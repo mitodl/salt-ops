@@ -11,3 +11,5 @@ install_contrib_modules:
     - watch_in:
         - service: salt_minion_running
         - service: salt_master_running
+    - require:
+        - git: install_contrib_modules
