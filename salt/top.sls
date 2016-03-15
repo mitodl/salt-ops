@@ -1,11 +1,12 @@
 base:
-  '*':
+  '*': []
   'roles:master':
     - match: grain
     - master
     - master.aws
     - master.api
     - master_utils.contrib
+    - master_utils.dns
   'roles:elasticsearch':
     - match: grain
     - elasticsearch
