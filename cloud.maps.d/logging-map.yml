@@ -1,0 +1,23 @@
+elasticsearch:
+  - es1:
+      grains:
+        env: prod
+  - es2:
+      grains:
+        env: prod
+  - es3:
+      grains:
+        env: prod
+
+fluentd:
+  - fluent1:
+      grains:
+        env: prod
+  - fluent2:
+      grains:
+        env: prod
+
+kibana:
+  - kibana1:
+      grains:
+        env: prod
