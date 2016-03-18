@@ -13,3 +13,10 @@ install_contrib_modules:
         - service: salt_master_running
     - require:
         - git: install_contrib_modules
+
+load_contrib_modules:
+  module.run:
+    - name: saltutil.sync_all
+    - refresh: True
+    - require:
+        - cmd: install_contrib_modules
