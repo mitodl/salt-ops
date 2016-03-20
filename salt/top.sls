@@ -14,6 +14,7 @@ base:
   'roles:kibana':
     - match: grain
     - elasticsearch
+    - elasticsearch.plugins
     - elasticsearch.kibana
   'roles:fluentd':
     - match: grain
