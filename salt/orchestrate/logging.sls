@@ -1,25 +1,19 @@
-{% for profile, count in [('elasticsearch', 3), ('kibana', 1), ('fluentd', 2)] %}
+{% for profile in ['elasticsearch', 'kibana', 'fluentd'] %}
 ensure_instance_profile_exists_for_{{ profile }}:
-  salt.function:
-    - name: boto_iam.create_role
-    - tgt: 'roles: master'
-    - tgt_type: grain
-    - arg:
-        - {{ profile }}-instance-role
+  boto_iam_role.present:
+    - name: {{ profile }}-instance-role
+{% endfor %}
 
-{% for num in range(count) %}
-build_{{ profile }}_{{ num + 1}}:
+deploy_logging_cloud_map:
   salt.function:
-    - name: cloud.profile
+    - name: saltutil.runner
     - tgt: 'roles:master'
     - tgt_type: grain
     - arg:
-        - {{ profile }}
-        - {{ profile }}{{ num + 1 }}
+        - cloud.map_run
     - kwarg:
-        iam_profile: {{ profile }}-instance-role
-{% endfor %}
-{% endfor %}
+        path: /etc/salt/cloud.maps.d/logging-map.yml
+        parallel: True
 
 build_elasticsearch_nodes:
   salt.state:
