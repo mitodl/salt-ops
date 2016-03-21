@@ -7,6 +7,7 @@ base:
     - master.api
     - master_utils.contrib
     - master_utils.dns
+    - master_utils.libgit
   'roles:elasticsearch':
     - match: grain
     - elasticsearch

@@ -10,7 +10,6 @@ salt_master:
       - reclass
       - git
       - python-dev
-      - libgit2-dev
       - python-pip
       - libffi-dev
       - libssh2-1-dev
@@ -20,7 +19,6 @@ salt_master:
       - PyOpenssl
       - pyyaml
       - requests
-      - pygit2<0.24
   ssl:
     cert_path: /etc/salt/ssl/certs/salt.odl.mit.com.crt
     key_path: /etc/salt/ssl/certs/salt.odl.mit.com.key

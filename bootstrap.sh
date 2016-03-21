@@ -15,4 +15,5 @@ sudo cp -r salt/* /srv/salt
 # sudo spm update_repo
 # sudo spm install master
 sudo cp -r formulas/master-formula/master /srv/salt
+sudo salt-call --local grains.set roles '[master]'
 sudo salt-call --local state.highstate
