@@ -26,3 +26,16 @@ build_logging_nodes:
     - tgt: 'P@roles:(elasticsearch|kibana|fluentd)'
     - tgt_type: compound
     - highstate: True
+
+{% set kibana_host = '' %}
+{% for host, grains in salt.mine.get(
+    kibana1, 'grains.item', expr_form='compound'
+    ).items() %}
+{% set kibana_host = grains['external_ip'] %}
+{% endfor %}
+register_kibana_dns:
+  boto_route53.present:
+    - name: logs.odl.mit.edu
+    - value: {{ kibana_host }}
+    - zone: odl.mit.edu.
+    - record_type: A

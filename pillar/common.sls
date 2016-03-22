@@ -4,3 +4,4 @@ mine_functions:
   grains.item:
     - external_ip
     - ec2:local_ipv4
+    - ec2:public_ipv4
