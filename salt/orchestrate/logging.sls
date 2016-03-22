@@ -27,15 +27,14 @@ build_logging_nodes:
     - tgt_type: compound
     - highstate: True
 
-{% set kibana_host = '' %}
-{% for host, grains in salt.mine.get(
-    kibana1, 'grains.item', expr_form='compound'
+{% for host, grains in salt.saltutil.runner(
+    'mine.get',
+    tgt='roles:kibana', fun='grains.item', tgt_type='grain'
     ).items() %}
-{% set kibana_host = grains['external_ip'] %}
-{% endfor %}
-register_kibana_dns:
+register_kibana_dns_{{ host }}:
   boto_route53.present:
     - name: logs.odl.mit.edu
-    - value: {{ kibana_host }}
+    - value: {{ grains['external_ip'] }}
     - zone: odl.mit.edu.
     - record_type: A
+{% endfor %}
