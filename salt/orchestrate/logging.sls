@@ -15,25 +15,14 @@ deploy_logging_cloud_map:
         path: /etc/salt/cloud.maps.d/logging-map.yml
         parallel: True
 
-build_elasticsearch_nodes:
-  salt.state:
-    - tgt: 'roles:elasticsearch'
-    - tgt_type: grain
-    - highstate: True
-
-build_kibana_nodes:
-  salt.state:
-    - tgt: 'roles:kibana'
-    - tgt_type: grain
-    - highstate: True
-
-populate_mine_with_elasticsearch_data:
+populate_mine_with_logging_node_data:
   salt.function:
     - name: mine.update
-    - tgt: '*'
+    - tgt: 'P@roles:(elasticsearch|kibana|fluentd)'
+    - tgt_type: compound
 
-build_fluentd_nodes:
+build_logging_nodes:
   salt.state:
-    - tgt: 'roles:fluentd'
-    - tgt_type: grain
+    - tgt: 'P@roles:(elasticsearch|kibana|fluentd)'
+    - tgt_type: compound
     - highstate: True

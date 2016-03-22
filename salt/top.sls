@@ -17,6 +17,7 @@ base:
     - elasticsearch
     - elasticsearch.plugins
     - elasticsearch.kibana
+    - elasticsearch.kibana.nginx_extra_config
   'roles:fluentd':
     - match: grain
     - fluentd
