@@ -15,6 +15,12 @@ deploy_logging_cloud_map:
         path: /etc/salt/cloud.maps.d/logging-map.yml
         parallel: True
 
+load_pillar_data_on_logging_nodes:
+  salt.function:
+    - name: saltutil.refresh_pillar
+      tgt: 'P@roles:(elasticsearch|kibana|fluentd)'
+      tgt_type: compound
+
 populate_mine_with_logging_node_data:
   salt.function:
     - name: mine.update
@@ -27,14 +33,16 @@ build_logging_nodes:
     - tgt_type: compound
     - highstate: True
 
+{% set hosts = [] %}
 {% for host, grains in salt.saltutil.runner(
     'mine.get',
     tgt='roles:kibana', fun='grains.item', tgt_type='grain'
     ).items() %}
-register_kibana_dns_{{ host }}:
+{% do hosts.append(grains['external_ip']) %}
+{% endfor %}
+register_kibana_dns:
   boto_route53.present:
     - name: logs.odl.mit.edu
-    - value: {{ grains['external_ip'] }}
+    - value: {{ hosts }}
     - zone: odl.mit.edu.
     - record_type: A
-{% endfor %}
