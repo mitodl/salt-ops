@@ -46,3 +46,31 @@ register_kibana_dns:
     - value: {{ hosts }}
     - zone: odl.mit.edu.
     - record_type: A
+
+{% set hosts = [] %}
+{% for host, grains in salt.saltutil.runner(
+    'mine.get',
+    tgt='G@roles:fluentd and G@roles:aggregator', fun='grains.item', tgt_type='compound'
+    ).items() %}
+{% do hosts.append(grains['external_ip']) %}
+{% endfor %}
+register_log_aggregator_dns:
+  boto_route53.present:
+    - name: log-input.odl.mit.edu
+    - value: {{ hosts }}
+    - zone: odl.mit.edu.
+    - record_type: A
+
+{% set hosts = [] %}
+{% for host, grains in salt.saltutil.runner(
+    'mine.get',
+    tgt='G@roles:fluentd and G@roles:aggregator', fun='grains.item', tgt_type='compound'
+    ).items() %}
+{% do hosts.append(grains['ec2:local_hostname']) %}
+{% endfor %}
+register_log_aggregator_internal_dns:
+  boto_route53.present:
+    - name: log-input.private.odl.mit.edu
+    - value: {{ hosts }}
+    - zone: odl.mit.edu.
+    - record_type: CNAME
