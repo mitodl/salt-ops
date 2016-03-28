@@ -10,6 +10,6 @@ forward_syslog_to_local_fluentd:
 
 restart_syslog_for_config_change:
   service.running:
-    - name: syslog
+    - name: rsyslog
     - watch:
         - file: forward_syslog_to_local_fluentd
