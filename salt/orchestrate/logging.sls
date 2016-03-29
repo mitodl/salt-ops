@@ -15,6 +15,12 @@ deploy_logging_cloud_map:
         path: /etc/salt/cloud.maps.d/logging-map.yml
         parallel: True
 
+resize_root_partitions_on_elasticsearch_nodes:
+  salt.state:
+    - tgt: 'roles:elasticsearch'
+    - tgt_type: grain
+    - sls: utils.grow_partition
+
 load_pillar_data_on_logging_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
