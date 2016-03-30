@@ -39,6 +39,49 @@ build_logging_nodes:
     - tgt_type: compound
     - highstate: True
 
+# Obtain the grains for one of the elasticsearch nodes
+{% set grains = salt.saltutil.runner(
+    'mine.get',
+    tgt='roles:elasticsearch', fun='grains.item', tgt_type='grain'
+    ).items()[0][1] %}
+# PUT the mapper template into the ES _template index
+put_elasticsearch_mapper_template:
+  http.query:
+    - name: http://{{ grains['ec2:local_ipv4'] }}:9200/_template/logstash
+    - data: '
+      {
+        "template":   "logstash-*",
+        "settings" : {
+          "index.refresh_interval" : "5s"
+        },
+        "mappings": {
+          "_default_": {
+            "_all": {
+              "enabled": false
+            },
+            "dynamic_templates": [
+              {
+                "strings": {
+                  "match_mapping_type": "string",
+                  "mapping": {
+                    "type": "string",
+                    "fields": {
+                      "raw": {
+                        "type":  "string",
+                        "index": "not_analyzed",
+                        "ignore_above": 256
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }'
+    - method: PUT
+    - status: 200
+
 {% set hosts = [] %}
 {% for host, grains in salt.saltutil.runner(
     'mine.get',
