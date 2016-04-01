@@ -43,6 +43,7 @@ salt_master:
         - https://github.com/mitodl/elasticsearch-formula
         - https://github.com/mitodl/fluentd-formula
         - https://github.com/blarghmatey/aws-formula
+        - https://github.com/DataDog/datadog-formula
     ext_pillar:
       git_pillar_provider: pygit2
       ext_pillar:

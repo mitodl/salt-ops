@@ -1,5 +1,6 @@
 base:
-  '*': []
+  '*':
+    - datadog
   'roles:master':
     - match: grain
     - master
