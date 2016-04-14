@@ -115,11 +115,11 @@ register_log_aggregator_dns:
     'mine.get',
     tgt='G@roles:fluentd and G@roles:aggregator', fun='grains.item', tgt_type='compound'
     ).items() %}
-{% do hosts.append(grains['ec2:local_hostname']) %}
+{% do hosts.append(grains['ec2:local_ipv4']) %}
 {% endfor %}
 register_log_aggregator_internal_dns:
   boto_route53.present:
     - name: log-input.private.odl.mit.edu
     - value: {{ hosts }}
-    - zone: odl.mit.edu.
-    - record_type: CNAME
+    - zone: private.odl.mit.edu.
+    - record_type: A

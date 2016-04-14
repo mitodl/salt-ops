@@ -8,7 +8,7 @@ install_parted:
 
 resize_root_partition:
   cmd.run:
-    - name: parted {{ devicename }} {{ part_number }} yes 100%
+    - name: parted {{ devicename }} resizepart {{ part_number }} yes 100%
 
 resize_file_system:
   cmd.run:
