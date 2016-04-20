@@ -1,7 +1,0 @@
-edx_sandbox_ami:
-  - edx_sandbox_ami:
-      grains:
-        env: sandbox
-        # sandbox_status can be used to easily discern which instances are
-        # AMIs being built, and which are instanced from an AMI.
-        sandbox_status: ami-provision
