@@ -3,7 +3,7 @@ mongodb:
       grains:
         env: qa
         roles:
-	  - mongodb-primary
+          - mongodb-primary
   - mongo2-qa:
       grains:
         env: qa
