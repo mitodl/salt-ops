@@ -13,12 +13,14 @@ base:
     - match: grain
     - elasticsearch
     - elasticsearch.plugins
+    - datadog.plugins
   'roles:kibana':
     - match: grain
     - elasticsearch
     - elasticsearch.plugins
     - elasticsearch.kibana
     - elasticsearch.kibana.nginx_extra_config
+    - datadog.plugins
   'roles:fluentd':
     - match: grain
     - fluentd
@@ -27,3 +29,7 @@ base:
   'G@roles:edx_sandbox and G@sandbox_status:ami-provision':
     - match: compound
     - edx.sandbox_ami
+  'roles:aggregator':
+    - match: grain
+    - fluentd.reverse_proxy
+    - datadog.plugins
