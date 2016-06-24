@@ -13,6 +13,12 @@ deploy_logging_cloud_map:
         path: /etc/salt/cloud.maps.d/mongodb-map.yml
         parallel: True
 
+resize_root_partitions_on_mongodb_nodes:
+  salt.state:
+    - tgt: 'G@roles:mongodb and G@environment:dogwood-qa'
+    - tgt_type: compound
+    - sls: utils.grow_partition
+
 load_pillar_data_on_mongodb_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
