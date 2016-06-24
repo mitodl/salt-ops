@@ -1,0 +1,12 @@
+mongodb:
+  - mongo1-qa:
+      grains:
+        env: qa
+        roles:
+	  - mongodb-primary
+  - mongo2-qa:
+      grains:
+        env: qa
+  - mongo3-qa:
+      grains:
+        env: qa
