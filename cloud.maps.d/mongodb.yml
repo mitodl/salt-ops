@@ -1,12 +1,12 @@
 mongodb:
   - mongo1-qa:
       grains:
-        env: qa
+        environment: dogwood-qa
         roles:
           - mongodb-primary
   - mongo2-qa:
       grains:
-        env: qa
+        environment: dogwood-qa
   - mongo3-qa:
       grains:
-        env: qa
+        environment: dogwood-qa
