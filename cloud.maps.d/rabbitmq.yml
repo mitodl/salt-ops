@@ -1,0 +1,10 @@
+rabbitmq:
+  - rabbit1-qa:
+      grains:
+        environment: dogwood-qa
+  - rabbit2-qa:
+      grains:
+        environment: dogwood-qa
+  - rabbit3-qa:
+      grains:
+        environment: dogwood-qa
