@@ -17,22 +17,28 @@ create_dogwood_qa_vpc:
     - dns_support: True
     - dns_hostnames: True
 
+create_dogwood_qa_internet_gateway:
+  boto_vpc.internet_gateway_present:
+    - name: dogwood_qa-igw
+    - vpc_name: {{ VPC_NAME }}
+    - require:
+        - boto_vpc: create_dogwood_qa_vpc
+
 create_dogwood_qa_public_subnet:
   boto_vpc.subnet_present:
     - name: public-dogwood_qa
     - vpc_name: {{ VPC_NAME }}
     - cidr_block: 10.5.0.0/24
+    - require:
+        - boto_vpc: create_dogwood_qa_vpc
 
 create_dogwood_private_db_subnet:
   boto_vpc.subnet_present:
     - name: private_db_subnet-dogwood_qa
     - vpc_name: {{ VPC_NAME }}
     - cidr_block: 10.5.5.0/24
-
-create_dogwood_qa_internet_gateway:
-  boto_vpc.internet_gateway_present:
-    - name: dogwood_qa-igw
-    - vpc_name: {{ VPC_NAME }}
+    - require:
+        - boto_vpc: create_dogwood_qa_vpc
 
 create_dogwood_qa_routing_table:
   boto_vpc.route_table_present:
@@ -43,6 +49,9 @@ create_dogwood_qa_routing_table:
     - routes:
         - destination_cidr_block: 0.0.0.0/0
           internet_gateway_name: dogwood_qa-igw
+    - require:
+        boto_vpc: create_dogwood_qa_vpc
+        boto_vpc: create_dogwood_qa_public_subnet
 
 create_edx_security_group:
   boto_secgroup.present:
@@ -58,6 +67,9 @@ create_edx_security_group:
           from_port: 443
           to_port: 443
           cidr_ip: 0.0.0.0/0
+    - require:
+        boto_vpc: create_dogwood_qa_vpc
+        boto_vpc: create_dogwood_qa_public_subnet
 
 create_mongodb_security_group:
   boto_secgroup.present:
@@ -73,6 +85,10 @@ create_mongodb_security_group:
           cidr_ip:
             - 10.0.0.0/16
             - 10.5.0.0/16
+    - require:
+        boto_vpc: create_dogwood_qa_vpc
+        boto_vpc: create_dogwood_qa_public_subnet
+        boto_secgroup: create_edx_security_group
 
 create_dogwood_consul_security_group:
   boto_secgroup.present:
@@ -104,6 +120,9 @@ create_dogwood_consul_security_group:
           from_port: 8301
           to_port: 8301
           source_group_name: default
+    - require:
+        boto_vpc: create_dogwood_qa_vpc
+        boto_vpc: create_dogwood_qa_public_subnet
 
 create_rabbitmq_security_group:
   boto_secgroup.present:
@@ -115,6 +134,10 @@ create_rabbitmq_security_group:
           from_port: 5672
           to_port: 5672
           source_group_name: edx-dogwood_qa
+    - require:
+        boto_vpc: create_dogwood_qa_vpc
+        boto_vpc: create_dogwood_qa_public_subnet
+        boto_secgroup: create_edx_security_group
 
 create_rds_security_group:
   boto_secgroup.present:
@@ -126,3 +149,7 @@ create_rds_security_group:
           from_port: 3306
           to_port: 3306
           source_group_name: edx-dogwood_qa
+    - require:
+        boto_vpc: create_dogwood_qa_vpc
+        boto_vpc: create_dogwood_qa_public_subnet
+        boto_secgroup: create_edx_security_group
