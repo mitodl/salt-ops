@@ -32,7 +32,7 @@ create_dogwood_qa_public_subnet:
   boto_vpc.subnet_present:
     - name: public-dogwood_qa
     - vpc_name: {{ VPC_NAME }}
-    - cidr_block: 10.5.0.0/24
+    - cidr_block: 10.5.1.0/24
     - require:
         - boto_vpc: create_dogwood_qa_vpc
     - tags:

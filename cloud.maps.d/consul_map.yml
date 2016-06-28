@@ -1,20 +1,23 @@
 consul:
   - sd1:
-      securitygroup: consul-dogwood_qa
+      securitygroupname: consul-dogwood_qa
+      subnetname: public-dogwood_qa
       grains:
         environment: dogwood-qa
         roles:
           - consul_server
           - vault_server
   - sd2:
-      securitygroup: consul-dogwood_qa
+      securitygroupname: consul-dogwood_qa
+      subnetname: public-dogwood_qa
       grains:
         environment: dogwood-qa
         roles:
           - consul_server
           - vault_server
   - sd3:
-      securitygroup: consul-dogwood_qa
+      securitygroupname: consul-dogwood_qa
+      subnetname: public-dogwood_qa
       grains:
         environment: dogwood-qa
         roles:
