@@ -33,3 +33,15 @@ base:
     - match: grain
     - fluentd.reverse_proxy
     - datadog.plugins
+  'environment:dogwood-qa':
+    - match: grain
+    - consul
+    - consul.tests
+  'G@roles:consul_server and G@environment:operations':
+    - match: compound
+    - consul
+    - consul.tests
+  'G@roles:vault_server and G@environment:operations':
+    - match: compound
+    - vault
+    - vault.tests

@@ -133,7 +133,7 @@ create_dogwood_consul_security_group:
           to_port: 8600
           source_group_name: default
         - ip_protocol: tcp
-          from_port: 8301
+          from_port: 8300
           to_port: 8301
           source_group_name: default
         - ip_protocol: udp
