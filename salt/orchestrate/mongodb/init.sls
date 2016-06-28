@@ -10,8 +10,21 @@ deploy_logging_cloud_map:
     - arg:
         - cloud.map_run
     - kwarg:
-        path: /etc/salt/cloud.maps.d/mongodb-map.yml
+        path: /etc/salt/cloud.maps.d/mongodb.yml
         parallel: True
+
+{% for grains in salt.saltutil.runner(
+    'mine.get',
+    tgt='roles:mongodb', fun='grains.item', tgt_type='grain'
+    ).items() %}
+update_mongodb_instance:
+  boto_ec2.instance_present:
+    - vpc_name: 'Dogwood QA'
+    - instance_id: {{ grains[1]['ec2:instance_id'] }}
+    - instance_profile_name: mongodb
+    - security_group_names: mongodb-dogwood_qa
+    - target_state: running
+{% endfor %}
 
 resize_root_partitions_on_mongodb_nodes:
   salt.state:
@@ -44,10 +57,3 @@ build_mongodb_nodes:
     ).items() %}
 {% do hosts.append(grains['external_ip']) %}
 {% endfor %}
-
-register_mongodb_internal_dns:
-  boto_route53.present:
-    - name: mongodb-dogwood-qa.private.odl.mit.edu
-    - value: {{ hosts }}
-    - zone: private.odl.mit.edu.
-    - record_type: A
