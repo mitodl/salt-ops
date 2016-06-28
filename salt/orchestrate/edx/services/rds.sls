@@ -3,6 +3,8 @@ create_edx_rds_db_subnet_group:
     - name: edx_db_subnet_group-dogwood_qa
     - subnet_names:
         - private_db_subnet-dogwood_qa
+    - tags:
+        Name: edx_db_subnet_group-dogwood_qa
 
 create_edx_rds_store:
   boto_rds.present:
@@ -15,3 +17,7 @@ create_edx_rds_store:
         - {{ salt.boto_secgroup.get_group_id('rds-dogwood_qa') }}
         - {{ salt.boto_secgroup.get_group_id('default', vpc_name='Dogwood QA') }}
     - db_subnet_group_name: edx_db_subnet_group-dogwood_qa
+    - tags:
+        Name: edx_db-dogwood_qa
+    - require:
+        - bot_rds: create_edx_rds_db_subnet_group
