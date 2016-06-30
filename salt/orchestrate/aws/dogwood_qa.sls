@@ -33,11 +33,11 @@ create_dogwood_qa_public_subnet_1:
     - name: public1-dogwood_qa
     - vpc_name: {{ VPC_NAME }}
     - cidr_block: 10.5.1.0/24
-    - availability_zone: us-east-1a
+    - availability_zone: us-east-1d
     - require:
         - boto_vpc: create_dogwood_qa_vpc
     - tags:
-        Name: public-dogwood_qa
+        Name: public1-dogwood_qa
 
 create_dogwood_qa_public_subnet_2:
   boto_vpc.subnet_present:
@@ -48,7 +48,7 @@ create_dogwood_qa_public_subnet_2:
     - require:
         - boto_vpc: create_dogwood_qa_vpc
     - tags:
-        Name: public-dogwood_qa
+        Name: public2-dogwood_qa
 
 create_dogwood_qa_public_subnet_3:
   boto_vpc.subnet_present:
@@ -59,7 +59,7 @@ create_dogwood_qa_public_subnet_3:
     - require:
         - boto_vpc: create_dogwood_qa_vpc
     - tags:
-        Name: public-dogwood_qa
+        Name: public3-dogwood_qa
 
 create_dogwood_private_db_subnet:
   boto_vpc.subnet_present:

@@ -1,0 +1,11 @@
+consul:
+  {% for id_num in range(3) %}
+  - consul-{{ environment_name }}-{{ id_num }}:
+      securitygroupid: {{ securitygroupid }}
+      subnetid: {{ subnetids[id_num] }}
+      tag:
+        environment: {{ environment_name }}
+      grains:
+        environment: {{ environment_name }}
+        roles: {{ roles }}
+  {% endfor %}
