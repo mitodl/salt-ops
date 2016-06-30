@@ -28,7 +28,7 @@ deploy_consul_nodes:
     - arg:
         - cloud.map_run
     - kwarg:
-        path: /etc/salt/cloud.maps.d/consul_map.yml
+        path: /etc/salt/cloud.maps.d/operations_consul_map.yml
         parallel: True
     - require:
         - file: generate_cloud_map_file
