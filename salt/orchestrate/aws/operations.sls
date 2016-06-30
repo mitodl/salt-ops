@@ -27,6 +27,20 @@ create_operations_public_subnet_3:
     - tags:
         Name: public3-operations
 
+manage_operations_routing_table:
+  boto_vpc.route_table_present:
+    - name: operations-route_table
+    - vpc_name: {{ VPC_NAME }}
+    - subnet_names:
+        - public1-operations
+        - public2-operations
+        - public3-operations
+    - routes:
+        - destination_cidr_block: 0.0.0.0/0
+          internet_gateway_name: operations-igw
+    - tags:
+        Name: operations-route_table
+
 create_operations_consul_security_group:
   boto_secgroup.present:
     - name: consul-operations

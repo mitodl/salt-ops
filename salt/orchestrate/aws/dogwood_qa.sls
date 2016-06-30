@@ -76,13 +76,18 @@ create_dogwood_qa_routing_table:
     - name: dogwood_qa-route_table
     - vpc_name: {{ VPC_NAME }}
     - subnet_names:
-        - public-dogwood_qa
+        - public1-dogwood_qa
+        - public2-dogwood_qa
+        - public3-dogwood_qa
+        - private_db_subnet-dogwood_qa
     - routes:
         - destination_cidr_block: 0.0.0.0/0
           internet_gateway_name: dogwood_qa-igw
     - require:
         - boto_vpc: create_dogwood_qa_vpc
-        - boto_vpc: create_dogwood_qa_public_subnet
+        - boto_vpc: create_dogwood_qa_public_subnet_1
+        - boto_vpc: create_dogwood_qa_public_subnet_2
+        - boto_vpc: create_dogwood_qa_public_subnet_3
     - tags:
         Name: dogwood_qa-route_table
 
