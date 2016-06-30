@@ -1,7 +1,7 @@
 {% set subnet_ids = [] %}
 {% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
     'public1-operations', 'public2-operations', 'public3-operations'])['subnets'] %}
-{% do subnet_ids.append(subnet['id']) %}
+{% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
 
 generate_cloud_map_file:
@@ -16,8 +16,11 @@ generate_cloud_map_file:
           - consul_server
           - service_discovery
           - vault_server
-        securitygroupid: {{ salt.boto_secgroup.get_group_id(
+        securitygroupid:
+          - {{ salt.boto_secgroup.get_group_id(
             'consul-operations', vpc_name='mitodl-operations-services') }}
+          - {{ salt.boto_secgroup.get_group_id(
+            'default', vpc_name='mitodl-operations-services') }}
         subnetids: {{ subnet_ids }}
 
 deploy_consul_nodes:
