@@ -5,6 +5,7 @@ base:
     - match: grain
     - master
     - master.api
+    - master_utils.dns
     - master_utils.libgit
   'G@roles:master and G@environment:operations':
     - match: compound
