@@ -27,6 +27,13 @@ populate_mine_with_dogwood_consul_data:
     - tgt: 'G@roles:consul_server and G@environment:dogwood_qa'
     - tgt_type: compound
 
+{# Reload the pillar data to update values from the salt mine #}
+reload_pillar_data_on_dogwood_consul_nodes:
+  salt.function:
+    - name: saltutil.refresh_pillar
+    - tgt: 'G@roles:consul_server and G@environment:dogwood_qa'
+    - tgt_type: compound
+
 build_dogwood_consul_nodes:
   salt.state:
     - tgt: 'G@roles:consul_server and G@environment:dogwood_qa'

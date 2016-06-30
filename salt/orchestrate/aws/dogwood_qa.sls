@@ -28,11 +28,34 @@ create_dogwood_qa_internet_gateway:
     - tags:
         Name: dogwood_qa-igw
 
-create_dogwood_qa_public_subnet:
+create_dogwood_qa_public_subnet_1:
   boto_vpc.subnet_present:
-    - name: public-dogwood_qa
+    - name: public1-dogwood_qa
     - vpc_name: {{ VPC_NAME }}
     - cidr_block: 10.5.1.0/24
+    - availability_zone: us-east-1a
+    - require:
+        - boto_vpc: create_dogwood_qa_vpc
+    - tags:
+        Name: public-dogwood_qa
+
+create_dogwood_qa_public_subnet_2:
+  boto_vpc.subnet_present:
+    - name: public2-dogwood_qa
+    - vpc_name: {{ VPC_NAME }}
+    - cidr_block: 10.5.2.0/24
+    - availability_zone: us-east-1b
+    - require:
+        - boto_vpc: create_dogwood_qa_vpc
+    - tags:
+        Name: public-dogwood_qa
+
+create_dogwood_qa_public_subnet_3:
+  boto_vpc.subnet_present:
+    - name: public3-dogwood_qa
+    - vpc_name: {{ VPC_NAME }}
+    - cidr_block: 10.5.3.0/24
+    - availability_zone: us-east-1c
     - require:
         - boto_vpc: create_dogwood_qa_vpc
     - tags:
@@ -120,26 +143,39 @@ create_dogwood_consul_security_group:
           from_port: 8500
           to_port: 8500
           source_group_name: default
+          {# HTTP access #}
         - ip_protocol: udp
           from_port: 8500
           to_port: 8500
           source_group_name: default
+          {# HTTP access #}
         - ip_protocol: tcp
           from_port: 8600
           to_port: 8600
           source_group_name: default
+          {# DNS access #}
         - ip_protocol: udp
           from_port: 8600
           to_port: 8600
           source_group_name: default
+          {# DNS access #}
         - ip_protocol: tcp
-          from_port: 8300
+          from_port: 8301
           to_port: 8301
           source_group_name: default
+          {# LAN gossip protocol #}
         - ip_protocol: udp
           from_port: 8301
           to_port: 8301
           source_group_name: default
+          {# LAN gossip protocol #}
+        - ip_protocol: tcp
+          from_port: 8302
+          to_port: 8302
+          cidr_ip:
+            - 10.0.0.0/16
+            - 10.5.0.0/16
+          {# WAN cluster interface #}
     - require:
         - boto_vpc: create_dogwood_qa_vpc
     - tags:
