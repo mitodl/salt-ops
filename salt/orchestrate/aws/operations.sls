@@ -1,4 +1,4 @@
-{% set VPC_NAME='mitodl=operations-services' %}
+{% set VPC_NAME='mitodl-operations-services' %}
 
 create_operations_public_subnet_1:
   boto_vpc.subnet_present:
