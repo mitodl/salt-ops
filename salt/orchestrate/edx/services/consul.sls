@@ -1,6 +1,6 @@
 {% set subnet_ids = [] %}
 {% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
-    'public1-dogwood_qa', 'public2-dogwood_qa', 'public3-dogwood_qa']) %}
+    'public1-dogwood_qa', 'public2-dogwood_qa', 'public3-dogwood_qa'])['subnets'] %}
 {% do subnet_ids.append(subnet['id']) %}
 {% endfor %}
 
@@ -15,8 +15,11 @@ generate_cloud_map_file:
         roles:
           - consul_server
           - service_discovery
-        securitygroupid: {{ salt.boto_secgroup.get_group_id(
+        securitygroupid:
+          - {{ salt.boto_secgroup.get_group_id(
             'consul-dogwood_qa', vpc_name='Dogwood QA') }}
+          - {{ salt.boto_secgroup.get_group_id(
+            'salt_master-dogwood_qa', vpc_name='Dogwood QA') }}
         subnetids: {{ subnet_ids }}
 
 deploy_consul_nodes:

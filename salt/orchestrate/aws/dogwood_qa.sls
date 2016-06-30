@@ -212,3 +212,19 @@ create_rds_security_group:
         - boto_secgroup: create_edx_security_group
     - tags:
         Name: rds-dogwood_qa
+
+create_salt_master_security_group:
+  boto_secgroup.present:
+    - name: salt_master-dogwood_qa
+    - vpc_name: {{ VPC_NAME }}
+    - description: ACL for allowing access to hosts from Salt Master
+    - tags:
+        Name: salt_master-dogwood_qa
+    - rules:
+        - ip_protocol: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip:
+            - 10.0.0.0/16
+    - require:
+        - boto_vpc: create_dogwood_qa_vpc
