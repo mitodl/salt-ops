@@ -1,8 +1,11 @@
 consul:
   {% for id_num in range(3) %}
   - consul-{{ environment_name }}-{{ id_num }}:
-      securitygroupid: {{ securitygroupid }}
-      subnetid: {{ subnetids[id_num] }}
+      network_interfaces:
+        - DeviceIndex: 0
+          AssociatePublicIpAddress: True
+          SubnetId: {{ subnetids[id_num] }}
+          SecurityGroupId: {{ securitygroupid }}
       tag:
         environment: {{ environment_name }}
       grains:
