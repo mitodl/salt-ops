@@ -1,0 +1,45 @@
+{% for key, value in ansible_env_config.items() %}
+{{ key }}: {{ value }}
+{% endfor %}
+
+{% raw %}
+edx_platform_version: '{{ EDX_BRANCH }}'
+edx_platform_repo: '{{ EDX_REMOTE }}'
+
+SANDBOX_DOMAIN: '{{ SANDBOX_NAME }}.{{ SANDBOX_ZONE }}'
+
+# Nginx sites overrides
+EDXAPP_PREVIEW_LMS_BASE: 'preview.{{ SANDBOX_DOMAIN }}'
+EDXAPP_LMS_BASE: '{{ SANDBOX_DOMAIN }}'
+EDXAPP_CMS_BASE: 'studio-{{ SANDBOX_DOMAIN }}'
+
+EDXAPP_LMS_PREVIEW_NGINX_PORT: 80
+EDXAPP_CMS_NGINX_PORT: 80
+EDXAPP_LMS_NGINX_PORT: 80
+EDXAPP_CMS_SSL_NGINX_PORT: 443
+EDXAPP_LMS_SSL_NGINX_PORT: 443
+
+# Configure TLS
+NGINX_ENABLE_SSL: True
+NGINX_REDIRECT_TO_HTTPS: True
+NGINX_HTTPS_REDIRECT_STRATEGY: "scheme"
+
+NGINX_SSL_CERTIFICATE: '{{ TLS_LOCATION }}/{{ TLS_KEY_NAME }}.crt'
+NGINX_SSL_KEY: '{{ TLS_LOCATION }}/{{ TLS_KEY_NAME }}.key'
+
+# Configure HTTP auth
+COMMON_ENABLE_BASIC_AUTH: '{{ ENABLE_HTTP_AUTH }}'
+COMMON_HTPASSWD_USER: '{{ HTTP_USERNAME }}'
+COMMON_HTPASSWD_PASS: '{{ HTTP_PASSWORD }}'
+
+# Ask search bots to not index sandboxes
+NGINX_ROBOT_RULES:
+  - agent: '*'
+    disallow: '/'
+
+# Misc feature flags
+EDXAPP_ENABLE_OAUTH2_PROVIDER: True
+EDXAPP_ENABLE_MOBILE_REST_API: True
+EDXAPP_CUSTOM_COURSES_EDX: True
+EDXAPP_ENABLE_SYSADMIN_DASHBOARD: True
+{% endraw %}

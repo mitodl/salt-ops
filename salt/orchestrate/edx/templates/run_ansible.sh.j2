@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -x
+
+# Checkout the Ansible submodules
+
+cd {{ venv_path }}/src/ansible/
+git submodule init
+git submodule update
+
+# Source the virtualenv and ansible dev environment script
+
+source {{ venv_path }}/bin/activate
+source {{ venv_path }}/src/ansible/hacking/env-setup
+
+# Run ansible
+
+cd {{ repo_path }}/playbooks
+ansible-playbook -c local -i localhost, \
+    edx_sandbox.yml \
+    --extra-vars @{{ conf_file }} \
+    2>&1 | tee {{ data_path }}/ansible-log.txt
