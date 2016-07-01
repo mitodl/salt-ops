@@ -1,0 +1,21 @@
+edx:
+  provider: mitx
+  size: m3.xlarge
+  image: ami-427a392a
+  ssh_username: admin
+  ssh_interface: private_ips
+  block_device_mappings:
+    - DeviceName: /dev/xvda
+      Ebs.VolumeSize: 400
+      Ebs.VolumeType: gp2
+  ebs_optimized: True
+  iam_profile: edx-instance-role
+  tag:
+    env: qa
+    role: edx
+  grains:
+    roles:
+      - edx
+  minion:
+    master:
+      - salt.private.odl.mit.edu
