@@ -53,7 +53,7 @@ create_ansible_virtualenv:
 place_sandbox_ansible_configuration:
   file.managed:
     - name: {{ conf_file }}
-    - source: salt://edx-sandbox/templates/ansible_env_config.yaml.j2
+    - source: salt://orchestrate/edx/templates/ansible_env_config.yaml.j2
     - template: jinja
     - context:
       ansible_env_config: {{ salt.pillar.get('edx:ansible_env_config') }}
@@ -90,8 +90,13 @@ place_tls_{{ ext }}_file:
 run_ansible:
   cmd.script:
     - name: {{ data_path }}/run_ansible.sh
-    - source: salt://orchestrate/templates/run_ansible.sh.j2
+    - source: salt://orchestrate/edx/templates/run_ansible.sh.j2
     - template: jinja
     - cwd: {{ repo_path }}/playbooks
+    - context:
+      repo_path: {{ repo_path }}
+      venv_path: {{ venv_path }}
+      repo_path: {{ repo_path }}
+      conf_file: {{ conf_file }}
     - require:
       - virtualenv: create_ansible_virtualenv
