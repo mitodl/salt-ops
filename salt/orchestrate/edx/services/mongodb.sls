@@ -3,6 +3,11 @@
     'public1-dogwood_qa', 'public2-dogwood_qa', 'public3-dogwood_qa'])['subnets'] %}
 {% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
+load_mongodb_cloud_profile:
+  file.managed:
+    - name: /etc/salt/cloud.profiles.d/mongodb.conf
+    - source: salt://orchestrate/aws/cloud_profiles/mongodb.conf
+
 generate_cloud_map_file:
   file.managed:
     - name: /etc/salt/cloud.maps.d/dogwood_qa_mongodb_map.yml
@@ -19,6 +24,8 @@ generate_cloud_map_file:
           - {{ salt.boto_secgroup.get_group_id(
             'salt_master-dogwood_qa', vpc_name='Dogwood QA') }}
         subnetids: {{ subnet_ids }}
+    - require:
+        - file: load_mongodb_cloud_profile
 
 ensure_instance_profile_exists_for_mongodb:
   boto_iam_role.present:

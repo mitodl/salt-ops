@@ -4,6 +4,11 @@
 {% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
 
+load_consul_cloud_profile:
+  file.managed:
+    - name: /etc/salt/cloud.profiles.d/consul.conf
+    - source: salt://orchestrate/aws/cloud_profiles/consul.conf
+
 generate_cloud_map_file:
   file.managed:
     - name: /etc/salt/cloud.maps.d/dogwood_qa_consul_map.yml
@@ -21,6 +26,8 @@ generate_cloud_map_file:
           - {{ salt.boto_secgroup.get_group_id(
             'salt_master-dogwood_qa', vpc_name='Dogwood QA') }}
         subnetids: {{ subnet_ids }}
+    - require:
+        - file: load_consul_cloud_profile
 
 deploy_consul_nodes:
   salt.function:

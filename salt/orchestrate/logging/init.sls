@@ -3,6 +3,20 @@ ensure_instance_profile_exists_for_{{ profile }}:
   boto_iam_role.present:
     - name: {{ profile }}-instance-role
 {% endfor %}
+load_elasticsearch_cloud_profile:
+  file.managed:
+    - name: /etc/salt/cloud.profiles.d/elasticsearch.conf
+    - source: salt://orchestrate/aws/cloud_profiles/elasticsearch.conf
+
+load_fluentd_cloud_profile:
+  file.managed:
+    - name: /etc/salt/cloud.profiles.d/fluentd.conf
+    - source: salt://orchestrate/aws/cloud_profiles/fluentd.conf
+
+load_kibana_cloud_profile:
+  file.managed:
+    - name: /etc/salt/cloud.profiles.d/kibana.conf
+    - source: salt://orchestrate/aws/cloud_profiles/kibana.conf
 
 deploy_logging_cloud_map:
   salt.function:

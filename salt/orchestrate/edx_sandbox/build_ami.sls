@@ -2,6 +2,11 @@ ensure_instance_profile_exists_for_edx_sandbox_ami:
   boto_iam_role.present:
     - name: edx-sandbox-ami-instance-role
 
+load_edx_sandbox_cloud_profile:
+  file.managed:
+    - name: /etc/salt/cloud.profiles.d/edx_sandbox.conf
+    - source: salt://orchestrate/aws/cloud_profiles/edx_sandbox.conf
+
 provision_edx_sandbox_ami:
   cloud.profile:
     - name: edx_sandbox_ami
