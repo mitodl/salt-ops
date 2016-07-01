@@ -8,7 +8,7 @@ load_mongodb_cloud_profile:
     - name: /etc/salt/cloud.profiles.d/mongodb.conf
     - source: salt://orchestrate/aws/cloud_profiles/mongodb.conf
 
-generate_cloud_map_file:
+generate_mongodb_cloud_map_file:
   file.managed:
     - name: /etc/salt/cloud.maps.d/dogwood_qa_mongodb_map.yml
     - source: salt://orchestrate/aws/map_templates/mongodb.yml
@@ -31,7 +31,7 @@ ensure_instance_profile_exists_for_mongodb:
   boto_iam_role.present:
     - name: mongodb-instance-role
 
-deploy_logging_cloud_map:
+deploy_mongodb_cloud_map:
   salt.function:
     - name: saltutil.runner
     - tgt: 'roles:master'
@@ -42,7 +42,7 @@ deploy_logging_cloud_map:
         path: /etc/salt/cloud.maps.d/dogwood_qa_mongodb_map.yml
         parallel: True
     - require:
-        - file: generate_cloud_map_file
+        - file: generate_mongodb_cloud_map_file
 
 load_pillar_data_on_mongodb_nodes:
   salt.function:
