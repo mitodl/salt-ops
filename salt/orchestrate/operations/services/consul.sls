@@ -36,7 +36,7 @@ deploy_consul_nodes:
     - require:
         - file: generate_cloud_map_file
 
-load_pillar_data_on_dogwood_consul_nodes:
+load_pillar_data_on_operations_consul_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
     - tgt: 'G@roles:consul_server and G@environment:operations'
@@ -44,22 +44,22 @@ load_pillar_data_on_dogwood_consul_nodes:
     - require:
         - salt: deploy_consul_nodes
 
-populate_mine_with_dogwood_consul_data:
+populate_mine_with_operations_consul_data:
   salt.function:
     - name: mine.update
     - tgt: 'G@roles:consul_server and G@environment:operations'
     - tgt_type: compound
     - require:
-        - salt: load_pillar_data_on_dogwood_consul_nodes
+        - salt: load_pillar_data_on_operations_consul_nodes
 
 {# Reload the pillar data to update values from the salt mine #}
-reload_pillar_data_on_dogwood_consul_nodes:
+reload_pillar_data_on_operations_consul_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
     - tgt: 'G@roles:consul_server and G@environment:operations'
     - tgt_type: compound
     - require:
-        - salt: populate_mine_with_dogwood_consul_data
+        - salt: populate_mine_with_operations_consul_data
 
 install_git_on_consul_nodes_for_cloning_forked_python_packages:
   salt.function:
@@ -69,13 +69,13 @@ install_git_on_consul_nodes_for_cloning_forked_python_packages:
     - arg:
         - git
 
-build_dogwood_consul_nodes:
+build_operations_consul_nodes:
   salt.state:
     - tgt: 'G@roles:consul_server and G@environment:operations'
     - tgt_type: compound
     - highstate: True
     - require:
-        - salt: reload_pillar_data_on_dogwood_consul_nodes
+        - salt: reload_pillar_data_on_operations_consul_nodes
 
 bootstrap_vault_nodes:
   salt.state:
