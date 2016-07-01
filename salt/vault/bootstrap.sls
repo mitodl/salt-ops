@@ -27,7 +27,6 @@ register_root_ec2_role:
   vault.ec2_role_created:
     - role: salt-master
     - bound_ami_id: ami-116d857a
-    - role_tag: salt-master
     - policies:
         - root
         - salt-master

@@ -79,8 +79,7 @@ build_dogwood_consul_nodes:
 
 bootstrap_vault_nodes:
   salt.state:
-    - tgt: 'G@roles:vault_server and G@environment:operations'
-    - tgt_type: compound
+    - tgt: consul-operations-0
     - sls:
         - vault.bootstrap
     - pillar:
