@@ -84,6 +84,6 @@ build_edx_nodes:
   salt.state:
     - tgt: 'G@roles:edx and G@environment:dogwood-qa'
     - tgt_type: compound
-    - highstate: True
+    - sls: orchestrate.edx.deploy
     - require:
         - salt: reload_pillar_data_on_edx_nodes
