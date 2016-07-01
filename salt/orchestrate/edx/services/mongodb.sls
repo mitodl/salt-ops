@@ -44,13 +44,11 @@ deploy_mongodb_cloud_map:
     - require:
         - file: generate_mongodb_cloud_map_file
 
-load_pillar_data_on_mongodb_nodes:
+load_pillar_data_on_dogwood_mongodb_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
     - tgt: 'G@roles:mongodb and G@environment:dogwood-qa'
     - tgt_type: compound
-    - require:
-        - salt: deploy_mongodb_cloud_map
 
 populate_mine_with_mongodb_node_data:
   salt.function:
@@ -58,7 +56,7 @@ populate_mine_with_mongodb_node_data:
     - tgt: 'G@roles:mongodb and G@environment:dogwood-qa'
     - tgt_type: compound
     - require:
-        - salt: load_pillar_data_on_mongodb_nodes
+        - salt: load_pillar_data_on_dogwood_mongodb_nodes
 
 build_mongodb_nodes:
   salt.state:
@@ -67,3 +65,10 @@ build_mongodb_nodes:
     - highstate: True
     - require:
         - salt: populate_mine_with_mongodb_node_data
+    - pillar:
+        mongodb:
+          overrides:
+            pkgs:
+              - mongodb-org
+              - python
+              - python-pip

@@ -15,6 +15,6 @@ mongodb:
           - {{ role }}
           {% endfor %}
           {% if id_num == 0 %}
-          - mongodb-primary
+          - mongodb_primary
           {% endif %}
 {% endfor %}
