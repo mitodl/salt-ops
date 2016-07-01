@@ -147,32 +147,38 @@ create_dogwood_consul_security_group:
         - ip_protocol: tcp
           from_port: 8500
           to_port: 8500
-          source_group_name: default
+          cidr_ip:
+            - 10.5.0.0/16
           {# HTTP access #}
         - ip_protocol: udp
           from_port: 8500
           to_port: 8500
-          source_group_name: default
+          cidr_ip:
+            - 10.5.0.0/16
           {# HTTP access #}
         - ip_protocol: tcp
           from_port: 8600
           to_port: 8600
-          source_group_name: default
+          cidr_ip:
+            - 10.5.0.0/16
           {# DNS access #}
         - ip_protocol: udp
           from_port: 8600
           to_port: 8600
-          source_group_name: default
+          cidr_ip:
+            - 10.5.0.0/16
           {# DNS access #}
         - ip_protocol: tcp
-          from_port: 8301
+          from_port: 8300
           to_port: 8301
-          source_group_name: default
+          cidr_ip:
+            - 10.5.0.0/16
           {# LAN gossip protocol #}
         - ip_protocol: udp
           from_port: 8301
           to_port: 8301
-          source_group_name: default
+          cidr_ip:
+            - 10.5.0.0/16
           {# LAN gossip protocol #}
         - ip_protocol: tcp
           from_port: 8302

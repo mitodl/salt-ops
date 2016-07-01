@@ -21,6 +21,8 @@ generate_cloud_map_file:
             'consul-operations', vpc_name='mitodl-operations-services') }}
           - {{ salt.boto_secgroup.get_group_id(
             'default', vpc_name='mitodl-operations-services') }}
+          - {{ salt.boto_secgroup.get_group_id(
+            'vault-operations', vpc_name='mitodl-operations-services') }}
         subnetids: {{ subnet_ids }}
 
 deploy_consul_nodes:
