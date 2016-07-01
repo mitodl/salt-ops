@@ -3,7 +3,12 @@
     'public1-dogwood_qa', 'public2-dogwood_qa', 'public3-dogwood_qa']) %}
 {% do subnet_ids.append(subnet['id']) %}
 {% endfor %}
-generate_cloud_map_file:
+load_rabbitmq_cloud_profile:
+  file.managed:
+    - name: /etc/salt/cloud.profiles.d/rabbitmq.conf
+    - source: salt://orchestrate/aws/cloud_profiles/rabbitmq.conf
+
+generate_rabbitmq_cloud_map_file:
   file.managed:
     - name: /etc/salt/cloud.maps.d/dogwood_qa_rabbitmq_map.yml
     - source: salt://orchestrate/aws/map_templates/rabbitmq.yml
@@ -13,8 +18,11 @@ generate_cloud_map_file:
         environment_name: dogwood-qa
         roles:
           - rabbitmq
-        securitygroupid: {{ salt.boto_secgroup.get_group_id(
+        securitygroupid:
+          - {{ salt.boto_secgroup.get_group_id(
             'rabbitmq-dogwood_qa', vpc_name='Dogwood QA') }}
+          - {{ salt.boto_secgroup.get_group_id(
+            'salt_master-dogwood_qa', vpc_name='Dogwood QA') }}
         subnetids: {{ subnet_ids }}
 
 ensure_instance_profile_exists_for_rabbitmq:
@@ -32,15 +40,7 @@ deploy_rabbitmq_cloud_map:
         path: /etc/salt/cloud.maps.d/dogwood_qa_rabbitmq_map.yml
         parallel: True
     - require:
-        - file: generate_cloud_map_file
-
-resize_root_partitions_on_rabbitmq_nodes:
-  salt.state:
-    - tgt: 'G@roles:rabbitmq and G@environment:dogwood-qa'
-    - tgt_type: compound
-    - sls: utils.grow_partition
-    - require:
-        - salt: deploy_rabbitmq_cloud_map
+        - file: generate_rabbitmq_cloud_map_file
 
 load_pillar_data_on_rabbitmq_nodes:
   salt.function:
@@ -58,19 +58,10 @@ populate_mine_with_rabbitmq_node_data:
     - require:
         - salt: load_pillar_data_on_rabbitmq_nodes
 
-{# Reload the pillar data to update values from the salt mine #}
-reload_pillar_data_on_rabbitmq_nodes:
-  salt.function:
-    - name: saltutil.refresh_pillar
-    - tgt: 'G@roles:rabbitmq and G@environment:dogwood_qa'
-    - tgt_type: compound
-    - require:
-        - salt: populate_mine_with_rabbitmq_data
-
 build_rabbitmq_nodes:
   salt.state:
     - tgt: 'G@roles:rabbitmq and G@environment:dogwood-qa'
     - tgt_type: compound
     - highstate: True
     - require:
-        - salt: reload_pillar_data_on_rabbitmq_nodes
+        - salt: populate_mine_with_rabbitmq_node_data
