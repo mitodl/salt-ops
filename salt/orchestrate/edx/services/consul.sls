@@ -35,14 +35,6 @@ deploy_consul_nodes:
     - require:
         - file: generate_cloud_map_file
 
-resize_consul_node_root_partitions:
-  salt.state:
-    - tgt: 'roles:consul_server'
-    - tgt_type: grain
-    - sls: utils.grow_partition
-    - require:
-        - salt: deploy_consul_nodes
-
 load_pillar_data_on_dogwood_consul_nodes:
   salt.function:
     - name: saltutil.refresh_pillar

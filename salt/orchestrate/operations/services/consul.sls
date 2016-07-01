@@ -36,21 +36,13 @@ deploy_consul_nodes:
     - require:
         - file: generate_cloud_map_file
 
-resize_consul_node_root_partitions:
-  salt.state:
-    - tgt: 'roles:consul_server'
-    - tgt_type: grain
-    - sls: utils.grow_partition
-    - require:
-        - salt: deploy_consul_nodes
-
 load_pillar_data_on_dogwood_consul_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
     - tgt: 'G@roles:consul_server and G@environment:operations'
     - tgt_type: compound
     - require:
-        - salt: resize_consul_node_root_partitions
+        - salt: deploy_consul_nodes
 
 populate_mine_with_dogwood_consul_data:
   salt.function:
@@ -76,3 +68,10 @@ build_dogwood_consul_nodes:
     - highstate: True
     - require:
         - salt: reload_pillar_data_on_dogwood_consul_nodes
+
+bootstrap_vault_nodes:
+  salt.state:
+    - tgt: 'G@roles:vault_server and G@environment:operations'
+    - tgt_type: compound
+    - sls:
+        - vault.bootstrap
