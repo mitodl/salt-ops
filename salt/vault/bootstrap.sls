@@ -17,9 +17,11 @@ create_salt_master_policy:
   vault.policy_created:
     - name: salt-master
     - rules:
-        - path:
-            '*':
-              policy: sudo
+        path:
+          '*':
+            policy: sudo
+          'sys/*':
+            policy: sudo
 
 register_root_ec2_role:
   vault.ec2_role_created:

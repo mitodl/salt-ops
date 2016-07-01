@@ -83,3 +83,5 @@ bootstrap_vault_nodes:
     - tgt_type: compound
     - sls:
         - vault.bootstrap
+    - pillar:
+        vault.verify: False
