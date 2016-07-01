@@ -61,6 +61,14 @@ reload_pillar_data_on_dogwood_consul_nodes:
     - require:
         - salt: populate_mine_with_dogwood_consul_data
 
+install_git_on_consul_nodes_for_cloning_forked_python_packages:
+  salt.function:
+    - name: pkg.install
+    - tgt: 'G@roles:consul_server and G@environment:operations'
+    - tgt_type: compound
+    - arg:
+        - git
+
 build_dogwood_consul_nodes:
   salt.state:
     - tgt: 'G@roles:consul_server and G@environment:operations'
