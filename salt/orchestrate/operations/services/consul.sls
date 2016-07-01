@@ -77,10 +77,25 @@ build_operations_consul_nodes:
     - require:
         - salt: reload_pillar_data_on_operations_consul_nodes
 
+deploy_consul_agent_on_master:
+  salt.state:
+    - tgt: 'roles:master'
+    - tgt_type: grain
+    - sls:
+        - consul
+        - consul.dns_proxy
+    - require:
+        - salt: build_operations_consul_nodes
+
 bootstrap_vault_nodes:
   salt.state:
-    - tgt: consul-operations-0
+    - tgt: 'roles:master'
+    - tgt_type: grain
     - sls:
         - vault.bootstrap
     - pillar:
         vault.verify: False
+        vault.url: 'https://consul.service.consul:8200'
+    - require:
+        - salt: build_operations_consul_nodes
+        - salt: deploy_consul_agent_on_master
