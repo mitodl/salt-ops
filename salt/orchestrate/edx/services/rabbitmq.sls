@@ -1,7 +1,7 @@
 {% set subnet_ids = [] %}
 {% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
-    'public1-dogwood_qa', 'public2-dogwood_qa', 'public3-dogwood_qa']) %}
-{% do subnet_ids.append(subnet['id']) %}
+    'public1-dogwood_qa', 'public2-dogwood_qa', 'public3-dogwood_qa'])['subnets'] %}
+{% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
 load_rabbitmq_cloud_profile:
   file.managed:
