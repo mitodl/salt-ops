@@ -1,0 +1,14 @@
+rabbitmq:
+  {% for id_num in range(3) %}
+  - rabbitmq-{{ environment_name }}-{{ id_num }}:
+      network_interfaces:
+        - DeviceIndex: 0
+          AssociatePublicIpAddress: True
+          SubnetId: {{ subnetids[id_num] }}
+          SecurityGroupId: {{ securitygroupid }}
+      tag:
+        environment: {{ environment_name }}
+      grains:
+        environment: {{ environment_name }}
+        roles: {{ roles }}
+{% endfor %}
