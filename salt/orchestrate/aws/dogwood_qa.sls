@@ -125,7 +125,9 @@ create_mongodb_security_group:
         - ip_protocol: tcp
           from_port: 27017
           to_port: 27017
-          source_group_name: edx-dogwood_qa
+          source_group_name:
+            - edx-dogwood_qa
+            - mongodb-dogwood_qa
         - ip_protocol: tcp
           from_port: 22
           to_port: 22

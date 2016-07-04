@@ -60,7 +60,22 @@ populate_mine_with_mongodb_node_data:
 
 build_mongodb_nodes:
   salt.state:
-    - tgt: 'G@roles:mongodb and G@environment:dogwood-qa'
+    - tgt: 'G@roles:mongodb and G@environment:dogwood-qa and not G@roles:mongodb_primary'
+    - tgt_type: compound
+    - highstate: True
+    - require:
+        - salt: populate_mine_with_mongodb_node_data
+    - pillar:
+        mongodb:
+          overrides:
+            pkgs:
+              - mongodb-org
+              - python
+              - python-pip
+
+build_mongodb_master_node:
+  salt.state:
+    - tgt: 'G@roles:mongodb_primary and G@environment:dogwood-qa'
     - tgt_type: compound
     - highstate: True
     - require:
