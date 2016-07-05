@@ -56,3 +56,7 @@ base:
     - match: compound
     - vault
     - vault.tests
+  'roles:rabbitmq':
+    - match: grain
+    - rabbitmq
+    - rabbitmq.tests
