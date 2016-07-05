@@ -18,5 +18,6 @@ source {{ venv_path }}/src/ansible/hacking/env-setup
 cd {{ repo_path }}/playbooks
 ansible-playbook -c local -i localhost, \
     edx_sandbox.yml \
+    --extra-vars @{{ default_conf_file }}
     --extra-vars @{{ conf_file }} \
     2>&1 | tee {{ data_path }}/ansible-log.txt
