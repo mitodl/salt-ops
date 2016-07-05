@@ -1,9 +1,10 @@
 base:
+  '*':
+    - utils.install_pip
   'roles:master':
     - match: grain
     - master
     - master.api
-    - master_utils.contrib
     - master_utils.libgit
   'G@roles:master and G@environment:operations':
     - match: compound
@@ -56,7 +57,7 @@ base:
     - match: compound
     - vault
     - vault.tests
-  'roles:rabbitmq':
+  'G@roles:rabbitmq and G@environment:dogwood-qa':
     - match: grain
     - rabbitmq
     - rabbitmq.tests
