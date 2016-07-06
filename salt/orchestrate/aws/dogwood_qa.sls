@@ -204,6 +204,14 @@ create_rabbitmq_security_group:
           from_port: 5672
           to_port: 5672
           source_group_name: edx-dogwood_qa
+        - ip_protocol: tcp
+          from_port: 4369
+          to_port: 4369
+          source_group_name: rabbitmq-dogwood_qa
+        - ip_protocol: tcp
+          from_port: 25672
+          to_port: 25672
+          source_group_name: rabbitmq-dogwood_qa
     - require:
         - boto_vpc: create_dogwood_qa_vpc
         - boto_secgroup: create_edx_security_group
