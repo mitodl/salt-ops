@@ -60,4 +60,5 @@ base:
   'G@roles:rabbitmq and G@environment:dogwood-qa':
     - match: compound
     - rabbitmq
+    - rabbitmq.autocluster
     - rabbitmq.tests
