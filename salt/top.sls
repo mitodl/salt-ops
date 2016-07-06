@@ -58,6 +58,6 @@ base:
     - vault
     - vault.tests
   'G@roles:rabbitmq and G@environment:dogwood-qa':
-    - match: grain
+    - match: compound
     - rabbitmq
     - rabbitmq.tests
