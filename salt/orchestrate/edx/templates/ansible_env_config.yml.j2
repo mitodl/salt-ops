@@ -468,6 +468,10 @@ cms_env_config: &cms_env
   FILE_UPLOAD_STORAGE_BUCKET_NAME: "{{ AWS_STORAGE_BUCKET_NAME }}"
   FILE_UPLOAD_STORAGE_PREFIX: "{{ UPLOAD_STORAGE_PREFIX }}"
 
+FORUM_MONGO_HOSTS:
+  - "{{ FORUM_MONGO_HOST }}"
+
+
 ### Specific configuration overrides ###
 
 edx_platform_version: '{{ EDX_BRANCH }}'
