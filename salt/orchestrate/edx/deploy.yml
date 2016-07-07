@@ -56,7 +56,8 @@ place_sandbox_ansible_configuration:
     - source: salt://orchestrate/edx/templates/ansible_env_config.yaml.j2
     - template: jinja
     - context:
-      ansible_env_config: {{ salt.pillar.get('edx:ansible_env_config') }}
+      edxapp: {{ salt.pillar.get('edx:edxapp') }}
+      xqueue: {{ salt.pillar.get('edx:xqueue') }}
     - makedirs: True
 
 {% if salt.pillar.get('edx:generate_tls_certificate') %}

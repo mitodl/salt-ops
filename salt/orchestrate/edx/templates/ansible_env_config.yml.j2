@@ -1,12 +1,29 @@
-{% for key, value in ansible_env_config.items() %}
-{{ key }}: {{ value }}
-{% endfor %}
+### XQUEUE ENVIRONMENT ###
 
+xqueue_env_config:
+  XQUEUES:
+    {% for key, value in xqueue.queues.items() %}
+      {{ key }}: {{ value }}
+    {% endfor %}
 {% raw %}
+  'RABBIT_VHOST': '/prod'
+  'XQUEUE_WORKERS_PER_QUEUE': 2
+  'LOGGING_ENV' : 'prod'
+  'LOG_DIR' : '/logs'
+  'SYSLOG_SERVER' : "{{ SYSLOG_SERVER }}"
+  'RABBIT_HOST' : 'localhost'
+  'S3_BUCKET_PREFIX' : 'mitx-rp-bucket'
+{% endraw %}
+xqueue_create_db: no
 
 
 ### EDXAPP ENVIRONMENT ###
 
+{% for key, value in edxapp.items() %}
+{{ key }}: {{ value }}
+{% endfor %}
+
+{% raw %}
 EDXAPP_MYSQL_USER_MIGRATE: "lms"
 EDXAPP_MYSQL_PASSWORD_MIGRATE: "{{ MYSQL_PASSWORD }}"
 EDXAPP_AWS_STORAGE_BUCKET_NAME: "{{ AWS_STORAGE_BUCKET_NAME }}"
