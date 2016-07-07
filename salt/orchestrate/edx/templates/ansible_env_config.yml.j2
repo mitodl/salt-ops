@@ -3,6 +3,473 @@
 {% endfor %}
 
 {% raw %}
+
+
+### EDXAPP ENVIRONMENT ###
+
+EDXAPP_MYSQL_USER_MIGRATE: "lms"
+EDXAPP_MYSQL_PASSWORD_MIGRATE: "{{ MYSQL_PASSWORD }}"
+EDXAPP_AWS_STORAGE_BUCKET_NAME: "{{ AWS_STORAGE_BUCKET_NAME }}"
+
+edxapp_workers:
+  - queue: low
+    service_variant: cms
+    concurrency: 1
+  - queue: default
+    service_variant: cms
+    concurrency: 1
+  - queue: high
+    service_variant: cms
+    concurrency: 1
+  - queue: low
+    service_variant: lms
+    concurrency: 1
+  - queue: default
+    service_variant: lms
+    concurrency: 2
+  - queue: high
+    service_variant: lms
+    concurrency: 2
+  - queue: high_mem
+    service_variant: lms
+    concurrency: 1
+
+#Use YAML references (& and *) and hash merge <<: to factor out shared settings
+#see http://atechie.net/2009/07/merging-hashes-in-yaml-conf-files/
+lms_auth_config:  &lms_auth
+  ANALYTICS_API_KEY: ""
+  AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
+  AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
+  AWS_STORAGE_BUCKET_NAME: "{{ EDXAPP_AWS_STORAGE_BUCKET_NAME }}"
+  CELERY_BROKER_PASSWORD: "{{ CELERY_BROKER_PASSWORD }}"
+  CELERY_BROKER_USER: "{{ CELERY_BROKER_USER }}"
+  DOC_STORE_CONFIG:
+    db: "{{ MONGODB_MODULESTORE_DB }}"
+    host:
+      - "{{ MONGODB_HOST }}"
+    password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
+    port: "{{ MONGODB_PORT }}"
+    user: "{{ MONGODB_MODULESTORE_USER }}"
+    collection: 'modulestore'
+  CONTENTSTORE:
+    ENGINE: ""{{ MONGODB_CONTENTSTORE_ENGINE }}"
+    OPTIONS:
+      db: "{{ MONGODB_CONTENTSTORE_DB }}"
+      host:
+        - "{{ MONGODB_HOST }}"
+      password: "{{ MONGODB_CONTENTSTORE_PASSWORD }}"
+      port: "{{ MONGODB_PORT }}"
+      user: "{{ MONGODB_CONTENTSTORE_USER }}"
+    DOC_STORE_CONFIG:
+      db: "{{ MONGODB_CONTENTSTORE_DB }}"
+      host:
+        - "{{ MONGODB_HOST }}"
+      password: "{{ MONGODB_CONTENTSTORE_PASSWORD }}"
+      port: "{{ MONGODB_PORT }}"
+      user: "{{ MONGODB_CONTENTSTORE_USER }}"
+      collection: 'modulestore'
+  DATABASES:
+    default:
+      ENGINE: "django.db.backends.mysql"
+      HOST: "{{ MYSQL_HOST }}"
+      NAME: "{{ MYSQL_DATABASE }}"
+      PASSWORD: "{{ MYSQL_PASSWORD }}"
+      PORT: "{{ MYSQL_PORT }}"
+      USER: "{{ MYSQL_USER }}"
+  MODULESTORE:
+    default:
+      ENGINE: "{{ MONGODB_MODULESTORE_ENGINE }}"
+      OPTIONS:
+        collection: "modulestore"
+        db: "{{ MONGODB_MODULESTORE_DB }}"
+        default_class: "xmodule.raw_module.RawDescriptor"
+        fs_root: "{{ GIT_REPO_DIR }}"
+        host:
+          - "{{ MONGODB_HOST }}"
+        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
+        port: "{{ MONGODB_PORT }}"
+        render_template: "edxmako.shortcuts.render_to_string"
+        user: "{{ MONGODB_MODULESTORE_USER }}"
+      DOC_STORE_CONFIG:
+        db: "{{ MONGODB_MODULESTORE_DB }}"
+        host:
+          - "{{ MONGODB_HOST }}"
+        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
+        port: "{{ MONGODB_PORT }}"
+        user: "{{ MONGODB_MODULESTORE_USER }}"
+        collection: 'modulestore'
+  OPEN_ENDED_GRADING_INTERFACE:
+    grading_controller: "grading_controller"
+    password: "{{ XQUEUE_PASSWORD }}"
+    peer_grading: "peer_grading"
+    staff_grading: "staff_grading"
+    url: "http://localhost:8060/"
+    username: "{{ XQUEUE_USER }}"
+  PEARSON_TEST_PASSWORD: ""
+  SECRET_KEY: "{{ LMS_DJANGO_SECRET_KEY }}"
+  XQUEUE_INTERFACE:
+    # basic_auth:
+    #   - "mitx"
+    #   - "{{ XQUEUE_PASSWORD }}"
+    django_auth:
+      password: "{{ XQUEUE_PASSWORD }}"
+      username: "{{ XQUEUE_USER }}"
+    url: "http://localhost:8040"
+    callback_url: "http://localhost:8199"
+  YOUTUBE_API_KEY: "{{ YOUTUBE_API_KEY }}"
+  ZENDESK_API_KEY: ""
+  ZENDESK_USER: ""
+  MONGODB_LOG:
+    db: "{{ MONGODB_LOG_DB }}"
+    host: "{{ MONGODB_HOST }}"
+    user: "{{ MONGODB_LOG_USER }}"
+    password: "{{ MONGODB_LOG_PASSWORD }}"
+
+lms_env_config:  &lms_env
+  COURSES_WITH_UNSAFE_CODE: "{{ COURSES_WITH_UNSAFE_CODE }}"
+  'ADMINS' :
+  - ['{{ ADMIN_EMAIL_NAME }}', '{{ ADMIN_EMAIL }}']
+  ANALYTICS_SERVER_URL: ""
+  BOOK_URL: ""
+  BULK_EMAIL_DEFAULT_FROM_EMAIL: "{{ BULK_EMAIL_DEFAULT_FROM_EMAIL }}"
+  PLATFORM_NAME: "{{ PLATFORM_NAME }}"
+  BUGS_EMAIL: "{{ BUGS_EMAIL }}"
+  CONTACT_EMAIL: "{{ CONTACT_EMAIL }}"
+  TECH_SUPPORT_EMAIL: "{{ TECH_SUPPORT_EMAIL }}"
+  THEME_NAME: "{{ THEME_NAME }}"
+  MKTG_URL_LINK_MAP:
+    CONTACT: !!null
+    FAQ: !!null
+    HONOR: !!null
+    PRIVACY: !!null
+  CACHES:
+    celery:
+      BACKEND: "django.core.cache.backends.memcached.MemcachedCache"
+      KEY_FUNCTION: "util.memcache.safe_key"
+      KEY_PREFIX: "integration_celery"
+      LOCATION:
+        - "localhost:11211"
+    default:
+      BACKEND: "django.core.cache.backends.locmem.LocMemCache"
+      KEY_FUNCTION: "util.memcache.safe_key"
+      KEY_PREFIX: "sandbox_default"
+      LOCATION: "mitx_loc_mem_cache"
+    general:
+      BACKEND: "django.core.cache.backends.dummy.DummyCache"
+      KEY_FUNCTION: "util.memcache.safe_key"
+      KEY_PREFIX: "general"
+      LOCATION:
+        - "localhost:11211"
+      VERSION: 4
+    mongo_metadata_inheritance:
+      BACKEND: "django.core.cache.backends.filebased.FileBasedCache"
+      KEY_FUNCTION: "util.memcache.safe_key"
+      KEY_PREFIX: "integration_mongo_metadata_inheritance"
+      LOCATION: "/var/tmp/mongo_metadata_inheritance"
+      TIMEOUT: 300
+    staticfiles:
+      BACKEND: "django.core.cache.backends.memcached.MemcachedCache"
+      KEY_FUNCTION: "util.memcache.safe_key"
+      KEY_PREFIX: "integration_static_files"
+      LOCATION:
+        - "localhost:11211"
+  CELERY_BROKER_HOSTNAME: "localhost"
+  CELERY_BROKER_TRANSPORT: "amqp"
+  CELERY_BROKER_VHOST: '/dev'
+  CERT_QUEUE: "certificates"
+  CMS_BASE: "{{ CMS_NAME }}"
+  HOSTNAME_MODULESTORE_DEFAULT_MAPPINGS:
+    'preview\.': 'draft-preferred'
+  CODE_JAIL:
+    limits:
+      REALTIME: 3
+      CPU: 3
+      FSIZE: 1048576
+      PROXY: 0
+      VMEM: 536870912
+    python_bin: "{{ edxapp_sandbox_venv_dir }}/bin/python"
+    user: "{{ edxapp_sandbox_user }}"
+  COMMENTS_SERVICE_KEY: "{{ COMMONTS_SERVICE_KEY }}"
+  COMMENTS_SERVICE_URL: "http://localhost:4567"
+  DEFAULT_FEEDBACK_EMAIL: "{{ DEFAULT_FEEDBACK_EMAIL }}"
+  DEFAULT_FROM_EMAIL: "{{ DEFAULT_FROM_EMAIL }}"
+  EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
+  FEEDBACK_SUBMISSION_EMAIL: ""
+  GRADES_DOWNLOAD:
+    'STORAGE_TYPE': 'S3'
+    'BUCKET': "{{ AWS_GRADES_BUCKER_NAME }}"
+    'ROOT_PATH': "{{ AWS_GRADES_ROOT_PATH }}"
+  LMS_BASE: "{{ LMS_NAME }}"
+  LOCAL_LOGLEVEL: "DEBUG"
+  LOGGING_ENV: "{{ LMS_LOG_ENV }}"
+  LOG_DIR: "{{ LMS_LOG_DIR }}"
+  MEDIA_URL: ""
+  FEATURES:
+    ALLOW_ALL_ADVANCED_COMPONENTS: true
+    ALLOW_COURSE_STAFF_GRADE_DOWNLOADS: true
+    ACCESS_REQUIRE_STAFF_FOR_COURSE: true
+    AUTH_USE_CERTIFICATES: true
+    AUTH_USE_MIT_CERTIFICATES: true
+    AUTH_USE_CERTIFICATES_IMMEDIATE_SIGNUP: true
+    AUTH_USE_MIT_CERTIFICATES_IMMEDIATE_SIGNUP: true
+    AUTH_USE_OPENID_PROVIDER: false
+    BYPASS_ACTIVATION_EMAIL_FOR_EXTAUTH: true
+    CERTIFICATES_ENABLED: true
+    DISABLE_LOGIN_BUTTON: false
+    DISPLAY_HISTOGRAMS_TO_STAFF: true
+    ENABLE_AUTO_COURSE_REGISTRATION: true
+    ENABLE_COURSE_BLOCKS_NAVIGATION_API: true
+    ENABLE_DISCUSSION_SERVICE: true
+    ENABLE_INSTRUCTOR_ANALYTICS: true
+    ENABLE_INSTRUCTOR_EMAIL: true
+    ENABLE_PAID_COURSE_REGISTRATION: false
+    ENABLE_PEARSON_HACK_TEST: false
+    ENABLE_PSYCHOMETRICS: false
+    ENABLE_RENDER_XBLOCK_API: true
+    ENABLE_S3_GRADE_DOWNLOADS: true
+    ENABLE_SHOPPING_CART: true
+    ENABLE_SYSADMIN_DASHBOARD: true
+    INDIVIDUAL_DUE_DATES: true
+    LICENSING: true
+    PREVIEW_LMS_BASE: "{{ PREVIEW_NAME }}"
+    REMOTE_GRADEBOOK_URL: "{{ REMOTE_GRADEBOOK_URL }}"
+    REQUIRE_COURSE_EMAIL_AUTH: false
+    REROUTE_ACTIVATION_EMAIL: "{{ REROUTE_ACTIVATION_EMAIL }}"
+    SUBDOMAIN_BRANDING: false
+    SUBDOMAIN_COURSE_LISTINGS: false
+    USE_CUSTOM_THEME: true
+  SEGMENT_IO_LMS: true
+  SERVER_EMAIL: "{{ SERVER_EMAIL }}"
+  SESSION_COOKIE_DOMAIN: !!null
+  SESSION_ENGINE: "django.contrib.sessions.backends.db"
+  SITE_NAME: "{{ LMS_NAME }}"
+  SYSLOG_SERVER: "{{ SYSLOG_SERVER }}"
+  TIME_ZONE: "{{ TIME_ZONE }}"
+  TIME_ZONE_DISPLAYED_FOR_DEADLINES: "{{ TIME_ZONE }}"
+  WIKI_ENABLED: true
+  GIT_REPO_DIR: "{{ GIT_REPO_DIR }}"
+  GIT_IMPORT_STATIC: false
+  ADDL_INSTALLED_APPS: "{{ ADDL_INSTALLED_APPS }}"
+  ORA2_FILE_PREFIX: "{{ env }}-dev/ora2"
+  FILE_UPLOAD_STORAGE_BUCKET_NAME: "{{ EDXAPP_AWS_STORAGE_BUCKET_NAME }}"
+  FILE_UPLOAD_STORAGE_PREFIX: "{{ UPLOAD_STORAGE_PREFIX }}"
+
+cms_auth_config: &cms_auth
+  ANALYTICS_API_KEY: ""
+  AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
+  AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
+  AWS_STORAGE_BUCKET_NAME: "{{ EDXAPP_AWS_STORAGE_BUCKET_NAME }}"
+  CELERY_BROKER_PASSWORD: "{{ CELERY_BROKER_PASSWORD }}"
+  CELERY_BROKER_USER: "{{ CELERY_BROKER_USER }}"
+  DOC_STORE_CONFIG:
+    db: "{{ MONGODB_MODULESTORE_DB }}"
+    host:
+      - "{{ MONGODB_HOST }}"
+    password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
+    port: "{{ MONGODB_PORT }}"
+    user: "{{ MONGODB_MODULESTORE_USER }}"
+    collection: 'modulestore'
+  CONTENTSTORE:
+    ENGINE: ""{{ MONGODB_CONTENTSTORE_ENGINE }}"
+    OPTIONS:
+      db: "{{ MONGODB_CONTENTSTORE_DB }}"
+      host:
+        - "{{ MONGODB_HOST }}"
+      password: "{{ MONGODB_CONTENTSTORE_PASSWORD }}"
+      port: "{{ MONGODB_PORT }}"
+      user: "{{ MONGODB_CONTENTSTORE_USER }}"
+    DOC_STORE_CONFIG:
+      db: "{{ MONGODB_CONTENTSTORE_DB }}"
+      host:
+        - "{{ MONGODB_HOST }}"
+      password: "{{ MONGODB_CONTENTSTORE_PASSWORD }}"
+      port: "{{ MONGODB_PORT }}"
+      user: "{{ MONGODB_CONTENTSTORE_USER }}"
+      collection: 'modulestore'
+  DATABASES:
+    default:
+      ENGINE: "django.db.backends.mysql"
+      HOST: "{{ MYSQL_HOST }}"
+      NAME: "{{ MYSQL_DATABASE }}"
+      PASSWORD: "{{ MYSQL_PASSWORD }}"
+      PORT: "{{ MYSQL_PORT }}"
+      USER: "{{ MYSQL_USER }}"
+  DEFAULT_FEEDBACK_EMAIL: "{{ DEFAULT_FEEDBACK_EMAIL }}"
+  DEFAULT_FROM_EMAIL: "{{ DEFAULT_FROM_EMAIL }}"
+  MODULESTORE:
+    default:
+      ENGINE: "xmodule.modulestore.mongo.DraftMongoModuleStore"
+      OPTIONS:
+        collection: "modulestore"
+        db: "{{ MONGODB_MODULESTORE_DB }}"
+        default_class: "xmodule.raw_module.RawDescriptor"
+        fs_root: "{{ GIT_REPO_DIR }}"
+        host:
+          - "{{ MONGODB_HOST }}"
+        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
+        port: "{{ MONGODB_PORT }}"
+        render_template: "edxmako.shortcuts.render_to_string"
+        user: "{{ MONGODB_MODULESTORE_USER }}"
+      DOC_STORE_CONFIG:
+        db: "{{ MONGODB_MODULESTORE_DB }}"
+        host:
+          - "{{ MONGODB_HOST }}"
+        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
+        port: "{{ MONGODB_PORT }}"
+        user: "{{ MONGODB_MODULESTORE_USER }}"
+        collection: 'modulestore'
+    direct:
+      ENGINE: "{{ MONGODB_MODULESTORE_ENGINE }}"
+      OPTIONS:
+        collection: "modulestore"
+        db: "{{ MONGODB_MODULESTORE_DB }}"
+        default_class: "xmodule.raw_module.RawDescriptor"
+        fs_root: "{{ GIT_REPO_DIR }}"
+        host:
+          - "{{ MONGODB_HOST }}"
+        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
+        port: "{{ MONGODB_PORT }}"
+        render_template: "edxmako.shortcuts.render_to_string"
+        user: "{{ MONGODB_MODULESTORE_USER }}"
+      DOC_STORE_CONFIG:
+        db: "{{ MONGODB_MODULESTORE_DB }}"
+        host:
+          - "{{ MONGODB_HOST }}"
+        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
+        port: "{{ MONGODB_PORT }}"
+        user: "{{ MONGODB_MODULESTORE_USER }}"
+        collection: 'modulestore'
+  OPEN_ENDED_GRADING_INTERFACE:
+    grading_controller: "grading_controller"
+    password: "{{ XQUEUE_PASSWORD }}"
+    peer_grading: "peer_grading"
+    staff_grading: "staff_grading"
+    url: "http://localhost:8060/"
+    username: "{{ XQUEUE_USER }}"
+  PEARSON_TEST_PASSWORD: ""
+  SECRET_KEY: "{{ CMS_DJANGO_SECRET_KEY }}"
+  XQUEUE_INTERFACE:
+    # basic_auth:
+    #   - "mitx"
+    #   - "{{ XQUEUE_PASSWORD }}"
+    django_auth:
+      password: "{{ XQUEUE_PASSWORD }}"
+      username: "{{ XQUEUE_USER }}"
+    url: "http://localhost:8040"
+    callback_url: "http://localhost:8199"
+  YOUTUBE_API_KEY: "{{ YOUTUBE_API_KEY }}"
+  ZENDESK_API_KEY: ""
+  ZENDESK_USER: ""
+
+cms_env_config: &cms_env
+  'ADMINS' :
+  - ['{{ ADMIN_EMAIL_NAME }}', '{{ ADMIN_EMAIL }}']
+  BUGS_EMAIL: "{{ BUGS_EMAIL }}"
+  CONTACT_EMAIL: "{{ CONTACT_EMAIL }}"
+  TECH_SUPPORT_EMAIL: "{{ TECH_SUPPORT_EMAIL }}"
+  ANALYTICS_SERVER_URL: ""
+  BOOK_URL: ""
+  CACHES:
+    celery:
+      BACKEND: "django.core.cache.backends.memcached.MemcachedCache"
+      KEY_FUNCTION: "util.memcache.safe_key"
+      KEY_PREFIX: "integration_celery"
+      LOCATION:
+        - "localhost:11211"
+    default:
+      BACKEND: "django.core.cache.backends.locmem.LocMemCache"
+      KEY_FUNCTION: "util.memcache.safe_key"
+      KEY_PREFIX: "sandbox_default"
+      LOCATION: "mitx_loc_mem_cache"
+    general:
+      BACKEND: "django.core.cache.backends.dummy.DummyCache"
+      KEY_FUNCTION: "util.memcache.safe_key"
+      KEY_PREFIX: "general"
+      LOCATION:
+        - "localhost:11211"
+      VERSION: 4
+    mongo_metadata_inheritance:
+      BACKEND: "django.core.cache.backends.filebased.FileBasedCache"
+      KEY_FUNCTION: "util.memcache.safe_key"
+      KEY_PREFIX: "integration_mongo_metadata_inheritance"
+      LOCATION: "/var/tmp/mongo_metadata_inheritance"
+      TIMEOUT: 300
+    staticfiles:
+      BACKEND: "django.core.cache.backends.memcached.MemcachedCache"
+      KEY_FUNCTION: "util.memcache.safe_key"
+      KEY_PREFIX: "integration_static_files"
+      LOCATION:
+        - "localhost:11211"
+  CELERY_BROKER_HOSTNAME: "localhost"
+  CELERY_BROKER_TRANSPORT: "amqp"
+  CELERY_BROKER_VHOST: '/dev'
+  CERT_QUEUE: "certificates"
+  CODE_JAIL:
+    limits:
+      REALTIME: 3
+      CPU: 3
+      FSIZE: 1048576
+      PROXY: 0
+      VMEM: 536870912
+    python_bin: "{{ edxapp_sandbox_venv_dir }}/bin/python"
+    user: "{{ edxapp_sandbox_user }}"
+  COMMENTS_SERVICE_KEY: "{{ COMMONTS_SERVICE_KEY }}"
+  COMMENTS_SERVICE_URL: "http://localhost:4567"
+  DEFAULT_FEEDBACK_EMAIL: "{{ DEFAULT_FEEDBACK_EMAIL }}"
+  DEFAULT_FROM_EMAIL: "{{ DEFAULT_FROM_EMAIL }}"
+  EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
+  FEEDBACK_SUBMISSION_EMAIL: ""
+  LMS_BASE: "{{ LMS_NAME }}"
+  LOCAL_LOGLEVEL: "DEBUG"
+  LOGGING_ENV: "{{ CMS_LOG_ENV }}"
+  LOG_DIR: "{{ CMS_LOG_DIR }}"
+  MEDIA_URL: ""
+  FEATURES:
+    ACCESS_REQUIRE_STAFF_FOR_COURSE: true
+    ALLOW_ALL_ADVANCED_COMPONENTS: true
+    ALLOW_COURSE_RERUNS: false
+    ALLOW_HIDING_DISCUSSION_TAB: true
+    AUTH_USE_CERTIFICATES: true
+    AUTH_USE_MIT_CERTIFICATES: true
+    AUTH_USE_CERTIFICATES_IMMEDIATE_SIGNUP: true
+    AUTH_USE_MIT_CERTIFICATES_IMMEDIATE_SIGNUP: true
+    AUTH_USE_OPENID_PROVIDER: false
+    BYPASS_ACTIVATION_EMAIL_FOR_EXTAUTH: true
+    CERTIFICATES_ENABLED: true
+    DISABLE_COURSE_CREATION: false
+    DISABLE_LOGIN_BUTTON: false
+    DISABLE_START_DATES: true
+    DISPLAY_HISTOGRAMS_TO_STAFF: true
+    ENABLE_COURSE_BLOCKS_NAVIGATION_API: true
+    ENABLE_DISCUSSION_SERVICE: true
+    ENABLE_EXPORT_GIT: true
+    ENABLE_INSTRUCTOR_ANALYTICS: true
+    ENABLE_PEARSON_HACK_TEST: false
+    ENABLE_PUSH_TO_LMS: true
+    ENABLE_RENDER_XBLOCK_API: true
+    ENABLE_SQL_TRACKING_LOGS: true
+    PREVIEW_LMS_BASE: "{{ PREVIEW_NAME }}"
+    REROUTE_ACTIVATION_EMAIL: "{{ REROUTE_ACTIVATION_EMAIL }}"
+    SEGMENT_IO: false
+    STAFF_EMAIL: "{{ STAFF_EMAIL }}"
+    SUBDOMAIN_BRANDING: false
+    SUBDOMAIN_COURSE_LISTINGS: false
+  SEGMENT_IO_LMS: true
+  SERVER_EMAIL: "{{ SERVER_EMAIL }}"
+  SESSION_COOKIE_DOMAIN: !!null
+  SESSION_ENGINE: "django.contrib.sessions.backends.db"
+  SITE_NAME: "{{ CMS_NAME }}"
+  SYSLOG_SERVER: "{{ SYSLOG_SERVER }}"
+  TIME_ZONE_DISPLAYED_FOR_DEADLINES: "{{ TIME_ZONE }}"
+  TIME_ZONE: "{{ TIME_ZONE }}"
+  WIKI_ENABLED: true
+  ADDL_INSTALLED_APPS: "{{ ADDL_INSTALLED_APPS }}"
+  ORA2_FILE_PREFIX: "{{ env }}-dev/ora2"
+  FILE_UPLOAD_STORAGE_BUCKET_NAME: "{{ AWS_STORAGE_BUCKET_NAME }}"
+  FILE_UPLOAD_STORAGE_PREFIX: "{{ UPLOAD_STORAGE_PREFIX }}"
+
+### Specific configuration overrides ###
+
 edx_platform_version: '{{ EDX_BRANCH }}'
 edx_platform_repo: '{{ EDX_REMOTE }}'
 
