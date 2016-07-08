@@ -21,7 +21,7 @@ ensure_instance_profile_exists_for_edx:
   boto_iam_role.present:
     - name: edx-instance-role
 
-deploy_logging_cloud_map:
+deploy_edx_cloud_map:
   salt.function:
     - name: saltutil.runner
     - tgt: 'roles:master'
@@ -33,27 +33,6 @@ deploy_logging_cloud_map:
         parallel: True
     - require:
         - file: generate_cloud_map_file
-
-{% for grains in salt.saltutil.runner(
-    'mine.get',
-    tgt='roles:edx', fun='grains.item', tgt_type='grain'
-    ).items() %}
-update_edx_instance:
-  boto_ec2.instance_present:
-    - vpc_name: 'Dogwood QA'
-    - instance_id: {{ grains[1]['ec2:instance_id'] }}
-    - instance_profile_name: edx
-    - security_group_names: edx-dogwood_qa
-    - target_state: running
-{% endfor %}
-
-resize_root_partitions_on_edx_nodes:
-  salt.state:
-    - tgt: 'G@roles:edx and G@environment:dogwood-qa'
-    - tgt_type: compound
-    - sls: utils.grow_partition
-    - require:
-        - salt: deploy_edx_cloud_map
 
 load_pillar_data_on_edx_nodes:
   salt.function:
@@ -80,10 +59,20 @@ reload_pillar_data_on_edx_nodes:
     - require:
         - salt: populate_mine_with_edx_data
 
+{# Deploy Consul agent first so that the edx deployment can use provided DNS endpoints #}
+deploy_consul_agent_to_edx_nodes:
+  salt.state:
+    - tgt: 'G@roles:edx and G@environment:dogwood-qa'
+    - tgt_type: compound
+    - sls:
+        - consul
+        - consul.dns_proxy
+
 build_edx_nodes:
   salt.state:
     - tgt: 'G@roles:edx and G@environment:dogwood-qa'
     - tgt_type: compound
-    - sls: orchestrate.edx.deploy
+    - sls: edx.prod
     - require:
         - salt: reload_pillar_data_on_edx_nodes
+        - salt: deploy_consul_agent_to_edx_nodes
