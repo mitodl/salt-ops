@@ -14,7 +14,9 @@ install_os_packages:
        - python-dev
        - python-pip
        - python-virtualenv
+       - nfs-common
     - refresh: True
+    - refresh_modules: True
 
 clone_edx_configuration:
   file.directory:
