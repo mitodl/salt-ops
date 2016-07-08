@@ -1,14 +1,18 @@
 edx:
-  {% for id_num in range(3) %}
-  - edx-{{ environment_name }}-{{ id_num }}:
+  {% for app_type, num_instances in app_types.items() %}
+  {% for id_num in range(num_instances) %}
+  - edx-{{ environment_name }}-{{ app_type }}-{{ id_num }}:
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
-          SubnetId: {{ subnetids[id_num] }}
+          SubnetId: {{ subnetids[id_num % len(subnetids)] }}
           SecurityGroupId: {{ securitygroupid }}
       tag:
         environment: {{ environment_name }}
       grains:
         environment: {{ environment_name }}
-        roles: {{ roles }}
+        roles:
+          - edx
+          - edx-{{ app_type }}
+{% endfor %}
 {% endfor %}

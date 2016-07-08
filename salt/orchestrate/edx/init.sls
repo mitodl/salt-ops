@@ -17,11 +17,15 @@ generate_cloud_map_file:
     - makedirs: True
     - context:
         environment_name: dogwood-qa
-        roles:
-          - edx
-        securitygroupid: {{ salt.boto_secgroup.get_group_id(
-            'edx-dogwood_qa', vpc_name='Dogwood QA') }}
+        securitygroupid:
+          - {{ salt.boto_secgroup.get_group_id(
+              'edx-dogwood_qa', vpc_name='Dogwood QA') }}
+          - {{ salt.boto_secgroup.get_group_id(
+              'salt_master-dogwood_qa', vpc_name='Dogwood QA') }}
         subnetids: {{ subnet_ids }}
+        app_types:
+          draft: 4
+          live: 6
     - require:
         - file: load_edx_cloud_profile
 

@@ -12,7 +12,7 @@ xqueue_env_config:
   'LOG_DIR' : '/logs'
   'SYSLOG_SERVER' : "{{ SYSLOG_SERVER }}"
   'RABBIT_HOST' : 'localhost'
-  'S3_BUCKET_PREFIX' : 'mitx-rp-bucket'
+  'S3_BUCKET_PREFIX' : '{{ AWS_GRADES_BUCKET_NAME }}'
 {% endraw %}
 xqueue_create_db: no
 
