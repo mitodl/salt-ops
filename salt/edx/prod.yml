@@ -90,6 +90,16 @@ place_tls_{{ ext }}_file:
 {% endfor %}
 {% endif %}
 
+mount_efs_filesystem_for_course_assets:
+  mount.mounted:
+    - name: /mnt/data
+    - device: {{ salt.grains.get('ec2:availability_zone', 'us-east-1b') }}.{{ salt.pillar.get('edx:efs_id') }}.efs.us-east-1.amazonaws.com:/
+    - fstype: nfs4
+    - mkmnt: True
+    - persist: True
+    - mount: True
+    - user: www-data
+
 run_ansible:
   cmd.script:
     - name: {{ data_path }}/run_ansible.sh
