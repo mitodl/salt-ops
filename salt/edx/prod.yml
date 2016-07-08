@@ -55,7 +55,7 @@ create_ansible_virtualenv:
 place_sandbox_ansible_configuration:
   file.managed:
     - name: {{ conf_file }}
-    - source: salt://orchestrate/edx/templates/ansible_env_config.yaml.j2
+    - source: salt://edx/templates/ansible_env_config.yaml.j2
     - template: jinja
     - context:
       edxapp: {{ salt.pillar.get('edx:edxapp') }}
@@ -103,7 +103,7 @@ mount_efs_filesystem_for_course_assets:
 run_ansible:
   cmd.script:
     - name: {{ data_path }}/run_ansible.sh
-    - source: salt://orchestrate/edx/templates/run_ansible.sh.j2
+    - source: salt://edx/templates/run_ansible.sh.j2
     - template: jinja
     - cwd: {{ repo_path }}/playbooks
     - context:
