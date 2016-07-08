@@ -3,6 +3,12 @@
     'public1-dogwood_qa', 'public2-dogwood_qa', 'public3-dogwood_qa']) %}
 {% do subnet_ids.append(subnet['id']) %}
 {% endfor %}
+
+load_edx_cloud_profile:
+  file.managed:
+    - name: /etc/salt/cloud.profiles.d/edx.conf
+    - source: salt://orchestrate/aws/cloud_profiles/edx.conf
+
 generate_cloud_map_file:
   file.managed:
     - name: /etc/salt/cloud.maps.d/dogwood_qa_edx_map.yml
@@ -16,6 +22,8 @@ generate_cloud_map_file:
         securitygroupid: {{ salt.boto_secgroup.get_group_id(
             'edx-dogwood_qa', vpc_name='Dogwood QA') }}
         subnetids: {{ subnet_ids }}
+    - require:
+        - file: load_edx_cloud_profile
 
 ensure_instance_profile_exists_for_edx:
   boto_iam_role.present:
