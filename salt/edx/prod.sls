@@ -21,8 +21,8 @@ clone_edx_configuration:
     - name: {{ repo_path }}
     - makedirs: True
   git.latest:
-    - name: {{ salt.pillar.get('edx:config:repo') }}
-    - branch: {{ salt.pillar.get('edx:config:branch') }}
+    - name: {{ salt.pillar.get('edx:config:repo', 'https://github.com/edx/configuration.git') }}
+    - rev: {{ salt.pillar.get('edx:config:branch', 'named-release/dogwood.3') }}
     - target: {{ repo_path }}
     - user: root
     - require:
@@ -53,7 +53,7 @@ create_ansible_virtualenv:
 place_ansible_environment_configuration:
   file.managed:
     - name: {{ conf_file }}
-    - source: salt://edx/templates/ansible_env_config.yaml.j2
+    - source: salt://edx/templates/ansible_env_config.yml.j2
     - template: jinja
     - context:
       edxapp: {{ salt.pillar.get('edx:edxapp') }}
@@ -96,7 +96,7 @@ mount_efs_filesystem_for_course_assets:
     - mkmnt: True
     - persist: True
     - mount: True
-    - user: www-data
+    - opts: uid=www-data,gid=www-data
 
 run_ansible:
   cmd.script:
