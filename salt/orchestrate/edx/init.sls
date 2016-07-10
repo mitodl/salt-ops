@@ -17,8 +17,6 @@ generate_edx_cloud_map_file:
     - makedirs: True
     - context:
         environment_name: dogwood-qa
-        securitygroupid:
-          - {{ salt.boto_secgroup.get_group_id(
         roles:
           - edx
         securitygroupid:
