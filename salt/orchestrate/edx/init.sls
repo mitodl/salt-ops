@@ -88,5 +88,4 @@ build_edx_nodes:
     - tgt_type: compound
     - sls: edx.prod
     - require:
-        - salt: reload_pillar_data_on_edx_nodes
         - salt: deploy_consul_agent_to_edx_nodes
