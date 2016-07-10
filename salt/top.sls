@@ -63,3 +63,6 @@ base:
     - rabbitmq.autocluster
     - rabbitmq.tests
     - datadog.plugins
+  'G@roles:edx and G@environment:dogwood-qa':
+    - match: compound
+    - edx.prod
