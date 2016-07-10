@@ -1,4 +1,4 @@
-{% set repo_path = '/tmp/edx_config' %}
+{% set data_path = '/tmp/edx_config' %}
 {% set venv_path = '/tmp/edx_config/venv' %}
 {% set repo_path = '/tmp/edx_config/configuration' %}
 {% set conf_file = '/tmp/edx_config/edx-sandbox.conf' %}
@@ -105,7 +105,7 @@ run_ansible:
     - template: jinja
     - cwd: {{ repo_path }}/playbooks
     - context:
-        repo_path: {{ repo_path }}
+        data_path: {{ data_path }}
         venv_path: {{ venv_path }}
         repo_path: {{ repo_path }}
         conf_file: {{ conf_file }}
