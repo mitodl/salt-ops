@@ -56,8 +56,8 @@ place_ansible_environment_configuration:
     - source: salt://edx/templates/ansible_env_config.yml.j2
     - template: jinja
     - context:
-      edxapp: {{ salt.pillar.get('edx:edxapp') }}
-      xqueue: {{ salt.pillar.get('edx:xqueue') }}
+        edxapp: {{ salt.pillar.get('edx:edxapp') }}
+        xqueue: {{ salt.pillar.get('edx:xqueue') }}
     - makedirs: True
 
 {% if salt.pillar.get('edx:generate_tls_certificate') %}
@@ -79,7 +79,7 @@ generate_self_signed_certificate:
 place_tls_{{ ext }}_file:
   file.managed:
     - name: {{ key_path }}.{{ ext }}
-    - contents: {{ salt.pillar.get('edx:tls_{}'.format(ext)) }}
+    - contents_pillar: {{ 'edx:tls_{}'.format(ext) }}
     - user: root
     - group: root
     - mode: 600
@@ -91,12 +91,11 @@ place_tls_{{ ext }}_file:
 mount_efs_filesystem_for_course_assets:
   mount.mounted:
     - name: /mnt/data
-    - device: {{ salt.grains.get('ec2:availability_zone', 'us-east-1b') }}.{{ salt.pillar.get('edx:efs_id') }}.efs.us-east-1.amazonaws.com:/
+    - device: {{ salt.grains.get('ec2:availability_zone', 'us-east-1b')|trim }}.{{ salt.pillar.get('edx:efs_id')|trim }}.efs.us-east-1.amazonaws.com:/
     - fstype: nfs4
     - mkmnt: True
     - persist: True
     - mount: True
-    - opts: uid=www-data,gid=www-data
 
 run_ansible:
   cmd.script:
