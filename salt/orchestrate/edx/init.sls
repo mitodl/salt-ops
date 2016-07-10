@@ -1,7 +1,7 @@
 {% set subnet_ids = [] %}
 {% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
-    'public1-dogwood_qa', 'public2-dogwood_qa', 'public3-dogwood_qa']) %}
-{% do subnet_ids.append(subnet['id']) %}
+    'public1-dogwood_qa', 'public2-dogwood_qa', 'public3-dogwood_qa'])['subnets'] %}
+{% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
 
 load_edx_cloud_profile:
@@ -9,7 +9,7 @@ load_edx_cloud_profile:
     - name: /etc/salt/cloud.profiles.d/edx.conf
     - source: salt://orchestrate/aws/cloud_profiles/edx.conf
 
-generate_cloud_map_file:
+generate_edx_cloud_map_file:
   file.managed:
     - name: /etc/salt/cloud.maps.d/dogwood_qa_edx_map.yml
     - source: salt://orchestrate/aws/map_templates/edx.yml
@@ -19,9 +19,13 @@ generate_cloud_map_file:
         environment_name: dogwood-qa
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
+        roles:
+          - edx
+        securitygroupid:
+          - {{ salt.boto_secgroup.get_group_id(
               'edx-dogwood_qa', vpc_name='Dogwood QA') }}
           - {{ salt.boto_secgroup.get_group_id(
-              'salt_master-dogwood_qa', vpc_name='Dogwood QA') }}
+            'salt_master-dogwood_qa', vpc_name='Dogwood QA') }}
         subnetids: {{ subnet_ids }}
         app_types:
           draft: 4
@@ -44,7 +48,7 @@ deploy_edx_cloud_map:
         path: /etc/salt/cloud.maps.d/dogwood_qa_edx_map.yml
         parallel: True
     - require:
-        - file: generate_cloud_map_file
+        - file: generate_edx_cloud_map_file
 
 load_pillar_data_on_edx_nodes:
   salt.function:
@@ -69,7 +73,7 @@ reload_pillar_data_on_edx_nodes:
     - tgt: 'G@roles:edx and G@environment:dogwood_qa'
     - tgt_type: compound
     - require:
-        - salt: populate_mine_with_edx_data
+        - salt: populate_mine_with_edx_node_data
 
 {# Deploy Consul agent first so that the edx deployment can use provided DNS endpoints #}
 deploy_consul_agent_to_edx_nodes:

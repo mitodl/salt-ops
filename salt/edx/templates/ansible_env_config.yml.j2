@@ -6,7 +6,7 @@ xqueue_env_config:
       {{ key }}: {{ value }}
     {% endfor %}
 {% raw %}
-  'RABBIT_VHOST': '/prod'
+  'RABBIT_VHOST': '/{{ xqueue.rabbit_vhost }}'
   'XQUEUE_WORKERS_PER_QUEUE': 2
   'LOGGING_ENV' : 'prod'
   'LOG_DIR' : '/logs'
@@ -214,7 +214,7 @@ lms_env_config:  &lms_env
   FEEDBACK_SUBMISSION_EMAIL: ""
   GRADES_DOWNLOAD:
     'STORAGE_TYPE': 'S3'
-    'BUCKET': "{{ AWS_GRADES_BUCKER_NAME }}"
+    'BUCKET': "{{ AWS_GRADES_BUCKET_NAME }}"
     'ROOT_PATH': "{{ AWS_GRADES_ROOT_PATH }}"
   LMS_BASE: "{{ LMS_NAME }}"
   LOCAL_LOGLEVEL: "DEBUG"

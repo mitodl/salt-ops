@@ -1,6 +1,8 @@
 base:
   '*':
     - utils.install_pip
+  'G@environment:(operations|dogwood-qa|dogwood-rp|rp|partners)':
+    - datadog
   'roles:master':
     - match: grain
     - master
@@ -14,7 +16,6 @@ base:
     - match: grain
     - elasticsearch
     - elasticsearch.plugins
-    - datadog
     - datadog.plugins
   'roles:kibana':
     - match: grain
@@ -22,24 +23,22 @@ base:
     - elasticsearch.plugins
     - elasticsearch.kibana
     - elasticsearch.kibana.nginx_extra_config
-    - datadog
     - datadog.plugins
   'roles:fluentd':
     - match: grain
     - fluentd
     - fluentd.plugins
     - fluentd.config
-    - datadog
   'G@roles:edx_sandbox and G@sandbox_status:ami-provision':
     - match: compound
     - edx.sandbox_ami
   'G@roles:mongodb and G@environment:dogwood-qa':
     - match: compound
     - mongodb
+    - datadog.plugins
   'roles:aggregator':
     - match: grain
     - fluentd.reverse_proxy
-    - datadog
     - datadog.plugins
   'environment:dogwood-qa':
     - match: grain
@@ -53,6 +52,7 @@ base:
     - consul.tests
     - consul.dns_proxy
     - consul.tests.test_dns_setup
+    - datadog.plugins
   'G@roles:vault_server and G@environment:operations':
     - match: compound
     - vault
@@ -62,3 +62,4 @@ base:
     - rabbitmq
     - rabbitmq.autocluster
     - rabbitmq.tests
+    - datadog.plugins

@@ -52,7 +52,7 @@ create_ansible_virtualenv:
     - require:
       - git: clone_edx_configuration
 
-place_sandbox_ansible_configuration:
+place_ansible_environment_configuration:
   file.managed:
     - name: {{ conf_file }}
     - source: salt://edx/templates/ansible_env_config.yaml.j2
@@ -107,9 +107,9 @@ run_ansible:
     - template: jinja
     - cwd: {{ repo_path }}/playbooks
     - context:
-      repo_path: {{ repo_path }}
-      venv_path: {{ venv_path }}
-      repo_path: {{ repo_path }}
-      conf_file: {{ conf_file }}
+        repo_path: {{ repo_path }}
+        venv_path: {{ venv_path }}
+        repo_path: {{ repo_path }}
+        conf_file: {{ conf_file }}
     - require:
       - virtualenv: create_ansible_virtualenv
