@@ -1,9 +1,7 @@
-{%
-  set repo_path = '/tmp/edx_config'
-  set venv_path = '/tmp/edx_config/venv'
-  set repo_path = '/tmp/edx_config/configuration'
-  set conf_file = '/tmp/edx_config/edx-sandbox.conf'
-%}
+{% set repo_path = '/tmp/edx_config' %}
+{% set venv_path = '/tmp/edx_config/venv' %}
+{% set repo_path = '/tmp/edx_config/configuration' %}
+{% set conf_file = '/tmp/edx_config/edx-sandbox.conf' %}
 
 install_os_packages:
   pkg.installed:
