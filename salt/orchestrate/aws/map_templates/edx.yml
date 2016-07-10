@@ -1,11 +1,12 @@
 edx:
+  {% set num_subnets = subnetids|length %}
   {% for app_type, num_instances in app_types.items() %}
   {% for id_num in range(num_instances) %}
   - edx-{{ environment_name }}-{{ app_type }}-{{ id_num }}:
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
-          SubnetId: {{ subnetids[id_num % len(subnetids)] }}
+          SubnetId: {{ subnetids[id_num % num_subnets] }}
           SecurityGroupId: {{ securitygroupid }}
       tag:
         environment: {{ environment_name }}
