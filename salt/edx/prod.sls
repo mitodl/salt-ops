@@ -79,7 +79,7 @@ generate_self_signed_certificate:
 place_tls_{{ ext }}_file:
   file.managed:
     - name: {{ key_path }}.{{ ext }}
-    - contents: {{ edx_sandbox['edx_tls_{}'.format(ext)] }}
+    - contents: {{ salt.pillar.get('edx:tls_{}'.format(ext)) }}
     - user: root
     - group: root
     - mode: 600
