@@ -1,3 +1,5 @@
+{% set edxapp = salt.pillar.get('edx:edxapp') %}
+{% set xqueue = salt.pillar.get('edx:xqueue') %}
 ### XQUEUE ENVIRONMENT ###
 
 xqueue_env_config:

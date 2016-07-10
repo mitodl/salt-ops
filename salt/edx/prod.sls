@@ -55,9 +55,6 @@ place_ansible_environment_configuration:
     - name: {{ conf_file }}
     - source: salt://edx/templates/ansible_env_config.yml.j2
     - template: jinja
-    - context:
-        edxapp: {{ salt.pillar.get('edx:edxapp') }}
-        xqueue: {{ salt.pillar.get('edx:xqueue') }}
     - makedirs: True
 
 {% if salt.pillar.get('edx:generate_tls_certificate') %}
