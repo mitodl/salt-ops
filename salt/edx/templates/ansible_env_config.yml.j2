@@ -208,7 +208,7 @@ lms_env_config:  &lms_env
       VMEM: 536870912
     python_bin: "{{ edxapp_sandbox_venv_dir }}/bin/python"
     user: "{{ edxapp_sandbox_user }}"
-  COMMENTS_SERVICE_KEY: "{{ COMMONTS_SERVICE_KEY }}"
+  COMMENTS_SERVICE_KEY: "{{ COMMENTS_SERVICE_KEY }}"
   COMMENTS_SERVICE_URL: "http://localhost:4567"
   DEFAULT_FEEDBACK_EMAIL: "{{ DEFAULT_FEEDBACK_EMAIL }}"
   DEFAULT_FROM_EMAIL: "{{ DEFAULT_FROM_EMAIL }}"
