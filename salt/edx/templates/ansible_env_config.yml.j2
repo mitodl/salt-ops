@@ -29,6 +29,11 @@ xqueue_create_db: no
 EDXAPP_MYSQL_USER_MIGRATE: "lms"
 EDXAPP_MYSQL_PASSWORD_MIGRATE: "{{ MYSQL_PASSWORD }}"
 EDXAPP_AWS_STORAGE_BUCKET_NAME: "{{ AWS_STORAGE_BUCKET_NAME }}"
+EDXAPP_CMS_ROOT_URL: "{{ EDXAPP_CMS_BASE_SCHEME | default('https') }}://{{ EDXAPP_CMS_BASE }}"
+EDXAPP_CMS_ISSUER: "{{ EDXAPP_CMS_ROOT_URL }}/oauth2"
+
+EDXAPP_LMS_ROOT_URL: "{{ EDXAPP_LMS_BASE_SCHEME | default('https') }}://{{ EDXAPP_LMS_BASE }}"
+EDXAPP_LMS_ISSUER: "{{ EDXAPP_LMS_ROOT_URL }}/oauth2"
 
 edxapp_workers:
   - queue: low
@@ -200,9 +205,9 @@ lms_env_config:  &lms_env
       KEY_PREFIX: "integration_static_files"
       LOCATION:
         - "localhost:11211"
-  CELERY_BROKER_HOSTNAME: "localhost"
+  CELERY_BROKER_HOSTNAME: "rabbitmq.service.consul"
   CELERY_BROKER_TRANSPORT: "amqp"
-  CELERY_BROKER_VHOST: '/dev'
+  CELERY_BROKER_VHOST: '/{{ rabbitmq_dev_vhost }}'
   CERT_QUEUE: "certificates"
   CMS_BASE: "{{ CMS_NAME }}"
   HOSTNAME_MODULESTORE_DEFAULT_MAPPINGS:
@@ -280,6 +285,7 @@ lms_env_config:  &lms_env
   ORA2_FILE_PREFIX: "{{ env }}-dev/ora2"
   FILE_UPLOAD_STORAGE_BUCKET_NAME: "{{ EDXAPP_AWS_STORAGE_BUCKET_NAME }}"
   FILE_UPLOAD_STORAGE_PREFIX: "{{ UPLOAD_STORAGE_PREFIX }}"
+  OAUTH_OIDC_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
 
 cms_auth_config: &cms_auth
   ANALYTICS_API_KEY: ""
@@ -427,9 +433,9 @@ cms_env_config: &cms_env
       KEY_PREFIX: "integration_static_files"
       LOCATION:
         - "localhost:11211"
-  CELERY_BROKER_HOSTNAME: "localhost"
+  CELERY_BROKER_HOSTNAME: "rabbitmq.service.consul"
   CELERY_BROKER_TRANSPORT: "amqp"
-  CELERY_BROKER_VHOST: '/dev'
+  CELERY_BROKER_VHOST: '/{{ rabbitmq_dev_vhost}}'
   CERT_QUEUE: "certificates"
   CODE_JAIL:
     limits:
@@ -494,6 +500,7 @@ cms_env_config: &cms_env
   ORA2_FILE_PREFIX: "{{ env }}-dev/ora2"
   FILE_UPLOAD_STORAGE_BUCKET_NAME: "{{ AWS_STORAGE_BUCKET_NAME }}"
   FILE_UPLOAD_STORAGE_PREFIX: "{{ UPLOAD_STORAGE_PREFIX }}"
+  OAUTH_OIDC_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
 
 FORUM_MONGO_HOSTS:
   - "{{ FORUM_MONGO_HOST }}"
