@@ -47,8 +47,11 @@ create_ansible_virtualenv:
   virtualenv.managed:
     - name: {{ venv_path }}
     - requirements: {{ repo_path }}/requirements.txt
+    - use_wheel: True
+    - pip: True
     - require:
       - git: clone_edx_configuration
+      - pkg: install_os_packages
 
 place_ansible_environment_configuration:
   file.managed:
