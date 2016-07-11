@@ -34,24 +34,32 @@ edxapp_workers:
   - queue: low
     service_variant: cms
     concurrency: 1
+    monitor: True
   - queue: default
     service_variant: cms
     concurrency: 1
+    monitor: True
   - queue: high
     service_variant: cms
     concurrency: 1
+    monitor: True
   - queue: low
     service_variant: lms
     concurrency: 1
+    monitor: True
   - queue: default
     service_variant: lms
     concurrency: 2
+    monitor: True
   - queue: high
     service_variant: lms
     concurrency: 2
+    monitor: True
   - queue: high_mem
     service_variant: lms
     concurrency: 1
+    monitor: False
+    max_tasks_per_child: 1
 
 #Use YAML references (& and *) and hash merge <<: to factor out shared settings
 #see http://atechie.net/2009/07/merging-hashes-in-yaml-conf-files/
