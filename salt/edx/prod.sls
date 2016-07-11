@@ -68,8 +68,8 @@ generate_self_signed_certificate:
 {% else %}
 {%
   set key_path = '{}/{}'.format(
-    salt.pillar.get('edx:ansible_env_config:TLS_LOCATION'),
-    salt.pillar.get('edx:ansible_env_config:TLS_KEY_NAME')
+    salt.pillar.get('edx:edxapp:TLS_LOCATION'),
+    salt.pillar.get('edx:edxapp:TLS_KEY_NAME')
   )
 %}
 {% for ext in ['crt', 'key'] %}
@@ -80,6 +80,7 @@ place_tls_{{ ext }}_file:
     - user: root
     - group: root
     - mode: 600
+    - makedirs: True
     - require_in:
       - cmd: run_ansible
 {% endfor %}
