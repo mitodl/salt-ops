@@ -71,7 +71,7 @@ lms_auth_config:  &lms_auth
     user: "{{ MONGODB_MODULESTORE_USER }}"
     collection: 'modulestore'
   CONTENTSTORE:
-    ENGINE: ""{{ MONGODB_CONTENTSTORE_ENGINE }}"
+    ENGINE: "{{ MONGODB_CONTENTSTORE_ENGINE }}"
     OPTIONS:
       db: "{{ MONGODB_CONTENTSTORE_DB }}"
       host:
@@ -289,7 +289,7 @@ cms_auth_config: &cms_auth
     user: "{{ MONGODB_MODULESTORE_USER }}"
     collection: 'modulestore'
   CONTENTSTORE:
-    ENGINE: ""{{ MONGODB_CONTENTSTORE_ENGINE }}"
+    ENGINE: "{{ MONGODB_CONTENTSTORE_ENGINE }}"
     OPTIONS:
       db: "{{ MONGODB_CONTENTSTORE_DB }}"
       host:
