@@ -1,5 +1,5 @@
 {% set devicename = salt.grains.get('ec2:block_device_mapping:root') %}
-{% set part_number = 1 %}
+{% set part_number = salt.pillar.get('system_settings:os_parition_num', 2) %}
 
 install_parted:
   pkg.installed:
@@ -8,7 +8,7 @@ install_parted:
 
 resize_root_partition:
   cmd.run:
-    - name: parted {{ devicename }} resizepart {{ part_number }} yes 100%
+    - name: echo "resizepart {{ part_number }} yes 100%\n" | parted {{ devicename }}
 
 resize_file_system:
   cmd.run:
