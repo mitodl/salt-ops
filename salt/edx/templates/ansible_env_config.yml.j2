@@ -168,7 +168,7 @@ lms_env_config:  &lms_env
   BUGS_EMAIL: "{{ BUGS_EMAIL }}"
   CONTACT_EMAIL: "{{ CONTACT_EMAIL }}"
   TECH_SUPPORT_EMAIL: "{{ TECH_SUPPORT_EMAIL }}"
-  THEME_NAME: "{{ THEME_NAME }}"
+  # THEME_NAME: "{{ THEME_NAME }}"
   MKTG_URL_LINK_MAP:
     CONTACT: !!null
     FAQ: !!null
@@ -269,7 +269,8 @@ lms_env_config:  &lms_env
     REROUTE_ACTIVATION_EMAIL: "{{ REROUTE_ACTIVATION_EMAIL }}"
     SUBDOMAIN_BRANDING: false
     SUBDOMAIN_COURSE_LISTINGS: false
-    USE_CUSTOM_THEME: true
+    USE CUSTOM_THEME: false
+    # USE_CUSTOM_THEME: true
   SEGMENT_IO_LMS: true
   SERVER_EMAIL: "{{ SERVER_EMAIL }}"
   SESSION_COOKIE_DOMAIN: !!null
