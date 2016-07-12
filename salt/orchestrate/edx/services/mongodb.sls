@@ -44,6 +44,13 @@ deploy_mongodb_cloud_map:
     - require:
         - file: generate_mongodb_cloud_map_file
 
+resize_root_device_to_use_full_disk:
+  salt.state:
+    - tgt: 'G@roles:mongodb and G@environment:dogwood-qa'
+    - tgt_type: compound
+    - sls:
+        - utils.grow_partition
+
 load_pillar_data_on_dogwood_mongodb_nodes:
   salt.function:
     - name: saltutil.refresh_pillar

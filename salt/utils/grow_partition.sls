@@ -12,4 +12,4 @@ resize_root_partition:
 
 resize_file_system:
   cmd.run:
-    - name: resize2fs {{ devicename }}{{ part_number }}
+    - name: 'resize2fs {{ devicename }}{{ part_number }}'
