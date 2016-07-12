@@ -224,7 +224,7 @@ lms_env_config:  &lms_env
         - "localhost:11211"
   CELERY_BROKER_HOSTNAME: "rabbitmq.service.consul"
   CELERY_BROKER_TRANSPORT: "amqp"
-  CELERY_BROKER_VHOST: '/{{ rabbitmq_dev_vhost }}'
+  CELERY_BROKER_VHOST: '/{{ rabbitmq_vhost }}'
   CERT_QUEUE: "certificates"
   CMS_BASE: "{{ CMS_NAME }}"
   HOSTNAME_MODULESTORE_DEFAULT_MAPPINGS:
