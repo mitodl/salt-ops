@@ -18,6 +18,23 @@ xqueue_env_config:
 {% endraw %}
 xqueue_create_db: no
 
+{% raw %}
+xqueue_auth_config:
+  'AWS_ACCESS_KEY_ID' : "{{ AWS_ACCESS_KEY_ID }}"
+  'AWS_SECRET_ACCESS_KEY' : "{{ AWS_SECRET_ACCESS_KEY }}"
+  'REQUESTS_BASIC_AUTH': ['mitx', '{{ XQUEUE_PASSWORD }}']
+  'USERS': {'{{ XQUEUE_USER }}': '{{ XQUEUE_PASSWORD }}', 'xqueue_pull': "{{ XQUEUE_PULL_PASSWORD }}"}
+  'RABBITMQ_USER': '{{ CELERY_BROKER_USER }}'
+  'RABBITMQ_PASS': '{{ CELERY_BROKER_PASSWORD }}'
+  'DATABASES':
+    'default': {
+      'ENGINE': 'django.db.backends.mysql',
+      'NAME': '{{ XQUEUE_MYSQL_DATABASE }}',
+      'USER': '{{ XQUEUE_MYSQL_USER }}',
+      'PASSWORD': '{{ XQUEUE_MYSQL_PASSWORD}}',
+      'HOST': '{{ MYSQL_HOST }}',
+      'PORT': '{{ MYSQL_PORT }}' }
+{% raw %}
 
 ### EDXAPP ENVIRONMENT ###
 
