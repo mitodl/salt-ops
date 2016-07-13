@@ -8,33 +8,37 @@ xqueue_env_config:
       {{ key }}: {{ value }}
     {% endfor %}
 {% raw %}
-  'RABBIT_VHOST': '/{{ xqueue.rabbit_vhost }}'
-  'XQUEUE_WORKERS_PER_QUEUE': 2
-  'LOGGING_ENV' : 'prod'
-  'LOG_DIR' : '/logs'
-  'SYSLOG_SERVER' : "{{ SYSLOG_SERVER }}"
-  'RABBIT_HOST' : 'localhost'
-  'S3_BUCKET_PREFIX' : '{{ AWS_GRADES_BUCKET_NAME }}'
+  RABBIT_VHOST: '/{{ xqueue.rabbit_vhost }}'
+  XQUEUE_WORKERS_PER_QUEUE: 2
+  LOGGING_ENV: prod
+  LOG_DIR: /logs
+  SYSLOG_SERVER: "{{ SYSLOG_SERVER }}"
+  RABBIT_HOST: rabbitmq.service.consul
+  S3_BUCKET_PREFIX: '{{ AWS_GRADES_BUCKET_NAME }}'
 {% endraw %}
 xqueue_create_db: no
 
 {% raw %}
 xqueue_auth_config:
-  'AWS_ACCESS_KEY_ID' : "{{ AWS_ACCESS_KEY_ID }}"
-  'AWS_SECRET_ACCESS_KEY' : "{{ AWS_SECRET_ACCESS_KEY }}"
-  'REQUESTS_BASIC_AUTH': ['mitx', '{{ XQUEUE_PASSWORD }}']
-  'USERS': {'{{ XQUEUE_USER }}': '{{ XQUEUE_PASSWORD }}', 'xqueue_pull': "{{ XQUEUE_PULL_PASSWORD }}"}
-  'RABBITMQ_USER': '{{ CELERY_BROKER_USER }}'
-  'RABBITMQ_PASS': '{{ CELERY_BROKER_PASSWORD }}'
-  'DATABASES':
-    'default': {
-      'ENGINE': 'django.db.backends.mysql',
-      'NAME': '{{ XQUEUE_MYSQL_DATABASE }}',
-      'USER': '{{ XQUEUE_MYSQL_USER }}',
-      'PASSWORD': '{{ XQUEUE_MYSQL_PASSWORD}}',
-      'HOST': '{{ MYSQL_HOST }}',
-      'PORT': '{{ MYSQL_PORT }}' }
-{% raw %}
+  AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
+  AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
+  REQUESTS_BASIC_AUTH:
+    - mitx
+    - '{{ XQUEUE_PASSWORD }}'
+  USERS:
+    '{{ XQUEUE_USER }}': '{{ XQUEUE_PASSWORD }}'
+    xqueue_pull: "{{ XQUEUE_PULL_PASSWORD }}"
+  RABBITMQ_USER: '{{ CELERY_BROKER_USER }}'
+  RABBITMQ_PASS: '{{ CELERY_BROKER_PASSWORD }}'
+  DATABASES:
+    default:
+      ENGINE: django.db.backends.mysql
+      NAME: '{{ XQUEUE_MYSQL_DATABASE }}'
+      USER: '{{ XQUEUE_MYSQL_USER }}'
+      PASSWORD: '{{ XQUEUE_MYSQL_PASSWORD}}'
+      HOST: '{{ MYSQL_HOST }}'
+      PORT: '{{ MYSQL_PORT }}'
+{% endraw %}
 
 ### EDXAPP ENVIRONMENT ###
 
@@ -453,7 +457,7 @@ cms_env_config: &cms_env
         - "localhost:11211"
   CELERY_BROKER_HOSTNAME: "rabbitmq.service.consul"
   CELERY_BROKER_TRANSPORT: "amqp"
-  CELERY_BROKER_VHOST: '/{{ rabbitmq_dev_vhost}}'
+  CELERY_BROKER_VHOST: '/{{ rabbitmq_vhost}}'
   CERT_QUEUE: "certificates"
   CODE_JAIL:
     limits:
