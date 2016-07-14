@@ -46,6 +46,8 @@ xqueue_auth_config:
 {{ key }}: {{ value }}
 {% endfor %}
 
+MONGODB_REPLICASET: {{ salt.pillar.get('mongodb:replset_name', 'rs0') }}
+
 {% raw %}
 EDXAPP_MYSQL_USER_MIGRATE: "lms"
 EDXAPP_MYSQL_PASSWORD_MIGRATE: "{{ MYSQL_PASSWORD }}"
@@ -113,6 +115,8 @@ lms_auth_config:  &lms_auth
       password: "{{ MONGODB_CONTENTSTORE_PASSWORD }}"
       port: "{{ MONGODB_PORT }}"
       user: "{{ MONGODB_CONTENTSTORE_USER }}"
+    ADDITIONAL_OPTIONS:
+      replicaset: "{{ MONGODB_REPLICASET }}"
     DOC_STORE_CONFIG:
       db: "{{ MONGODB_CONTENTSTORE_DB }}"
       host:
@@ -334,6 +338,8 @@ cms_auth_config: &cms_auth
       password: "{{ MONGODB_CONTENTSTORE_PASSWORD }}"
       port: "{{ MONGODB_PORT }}"
       user: "{{ MONGODB_CONTENTSTORE_USER }}"
+    ADDITIONAL_OPTIONS:
+      replicaset: "{{ MONGODB_REPLICASET }}"
     DOC_STORE_CONFIG:
       db: "{{ MONGODB_CONTENTSTORE_DB }}"
       host:
