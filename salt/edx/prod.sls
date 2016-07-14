@@ -13,6 +13,7 @@ install_os_packages:
        - python-pip
        - python-virtualenv
        - nfs-common
+       - postfix
     - refresh: True
     - refresh_modules: True
 
@@ -107,5 +108,7 @@ run_ansible:
         venv_path: {{ venv_path }}
         repo_path: {{ repo_path }}
         conf_file: {{ conf_file }}
+        playbooks: {{ salt.pillar.get('edx:playbooks', ['edx-east/common', 'edx-east/forum', 'edx-east/xqueue',
+                      'edx-east/xqwatcher',  'edx-east/edxapp', 'edx-east/worker']) }}
     - require:
       - virtualenv: create_ansible_virtualenv
