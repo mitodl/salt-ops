@@ -12,7 +12,7 @@ create_elb_for_edx_{{ edx_type }}:
         - elb_port: 443
           instance_port: 443
           elb_protocol: TCP
-          instance_protocol: HTTPS
+          instance_protocol: TCP
         - elb_port: 80
           instance_port: 80
           elb_protocol: HTTP
@@ -38,4 +38,6 @@ register_edx_{{ edx_type }}_nodes_with_elb:
         - {{ salt.boto_ec2.get_id('edx-{env}-{t}-{num}'.format(
             env=environment, t=edx_type, num=instance_num)) }}
         {% endfor %}
+    - require:
+        - boto_elb: create_elb_for_edx_{{ edx_type }}
 {% endfor %}
