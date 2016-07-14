@@ -1,13 +1,16 @@
 {% set type_counts = {'draft': 4, 'live': 6} %}
 {% set environment = 'dogwood-qa' %}
+{% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-dogwood_qa']) %}
+{% set subnet_ids = [] %}
+{% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
+    'public1-dogwood_qa', 'public2-dogwood_qa', 'public3-dogwood_qa'])['subnets'] %}
+{% do subnet_ids.append('{0}'.format(subnet['id'])) %}
+{% endfor %}
+
 {% for edx_type in ['draft', 'live'] %}
 create_elb_for_edx_{{ edx_type }}:
   boto_elb.present:
     - name: edx-{{ edx_type }}-dogwood-qa
-    - availability_zones:
-        - us-east-1b
-        - us-east-1c
-        - us-east-1d
     - listeners:
         - elb_port: 443
           instance_port: 443
@@ -21,14 +24,16 @@ create_elb_for_edx_{{ edx_type }}:
         cross_zone_load_balancing:
           enabled: True
     - cnames:
-        - name: dogwood-qa.{{ edx_type }}.mitx.mit.edu.
+        - name: dogwood-qa-{{ edx_type }}.mitx.mit.edu.
           zone: mitx.mit.edu.
           ttl: 60
-        - name: studio-dogwood-qa.{{ edx_type }}.mitx.mit.edu.
+        - name: studio-dogwood-qa-{{ edx_type }}.mitx.mit.edu.
           zone: mitx.mit.edu.
           ttl: 60
     - health_check:
         target: 'HTTPS:443/heartbeat'
+    - subnets: {{ subnet_ids }}
+    - security_groups: {{ security_groups }}
 
 register_edx_{{ edx_type }}_nodes_with_elb:
   boto_elb.register_instances:
