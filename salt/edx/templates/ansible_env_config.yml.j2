@@ -303,6 +303,7 @@ lms_env_config:  &lms_env
   WIKI_ENABLED: true
   GIT_REPO_DIR: "{{ GIT_REPO_DIR }}"
   GIT_IMPORT_STATIC: false
+  STATIC_ROOT_BASE: "/edx/var/edxapp/staticfiles"
   # ADDL_INSTALLED_APPS: "{{ ADDL_INSTALLED_APPS }}"
   ORA2_FILE_PREFIX: "{{ env }}-dev/ora2"
   FILE_UPLOAD_STORAGE_BUCKET_NAME: "{{ EDXAPP_AWS_STORAGE_BUCKET_NAME }}"
