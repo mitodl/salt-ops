@@ -14,9 +14,9 @@ source {{ venv_path }}/bin/activate
 source {{ venv_path }}/src/ansible/hacking/env-setup
 
 # Run ansible
-
+rm {{ data_path }}/ansible-log.txt
 cd {{ repo_path }}/playbooks
 {% for playbook in playbooks %}
 ansible-playbook -c local -i localhost, {{ playbook }} --extra-vars @{{ conf_file }} 2>&1 | \
-    tee {{ data_path }}/ansible-log.txt
+    tee -a {{ data_path }}/ansible-log.txt
 {% endfor %}

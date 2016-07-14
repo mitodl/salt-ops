@@ -108,7 +108,8 @@ run_ansible:
         venv_path: {{ venv_path }}
         repo_path: {{ repo_path }}
         conf_file: {{ conf_file }}
-        playbooks: {{ salt.pillar.get('edx:playbooks', ['edx-east/common', 'edx-east/forum', 'edx-east/xqueue',
-                      'edx-east/xqwatcher',  'edx-east/edxapp', 'edx-east/worker']) }}
+        playbooks: {{ salt.pillar.get('edx:playbooks', ['edx-east/common.yml', 'edx-east/forum.yml',
+                      'edx-east/xqueue.yml', 'edx-east/xqwatcher.yml',  'edx-east/edxapp.yml',
+                      'edx-east/worker.yml']) }}
     - require:
       - virtualenv: create_ansible_virtualenv
