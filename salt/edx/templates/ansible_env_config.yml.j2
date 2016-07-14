@@ -8,7 +8,7 @@ xqueue_env_config:
       {{ key }}: {{ value }}
     {% endfor %}
 {% raw %}
-  RABBIT_VHOST: '/{{ xqueue.rabbit_vhost }}'
+  RABBIT_VHOST: '{{ xqueue.rabbit_vhost }}'
   XQUEUE_WORKERS_PER_QUEUE: 2
   LOGGING_ENV: prod
   LOG_DIR: /logs
@@ -232,7 +232,7 @@ lms_env_config:  &lms_env
         - "localhost:11211"
   CELERY_BROKER_HOSTNAME: "rabbitmq.service.consul"
   CELERY_BROKER_TRANSPORT: "amqp"
-  CELERY_BROKER_VHOST: '/{{ rabbitmq_vhost }}'
+  CELERY_BROKER_VHOST: '{{ rabbitmq_vhost }}'
   CERT_QUEUE: "certificates"
   CMS_BASE: "{{ CMS_NAME }}"
   HOSTNAME_MODULESTORE_DEFAULT_MAPPINGS:
@@ -316,8 +316,6 @@ lms_env_config:  &lms_env
   CAS_ATTRIBUTE_CALLBACK:
     module: '{{ CAS_ATTRIBUTE_CALLBACK_MODULE }}'
     function: '{{ CAS_ATTRIBUTE_CALLBACK_FUNCTION }}'
-  ADDL_INSTALLED_APPS:
-    - "longerusername"
   ORA2_FILE_PREFIX: "{{ env }}-dev/ora2"
   FILE_UPLOAD_STORAGE_BUCKET_NAME: "{{ EDXAPP_AWS_STORAGE_BUCKET_NAME }}"
   FILE_UPLOAD_STORAGE_PREFIX: "{{ UPLOAD_STORAGE_PREFIX }}"
@@ -543,8 +541,6 @@ cms_env_config: &cms_env
   CAS_ATTRIBUTE_CALLBACK:
     module: '{{ CAS_ATTRIBUTE_CALLBACK_MODULE }}'
     function: '{{ CAS_ATTRIBUTE_CALLBACK_FUNCTION }}'
-  ADDL_INSTALLED_APPS:
-    - "longerusername"
   ORA2_FILE_PREFIX: "{{ env }}-dev/ora2"
   FILE_UPLOAD_STORAGE_BUCKET_NAME: "{{ AWS_STORAGE_BUCKET_NAME }}"
   FILE_UPLOAD_STORAGE_PREFIX: "{{ UPLOAD_STORAGE_PREFIX }}"
