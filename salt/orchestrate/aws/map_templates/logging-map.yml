@@ -1,0 +1,33 @@
+elasticsearch:
+  {% for x in range(3) %}
+  - es{{ x }}:
+      network_interfaces:
+        - DeviceIndex: 0
+          AssociatePublicIpAddress: True
+          SubnetId: {{ subnetids[id_num % length(subnetids)] }}
+          SecurityGroupId: {{ securitygroupid }}
+      grains:
+        environment: operations
+  {% endfor %}
+
+fluentd:
+  {% for x in range(2) %}
+  - fluent{{ x }}:
+      network_interfaces:
+        - DeviceIndex: 0
+          AssociatePublicIpAddress: True
+          SubnetId: {{ subnetids[id_num % length(subnetids)] }}
+          SecurityGroupId: {{ securitygroupid }}
+      grains:
+        environment: operations
+  {% endfor %}
+
+kibana:
+  - kibana1:
+      network_interfaces:
+        - DeviceIndex: 0
+          AssociatePublicIpAddress: True
+          SubnetId: {{ subnetids[0] }}
+          SecurityGroupId: {{ securitygroupid }}
+      grains:
+        environment: operations

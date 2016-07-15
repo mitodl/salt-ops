@@ -41,8 +41,8 @@ base:
     - fluentd.reverse_proxy
     - datadog
     - datadog.plugins
-  'environment:dogwood-qa':
-    - match: grain
+  'P@environment:(operations|dogwood-qa)':
+    - match: compound
     - consul
     - consul.dns_proxy
     - consul.tests
