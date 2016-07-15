@@ -549,6 +549,11 @@ cms_env_config: &cms_env
 FORUM_MONGO_HOSTS:
   - "{{ FORUM_MONGO_HOST }}"
 FORUM_API_KEY: "{{ COMMENTS_SERVICE_KEY }}"
+FORUM_ELASTICSEARCH_HOST: "elasticsearch.service.consul"
+
+EDXAPP_ELASTIC_SEARCH_CONFIG:
+  - host: elasticsearch.service.consul
+    port: 9200
 
 ### Specific configuration overrides ###
 
