@@ -218,6 +218,26 @@ create_rabbitmq_security_group:
     - tags:
         Name: rabbitmq-dogwood_qa
 
+create_elasticsearch_security_group:
+  boto_secgroup.present:
+    - name: elasticsearch-dogwood_qa
+    - vpc_name: {{ VPC_NAME }}
+    - description: ACL for elasticsearch servers
+    - rules:
+        - ip_protocol: tcp
+          from_port: 9200
+          to_port: 9200
+          source_group_name: edx-dogwood_qa
+        - ip_protocol: tcp
+          from_port: 9300
+          to_port: 9400
+          source_group_name: elasticsearch-dogwood_qa
+    - require:
+        - boto_vpc: create_dogwood_qa_vpc
+        - boto_secgroup: create_edx_security_group
+    - tags:
+        Name: elasticsearch-dogwood_qa
+
 create_rds_security_group:
   boto_secgroup.present:
     - name: rds-dogwood_qa

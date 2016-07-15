@@ -18,6 +18,24 @@ load_kibana_cloud_profile:
     - name: /etc/salt/cloud.profiles.d/kibana.conf
     - source: salt://orchestrate/aws/cloud_profiles/kibana.conf
 
+generate_cloud_map_file:
+  file.managed:
+    - name: /etc/salt/cloud.maps.d/logging-map.yml
+    - source: salt://orchestrate/aws/map_templates/logging-map.yml
+    - template: jinja
+    - makedirs: True
+    - context:
+        environment_name: operations
+        roles:
+          - elasticsearch
+        securitygroupid: sg-0a994772
+        subnetids:
+          - subnet-13305e2e
+    - require:
+        - file: load_elasticsearch_cloud_profile
+        - file: load_fluentd_cloud_profile
+        - file: load_kibana_cloud_profile
+
 deploy_logging_cloud_map:
   salt.function:
     - name: saltutil.runner
