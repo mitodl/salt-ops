@@ -546,6 +546,7 @@ cms_env_config: &cms_env
   FILE_UPLOAD_STORAGE_PREFIX: "{{ UPLOAD_STORAGE_PREFIX }}"
   OAUTH_OIDC_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
 
+FORUM_USE_TCP: True
 FORUM_MONGO_HOSTS:
   - "{{ FORUM_MONGO_HOST }}"
 FORUM_MONGO_URL: "mongodb://{{ FORUM_MONGO_USER }}:{{ FORUM_MONGO_PASSWORD }}@{%- for host in FORUM_MONGO_HOSTS -%}{{ host }}:{{ FORUM_MONGO_PORT }}{%- if not loop.last -%},{%- endif -%}{%- endfor -%}/{{ FORUM_MONGO_DATABASE }}{%- if FORUM_MONGO_OPTION_STRING -%}?{{ FORUM_MONGO_OPTION_STRING }}{%- endif -%}"
