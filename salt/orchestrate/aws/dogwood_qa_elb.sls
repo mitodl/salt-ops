@@ -14,8 +14,9 @@ create_elb_for_edx_{{ edx_type }}:
     - listeners:
         - elb_port: 443
           instance_port: 443
-          elb_protocol: TCP
-          instance_protocol: TCP
+          elb_protocol: HTTPS
+          instance_protocol: HTTPS
+          certificate: arn:aws:iam::610119931565:server-certificate/mitx-wildcard-cert
         - elb_port: 80
           instance_port: 80
           elb_protocol: HTTP
