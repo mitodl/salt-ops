@@ -81,3 +81,11 @@ build_dogwood_elasticsearch_nodes:
     - highstate: True
     - require:
         - salt: reload_pillar_data_on_dogwood_elasticsearch_nodes
+
+remove_broken_line_from_elasticsearch_init_script:
+  file.comment:
+    - name: /etc/init.d/elasticsearch
+    - regex: ^test "\$START_DAEMON"
+    - mode: Delete
+  cmd.run:
+    - name: systemctl daemon-reload && systemctl restart elasticsearch
