@@ -33,3 +33,9 @@ create_gitreload_config:
     - group: www-data
     - contents: {{ salt.pillar.get('edx:gitreload:gr_env') | json }}
     - makedirs: True
+
+install_gitreload:
+  pip.install:
+    - name: {{ salt.pillar.get('edx:gitreload:gr_env:VIRTUAL_ENV') }}
+    - pkgs: git+https://{{ salt.pillar.get('edx:gitreload:gr_repo') }}@{{ salt.pillar.get('edx:gitreload:gr_version') }}#egg=gitreload
+    - exists_action: w
