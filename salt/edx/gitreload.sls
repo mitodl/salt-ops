@@ -25,3 +25,11 @@ grab_{{ item }}_ssh_host_key:
     - require:
       - file: create_empty_known_hosts
 {% endfor %}
+
+create_gitreload_config:
+  file.managed:
+    - name: {{ salt.pillar.get('edx:gitreload:gr_dir') }}/gr.env.json
+    - owner: www-data
+    - group: www-data
+    - contents: {{ salt.pillar.get('edx:gitreload:gr_env') | json }}
+    - makedirs: True
