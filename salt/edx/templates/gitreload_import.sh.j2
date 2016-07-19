@@ -1,0 +1,6 @@
+executable=/bin/bash
+cd {{ gr_env.EDX_PLATFORM }}/../;
+. edxapp_env;
+source {{ gr_env.VIRTUAL_ENV }}/bin/activate;
+cd {{ gr_env.EDX_PLATFORM }};
+SERVICE_VARIANT=lms python manage.py lms --settings=aws git_add_course {{ item.url }} {{ gr_env.REPODIR }}/{{ item.name }}

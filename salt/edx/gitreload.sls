@@ -39,3 +39,24 @@ install_gitreload:
     - name: {{ salt.pillar.get('edx:gitreload:gr_env:VIRTUAL_ENV') }}
     - pkgs: git+https://{{ salt.pillar.get('edx:gitreload:gr_repo') }}@{{ salt.pillar.get('edx:gitreload:gr_version') }}#egg=gitreload
     - exists_action: w
+
+{% for item in salt.pillar.get('edx:gitreload:gr_repos') %}
+  pull_{{ item.name }}_repo:
+    git.latest:
+      - name: {{ item.url }}
+      - target: {{ salt.pillar.get('edx:gitreload:gr_env:REPODIR') }}/{{ item.name }}
+      - rev: {{ item.commit }}
+      - user: www-data
+{% endfor %}
+
+{% for item in salt.pillar.get('edx:gitreload:gr_repos') %}
+import_{{ item }}_course:
+  cmd.script:
+    - source: salt://edx/templates/gitreload_import.sh.j2
+    - template: jinja
+    - context:
+        gr_env: {{ salt.pillar.get('edx:gitreload:gr_env ') }}
+        item: {{ item }}
+    - require:
+      - git: pull_{{ item.name }}_repo
+{% endfor %}
