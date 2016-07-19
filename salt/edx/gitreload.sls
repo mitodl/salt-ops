@@ -1,9 +1,22 @@
-{% set gr_dir = salt.pillar.get('edx:gitreload:gr_dir') %}
-{% set gr_env = salt.pillar.get('edx:gitreload:gr_env') %}
-{% set gr_repo = salt.pillar.get('edx:gitreload:gr_repo') %}
-{% set gr_repos = salt.pillar.get('edx:gitreload:gr_repos') %}
-{% set gr_version = salt.pillar.get('edx:gitreload:gr_version') %}
-{% set ssh_hosts = salt.pillar.get('edx:gitreload:ssh_hosts', ['github.com', 'github.mit.edu']) %}
+{% set gr_dir = salt.pillar.get('edx:gitreload:gr_dir', '/edx/app/gitreload') -%}
+{% set gr_env = salt.pillar.get('edx:gitreload:gr_env', {
+    'PORT': 8095
+    'UPDATE_LMS': True
+    'REPODIR': '/mnt/data/repos'
+    'LOG_LEVEL': 'debug'
+    'NUM_THREADS': 1
+    'LOGFILE': "/edx/var/log/gr/gitreload.log"
+    'VIRTUAL_ENV': '/edx/app/edxapp/venvs/edxapp'
+    'EDX_PLATFORM': '/edx/app/edxapp/edx-platform'
+    'DJANGO_SETTINGS': 'aws'
+}) -%}
+{% set gr_repo = salt.pillar.get('edx:gitreload:gr_repo',
+                                 'github.com/mitodl/gitreload') -%}
+{% set gr_repos = salt.pillar.get('edx:gitreload:gr_repos', []) -%}
+{% set gr_version = salt.pillar.get('edx:gitreload:gr_version',
+                                    'ba53a4b0e0618891535aa9107c3d113227540e39') -%}
+{% set ssh_hosts = salt.pillar.get('edx:gitreload:ssh_hosts',
+                                   ['github.com', 'github.mit.edu']) -%}
 
 install_mit_github_ssh_key:
   file.managed:
