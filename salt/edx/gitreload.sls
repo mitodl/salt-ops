@@ -1,13 +1,13 @@
 {% set gr_dir = salt.pillar.get('edx:gitreload:gr_dir', '/edx/app/gitreload') -%}
 {% set gr_env = salt.pillar.get('edx:gitreload:gr_env', {
-    'PORT': 8095
-    'UPDATE_LMS': True
-    'REPODIR': '/mnt/data/repos'
-    'LOG_LEVEL': 'debug'
-    'NUM_THREADS': 1
-    'LOGFILE': "/edx/var/log/gr/gitreload.log"
-    'VIRTUAL_ENV': '/edx/app/edxapp/venvs/edxapp'
-    'EDX_PLATFORM': '/edx/app/edxapp/edx-platform'
+    'PORT': 8095,
+    'UPDATE_LMS': True,
+    'REPODIR': '/mnt/data/repos',
+    'LOG_LEVEL': 'debug',
+    'NUM_THREADS': 1,
+    'LOGFILE': "/edx/var/log/gr/gitreload.log",
+    'VIRTUAL_ENV': '/edx/app/edxapp/venvs/edxapp',
+    'EDX_PLATFORM': '/edx/app/edxapp/edx-platform',
     'DJANGO_SETTINGS': 'aws'
 }) -%}
 {% set gr_repo = salt.pillar.get('edx:gitreload:gr_repo',
