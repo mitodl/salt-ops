@@ -57,10 +57,10 @@ create_gitreload_config:
     - makedirs: True
 
 install_gitreload:
-  pip.install:
-    - name: {{ gr_env.VIRTUAL_ENV }}
-    - pkgs: git+https://{{ gr_repo }}@{{ gr_version }}#egg=gitreload
+  pip.installed:
+    - name: git+https://{{ gr_repo }}@{{ gr_version }}#egg=gitreload
     - exists_action: w
+    - bin_env: {{ gr_env.VIRTUAL_ENV }}
 
 {% for item in gr_repos %}
 pull_{{ item.name }}_repo:
