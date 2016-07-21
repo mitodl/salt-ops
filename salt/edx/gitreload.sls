@@ -15,8 +15,9 @@
 {% set gr_repos = salt.pillar.get('edx:gitreload:gr_repos', []) -%}
 {% set gr_version = salt.pillar.get('edx:gitreload:gr_version',
                                     'ba53a4b0e0618891535aa9107c3d113227540e39') -%}
-{% set ssh_hosts = salt.pillar.get('edx:gitreload:ssh_hosts',
-                                   ['github.com', 'github.mit.edu']) -%}
+{% set ssh_hosts = salt.pillar.get('edx:ssh_hosts',
+   [{'name': 'github.com', 'fingerprint': '16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48'},
+    {'name': 'github.mit.edu', 'fingerprint': '52:6d:53:23:b4:20:93:d1:2e:91:c7:ba:d4:3c:a8:20'}] %}
 {% set gr_log_dir = salt.pillar.get('edx:gitreload:gr_log_dir',
                                   '/edx/var/log/gr') -%}
 
@@ -30,24 +31,14 @@ install_mit_github_ssh_key:
     - mode: 0600
     - dir_mode: 0700
 
-create_empty_known_hosts:
-  file.managed:
-    - name: /var/www/.ssh/known_hosts
+{% for host in git_servers %}
+add_{{ host.name }}_to_known_hosts:
+  ssh_known_hosts.present:
+    - name: {{ host.name }}
     - user: www-data
-    - group: www-data
-    # Note: Contents is explicitly being set to empty here in order to overwrite
-    # any existing known_hosts.
-    - contents:
+    - fingerprint: {{ host.fingerprint }}
     - require:
       - file: install_mit_github_ssh_key
-
-{% for item in ssh_hosts %}
-save_{{ item }}_ssh_host_key:
-  cmd.run:
-    - name: ssh-keyscan {{ item }} >> /var/www/.ssh/known_hosts
-    - runas: www-data
-    - require:
-      - file: create_empty_known_hosts
 {% endfor %}
 
 create_gitreload_config:
@@ -85,10 +76,8 @@ pull_{{ item.name }}_repo:
       {% for host in ssh_hosts %}
       - cmd: save_{{ host }}_ssh_host_key
       {% endfor %}
-{% endfor %}
 
-{% for item in gr_repos %}
-import_{{ item }}_course:
+import_{{ item.name }}_course:
   cmd.script:
     - source: salt://edx/templates/gitreload_import.sh.j2
     - template: jinja
