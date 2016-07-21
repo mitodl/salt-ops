@@ -17,7 +17,7 @@
                                     'ba53a4b0e0618891535aa9107c3d113227540e39') -%}
 {% set ssh_hosts = salt.pillar.get('edx:ssh_hosts',
    [{'name': 'github.com', 'fingerprint': '16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48'},
-    {'name': 'github.mit.edu', 'fingerprint': '52:6d:53:23:b4:20:93:d1:2e:91:c7:ba:d4:3c:a8:20'}] %}
+    {'name': 'github.mit.edu', 'fingerprint': '52:6d:53:23:b4:20:93:d1:2e:91:c7:ba:d4:3c:a8:20'}]) %}
 {% set gr_log_dir = salt.pillar.get('edx:gitreload:gr_log_dir',
                                   '/edx/var/log/gr') -%}
 
@@ -31,7 +31,7 @@ install_mit_github_ssh_key:
     - mode: 0600
     - dir_mode: 0700
 
-{% for host in git_servers %}
+{% for host in ssh_hosts %}
 add_{{ host.name }}_to_known_hosts:
   ssh_known_hosts.present:
     - name: {{ host.name }}
@@ -44,9 +44,12 @@ add_{{ host.name }}_to_known_hosts:
 create_gitreload_config:
   file.managed:
     - name: {{ gr_dir }}/gr.env.json
+    - source: salt://edx/templates/gitreload_config.json.j2
     - owner: www-data
     - group: www-data
-    - contents: {{ gr_env | dict| json }}
+    - template: jinja
+    - context:
+        gr_env: {{ gr_env }}
     - makedirs: True
 
 install_gitreload:
