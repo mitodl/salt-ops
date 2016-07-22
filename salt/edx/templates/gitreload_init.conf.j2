@@ -1,0 +1,21 @@
+# gunicorn
+
+description "gunicorn server"
+author "Brandon DeRosier <bdero@mit.edu>"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on [!12345]
+
+respawn
+respawn limit 3 30
+
+env PID=/var/tmp/gitreload.pid
+env WORKERS=1
+env PORT={{ gr_env.PORT }}
+env LANG=en_US.UTF-8
+env LOGFILE={{ gr_env.LOGFILE }}
+
+chdir {{ gr_dir }}
+setuid www-data
+
+exec {{ gr_env.VIRTUAL_ENV }}/bin/gunicorn --preload -b 0.0.0.0:$PORT -w $WORKERS --timeout=10 gitreload.web:app 2>> $LOGFILE >> $LOGFILE
