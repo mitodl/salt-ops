@@ -115,8 +115,8 @@ lms_auth_config:  &lms_auth
       password: "{{ MONGODB_CONTENTSTORE_PASSWORD }}"
       port: "{{ MONGODB_PORT }}"
       user: "{{ MONGODB_CONTENTSTORE_USER }}"
-    ADDITIONAL_OPTIONS:
       replicaset: "{{ MONGODB_REPLICASET }}"
+      read_preference: "PRIMARY_PREFERRED"
     DOC_STORE_CONFIG:
       db: "{{ MONGODB_CONTENTSTORE_DB }}"
       host:
@@ -147,6 +147,8 @@ lms_auth_config:  &lms_auth
         port: "{{ MONGODB_PORT }}"
         render_template: "edxmako.shortcuts.render_to_string"
         user: "{{ MONGODB_MODULESTORE_USER }}"
+        replicaset: "{{ MONGODB_REPLICASET }}"
+        read_preference: "PRIMARY_PREFERRED"
       DOC_STORE_CONFIG:
         db: "{{ MONGODB_MODULESTORE_DB }}"
         host:
@@ -344,8 +346,8 @@ cms_auth_config: &cms_auth
       password: "{{ MONGODB_CONTENTSTORE_PASSWORD }}"
       port: "{{ MONGODB_PORT }}"
       user: "{{ MONGODB_CONTENTSTORE_USER }}"
-    ADDITIONAL_OPTIONS:
       replicaset: "{{ MONGODB_REPLICASET }}"
+      read_preference: "PRIMARY_PREFERRED"
     DOC_STORE_CONFIG:
       db: "{{ MONGODB_CONTENTSTORE_DB }}"
       host:
@@ -378,6 +380,8 @@ cms_auth_config: &cms_auth
         port: "{{ MONGODB_PORT }}"
         render_template: "edxmako.shortcuts.render_to_string"
         user: "{{ MONGODB_MODULESTORE_USER }}"
+        replicaset: "{{ MONGODB_REPLICASET }}"
+        read_preference: "PRIMARY_PREFERRED"
       DOC_STORE_CONFIG:
         db: "{{ MONGODB_MODULESTORE_DB }}"
         host:
@@ -399,6 +403,8 @@ cms_auth_config: &cms_auth
         port: "{{ MONGODB_PORT }}"
         render_template: "edxmako.shortcuts.render_to_string"
         user: "{{ MONGODB_MODULESTORE_USER }}"
+        replicaset: "{{ MONGODB_REPLICASET }}"
+        read_preference: "PRIMARY_PREFERRED"
       DOC_STORE_CONFIG:
         db: "{{ MONGODB_MODULESTORE_DB }}"
         host:
@@ -550,6 +556,12 @@ FORUM_MONGO_HOSTS:
 FORUM_MONGO_URL: "mongodb://{{ FORUM_MONGO_USER }}:{{ FORUM_MONGO_PASSWORD }}@{%- for host in FORUM_MONGO_HOSTS -%}{{ host }}:{{ FORUM_MONGO_PORT }}{%- if not loop.last -%},{%- endif -%}{%- endfor -%}/{{ FORUM_MONGO_DATABASE }}{%- if FORUM_MONGO_OPTION_STRING -%}?{{ FORUM_MONGO_OPTION_STRING }}{%- endif -%}"
 FORUM_API_KEY: "{{ COMMENTS_SERVICE_KEY }}"
 FORUM_ELASTICSEARCH_HOST: "elasticsearch.service.consul"
+
+forum_environment:
+  MONGOID_READ_MODE: primary_preferred
+
+forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
+forum_version: 'blarghmatey/mongoid_settings_update'
 
 EDXAPP_ELASTIC_SEARCH_CONFIG:
   - host: elasticsearch.service.consul
