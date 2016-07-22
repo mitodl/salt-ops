@@ -219,11 +219,10 @@ lms_env_config:  &lms_env
         - "localhost:11211"
       VERSION: 4
     mongo_metadata_inheritance:
-      BACKEND: "django.core.cache.backends.filebased.FileBasedCache"
+      BACKEND: "django.core.cache.backends.locmem.LocMemCache"
       KEY_FUNCTION: "util.memcache.safe_key"
       KEY_PREFIX: "integration_mongo_metadata_inheritance"
-      LOCATION: "/var/tmp/mongo_metadata_inheritance"
-      TIMEOUT: 300
+      LOCATION: "mitx_loc_mem_cache"
     staticfiles:
       BACKEND: "django.core.cache.backends.memcached.MemcachedCache"
       KEY_FUNCTION: "util.memcache.safe_key"
@@ -459,11 +458,10 @@ cms_env_config: &cms_env
         - "localhost:11211"
       VERSION: 4
     mongo_metadata_inheritance:
-      BACKEND: "django.core.cache.backends.filebased.FileBasedCache"
+      BACKEND: "django.core.cache.backends.locmem.LocMemCache"
       KEY_FUNCTION: "util.memcache.safe_key"
       KEY_PREFIX: "integration_mongo_metadata_inheritance"
-      LOCATION: "/var/tmp/mongo_metadata_inheritance"
-      TIMEOUT: 300
+      LOCATION: "mitx_loc_mem_cache"
     staticfiles:
       BACKEND: "django.core.cache.backends.memcached.MemcachedCache"
       KEY_FUNCTION: "util.memcache.safe_key"
