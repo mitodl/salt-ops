@@ -10,7 +10,9 @@
             'gcc',
             'make',
             'libssl-dev',
-            'libssh2-1-dev'
+            'libssh2-1-dev',
+            'python-pip',
+            'python-dev'
         ]
     },
     'RedHat': {
@@ -19,7 +21,9 @@
             'gcc',
             'make',
             'openssl-devel',
-            'libssh-devel'
+            'libssh-devel',
+            'python-pip',
+            'python-devel'
         ]
     }
 }, grain='os_family', merge=salt.pillar.get('salt_master:libgit'), base='default') %}
@@ -27,6 +31,7 @@
 install_libgit_build_tools:
   pkg.installed:
     - pkgs: {{ libgit.pkgs }}
+    - reload_modules: True
 
 download_libgit_source:
   archive.extracted:

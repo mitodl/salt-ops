@@ -1,19 +1,19 @@
 #!/bin/bash
 
-sudo apt-get -y install git
-mkdir formulas
-git clone https://github.com/mitodl/master-formula formulas/master-formula
-sh formulas/master-formula/scripts/build.sh
-sudo cp -r pillar/* /srv/pillar
-sudo cp -r salt/* /srv/salt
-# sudo mkdir /etc/salt/spm.repos.d
-# sudo spm create_repo /srv/spm
-# sudo spm build formulas/master-formula
-# echo "\
-# local_repo:
-#   url: file:///srv/spm" | sudo tee /etc/salt/spm.repos.d/local_repo.conf
-# sudo spm update_repo
-# sudo spm install master
-sudo cp -r formulas/master-formula/master /srv/salt
+sudo apt-get -y install curl
+if [ -z `which salt-minion` ]
+then
+    curl -o install_salt.sh -L https://bootstrap.saltstack.com
+    sudo sh install_salt.sh -M -U -Z -L -P -A 127.0.0.1 stable
+fi
+sudo mkdir -p /srv/salt
+sudo mkdir -p /srv/pillar
+sudo sh scripts/update_files.sh
 sudo salt-call --local grains.set roles '[master]'
-sudo salt-call --local state.highstate
+sudo salt-call --local service.restart salt-minion
+sudo salt-key -A -y
+sudo salt -G 'roles:master' state.sls master_utils.libgit
+sudo salt -G 'roles:master' state.sls master_utils.bootstrap
+sudo salt-call --local service.restart salt-master
+sleep 5
+sudo salt -G 'roles:master' state.highstate
