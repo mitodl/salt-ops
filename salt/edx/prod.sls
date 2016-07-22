@@ -1,7 +1,31 @@
-{% set data_path = '/tmp/edx_config' %}
-{% set venv_path = '/tmp/edx_config/venv' %}
-{% set repo_path = '/tmp/edx_config/configuration' %}
-{% set conf_file = '/tmp/edx_config/edx-sandbox.conf' %}
+{% set data_path = '/tmp/edx_config' -%}
+{% set venv_path = '/tmp/edx_config/venv' -%}
+{% set repo_path = '/tmp/edx_config/configuration' -%}
+{% set conf_file = '/tmp/edx_config/edx-sandbox.conf' -%}
+{% set git_export_path = salt.pillar.get('edxapp:EDXAPP_GIT_REPO_EXPORT_DIR',
+                                         '/edx/var/edxapp/export_course_repos') -%}
+{% set git_servers = salt.pillar.get('edx:ssh_hosts',
+                                     [{'name': 'github.com',
+                                       'fingerprint': '16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48'},
+                                      {'name': 'github.mit.edu',
+                                       'fingerprint': '64:a1:32:63:b4:7f:a6:98:c9:20:e2:b8:bc:10:09:57'}]) -%}
+{% set playbooks = salt.pillar.get('edx:playbooks',
+                                   ['edx-east/common.yml',
+                                    'edx-east/forum.yml',
+                                    'edx-east/xqueue.yml',
+                                    'edx-east/xqwatcher.yml',
+                                    'edx-east/edxapp.yml',
+                                    'edx-east/worker.yml']) -%}
+
+{% if salt.grains.get('osfinger') == 'Ubuntu-12.04' %}
+configure_git_ppa:
+  pkgrepo.managed:
+    - ppa: git-core/ppa
+
+configure_python_ppa:
+  pkgrepo.managed:
+    - ppa: fkrull/deadsnakes-python2.7
+{% endif %}
 
 install_os_packages:
   pkg.installed:
@@ -108,8 +132,31 @@ run_ansible:
         venv_path: {{ venv_path }}
         repo_path: {{ repo_path }}
         conf_file: {{ conf_file }}
-        playbooks: {{ salt.pillar.get('edx:playbooks', ['edx-east/common.yml', 'edx-east/forum.yml',
-                      'edx-east/xqueue.yml', 'edx-east/xqwatcher.yml',  'edx-east/edxapp.yml',
-                      'edx-east/worker.yml']) }}
+        playbooks: {{ playbooks }}
     - require:
       - virtualenv: create_ansible_virtualenv
+    - unless: {{ salt.pillar.get('edx:skip_ansible', False) }}
+
+{# Steps to enable git export for courses #}
+make_git_export_directory:
+  file.directory:
+    - name: {{ git_export_path }}
+    - user: www-data
+    - group: www-data
+    - makedirs: True
+
+add_private_ssh_key_to_www-data_for_git_export:
+  file.managed:
+    - name: /var/www/.ssh/id_rsa
+    - contents_pillar: edx:ssh_key
+    - mode: 0600
+    - makedirs: True
+    - dir_mode: 0700
+
+{% for host in git_servers %}
+add_{{ host.name }}_to_known_hosts:
+  ssh_known_hosts.present:
+    - name: {{ host.name }}
+    - user: www-data
+    - fingerprint: {{ host.fingerprint }}
+{% endfor %}
