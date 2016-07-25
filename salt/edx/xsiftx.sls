@@ -9,6 +9,34 @@
 {% set cron_jobs = salt.pillar.get('edx:xsiftx:cron_jobs', []) -%}
 {% set run_web = salt.pillar.get('edx:xsiftx:run_web', false) -%}
 {% set log_dir = salt.pillar.get('edx:xsiftx:log_dir', '/edx/var/log/xsiftx') -%}
+{% set edxapp_venv = salt.pillar.get('edx:xsiftx:edxapp_venv', '/edx/app/edxapp/venvs/edxapp') -%}
+{% set edxapp_app = salt.pillar.get('edx:xsiftx:edxapp_app', '/edx/app/edxapp/edx-platform') -%}
+{% set web = salt.pillar.get('edx:xsiftx:web', {
+  "PORT": "8094",
+  "LOG_FILE": "{{ xsiftx_log_dir }}/xsiftx_uwsgi.log",
+  "WORKER_LOG_FILE": "{{ xsiftx_log_dir }}/xsiftx_celery.log",
+  "LOG_LEVEL": "INFO",
+  "CELERY_BROKER_URL": "amqp://celery:celery@localhost:5672//",
+  "CELERY_RESULT_BACKEND": "amqp",
+  "SITE_KEY": "please_change_this_within_your_own_or_bad_things",
+  "WORKERS": 1,
+  "CONSUMERS": {
+    "consumers": {[
+      {
+        "key": "test_course"
+        "secret": "please_override_me_in_secure"
+      },
+      {
+        "key": "another_test"
+        "secret": "no_really_override_me"
+        "allowed_sifters": [
+          'compute_grades',
+          'content_statistics'
+        ]
+      }
+    ]}
+  }
+}) -%}
 
 
 install_xsiftx:
@@ -22,6 +50,19 @@ install_extra_sifters
     - name: {{ extra_sifter_repo }}
     - target: {{ extra_sifter_dir }}
 {% endif %}
+
+{% for item in cron_jobs %}
+xsiftx_{{ item.name }}_cron:
+  cron.present:
+    - comment: {{ item.name }}
+    - hour: {{ item.cron_hour }}
+    - minute: {{ item.cron_minute }}
+    - weekday: {{ item.cron_weekday|default('*')}}
+    - user: www-data
+    - name: "export PATH=$PATH:/usr/local/bin; xsiftx -v {{ edxapp_venv }} -e {{ edxapp_app }} {{ item.sifter }}"
+    - require:
+      - pip: install_xsiftx
+{% endfor %}
 
 {% if run_web %}
 install_uwsgi:
@@ -43,13 +84,9 @@ create_xsiftx_config:
     - group: www-data
     - mode: 600
     - context:
-        edxapp_venv:
-        edxapp_app:
-        SITE_KEY:
-        LOG_LEVEL:
-        CELERY_BROKER_URL:
-        CELERY_RESULT_BACKEND:
-        XSIFTX_CONSUMERS:
+        web: {{ web }}
+        edxapp_venv: {{ edxapp_venv }}
+        edxapp_app: {{ edxapp_app }}
 
 create_xsiftx_upstart_script:
   file.managed:
@@ -58,12 +95,8 @@ create_xsiftx_upstart_script:
     - template: jinja
     - mode: 644
     - context:
-        PORT:
-        LOG_LEVEL:
+        web: {{ web }}
         hostname:
-        WORKERS:
-        WORKER_LOG_FILE:
-        LOG_FILE:
 
 start_xsiftx_service:
   service.running:
