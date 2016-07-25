@@ -28,7 +28,7 @@ create_elb_for_edx_{{ edx_type }}:
         - name: dogwood-qa-{{ edx_type }}.mitx.mit.edu.
           zone: mitx.mit.edu.
           ttl: 60
-        - name: preview.dogwood-qa-{{ edx_type }}.mitx.mit.edu.
+        - name: preview-dogwood-qa-{{ edx_type }}.mitx.mit.edu.
           zone: mitx.mit.edu.
           ttl: 60
         - name: studio-dogwood-qa-{{ edx_type }}.mitx.mit.edu.
