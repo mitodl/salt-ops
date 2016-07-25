@@ -67,3 +67,4 @@ base:
   'G@roles:edx and G@environment:dogwood-qa':
     - match: compound
     - edx.prod
+    - edx.gitreload

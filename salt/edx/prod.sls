@@ -30,14 +30,14 @@ configure_python_ppa:
 install_os_packages:
   pkg.installed:
     - pkgs:
-       - git
-       - libmysqlclient-dev
-       - python2.7
-       - python-dev
-       - python-pip
-       - python-virtualenv
-       - nfs-common
-       - postfix
+        - git
+        - libmysqlclient-dev
+        - python2.7
+        - python2.7-dev
+        - python-pip
+        - python-virtualenv
+        - nfs-common
+        - postfix
     - refresh: True
     - refresh_modules: True
 
