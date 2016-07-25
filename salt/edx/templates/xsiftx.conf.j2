@@ -1,0 +1,22 @@
+# gunicorn
+
+description "UWSGI runner for xsiftx Web server"
+author "Brandon DeRosier <bdero@mit.edu>"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on [!12345]
+
+respawn
+respawn limit 3 30
+
+env WORKERS=2
+env PORT={{ PORT }}
+env LANG=en_US.UTF-8
+
+script
+  # Create workers
+  exec start-stop-daemon --quiet --chuid www-data --start --exec /usr/local/bin/celery -- --app=xsiftx.lti worker --loglevel={{ LOG_LEVEL|lower }} -n xsiftx.core.{{ hostname }} --concurrency={{ WORKERS }} --logfile={{ WORKER_LOG_FILE }} &
+
+  # Create wsgi server
+  exec start-stop-daemon --quiet --chuid www-data --start --exec usr/local/bin/uwsgi -- --master --die-on-term --http :$PORT -w xsiftx.web:app -b 32768 -p $WORKERS --harakiri 60 --logto {{ LOG_FILE }}
+end script
