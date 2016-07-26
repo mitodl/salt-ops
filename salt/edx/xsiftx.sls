@@ -21,20 +21,7 @@
   "SITE_KEY": "please_change_this_within_your_own_or_bad_things",
   "WORKERS": 1,
   "CONSUMERS": {
-    "consumers": {[
-      {
-        "key": "test_course"
-        "secret": "please_override_me_in_secure"
-      },
-      {
-        "key": "another_test"
-        "secret": "no_really_override_me"
-        "allowed_sifters": [
-          'compute_grades',
-          'content_statistics'
-        ]
-      }
-    ]}
+    "consumers": []
   }
 }) -%}
 
