@@ -21,10 +21,6 @@
 configure_git_ppa:
   pkgrepo.managed:
     - ppa: git-core/ppa
-
-configure_python_ppa:
-  pkgrepo.managed:
-    - ppa: fkrull/deadsnakes-python2.7
 {% endif %}
 
 install_os_packages:
