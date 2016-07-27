@@ -96,9 +96,26 @@ edxapp_workers:
     monitor: False
     max_tasks_per_child: 1
 
+
+
+edxapp_generic_doc_store_config: &edxapp_generic_default_docstore
+  db: "{{ EDXAPP_MONGO_DB_NAME }}"
+  host:
+    - "{{ MONGODB_HOST }}"
+  password: "{{ EDXAPP_MONGO_PASSWORD }}"
+  port: "{{ MONGODB_PORT }}"
+  user: "{{ EDXAPP_MONGO_USER }}"
+  collection:  'modulestore'
+  replicaset: "{{ MONGODB_REPLICASET }}"
+  read_preference: "NEAREST"
+
+#####################################################################
+########### Auth Configs ############################################
+#####################################################################
+
 #Use YAML references (& and *) and hash merge <<: to factor out shared settings
 #see http://atechie.net/2009/07/merging-hashes-in-yaml-conf-files/
-lms_auth_config:  &lms_auth
+edxapp_generic_auth_config: &generic_auth_config
   ANALYTICS_API_KEY: ""
   AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
   AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
@@ -106,32 +123,22 @@ lms_auth_config:  &lms_auth
   CELERY_BROKER_PASSWORD: "{{ CELERY_BROKER_PASSWORD }}"
   CELERY_BROKER_USER: "{{ CELERY_BROKER_USER }}"
   DOC_STORE_CONFIG:
+    <<: *edxapp_generic_default_docstore
     db: "{{ MONGODB_MODULESTORE_DB }}"
-    host:
-      - "{{ MONGODB_HOST }}"
     password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
-    port: "{{ MONGODB_PORT }}"
     user: "{{ MONGODB_MODULESTORE_USER }}"
-    collection: 'modulestore'
   CONTENTSTORE:
     ENGINE: "{{ MONGODB_CONTENTSTORE_ENGINE }}"
     OPTIONS:
+      <<: *edxapp_generic_default_docstore
       db: "{{ MONGODB_CONTENTSTORE_DB }}"
-      host:
-        - "{{ MONGODB_HOST }}"
       password: "{{ MONGODB_CONTENTSTORE_PASSWORD }}"
-      port: "{{ MONGODB_PORT }}"
       user: "{{ MONGODB_CONTENTSTORE_USER }}"
-      replicaset: "{{ MONGODB_REPLICASET }}"
-      read_preference: "PRIMARY_PREFERRED"
     DOC_STORE_CONFIG:
+      <<: *edxapp_generic_default_docstore
       db: "{{ MONGODB_CONTENTSTORE_DB }}"
-      host:
-        - "{{ MONGODB_HOST }}"
       password: "{{ MONGODB_CONTENTSTORE_PASSWORD }}"
-      port: "{{ MONGODB_PORT }}"
       user: "{{ MONGODB_CONTENTSTORE_USER }}"
-      collection: 'modulestore'
   DATABASES:
     default:
       ENGINE: "django.db.backends.mysql"
@@ -140,39 +147,6 @@ lms_auth_config:  &lms_auth
       PASSWORD: "{{ MYSQL_PASSWORD }}"
       PORT: "{{ MYSQL_PORT }}"
       USER: "{{ MYSQL_USER }}"
-  MODULESTORE:
-    default:
-      ENGINE: "{{ MONGODB_MODULESTORE_ENGINE }}"
-      OPTIONS:
-        collection: "modulestore"
-        db: "{{ MONGODB_MODULESTORE_DB }}"
-        default_class: "xmodule.raw_module.RawDescriptor"
-        fs_root: "{{ GIT_REPO_DIR }}"
-        host:
-          - "{{ MONGODB_HOST }}"
-        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
-        port: "{{ MONGODB_PORT }}"
-        render_template: "edxmako.shortcuts.render_to_string"
-        user: "{{ MONGODB_MODULESTORE_USER }}"
-        replicaset: "{{ MONGODB_REPLICASET }}"
-        read_preference: "PRIMARY_PREFERRED"
-      DOC_STORE_CONFIG:
-        db: "{{ MONGODB_MODULESTORE_DB }}"
-        host:
-          - "{{ MONGODB_HOST }}"
-        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
-        port: "{{ MONGODB_PORT }}"
-        user: "{{ MONGODB_MODULESTORE_USER }}"
-        collection: 'modulestore'
-  OPEN_ENDED_GRADING_INTERFACE:
-    grading_controller: "grading_controller"
-    password: "{{ XQUEUE_PASSWORD }}"
-    peer_grading: "peer_grading"
-    staff_grading: "staff_grading"
-    url: "http://localhost:8060/"
-    username: "{{ XQUEUE_USER }}"
-  PEARSON_TEST_PASSWORD: ""
-  SECRET_KEY: "{{ LMS_DJANGO_SECRET_KEY }}"
   XQUEUE_INTERFACE:
     # basic_auth:
     #   - "mitx"
@@ -185,29 +159,111 @@ lms_auth_config:  &lms_auth
   YOUTUBE_API_KEY: "{{ YOUTUBE_API_KEY }}"
   ZENDESK_API_KEY: ""
   ZENDESK_USER: ""
+  OPEN_ENDED_GRADING_INTERFACE:
+    grading_controller: "grading_controller"
+    password: "{{ XQUEUE_PASSWORD }}"
+    peer_grading: "peer_grading"
+    staff_grading: "staff_grading"
+    url: "http://localhost:8060/"
+    username: "{{ XQUEUE_USER }}"
+  PEARSON_TEST_PASSWORD: ""
+
+lms_auth_config:
+  <<: *generic_auth_config
+  MODULESTORE:
+    default:
+      ENGINE: "{{ MONGODB_MODULESTORE_ENGINE }}"
+      OPTIONS:
+        <<: *edxapp_generic_default_docstore
+        db: "{{ MONGODB_MODULESTORE_DB }}"
+        default_class: "xmodule.raw_module.RawDescriptor"
+        fs_root: "{{ GIT_REPO_DIR }}"
+        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
+        render_template: "edxmako.shortcuts.render_to_string"
+        user: "{{ MONGODB_MODULESTORE_USER }}"
+      DOC_STORE_CONFIG:
+        <<: *edxapp_generic_default_docstore
+        db: "{{ MONGODB_MODULESTORE_DB }}"
+        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
+        user: "{{ MONGODB_MODULESTORE_USER }}"
+  SECRET_KEY: "{{ LMS_DJANGO_SECRET_KEY }}"
   MONGODB_LOG:
     db: "{{ MONGODB_LOG_DB }}"
     host: "{{ MONGODB_HOST }}"
     user: "{{ MONGODB_LOG_USER }}"
     password: "{{ MONGODB_LOG_PASSWORD }}"
 
-lms_env_config:  &lms_env
-  COURSES_WITH_UNSAFE_CODE: "{{ COURSES_WITH_UNSAFE_CODE }}"
-  'ADMINS' :
-  - ['{{ ADMIN_EMAIL_NAME }}', '{{ ADMIN_EMAIL }}']
+cms_auth_config:
+  <<: *generic_auth_config
+  DEFAULT_FEEDBACK_EMAIL: "{{ DEFAULT_FEEDBACK_EMAIL }}"
+  DEFAULT_FROM_EMAIL: "{{ DEFAULT_FROM_EMAIL }}"
+  MODULESTORE:
+    default:
+      ENGINE: "xmodule.modulestore.mongo.DraftMongoModuleStore"
+      OPTIONS:
+        <<: *edxapp_generic_default_docstore
+        db: "{{ MONGODB_MODULESTORE_DB }}"
+        default_class: "xmodule.raw_module.RawDescriptor"
+        fs_root: "{{ GIT_REPO_DIR }}"
+        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
+        render_template: "edxmako.shortcuts.render_to_string"
+        user: "{{ MONGODB_MODULESTORE_USER }}"
+      DOC_STORE_CONFIG:
+        <<: *edxapp_generic_default_docstore
+        db: "{{ MONGODB_MODULESTORE_DB }}"
+        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
+        user: "{{ MONGODB_MODULESTORE_USER }}"
+    direct:
+      ENGINE: "{{ MONGODB_MODULESTORE_ENGINE }}"
+      OPTIONS:
+        <<: *edxapp_generic_default_docstore
+        db: "{{ MONGODB_MODULESTORE_DB }}"
+        default_class: "xmodule.raw_module.RawDescriptor"
+        fs_root: "{{ GIT_REPO_DIR }}"
+        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
+        render_template: "edxmako.shortcuts.render_to_string"
+        user: "{{ MONGODB_MODULESTORE_USER }}"
+      DOC_STORE_CONFIG:
+        <<: *edxapp_generic_default_docstore
+        db: "{{ MONGODB_MODULESTORE_DB }}"
+        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
+        user: "{{ MONGODB_MODULESTORE_USER }}"
+  SECRET_KEY: "{{ CMS_DJANGO_SECRET_KEY }}"
+
+
+#####################################################################
+########### Environment Configs #####################################
+#####################################################################
+
+edxapp_generic_env_config: &generic_env_config
+  CELERY_BROKER_HOSTNAME: "rabbitmq.service.consul"
+  CELERY_BROKER_TRANSPORT: "amqp"
+  CELERY_BROKER_VHOST: '/{{ rabbitmq_vhost}}'
+  CERT_QUEUE: "certificates"
+  CODE_JAIL:
+    limits:
+      REALTIME: 3
+      CPU: 3
+      FSIZE: 1048576
+      PROXY: 0
+      VMEM: 536870912
+    python_bin: "{{ edxapp_sandbox_venv_dir }}/bin/python"
+    user: "{{ edxapp_sandbox_user }}"
+  COMMENTS_SERVICE_KEY: "{{ COMMENTS_SERVICE_KEY }}"
+  COMMENTS_SERVICE_URL: "http://localhost:4567"
+  DEFAULT_FEEDBACK_EMAIL: "{{ DEFAULT_FEEDBACK_EMAIL }}"
+  DEFAULT_FROM_EMAIL: "{{ DEFAULT_FROM_EMAIL }}"
+  EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
+  FEEDBACK_SUBMISSION_EMAIL: ""
+  LMS_BASE: "{{ LMS_NAME }}"
+  LOCAL_LOGLEVEL: "DEBUG"
   ANALYTICS_SERVER_URL: ""
   BOOK_URL: ""
-  BULK_EMAIL_DEFAULT_FROM_EMAIL: "{{ BULK_EMAIL_DEFAULT_FROM_EMAIL }}"
-  PLATFORM_NAME: "{{ PLATFORM_NAME }}"
+  'ADMINS' :
+  - ['{{ ADMIN_EMAIL_NAME }}', '{{ ADMIN_EMAIL }}']
   BUGS_EMAIL: "{{ BUGS_EMAIL }}"
   CONTACT_EMAIL: "{{ CONTACT_EMAIL }}"
   TECH_SUPPORT_EMAIL: "{{ TECH_SUPPORT_EMAIL }}"
-  # THEME_NAME: "{{ THEME_NAME }}"
-  MKTG_URL_LINK_MAP:
-    CONTACT: !!null
-    FAQ: !!null
-    HONOR: !!null
-    PRIVACY: !!null
   CACHES:
     celery:
       BACKEND: "django.core.cache.backends.memcached.MemcachedCache"
@@ -238,37 +294,44 @@ lms_env_config:  &lms_env
       KEY_PREFIX: "integration_static_files"
       LOCATION:
         - "localhost:11211"
-  CELERY_BROKER_HOSTNAME: "rabbitmq.service.consul"
-  CELERY_BROKER_TRANSPORT: "amqp"
-  CELERY_BROKER_VHOST: '{{ rabbitmq_vhost }}'
-  CERT_QUEUE: "certificates"
-  CMS_BASE: "{{ CMS_NAME }}"
-  HOSTNAME_MODULESTORE_DEFAULT_MAPPINGS:
-    'preview\.': 'draft-preferred'
-  CODE_JAIL:
-    limits:
-      REALTIME: 3
-      CPU: 3
-      FSIZE: 1048576
-      PROXY: 0
-      VMEM: 536870912
-    python_bin: "{{ edxapp_sandbox_venv_dir }}/bin/python"
-    user: "{{ edxapp_sandbox_user }}"
-  COMMENTS_SERVICE_KEY: "{{ COMMENTS_SERVICE_KEY }}"
-  COMMENTS_SERVICE_URL: "http://localhost:4567"
-  DEFAULT_FEEDBACK_EMAIL: "{{ DEFAULT_FEEDBACK_EMAIL }}"
-  DEFAULT_FROM_EMAIL: "{{ DEFAULT_FROM_EMAIL }}"
-  EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
-  FEEDBACK_SUBMISSION_EMAIL: ""
+  SEGMENT_IO_LMS: true
+  SERVER_EMAIL: "{{ SERVER_EMAIL }}"
+  SESSION_COOKIE_DOMAIN: !!null
+  SESSION_ENGINE: "django.contrib.sessions.backends.db"
+  SYSLOG_SERVER: "{{ SYSLOG_SERVER }}"
+  TIME_ZONE_DISPLAYED_FOR_DEADLINES: "{{ TIME_ZONE }}"
+  TIME_ZONE: "{{ TIME_ZONE }}"
+  WIKI_ENABLED: true
+  STATIC_ROOT_BASE: "/edx/var/edxapp/staticfiles"
+  CAS_SERVER_URL: '{{ CAS_SERVER_URL }}'
+  CAS_EXTRA_LOGIN_PARAMS:
+    provider: '{{ CAS_LOGIN_PROVIDER }}'
+    appname: '{{ CAS_LOGIN_APPNAME }}'
+  CAS_ATTRIBUTE_CALLBACK:
+    module: '{{ CAS_ATTRIBUTE_CALLBACK_MODULE }}'
+    function: '{{ CAS_ATTRIBUTE_CALLBACK_FUNCTION }}'
+  ORA2_FILE_PREFIX: "{{ env }}-dev/ora2"
+  FILE_UPLOAD_STORAGE_PREFIX: "{{ UPLOAD_STORAGE_PREFIX }}"
+  MEDIA_URL: ""
+  FILE_UPLOAD_STORAGE_BUCKET_NAME: "{{ AWS_STORAGE_BUCKET_NAME }}"
+
+lms_env_config:
+  <<: *generic_env_config
+  COURSES_WITH_UNSAFE_CODE: "{{ COURSES_WITH_UNSAFE_CODE }}"
+  BULK_EMAIL_DEFAULT_FROM_EMAIL: "{{ BULK_EMAIL_DEFAULT_FROM_EMAIL }}"
+  PLATFORM_NAME: "{{ PLATFORM_NAME }}"
+  # THEME_NAME: "{{ THEME_NAME }}"
+  MKTG_URL_LINK_MAP:
+    CONTACT: !!null
+    FAQ: !!null
+    HONOR: !!null
+    PRIVACY: !!null
   GRADES_DOWNLOAD:
     'STORAGE_TYPE': 'S3'
     'BUCKET': "{{ AWS_GRADES_BUCKET_NAME }}"
     'ROOT_PATH': "{{ AWS_GRADES_ROOT_PATH }}"
-  LMS_BASE: "{{ LMS_NAME }}"
-  LOCAL_LOGLEVEL: "DEBUG"
   LOGGING_ENV: "{{ LMS_LOG_ENV }}"
   LOG_DIR: "{{ LMS_LOG_DIR }}"
-  MEDIA_URL: ""
   FEATURES:
     ALLOW_ALL_ADVANCED_COMPONENTS: true
     ALLOW_COURSE_STAFF_GRADE_DOWNLOADS: true
@@ -306,205 +369,15 @@ lms_env_config:  &lms_env
     SUBDOMAIN_COURSE_LISTINGS: false
     USE CUSTOM_THEME: false
     # USE_CUSTOM_THEME: true
-  SEGMENT_IO_LMS: true
-  SERVER_EMAIL: "{{ SERVER_EMAIL }}"
-  SESSION_COOKIE_DOMAIN: !!null
-  SESSION_ENGINE: "django.contrib.sessions.backends.db"
   SITE_NAME: "{{ LMS_NAME }}"
-  SYSLOG_SERVER: "{{ SYSLOG_SERVER }}"
-  TIME_ZONE: "{{ TIME_ZONE }}"
-  TIME_ZONE_DISPLAYED_FOR_DEADLINES: "{{ TIME_ZONE }}"
-  WIKI_ENABLED: true
   GIT_REPO_DIR: "{{ GIT_REPO_DIR }}"
   GIT_IMPORT_STATIC: false
-  STATIC_ROOT_BASE: "/edx/var/edxapp/staticfiles"
-  CAS_SERVER_URL: '{{ CAS_SERVER_URL }}'
-  CAS_EXTRA_LOGIN_PARAMS:
-    provider: '{{ CAS_LOGIN_PROVIDER }}'
-    appname: '{{ CAS_LOGIN_APPNAME }}'
-  CAS_ATTRIBUTE_CALLBACK:
-    module: '{{ CAS_ATTRIBUTE_CALLBACK_MODULE }}'
-    function: '{{ CAS_ATTRIBUTE_CALLBACK_FUNCTION }}'
-  ORA2_FILE_PREFIX: "{{ env }}-dev/ora2"
-  FILE_UPLOAD_STORAGE_BUCKET_NAME: "{{ EDXAPP_AWS_STORAGE_BUCKET_NAME }}"
-  FILE_UPLOAD_STORAGE_PREFIX: "{{ UPLOAD_STORAGE_PREFIX }}"
   OAUTH_OIDC_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
 
-cms_auth_config: &cms_auth
-  ANALYTICS_API_KEY: ""
-  AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
-  AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
-  AWS_STORAGE_BUCKET_NAME: "{{ EDXAPP_AWS_STORAGE_BUCKET_NAME }}"
-  CELERY_BROKER_PASSWORD: "{{ CELERY_BROKER_PASSWORD }}"
-  CELERY_BROKER_USER: "{{ CELERY_BROKER_USER }}"
-  DOC_STORE_CONFIG:
-    db: "{{ MONGODB_MODULESTORE_DB }}"
-    host:
-      - "{{ MONGODB_HOST }}"
-    password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
-    port: "{{ MONGODB_PORT }}"
-    user: "{{ MONGODB_MODULESTORE_USER }}"
-    collection: 'modulestore'
-  CONTENTSTORE:
-    ENGINE: "{{ MONGODB_CONTENTSTORE_ENGINE }}"
-    OPTIONS:
-      db: "{{ MONGODB_CONTENTSTORE_DB }}"
-      host:
-        - "{{ MONGODB_HOST }}"
-      password: "{{ MONGODB_CONTENTSTORE_PASSWORD }}"
-      port: "{{ MONGODB_PORT }}"
-      user: "{{ MONGODB_CONTENTSTORE_USER }}"
-      replicaset: "{{ MONGODB_REPLICASET }}"
-      read_preference: "PRIMARY_PREFERRED"
-    DOC_STORE_CONFIG:
-      db: "{{ MONGODB_CONTENTSTORE_DB }}"
-      host:
-        - "{{ MONGODB_HOST }}"
-      password: "{{ MONGODB_CONTENTSTORE_PASSWORD }}"
-      port: "{{ MONGODB_PORT }}"
-      user: "{{ MONGODB_CONTENTSTORE_USER }}"
-      collection: 'modulestore'
-  DATABASES:
-    default:
-      ENGINE: "django.db.backends.mysql"
-      HOST: "{{ MYSQL_HOST }}"
-      NAME: "{{ MYSQL_DATABASE }}"
-      PASSWORD: "{{ MYSQL_PASSWORD }}"
-      PORT: "{{ MYSQL_PORT }}"
-      USER: "{{ MYSQL_USER }}"
-  DEFAULT_FEEDBACK_EMAIL: "{{ DEFAULT_FEEDBACK_EMAIL }}"
-  DEFAULT_FROM_EMAIL: "{{ DEFAULT_FROM_EMAIL }}"
-  MODULESTORE:
-    default:
-      ENGINE: "xmodule.modulestore.mongo.DraftMongoModuleStore"
-      OPTIONS:
-        collection: "modulestore"
-        db: "{{ MONGODB_MODULESTORE_DB }}"
-        default_class: "xmodule.raw_module.RawDescriptor"
-        fs_root: "{{ GIT_REPO_DIR }}"
-        host:
-          - "{{ MONGODB_HOST }}"
-        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
-        port: "{{ MONGODB_PORT }}"
-        render_template: "edxmako.shortcuts.render_to_string"
-        user: "{{ MONGODB_MODULESTORE_USER }}"
-        replicaset: "{{ MONGODB_REPLICASET }}"
-        read_preference: "PRIMARY_PREFERRED"
-      DOC_STORE_CONFIG:
-        db: "{{ MONGODB_MODULESTORE_DB }}"
-        host:
-          - "{{ MONGODB_HOST }}"
-        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
-        port: "{{ MONGODB_PORT }}"
-        user: "{{ MONGODB_MODULESTORE_USER }}"
-        collection: 'modulestore'
-    direct:
-      ENGINE: "{{ MONGODB_MODULESTORE_ENGINE }}"
-      OPTIONS:
-        collection: "modulestore"
-        db: "{{ MONGODB_MODULESTORE_DB }}"
-        default_class: "xmodule.raw_module.RawDescriptor"
-        fs_root: "{{ GIT_REPO_DIR }}"
-        host:
-          - "{{ MONGODB_HOST }}"
-        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
-        port: "{{ MONGODB_PORT }}"
-        render_template: "edxmako.shortcuts.render_to_string"
-        user: "{{ MONGODB_MODULESTORE_USER }}"
-        replicaset: "{{ MONGODB_REPLICASET }}"
-        read_preference: "PRIMARY_PREFERRED"
-      DOC_STORE_CONFIG:
-        db: "{{ MONGODB_MODULESTORE_DB }}"
-        host:
-          - "{{ MONGODB_HOST }}"
-        password: "{{ MONGODB_MODULESTORE_PASSWORD }}"
-        port: "{{ MONGODB_PORT }}"
-        user: "{{ MONGODB_MODULESTORE_USER }}"
-        collection: 'modulestore'
-  OPEN_ENDED_GRADING_INTERFACE:
-    grading_controller: "grading_controller"
-    password: "{{ XQUEUE_PASSWORD }}"
-    peer_grading: "peer_grading"
-    staff_grading: "staff_grading"
-    url: "http://localhost:8060/"
-    username: "{{ XQUEUE_USER }}"
-  PEARSON_TEST_PASSWORD: ""
-  SECRET_KEY: "{{ CMS_DJANGO_SECRET_KEY }}"
-  XQUEUE_INTERFACE:
-    # basic_auth:
-    #   - "mitx"
-    #   - "{{ XQUEUE_PASSWORD }}"
-    django_auth:
-      password: "{{ XQUEUE_PASSWORD }}"
-      username: "{{ XQUEUE_USER }}"
-    url: "http://localhost:8040"
-    callback_url: "http://localhost:8199"
-  YOUTUBE_API_KEY: "{{ YOUTUBE_API_KEY }}"
-  ZENDESK_API_KEY: ""
-  ZENDESK_USER: ""
-
-cms_env_config: &cms_env
-  'ADMINS' :
-  - ['{{ ADMIN_EMAIL_NAME }}', '{{ ADMIN_EMAIL }}']
-  BUGS_EMAIL: "{{ BUGS_EMAIL }}"
-  CONTACT_EMAIL: "{{ CONTACT_EMAIL }}"
-  TECH_SUPPORT_EMAIL: "{{ TECH_SUPPORT_EMAIL }}"
-  ANALYTICS_SERVER_URL: ""
-  BOOK_URL: ""
-  CACHES:
-    celery:
-      BACKEND: "django.core.cache.backends.memcached.MemcachedCache"
-      KEY_FUNCTION: "util.memcache.safe_key"
-      KEY_PREFIX: "integration_celery"
-      LOCATION:
-        - "localhost:11211"
-    default:
-      BACKEND: "django.core.cache.backends.locmem.LocMemCache"
-      KEY_FUNCTION: "util.memcache.safe_key"
-      KEY_PREFIX: "sandbox_default"
-      LOCATION: "mitx_loc_mem_cache"
-    general:
-      BACKEND: "django.core.cache.backends.dummy.DummyCache"
-      KEY_FUNCTION: "util.memcache.safe_key"
-      KEY_PREFIX: "general"
-      LOCATION:
-        - "localhost:11211"
-      VERSION: 4
-    mongo_metadata_inheritance:
-      BACKEND: "django.core.cache.backends.locmem.LocMemCache"
-      KEY_FUNCTION: "util.memcache.safe_key"
-      KEY_PREFIX: "integration_mongo_metadata_inheritance"
-      LOCATION: "mitx_loc_mem_cache"
-    staticfiles:
-      BACKEND: "django.core.cache.backends.memcached.MemcachedCache"
-      KEY_FUNCTION: "util.memcache.safe_key"
-      KEY_PREFIX: "integration_static_files"
-      LOCATION:
-        - "localhost:11211"
-  CELERY_BROKER_HOSTNAME: "rabbitmq.service.consul"
-  CELERY_BROKER_TRANSPORT: "amqp"
-  CELERY_BROKER_VHOST: '/{{ rabbitmq_vhost}}'
-  CERT_QUEUE: "certificates"
-  CODE_JAIL:
-    limits:
-      REALTIME: 3
-      CPU: 3
-      FSIZE: 1048576
-      PROXY: 0
-      VMEM: 536870912
-    python_bin: "{{ edxapp_sandbox_venv_dir }}/bin/python"
-    user: "{{ edxapp_sandbox_user }}"
-  COMMENTS_SERVICE_KEY: "{{ COMMENTS_SERVICE_KEY }}"
-  COMMENTS_SERVICE_URL: "http://localhost:4567"
-  DEFAULT_FEEDBACK_EMAIL: "{{ DEFAULT_FEEDBACK_EMAIL }}"
-  DEFAULT_FROM_EMAIL: "{{ DEFAULT_FROM_EMAIL }}"
-  EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
-  FEEDBACK_SUBMISSION_EMAIL: ""
-  LMS_BASE: "{{ LMS_NAME }}"
-  LOCAL_LOGLEVEL: "DEBUG"
+cms_env_config:
+  <<: *generic_env_config
   LOGGING_ENV: "{{ CMS_LOG_ENV }}"
   LOG_DIR: "{{ CMS_LOG_DIR }}"
-  MEDIA_URL: ""
   FEATURES:
     ACCESS_REQUIRE_STAFF_FOR_COURSE: true
     ALLOW_ALL_ADVANCED_COMPONENTS: true
@@ -537,27 +410,12 @@ cms_env_config: &cms_env
     STAFF_EMAIL: "{{ STAFF_EMAIL }}"
     SUBDOMAIN_BRANDING: false
     SUBDOMAIN_COURSE_LISTINGS: false
-  SEGMENT_IO_LMS: true
-  SERVER_EMAIL: "{{ SERVER_EMAIL }}"
-  SESSION_COOKIE_DOMAIN: !!null
-  SESSION_ENGINE: "django.contrib.sessions.backends.db"
   SITE_NAME: "{{ CMS_NAME }}"
-  SYSLOG_SERVER: "{{ SYSLOG_SERVER }}"
-  TIME_ZONE_DISPLAYED_FOR_DEADLINES: "{{ TIME_ZONE }}"
-  TIME_ZONE: "{{ TIME_ZONE }}"
-  WIKI_ENABLED: true
-  STATIC_ROOT_BASE: "/edx/var/edxapp/staticfiles"
-  CAS_SERVER_URL: '{{ CAS_SERVER_URL }}'
-  CAS_EXTRA_LOGIN_PARAMS:
-    provider: '{{ CAS_LOGIN_PROVIDER }}'
-    appname: '{{ CAS_LOGIN_APPNAME }}'
-  CAS_ATTRIBUTE_CALLBACK:
-    module: '{{ CAS_ATTRIBUTE_CALLBACK_MODULE }}'
-    function: '{{ CAS_ATTRIBUTE_CALLBACK_FUNCTION }}'
-  ORA2_FILE_PREFIX: "{{ env }}-dev/ora2"
-  FILE_UPLOAD_STORAGE_BUCKET_NAME: "{{ AWS_STORAGE_BUCKET_NAME }}"
-  FILE_UPLOAD_STORAGE_PREFIX: "{{ UPLOAD_STORAGE_PREFIX }}"
   OAUTH_OIDC_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
+
+################################################################################
+#################### Forum Settings ############################################
+################################################################################
 
 FORUM_USE_TCP: True
 FORUM_MONGO_HOSTS:
@@ -565,12 +423,12 @@ FORUM_MONGO_HOSTS:
 FORUM_MONGO_URL: "mongodb://{{ FORUM_MONGO_USER }}:{{ FORUM_MONGO_PASSWORD }}@{%- for host in FORUM_MONGO_HOSTS -%}{{ host }}:{{ FORUM_MONGO_PORT }}{%- if not loop.last -%},{%- endif -%}{%- endfor -%}/{{ FORUM_MONGO_DATABASE }}{%- if FORUM_MONGO_OPTION_STRING -%}?{{ FORUM_MONGO_OPTION_STRING }}{%- endif -%}"
 FORUM_API_KEY: "{{ COMMENTS_SERVICE_KEY }}"
 FORUM_ELASTICSEARCH_HOST: "elasticsearch.service.consul"
-
 forum_environment:
   MONGOID_READ_MODE: primary_preferred
-
 forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
 forum_version: 'blarghmatey/mongoid_settings_update'
+
+
 
 EDXAPP_ELASTIC_SEARCH_CONFIG:
   - host: elasticsearch.service.consul
