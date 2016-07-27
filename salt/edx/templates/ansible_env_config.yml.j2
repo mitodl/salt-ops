@@ -100,14 +100,13 @@ edxapp_workers:
 
 edxapp_generic_doc_store_config: &edxapp_generic_default_docstore
   db: "{{ EDXAPP_MONGO_DB_NAME }}"
-  host:
-    - "{{ MONGODB_HOST }}"
+  host: "{{ MONGODB_HOST }}"
   password: "{{ EDXAPP_MONGO_PASSWORD }}"
   port: "{{ MONGODB_PORT }}"
   user: "{{ EDXAPP_MONGO_USER }}"
   collection:  'modulestore'
   replicaset: "{{ MONGODB_REPLICASET }}"
-  read_preference: "NEAREST"
+  readPreference: "nearest"
 
 #####################################################################
 ########### Auth Configs ############################################
