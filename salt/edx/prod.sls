@@ -16,6 +16,9 @@
                                     'edx-east/xqwatcher.yml',
                                     'edx-east/edxapp.yml',
                                     'edx-east/worker.yml']) -%}
+{% set theme_repo = salt.pillar.get('edx:edxapp:custom_theme:repo', 'https://github.com/mitocw/edx-theme') -%}
+{% set theme_name = salt.pillar.get('edx:edxapp:THEME_NAME', None) -%}
+{% set theme_branch = salt.pillar.get('edx:edxapp:custom_theme:branch', 'mitx') -%}
 
 {% if salt.grains.get('osfinger') == 'Ubuntu-12.04' %}
 configure_git_ppa:
@@ -116,6 +119,17 @@ mount_efs_filesystem_for_course_assets:
     - mkmnt: True
     - persist: True
     - mount: True
+
+{% if theme_name is not none %}
+install_edxapp_theme:
+  git.latest:
+    - name: {{ theme_repo }}
+    - branch: {{ theme_branch }}
+    - target: /edx/app/edxapp/themes/{{ theme_name }}
+    - user: www-data
+    - require_in:
+      - cmd: run_ansible
+{% endif %}
 
 run_ansible:
   cmd.script:
