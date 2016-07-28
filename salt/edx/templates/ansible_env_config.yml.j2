@@ -55,7 +55,7 @@ EDX_DOMAIN: '{{ EDX_NAME }}.{{ EDX_ZONE }}'
 EDXAPP_PREVIEW_LMS_BASE: 'preview-{{ EDX_DOMAIN }}'
 EDXAPP_LMS_BASE: '{{ EDX_DOMAIN }}'
 EDXAPP_CMS_BASE: 'studio-{{ EDX_DOMAIN }}'
-
+EDXAPP_INSTALL_PRIVATE_REQUIREMENTS: true
 EDXAPP_MYSQL_USER_MIGRATE: "lms"
 EDXAPP_MYSQL_PASSWORD_MIGRATE: "{{ MYSQL_PASSWORD }}"
 EDXAPP_AWS_STORAGE_BUCKET_NAME: "{{ AWS_STORAGE_BUCKET_NAME }}"
@@ -238,35 +238,13 @@ cms_auth_config:
 #####################################################################
 
 edxapp_generic_env_config: &generic_env_config
-  CELERY_BROKER_HOSTNAME: "rabbitmq.service.consul"
-  CELERY_BROKER_TRANSPORT: "amqp"
-  CELERY_BROKER_VHOST: '/{{ rabbitmq_vhost}}'
-  CERT_QUEUE: "certificates"
-  CODE_JAIL:
-    limits:
-      REALTIME: 3
-      CPU: 3
-      FSIZE: 1048576
-      PROXY: 0
-      VMEM: 536870912
-    python_bin: "{{ edxapp_sandbox_venv_dir }}/bin/python"
-    user: "{{ edxapp_sandbox_user }}"
-  COMMENTS_SERVICE_KEY: "{{ COMMENTS_SERVICE_KEY }}"
-  COMMENTS_SERVICE_URL: "http://localhost:4567"
-  DEFAULT_FEEDBACK_EMAIL: "{{ DEFAULT_FEEDBACK_EMAIL }}"
-  DEFAULT_FROM_EMAIL: "{{ DEFAULT_FROM_EMAIL }}"
-  EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
-  FEEDBACK_SUBMISSION_EMAIL: ""
-  LMS_BASE: "{{ LMS_NAME }}"
-  CMS_BASE: "{{ EDXAPP_CMS_BASE }}"
-  LOCAL_LOGLEVEL: "DEBUG"
+  ADDL_INSTALLED_APPS:
+    - ubcpi
+  ADMINS:
+  - ['{{ ADMIN_EMAIL_NAME }}', '{{ ADMIN_EMAIL }}']
   ANALYTICS_SERVER_URL: ""
   BOOK_URL: ""
-  'ADMINS' :
-  - ['{{ ADMIN_EMAIL_NAME }}', '{{ ADMIN_EMAIL }}']
   BUGS_EMAIL: "{{ BUGS_EMAIL }}"
-  CONTACT_EMAIL: "{{ CONTACT_EMAIL }}"
-  TECH_SUPPORT_EMAIL: "{{ TECH_SUPPORT_EMAIL }}"
   CACHES:
     celery:
       BACKEND: "django.core.cache.backends.memcached.MemcachedCache"
@@ -297,26 +275,50 @@ edxapp_generic_env_config: &generic_env_config
       KEY_PREFIX: "integration_static_files"
       LOCATION:
         - "localhost:11211"
+  CAS_SERVER_URL: '{{ CAS_SERVER_URL }}'
+  CAS_ATTRIBUTE_CALLBACK:
+    module: '{{ CAS_ATTRIBUTE_CALLBACK_MODULE }}'
+    function: '{{ CAS_ATTRIBUTE_CALLBACK_FUNCTION }}'
+  CAS_EXTRA_LOGIN_PARAMS:
+    provider: '{{ CAS_LOGIN_PROVIDER }}'
+    appname: '{{ CAS_LOGIN_APPNAME }}'
+  CELERY_BROKER_HOSTNAME: "rabbitmq.service.consul"
+  CELERY_BROKER_TRANSPORT: "amqp"
+  CELERY_BROKER_VHOST: '/{{ rabbitmq_vhost}}'
+  CERT_QUEUE: "certificates"
+  CMS_BASE: "{{ EDXAPP_CMS_BASE }}"
+  CODE_JAIL:
+    limits:
+      REALTIME: 3
+      CPU: 3
+      FSIZE: 1048576
+      PROXY: 0
+      VMEM: 536870912
+    python_bin: "{{ edxapp_sandbox_venv_dir }}/bin/python"
+    user: "{{ edxapp_sandbox_user }}"
+  COMMENTS_SERVICE_KEY: "{{ COMMENTS_SERVICE_KEY }}"
+  COMMENTS_SERVICE_URL: "http://localhost:4567"
+  CONTACT_EMAIL: "{{ CONTACT_EMAIL }}"
+  DEFAULT_FEEDBACK_EMAIL: "{{ DEFAULT_FEEDBACK_EMAIL }}"
+  DEFAULT_FROM_EMAIL: "{{ DEFAULT_FROM_EMAIL }}"
+  EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
+  FEEDBACK_SUBMISSION_EMAIL: ""
+  FILE_UPLOAD_STORAGE_BUCKET_NAME: "{{ AWS_STORAGE_BUCKET_NAME }}"
+  FILE_UPLOAD_STORAGE_PREFIX: "{{ UPLOAD_STORAGE_PREFIX }}"
+  LMS_BASE: "{{ LMS_NAME }}"
+  LOCAL_LOGLEVEL: "DEBUG"
+  MEDIA_URL: ""
+  ORA2_FILE_PREFIX: "{{ env }}-dev/ora2"
   SEGMENT_IO_LMS: true
   SERVER_EMAIL: "{{ SERVER_EMAIL }}"
   SESSION_COOKIE_DOMAIN: !!null
   SESSION_ENGINE: "django.contrib.sessions.backends.db"
-  SYSLOG_SERVER: "{{ SYSLOG_SERVER }}"
-  TIME_ZONE_DISPLAYED_FOR_DEADLINES: "{{ TIME_ZONE }}"
-  TIME_ZONE: "{{ TIME_ZONE }}"
-  WIKI_ENABLED: true
   STATIC_ROOT_BASE: "/edx/var/edxapp/staticfiles"
-  CAS_SERVER_URL: '{{ CAS_SERVER_URL }}'
-  CAS_EXTRA_LOGIN_PARAMS:
-    provider: '{{ CAS_LOGIN_PROVIDER }}'
-    appname: '{{ CAS_LOGIN_APPNAME }}'
-  CAS_ATTRIBUTE_CALLBACK:
-    module: '{{ CAS_ATTRIBUTE_CALLBACK_MODULE }}'
-    function: '{{ CAS_ATTRIBUTE_CALLBACK_FUNCTION }}'
-  ORA2_FILE_PREFIX: "{{ env }}-dev/ora2"
-  FILE_UPLOAD_STORAGE_PREFIX: "{{ UPLOAD_STORAGE_PREFIX }}"
-  MEDIA_URL: ""
-  FILE_UPLOAD_STORAGE_BUCKET_NAME: "{{ AWS_STORAGE_BUCKET_NAME }}"
+  SYSLOG_SERVER: "{{ SYSLOG_SERVER }}"
+  TECH_SUPPORT_EMAIL: "{{ TECH_SUPPORT_EMAIL }}"
+  TIME_ZONE: "{{ TIME_ZONE }}"
+  TIME_ZONE_DISPLAYED_FOR_DEADLINES: "{{ TIME_ZONE }}"
+  WIKI_ENABLED: true
 
 common_feature_flags: &common_feature_flags
   ACCESS_REQUIRE_STAFF_FOR_COURSE: true
