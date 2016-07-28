@@ -191,6 +191,9 @@ lms_auth_config:
     host: "{{ MONGODB_HOST }}"
     user: "{{ MONGODB_LOG_USER }}"
     password: "{{ MONGODB_LOG_PASSWORD }}"
+    replicaset: "{{ MONGODB_REPLICASET }}"
+    readPreference: "nearest"
+
 
 cms_auth_config:
   <<: *generic_auth_config
