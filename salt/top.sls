@@ -36,6 +36,7 @@ base:
   'G@roles:mongodb and G@environment:dogwood-qa':
     - match: compound
     - mongodb
+    - mongodb.consul_check
     - datadog.plugins
   'roles:aggregator':
     - match: grain
