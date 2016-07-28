@@ -148,6 +148,8 @@ add_private_ssh_key_to_www-data_for_git_export:
     - mode: 0600
     - makedirs: True
     - dir_mode: 0700
+    - user: www-data
+    - group: www-data
 
 {% for host in git_servers %}
 add_{{ host.name }}_to_known_hosts:
