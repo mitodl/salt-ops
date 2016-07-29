@@ -65,6 +65,18 @@ EDXAPP_CMS_ISSUER: "{{ EDXAPP_CMS_ROOT_URL }}/oauth2"
 EDXAPP_LMS_ROOT_URL: "{{ EDXAPP_LMS_BASE_SCHEME | default('https') }}://{{ EDXAPP_LMS_BASE }}"
 EDXAPP_LMS_ISSUER: "{{ EDXAPP_LMS_ROOT_URL }}/oauth2"
 
+common_debian_pkgs:
+  - ntp
+  - acl
+  - lynx-cur
+  - logrotate
+  - rsyslog
+  - git
+  - unzip
+  - python2.7
+  - python-pip
+  - python2.7-dev
+
 edxapp_workers:
   - queue: low
     service_variant: cms
