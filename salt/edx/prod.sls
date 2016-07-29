@@ -62,7 +62,7 @@ mark_ansible_as_editable:
     - pattern: |
         ^git\+https://github\.com/edx/ansible.*
     - repl: |
-        --editable git+https://github.com/edx/ansible.git@stable-1.9.3-rc1-edx#egg=ansible==1.9.3-edx
+        -e git+https://github.com/edx/ansible.git@stable-1.9.3-rc1-edx#egg=ansible==1.9.3-edx
     - require:
       - git: clone_edx_configuration
 
