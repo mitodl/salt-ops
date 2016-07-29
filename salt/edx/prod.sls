@@ -18,9 +18,13 @@
                                     'edx-east/worker.yml']) -%}
 
 {% if salt.grains.get('osfinger') == 'Ubuntu-12.04' %}
-configure_git_ppa:
+configure_git_ppa_for_edx:
   pkgrepo.managed:
     - ppa: git-core/ppa
+
+configure_python_ppa_for_edx:
+  pkgrepo.managed:
+    - ppa: fkrull/deadsnakes-python2.7
 {% endif %}
 
 install_os_packages:
