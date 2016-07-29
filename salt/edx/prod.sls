@@ -35,6 +35,7 @@ install_os_packages:
     - pkgs:
         - git
         - libmysqlclient-dev
+        - python-dev
         - python2.7
         - python2.7-dev
         - python-pip
