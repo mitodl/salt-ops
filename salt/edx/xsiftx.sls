@@ -13,8 +13,8 @@
 {% set edxapp_app = salt.pillar.get('edx:xsiftx:edxapp_app', '/edx/app/edxapp/edx-platform') -%}
 {% set web = salt.pillar.get('edx:xsiftx:web', {
   "PORT": "8094",
-  "LOG_FILE": "{{ xsiftx_log_dir }}/xsiftx_uwsgi.log",
-  "WORKER_LOG_FILE": "{{ xsiftx_log_dir }}/xsiftx_celery.log",
+  "LOG_FILE": "/edx/var/log/xsiftx/xsiftx_uwsgi.log",
+  "WORKER_LOG_FILE": "/edx/var/log/xsiftx/xsiftx_celery.log",
   "LOG_LEVEL": "INFO",
   "CELERY_BROKER_URL": "amqp://celery:celery@localhost:5672//",
   "CELERY_RESULT_BACKEND": "amqp",
