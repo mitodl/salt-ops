@@ -1,0 +1,20 @@
+  location ~ /static/((?P<dir>[^/]+)/(?P<file>.*)|(?P<rfile>[\w\d\-.]+)) {
+    root {{ edxapp_app_dir }};
+    try_files /staticfiles/$dir/$file /course_static/$dir/static/$file /staticfiles/$rfile =404;
+
+    # return a 403 for static files that shouldn't be
+    # in the staticfiles directory
+    location ~ ^/static/(?:.*)(?:\.xml|\.json|README.TXT) {
+        return 403;
+    }
+    # Set django-pipelined files to maximum cache time
+    location ~ "/static/(?P<collected>.*\.[0-9a-f]{12}\..*)" {
+        expires max;
+        # Without this try_files, files that have been run through
+        # django-pipeline return 404s
+        try_files /staticfiles/$collected /course_static/$collected =404;
+    }
+
+    # Expire other static files immediately (there should be very few / none of these)
+    expires epoch;
+  }

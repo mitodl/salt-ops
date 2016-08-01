@@ -54,6 +54,7 @@ clone_edx_configuration:
     - rev: {{ salt.pillar.get('edx:config:branch', 'named-release/dogwood.3') }}
     - target: {{ repo_path }}
     - user: root
+    - force_reset: True
     - require:
       - file: clone_edx_configuration
 
@@ -67,6 +68,13 @@ mark_ansible_as_editable:
     - require:
       - git: clone_edx_configuration
 
+replace_nginx_static_asset_template_fragment:
+  file.managed:
+    - name: {{ repo_path }}/playbooks/roles/nginx/templates/edx/app/nginx/sites-available/static-files.j2
+    - source: salt://edx/files/nginx_satic_assets.j2
+    - require:
+        - git: clone_edx_configuration
+
 create_ansible_virtualenv:
   # Note: We need to use a virtualenv over here because the Salt minion bootstrap
   #       installs some OS `python-` packages that are also pulled in by the edX
@@ -79,6 +87,7 @@ create_ansible_virtualenv:
     - require:
       - git: clone_edx_configuration
       - pkg: install_os_packages
+      - file: replace_nginx_static_asset_template_fragment
 
 place_ansible_environment_configuration:
   file.managed:
@@ -158,6 +167,16 @@ run_ansible:
     - require:
       - virtualenv: create_ansible_virtualenv
     - unless: {{ salt.pillar.get('edx:skip_ansible', False) }}
+
+create_course_asset_symlink:
+  file.absent:
+    - name: /edx/var/edxapp/course_static/
+  file.symlink:
+    - name: /edx/var/edxapp/course_static
+    - target: {{ salt.pillar.get('edx:edxapp:GIT_REPO_DIR') }}
+    - makedirs: True
+    - user: edxapp
+    - group: edxapp
 
 {# Steps to enable git export for courses #}
 make_git_export_directory:
