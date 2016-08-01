@@ -134,7 +134,7 @@ mount_efs_filesystem_for_course_assets:
     - persist: True
     - mount: True
 
-{% if theme_name is not none %}
+{% if theme_name %}
 install_edxapp_theme:
   file.directory:
     - name: /edx/app/edxapp/themes
