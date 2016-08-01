@@ -71,7 +71,7 @@ mark_ansible_as_editable:
 replace_nginx_static_asset_template_fragment:
   file.managed:
     - name: {{ repo_path }}/playbooks/roles/nginx/templates/edx/app/nginx/sites-available/static-files.j2
-    - source: salt://edx/files/nginx_satic_assets.j2
+    - source: salt://edx/files/nginx_static_assets.j2
     - require:
         - git: clone_edx_configuration
 
@@ -152,6 +152,10 @@ install_edxapp_theme:
       - cmd: run_ansible
 {% endif %}
 
+remove_course_asset_symlink_before_ansible_run:
+  file.absent:
+    - name: /edx/var/edxapp/course_static
+
 run_ansible:
   cmd.script:
     - name: {{ data_path }}/run_ansible.sh
@@ -169,14 +173,13 @@ run_ansible:
     - unless: {{ salt.pillar.get('edx:skip_ansible', False) }}
 
 create_course_asset_symlink:
-  file.absent:
-    - name: /edx/var/edxapp/course_static/
   file.symlink:
     - name: /edx/var/edxapp/course_static
     - target: {{ salt.pillar.get('edx:edxapp:GIT_REPO_DIR') }}
     - makedirs: True
+    - force: True
     - user: edxapp
-    - group: edxapp
+    - group: www-data
 
 {# Steps to enable git export for courses #}
 make_git_export_directory:
