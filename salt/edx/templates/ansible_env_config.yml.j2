@@ -418,16 +418,10 @@ cms_env_config:
 
 FORUM_USE_TCP: True
 FORUM_MONGO_HOSTS:
-  - "{{ FORUM_MONGO_HOST }}"
+  - mongodb-master.service.consul
 FORUM_MONGO_URL: "mongodb://{{ FORUM_MONGO_USER }}:{{ FORUM_MONGO_PASSWORD }}@{%- for host in FORUM_MONGO_HOSTS -%}{{ host }}:{{ FORUM_MONGO_PORT }}{%- if not loop.last -%},{%- endif -%}{%- endfor -%}/{{ FORUM_MONGO_DATABASE }}{%- if FORUM_MONGO_OPTION_STRING -%}?{{ FORUM_MONGO_OPTION_STRING }}{%- endif -%}"
 FORUM_API_KEY: "{{ COMMENTS_SERVICE_KEY }}"
 FORUM_ELASTICSEARCH_HOST: "elasticsearch.service.consul"
-forum_environment:
-  MONGOID_READ_MODE: primary_preferred
-forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
-forum_version: 'blarghmatey/mongoid_settings_update'
-
-
 
 EDXAPP_ELASTIC_SEARCH_CONFIG:
   - host: elasticsearch.service.consul
