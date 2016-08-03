@@ -310,6 +310,7 @@ edxapp_generic_env_config: &generic_env_config
     user: "{{ edxapp_sandbox_user }}"
   COMMENTS_SERVICE_KEY: "{{ COMMENTS_SERVICE_KEY }}"
   COMMENTS_SERVICE_URL: "http://localhost:4567"
+  COMPREHENSIVE_THEME_DIR: '/edx/app/edxapp/edx-platform/themes/{{ THEME_NAME }}'
   CONTACT_EMAIL: "{{ CONTACT_EMAIL }}"
   DEFAULT_FEEDBACK_EMAIL: "{{ DEFAULT_FEEDBACK_EMAIL }}"
   DEFAULT_FROM_EMAIL: "{{ DEFAULT_FROM_EMAIL }}"
@@ -388,7 +389,6 @@ lms_env_config:
     LICENSING: true
     REMOTE_GRADEBOOK_URL: "{{ REMOTE_GRADEBOOK_URL }}"
     REQUIRE_COURSE_EMAIL_AUTH: false
-    USE_CUSTOM_THEME: true
   SITE_NAME: "{{ LMS_NAME }}"
   GIT_REPO_DIR: "{{ GIT_REPO_DIR }}"
   GIT_IMPORT_STATIC: false
