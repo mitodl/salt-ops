@@ -49,6 +49,8 @@ xqueue_auth_config:
 MONGODB_REPLICASET: {{ salt.pillar.get('mongodb:replset_name', 'rs0') }}
 
 {% raw %}
+xqwatcher_requirements_file: "{{ xqwatcher_code_dir }}/requirements/prod.txt"
+
 EDX_DOMAIN: '{{ EDX_NAME }}.{{ EDX_ZONE }}'
 
 # Nginx sites overrides
