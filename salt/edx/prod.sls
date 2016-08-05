@@ -19,6 +19,7 @@
 {% set theme_repo = salt.pillar.get('edx:edxapp:custom_theme:repo', 'https://github.com/mitocw/edx-theme') -%}
 {% set theme_name = salt.pillar.get('edx:edxapp:THEME_NAME', None) -%}
 {% set theme_branch = salt.pillar.get('edx:edxapp:custom_theme:branch', 'mitx') -%}
+{% set theme_dir = salt.pillar.get('edx:edxapp:EDXAPP_COMPREHENSIVE_THEME_DIR', '/edx/app/edxapp/themes') -%}
 
 {% if salt.grains.get('osfinger') == 'Ubuntu-12.04' %}
 configure_git_ppa_for_edx:
@@ -137,14 +138,14 @@ mount_efs_filesystem_for_course_assets:
 {% if theme_name %}
 install_edxapp_theme:
   file.directory:
-    - name: /edx/app/edxapp/themes
+    - name: {{ theme_dir }}
     - makedirs: True
     - user: www-data
     - group: www-data
   git.latest:
     - name: {{ theme_repo }}
     - branch: {{ theme_branch }}
-    - target: /edx/app/edxapp/themes/{{ theme_name }}
+    - target: {{ theme_dir }}/{{ theme_name }}
     - user: www-data
     - require:
       - file: install_edxapp_theme
