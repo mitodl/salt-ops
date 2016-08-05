@@ -86,6 +86,6 @@ build_edx_nodes:
   salt.state:
     - tgt: 'G@roles:edx and G@environment:dogwood-qa'
     - tgt_type: compound
-    - sls: edx.prod
+    - highstate: True
     - require:
         - salt: deploy_consul_agent_to_edx_nodes
