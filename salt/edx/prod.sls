@@ -201,7 +201,7 @@ add_private_ssh_key_to_www-data_for_git_export:
     - group: www-data
 
 {% for host in git_servers %}
-add_{{ host.name }}_to_known_hosts:
+add_{{ host.name }}_to_known_hosts_for_edxapp:
   ssh_known_hosts.present:
     - name: {{ host.name }}
     - user: www-data

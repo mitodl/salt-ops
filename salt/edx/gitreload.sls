@@ -32,7 +32,7 @@ install_mit_github_ssh_key:
     - dir_mode: 0700
 
 {% for host in ssh_hosts %}
-add_{{ host.name }}_to_known_hosts:
+add_{{ host.name }}_to_known_hosts_for_gitreload:
   ssh_known_hosts.present:
     - name: {{ host.name }}
     - user: www-data
