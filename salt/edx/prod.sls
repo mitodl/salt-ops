@@ -147,6 +147,10 @@ install_edxapp_theme:
     - branch: {{ theme_branch }}
     - target: {{ theme_dir }}/{{ theme_name }}
     - user: edxapp
+    - force_checkout: True
+    - force_clone: True
+    - force_reset: True
+    - update_head: True
     - require:
       - file: install_edxapp_theme
     - require_in:
