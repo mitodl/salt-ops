@@ -140,13 +140,13 @@ install_edxapp_theme:
   file.directory:
     - name: {{ theme_dir }}
     - makedirs: True
-    - user: www-data
-    - group: www-data
+    - user: edxapp
+    - group: edxapp
   git.latest:
     - name: {{ theme_repo }}
     - branch: {{ theme_branch }}
     - target: {{ theme_dir }}/{{ theme_name }}
-    - user: www-data
+    - user: edxapp
     - require:
       - file: install_edxapp_theme
     - require_in:
