@@ -1,7 +1,8 @@
 base:
   '*':
     - utils.install_pip
-  'G@environment:(operations|dogwood-qa|dogwood-rp|rp|partners)':
+  'P@environment:(operations|dogwood-qa|dogwood-rp|rp|partners)':
+    - match: compound
     - datadog
   'roles:master':
     - match: grain
@@ -33,7 +34,7 @@ base:
   'G@roles:edx_sandbox and G@sandbox_status:ami-provision':
     - match: compound
     - edx.sandbox_ami
-  'G@roles:mongodb and G@environment:dogwood-qa':
+  'G@roles:mongodb and P@environment:(dogwood-qa|dogwood-rp}':
     - match: compound
     - mongodb
     - mongodb.consul_check
@@ -42,7 +43,7 @@ base:
     - match: grain
     - fluentd.reverse_proxy
     - datadog.plugins
-  'P@environment:(operations|dogwood-qa)':
+  'P@environment:(operations|dogwood-qa|dogwood-rp)':
     - match: compound
     - consul
     - consul.dns_proxy

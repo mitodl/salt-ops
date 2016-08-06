@@ -22,7 +22,7 @@ install_global_pip_executable:
         sudo python get_pip.py
         rm get_pip.py
     - reload_modules: True
-    - unless: which pip
+    - unless: test -n `which pip`
 
 install_python_libraries:
   pip.installed:
