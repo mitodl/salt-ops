@@ -26,7 +26,7 @@ install_mit_github_ssh_key:
     - name: /var/www/.ssh/id_rsa
     - user: www-data
     - group: www-data
-    - contents_pillar: 'edx:gitreload:ssh_key'
+    - contents_pillar: 'edx:ssh_key'
     - makedirs: True
     - mode: 0600
     - dir_mode: 0700
@@ -64,6 +64,7 @@ create_{{ path }}_directories:
     - name: {{ path }}
     - user: www-data
     - group: www-data
+    - makedirs: True
     - require_in:
       - file: gitreload_init_script
 {% endfor %}

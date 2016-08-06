@@ -135,6 +135,15 @@ mount_efs_filesystem_for_course_assets:
     - persist: True
     - mount: True
 
+{# Creating the edxapp user here so that it is present for setting appropriate
+   file and directory ownership #}
+create_edxapp_user:
+  user.present:
+    - name: edxapp
+    - home: /edx/app/edxapp
+    - createhome: False
+    - shell: /bin/false
+
 {% if theme_name %}
 install_edxapp_theme:
   file.directory:
