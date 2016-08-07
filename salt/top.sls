@@ -34,7 +34,7 @@ base:
   'G@roles:edx_sandbox and G@sandbox_status:ami-provision':
     - match: compound
     - edx.sandbox_ami
-  'G@roles:mongodb and P@environment:(dogwood-qa|dogwood-rp}':
+  'G@roles:mongodb and P@environment:(dogwood-qa|dogwood-rp)':
     - match: compound
     - mongodb
     - mongodb.consul_check
@@ -56,7 +56,7 @@ base:
     - match: compound
     - vault
     - vault.tests
-  'G@roles:rabbitmq and G@environment:dogwood-qa':
+  'G@roles:rabbitmq and P@environment:(dogwood-qa|dogwood-rp)':
     - match: compound
     - rabbitmq
     - rabbitmq.autocluster
