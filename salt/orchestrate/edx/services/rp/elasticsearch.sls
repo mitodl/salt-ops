@@ -21,9 +21,9 @@ generate_elasticsearch_cloud_map_file:
           - elasticsearch
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
-            'elasticsearch-dogwood-rp', vpc_name='Dogwood QA') }}
+            'elasticsearch-dogwood-rp', vpc_name='Dogwood RP') }}
           - {{ salt.boto_secgroup.get_group_id(
-            'salt_master-dogwood-rp', vpc_name='Dogwood QA') }}
+            'salt_master-dogwood-rp', vpc_name='Dogwood RP') }}
         subnetids: {{ subnet_ids }}
     - require:
         - file: load_elasticsearch_cloud_profile

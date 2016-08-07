@@ -20,9 +20,9 @@ generate_mongodb_cloud_map_file:
           - mongodb
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
-            'mongodb-dogwood-rp', vpc_name='Dogwood QA') }}
+            'mongodb-dogwood-rp', vpc_name='Dogwood RP') }}
           - {{ salt.boto_secgroup.get_group_id(
-            'salt_master-dogwood-rp', vpc_name='Dogwood QA') }}
+            'salt_master-dogwood-rp', vpc_name='Dogwood RP') }}
         subnetids: {{ subnet_ids }}
     - require:
         - file: load_mongodb_cloud_profile

@@ -20,9 +20,9 @@ generate_rabbitmq_cloud_map_file:
           - rabbitmq
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
-            'rabbitmq-dogwood-rp', vpc_name='Dogwood QA') }}
+            'rabbitmq-dogwood-rp', vpc_name='Dogwood RP') }}
           - {{ salt.boto_secgroup.get_group_id(
-            'salt_master-dogwood-rp', vpc_name='Dogwood QA') }}
+            'salt_master-dogwood-rp', vpc_name='Dogwood RP') }}
         subnetids: {{ subnet_ids }}
 
 ensure_instance_profile_exists_for_rabbitmq:
