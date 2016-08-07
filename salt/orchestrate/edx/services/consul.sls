@@ -3,6 +3,7 @@
     'public1-dogwood_qa', 'public2-dogwood_qa', 'public3-dogwood_qa'])['subnets'] %}
 {% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
+{% set VPC_NAME = 'Dogwood QA' %}
 
 load_consul_cloud_profile:
   file.managed:
@@ -22,9 +23,9 @@ generate_cloud_map_file:
           - service_discovery
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
-            'consul-dogwood_qa', vpc_name='Dogwood QA') }}
+            'consul-dogwood_qa', vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
-            'salt_master-dogwood_qa', vpc_name='Dogwood QA') }}
+            'salt_master-dogwood_qa', vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids }}
     - require:
         - file: load_consul_cloud_profile

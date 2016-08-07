@@ -51,10 +51,6 @@ base:
     - consul.tests.test_dns_setup
   'G@roles:consul_server and G@environment:operations':
     - match: compound
-    - consul
-    - consul.tests
-    - consul.dns_proxy
-    - consul.tests.test_dns_setup
     - datadog.plugins
   'G@roles:vault_server and G@environment:operations':
     - match: compound
@@ -66,7 +62,10 @@ base:
     - rabbitmq.autocluster
     - rabbitmq.tests
     - datadog.plugins
-  'G@roles:edx and G@environment:dogwood-qa':
+  'G@roles:edx and P@environment:(dogwood-qa|dogwood-rp)':
     - match: compound
     - edx.prod
     - edx.gitreload
+    - fluentd
+    - fluentd.plugins
+    - fluentd.config
