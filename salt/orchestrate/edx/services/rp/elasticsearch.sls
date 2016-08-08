@@ -83,9 +83,18 @@ build_dogwood_elasticsearch_nodes:
         - salt: reload_pillar_data_on_dogwood_elasticsearch_nodes
 
 remove_broken_line_from_elasticsearch_init_script:
-  file.comment:
-    - name: /etc/init.d/elasticsearch
-    - regex: ^test "\$START_DAEMON"
-    - mode: Delete
-  cmd.run:
-    - name: systemctl daemon-reload && systemctl restart elasticsearch
+  salt.function:
+    - tgt: 'G@roles:elasticsearch and G@environment:dogwood-rp'
+    - tgt_type: compound
+    - name: file.comment_line
+    - kwarg:
+        name: /etc/init.d/elasticsearch
+        regex: ^test "\$START_DAEMON"
+
+reload_elasticsearch_systemd_unit:
+  salt.function:
+    - tgt: 'G@roles:elasticsearch and G@environment:dogwood-rp'
+    - tgt_type: compound
+    - name: cmd.run
+    - kwarg:
+        name: systemctl daemon-reload && systemctl restart elasticsearch
