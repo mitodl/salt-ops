@@ -312,6 +312,7 @@ edxapp_generic_env_config: &generic_env_config
     user: "{{ edxapp_sandbox_user }}"
   COMMENTS_SERVICE_KEY: "{{ COMMENTS_SERVICE_KEY }}"
   COMMENTS_SERVICE_URL: "http://localhost:4567"
+  COMPREHENSIVE_THEME_DIR: '/edx/app/edxapp/edx-platform/themes/{{ THEME_NAME }}'
   CONTACT_EMAIL: "{{ CONTACT_EMAIL }}"
   COMPREHENSIVE_THEME_DIR: "{{ EDXAPP_COMPREHENSIVE_THEME_DIR }}/{{ THEME_NAME }}"
   DEFAULT_FEEDBACK_EMAIL: "{{ DEFAULT_FEEDBACK_EMAIL }}"
