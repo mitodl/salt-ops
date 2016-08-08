@@ -22,9 +22,9 @@ generate_edx_cloud_map_file:
           - log-forwarder
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
-              'edx-dogwood-rp', vpc_name='Dogwood QA') }}
+              'edx-dogwood-rp', vpc_name='Dogwood RP') }}
           - {{ salt.boto_secgroup.get_group_id(
-            'salt_master-dogwood-rp', vpc_name='Dogwood QA') }}
+            'salt_master-dogwood-rp', vpc_name='Dogwood RP') }}
         subnetids: {{ subnet_ids }}
         app_types:
           draft: 4
