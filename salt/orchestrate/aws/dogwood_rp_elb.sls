@@ -28,13 +28,13 @@ create_elb_for_edx_{{ edx_type }}:
           enabled: True
     - cnames:
         {% if edx_type == 'draft' %}
-        {% for domain in ['staging', 'preview', 'preview-rp', 'studio', 'studio-rp'] %}
+        {% for domain in ['staging', 'preview', 'preview-rp', 'studio', 'studio-rp', 'gr-rp'] %}
         - name: {{ domain }}.mitx.mit.edu.
           zone: mitx.mit.edu.
           ttl: 60
         {% endfor %}
         {% else %}
-        {% for domain in ['lms', 'lms-rp'] %}
+        {% for domain in ['lms', 'lms-rp', 'prod-gr-rp'] %}
         - name: {{ domain }}.mitx.mit.edu.
           zone: mitx.mit.edu.
           ttl: 60
