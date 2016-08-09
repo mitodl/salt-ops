@@ -111,7 +111,7 @@ gitreload_init_script:
 gitreload_htpasswd:
   file.managed:
     - name: {{ basic_auth.location }}
-    - contents: {{ basic_auth.username }}:{{ salt['cmd.run']('openssl passwd -crypt {}'.format(basic_auth.password) }}
+    - contents: {{ basic_auth.username }}:{{ salt['cmd.run']('openssl passwd -crypt {}'.format(basic_auth.password)) }}
     - user: www-data
     - group: www-data
 
