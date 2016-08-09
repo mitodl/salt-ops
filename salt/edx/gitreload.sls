@@ -63,6 +63,7 @@ install_gitreload:
     - name: git+https://{{ gr_repo }}@{{ gr_version }}#egg=gitreload
     - exists_action: w
     - bin_env: {{ gr_env.VIRTUAL_ENV }}
+    - upgrade: True
 
 {% for path in [gr_dir, gr_log_dir, gr_env.REPODIR] %}
 create_{{ path }}_directories:
