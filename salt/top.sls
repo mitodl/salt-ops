@@ -64,8 +64,8 @@ base:
     - datadog.plugins
   'G@roles:edx and P@environment:(dogwood-qa|dogwood-rp)':
     - match: compound
-    - edx.prod
     - edx.gitreload
+    - edx.prod
     - fluentd
     - fluentd.plugins
     - fluentd.config
