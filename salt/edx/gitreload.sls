@@ -147,7 +147,7 @@ reload_nginx:
     - watch:
       - file: enable_gitreload_link
       - file: gitreload_htpasswd
-      - htpasswd: gitreload_htpasswd
+      - file: gitreload_site
 
 start_gitreload:
   service.running:
