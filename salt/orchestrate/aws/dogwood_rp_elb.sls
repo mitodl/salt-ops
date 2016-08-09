@@ -27,15 +27,19 @@ create_elb_for_edx_{{ edx_type }}:
         sticky_sessions:
           enabled: True
     - cnames:
-        - name: {{ edx_type }}.mitx.mit.edu.
+        {% if edx_type == 'draft' %}
+        {% for domain in ['staging', 'preview', 'preview-rp', 'studio', 'studio-rp'] %}
+        - name: {{ domain }}.mitx.mit.edu.
           zone: mitx.mit.edu.
           ttl: 60
-        - name: preview-{{ edx_type }}.mitx.mit.edu.
+        {% endfor %}
+        {% else %}
+        {% for domain in ['lms', 'lms-rp'] %}
+        - name: {{ domain }}.mitx.mit.edu.
           zone: mitx.mit.edu.
           ttl: 60
-        - name: studio-{{ edx_type }}.mitx.mit.edu.
-          zone: mitx.mit.edu.
-          ttl: 60
+        {% endfor %}
+        {% endif %}
     - health_check:
         target: 'HTTPS:443/heartbeat'
     - subnets: {{ subnet_ids }}
