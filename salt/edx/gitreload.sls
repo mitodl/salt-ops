@@ -133,10 +133,10 @@ gitreload_site:
 
 enable_gitreload_link:
   file.symlink:
-    - name: /edx/app/nginx/sites-enabled/gitreload
+    - name: /etc/nginx/sites-enabled/gitreload
     - target: /edx/app/nginx/sites-available/gitreload
     - user: root
-    - group: www-data
+    - group: root
     - require:
       - file: gitreload_site
 
