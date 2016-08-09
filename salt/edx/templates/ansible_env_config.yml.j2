@@ -426,6 +426,7 @@ FORUM_MONGO_HOSTS:
 FORUM_MONGO_URL: "mongodb://{{ FORUM_MONGO_USER }}:{{ FORUM_MONGO_PASSWORD }}@{%- for host in FORUM_MONGO_HOSTS -%}{{ host }}:{{ FORUM_MONGO_PORT }}{%- if not loop.last -%},{%- endif -%}{%- endfor -%}/{{ FORUM_MONGO_DATABASE }}{%- if FORUM_MONGO_OPTION_STRING -%}?{{ FORUM_MONGO_OPTION_STRING }}{%- endif -%}"
 FORUM_API_KEY: "{{ COMMENTS_SERVICE_KEY }}"
 FORUM_ELASTICSEARCH_HOST: "elasticsearch.service.consul"
+forum_version: "{{ FORUM_VERSION }}"
 
 EDXAPP_ELASTIC_SEARCH_CONFIG:
   - host: elasticsearch.service.consul
