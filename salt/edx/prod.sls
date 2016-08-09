@@ -34,11 +34,10 @@ configure_python_ppa_for_edx:
 install_os_packages:
   pkg.installed:
     - pkgs:
-        - git
+        - git: 2.9.2-0ppa1~ubuntu12.04.1
         - libmysqlclient-dev
-        - python-dev
-        - python2.7
-        - python2.7-dev
+        - python2.7: 2.7.10-0+precise1
+        - python2.7-dev: 2.7.10-0+precise1
         - python-pip
         - python-virtualenv
         - nfs-common
