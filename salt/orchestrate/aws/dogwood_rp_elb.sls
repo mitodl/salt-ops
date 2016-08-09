@@ -7,7 +7,7 @@
 {% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
 
-{% for edx_type in ['staging', 'lms'] %}
+{% for edx_type in ['draft', 'live'] %}
 create_elb_for_edx_{{ edx_type }}:
   boto_elb.present:
     - name: edx-{{ edx_type }}-dogwood-rp
