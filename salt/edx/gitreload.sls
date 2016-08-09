@@ -27,6 +27,10 @@
   'location': '/edx/app/nginx/gitreload.htpasswd'
 }) -%}
 
+install_gitreload_pkgs:
+  pkg.installed:
+    - name: apache2-utils
+
 install_mit_github_ssh_key:
   file.managed:
     - name: /var/www/.ssh/id_rsa
@@ -139,6 +143,15 @@ enable_gitreload_link:
     - group: www-data
     - require:
       - file: gitreload_site
+
+reload_nginx:
+  service.running:
+    - name: nginx
+    - reload: True
+    - watch:
+      - file: enable_gitreload_link
+      - file: gitreload_htpasswd
+      - htpasswd: gitreload_htpasswd
 
 start_gitreload:
   service.running:
