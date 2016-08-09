@@ -1,6 +1,6 @@
 {% set type_counts = {'draft': 4, 'live': 6} %}
 {% set environment = 'dogwood-rp' %}
-{% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-dogwood_rp']) %}
+{% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-dogwood-rp']) %}
 {% set subnet_ids = [] %}
 {% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
     'public1-dogwood-rp', 'public2-dogwood-rp', 'public3-dogwood-rp'])['subnets'] %}
