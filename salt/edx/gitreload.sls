@@ -60,7 +60,7 @@ create_gitreload_config:
 
 install_gitreload:
   pip.installed:
-    - name: git+https://{{ gr_repo }}@{{ gr_version }}#egg=gitreload
+    - name: git+https://{{ gr_repo }}@{{ gr_version }}#egg=gitreload-latest
     - exists_action: w
     - bin_env: {{ gr_env.VIRTUAL_ENV }}
     - upgrade: True
