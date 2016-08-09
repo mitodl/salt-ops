@@ -118,6 +118,8 @@ gitreload_htpasswd:
     - password: {{ basic_auth.password }}
     - htpasswd_file: {{ basic_auth.location }}
     - runas: www-data
+    - require:
+      - pkg: install_gitreload_pkgs
 
 gitreload_site:
   file.managed:
