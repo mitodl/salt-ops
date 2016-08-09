@@ -20,6 +20,12 @@
     {'name': 'github.mit.edu', 'fingerprint': '52:6d:53:23:b4:20:93:d1:2e:91:c7:ba:d4:3c:a8:20'}]) %}
 {% set gr_log_dir = salt.pillar.get('edx:gitreload:gr_log_dir',
                                   '/edx/var/log/gr') -%}
+{% set hostname = salt.pillar.get('edx:gitreload:hostname') -%}
+{% set basic_auth = salt.pillar.get('edx:gitreload:basic_auth', {
+  'username': 'mitx',
+  'password': 'change_me',
+  'location': '/edx/app/nginx/gitreload.htpasswd'
+}) -%}
 
 install_mit_github_ssh_key:
   file.managed:
@@ -102,6 +108,26 @@ gitreload_init_script:
         gr_env: {{ gr_env }}
         gr_dir: {{ gr_dir }}
 
+gitreload_htpasswd:
+    htpasswd.user_exists
+    name: {{ basic_auth.username }}
+    password: {{ basic_auth.password }}
+    htpasswd_file: {{ basic_auth.location }}
+    runas: www-data
+
+gitreload_site:
+  file.managed:
+    - name /edx/app/nginx/sites-available/gitreload
+    - source: salt://edx/templates/gitreload_site.j2
+    - template: jinja
+    - mode: 640
+    - makedirs: True
+    - user: root
+    - group: www-data
+    - context:
+        gr_env: {{ gr_env }}
+        hostname: {{ hostname }}
+        htpasswd: {{ basic_auth.location }}
 start_gitreload:
   service.running:
     - name: gitreload
