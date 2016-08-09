@@ -34,6 +34,9 @@ create_elb_for_edx_{{ edx_type }}:
         - name: studio-dogwood-qa-{{ edx_type }}.mitx.mit.edu.
           zone: mitx.mit.edu.
           ttl: 60
+        - name: {% if edx_type == 'live' %}prod-{% endif %}gr-qa.mitx.mit.edu.
+          zone: mitx.mit.edu.
+          ttl: 60
     - health_check:
         target: 'HTTPS:443/heartbeat'
     - subnets: {{ subnet_ids }}
