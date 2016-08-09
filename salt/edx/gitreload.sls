@@ -27,10 +27,6 @@
   'location': '/edx/app/nginx/gitreload.htpasswd'
 }) -%}
 
-install_gitreload_pkgs:
-  pkg.installed:
-    - name: apache2-utils
-
 install_mit_github_ssh_key:
   file.managed:
     - name: /var/www/.ssh/id_rsa
@@ -113,13 +109,11 @@ gitreload_init_script:
         gr_dir: {{ gr_dir }}
 
 gitreload_htpasswd:
-  htpasswd.user_exists:
-    - name: {{ basic_auth.username }}
-    - password: {{ basic_auth.password }}
-    - htpasswd_file: {{ basic_auth.location }}
-    - runas: www-data
-    - require:
-      - pkg: install_gitreload_pkgs
+  file.managed:
+    - name: {{ basic_auth.location }}
+    - contents: {{ basic_auth.username }}:{{ salt['cmd.run']('openssl passwd -crypt {}'.format(basic_auth.password) }}
+    - user: www-data
+    - group: www-data
 
 gitreload_site:
   file.managed:
@@ -135,7 +129,7 @@ gitreload_site:
         hostname: {{ hostname }}
         htpasswd: {{ basic_auth.location }}
     - require:
-      - htpasswd: gitreload_htpasswd
+      - file: gitreload_htpasswd
 
 enable_gitreload_link:
   file.symlink:
