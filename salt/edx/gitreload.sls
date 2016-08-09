@@ -109,15 +109,15 @@ gitreload_init_script:
         gr_dir: {{ gr_dir }}
 
 gitreload_htpasswd:
-    htpasswd.user_exists
-    name: {{ basic_auth.username }}
-    password: {{ basic_auth.password }}
-    htpasswd_file: {{ basic_auth.location }}
-    runas: www-data
+  htpasswd.user_exists:
+    - name: {{ basic_auth.username }}
+    - password: {{ basic_auth.password }}
+    - htpasswd_file: {{ basic_auth.location }}
+    - runas: www-data
 
 gitreload_site:
   file.managed:
-    - name /edx/app/nginx/sites-available/gitreload
+    - name: /edx/app/nginx/sites-available/gitreload
     - source: salt://edx/templates/gitreload_site.j2
     - template: jinja
     - mode: 640
@@ -128,6 +128,18 @@ gitreload_site:
         gr_env: {{ gr_env }}
         hostname: {{ hostname }}
         htpasswd: {{ basic_auth.location }}
+    - require:
+      - htpasswd: gitreload_htpasswd
+
+enable_gitreload_link:
+  file.symlink:
+    - name: /edx/app/nginx/sites-enabled/gitreload
+    - target: /edx/app/nginx/sites-available/gitreload
+    - user: root
+    - group: www-data
+    - require:
+      - file: gitreload_site
+
 start_gitreload:
   service.running:
     - name: gitreload
