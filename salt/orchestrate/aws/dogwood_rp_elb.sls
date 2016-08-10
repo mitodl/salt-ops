@@ -40,6 +40,15 @@ create_elb_for_edx_{{ edx_type }}:
           ttl: 60
         {% endfor %}
         {% endif %}
+        - name: dogwood-rp-{{ edx_type }}.mitx.mit.edu.
+          zone: mitx.mit.edu.
+          ttl: 60
+        - name: preview-dogwood-rp-{{ edx_type }}.mitx.mit.edu.
+          zone: mitx.mit.edu.
+          ttl: 60
+        - name: studio-dogwood-rp-{{ edx_type }}.mitx.mit.edu.
+          zone: mitx.mit.edu.
+          ttl: 60
     - health_check:
         target: 'HTTPS:443/heartbeat'
     - subnets: {{ subnet_ids }}
