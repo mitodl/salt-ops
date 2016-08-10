@@ -38,6 +38,7 @@ install_os_packages:
     - pkgs:
         - git: '1:2.9.2-0ppa1~ubuntu12.04.1'
         - libmysqlclient-dev
+        - mysql-client
         - python2.7: 2.7.12-1~precise1
         - python2.7-dev: 2.7.12-1~precise1
         - python-pip
@@ -156,7 +157,7 @@ install_edxapp_theme:
     - group: edxapp
   git.latest:
     - name: {{ theme_repo }}
-    - rev: {{ theme_branch }}
+    - branch: {{ theme_branch }}
     - target: {{ theme_dir }}/{{ theme_name }}
     - user: edxapp
     - force_checkout: True
