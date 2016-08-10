@@ -21,23 +21,25 @@
 {% set theme_branch = salt.pillar.get('edx:edxapp:custom_theme:branch', 'mitx') -%}
 {% set theme_dir = salt.pillar.get('edx:edxapp:EDXAPP_COMPREHENSIVE_THEME_DIR', '/edx/app/edxapp/themes') -%}
 
-{% if salt.grains.get('osfinger') == 'Ubuntu-12.04' %}
 configure_git_ppa_for_edx:
   pkgrepo.managed:
     - ppa: git-core/ppa
+    - require_in:
+        - pkg: install_os_packages
 
 configure_python_ppa_for_edx:
   pkgrepo.managed:
     - ppa: fkrull/deadsnakes-python2.7
-{% endif %}
+    - require_in:
+        - pkg: install_os_packages
 
 install_os_packages:
   pkg.installed:
     - pkgs:
-        - git: 2.9.2-0ppa1~ubuntu12.04.1
+        - git: '1:2.9.2-0ppa1~ubuntu12.04.1'
         - libmysqlclient-dev
-        - python2.7: 2.7.10-0+precise1
-        - python2.7-dev: 2.7.10-0+precise1
+        - python2.7: 2.7.12-1~precise1
+        - python2.7-dev: 2.7.12-1~precise1
         - python-pip
         - python-virtualenv
         - nfs-common
