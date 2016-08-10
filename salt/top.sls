@@ -66,6 +66,8 @@ base:
     - match: compound
     - edx.gitreload
     - edx.prod
+    - logging.setup_ubuntu
+    - logging.forward_syslog
     - fluentd
     - fluentd.plugins
     - fluentd.config

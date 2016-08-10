@@ -56,6 +56,8 @@ clone_edx_configuration:
     - rev: {{ salt.pillar.get('edx:config:branch', 'named-release/dogwood.3') }}
     - target: {{ repo_path }}
     - user: root
+    - force_checkout: True
+    - force_clone: True
     - force_reset: True
     - require:
       - file: clone_edx_configuration
