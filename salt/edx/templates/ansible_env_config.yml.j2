@@ -332,7 +332,7 @@ edxapp_generic_env_config: &generic_env_config
   SESSION_ENGINE: "django.contrib.sessions.backends.db"
   STATIC_ROOT_BASE: "/edx/var/edxapp/staticfiles"
   SYSLOG_SERVER: "{{ SYSLOG_SERVER }}"
-  TECH_SUPPORT_EMAIL: "{{ TECH_SUPPORT_EMAIL }}"
+  TECH_SUPPORT_EMAIL: "{{ EDXAPP_TECH_SUPPORT_EMAIL }}"
   THEME_NAME: "{{ THEME_NAME }}"
   TIME_ZONE: "{{ TIME_ZONE }}"
   TIME_ZONE_DISPLAYED_FOR_DEADLINES: "{{ TIME_ZONE }}"
