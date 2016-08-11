@@ -64,6 +64,7 @@ install_gitreload:
     - exists_action: w
     - bin_env: {{ gr_env.VIRTUAL_ENV }}
     - upgrade: True
+    - user: edxapp
 
 {% for path in [gr_dir, gr_log_dir, gr_env.REPODIR] %}
 create_{{ path }}_directories:
