@@ -7,8 +7,8 @@ xqueue_env_config:
     {% for key, value in xqueue.queues.items() %}
       {{ key }}: {{ value }}
     {% endfor %}
-{% raw %}
   RABBIT_VHOST: '{{ xqueue.rabbit_vhost }}'
+{% raw %}
   XQUEUE_WORKERS_PER_QUEUE: 2
   LOGGING_ENV: prod
   LOG_DIR: /logs
@@ -18,15 +18,15 @@ xqueue_env_config:
 {% endraw %}
 xqueue_create_db: no
 
-{% raw %}
 xqueue_auth_config:
+{% raw %}
   AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
   AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
   REQUESTS_BASIC_AUTH:
     - mitx
     - '{{ XQUEUE_PASSWORD }}'
   USERS:
-    '{{ XQUEUE_USER }}': '{{ XQUEUE_PASSWORD }}'
+    xqueue: '{{ XQUEUE_PASSWORD }}'
     xqueue_pull: "{{ XQUEUE_PULL_PASSWORD }}"
   RABBITMQ_USER: '{{ CELERY_BROKER_USER }}'
   RABBITMQ_PASS: '{{ CELERY_BROKER_PASSWORD }}'
@@ -49,6 +49,7 @@ xqueue_auth_config:
 MONGODB_REPLICASET: {{ salt.pillar.get('mongodb:replset_name', 'rs0') }}
 
 {% raw %}
+elb_pre_post: false
 xqwatcher_requirements_file: "{{ xqwatcher_code_dir }}/requirements/production.txt"
 
 EDX_DOMAIN: '{{ EDX_NAME }}.{{ EDX_ZONE }}'
@@ -168,7 +169,7 @@ edxapp_generic_auth_config: &generic_auth_config
       password: "{{ XQUEUE_PASSWORD }}"
       username: "{{ XQUEUE_USER }}"
     url: "http://localhost:8040"
-    callback_url: "http://localhost:8199"
+    callback_url: "http://localhost:8000"
   YOUTUBE_API_KEY: "{{ YOUTUBE_API_KEY }}"
   ZENDESK_API_KEY: ""
   ZENDESK_USER: ""
