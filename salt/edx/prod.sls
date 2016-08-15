@@ -224,3 +224,23 @@ add_{{ host.name }}_to_known_hosts_for_edxapp:
     - user: www-data
     - fingerprint: {{ host.fingerprint }}
 {% endfor %}
+
+configure_nginx_status_module_for_edx:
+  file.managed:
+    - name: /etc/nginx/sites-enabled/status_monitor
+    - contents: |
+        server {
+            listen 80;
+            location /nginx_status {
+                stub_status on;
+                access_log off;
+                allow 127.0.0.1;
+                deny all;
+            }
+        }
+    - group: www-data
+  service.running:
+    - name: nginx
+    - reload: True
+    - watch:
+        - file: configure_nginx_status_module_for_edx
