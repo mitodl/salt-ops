@@ -52,20 +52,15 @@ MONGODB_REPLICASET: {{ salt.pillar.get('mongodb:replset_name', 'rs0') }}
 elb_pre_post: false
 xqwatcher_requirements_file: "{{ xqwatcher_code_dir }}/requirements/production.txt"
 
-EDX_DOMAIN: '{{ EDX_NAME }}.{{ EDX_ZONE }}'
-
 # Nginx sites overrides
-EDXAPP_PREVIEW_LMS_BASE: 'preview-{{ EDX_DOMAIN }}'
-EDXAPP_LMS_BASE: '{{ EDX_DOMAIN }}'
-EDXAPP_CMS_BASE: 'studio-{{ EDX_DOMAIN }}'
 EDXAPP_INSTALL_PRIVATE_REQUIREMENTS: true
 EDXAPP_MYSQL_USER_MIGRATE: "lms"
 EDXAPP_MYSQL_PASSWORD_MIGRATE: "{{ MYSQL_PASSWORD }}"
 EDXAPP_AWS_STORAGE_BUCKET_NAME: "{{ AWS_STORAGE_BUCKET_NAME }}"
-EDXAPP_CMS_ROOT_URL: "{{ EDXAPP_CMS_BASE_SCHEME | default('https') }}://{{ EDXAPP_CMS_BASE }}"
+EDXAPP_CMS_ROOT_URL: "{{ EDXAPP_CMS_BASE_SCHEME | default('https') }}://{{ CMS_DOMAIN }}"
 EDXAPP_CMS_ISSUER: "{{ EDXAPP_CMS_ROOT_URL }}/oauth2"
 
-EDXAPP_LMS_ROOT_URL: "{{ EDXAPP_LMS_BASE_SCHEME | default('https') }}://{{ EDXAPP_LMS_BASE }}"
+EDXAPP_LMS_ROOT_URL: "{{ EDXAPP_LMS_BASE_SCHEME | default('https') }}://{{ LMS_DOMAIN }}"
 EDXAPP_LMS_ISSUER: "{{ EDXAPP_LMS_ROOT_URL }}/oauth2"
 
 common_debian_pkgs:
@@ -302,7 +297,7 @@ edxapp_generic_env_config: &generic_env_config
   CELERY_BROKER_TRANSPORT: "amqp"
   CELERY_BROKER_VHOST: '/{{ rabbitmq_vhost}}'
   CERT_QUEUE: "certificates"
-  CMS_BASE: "{{ EDXAPP_CMS_BASE }}"
+  CMS_BASE: "{{ CMS_DOMAIN }}"
   CODE_JAIL:
     limits:
       REALTIME: 3
@@ -324,7 +319,7 @@ edxapp_generic_env_config: &generic_env_config
   FEEDBACK_SUBMISSION_EMAIL: ""
   FILE_UPLOAD_STORAGE_BUCKET_NAME: "{{ AWS_STORAGE_BUCKET_NAME }}"
   FILE_UPLOAD_STORAGE_PREFIX: "{{ UPLOAD_STORAGE_PREFIX }}"
-  LMS_BASE: "{{ LMS_NAME }}"
+  LMS_BASE: "{{ LMS_DOMAIN }}"
   LOCAL_LOGLEVEL: "DEBUG"
   MEDIA_URL: ""
   ORA2_FILE_PREFIX: "{{ env }}-dev/ora2"
@@ -360,7 +355,7 @@ common_feature_flags: &common_feature_flags
   ENABLE_PEARSON_HACK_TEST: false
   ENABLE_RENDER_XBLOCK_API: true
   ENABLE_SPECIAL_EXAMS: true
-  PREVIEW_LMS_BASE: "{{ EDXAPP_PREVIEW_LMS_BASE}}"
+  PREVIEW_LMS_BASE: "{{ PREVIEW_DOMAIN}}"
   REROUTE_ACTIVATION_EMAIL: "{{ REROUTE_ACTIVATION_EMAIL }}"
   SUBDOMAIN_BRANDING: false
   SUBDOMAIN_COURSE_LISTINGS: false
@@ -395,7 +390,7 @@ lms_env_config:
     LICENSING: true
     REMOTE_GRADEBOOK_URL: "{{ REMOTE_GRADEBOOK_URL }}"
     REQUIRE_COURSE_EMAIL_AUTH: false
-  SITE_NAME: "{{ LMS_NAME }}"
+  SITE_NAME: "{{ LMS_DOMAIN }}"
   GIT_REPO_DIR: "{{ GIT_REPO_DIR }}"
   GIT_IMPORT_STATIC: false
   OAUTH_OIDC_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
@@ -415,7 +410,7 @@ cms_env_config:
     ENABLE_SQL_TRACKING_LOGS: true
     SEGMENT_IO: false
     STAFF_EMAIL: "{{ STAFF_EMAIL }}"
-  SITE_NAME: "{{ EDXAPP_CMS_BASE }}"
+  SITE_NAME: "{{ CMS_DOMAIN }}"
   OAUTH_OIDC_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
 
 ################################################################################
