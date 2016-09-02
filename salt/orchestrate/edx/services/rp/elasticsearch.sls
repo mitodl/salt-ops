@@ -25,6 +25,9 @@ generate_elasticsearch_cloud_map_file:
           - {{ salt.boto_secgroup.get_group_id(
             'salt_master-dogwood-rp', vpc_name='Dogwood RP') }}
         subnetids: {{ subnet_ids }}
+        volume_size: 200
+        tags:
+          escluster: dogwood-rp
     - require:
         - file: load_elasticsearch_cloud_profile
 
