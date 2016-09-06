@@ -26,6 +26,14 @@ base:
     - elasticsearch.kibana
     - elasticsearch.kibana.nginx_extra_config
     - datadog.plugins
+  'G@roles:elasticsearch and G@environment:micromasters':
+    - match: compound
+    - elasticsearch
+    - elasticsearch.plugins
+    - nginx.ng
+    - letsencrypt
+    - datadog
+    - datadog.plugins
   'roles:fluentd':
     - match: grain
     - fluentd

@@ -25,6 +25,9 @@ generate_elasticsearch_cloud_map_file:
           - {{ salt.boto_secgroup.get_group_id(
             'salt_master-dogwood_qa', vpc_name='Dogwood QA') }}
         subnetids: {{ subnet_ids }}
+        volume_size: 200
+        tags:
+          escluster: edx-dogwood-rp
     - require:
         - file: load_elasticsearch_cloud_profile
 
@@ -84,7 +87,7 @@ build_dogwood_elasticsearch_nodes:
 
 remove_broken_line_from_elasticsearch_init_script:
   salt.function:
-    - tgt: 'G@roles:elasticsearch and G@environment:dogwood-rp'
+    - tgt: 'G@roles:elasticsearch and G@environment:dogwood-qa'
     - tgt_type: compound
     - name: file.comment_line
     - kwarg:
@@ -93,7 +96,7 @@ remove_broken_line_from_elasticsearch_init_script:
 
 reload_elasticsearch_systemd_unit:
   salt.function:
-    - tgt: 'G@roles:elasticsearch and G@environment:dogwood-rp'
+    - tgt: 'G@roles:elasticsearch and G@environment:dogwood-qa'
     - tgt_type: compound
     - name: cmd.run
     - kwarg:

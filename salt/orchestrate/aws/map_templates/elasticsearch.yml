@@ -8,11 +8,14 @@ elasticsearch:
           SecurityGroupId: {{ securitygroupid }}
       block_device_mappings:
         - DeviceName: /dev/xvda
-          Ebs.VolumeSize: 200
+          Ebs.VolumeSize: {{ volume_size }}
           Ebs.VolumeType: gp2
       tag:
         environment: {{ environment_name }}
         role: elasticsearch
+        {% for tag_name, tag_value in tags.items() %}
+        {{ tag_name }}: {{ tag_value }}
+        {% endfor %}
       grains:
         environment: {{ environment_name }}
         roles: {{ roles }}
