@@ -1,0 +1,16 @@
+edx:
+  - ike-edx-dogwood-rp-live:
+      network_interfaces:
+        - DeviceIndex: 0
+          AssociatePublicIpAddress: True
+          SubnetId: subnet-0187862b
+          SecurityGroupId: ['sg-c46797be', 'sg-a96797d3', 'sg-c1dd21bb']
+      tag:
+        purpose: ike-analytics
+        environment: dogwood-rp
+      grains:
+        environment: dogwood-rp
+        roles:
+          - edx
+          - edx-live
+          - ike-analytics
