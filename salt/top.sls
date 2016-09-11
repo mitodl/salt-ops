@@ -1,7 +1,7 @@
 base:
   '*':
     - utils.install_pip
-  'P@environment:(operations|dogwood-qa|dogwood-rp|rp|partners)':
+  'P@environment:(operations|dogwood-rp|rp|partners)':
     - match: compound
     - datadog
   'roles:master':
@@ -77,3 +77,6 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
+  'roles:xqwatcher':
+    - match: grain
+    - edx.xqwatcher

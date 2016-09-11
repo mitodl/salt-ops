@@ -111,6 +111,10 @@ create_edx_security_group:
           cidr_ip:
             - 10.0.0.0/16
             - 10.5.0.0/16
+        - ip_protocol: tcp
+          from_port: 18040
+          to_port: 18040
+          cidr_ip: 10.5.0.0/16
     - require:
         - boto_vpc: create_dogwood_qa_vpc
     - tags:
