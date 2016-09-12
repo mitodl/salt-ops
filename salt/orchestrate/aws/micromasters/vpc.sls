@@ -55,6 +55,12 @@ create_{{ ENVIRONMENT }}_public_subnet_3:
     - tags:
         Name: public3-{{ VPC_RESOURCE_SUFFIX }}
 
+create_{{ ENVIRONMENT }}_vpc_peering_connection_with_operations:
+  boto_vpc.vpc_peering_connection_present:
+    - conn_name: {{ VPC_RESOURCE_SUFFIX }}-operations-peer
+    - requester_vpc_name: {{ VPC_NAME }}
+    - peer_vpc_name: mitodl-operations-services
+
 create_{{ ENVIRONMENT }}_routing_table:
   boto_vpc.route_table_present:
     - name: {{ VPC_RESOURCE_SUFFIX }}-route_table
@@ -66,11 +72,14 @@ create_{{ ENVIRONMENT }}_routing_table:
     - routes:
         - destination_cidr_block: 0.0.0.0/0
           internet_gateway_name: {{ VPC_RESOURCE_SUFFIX }}-igw
+        - destination_cidr_block: 10.0.0.0/16
+          vpc_peering_connection_name: {{ VPC_RESOURCE_SUFFIX }}-operations-peer
     - require:
         - boto_vpc: create_{{ VPC_NAME }}_vpc
         - boto_vpc: create_{{ VPC_NAME }}_public_subnet_1
         - boto_vpc: create_{{ VPC_NAME }}_public_subnet_2
         - boto_vpc: create_{{ VPC_NAME }}_public_subnet_3
+        - boto_vpc: create_{{ ENVIRONMENT }}_vpc_peering_connection_with_operations
     - tags:
         Name: {{ VPC_RESOURCE_SUFFIX }}-route_table
 

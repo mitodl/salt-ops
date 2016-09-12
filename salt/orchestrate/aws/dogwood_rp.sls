@@ -72,7 +72,7 @@ create_dogwood_private_db_subnet:
         Name: private_db_subnet-dogwood-rp
 
 create_dogwood_rp_vpc_peering_connection_with_operations:
-  boto_vpc.peering_connection_present:
+  boto_vpc.vpc_peering_connection_present:
     - conn_name: dogwood-rp-operations-peer
     - requester_vpc_name: Dogwood RP
     - peer_vpc_name: mitodl-operations-services
