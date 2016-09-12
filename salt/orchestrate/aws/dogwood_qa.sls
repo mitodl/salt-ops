@@ -71,6 +71,12 @@ create_dogwood_private_db_subnet:
     - tags:
         Name: private_db_subnet-dogwood_qa
 
+create_dogwood_qa_vpc_peering_connection_with_operations:
+  boto_vpc.peering_connection_present:
+    - conn_name: dogwood-qa-operations-peer
+    - requester_vpc_name: Dogwood QA
+    - peer_vpc_name: mitodl-operations-services
+
 create_dogwood_qa_routing_table:
   boto_vpc.route_table_present:
     - name: dogwood_qa-route_table
@@ -83,11 +89,14 @@ create_dogwood_qa_routing_table:
     - routes:
         - destination_cidr_block: 0.0.0.0/0
           internet_gateway_name: dogwood_qa-igw
+        - destination_cidr_block: 10.0.0.0/16
+          vpc_peering_connection_name: dogwood-qa-operations-peer
     - require:
         - boto_vpc: create_dogwood_qa_vpc
         - boto_vpc: create_dogwood_qa_public_subnet_1
         - boto_vpc: create_dogwood_qa_public_subnet_2
         - boto_vpc: create_dogwood_qa_public_subnet_3
+        - boto_vpc: create_dogwood_qa_vpc_peering_connection_with_operations
     - tags:
         Name: dogwood_qa-route_table
 
