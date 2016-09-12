@@ -77,6 +77,10 @@ create_dogwood_rp_vpc_peering_connection_with_operations:
     - requester_vpc_name: Dogwood RP
     - peer_vpc_name: mitodl-operations-services
 
+accept_dogwood_rp_vpc_peering_connection_with_operations:
+  boto_vpc.accept_vpc_peering_connection:
+    - conn_name: dogwood-rp-operations-peer
+
 create_dogwood-rp_routing_table:
   boto_vpc.route_table_present:
     - name: dogwood-rp-route_table
