@@ -228,7 +228,7 @@ add_{{ host.name }}_to_known_hosts_for_edxapp:
 update_max_upload_size_for_lms:
   file.replace:
     - name: /etc/nginx/sites-enabled/lms
-    - pattern: 'client_max_body_size\s+\d+.M;'
+    - pattern: 'client_max_body_size\s+\d+M;'
     - repl: 'client_max_body_size {{ salt.pillar.get("edx:edxapp:max_upload_size", "20") }}M;'
     - backup: False
   service.running:
