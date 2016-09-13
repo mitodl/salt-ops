@@ -22,10 +22,10 @@ install_global_pip_executable:
         sudo python get_pip.py
         rm get_pip.py
     - reload_modules: True
-    - unless: test -n `which pip`
+    - unless: which pip
 
 install_python_libraries:
   pip.installed:
     - names: {{ python_dependencies.python_libs }}
     - require:
-        - cmd: install_pip_executable
+        - cmd: install_global_pip_executable
