@@ -336,7 +336,6 @@ edxapp_generic_env_config: &generic_env_config
   WIKI_ENABLED: true
 
 common_feature_flags: &common_feature_flags
-  ACCESS_REQUIRE_STAFF_FOR_COURSE: true
   ALLOW_ALL_ADVANCED_COMPONENTS: true
   AUTH_USE_CAS: true
   AUTH_USE_CERTIFICATES: false
@@ -362,6 +361,8 @@ common_feature_flags: &common_feature_flags
 
 lms_env_config:
   <<: *generic_env_config
+  COURSE_ABOUT_VISIBILITY_PERMISSION: "{{ COURSE_ABOUT_VISIBILITY_PERMISSION }}"
+  COURSE_CATALOG_VISIBILITY_PERMISSION: "{{ COURSE_CATALOG_VISIBILITY_PERMISSION }}"
   COURSES_WITH_UNSAFE_CODE: "{{ COURSES_WITH_UNSAFE_CODE }}"
   BULK_EMAIL_DEFAULT_FROM_EMAIL: "{{ BULK_EMAIL_DEFAULT_FROM_EMAIL }}"
   PLATFORM_NAME: "{{ PLATFORM_NAME }}"
