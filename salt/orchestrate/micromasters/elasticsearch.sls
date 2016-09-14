@@ -50,6 +50,22 @@ deploy_elasticsearch_nodes:
     - require:
         - file: generate_elasticsearch_cloud_map_file
 
+load_pillar_data_on_{{ ENVIRONMENT }}_elasticsearch_nodes:
+  salt.function:
+    - name: saltutil.refresh_pillar
+    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - require:
+        - salt: deploy_elasticsearch_nodes
+
+populate_mine_with_{{ ENVIRONMENT }}_elasticsearch_data:
+  salt.function:
+    - name: mine.update
+    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - require:
+        - salt: load_pillar_data_on_{{ ENVIRONMENT }}_elasticsearch_nodes
+
 build_{{ ENVIRONMENT }}_elasticsearch_nodes:
   salt.state:
     - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
