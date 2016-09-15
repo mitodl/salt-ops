@@ -6,7 +6,7 @@
                               'https://github.com/mitodl/sifters') -%}
 {% set extra_sifter_dir = salt.pillar.get('edx:xsiftx:extra_sifter_dir',
                               '/usr/local/share/xsiftx/sifters') -%}
-{% set cron_jobs = salt.pillar.get('edx:xsiftx:cron_jobs') -%}
+{% set cron_jobs = salt.pillar.get('edx:xsiftx:cron_jobs', []) -%}
 {% set run_web = salt.pillar.get('edx:xsiftx:run_web', false) -%}
 {% set log_dir = salt.pillar.get('edx:xsiftx:log_dir', '/edx/var/log/xsiftx') -%}
 {% set edxapp_venv = salt.pillar.get('edx:xsiftx:edxapp_venv', '/edx/app/edxapp/venvs/edxapp') -%}
@@ -44,7 +44,7 @@ xsiftx_{{ item.name }}_cron:
     - comment: {{ item.name }}
     - hour: {{ item.cron_hour }}
     - minute: {{ item.cron_minute }}
-    - weekday: {{ item.cron_weekday|default('"*"') }}
+    - dayweek: {{ item.cron_weekday|default('"*"') }}
     - user: www-data
     - name: "export PATH=$PATH:/usr/local/bin; xsiftx -v {{ edxapp_venv }} -e {{ edxapp_app }} {{ item.sifter }}"
     - require:
