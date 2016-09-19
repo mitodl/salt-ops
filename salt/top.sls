@@ -31,7 +31,6 @@ base:
     - elasticsearch
     - elasticsearch.plugins
     - nginx.ng
-    - letsencrypt
     - datadog
     - datadog.plugins
   'roles:fluentd':
