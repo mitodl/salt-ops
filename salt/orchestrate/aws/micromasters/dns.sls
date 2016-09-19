@@ -12,7 +12,7 @@
 {% endfor %}
 register_{{ ENVIRONMENT }}-elasticsearch_dns:
   boto_route53.present:
-    - name: es.{{ VPC_RESOURCE_SUFFIX }}.odl.mit.edu
+    - name: {{ VPC_RESOURCE_SUFFIX }}-es.odl.mit.edu
     - value: {{ hosts }}
     - zone: odl.mit.edu.
     - record_type: A
