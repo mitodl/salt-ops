@@ -8,7 +8,7 @@
                                      [{'name': 'github.com',
                                        'fingerprint': '16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48'},
                                       {'name': 'github.mit.edu',
-                                       'fingerprint': '64:a1:32:63:b4:7f:a6:98:c9:20:e2:b8:bc:10:09:57'}]) -%}
+                                       'fingerprint': '03:3b:72:d6:20:6f:3e:1f:5e:2f:38:a2:80:01:f3:22'}]) %}
 {% set playbooks = salt.pillar.get('edx:playbooks',
                                    ['edx-east/common.yml',
                                     'edx-east/forum.yml',

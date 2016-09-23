@@ -17,7 +17,7 @@
                                     'ba53a4b0e0618891535aa9107c3d113227540e39') -%}
 {% set ssh_hosts = salt.pillar.get('edx:ssh_hosts',
    [{'name': 'github.com', 'fingerprint': '16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48'},
-    {'name': 'github.mit.edu', 'fingerprint': '52:6d:53:23:b4:20:93:d1:2e:91:c7:ba:d4:3c:a8:20'}]) %}
+    {'name': 'github.mit.edu', 'fingerprint': '03:3b:72:d6:20:6f:3e:1f:5e:2f:38:a2:80:01:f3:22'}]) %}
 {% set gr_log_dir = salt.pillar.get('edx:gitreload:gr_log_dir',
                                   '/edx/var/log/gr') -%}
 {% set hostname = salt.pillar.get('edx:gitreload:hostname') -%}
