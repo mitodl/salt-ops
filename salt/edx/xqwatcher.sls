@@ -36,6 +36,7 @@ clone_edx_configuration:
     - force_checkout: True
     - force_clone: True
     - force_reset: True
+    - force_fetch: True
     - require:
       - file: clone_edx_configuration
 
