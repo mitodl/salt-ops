@@ -25,6 +25,7 @@ base:
     - elasticsearch.plugins
     - elasticsearch.kibana
     - elasticsearch.kibana.nginx_extra_config
+    - elasticsearch.elastalert
     - datadog.plugins
   'G@roles:elasticsearch and G@environment:micromasters':
     - match: compound
