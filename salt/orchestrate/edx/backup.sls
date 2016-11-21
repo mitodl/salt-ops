@@ -18,8 +18,9 @@ ensure_backup_bucket_exists:
 ensure_instance_profile_exists_for_backups:
   boto_iam_role.present:
     - name: backups-instance-role
+    - delete_policies: False
     - policies:
-        BackupS3Policy:
+        operations-backups-policy:
           Statement:
             - Action:
                 - s3:*
@@ -27,6 +28,11 @@ ensure_instance_profile_exists_for_backups:
               Resource:
                 - arn:aws:s3::odl-operations-backups
                 - arn:aws:s3::odl-operations-backups/*
+
+load_backup_host_cloud_profile:
+  file.managed:
+    - name: /etc/salt/cloud.profiles.d/backup_host.conf
+    - source: salt://orchestrate/aws/cloud_profiles/backup_host.conf
 
 deploy_backup_instance_to_{{ ENVIRONMENT }}:
   salt.function:
