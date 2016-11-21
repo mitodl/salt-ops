@@ -7,7 +7,7 @@ mkdir -p {{ backupdir }}
                    --port {{ settings.get('port', 27017) }} \
                    --username admin --password {{ settings.password }} \
                    --authenticationDatabase admin \
-                   {{ backupdir }}
+                   --out {{ backupdir }}
 
 PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
           --s3-use-server-side-encryption {{ backupdir }} \

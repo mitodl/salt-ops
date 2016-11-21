@@ -26,8 +26,10 @@ ensure_instance_profile_exists_for_backups:
                 - s3:*
               Effect: Allow
               Resource:
-                - arn:aws:s3::odl-operations-backups
-                - arn:aws:s3::odl-operations-backups/*
+                - arn:aws:s3:::odl-operations-backups
+                - arn:aws:s3:::odl-operations-backups/*
+    - require:
+        - boto_s3_bucket: ensure_backup_bucket_exists
 
 load_backup_host_cloud_profile:
   file.managed:
@@ -36,26 +38,28 @@ load_backup_host_cloud_profile:
 
 deploy_backup_instance_to_{{ ENVIRONMENT }}:
   salt.function:
-    - name: saltutil.runner
+    - name: cloud.profile
     - tgt: 'roles:master'
     - tgt_type: grain
     - arg:
-        - cloud.profile
+        - backup_host
+        - backup-{{ ENVIRONMENT }}
     - kwarg:
-        prof: backup_host
-        instances:
-          - backup-{{ ENVIRONMENT }}
-        grains:
-          environment: {{ ENVIRONMENT }}
-        network_interfaces:
-          - DeviceIndex: 0
-            AssociatePublicIpAddress: True
-            SubnetId: {{ subnet_ids[0] }}
-            SecurityGroupId:
-              - {{ salt.boto_secgroup.get_group_id(
-                   'salt_master-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
-              - {{ salt.boto_secgroup.get_group_id(
-                   'edx-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
+        vm_overrides:
+          grains:
+            environment: {{ ENVIRONMENT }}
+          network_interfaces:
+            - DeviceIndex: 0
+              AssociatePublicIpAddress: True
+              SubnetId: {{ subnet_ids[0] }}
+              SecurityGroupId:
+                - {{ salt.boto_secgroup.get_group_id(
+                     'salt_master-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
+                - {{ salt.boto_secgroup.get_group_id(
+                     'edx-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
+    - require:
+        - file: load_backup_host_cloud_profile
+        - boto_iam_role: ensure_instance_profile_exists_for_backups
 
 execute_enabled_backup_scripts:
   salt.state:
@@ -63,6 +67,8 @@ execute_enabled_backup_scripts:
     - tgt_type: compound
     - sls:
         backups
+    - require:
+        - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
 
 terminate_backup_instance_in_{{ ENVIRONMENT }}:
   salt.function:
@@ -74,3 +80,5 @@ terminate_backup_instance_in_{{ ENVIRONMENT }}:
     - kwarg:
         instances:
           - backup-{{ ENVIRONMENT }}
+    - require:
+        - salt: execute_enabled_backup_scripts
