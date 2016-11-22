@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 {% set backupdir = '/backups/{}'.format(settings.get('directory', 'mysql')) %}
 mkdir -p {{ backupdir }}
@@ -14,4 +15,5 @@ mkdir -p {{ backupdir }}
 
 PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
           --s3-use-server-side-encryption {{ backupdir }} \
+          --allow-source-mismatch \
           s3+http://odl-operations-backups/{{ settings.get('directory', 'mysql') }}/

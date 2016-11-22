@@ -80,3 +80,6 @@ base:
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
+  'roles:backups':
+    - match: grain
+    - backups

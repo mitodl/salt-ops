@@ -66,7 +66,9 @@ execute_enabled_backup_scripts:
     - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - sls:
-        backups
+        - consul
+        - consul.dns_proxy
+        - backups
     - require:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
 
@@ -81,4 +83,16 @@ terminate_backup_instance_in_{{ ENVIRONMENT }}:
         instances:
           - backup-{{ ENVIRONMENT }}
     - require:
+        - salt: execute_enabled_backup_scripts
+
+alert_devops_channel_on_failure:
+  hipchat.send_message:
+    - room_id: DevOps
+    - from_name: Salt Master
+    - message: '@channel The scheduled backup for edX RP has failed.'
+    - color: red
+    - notify: True
+    - api_key: {{ salt.pillar.get('hipchat_api_token') }}
+    - api_version: v1
+    - onfail:
         - salt: execute_enabled_backup_scripts
