@@ -61,6 +61,19 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
         - file: load_backup_host_cloud_profile
         - boto_iam_role: ensure_instance_profile_exists_for_backups
 
+configure_backup_drive:
+  blockdev.formatted:
+    - name: /dev/xvdb
+    - fs_type: ext4
+  mount.mounted:
+    - name: /backups
+    - device: /dev/xvdb
+    - fstype: ext4
+    - mkmnt: True
+    - opts: 'relatime,user'
+    - require:
+        - blockdev: configure_backup_drive
+
 execute_enabled_backup_scripts:
   salt.state:
     - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
@@ -71,6 +84,7 @@ execute_enabled_backup_scripts:
         - backups
     - require:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
+        - mount: configure_backup_drive
 
 terminate_backup_instance_in_{{ ENVIRONMENT }}:
   salt.function:
