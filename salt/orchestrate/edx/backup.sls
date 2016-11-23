@@ -1,5 +1,5 @@
-{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT') %}
-{% set VPC_NAME = salt.environ.get('VPC_NAME', 'Dogwood QA') %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'dogwood-rp') %}
+{% set VPC_NAME = salt.environ.get('VPC_NAME', 'Dogwood RP') %}
 {% set VPC_RESOURCE_SUFFIX = salt.environ.get('VPC_RESOURCE_SUFFIX',
                                               VPC_NAME.lower() | replace(' ', '-')) %}
 {% set subnet_ids = [] %}
@@ -104,7 +104,6 @@ alert_devops_channel_on_failure:
     - room_id: DevOps
     - from_name: Salt Master
     - message: '@channel The scheduled backup for edX RP has failed.'
-    - color: red
     - notify: True
     - api_key: {{ salt.pillar.get('hipchat_api_token') }}
     - api_version: v1
