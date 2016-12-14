@@ -1,7 +1,7 @@
 base:
   '*':
     - utils.install_pip
-  'P@environment:(operations|dogwood-rp|rp|partners)':
+  'P@environment:(operations|mitx-rp|rp|partners)':
     - match: compound
     - datadog
   'roles:master':
@@ -42,7 +42,7 @@ base:
   'G@roles:edx_sandbox and G@sandbox_status:ami-provision':
     - match: compound
     - edx.sandbox_ami
-  'G@roles:mongodb and P@environment:(dogwood-qa|dogwood-rp)':
+  'G@roles:mongodb and P@environment:(mitx-qa|mitx-rp)':
     - match: compound
     - mongodb
     - mongodb.consul_check
@@ -51,7 +51,7 @@ base:
     - match: grain
     - fluentd.reverse_proxy
     - datadog.plugins
-  'P@environment:(operations|dogwood-qa|dogwood-rp)':
+  'P@environment:(operations|mitx-qa|mitx-rp)':
     - match: compound
     - consul
     - consul.dns_proxy
@@ -64,13 +64,13 @@ base:
     - match: compound
     - vault
     - vault.tests
-  'G@roles:rabbitmq and P@environment:(dogwood-qa|dogwood-rp)':
+  'G@roles:rabbitmq and P@environment:(mitx-qa|mitx-rp)':
     - match: compound
     - rabbitmq
     - rabbitmq.autocluster
     - rabbitmq.tests
     - datadog.plugins
-  'G@roles:edx and P@environment:(dogwood-qa|dogwood-rp)':
+  'G@roles:edx and P@environment:(mitx-qa|mitx-rp)':
     - match: compound
     - edx.gitreload
     - edx.prod

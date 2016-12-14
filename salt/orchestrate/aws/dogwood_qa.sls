@@ -7,9 +7,9 @@ ensure_instance_profile_exists_for_{{ profile }}:
     - name: {{ profile }}-instance-role
 {% endfor %}
 
-{% set VPC_NAME = 'Dogwood QA' %}
+{% set VPC_NAME = 'MITx QA' %}
 
-create_dogwood_qa_vpc:
+create_mitx_qa_vpc:
   boto_vpc.present:
     - name: {{ VPC_NAME }}
     - cidr_block: 10.5.0.0/16
@@ -19,94 +19,94 @@ create_dogwood_qa_vpc:
     - tags:
         Name: {{ VPC_NAME }}
 
-create_dogwood_qa_internet_gateway:
+create_mitx_qa_internet_gateway:
   boto_vpc.internet_gateway_present:
-    - name: dogwood_qa-igw
+    - name: mitx-qa-igw
     - vpc_name: {{ VPC_NAME }}
     - require:
-        - boto_vpc: create_dogwood_qa_vpc
+        - boto_vpc: create_mitx_qa_vpc
     - tags:
-        Name: dogwood_qa-igw
+        Name: mitx-qa-igw
 
-create_dogwood_qa_public_subnet_1:
+create_mitx_qa_public_subnet_1:
   boto_vpc.subnet_present:
-    - name: public1-dogwood_qa
+    - name: public1-mitx-qa
     - vpc_name: {{ VPC_NAME }}
     - cidr_block: 10.5.1.0/24
     - availability_zone: us-east-1d
     - require:
-        - boto_vpc: create_dogwood_qa_vpc
+        - boto_vpc: create_mitx_qa_vpc
     - tags:
-        Name: public1-dogwood_qa
+        Name: public1-mitx-qa
 
-create_dogwood_qa_public_subnet_2:
+create_mitx_qa_public_subnet_2:
   boto_vpc.subnet_present:
-    - name: public2-dogwood_qa
+    - name: public2-mitx-qa
     - vpc_name: {{ VPC_NAME }}
     - cidr_block: 10.5.2.0/24
     - availability_zone: us-east-1b
     - require:
-        - boto_vpc: create_dogwood_qa_vpc
+        - boto_vpc: create_mitx_qa_vpc
     - tags:
-        Name: public2-dogwood_qa
+        Name: public2-mitx-qa
 
-create_dogwood_qa_public_subnet_3:
+create_mitx_qa_public_subnet_3:
   boto_vpc.subnet_present:
-    - name: public3-dogwood_qa
+    - name: public3-mitx-qa
     - vpc_name: {{ VPC_NAME }}
     - cidr_block: 10.5.3.0/24
     - availability_zone: us-east-1c
     - require:
-        - boto_vpc: create_dogwood_qa_vpc
+        - boto_vpc: create_mitx_qa_vpc
     - tags:
-        Name: public3-dogwood_qa
+        Name: public3-mitx-qa
 
-create_dogwood_private_db_subnet:
+create_mitx_private_db_subnet:
   boto_vpc.subnet_present:
-    - name: private_db_subnet-dogwood_qa
+    - name: private_db_subnet-mitx-qa
     - vpc_name: {{ VPC_NAME }}
     - cidr_block: 10.5.5.0/24
     - require:
-        - boto_vpc: create_dogwood_qa_vpc
+        - boto_vpc: create_mitx_qa_vpc
     - tags:
-        Name: private_db_subnet-dogwood_qa
+        Name: private_db_subnet-mitx-qa
 
-create_dogwood_qa_vpc_peering_connection_with_operations:
+create_mitx_qa_vpc_peering_connection_with_operations:
   boto_vpc.vpc_peering_connection_present:
-    - conn_name: dogwood-qa-operations-peer
-    - requester_vpc_name: Dogwood QA
+    - conn_name: mitx-qa-operations-peer
+    - requester_vpc_name: {{ VPC_NAME }}
     - peer_vpc_name: mitodl-operations-services
 
-accept_dogwood_qa_vpc_peering_connection_with_operations:
+accept_mitx_qa_vpc_peering_connection_with_operations:
   boto_vpc.accept_vpc_peering_connection:
-    - conn_name: dogwood-qa-operations-peer
+    - conn_name: mitx-qa-operations-peer
 
-create_dogwood_qa_routing_table:
+create_mitx_qa_routing_table:
   boto_vpc.route_table_present:
-    - name: dogwood_qa-route_table
+    - name: mitx-qa-route_table
     - vpc_name: {{ VPC_NAME }}
     - subnet_names:
-        - public1-dogwood_qa
-        - public2-dogwood_qa
-        - public3-dogwood_qa
-        - private_db_subnet-dogwood_qa
+        - public1-mitx-qa
+        - public2-mitx-qa
+        - public3-mitx-qa
+        - private_db_subnet-mitx-qa
     - routes:
         - destination_cidr_block: 0.0.0.0/0
-          internet_gateway_name: dogwood_qa-igw
+          internet_gateway_name: mitx-qa-igw
         - destination_cidr_block: 10.0.0.0/16
-          vpc_peering_connection_name: dogwood-qa-operations-peer
+          vpc_peering_connection_name: mitx-qa-operations-peer
     - require:
-        - boto_vpc: create_dogwood_qa_vpc
-        - boto_vpc: create_dogwood_qa_public_subnet_1
-        - boto_vpc: create_dogwood_qa_public_subnet_2
-        - boto_vpc: create_dogwood_qa_public_subnet_3
-        - boto_vpc: create_dogwood_qa_vpc_peering_connection_with_operations
+        - boto_vpc: create_mitx_qa_vpc
+        - boto_vpc: create_mitx_qa_public_subnet_1
+        - boto_vpc: create_mitx_qa_public_subnet_2
+        - boto_vpc: create_mitx_qa_public_subnet_3
+        - boto_vpc: create_mitx_qa_vpc_peering_connection_with_operations
     - tags:
-        Name: dogwood_qa-route_table
+        Name: mitx-qa-route_table
 
 create_edx_security_group:
   boto_secgroup.present:
-    - name: edx-dogwood_qa
+    - name: edx-mitx-qa
     - description: Access rules for EdX instances
     - vpc_name: {{ VPC_NAME }}
     - rules:
@@ -129,13 +129,13 @@ create_edx_security_group:
           to_port: 18040
           cidr_ip: 10.5.0.0/16
     - require:
-        - boto_vpc: create_dogwood_qa_vpc
+        - boto_vpc: create_mitx_qa_vpc
     - tags:
-        Name: edx-dogwood_qa
+        Name: edx-mitx-qa
 
 create_mongodb_security_group:
   boto_secgroup.present:
-    - name: mongodb-dogwood_qa
+    - name: mongodb-mitx-qa
     - description: Grant access to Mongo from EdX instances
     - vpc_name: {{ VPC_NAME }}
     - rules:
@@ -143,8 +143,8 @@ create_mongodb_security_group:
           from_port: 27017
           to_port: 27017
           source_group_name:
-            - edx-dogwood_qa
-            - mongodb-dogwood_qa
+            - edx-mitx-qa
+            - mongodb-mitx-qa
         - ip_protocol: tcp
           from_port: 22
           to_port: 22
@@ -152,14 +152,14 @@ create_mongodb_security_group:
             - 10.0.0.0/16
             - 10.5.0.0/16
     - require:
-        - boto_vpc: create_dogwood_qa_vpc
+        - boto_vpc: create_mitx_qa_vpc
         - boto_secgroup: create_edx_security_group
     - tags:
-        Name: mongodb-dogwood_qa
+        Name: mongodb-mitx-qa
 
-create_dogwood_consul_security_group:
+create_mitx_consul_security_group:
   boto_secgroup.present:
-    - name: consul-dogwood_qa
+    - name: consul-mitx-qa
     - description: Access rules for Consul cluster in {{ VPC_NAME }} stack
     - vpc_name: {{ VPC_NAME }}
     - rules:
@@ -207,77 +207,77 @@ create_dogwood_consul_security_group:
             - 10.5.0.0/16
           {# WAN cluster interface #}
     - require:
-        - boto_vpc: create_dogwood_qa_vpc
+        - boto_vpc: create_mitx_qa_vpc
     - tags:
-        Name: consul-dogwood_qa
+        Name: consul-mitx-qa
 
 create_rabbitmq_security_group:
   boto_secgroup.present:
-    - name: rabbitmq-dogwood_qa
+    - name: rabbitmq-mitx-qa
     - vpc_name: {{ VPC_NAME }}
     - description: ACL for RabbitMQ servers
     - rules:
         - ip_protocol: tcp
           from_port: 5672
           to_port: 5672
-          source_group_name: edx-dogwood_qa
+          source_group_name: edx-mitx-qa
         - ip_protocol: tcp
           from_port: 4369
           to_port: 4369
-          source_group_name: rabbitmq-dogwood_qa
+          source_group_name: rabbitmq-mitx-qa
         - ip_protocol: tcp
           from_port: 25672
           to_port: 25672
-          source_group_name: rabbitmq-dogwood_qa
+          source_group_name: rabbitmq-mitx-qa
     - require:
-        - boto_vpc: create_dogwood_qa_vpc
+        - boto_vpc: create_mitx_qa_vpc
         - boto_secgroup: create_edx_security_group
     - tags:
-        Name: rabbitmq-dogwood_qa
+        Name: rabbitmq-mitx-qa
 
 create_elasticsearch_security_group:
   boto_secgroup.present:
-    - name: elasticsearch-dogwood_qa
+    - name: elasticsearch-mitx-qa
     - vpc_name: {{ VPC_NAME }}
     - description: ACL for elasticsearch servers
     - rules:
         - ip_protocol: tcp
           from_port: 9200
           to_port: 9200
-          source_group_name: edx-dogwood_qa
+          source_group_name: edx-mitx-qa
         - ip_protocol: tcp
           from_port: 9300
           to_port: 9400
-          source_group_name: elasticsearch-dogwood_qa
+          source_group_name: elasticsearch-mitx-qa
     - require:
-        - boto_vpc: create_dogwood_qa_vpc
+        - boto_vpc: create_mitx_qa_vpc
         - boto_secgroup: create_edx_security_group
     - tags:
-        Name: elasticsearch-dogwood_qa
+        Name: elasticsearch-mitx-qa
 
 create_rds_security_group:
   boto_secgroup.present:
-    - name: rds-dogwood_qa
+    - name: rds-mitx-qa
     - vpc_name: {{ VPC_NAME }}
     - description: ACL for RDS access
     - rules:
         - ip_protocol: tcp
           from_port: 3306
           to_port: 3306
-          source_group_name: edx-dogwood_qa
+          source_group_name: edx-mitx-qa
     - require:
-        - boto_vpc: create_dogwood_qa_vpc
+        - boto_vpc: create_mitx_qa_vpc
         - boto_secgroup: create_edx_security_group
     - tags:
-        Name: rds-dogwood_qa
+        Name: rds-mitx-qa
 
 create_salt_master_security_group:
   boto_secgroup.present:
-    - name: salt_master-dogwood_qa
+    - name: salt_master-mitx-qa
     - vpc_name: {{ VPC_NAME }}
     - description: ACL for allowing access to hosts from Salt Master
     - tags:
-        Name: salt_master-dogwood_qa
+        Name: salt_master-mitx-qa
     - rules:
         - ip_protocol: tcp
           from_port: 22
@@ -285,4 +285,4 @@ create_salt_master_security_group:
           cidr_ip:
             - 10.0.0.0/16
     - require:
-        - boto_vpc: create_dogwood_qa_vpc
+        - boto_vpc: create_mitx_qa_vpc
