@@ -21,8 +21,6 @@ base:
     - datadog.plugins
   'roles:kibana':
     - match: grain
-    - elasticsearch
-    - elasticsearch.plugins
     - elasticsearch.kibana
     - elasticsearch.kibana.nginx_extra_config
     - elasticsearch.elastalert
