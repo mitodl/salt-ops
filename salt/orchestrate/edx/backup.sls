@@ -116,12 +116,10 @@ terminate_backup_instance_in_{{ ENVIRONMENT }}:
         - salt: execute_enabled_backup_scripts
 
 alert_devops_channel_on_failure:
-  hipchat.send_message:
-    - room_id: DevOps
-    - from_name: Salt Master
-    - message: '@channel The scheduled backup for edX RP has failed.'
-    - notify: True
-    - api_key: {{ salt.pillar.get('hipchat_api_token') }}
-    - api_version: v1
+  slack.post_message:
+    - channel: '#devops'
+    - from_name: saltbot
+    - message: 'The scheduled backup for edX RP has failed.'
+    - api_key: {{ salt.pillar.get('slack_api_token') }}
     - onfail:
         - salt: execute_enabled_backup_scripts
