@@ -43,8 +43,8 @@ create_ansible_virtualenv:
 place_ansible_environment_configuration:
   file.managed:
     - name: {{ conf_file }}
-    - source: salt://edx/templates/ansible_env_config.yml.j2
-    - template: jinja
+    - contents: |
+        {{ salt.pillar.get('edx:ansible_vars')|yaml(False)|indent(8) }}
     - makedirs: True
 
 {# Creating the edxapp user here so that it is present for setting appropriate
