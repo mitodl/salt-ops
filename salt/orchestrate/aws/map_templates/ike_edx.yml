@@ -1,5 +1,5 @@
 edx:
-  - ike-edx-dogwood-rp-live:
+  - ike-edx-mitx-rp-live:
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
@@ -7,9 +7,9 @@ edx:
           SecurityGroupId: ['sg-c46797be', 'sg-a96797d3', 'sg-c1dd21bb']
       tag:
         purpose: ike-analytics
-        environment: dogwood-rp
+        environment: mitx-rp
       grains:
-        environment: dogwood-rp
+        environment: mitx-rp
         roles:
           - edx
           - edx-live

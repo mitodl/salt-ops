@@ -1,14 +1,14 @@
 {% set type_counts = {'draft': 2, 'live': 3} %}
-{% set environment = 'dogwood-qa' %}
-{% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-dogwood_qa']) %}
+{% set environment = 'mitx-qa' %}
+{% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-mitx-qa']) %}
 {% set subnet_ids = [] %}
 {% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
-    'public1-dogwood_qa', 'public2-dogwood_qa', 'public3-dogwood_qa'])['subnets'] %}
+    'public1-mitx-qa', 'public2-mitx-qa', 'public3-mitx-qa'])['subnets'] %}
 {% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
 
 {% for edx_type in ['draft', 'live'] %}
-{% set elb_name = 'edx-{0}-dogwood-qa'.format(edx_type) %}
+{% set elb_name = 'edx-{0}-mitx-qa'.format(edx_type) %}
 create_elb_for_edx_{{ edx_type }}:
   boto_elb.present:
     - name: {{ elb_name }}
@@ -33,13 +33,13 @@ create_elb_for_edx_{{ edx_type }}:
           enabled: True
           timeout: 300
     - cnames:
-        - name: dogwood-qa-{{ edx_type }}.mitx.mit.edu.
+        - name: mitx-qa-{{ edx_type }}.mitx.mit.edu.
           zone: mitx.mit.edu.
           ttl: 60
-        - name: preview-dogwood-qa-{{ edx_type }}.mitx.mit.edu.
+        - name: preview-mitx-qa-{{ edx_type }}.mitx.mit.edu.
           zone: mitx.mit.edu.
           ttl: 60
-        - name: studio-dogwood-qa-{{ edx_type }}.mitx.mit.edu.
+        - name: studio-mitx-qa-{{ edx_type }}.mitx.mit.edu.
           zone: mitx.mit.edu.
           ttl: 60
         - name: {% if edx_type == 'live' %}prod-{% endif %}gr-qa.mitx.mit.edu.
@@ -56,7 +56,7 @@ create_elb_for_edx_{{ edx_type }}:
 
 register_edx_{{ edx_type }}_nodes_with_elb:
   boto_elb.register_instances:
-    - name: edx-{{ edx_type }}-dogwood-qa
+    - name: edx-{{ edx_type }}-mitx-qa
     - instances:
         {% for instance_num in range(type_counts[edx_type]) %}
         - {{ salt.boto_ec2.get_id('edx-{env}-{t}-{num}'.format(

@@ -1,6 +1,6 @@
 generate_ike_analytics_map_file:
     file.managed:
-    - name: /etc/salt/cloud.maps.d/dogwood_rp_ike_analytics_map.yml
+    - name: /etc/salt/cloud.maps.d/mitx_rp_ike_analytics_map.yml
     - source: salt://orchestrate/aws/map_templates/ike_edx.yml
     - makedirs: True
 
@@ -12,7 +12,7 @@ deploy_ike_analytics_cloud_map:
     - arg:
         - cloud.map_run
     - kwarg:
-        path: /etc/salt/cloud.maps.d/dogwood_rp_ike_analytics_map.yml
+        path: /etc/salt/cloud.maps.d/mitx_rp_ike_analytics_map.yml
         parallel: True
     - require:
         - file: generate_ike_analytics_map_file
@@ -20,7 +20,7 @@ deploy_ike_analytics_cloud_map:
 {# Deploy Consul agent first so that the edx deployment can use provided DNS endpoints #}
 deploy_consul_agent_to_analytics_node:
   salt.state:
-    - tgt: 'G@roles:ike-analytics and G@environment:dogwood-rp'
+    - tgt: 'G@roles:ike-analytics and G@environment:mitx-rp'
     - tgt_type: compound
     - sls:
         - consul
@@ -28,7 +28,7 @@ deploy_consul_agent_to_analytics_node:
 
 build_analytics_node:
   salt.state:
-    - tgt: 'G@roles:ike-analytics and G@environment:dogwood-rp'
+    - tgt: 'G@roles:ike-analytics and G@environment:mitx-rp'
     - tgt_type: compound
     - highstate: True
     - require:
@@ -36,7 +36,7 @@ build_analytics_node:
 
 create_user_account:
   salt.function:
-    - tgt: 'G@roles:ike-analytics and G@environment:dogwood-rp'
+    - tgt: 'G@roles:ike-analytics and G@environment:mitx-rp'
     - tgt_type: compound
     - name: user.add
     - kwarg:
@@ -55,7 +55,7 @@ create_user_account:
 {% set enc, key, comment = pubkey.split() %}
 add_{{ comment }}_public_key_to_user:
   salt.function:
-    - tgt: 'G@roles:ike-analytics and G@environment:dogwood-rp'
+    - tgt: 'G@roles:ike-analytics and G@environment:mitx-rp'
     - tgt_type: compound
     - name: ssh.set_auth_key
     - kwarg:

@@ -1,6 +1,6 @@
 {% set subnet_ids = [] %}
 {% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
-    'public1-dogwood_qa', 'public2-dogwood_qa', 'public3-dogwood_qa'])['subnets'] %}
+    'public1-mitx-qa', 'public2-mitx-qa', 'public3-mitx-qa'])['subnets'] %}
 {% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
 
@@ -11,20 +11,20 @@ load_edx_cloud_profile:
 
 generate_edx_cloud_map_file:
   file.managed:
-    - name: /etc/salt/cloud.maps.d/dogwood_qa_edx_map.yml
+    - name: /etc/salt/cloud.maps.d/mitx_qa_edx_map.yml
     - source: salt://orchestrate/aws/map_templates/edx.yml
     - template: jinja
     - makedirs: True
     - context:
-        environment_name: dogwood-qa
+        environment_name: mitx-qa
         roles:
           - edx
           - log-forwarder
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
-              'edx-dogwood_qa', vpc_name='Dogwood QA') }}
+              'edx-mitx-qa', vpc_name='MITx QA') }}
           - {{ salt.boto_secgroup.get_group_id(
-            'salt_master-dogwood_qa', vpc_name='Dogwood QA') }}
+            'salt_master-mitx-qa', vpc_name='MITx QA') }}
         subnetids: {{ subnet_ids }}
         app_types:
           draft: 4
@@ -44,7 +44,7 @@ deploy_edx_cloud_map:
     - arg:
         - cloud.map_run
     - kwarg:
-        path: /etc/salt/cloud.maps.d/dogwood_qa_edx_map.yml
+        path: /etc/salt/cloud.maps.d/mitx_qa_edx_map.yml
         parallel: True
     - require:
         - file: generate_edx_cloud_map_file
@@ -52,7 +52,7 @@ deploy_edx_cloud_map:
 load_pillar_data_on_edx_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'G@roles:edx and G@environment:dogwood-qa'
+    - tgt: 'G@roles:edx and G@environment:mitx-qa'
     - tgt_type: compound
     - require:
         - salt: deploy_edx_cloud_map
@@ -60,7 +60,7 @@ load_pillar_data_on_edx_nodes:
 populate_mine_with_edx_node_data:
   salt.function:
     - name: mine.update
-    - tgt: 'G@roles:edx and G@environment:dogwood-qa'
+    - tgt: 'G@roles:edx and G@environment:mitx-qa'
     - tgt_type: compound
     - require:
         - salt: load_pillar_data_on_edx_nodes
@@ -69,7 +69,7 @@ populate_mine_with_edx_node_data:
 reload_pillar_data_on_edx_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'G@roles:edx and G@environment:dogwood-qa'
+    - tgt: 'G@roles:edx and G@environment:mitx-qa'
     - tgt_type: compound
     - require:
         - salt: populate_mine_with_edx_node_data
@@ -77,7 +77,7 @@ reload_pillar_data_on_edx_nodes:
 {# Deploy Consul agent first so that the edx deployment can use provided DNS endpoints #}
 deploy_consul_agent_to_edx_nodes:
   salt.state:
-    - tgt: 'G@roles:edx and G@environment:dogwood-qa'
+    - tgt: 'G@roles:edx and G@environment:mitx-qa'
     - tgt_type: compound
     - sls:
         - consul
@@ -85,7 +85,7 @@ deploy_consul_agent_to_edx_nodes:
 
 build_edx_nodes:
   salt.state:
-    - tgt: 'G@roles:edx and G@environment:dogwood-qa'
+    - tgt: 'G@roles:edx and G@environment:mitx-qa'
     - tgt_type: compound
     - highstate: True
     - require:
