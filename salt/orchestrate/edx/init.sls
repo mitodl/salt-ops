@@ -27,8 +27,8 @@ generate_edx_cloud_map_file:
             'salt_master-mitx-qa', vpc_name='MITx QA') }}
         subnetids: {{ subnet_ids }}
         app_types:
-          draft: 4
-          live: 6
+          draft: 2
+          live: 2
     - require:
         - file: load_edx_cloud_profile
 

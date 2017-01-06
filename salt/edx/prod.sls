@@ -9,18 +9,15 @@
                                        'fingerprint': '16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48'},
                                       {'name': 'github.mit.edu',
                                        'fingerprint': '03:3b:72:d6:20:6f:3e:1f:5e:2f:38:a2:80:01:f3:22'}]) %}
-{% set playbooks = salt.pillar.get('edx:playbooks',
-                                   ['edx-east/common.yml',
-                                    'edx-east/forum.yml',
-                                    'edx-east/xqueue.yml',
-                                    'edx-east/xqwatcher.yml',
-                                    'edx-east/edxapp.yml',
-                                    'edx-east/worker.yml']) -%}
-{% set theme_repo = salt.pillar.get('edx:edxapp:custom_theme:repo', 'https://github.com/mitocw/edx-theme') -%}
+{% set theme_repo = salt.pillar.get('edx:edxapp:custom_theme:repo', 'https://github.com/mitodl/mitx-theme') -%}
 {% set theme_name = salt.pillar.get('edx:edxapp:THEME_NAME', None) -%}
 {% set theme_branch = salt.pillar.get('edx:edxapp:custom_theme:branch', 'mitx') -%}
 {% set theme_dir = salt.pillar.get('edx:edxapp:EDXAPP_COMPREHENSIVE_THEME_DIR', '/edx/app/edxapp/themes') -%}
 
+include:
+  - .run_ansible
+
+{% if salt.grains.get('osfinger'} == 'Ubuntu-12.04' %}
 configure_git_ppa_for_edx:
   pkgrepo.managed:
     - ppa: git-core/ppa
@@ -47,59 +44,9 @@ install_os_packages:
         - postfix
     - refresh: True
     - refresh_modules: True
-
-clone_edx_configuration:
-  file.directory:
-    - name: {{ repo_path }}
-    - makedirs: True
-  git.latest:
-    - name: {{ salt.pillar.get('edx:config:repo', 'https://github.com/edx/configuration.git') }}
-    - rev: {{ salt.pillar.get('edx:config:branch', 'named-release/dogwood.3') }}
-    - target: {{ repo_path }}
-    - user: root
-    - force_checkout: True
-    - force_clone: True
-    - force_reset: True
-    - require:
-      - file: clone_edx_configuration
-
-mark_ansible_as_editable:
-  file.replace:
-    - name: {{ repo_path }}/requirements.txt
-    - pattern: |
-        ^git\+https://github\.com/edx/ansible.*
-    - repl: |
-        -e git+https://github.com/edx/ansible.git@stable-1.9.3-rc1-edx#egg=ansible==1.9.3-edx
-    - require:
-      - git: clone_edx_configuration
-
-replace_nginx_static_asset_template_fragment:
-  file.managed:
-    - name: {{ repo_path }}/playbooks/roles/nginx/templates/edx/app/nginx/sites-available/static-files.j2
-    - source: salt://edx/files/nginx_static_assets.j2
-    - require:
-        - git: clone_edx_configuration
-
-create_ansible_virtualenv:
-  # Note: We need to use a virtualenv over here because the Salt minion bootstrap
-  #       installs some OS `python-` packages that are also pulled in by the edX
-  #       config requirements for Ansible (e.g. python-jinja). This causes python
-  #       package metadata issues, resulting in Ansible not being able to import
-  #       dependencies at runtime.
-  virtualenv.managed:
-    - name: {{ venv_path }}
-    - requirements: {{ repo_path }}/requirements.txt
-    - require:
-      - git: clone_edx_configuration
-      - pkg: install_os_packages
-      - file: replace_nginx_static_asset_template_fragment
-
-place_ansible_environment_configuration:
-  file.managed:
-    - name: {{ conf_file }}
-    - source: salt://edx/templates/ansible_env_config.yml.j2
-    - template: jinja
-    - makedirs: True
+    - require_in:
+        - virtualenv: create_ansible_virtualenv
+{% endif %}
 
 {% if salt.pillar.get('edx:generate_tls_certificate') %}
 generate_self_signed_certificate:
@@ -139,15 +86,6 @@ mount_efs_filesystem_for_course_assets:
     - persist: True
     - mount: True
 
-{# Creating the edxapp user here so that it is present for setting appropriate
-   file and directory ownership #}
-create_edxapp_user:
-  user.present:
-    - name: edxapp
-    - home: /edx/app/edxapp
-    - createhome: False
-    - shell: /bin/false
-
 {% if theme_name %}
 install_edxapp_theme:
   file.directory:
@@ -169,26 +107,6 @@ install_edxapp_theme:
     - require_in:
       - cmd: run_ansible
 {% endif %}
-
-remove_course_asset_symlink_before_ansible_run:
-  file.absent:
-    - name: /edx/var/edxapp/course_static
-
-run_ansible:
-  cmd.script:
-    - name: {{ data_path }}/run_ansible.sh
-    - source: salt://edx/templates/run_ansible.sh.j2
-    - template: jinja
-    - cwd: {{ repo_path }}/playbooks
-    - context:
-        data_path: {{ data_path }}
-        venv_path: {{ venv_path }}
-        repo_path: {{ repo_path }}
-        conf_file: {{ conf_file }}
-        playbooks: {{ playbooks }}
-    - require:
-      - virtualenv: create_ansible_virtualenv
-    - unless: {{ salt.pillar.get('edx:skip_ansible', False) }}
 
 create_course_asset_symlink:
   file.symlink:
