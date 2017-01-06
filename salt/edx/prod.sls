@@ -9,8 +9,6 @@
                                        'fingerprint': '16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48'},
                                       {'name': 'github.mit.edu',
                                        'fingerprint': '03:3b:72:d6:20:6f:3e:1f:5e:2f:38:a2:80:01:f3:22'}]) %}
-{% set playbooks = salt.pillar.get('edx:playbooks', ['edx-east/xqueue.yml',
-                                                     'edx-east/edxapp.yml']) -%}
 {% set theme_repo = salt.pillar.get('edx:edxapp:custom_theme:repo', 'https://github.com/mitocw/edx-theme') -%}
 {% set theme_name = salt.pillar.get('edx:edxapp:THEME_NAME', None) -%}
 {% set theme_branch = salt.pillar.get('edx:edxapp:custom_theme:branch', 'mitx') -%}

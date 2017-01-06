@@ -3,7 +3,10 @@
 {% set repo_path = '/tmp/edx_config/configuration' -%}
 {% set conf_file = '/tmp/edx_config/edx-sandbox.conf' -%}
 
-{% set playbooks = salt.pillar.get('edx:playbooks', salt.environ.get('EDX_PLAYBOOKS', ['edx-east/common.yml']).split(',')) -%}
+{% set playbooks = salt.pillar.get('edx:playbooks', ['edx-east/edxapp.yml',
+                                                     'edx-east/xqueue.yml',
+                                                     'edx-east/forum.yml',
+                                                     'edx-east/worker.yml']) -%}
 
 clone_edx_configuration:
   file.directory:
