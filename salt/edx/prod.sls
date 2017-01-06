@@ -16,6 +16,9 @@
 {% set theme_branch = salt.pillar.get('edx:edxapp:custom_theme:branch', 'mitx') -%}
 {% set theme_dir = salt.pillar.get('edx:edxapp:EDXAPP_COMPREHENSIVE_THEME_DIR', '/edx/app/edxapp/themes') -%}
 
+include:
+  - .run_ansible
+
 {% if salt.grains.get('osfinger'} == 'Ubuntu-12.04' %}
 configure_git_ppa_for_edx:
   pkgrepo.managed:

@@ -72,6 +72,7 @@ base:
     - match: compound
     - edx.gitreload
     - edx.prod
+    - edx.run_ansible
     - fluentd
     - fluentd.plugins
     - fluentd.config
