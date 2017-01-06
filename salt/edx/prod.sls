@@ -29,6 +29,7 @@ configure_python_ppa_for_edx:
     - ppa: fkrull/deadsnakes-python2.7
     - require_in:
         - pkg: install_os_packages
+{% endif %}
 
 install_os_packages:
   pkg.installed:
@@ -46,7 +47,7 @@ install_os_packages:
     - refresh_modules: True
     - require_in:
         - virtualenv: create_ansible_virtualenv
-{% endif %}
+        - git: clone_edx_configuration
 
 {% if salt.pillar.get('edx:generate_tls_certificate') %}
 generate_self_signed_certificate:

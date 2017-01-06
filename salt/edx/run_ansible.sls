@@ -47,7 +47,7 @@ place_ansible_environment_configuration:
   file.managed:
     - name: {{ conf_file }}
     - contents: |
-        {{ salt.pillar.get('edx:ansible_vars')|yaml(False)|indent(8) }}
+        {{ salt.pillar.get('edx_ansible_vars')|yaml(False)|indent(8) }}
     - makedirs: True
 
 {# Creating the edxapp user here so that it is present for setting appropriate

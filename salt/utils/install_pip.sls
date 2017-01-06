@@ -23,9 +23,11 @@ install_global_pip_executable:
         rm get_pip.py
     - reload_modules: True
     - unless: which pip
+    - reload_modules: True
 
 install_python_libraries:
   pip.installed:
     - names: {{ python_dependencies.python_libs }}
     - require:
         - cmd: install_global_pip_executable
+    - reload_modules: True
