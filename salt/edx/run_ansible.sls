@@ -1,7 +1,7 @@
 {% set data_path = '/tmp/edx_config' -%}
 {% set venv_path = '/tmp/edx_config/venv' -%}
 {% set repo_path = '/tmp/edx_config/configuration' -%}
-{% set conf_file = '/tmp/edx_config/edx-sandbox.conf' -%}
+{% set conf_file = '/tmp/edx_config/edx-vars.conf' -%}
 
 {% set playbooks = salt.pillar.get('edx:playbooks', ['edx-east/edxapp.yml',
                                                      'edx-east/xqueue.yml',
@@ -22,6 +22,16 @@ clone_edx_configuration:
     - force_reset: True
     - require:
       - file: clone_edx_configuration
+
+mark_ansible_as_editable:
+  file.replace:
+    - name: {{ repo_path }}/requirements.txt
+    - pattern: |
+        ^git\+https://github\.com/edx/ansible.*
+    - repl: |
+        -e git+https://github.com/edx/ansible.git@stable-1.9.3-rc1-edx#egg=ansible==1.9.3-edx
+    - require:
+        - git: clone_edx_configuration
 
 replace_nginx_static_asset_template_fragment:
   file.managed:
