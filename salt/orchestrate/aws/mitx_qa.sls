@@ -265,6 +265,10 @@ create_rds_security_group:
           from_port: 3306
           to_port: 3306
           source_group_name: edx-mitx-qa
+        - ip_protocol: tcp
+          from_port: 3306
+          to_port: 3306
+          source_group_name: consul-mitx-qa
     - require:
         - boto_vpc: create_mitx_qa_vpc
         - boto_secgroup: create_edx_security_group
