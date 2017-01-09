@@ -24,6 +24,8 @@ generate_edx_cloud_map_file:
           - {{ salt.boto_secgroup.get_group_id(
               'edx-mitx-rp', vpc_name='MITx RP') }}
           - {{ salt.boto_secgroup.get_group_id(
+              'default', vpc_name='MITx RP) }}
+          - {{ salt.boto_secgroup.get_group_id(
             'salt_master-mitx-rp', vpc_name='MITx RP') }}
         subnetids: {{ subnet_ids }}
         app_types:
