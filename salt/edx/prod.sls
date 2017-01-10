@@ -109,6 +109,15 @@ install_edxapp_theme:
       - cmd: run_ansible
 {% endif %}
 
+create_course_asset_symlink:
+  file.symlink:
+    - name: /edx/var/edxapp/course_static
+    - target: {{ salt.pillar.get('edx:edxapp:GIT_REPO_DIR') }}
+    - makedirs: True
+    - force: True
+    - user: edxapp
+    - group: www-data
+
 {# Steps to enable git export for courses #}
 make_git_export_directory:
   file.directory:
