@@ -1,4 +1,14 @@
-{% set type_counts = {'draft': 2, 'live': 3} %}
+{% set type_counts = {'draft': 2, 'live': 2} %}
+{% set domains = {
+    'draft': ['studio-mitx-qa-draft.mitx.mit.edu.',
+              'mitx-qa-draft.mitx.mit.edu.',
+              'preview-mitx-qa-draft.mitx.mit.edu.',
+              'gr-qa.mitx.mit.edu.'],
+    'live': ['studio-mitx-qa.mitx.mit.edu.',
+             'mitx-qa.mitx.mit.edu.',
+             'preview-mitx-qa.mitx.mit.edu.',
+             'prod-gr-qa.mitx.mit.edu.']
+} %}
 {% set environment = 'mitx-qa' %}
 {% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-mitx-qa']) %}
 {% set subnet_ids = [] %}
@@ -33,18 +43,11 @@ create_elb_for_edx_{{ edx_type }}:
           enabled: True
           timeout: 300
     - cnames:
-        - name: mitx-qa-{{ edx_type }}.mitx.mit.edu.
+        {% for domain in domains[edx_type] %}
+        - name: {{ domain }}
           zone: mitx.mit.edu.
           ttl: 60
-        - name: preview-mitx-qa-{{ edx_type }}.mitx.mit.edu.
-          zone: mitx.mit.edu.
-          ttl: 60
-        - name: studio-mitx-qa-{{ edx_type }}.mitx.mit.edu.
-          zone: mitx.mit.edu.
-          ttl: 60
-        - name: {% if edx_type == 'live' %}prod-{% endif %}gr-qa.mitx.mit.edu.
-          zone: mitx.mit.edu.
-          ttl: 60
+        {% endfor %}
     - health_check:
         target: 'HTTPS:443/heartbeat'
     - subnets: {{ subnet_ids }}
