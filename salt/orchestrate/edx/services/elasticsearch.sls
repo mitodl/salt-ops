@@ -24,6 +24,8 @@ generate_elasticsearch_cloud_map_file:
             'elasticsearch-mitx-qa', vpc_name='MITx QA') }}
           - {{ salt.boto_secgroup.get_group_id(
             'salt_master-mitx-qa', vpc_name='MITx QA') }}
+          - {{ salt.boto_secgroup.get_group_id(
+            'consul-agent-mitx-qa', vpc_name='MITx QA') }}
         subnetids: {{ subnet_ids }}
         volume_size: 200
         tags:

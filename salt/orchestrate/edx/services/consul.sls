@@ -26,6 +26,8 @@ generate_cloud_map_file:
             'consul-mitx-qa', vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
             'salt_master-mitx-qa', vpc_name=VPC_NAME) }}
+          - {{ salt.boto_secgroup.get_group_id(
+            'consul-agent-mitx-qa', vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids }}
     - require:
         - file: load_consul_cloud_profile

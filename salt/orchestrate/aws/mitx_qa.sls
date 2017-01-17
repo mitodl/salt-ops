@@ -211,6 +211,26 @@ create_mitx_consul_security_group:
     - tags:
         Name: consul-mitx-qa
 
+create_mitx_consul_agent_security_group:
+  boto_secgroup.present:
+    - name: consul-agent-mitx-qa
+    - description: Access rules for Consul agent in {{ VPC_NAME }} stack
+    - vpc_name: {{ VPC_NAME }}
+    - rules:
+        - ip_protocol: tcp
+          from_port: 8300
+          to_port: 8301
+          source_group_name: consul-agent-mitx-qa
+        - ip_protocol: udp
+          from_port: 8300
+          to_port: 8301
+          source_group_name: consul-agent-mitx-qa
+    - require:
+        - boto_vpc: create_mitx_qa_vpc
+        - boto_secgroup: create_mitx_consul_security_group
+    - tags:
+        Name: consul-agent-mitx-qa
+
 create_rabbitmq_security_group:
   boto_secgroup.present:
     - name: rabbitmq-mitx-qa

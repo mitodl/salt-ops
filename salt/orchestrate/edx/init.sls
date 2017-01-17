@@ -27,6 +27,8 @@ generate_edx_cloud_map_file:
               'default', vpc_name='MITx QA') }}
           - {{ salt.boto_secgroup.get_group_id(
             'salt_master-mitx-qa', vpc_name='MITx QA') }}
+          - {{ salt.boto_secgroup.get_group_id(
+            'consul-agent-mitx-qa', vpc_name='MITx QA') }}
         subnetids: {{ subnet_ids }}
         app_types:
           draft: 2
