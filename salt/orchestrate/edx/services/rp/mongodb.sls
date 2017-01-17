@@ -23,6 +23,8 @@ generate_mongodb_cloud_map_file:
             'mongodb-mitx-rp', vpc_name='MITx RP') }}
           - {{ salt.boto_secgroup.get_group_id(
             'salt_master-mitx-rp', vpc_name='MITx RP') }}
+          - {{ salt.boto_secgroup.get_group_id(
+            'consul-agent-mitx-rp', vpc_name='MITx RP') }}
         subnetids: {{ subnet_ids }}
     - require:
         - file: load_mongodb_cloud_profile

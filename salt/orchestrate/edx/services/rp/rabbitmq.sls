@@ -23,6 +23,8 @@ generate_rabbitmq_cloud_map_file:
             'rabbitmq-mitx-rp', vpc_name='MITx RP') }}
           - {{ salt.boto_secgroup.get_group_id(
             'salt_master-mitx-rp', vpc_name='MITx RP') }}
+          - {{ salt.boto_secgroup.get_group_id(
+            'consul-agent-mitx-rp', vpc_name='MITx RP') }}
         subnetids: {{ subnet_ids }}
 
 ensure_instance_profile_exists_for_rabbitmq:
