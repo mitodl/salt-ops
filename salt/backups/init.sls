@@ -9,9 +9,11 @@ install_duplicity_backend_requirements:
     - name: boto
 
 {% for service in salt.pillar.get('backups:enabled', []) %}
+{% if service.get('pkgs') %}
 install_packages_for_{{ service.title }}_backup:
   pkg.installed:
     - pkgs: {{ service.pkgs }}
+{% endif %}
 
 run_backup_for_{{ service.title }}:
   file.managed:
