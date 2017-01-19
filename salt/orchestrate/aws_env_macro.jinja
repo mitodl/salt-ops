@@ -1,0 +1,15 @@
+{% set VPC_NAME = salt.environ.get('VPC_NAME', 'MITx QA') %}
+{% set VPC = salt.boto_vpc.describe(vpc_name=VPC_NAME)['vpc'] %}
+{% set VPC_RESOURCE_SUFFIX = salt.environ.get(
+    'VPC_RESOURCE_SUFFIX',
+    VPC_NAME.lower().replace(' ', '_')) %}
+{% set ENVIRONMENT = salt.environ.get(
+    'ENVIRONMENT',
+    VPC_NAME.lower().replace(' ', '-')) %}
+{% set subnet_ids = [] %}
+{% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
+    'public1-{}'.format(ENVIRONMENT),
+    'public2-{}'.format(ENVIRONMENT),
+    'public3-{}'.format(ENVIRONMENT)])['subnets'] %}
+{% do subnet_ids.append('{0}'.format(subnet['id'])) %}
+{% endfor %}
