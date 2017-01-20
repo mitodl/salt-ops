@@ -9,6 +9,6 @@ sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,ret
 PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
           --s3-use-server-side-encryption {{ backupdir }} \
           --allow-source-mismatch \
-          s3+http://odl-operations-backups/{{ settings.get('directory', 'mysql') }}/
+          s3+http://odl-operations-backups/{{ settings.get('directory', 'course_assets') }}/
 
 sudo umount /mnt/efs
