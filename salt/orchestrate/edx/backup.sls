@@ -1,4 +1,4 @@
-{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'dogwood-rp') %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-rp') %}
 {% set VPC_NAME = salt.environ.get('VPC_NAME', 'Dogwood RP') %}
 {% set VPC_RESOURCE_SUFFIX = salt.environ.get('VPC_RESOURCE_SUFFIX',
                                               VPC_NAME.lower() | replace(' ', '-')) %}
