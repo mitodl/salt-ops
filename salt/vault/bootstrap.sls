@@ -26,7 +26,7 @@ create_salt_master_policy:
 register_root_ec2_role:
   vault.ec2_role_created:
     - role: salt-master
-    - bound_ami_id: ami-116d857a
+    - bound_iam_instance_profile_arn: {{ salt.grains.get('ec2:iam:info:instance_profile_arn') }}
+    - bound_account_id: {{ salt.grains.get('ec2:account_id') }}
     - policies:
-        - root
         - salt-master
