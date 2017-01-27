@@ -32,10 +32,5 @@ register_root_ec2_role:
         - salt-master
 
 authenticate_salt_master_to_vault:
-  module.run:
-    - name: vault.auth_ec2
-    - kwargs:
-        pkcs7: >-
-          {{ salt.http.query('http://169.254.169.254/latest/dynamic/instance-identity/pkcs7')['body']|indent(10) }}
-        role: salt-master
-    - unless: {{ salt.vault.is_authenticated }}
+  vault.ec2_minion_authenticated:
+    - role: salt-master
