@@ -34,3 +34,16 @@ register_root_ec2_role:
 authenticate_salt_master_to_vault:
   vault.ec2_minion_authenticated:
     - role: salt-master
+    - is_master: True
+
+restart_minion_after_auth:
+  service.running:
+    - name: salt-minion
+    - watch:
+        - vault: authenticate_salt_master_to_vault
+
+restart_master_after_auth:
+  service.running:
+    - name: salt-master
+    - watch:
+        - vault: authenticate_salt_master_to_vault
