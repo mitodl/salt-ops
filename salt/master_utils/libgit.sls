@@ -1,7 +1,7 @@
 {% set libgit = salt.grains.filter_by({
     'default': {
-        'tag': 'v0.24.0',
-        'hash': 'sha256=1c6693f943bee3f634b9094376f93e7e03b9ca77354a33f4e903fdcb2ee8b2b0',
+        'tag': 'v0.25.1',
+        'hash': 'sha256=7ae8e699ff7ff9a1fa702249140ee31ea6fd556bf7968e84e38165870667bcb1',
     },
     'Debian': {
         'pkgs': [
