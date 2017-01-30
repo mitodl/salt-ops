@@ -1,8 +1,5 @@
-{% set subnet_ids = [] %}
-{% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
-    'public1-mitx-qa', 'public2-mitx-qa', 'public3-mitx-qa'])['subnets'] %}
-{% do subnet_ids.append('{0}'.format(subnet['id'])) %}
-{% endfor %}
+{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
+ ENVIRONMENT, subnet_ids with context %}
 load_rabbitmq_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/rabbitmq.conf
@@ -10,21 +7,21 @@ load_rabbitmq_cloud_profile:
 
 generate_rabbitmq_cloud_map_file:
   file.managed:
-    - name: /etc/salt/cloud.maps.d/mitx_qa_rabbitmq_map.yml
+    - name: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_rabbitmq_map.yml
     - source: salt://orchestrate/aws/map_templates/rabbitmq.yml
     - template: jinja
     - makedirs: True
     - context:
-        environment_name: mitx-qa
+        environment_name: {{ ENVIRONMENT }}
         roles:
           - rabbitmq
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
-            'rabbitmq-mitx-qa', vpc_name='MITx QA') }}
+            'rabbitmq-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
-            'salt_master-mitx-qa', vpc_name='MITx QA') }}
+            'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
-            'consul-agent-mitx-qa', vpc_name='MITx QA') }}
+            'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids }}
 
 ensure_instance_profile_exists_for_rabbitmq:
@@ -39,7 +36,7 @@ deploy_rabbitmq_cloud_map:
     - arg:
         - cloud.map_run
     - kwarg:
-        path: /etc/salt/cloud.maps.d/mitx_qa_rabbitmq_map.yml
+        path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_rabbitmq_map.yml
         parallel: True
     - require:
         - file: generate_rabbitmq_cloud_map_file
@@ -47,7 +44,7 @@ deploy_rabbitmq_cloud_map:
 load_pillar_data_on_rabbitmq_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'G@roles:rabbitmq and G@environment:mitx-qa'
+    - tgt: 'G@roles:rabbitmq and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
         - salt: deploy_rabbitmq_cloud_map
@@ -55,14 +52,14 @@ load_pillar_data_on_rabbitmq_nodes:
 populate_mine_with_rabbitmq_node_data:
   salt.function:
     - name: mine.update
-    - tgt: 'G@roles:rabbitmq and G@environment:mitx-qa'
+    - tgt: 'G@roles:rabbitmq and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
         - salt: load_pillar_data_on_rabbitmq_nodes
 
 build_rabbitmq_nodes:
   salt.state:
-    - tgt: 'G@roles:rabbitmq and G@environment:mitx-qa'
+    - tgt: 'G@roles:rabbitmq and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - highstate: True
     - require:
