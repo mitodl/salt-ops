@@ -15,15 +15,15 @@ install_packages_for_{{ service.title }}_backup:
     - pkgs: {{ service.pkgs }}
 {% endif %}
 
-run_backup_for_{{ service.title }}:
+run_restore_for_{{ service.title }}:
   file.managed:
-    - name: /backups/{{service.title}}_backup.sh
-    - source: salt://backups/templates/{{ service.name }}.sh
+    - name: /backups/{{service.title}}_restore.sh
+    - source: salt://backups/templates/restore_{{ service.name }}.sh
     - template: jinja
     - context:
         settings: {{ service.settings }}
   cmd.script:
-    - name: salt://backups/templates/backup_{{ service.name }}.sh
+    - name: salt://backups/templates/restore_{{ service.name }}.sh
     - template: jinja
     - context:
         settings: {{ service.settings }}
