@@ -14,7 +14,7 @@ mkdir -p {{ backupdir }}
 
 PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
           --s3-use-server-side-encryption {{ backupdir }} \
-          --allow-source-mismatch \
+          --allow-source-mismatch --tempdir /backups \
           s3+http://odl-operations-backups/{{ settings.get('directory', 'mysql') }}/
 
 rm -rf {{ backupdir }}
