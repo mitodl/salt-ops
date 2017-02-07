@@ -18,7 +18,7 @@ install_packages_for_{{ service.title }}_backup:
 run_backup_for_{{ service.title }}:
   file.managed:
     - name: /backups/{{service.title}}_backup.sh
-    - source: salt://backups/templates/{{ service.name }}.sh
+    - source: salt://backups/templates/backup_{{ service.name }}.sh
     - template: jinja
     - context:
         settings: {{ service.settings }}
