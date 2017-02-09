@@ -12,5 +12,5 @@ PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity restore \
                --port {{ settings.get('port', 3306) }} \
                --user {{ settings.username }} \
                --password={{ settings.password }} \
-               --database={{ settings.database }}
+               --database={{ settings.database }} \
                < {{ backupdir }}/{{ settings.database }}.dump
