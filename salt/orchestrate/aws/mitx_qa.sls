@@ -86,7 +86,7 @@ create_mitx_qa_routing_table:
     - routes:
         - destination_cidr_block: 0.0.0.0/0
           internet_gateway_name: {{ VPC_RESOURCE_SUFFIX }}-igw
-        - destination_cidr_block: 10.0.0.0/16
+        - destination_cidr_block: 10.0.0.0/22
           vpc_peering_connection_name: {{ VPC_RESOURCE_SUFFIX }}-operations-peer
     - require:
         - boto_vpc: create_mitx_qa_vpc
@@ -115,12 +115,12 @@ create_edx_security_group:
           from_port: 22
           to_port: 22
           cidr_ip:
-            - 10.0.0.0/16
-            - 10.5.0.0/16
+            - 10.0.0.0/22
+            - 10.5.0.0/22
         - ip_protocol: tcp
           from_port: 18040
           to_port: 18040
-          cidr_ip: 10.5.0.0/16
+          cidr_ip: 10.5.0.0/22
     - require:
         - boto_vpc: create_mitx_qa_vpc
     - tags:
@@ -138,12 +138,6 @@ create_mongodb_security_group:
           source_group_name:
             - edx-{{ VPC_RESOURCE_SUFFIX }}
             - mongodb-{{ VPC_RESOURCE_SUFFIX }}
-        - ip_protocol: tcp
-          from_port: 22
-          to_port: 22
-          cidr_ip:
-            - 10.0.0.0/16
-            - 10.5.0.0/16
     - require:
         - boto_vpc: create_mitx_qa_vpc
         - boto_secgroup: create_edx_security_group
@@ -160,44 +154,44 @@ create_mitx_consul_security_group:
           from_port: 8500
           to_port: 8500
           cidr_ip:
-            - 10.5.0.0/16
+            - 10.5.0.0/22
           {# HTTP access #}
         - ip_protocol: udp
           from_port: 8500
           to_port: 8500
           cidr_ip:
-            - 10.5.0.0/16
+            - 10.5.0.0/22
           {# HTTP access #}
         - ip_protocol: tcp
           from_port: 8600
           to_port: 8600
           cidr_ip:
-            - 10.5.0.0/16
+            - 10.5.0.0/22
           {# DNS access #}
         - ip_protocol: udp
           from_port: 8600
           to_port: 8600
           cidr_ip:
-            - 10.5.0.0/16
+            - 10.5.0.0/22
           {# DNS access #}
         - ip_protocol: tcp
           from_port: 8300
           to_port: 8301
           cidr_ip:
-            - 10.5.0.0/16
+            - 10.5.0.0/22
           {# LAN gossip protocol #}
         - ip_protocol: udp
           from_port: 8301
           to_port: 8301
           cidr_ip:
-            - 10.5.0.0/16
+            - 10.5.0.0/22
           {# LAN gossip protocol #}
         - ip_protocol: tcp
           from_port: 8302
           to_port: 8302
           cidr_ip:
-            - 10.0.0.0/16
-            - 10.5.0.0/16
+            - 10.0.0.0/22
+            - 10.5.0.0/22
           {# WAN cluster interface #}
     - require:
         - boto_vpc: create_mitx_qa_vpc
@@ -300,7 +294,7 @@ create_salt_master_security_group:
           from_port: 22
           to_port: 22
           cidr_ip:
-            - 10.0.0.0/16
+            - 10.0.0.0/22
     - require:
         - boto_vpc: create_mitx_qa_vpc
 
@@ -319,18 +313,18 @@ create_vault_backend_security_group:
           from_port: 27017
           to_port: 27017
           cidr_ip:
-            - 10.0.0.0/16
+            - 10.0.0.0/22
         {% RabbitMQ %}
         - ip_protocol: tcp
           from_port: 15672
           to_port: 15672
           cidr_ip:
-            - 10.0.0.0/16
+            - 10.0.0.0/22
         {% MySQL %}
         - ip_protocol: tcp
           from_port: 3306
           to_port: 3306
           cidr_ip:
-            - 10.0.0.0/16
+            - 10.0.0.0/22
     - require:
         - boto_vpc: create_mitx_qa_vpc
