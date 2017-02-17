@@ -200,7 +200,7 @@ create_mitx_consul_security_group:
             - 10.6.0.0/16
           {# LAN gossip protocol #}
         - ip_protocol: tcp
-          from_port: 8302
+          from_port: 8300
           to_port: 8302
           cidr_ip:
             - 10.0.0.0/16
