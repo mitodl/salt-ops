@@ -83,16 +83,11 @@ configure_vault_rabbitmq_backend:
     - backend_type: rabbitmq
     - description: Backend to create dynamic RabbitMQ credentials for {{ ENVIRONMENT }}
     - mount_point: rabbitmq-{{ ENVIRONMENT }}
-    - config:
-        max_lease_ttl: 4368h
-        default_lease_ttl: 4368h
-  module.run:
-    - name: vault.write
-    - args:
-        - rabbitmq-{{ ENVIRONMENT }}/config/connection
-    - kwargs:
+    - connection_config:
         connection_uri: "http://rabbitmq.service.{{ ENVIRONMENT }}.consul:15672"
         username: admin
         password: {{ rabbit_admin_password }}
+    - lease: 4368h
+    - lease_max: 4368h
     - require:
         vault: configure_vault_rabbitmq_backend

@@ -42,14 +42,9 @@ configure_vault_mysql_backend:
     - backend_type: mysql
     - description: Backend to create dynamic MySQL credentials for {{ ENVIRONMENT }}
     - mount_point: mysql-{{ ENVIRONMENT }}
-    - config:
-        max_lease_ttl: 4368h
-        default_lease_ttl: 4368h
-  module.run:
-    - name: vault.write
-    - args:
-        - mysql-{{ ENVIRONMENT }}/config/connection
-    - kwargs:
+    - lease_max: 4368h
+    - lease: 4368h
+    - connection_config:
         connection_url: "{{ master_user }}:{{ master_pass }}@tcp(mysql.service.{{ ENVIRONMENT }}.consul:3306)"
     - require:
         vault: configure_vault_mysql_backend

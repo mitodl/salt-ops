@@ -54,8 +54,6 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
               SecurityGroupId:
                 - {{ salt.boto_secgroup.get_group_id(
                      'default'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
-                - {{ salt.boto_secgroup.get_group_id(
-                     'default'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
     - require:
         - file: load_backup_host_cloud_profile
         - boto_iam_role: ensure_instance_profile_exists_for_backups
