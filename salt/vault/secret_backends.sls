@@ -6,5 +6,5 @@ enable_transit_secret_backend:
 enable_mitx_aws_secret_backend:
   vault.secret_backend_enabled:
     - backend_type: aws
-    - mount_piont: aws-mitx
+    - mount_point: aws-mitx
     - description: Backend to dynamically create IAM credentials
