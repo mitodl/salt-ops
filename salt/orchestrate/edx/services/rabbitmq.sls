@@ -1,5 +1,7 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, subnet_ids with context %}
+{% set rabbit_admin_password = salt.vault.write('transit/random/42', format=base64)['data']['random_bytes'] %}
+
 load_rabbitmq_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/rabbitmq.conf
@@ -22,6 +24,8 @@ generate_rabbitmq_cloud_map_file:
             'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+          - {{ salt.boto_secgroup.get_group_id(
+            'vault-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids }}
 
 ensure_instance_profile_exists_for_rabbitmq:
@@ -64,3 +68,26 @@ build_rabbitmq_nodes:
     - highstate: True
     - require:
         - salt: populate_mine_with_rabbitmq_node_data
+    - pillar:
+        rabbitmq:
+          users:
+            - name: admin
+              state: present
+              settings:
+                tags:
+                  - administrator
+              password: {{ rabbit_admin_password }}
+
+configure_vault_rabbitmq_backend:
+  vault.secret_backend_enabled:
+    - backend_type: rabbitmq
+    - description: Backend to create dynamic RabbitMQ credentials for {{ ENVIRONMENT }}
+    - mount_point: rabbitmq-{{ ENVIRONMENT }}
+    - connection_config:
+        connection_uri: "http://rabbitmq.service.{{ ENVIRONMENT }}.consul:15672"
+        username: admin
+        password: {{ rabbit_admin_password }}
+    - lease: 4368h
+    - lease_max: 4368h
+    - require:
+        vault: configure_vault_rabbitmq_backend

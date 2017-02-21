@@ -1,5 +1,7 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, subnet_ids with context %}
+{% set mongo_admin_password = salt.vault.write('transit/random/42', format=base64)['data']['random_bytes'] %}
+
 load_mongodb_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/mongodb.conf
@@ -22,6 +24,8 @@ generate_mongodb_cloud_map_file:
             'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+          - {{ salt.boto_secgroup.get_group_id(
+            'vault-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids }}
     - require:
         - file: load_mongodb_cloud_profile
@@ -43,12 +47,34 @@ deploy_mongodb_cloud_map:
     - require:
         - file: generate_mongodb_cloud_map_file
 
-resize_root_device_to_use_full_disk:
-  salt.state:
+format_data_drive:
+  salt.function:
     - tgt: 'G@roles:mongodb and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
-    - sls:
-        - utils.grow_partition
+    - name: state.single
+    - arg:
+        - blockdev.formatted
+    - kwarg:
+        name: /dev/xvdb
+        fs_type: ext4
+    - require:
+        - salt: deploy_mongodb_cloud_map
+
+mount_data_drive:
+  salt.function:
+    - tgt: 'G@roles:mongodb and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - name: state.single
+    - arg:
+        - mount.mounted
+    - kwarg:
+        name: /var/lib/mongodb
+        device: /dev/xvdb
+        fstype: ext4
+        mkmnt: True
+        opts: 'relatime,user'
+    - require:
+        - salt: format_data_drive
 
 load_pillar_data_on_mitx_mongodb_nodes:
   salt.function:
@@ -93,3 +119,17 @@ build_mongodb_master_node:
               - mongodb-org
               - python
               - python-pip
+          admin_username: admin
+          admin_password: {{ mongo_admin_password }}
+
+configure_vault_mongodb_backend:
+  vault.secret_backend_enabled:
+    - backend_type: mongodb
+    - description: Backend to create dynamic MongoDB credentials for {{ ENVIRONMENT }}
+    - mount_point: mongodb-{{ ENVIRONMENT }}
+    - lease_max: 4368h
+    - lease: 4368h
+    - connection_config:
+        uri: "mongodb://admin:{{ mongo_admin_password }}@mongodb-master.service.{{ ENVIRONMENT }}.consul:27017/admin"
+    - require:
+        vault: configure_vault_mongodb_backend
