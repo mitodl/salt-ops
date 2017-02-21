@@ -42,6 +42,35 @@ deploy_elasticsearch_nodes:
     - require:
         - file: generate_elasticsearch_cloud_map_file
 
+format_data_drive:
+  salt.function:
+    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - name: state.single
+    - arg:
+        - blockdev.formatted
+    - kwarg:
+        name: /dev/xvdb
+        fs_type: ext4
+    - require:
+        - salt: deploy_elasticsearch_nodes
+
+mount_data_drive:
+  salt.function:
+    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - name: state.single
+    - arg:
+        - mount.mounted
+    - kwarg:
+        name: /var/lib/elasticsearch
+        device: /dev/xvdb
+        fstype: ext4
+        mkmnt: True
+        opts: 'relatime,user'
+    - require:
+        - salt: format_data_drive
+
 load_pillar_data_on_mitx_elasticsearch_nodes:
   salt.function:
     - name: saltutil.refresh_pillar

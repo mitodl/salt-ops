@@ -1,6 +1,7 @@
 mongodb:
   {% for id_num in range(3) %}
   - mongodb-{{ environment_name }}-{{ id_num }}:
+      size: t2.medium
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
