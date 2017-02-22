@@ -93,7 +93,7 @@ create_mitx-rp_routing_table:
     - routes:
         - destination_cidr_block: 0.0.0.0/0
           internet_gateway_name: mitx-rp-igw
-        - destination_cidr_block: 10.0.0.0/16
+        - destination_cidr_block: 10.0.0.0/22
           vpc_peering_connection_name: mitx-rp-operations-peer
     - require:
         - boto_vpc: create_mitx-rp_vpc
@@ -122,12 +122,12 @@ create_edx_security_group:
           from_port: 22
           to_port: 22
           cidr_ip:
-            - 10.0.0.0/16
-            - 10.6.0.0/16
+            - 10.0.0.0/22
+            - 10.6.0.0/22
         - ip_protocol: tcp
           from_port: 18040
           to_port: 18040
-          cidr_ip: 10.6.0.0/16
+          cidr_ip: 10.6.0.0/22
     - require:
         - boto_vpc: create_mitx-rp_vpc
     - tags:
@@ -149,8 +149,8 @@ create_mongodb_security_group:
           from_port: 22
           to_port: 22
           cidr_ip:
-            - 10.0.0.0/16
-            - 10.6.0.0/16
+            - 10.0.0.0/22
+            - 10.6.0.0/22
     - require:
         - boto_vpc: create_mitx-rp_vpc
         - boto_secgroup: create_edx_security_group
@@ -167,44 +167,44 @@ create_mitx_consul_security_group:
           from_port: 8500
           to_port: 8500
           cidr_ip:
-            - 10.6.0.0/16
+            - 10.6.0.0/22
           {# HTTP access #}
         - ip_protocol: udp
           from_port: 8500
           to_port: 8500
           cidr_ip:
-            - 10.6.0.0/16
+            - 10.6.0.0/22
           {# HTTP access #}
         - ip_protocol: tcp
           from_port: 8600
           to_port: 8600
           cidr_ip:
-            - 10.6.0.0/16
+            - 10.6.0.0/22
           {# DNS access #}
         - ip_protocol: udp
           from_port: 8600
           to_port: 8600
           cidr_ip:
-            - 10.6.0.0/16
+            - 10.6.0.0/22
           {# DNS access #}
         - ip_protocol: tcp
           from_port: 8300
           to_port: 8301
           cidr_ip:
-            - 10.6.0.0/16
+            - 10.6.0.0/22
           {# LAN gossip protocol #}
         - ip_protocol: udp
-          from_port: 8301
+          from_port: 8300
           to_port: 8301
           cidr_ip:
-            - 10.6.0.0/16
+            - 10.6.0.0/22
           {# LAN gossip protocol #}
         - ip_protocol: tcp
           from_port: 8300
           to_port: 8302
           cidr_ip:
-            - 10.0.0.0/16
-            - 10.6.0.0/16
+            - 10.0.0.0/22
+            - 10.6.0.0/22
           {# WAN cluster interface #}
     - require:
         - boto_vpc: create_mitx-rp_vpc
@@ -218,11 +218,11 @@ create_mitx_consul_agent_security_group:
     - vpc_name: {{ VPC_NAME }}
     - rules:
         - ip_protocol: tcp
-          from_port: 8300
+          from_port: 8301
           to_port: 8301
           source_group_name: consul-agent-mitx-rp
         - ip_protocol: udp
-          from_port: 8300
+          from_port: 8301
           to_port: 8301
           source_group_name: consul-agent-mitx-rp
     - require:
@@ -307,6 +307,6 @@ create_salt_master_security_group:
           from_port: 22
           to_port: 22
           cidr_ip:
-            - 10.0.0.0/16
+            - 10.0.0.0/22
     - require:
         - boto_vpc: create_mitx-rp_vpc

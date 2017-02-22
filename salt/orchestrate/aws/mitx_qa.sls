@@ -181,7 +181,7 @@ create_mitx_consul_security_group:
             - 10.5.0.0/22
           {# LAN gossip protocol #}
         - ip_protocol: udp
-          from_port: 8301
+          from_port: 8300
           to_port: 8301
           cidr_ip:
             - 10.5.0.0/22
@@ -205,11 +205,11 @@ create_mitx_consul_agent_security_group:
     - vpc_name: {{ VPC_NAME }}
     - rules:
         - ip_protocol: tcp
-          from_port: 8300
+          from_port: 8301
           to_port: 8301
           source_group_name: consul-agent-{{ VPC_RESOURCE_SUFFIX }}
         - ip_protocol: udp
-          from_port: 8300
+          from_port: 8301
           to_port: 8301
           source_group_name: consul-agent-{{ VPC_RESOURCE_SUFFIX }}
     - require:
