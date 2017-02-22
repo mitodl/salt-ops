@@ -225,6 +225,14 @@ create_mitx_consul_agent_security_group:
           from_port: 8301
           to_port: 8301
           source_group_name: consul-agent-mitx-rp
+          - ip_protocol: tcp
+          from_port: 8301
+          to_port: 8301
+          source_group_name: consul-mitx-rp
+        - ip_protocol: udp
+          from_port: 8301
+          to_port: 8301
+          source_group_name: consul-mitx-rp
     - require:
         - boto_vpc: create_mitx_rp_vpc
         - boto_secgroup: create_mitx_consul_security_group

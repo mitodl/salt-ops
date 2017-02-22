@@ -212,6 +212,14 @@ create_mitx_consul_agent_security_group:
           from_port: 8301
           to_port: 8301
           source_group_name: consul-agent-{{ VPC_RESOURCE_SUFFIX }}
+        - ip_protocol: tcp
+          from_port: 8301
+          to_port: 8301
+          source_group_name: consul-{{ VPC_RESOURCE_SUFFIX }}
+        - ip_protocol: udp
+          from_port: 8301
+          to_port: 8301
+          source_group_name: consul-{{ VPC_RESOURCE_SUFFIX }}
     - require:
         - boto_vpc: create_mitx_qa_vpc
         - boto_secgroup: create_mitx_consul_security_group
