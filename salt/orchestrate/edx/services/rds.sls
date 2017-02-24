@@ -1,7 +1,7 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, subnet_ids with context %}
 
-{% set master_pass = salt.vault.write('transit/random/42', format=hex)['data']['random_bytes'] %}
+{% set master_pass = salt.random.get_string(42) %}
 {% set master_user = salt.pillar.get('rds:mitx_qa:master_username', salt.vault.write('transit/random/15', format=hex)['data']['random_bytes'] }
 
 create_edx_rds_db_subnet_group:

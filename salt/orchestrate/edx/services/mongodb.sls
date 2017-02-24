@@ -1,6 +1,6 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, subnet_ids with context %}
-{% set mongo_admin_password = salt.vault.write('transit/random/42', format=base64)['data']['random_bytes'] %}
+{% set mongo_admin_password = salt.random.get_string(42) %}
 
 load_mongodb_cloud_profile:
   file.managed:
