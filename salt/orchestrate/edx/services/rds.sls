@@ -46,5 +46,3 @@ configure_vault_mysql_backend:
     - lease: 4368h
     - connection_config:
         connection_url: "{{ master_user }}:{{ master_pass }}@tcp(mysql.service.{{ ENVIRONMENT }}.consul:3306)"
-    - require:
-        vault: configure_vault_mysql_backend

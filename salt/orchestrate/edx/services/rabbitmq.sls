@@ -89,5 +89,3 @@ configure_vault_rabbitmq_backend:
         password: {{ rabbit_admin_password }}
     - lease: 4368h
     - lease_max: 4368h
-    - require:
-        vault: configure_vault_rabbitmq_backend
