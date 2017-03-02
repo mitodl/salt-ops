@@ -316,19 +316,19 @@ create_vault_backend_security_group:
     - tags:
         Name: salt_master-{{ VPC_RESOURCE_SUFFIX }}
     - rules:
-        {% MongoDB %}
+        {# MongoDB #}
         - ip_protocol: tcp
           from_port: 27017
           to_port: 27017
           cidr_ip:
             - 10.0.0.0/22
-        {% RabbitMQ %}
+        {# RabbitMQ #}
         - ip_protocol: tcp
           from_port: 15672
           to_port: 15672
           cidr_ip:
             - 10.0.0.0/22
-        {% MySQL %}
+        {# MySQL #}
         - ip_protocol: tcp
           from_port: 3306
           to_port: 3306
