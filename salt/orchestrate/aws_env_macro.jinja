@@ -2,7 +2,7 @@
 {% set VPC = salt.boto_vpc.describe(vpc_name=VPC_NAME)['vpc'] %}
 {% set VPC_RESOURCE_SUFFIX = salt.environ.get(
     'VPC_RESOURCE_SUFFIX',
-    VPC_NAME.lower().replace(' ', '-)) %}
+    VPC_NAME.lower().replace(' ', '-')) %}
 {% set ENVIRONMENT = salt.environ.get(
     'ENVIRONMENT',
     VPC_NAME.lower().replace(' ', '-')) %}
