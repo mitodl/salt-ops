@@ -1,6 +1,6 @@
 {% set python_dependencies = salt.grains.filter_by({
     'default': {
-      'python_libs': ['testinfra']
+      'python_libs': ['testinfra', 'pyinotify']
     },
     'Debian': {
       'pkgs': ['python-dev', 'python', 'curl'],
