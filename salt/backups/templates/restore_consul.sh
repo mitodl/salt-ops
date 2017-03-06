@@ -7,6 +7,7 @@ SNAPFILE=`aws s3 ls odl-operations-backups/{{ backupdir }}/ | sort | tail -n 1 |
 
 aws s3 cp s3+http://odl-operations-backups/{{ settings.get('directory', 'consul') }}/$SNAPFILE  /{{ backupdir }}/$SNAPFILE
 
-/usr/local/bin/consul snapshot save -stale -token={{ settings.acl_token }} {{ backupdir }}/$SNAPFILE
+/usr/local/bin/consul snapshot inspect -token={{ settings.acl_token }} {{ backupdir }}/$SNAPFILE
+/usr/local/bin/consul snapshot restore -token={{ settings.acl_token }} {{ backupdir }}/$SNAPFILE
 
 rm {{ backupdir }}/$SNAPFILE

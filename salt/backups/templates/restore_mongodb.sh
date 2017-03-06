@@ -6,7 +6,7 @@ mkdir -p {{ backupdir }}
 
 PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity restore\
           --s3-use-server-side-encryption s3+http://odl-operations-backups/{{ settings.get('directory', 'mongodb') }}/ \
-          --tempdir /backups {{ backupdir }}/
+          --force --tempdir /backups {{ backupdir }}/
 
 /usr/bin/mongorestore --host {{ settings.host }} \
                       --port {{ settings.get('port', 27017) }} \
