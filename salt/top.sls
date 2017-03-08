@@ -1,6 +1,7 @@
 base:
   '*':
     - utils.install_pip
+    - utils.inotify_watches
   'P@environment:(operations|mitx-rp|rp|partners)':
     - match: compound
     - datadog
