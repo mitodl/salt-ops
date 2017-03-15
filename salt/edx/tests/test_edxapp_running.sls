@@ -22,7 +22,7 @@ our configurations. Test the following:
     'lms': 'tcp://0.0.0.0:8000',
     'gitreload_service': 'tcp://0.0.0.0:8095',
     'xqueue': 'tcp://0.0.0.0:18040',
-    'forum': 'unix:///edx/var/forum/forum.sock',
+    'forum': 'tcp://0.0.0.0:4567',
     'rabbitmq': 'tcp://rabbitmq.service.consul:15672',
     'elasticsearch': 'tcp://elasticsearch.service.consul:9200',
     'mysql':'tcp://mysql.service.consul:3306',
@@ -51,7 +51,7 @@ test_edxapp_supervisor_{{ sv_service }}:
 
 {% for connection in socket_connections %}
 test_edxapp_{{ connection }}:
-  testinfra.sockethost:
+  testinfra.socket_host:
     - name: {{ connection }}
     - is_listening: True
 {% endfor %}
@@ -70,17 +70,20 @@ test_edxapp_cms:
 
 # Check if AWS EFS is mounted
 test_edxapp_efs_mount:
-  testinfra.mountpoint:
+  testinfra.mount_point:
     - name: '/mnt/data'
+    - exists: True
     - filesystem:
         expected: nfs4
         comparison: eq
 
-{% for entry in lms_env %}
-test_edxapp_lms_env_{{ entry }}:
+{% for attribute, value in lms_env.items() %}
+test_edxapp_lms_env_{{ value }}:
   testinfra.file:
     - name: '/edx/app/edxapp/lms.env.json'
-    - contains: {{ entry }}
-    - expected: {{ entry }}
-    - comparison: eq
+    - exists: True
+    - contains:
+        parameter: {{ value }}
+        expected: True
+        comparison: is_
 {% endfor %}
