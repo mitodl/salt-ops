@@ -49,11 +49,11 @@ test_edxapp_supervisor_{{ sv_service }}:
     - is_running: True
 {% endfor %}
 
-{% for connection in socket_connections %}
-test_edxapp_{{ connection }}:
+{% for attribute, value in socket_connections.items() %}
+test_edxapp_{{ attribute }}:
   testinfra.socket_host:
-    - name: {{ connection }}
-    - is_listening: True
+    - name: {{ value }}
+    - is_reachable: True
 {% endfor %}
 
 {% for service in running_services %}
@@ -78,7 +78,7 @@ test_edxapp_efs_mount:
         comparison: eq
 
 {% for attribute, value in lms_env.items() %}
-test_edxapp_lms_env_{{ value }}:
+test_edxapp_lms_env_{{ attribute }}:
   testinfra.file:
     - name: '/edx/app/edxapp/lms.env.json'
     - exists: True
