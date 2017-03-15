@@ -49,8 +49,8 @@ test_edxapp_supervisor_{{ sv_service }}:
     - is_running: True
 {% endfor %}
 
-{% for attribute, value in socket_connections.items() %}
-test_edxapp_{{ attribute }}:
+{% for connection, value in socket_connections.items() %}
+test_edxapp_{{ connection }}:
   testinfra.socket_host:
     - name: {{ value }}
     - is_reachable: True
