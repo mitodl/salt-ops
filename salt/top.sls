@@ -74,6 +74,7 @@ base:
     - edx.gitreload
     - edx.prod
     - edx.run_ansible
+    - edx.tests
     - fluentd
     - fluentd.plugins
     - fluentd.config
