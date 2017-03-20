@@ -1,5 +1,4 @@
 {% set VPC_NAME = salt.environ.get('VPC_NAME', 'MITx QA') %}
-{% set VPC = salt.boto_vpc.describe(vpc_name=VPC_NAME)['vpc'] %}
 {% set VPC_RESOURCE_SUFFIX = salt.environ.get(
     'VPC_RESOURCE_SUFFIX',
     VPC_NAME.lower().replace(' ', '-')) %}
