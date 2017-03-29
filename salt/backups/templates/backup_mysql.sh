@@ -2,7 +2,7 @@
 set -e
 
 {% set backupdir = '/backups/{}'.format(settings.get('directory', 'mysql')) %}
-{% set cacehdir = '/backups/.cache/{}'.format(settings.get('directory', 'mysql')) %}
+{% set cachedir = '/backups/.cache/{}'.format(settings.get('directory', 'mysql')) %}
 mkdir -p {{ backupdir }}
 
 /usr/bin/mysqldump --host {{ settings.host }} \
@@ -15,7 +15,6 @@ mkdir -p {{ backupdir }}
 
 PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
           --s3-use-server-side-encryption {{ backupdir }} \
-          --s3-use-ia \
           --archive-dir {{ cachedir }} \
           --full-if-older-than 1W \
           --allow-source-mismatch --tempdir /backups \

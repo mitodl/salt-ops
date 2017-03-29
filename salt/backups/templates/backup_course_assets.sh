@@ -9,7 +9,6 @@ mountpoint /mnt/efs || mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,
 
 PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
           --s3-use-server-side-encryption {{ backupdir }} \
-          --s3-use-ia \
           --archive-dir {{ cachedir }} \
           --full-if-older-than 1W \
           --allow-source-mismatch --tempdir /backups \
