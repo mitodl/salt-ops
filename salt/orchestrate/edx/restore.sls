@@ -125,3 +125,13 @@ alert_devops_channel_on_failure:
     - api_key: {{ salt.pillar.get('slack_api_token') }}
     - onfail:
         - salt: execute_enabled_backup_scripts
+
+alert_devops_channel_on_failure:
+  slack.post_message:
+    - channel: '#devops'
+    - from_name: saltbot
+    - message: 'The scheduled restore for edX {{ ENVIRONMENT }} has failed.'
+    - api_key: {{ salt.pillar.get('slack_api_token') }}
+    - require:
+        - salt: execute_enabled_backup_scripts
+        - salt: terminate_backup_instance_in_{{ ENVIRONMENT }}
