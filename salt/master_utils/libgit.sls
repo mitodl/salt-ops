@@ -22,7 +22,8 @@
             'make',
             'openssl-devel',
             'libssh-devel',
-            'python-pip',
+            'python2-pip',
+            'python-cffi',
             'python-devel'
         ]
     }
@@ -39,7 +40,7 @@ download_libgit_source:
     - source: https://github.com/libgit2/libgit2/archive/{{ libgit.tag }}.tar.gz
     - source_hash: {{ libgit.hash }}
     - archive_format: tar
-    - tar_options: xv
+    - options: xv
 
 compile_libgit:
   cmd.run:
@@ -52,6 +53,6 @@ compile_libgit:
 
 install_pygit:
   pip.installed:
-    - name: pygit2
+    - name: pygit2 == {{ libgit.tag.strip('v') }}
     - require:
         - cmd: compile_libgit
