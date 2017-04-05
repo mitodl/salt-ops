@@ -87,5 +87,5 @@ configure_vault_rabbitmq_backend:
         connection_uri: "http://rabbitmq.service.{{ ENVIRONMENT }}.consul:15672"
         username: admin
         password: {{ rabbit_admin_password }}
-    - lease: 4368h
-    - lease_max: 4368h
+    - ttl_max: 4368h
+    - ttl_default: 4368h
