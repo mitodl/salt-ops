@@ -127,7 +127,7 @@ configure_vault_mongodb_backend:
     - backend_type: mongodb
     - description: Backend to create dynamic MongoDB credentials for {{ ENVIRONMENT }}
     - mount_point: mongodb-{{ ENVIRONMENT }}
-    - lease_max: 4368h
-    - lease: 4368h
+    - ttl_max: 4368h
+    - ttl_default: 4368h
     - connection_config:
         uri: "mongodb://admin:{{ mongo_admin_password }}@mongodb-master.service.{{ ENVIRONMENT }}.consul:27017/admin"
