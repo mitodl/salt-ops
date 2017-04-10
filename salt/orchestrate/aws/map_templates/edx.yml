@@ -15,7 +15,7 @@ edx:
       grains:
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
-        {% set modified_purpose = purpose + '-' + app_type %}
+        {% set modified_purpose = purpose_prefix + '-' + app_type %}
         purpose: {{ modified_purpose }}
         roles:
           - edx
