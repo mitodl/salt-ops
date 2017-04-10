@@ -15,8 +15,8 @@ edx:
       grains:
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
-        {% if app_type not in purpose %}
-        {% set modified_purpose = purpose[:-len(purpose.split('-')[-1])] +app_type %}
+        {% if app_type == 'live' or 'draft' %}
+        {% set modified_purpose = purpose + '-' + app_type %}
         purpose: {{ modified_purpose }}
         {% else %}
         purpose: {{ purpose }}

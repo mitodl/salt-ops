@@ -13,4 +13,4 @@
 {% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', 'residential') %}
-{% set PURPOSE = salt.environ.get('PURPOSE', 'current-residential-draft') %}
+{% set PURPOSE = salt.environ.get('PURPOSE_PREFIX', 'current-residential') %}
