@@ -11,16 +11,12 @@ edx:
       tag:
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
-        purpose: {{ purpose }}
+        purpose_prefix: {{ purpose_prefix }}
       grains:
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
-        {% if app_type == 'live' or 'draft' %}
         {% set modified_purpose = purpose + '-' + app_type %}
         purpose: {{ modified_purpose }}
-        {% else %}
-        purpose: {{ purpose }}
-        {% endif %}
         roles:
           - edx
           - edx-{{ app_type }}
