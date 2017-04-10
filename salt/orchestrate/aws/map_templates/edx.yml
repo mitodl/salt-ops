@@ -9,9 +9,17 @@ edx:
           SubnetId: {{ subnetids[id_num % num_subnets] }}
           SecurityGroupId: {{ securitygroupid }}
       tag:
+        business_unit: {{ business_unit }}
         environment: {{ environment_name }}
+        purpose: {{ purpose }}
       grains:
+        business_unit: {{ business_unit }}
         environment: {{ environment_name }}
+        {% if app_type not in purpose %}
+        {% set purpose = purpose[:-len(purpose.split('-')[-1])] +app_type %}
+        purpose:
+          - {{ purpose }}
+        {% endif %}
         roles:
           - edx
           - edx-{{ app_type }}

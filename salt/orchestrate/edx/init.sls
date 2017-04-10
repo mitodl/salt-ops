@@ -1,5 +1,5 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- ENVIRONMENT, subnet_ids with context %}
+ ENVIRONMENT, BUSINESS_UNIT, PURPOSE, subnet_ids with context %}
 
 load_edx_cloud_profile:
   file.managed:
@@ -13,7 +13,9 @@ generate_edx_cloud_map_file:
     - template: jinja
     - makedirs: True
     - context:
+        business_unit: {{ BUSINESS_UNIT }}
         environment_name: {{ ENVIRONMENT }}
+        purpose: {{ PURPOSE }}
         roles:
           - edx
           - log-forwarder
