@@ -75,6 +75,7 @@ base:
     - edx.prod
     - edx.run_ansible
     - edx.tests
+    - edx.maintenance_tasks
     - fluentd
     - fluentd.plugins
     - fluentd.config
