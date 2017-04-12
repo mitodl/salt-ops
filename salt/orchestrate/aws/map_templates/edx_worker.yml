@@ -1,0 +1,24 @@
+edx_worker:
+  {% set num_subnets = subnetids|length %}
+  {% for app_type, num_instances in app_types.items() %}
+  {% for id_num in range(num_instances) %}
+  - edx-worker-{{ environment_name }}-{{ app_type }}-{{ id_num }}:
+      network_interfaces:
+        - DeviceIndex: 0
+          AssociatePublicIpAddress: False
+          SubnetId: {{ subnetids[id_num % num_subnets] }}
+          SecurityGroupId: {{ securitygroupid }}
+      tag:
+        business_unit: {{ business_unit }}
+        environment: {{ environment_name }}
+        purpose_prefix: {{ purpose_prefix }}
+      grains:
+        business_unit: {{ business_unit }}
+        environment: {{ environment_name }}
+        {% set modified_purpose = purpose_prefix + '-' + app_type %}
+        purpose: {{ modified_purpose }}
+        roles:
+          - edx
+          - edx-worker-{{ app_type }}
+{% endfor %}
+{% endfor %}
