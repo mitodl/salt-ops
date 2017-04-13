@@ -1,8 +1,12 @@
+#!jinja|yaml
+
 # Make sure that instance profiles exist for node types so that
 # they can be granted access via permissions attached to those
 # profiles because it's easier than managing IAM keys
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, subnet_ids with context %}
+
+{% import_yaml "environment_settings.yml" as env_settings %}
 
 {% for profile in ['consul', 'mongodb', 'rabbitmq', 'edx'] %}
 ensure_instance_profile_exists_for_{{ profile }}:
@@ -10,19 +14,13 @@ ensure_instance_profile_exists_for_{{ profile }}:
     - name: {{ profile }}-instance-role
 {% endfor %}
 
-{% if VPC_RESOURCE_SUFFIX == 'mitx-qa' %}
-{% set cidr_block_public_subnet_1 = 10.5.1.0/24 %}
-{% set cidr_block_public_subnet_2 = 10.5.2.0/24 %}
-{% set cidr_block_public_subnet_3 = 10.5.3.0/24 %}
-{% set cidr_ip = 10.5.0.0/22 %}
-{% set cidr_block = 10.5.0.0/16 %}
-{% elif VPC_RESOURCE_SUFFIX == 'mitx-rp' %}
-{% set cidr_block_public_subnet_1 = 10.6.1.0/24 %}
-{% set cidr_block_public_subnet_2 = 10.6.2.0/24 %}
-{% set cidr_block_public_subnet_3 = 10.6.3.0/24 %}
-{% set cidr_ip = 10.6.0.0/22 %}
-{% set cidr_block = 10.5.0.0/16 %}
-{% endif %}
+{% set network_prefix = env_settings.environments[VPC_RESOURCE_SUFFIX].network_prefix %}
+{% set cidr_block_public_subnet_1 = '{}.1.0/24'.format(network_prefix) %}
+{% set cidr_block_public_subnet_2 = '{}.2.0/24'.format(network_prefix) %}
+{% set cidr_block_public_subnet_3 = '{}.3.0/24'.format(network_prefix) %}
+{% set cidr_ip = '{}.0.0/22'.format(network_prefix) %}
+{% set cidr_block = '{}.0.0/16'.format(network_prefix) %}
+
 {% set VPC_RESOURCE_SUFFIX_UNDERSCORE = VPC_RESOURCE_SUFFIX.replace('-', '_') %}
 
 create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc:

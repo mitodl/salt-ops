@@ -1,4 +1,4 @@
-ike_edx:
+edx:
   - ike-edx-mitx-rp-live:
       network_interfaces:
         - DeviceIndex: 0

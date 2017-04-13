@@ -16,12 +16,11 @@ generate_edx_cloud_map_file:
         business_unit: {{ BUSINESS_UNIT }}
         environment_name: {{ ENVIRONMENT }}
         purpose_prefix: {{ PURPOSE_PREFIX }}
-        roles:
-          - edx
-          - log-forwarder
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
               'edx-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+          - {{ salt.boto_secgroup.get_group_id(
+              'edx-worker{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
               'default', vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
@@ -55,7 +54,7 @@ deploy_edx_cloud_map:
 load_pillar_data_on_edx_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'G@roles:edx and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
         - salt: deploy_edx_cloud_map
@@ -63,7 +62,7 @@ load_pillar_data_on_edx_nodes:
 populate_mine_with_edx_node_data:
   salt.function:
     - name: mine.update
-    - tgt: 'G@roles:edx and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
         - salt: load_pillar_data_on_edx_nodes
@@ -72,7 +71,7 @@ populate_mine_with_edx_node_data:
 reload_pillar_data_on_edx_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'G@roles:edx and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
         - salt: populate_mine_with_edx_node_data
@@ -80,7 +79,7 @@ reload_pillar_data_on_edx_nodes:
 {# Deploy Consul agent first so that the edx deployment can use provided DNS endpoints #}
 deploy_consul_agent_to_edx_nodes:
   salt.state:
-    - tgt: 'G@roles:edx and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - sls:
         - consul
@@ -88,8 +87,18 @@ deploy_consul_agent_to_edx_nodes:
 
 build_edx_nodes:
   salt.state:
-    - tgt: 'G@roles:edx and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - highstate: True
     - require:
         - salt: deploy_consul_agent_to_edx_nodes
+
+stop_non_edx_worker_services:
+{% for service in ['edxapp:', 'forum', 'xqueue', 'xqueue_consumer'] %}
+  salt.function:
+    - name: supervisord.dead
+    - tgt: 'G@roles:edx-worker and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - bin_env: '/edx/bin/supervisorctl'
+    - name: {{ service }}
+{% endfor %}
