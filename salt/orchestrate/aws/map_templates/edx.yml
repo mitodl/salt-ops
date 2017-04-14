@@ -1,7 +1,7 @@
 edx:
   {% set num_subnets = subnetids|length %}
   {% for app_type, num_instances in app_types.items() %}
-  {% for id_num in range(num_instances) %}
+  {% for id_num in range(num_instances.edx) %}
   - edx-{{ environment_name }}-{{ app_type }}-{{ id_num }}:
       network_interfaces:
         - DeviceIndex: 0
@@ -9,7 +9,6 @@ edx:
           SubnetId: {{ subnetids[id_num % num_subnets] }}
           SecurityGroupId:
             - {{ securitygroupids.edxapp }}
-            - {{ securitygroupids.edx-worker }}
             - {{ securitygroupids.default }}
             - {{ securitygroupids.salt-master }}
             - {{ securitygroupids.consul-agent }}
@@ -31,7 +30,7 @@ edx:
 edx-worker:
   {% set num_subnets = subnetids|length %}
   {% for app_type, num_instances in app_types.items() %}
-  {% for id_num in range(num_instances) %}
+  {% for id_num in range(num_instances.edx-worker) %}
   - edx-worker-{{ environment_name }}-{{ app_type }}-{{ id_num }}:
         network_interfaces:
           - DeviceIndex: 0

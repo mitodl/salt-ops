@@ -2,9 +2,8 @@
  ENVIRONMENT, BUSINESS_UNIT, PURPOSE_PREFIX, subnet_ids with context %}
 
  {% set env_settings = salt.pillar.get('environment_settings') %}
- {% set bucket_prefixes = |
-     env_settings.edxapp_secret_backends.aws.bucket_prefixes %}
-{% set purposes = env_settings.[ENVIRONMENT].purposes %}
+ {% set bucket_prefixes = env_settings.edxapp_secret_backends.aws.bucket_prefixes %}
+{% set purposes = env_settings[ENVIRONMENT].purposes %}
 
 load_edx_cloud_profile:
   file.managed:
