@@ -4,5 +4,9 @@ create_{{ role_id }}:
   vault.role_present:
     - name: {{ role.name }}
     - mount_point: {{ role.backend }}
-    - options: {{ role.options }}
+    - options:
+        {% for key, value in role.options.items() %}
+        {{ key }}: |
+            {{ value }}
+        {% endfor %}
 {% endfor %}
