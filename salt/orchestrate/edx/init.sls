@@ -44,9 +44,9 @@ ensure_instance_profile_exists_for_edx:
 
 {% for bucket in bucket_prefixes %}
 {% for type in ['draft', 'live'] %}
-create_edx_s3_bucket_{{ bucket }}_{{ PURPOSE_PREFIX }}:
+create_edx_s3_bucket_{{ bucket }}_{{ PURPOSE_PREFIX }}_{{ ENVIRONMENT }}:
   boto_s3_bucket.present:
-    - name: {{ bucket }}-{{ PURPOSE_PREFIX }}-{{ type }}
+    - name: {{ bucket }}-{{ PURPOSE_PREFIX }}-{{ type }}-{{ ENVIRONMENT }}
     - region: us-east-1
     - Versioning:
        Status: "Enabled"
