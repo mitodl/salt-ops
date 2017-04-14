@@ -7,9 +7,12 @@ edx:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
           SubnetId: {{ subnetids[id_num % num_subnets] }}
-          SecurityGroupId: |
-            {{ securitygroupids.edxapp, securitygroupids.edx-worker, securitygroupids.default,
-            securitygroupids.salt-master, securitygroupids.consul-agent }}
+          SecurityGroupId:
+            - {{ securitygroupids.edxapp }}
+            - {{ securitygroupids.edx-worker }}
+            - {{ securitygroupids.default }}
+            - {{ securitygroupids.salt-master }}
+            - {{ securitygroupids.consul-agent }}
       tag:
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
@@ -34,9 +37,11 @@ edx-worker:
           - DeviceIndex: 0
             AssociatePublicIpAddress: True
             SubnetId: {{ subnetids[id_num % num_subnets] }}
-            SecurityGroupId: |
-              {{ securitygroupids.edx-worker, securitygroupids.default, securitygroupids.salt-master,
-               securitygroupids.consul-agent }}
+            SecurityGroupId:
+              - {{ securitygroupids.edx-worker }}
+              - {{ securitygroupids.default }}
+              - {{ securitygroupids.salt-master }}
+              - {{ securitygroupids.consul-agent }}
         tag:
           business_unit: {{ business_unit }}
           environment: {{ environment_name }}

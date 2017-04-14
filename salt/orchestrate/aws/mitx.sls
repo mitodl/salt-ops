@@ -6,7 +6,7 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, subnet_ids with context %}
 
-{% set env_settings = salt.pillar.get('environment_settings') %}
+{% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 
 {% for profile in ['consul', 'mongodb', 'rabbitmq', 'edx'] %}
 ensure_instance_profile_exists_for_{{ profile }}:
@@ -14,7 +14,7 @@ ensure_instance_profile_exists_for_{{ profile }}:
     - name: {{ profile }}-instance-role
 {% endfor %}
 
-{% set network_prefix = env_settings.environments[VPC_RESOURCE_SUFFIX].network_prefix %}
+{% set network_prefix = env_settings.network_prefix %}
 {% set cidr_block_public_subnet_1 = '{}.1.0/24'.format(network_prefix) %}
 {% set cidr_block_public_subnet_2 = '{}.2.0/24'.format(network_prefix) %}
 {% set cidr_block_public_subnet_3 = '{}.3.0/24'.format(network_prefix) %}

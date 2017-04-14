@@ -34,18 +34,25 @@ generate_edx_cloud_map_file:
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids }}
         app_types:
-          draft:
-            edx: {{ purposes.current-residential-draft.num_instances.edx }}
-            edx-worker: {{ purposes.current-residential-draft.num_instances.edx-worker }}
-          live:
-            edx: {{ purposes.current-residential-live.num_instances.edx }}
-            edx-worker: {{ purposes.current-residential-live.num_instances.edx-worker }}
+          draft: {{ purposes['{}-draft'.format(PURPOSE_PREFIX)].num_instances }}
+          live:  {{ purposes['{}-live'.format(PURPOSE_PREFIX)].num_instances }}
     - require:
         - file: load_edx_cloud_profile
 
 ensure_instance_profile_exists_for_edx:
   boto_iam_role.present:
     - name: edx-instance-role
+
+{% for bucket in bucket_prefixes %}
+{% for type in ['draft', 'live'] %}
+create_edx_s3_bucket_{{ bucket }}_{{ PURPOSE_PREFIX }}:
+  boto_s3_bucket.present:
+    - name: {{ bucket }}-{{ PURPOSE_PREFIX }}-{{ type }}
+    - region: us-east-1
+    - Versioning:
+       Status: "Enabled"
+{% endfor %}
+{% endfor %}
 
 deploy_edx_cloud_map:
   salt.function:
@@ -111,10 +118,4 @@ stop_non_edx_worker_services_{{ service }}:
     - kwargs:
         bin_env: '/edx/bin/supervisorctl'
         name: {{ service }}
-{% endfor %}
-
-{% for bucket in bucket_prefixes %}
-create_edx_s3_bucket_{{ bucket }}_{{ PURPOSE_PREFIX }}:
-  boto_s3_bucket.create:
-    - name: {{ bucket }}_{{ PURPOSE_PREFIX }}
 {% endfor %}
