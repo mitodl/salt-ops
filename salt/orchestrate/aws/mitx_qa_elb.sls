@@ -1,24 +1,13 @@
-{% set type_counts = {'draft': 2, 'live': 2} %}
-{% set domains = {
-    'draft': ['studio-mitx-qa-draft.mitx.mit.edu.',
-              'mitx-qa-draft.mitx.mit.edu.',
-              'preview-mitx-qa-draft.mitx.mit.edu.',
-              'gr-qa.mitx.mit.edu.'],
-    'live': ['studio-mitx-qa.mitx.mit.edu.',
-             'mitx-qa.mitx.mit.edu.',
-             'preview-mitx-qa.mitx.mit.edu.',
-             'prod-gr-qa.mitx.mit.edu.']
-} %}
-{% set environment = 'mitx-qa' %}
+{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
+ ENVIRONMENT, PURPOSE_PREFIX, subnet_ids with context %}
+{% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
+
 {% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-mitx-qa']) %}
-{% set subnet_ids = [] %}
-{% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
-    'public1-mitx-qa', 'public2-mitx-qa', 'public3-mitx-qa'])['subnets'] %}
-{% do subnet_ids.append('{0}'.format(subnet['id'])) %}
-{% endfor %}
 
 {% for edx_type in ['draft', 'live'] %}
 {% set elb_name = 'edx-{0}-mitx-qa'.format(edx_type) %}
+{% set purpose = env_settings['{prefix}-{app}'.format(
+    prefix=PURPOSE_PREFIX, app=edx_type)] %}
 create_elb_for_edx_{{ edx_type }}:
   boto_elb.present:
     - name: {{ elb_name }}
@@ -43,8 +32,10 @@ create_elb_for_edx_{{ edx_type }}:
           enabled: True
           timeout: 300
     - cnames:
-        {% for domain in domains[edx_type] %}
-        - name: {{ domain }}
+        {% for domain_key, domain in purpose.domains.items()  %}
+        {% if (app_type == 'live' and domain_key in ['lms', 'gitreload'])
+           or app_type == 'draft' %}
+        - name: {{ domain }}.
           zone: mitx.mit.edu.
           ttl: 60
         {% endfor %}
@@ -59,11 +50,11 @@ create_elb_for_edx_{{ edx_type }}:
 
 register_edx_{{ edx_type }}_nodes_with_elb:
   boto_elb.register_instances:
-    - name: edx-{{ edx_type }}-mitx-qa
+    - name: edx-{{ edx_type }}-{{ ENVIRONMENT }}
     - instances:
-        {% for instance_num in range(type_counts[edx_type]) %}
+        {% for instance_num in range(purpose.num_instances.edx) %}
         - {{ salt.boto_ec2.get_id('edx-{env}-{t}-{num}'.format(
-            env=environment, t=edx_type, num=instance_num)) }}
+            env=ENVIRONMENT, t=edx_type, num=instance_num)) }}
         {% endfor %}
     - require:
         - boto_elb: create_elb_for_edx_{{ edx_type }}
