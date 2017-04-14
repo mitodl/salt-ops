@@ -6,7 +6,7 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, subnet_ids with context %}
 
-{% import_yaml "environment_settings.yml" as env_settings %}
+{% set env_settings = salt.pillar.get('environment_settings') %}
 
 {% for profile in ['consul', 'mongodb', 'rabbitmq', 'edx'] %}
 ensure_instance_profile_exists_for_{{ profile }}:

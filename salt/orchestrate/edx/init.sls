@@ -1,6 +1,11 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, BUSINESS_UNIT, PURPOSE_PREFIX, subnet_ids with context %}
 
+ {% set env_settings = salt.pillar.get('environment_settings') %}
+ {% set bucket_prefixes = |
+     env_settings.edxapp_secret_backends.aws.bucket_prefixes %}
+{% set purposes = env_settings.[ENVIRONMENT].purposes %}
+
 load_edx_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/edx.conf
@@ -16,21 +21,25 @@ generate_edx_cloud_map_file:
         business_unit: {{ BUSINESS_UNIT }}
         environment_name: {{ ENVIRONMENT }}
         purpose_prefix: {{ PURPOSE_PREFIX }}
-        securitygroupid:
-          - {{ salt.boto_secgroup.get_group_id(
+        securitygroupids:
+          edxapp: {{ salt.boto_secgroup.get_group_id(
               'edx-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-          - {{ salt.boto_secgroup.get_group_id(
+          edx-worker: {{ salt.boto_secgroup.get_group_id(
               'edx-worker{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-          - {{ salt.boto_secgroup.get_group_id(
+          default: {{ salt.boto_secgroup.get_group_id(
               'default', vpc_name=VPC_NAME) }}
-          - {{ salt.boto_secgroup.get_group_id(
+          salt-master: {{ salt.boto_secgroup.get_group_id(
             'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-          - {{ salt.boto_secgroup.get_group_id(
+          consul-agent: {{ salt.boto_secgroup.get_group_id(
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids }}
         app_types:
-          draft: 2
-          live: 2
+          draft:
+            edx: {{ purposes.current-residential-draft.num_instances.edx }}
+            edx-worker: {{ purposes.current-residential-draft.num_instances.edx-worker }}
+          live:
+            edx: {{ purposes.current-residential-live.num_instances.edx }}
+            edx-worker: {{ purposes.current-residential-live.num_instances.edx-worker }}
     - require:
         - file: load_edx_cloud_profile
 
@@ -93,12 +102,19 @@ build_edx_nodes:
     - require:
         - salt: deploy_consul_agent_to_edx_nodes
 
-stop_non_edx_worker_services:
 {% for service in ['edxapp:', 'forum', 'xqueue', 'xqueue_consumer'] %}
+stop_non_edx_worker_services_{{ service }}:
   salt.function:
     - name: supervisord.dead
     - tgt: 'G@roles:edx-worker and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
-    - bin_env: '/edx/bin/supervisorctl'
-    - name: {{ service }}
+    - kwargs:
+        bin_env: '/edx/bin/supervisorctl'
+        name: {{ service }}
+{% endfor %}
+
+{% for bucket in bucket_prefixes %}
+create_edx_s3_bucket_{{ bucket }}_{{ PURPOSE_PREFIX }}:
+  boto_s3_bucket.create:
+    - name: {{ bucket }}_{{ PURPOSE_PREFIX }}
 {% endfor %}
