@@ -5,8 +5,7 @@
 
 {% set playbooks = salt.pillar.get('edx:playbooks', ['edx-east/edxapp.yml',
                                                      'edx-east/xqueue.yml',
-                                                     'edx-east/forum.yml',
-                                                     'edx-east/worker.yml']) -%}
+                                                     'edx-east/forum.yml']) -%}
 
 clone_edx_configuration:
   file.directory:
