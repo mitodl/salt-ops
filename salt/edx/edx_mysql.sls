@@ -8,15 +8,16 @@
   'EDXAPP_MYSQL_DB_NAME': 'edxapp',
   }
 %}
+
+{% set edxapp_mysql_host = 'mysql.service.{}.consul'.format(environment) %}
+{% set edxapp_mysql_port = 3306 %}
+
+{% for db,name in edxlocal_databases.iteritems() %}
+{% for purpose in purposes %}
 {% set edxapp_mysql_creds = salt.vault.read(
     'mysql-{env}/creds/edxapp-{purpose}'.format(
         env=environment,
         purpose=purpose)) %}
-{% set edxapp_mysql_host = salt.pillar.get('edx:ansible_vars:EDXAPP_MYSQL_HOST') %}
-{% set edxapp_mysql_port = salt.pillar.get('edx:ansible_vars:EDXAPP_MYSQL_PORT') %}
-
-{% for db,name in edxlocal_databases.iteritems() %}
-{% for purpose in purposes %}
 edxapp_create_db_{{ name }}-{{ purpose }}:
   mysql_database.present:
     - name: {{ name }}-{{ purpose }}
