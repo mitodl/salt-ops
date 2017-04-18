@@ -11,13 +11,12 @@
 
 {% set edxapp_mysql_host = 'mysql.service.{}.consul'.format(environment) %}
 {% set edxapp_mysql_port = 3306 %}
+{% set edxapp_mysql_creds = salt.vault.read(
+    'mysql-{env}/creds/admin'.format(
+        env=environment)) %}
 
 {% for db,name in edxlocal_databases.iteritems() %}
 {% for purpose in purposes %}
-{% set edxapp_mysql_creds = salt.vault.read(
-    'mysql-{env}/creds/edxapp-{purpose}'.format(
-        env=environment,
-        purpose=purpose)) %}
 edxapp_create_db_{{ name }}_{{ purpose }}:
   mysql_database.present:
     - name: {{ name }}_{{ purpose|replace('-', '_') }}
