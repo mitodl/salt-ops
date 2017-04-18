@@ -20,7 +20,7 @@
         purpose=purpose)) %}
 edxapp_create_db_{{ name }}_{{ purpose }}:
   mysql_database.present:
-    - name: {{ name }}_{{ purpose }}
+    - name: {{ name }}_{{ purpose|replace('-', '_') }}
     - connection_user: {{ edxapp_mysql_creds.data.username }}
     - connection_pass: {{ edxapp_mysql_creds.data.password }}
     - connection_args:
