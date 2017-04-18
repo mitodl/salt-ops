@@ -1,9 +1,9 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, BUSINESS_UNIT, PURPOSE_PREFIX, subnet_ids with context %}
 
- {% set env_settings = salt.pillar.get('environment_settings') %}
- {% set bucket_prefixes = env_settings.edxapp_secret_backends.aws.bucket_prefixes %}
-{% set purposes = env_settings[ENVIRONMENT].purposes %}
+{% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
+{% set purposes = env_settings.purposes %}
+{% set bucket_prefixes = env_settings.secret_backends.aws.bucket_prefixes %}
 
 load_edx_cloud_profile:
   file.managed:
