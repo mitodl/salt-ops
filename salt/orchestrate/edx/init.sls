@@ -47,7 +47,7 @@ ensure_instance_profile_exists_for_edx:
 {% for type in ['draft', 'live'] %}
 create_edx_s3_bucket_{{ bucket }}_{{ PURPOSE_PREFIX }}-{{ type }}_{{ ENVIRONMENT }}:
   boto_s3_bucket.present:
-    - name: {{ bucket }}-{{ PURPOSE_PREFIX }}-{{ type }}-{{ ENVIRONMENT }}
+    - Bucket: {{ bucket }}-{{ PURPOSE_PREFIX }}-{{ type }}-{{ ENVIRONMENT }}
     - region: us-east-1
     - Versioning:
        Status: "Enabled"
@@ -115,7 +115,7 @@ stop_non_edx_worker_services_{{ service }}:
     - name: supervisord.dead
     - tgt: 'G@roles:edx-worker and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
-    - kwargs:
+    - kwarg:
         bin_env: '/edx/bin/supervisorctl'
         name: '{{ service }}'
 {% endfor %}

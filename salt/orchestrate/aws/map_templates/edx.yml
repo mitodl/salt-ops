@@ -10,7 +10,7 @@ edx:
           SecurityGroupId:
             - {{ securitygroupids.edxapp }}
             - {{ securitygroupids.default }}
-            - {{ securitygroupids.salt-master }}
+            - {{ securitygroupids['salt-master'] }}
             - {{ securitygroupids.consul-agent }}
       image: {{ ami_id }}
       tag:
@@ -40,7 +40,7 @@ edx-worker:
             SecurityGroupId:
               - {{ securitygroupids.edx-worker }}
               - {{ securitygroupids.default }}
-              - {{ securitygroupids.salt-master }}
+              - {{ securitygroupids['salt-master'] }}
               - {{ securitygroupids.consul-agent }}
         image: {{ ami_id }}
         tag:
