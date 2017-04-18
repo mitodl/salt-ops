@@ -18,9 +18,9 @@
     'mysql-{env}/creds/edxapp-{purpose}'.format(
         env=environment,
         purpose=purpose)) %}
-edxapp_create_db_{{ name }}-{{ purpose }}:
+edxapp_create_db_{{ name }}_{{ purpose }}:
   mysql_database.present:
-    - name: {{ name }}-{{ purpose }}
+    - name: {{ name }}_{{ purpose }}
     - connection_user: {{ edxapp_mysql_creds.data.username }}
     - connection_pass: {{ edxapp_mysql_creds.data.password }}
     - connection_args:
