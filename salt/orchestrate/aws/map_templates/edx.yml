@@ -12,6 +12,7 @@ edx:
             - {{ securitygroupids.default }}
             - {{ securitygroupids.salt-master }}
             - {{ securitygroupids.consul-agent }}
+      image: {{ ami_id }}
       tag:
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
@@ -41,6 +42,7 @@ edx-worker:
               - {{ securitygroupids.default }}
               - {{ securitygroupids.salt-master }}
               - {{ securitygroupids.consul-agent }}
+        image: {{ ami_id }}
         tag:
           business_unit: {{ business_unit }}
           environment: {{ environment_name }}
