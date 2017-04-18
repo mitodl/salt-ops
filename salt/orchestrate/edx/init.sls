@@ -117,5 +117,5 @@ stop_non_edx_worker_services_{{ service }}:
     - tgt_type: compound
     - kwargs:
         bin_env: '/edx/bin/supervisorctl'
-        name: {{ service }}
+        name: '{{ service }}'
 {% endfor %}
