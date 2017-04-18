@@ -11,7 +11,7 @@ edx:
             - {{ securitygroupids.edxapp }}
             - {{ securitygroupids.default }}
             - {{ securitygroupids['salt-master'] }}
-            - {{ securitygroupids.consul-agent }}
+            - {{ securitygroupids['consul-agent'] }}
       image: {{ ami_id }}
       tag:
         business_unit: {{ business_unit }}
@@ -31,17 +31,17 @@ edx:
 edx-worker:
   {% set num_subnets = subnetids|length %}
   {% for app_type, num_instances in app_types.items() %}
-  {% for id_num in range(num_instances.edx-worker) %}
+  {% for id_num in range(num_instances['edx-worker']) %}
   - edx-worker-{{ environment_name }}-{{ app_type }}-{{ id_num }}:
         network_interfaces:
           - DeviceIndex: 0
             AssociatePublicIpAddress: True
             SubnetId: {{ subnetids[id_num % num_subnets] }}
             SecurityGroupId:
-              - {{ securitygroupids.edx-worker }}
+              - {{ securitygroupids['edx-worker'] }}
               - {{ securitygroupids.default }}
               - {{ securitygroupids['salt-master'] }}
-              - {{ securitygroupids.consul-agent }}
+              - {{ securitygroupids['consul-agent'] }}
         image: {{ ami_id }}
         tag:
           business_unit: {{ business_unit }}
