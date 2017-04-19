@@ -29,6 +29,7 @@ configure_python_ppa_for_edx:
     - ppa: fkrull/deadsnakes-python2.7
     - require_in:
         - pkg: install_os_packages
+{% endif %}
 
 install_os_packages:
   pkg.installed:
@@ -36,8 +37,9 @@ install_os_packages:
         - git
         - libmysqlclient-dev
         - mysql-client
-        - python2.7: 2.7.12-1~precise1
-        - python2.7-dev: 2.7.12-1~precise1
+        - libssl-dev
+        - python2.7
+        - python2.7-dev
         - python-pip
         - python-virtualenv
         - nfs-common
@@ -47,7 +49,6 @@ install_os_packages:
     - require_in:
         - virtualenv: create_ansible_virtualenv
         - git: clone_edx_configuration
-{% endif %}
 
 {% if salt.pillar.get('edx:generate_tls_certificate') %}
 generate_self_signed_certificate:
