@@ -80,6 +80,12 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
+  'G@roles:edx-worker and P@environment:(mitx-qa|mitx-rp)':
+    - match: compound
+    - edx.run_ansible
+    - fluentd
+    - fluentd.plugins
+    - fluentd.config
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
