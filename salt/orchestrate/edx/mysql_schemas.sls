@@ -13,7 +13,7 @@
 {% set edxapp_mysql_port = 3306 %}
 {% set edxapp_mysql_creds = salt.vault.read(
     'mysql-{env}/creds/admin'.format(
-        env=environment)) %}
+        env=ENVIRONMENT)) %}
 
 {% for db,name in edxlocal_databases.iteritems() %}
 {% for purpose in purposes %}
