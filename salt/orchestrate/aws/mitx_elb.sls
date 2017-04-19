@@ -2,13 +2,14 @@
  ENVIRONMENT, PURPOSE_PREFIX, subnet_ids with context %}
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 
-{% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-mitx-qa']) %}
+{% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-{env}'.format(env=ENVIRONMENT]) %}
 
 {% for edx_type in ['draft', 'live'] %}
-{% set elb_name = 'edx-{0}-mitx-qa'.format(edx_type) %}
-{% set purpose = env_settings['{prefix}-{app}'.format(
-    prefix=PURPOSE_PREFIX, app=edx_type)] %}
-create_elb_for_edx_{{ edx_type }}:
+{% set purpose_name = '{prefix}-{app}'.format(
+    prefix=PURPOSE_PREFIX, app=edx_type) %}
+{% set purpose = env_settings[purpose_name] %}
+{% set elb_name = 'edx-{0}-{{ ENVIRONMENT }}'.format(purpose_name) %}
+create_elb_for_edx_{{ purpose_name }}:
   boto_elb.present:
     - name: {{ elb_name }}
     - listeners:
@@ -38,6 +39,7 @@ create_elb_for_edx_{{ edx_type }}:
         - name: {{ domain }}.
           zone: mitx.mit.edu.
           ttl: 60
+        {% endif %}
         {% endfor %}
     - health_check:
         target: 'HTTPS:443/heartbeat'
@@ -48,14 +50,14 @@ create_elb_for_edx_{{ edx_type }}:
           policy_type: LBCookieStickinessPolicyType
           policy: {}
 
-register_edx_{{ edx_type }}_nodes_with_elb:
+register_edx_{{ purpose_name }}_nodes_with_elb:
   boto_elb.register_instances:
-    - name: edx-{{ edx_type }}-{{ ENVIRONMENT }}
+    - name: edx-{{ purpose_name }}-{{ ENVIRONMENT }}
     - instances:
         {% for instance_num in range(purpose.num_instances.edx) %}
         - {{ salt.boto_ec2.get_id('edx-{env}-{t}-{num}'.format(
-            env=ENVIRONMENT, t=edx_type, num=instance_num)) }}
+            env=ENVIRONMENT, t=purpose_name, num=instance_num)) }}
         {% endfor %}
     - require:
-        - boto_elb: create_elb_for_edx_{{ edx_type }}
+        - boto_elb: create_elb_for_edx_{{ purpose_name }}
 {% endfor %}
