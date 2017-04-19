@@ -63,6 +63,7 @@ base:
     - match: compound
     - vault
     - vault.tests
+    - utils.file_limits
   'G@roles:rabbitmq and P@environment:(mitx-qa|mitx-rp)':
     - match: compound
     - rabbitmq
