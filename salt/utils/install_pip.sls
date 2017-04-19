@@ -1,6 +1,7 @@
 {% set python_dependencies = salt.grains.filter_by({
     'default': {
-      'python_libs': ['testinfra', 'pyinotify']
+      'python_libs': ['testinfra', 'pyinotify'],
+      'pkgs': ['gcc', 'make']
     },
     'Debian': {
       'pkgs': ['python-dev', 'python', 'curl'],
@@ -28,6 +29,4 @@ install_global_pip_executable:
 install_python_libraries:
   pip.installed:
     - names: {{ python_dependencies.python_libs }}
-    - require:
-        - cmd: install_global_pip_executable
     - reload_modules: True
