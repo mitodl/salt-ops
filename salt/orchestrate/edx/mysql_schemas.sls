@@ -9,7 +9,7 @@
   }
 %}
 
-{% set edxapp_mysql_host = 'mysql.service.{}.consul'.format(environment) %}
+{% set edxapp_mysql_host = 'mysql.service.{}.consul'.format(ENVIRONMENT) %}
 {% set edxapp_mysql_port = 3306 %}
 {% set edxapp_mysql_creds = salt.vault.read(
     'mysql-{env}/creds/admin'.format(
@@ -22,8 +22,7 @@ edxapp_create_db_{{ name }}_{{ purpose }}:
     - name: {{ name }}_{{ purpose|replace('-', '_') }}
     - connection_user: {{ edxapp_mysql_creds.data.username }}
     - connection_pass: {{ edxapp_mysql_creds.data.password }}
-    - connection_args:
-        mysql.host: {{ edxapp_mysql_host }}
-        mysql.port: {{ edxapp_mysql_port }}
+    - connection_host: {{ edxapp_mysql_host }}
+    - connection_port: {{ edxapp_mysql_port }}
 {% endfor %}
 {% endfor %}
