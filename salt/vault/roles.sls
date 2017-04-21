@@ -7,7 +7,7 @@ create_{{ role_id }}:
     - override: {{ salt.pillar.get('vault:force_roles', False) }}
     - options:
         {% for key, value in role.options.items() %}
-        {{ key }}: |
+        {{ key }}: >-
             {{ value }}
         {% endfor %}
 {% endfor %}
