@@ -53,6 +53,7 @@ edx-worker:
           {% set modified_purpose = purpose_prefix + '-' + app_type %}
           purpose: {{ modified_purpose }}
           roles:
+            - edx-worker
             - edx-worker-{{ app_type }}
 {% endfor %}
 {% endfor %}
