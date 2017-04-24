@@ -44,6 +44,7 @@ install_os_packages:
         - python-virtualenv
         - nfs-common
         - postfix
+        - memcached
     - refresh: True
     - refresh_modules: True
     - require_in:
