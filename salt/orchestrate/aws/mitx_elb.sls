@@ -2,13 +2,14 @@
  ENVIRONMENT, PURPOSE_PREFIX, subnet_ids with context %}
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 
-{% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-{env}'.format(env=ENVIRONMENT]) %}
+{% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-{env}'.format(env=ENVIRONMENT)]) %}
 
 {% for edx_type in ['draft', 'live'] %}
 {% set purpose_name = '{prefix}-{app}'.format(
     prefix=PURPOSE_PREFIX, app=edx_type) %}
-{% set purpose = env_settings[purpose_name] %}
-{% set elb_name = 'edx-{0}-{{ ENVIRONMENT }}'.format(purpose_name) %}
+{% set purpose = env_settings.purposes[purpose_name] %}
+{% set elb_name = 'edx-{purpose}-{env}'.format(
+   purpose=purpose_name, env=ENVIRONMENT)[:32].strip('-') %}
 create_elb_for_edx_{{ purpose_name }}:
   boto_elb.present:
     - name: {{ elb_name }}
@@ -34,8 +35,8 @@ create_elb_for_edx_{{ purpose_name }}:
           timeout: 300
     - cnames:
         {% for domain_key, domain in purpose.domains.items()  %}
-        {% if (app_type == 'live' and domain_key in ['lms', 'gitreload'])
-           or app_type == 'draft' %}
+        {% if (edx_type == 'live' and domain_key in ['lms', 'gitreload'])
+           or edx_type == 'draft' %}
         - name: {{ domain }}.
           zone: mitx.mit.edu.
           ttl: 60
@@ -52,7 +53,7 @@ create_elb_for_edx_{{ purpose_name }}:
 
 register_edx_{{ purpose_name }}_nodes_with_elb:
   boto_elb.register_instances:
-    - name: edx-{{ purpose_name }}-{{ ENVIRONMENT }}
+    - name: {{ elb_name }}
     - instances:
         {% for instance_num in range(purpose.num_instances.edx) %}
         - {{ salt.boto_ec2.get_id('edx-{env}-{t}-{num}'.format(
