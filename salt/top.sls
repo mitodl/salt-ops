@@ -72,9 +72,9 @@ base:
     - datadog.plugins
   'G@roles:edx and P@environment:(mitx-qa|mitx-rp)':
     - match: compound
-    - edx.gitreload
     - edx.prod
     - edx.run_ansible
+    - edx.gitreload
     - edx.tests
     - edx.maintenance_tasks
     - fluentd
@@ -82,6 +82,7 @@ base:
     - fluentd.config
   'G@roles:edx-worker and P@environment:(mitx-qa|mitx-rp)':
     - match: compound
+    - edx.prod
     - edx.run_ansible
     - fluentd
     - fluentd.plugins
