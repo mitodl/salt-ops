@@ -68,18 +68,24 @@ from s3 buckets when called. In order to accomodate that, we have an EBS volume 
 by the ephemeral instance that is destroyed once backups are complete. #}
 {% set instance_id = salt.boto_ec2.find_instances('name=backups-{}'.format(ENVIRONMENT)) %}
 {% if instance_id %}
-attach_backup_volume:
+create_attach_backup_volume:
   salt.function:
     - name: saltutil.runner
     - arg:
         - cloud.action
     - kwarg:
-        func: ec2.attach_volume
+        func: ec2.create_attach_volume
         kwargs:
           instance_id: {{ instance_id }}
-          volume_name: {{ backup_volume_name }}
-          zone: us-east-1b
-          size: 400
+          volume:
+            volume_name: {{ backup_volume_name }}
+            device: /dev/xvdb
+            zone: us-east-1b
+            tags: backup
+            type: gp2
+            size: 400
+    - require:
+        salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
 
 mount_backup_drive:
   salt.function:
@@ -90,7 +96,7 @@ mount_backup_drive:
         - mount.mounted
     - kwarg:
         name: /backups
-        device: /dev/{{ salt.grains.get('ec2:block_device_mapping:ebs2') }}
+        device: /dev/xvdb
         fstype: ext4
         mkmnt: True
         opts: 'relatime,user'
@@ -127,7 +133,9 @@ unmount_backup_drive:
         - mount.unmounted
     - kwarg:
         name: /backups
-        device: /dev/{{ salt.grains.get('ec2:block_device_mapping:ebs2') }}
+        device: /dev/xvdb
+    - require:
+        - salt: execute_enabled_backup_scripts
 
 detach_backup_volume:
   salt.function:
@@ -141,7 +149,7 @@ detach_backup_volume:
         kwargs:
           volume_id:
           instance_id: {{ instance_id }}
-          device: /dev/{{ salt.grains.get('ec2:block_device_mapping:ebs2') }}
+          device: /dev/xvdb
     - require:
         - salt: unmount_backup_drive
 
