@@ -1,19 +1,11 @@
 elasticsearch:
   {% for id_num in range(3) %}
   - elasticsearch-{{ environment_name }}-{{ id_num }}:
-      size: t2.medium
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
           SubnetId: {{ subnetids[id_num] }}
           SecurityGroupId: {{ securitygroupid }}
-      block_device_mappings:
-        - DeviceName: /dev/xvda
-          Ebs.VolumeSize: {{ volume_size }}
-          Ebs.VolumeType: gp2
-        - DeviceName: /dev/xvdb
-          Ebs.VolumeSize: {{ volume_size }}
-          Ebs.VolumeType: gp2
       tag:
         environment: {{ environment_name }}
         role: elasticsearch
