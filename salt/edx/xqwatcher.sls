@@ -21,6 +21,7 @@ install_os_packages:
         - python-pip
         - python-virtualenv
         - libmysqlclient-dev
+        - libssl-dev
     - refresh: True
     - refresh_modules: True
 
