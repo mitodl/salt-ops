@@ -95,17 +95,6 @@ mount_backup_drive:
         mkmnt: True
         opts: 'relatime,user'
 
-create_backup_directory:
-  salt.function:
-    - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - name: state.single
-    - arg:
-        - file.directory
-    - kwargs:
-        name: backups
-        makedirs: True
-
 execute_enabled_backup_scripts:
   salt.state:
     - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
