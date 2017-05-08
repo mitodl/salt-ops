@@ -8,7 +8,6 @@
 {% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
 {% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token.data.value') %}
-{% set backup_volume_name = 'odl-operations-backups-cache-{}'.format(ENVIRONMENT) %}
 
 ensure_backup_bucket_exists:
   boto_s3_bucket.present:
@@ -63,24 +62,6 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
         - file: load_backup_host_cloud_profile
         - boto_iam_role: ensure_instance_profile_exists_for_backups
 
-{# Duplicity requires an archive directory otherwise it will have to create it and download files
-from s3 buckets when called. In order to accomodate that, we have an EBS volume that will be mounted
-by the ephemeral instance that is destroyed once backups are complete. #}
-{% set instance_id = salt.boto_ec2.find_instances('name=backups-{}'.format(ENVIRONMENT)) %}
-{% if instance_id %}
-attach_backup_volume:
-  salt.function:
-    - name: saltutil.runner
-    - arg:
-        - cloud.action
-    - kwarg:
-        func: ec2.attach_volume
-        kwargs:
-          instance_id: {{ instance_id }}
-          volume_name: {{ backup_volume_name }}
-          zone: us-east-1b
-          size: 400
-
 mount_backup_drive:
   salt.function:
     - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
@@ -90,7 +71,7 @@ mount_backup_drive:
         - mount.mounted
     - kwarg:
         name: /backups
-        device: /dev/{{ salt.grains.get('ec2:block_device_mapping:ebs2') }}
+        device: /dev/xvdb
         fstype: ext4
         mkmnt: True
         opts: 'relatime,user'
@@ -107,33 +88,6 @@ execute_enabled_backup_scripts:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
         - salt: mount_backup_drive
 
-unmount_backup_drive:
-  salt.function:
-    - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - name: state.single
-    - arg:
-        - mount.unmounted
-    - kwarg:
-        name: /backups
-        device: /dev/{{ salt.grains.get('ec2:block_device_mapping:ebs2') }}
-
-detach_backup_volume:
-  salt.function:
-    - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - name: saltutil.runner
-    - arg:
-        - cloud.action
-    - kwarg:
-        func: ec2.detach_volume
-        kwargs:
-          volume_id:
-          instance_id: {{ instance_id }}
-          device: /dev/{{ salt.grains.get('ec2:block_device_mapping:ebs2') }}
-    - require:
-        - salt: unmount_backup_drive
-
 terminate_backup_instance_in_{{ ENVIRONMENT }}:
   salt.function:
     - name: saltutil.runner
@@ -146,8 +100,6 @@ terminate_backup_instance_in_{{ ENVIRONMENT }}:
           - backup-{{ ENVIRONMENT }}
     - require:
         - salt: execute_enabled_backup_scripts
-        - salt: detach_backup_volume
-{% endif %}
 
 alert_devops_channel_on_failure:
   slack.post_message:
