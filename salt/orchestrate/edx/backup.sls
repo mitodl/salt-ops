@@ -145,9 +145,9 @@ detach_backup_volume:
     - arg:
         - cloud.action
     - kwarg:
-        func: boto_ec2.detach_volume
+        func: ec2.detach_volume
         kwargs:
-          tags: {{ backup_volume_name }}
+          volume_id:
           instance_id: {{ instance_id }}
           device: /dev/xvdb
     - require:
