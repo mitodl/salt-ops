@@ -1,5 +1,5 @@
 elasticsearch:
-  {% for id_num in range(3) %}
+  {% for id_num in range(5) %}
   - elasticsearch-{{ environment_name }}-{{ id_num }}:
       network_interfaces:
         - DeviceIndex: 0
