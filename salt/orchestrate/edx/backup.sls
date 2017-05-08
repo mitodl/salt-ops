@@ -77,7 +77,7 @@ create_attach_backup_volume:
         func: ec2.create_attach_volume
         kwargs:
           instance_id: {{ instance_id }}
-          volumes:
+          volume:
             volume_name: {{ backup_volume_name }}
             device: /dev/xvdb
             zone: us-east-1b
