@@ -1,4 +1,4 @@
-{% from "orchestrate/aws_env_macro.jinja" import ENVIRONMENT %}
+{% set ENVIRONMENT = 'operations' %}
 {% for profile in ['elasticsearch', 'kibana', 'fluentd'] %}
 ensure_instance_profile_exists_for_{{ profile }}:
   boto_iam_role.present:
