@@ -57,13 +57,13 @@ resize_root_partitions_on_elasticsearch_nodes:
 load_pillar_data_on_logging_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-      tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:{}'.format(ENVIRONMENT)
+      tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:{{ ENVIRONMENT }}'
       tgt_type: compound
 
 populate_mine_with_logging_node_data:
   salt.function:
     - name: mine.update
-    - tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:{}'.format(ENVIRONMENT)
+    - tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
 
 build_logging_nodes:
