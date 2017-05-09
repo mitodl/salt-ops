@@ -50,32 +50,32 @@ deploy_logging_cloud_map:
 
 resize_root_partitions_on_elasticsearch_nodes:
   salt.state:
-    - tgt: 'G@roles:elasticsearch and G@environment:{}'.format(ENVIRONMENT)
+    - tgt: 'G@roles:elasticsearch and G@environment:operations'
     - tgt_type: compound
     - sls: utils.grow_partition
 
 load_pillar_data_on_logging_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-      tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:{{ ENVIRONMENT }}'
+      tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:operations'
       tgt_type: compound
 
 populate_mine_with_logging_node_data:
   salt.function:
     - name: mine.update
-    - tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:operations'
     - tgt_type: compound
 
 build_logging_nodes:
   salt.state:
-    - tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:{}'.format(ENVIRONMENT)
+    - tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:operations'
     - tgt_type: compound
     - highstate: True
 
 # Obtain the grains for one of the elasticsearch nodes
 {% set grains = salt.saltutil.runner(
     'mine.get',
-    tgt='G@roles:elasticsearch and G@environment:{}'.format(ENVIRONMENT), fun='grains.item', tgt_type='compound'
+    tgt='G@roles:elasticsearch and G@environment:operations', fun='grains.item', tgt_type='compound'
     ).items()[0][1] %}
 # PUT the mapper template into the ES _template index
 put_elasticsearch_mapper_template:
