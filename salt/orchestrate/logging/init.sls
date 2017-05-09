@@ -73,14 +73,17 @@ build_logging_nodes:
     - highstate: True
 
 # Obtain the grains for one of the elasticsearch nodes
-{% set grains = salt.saltutil.runner(
+{% set hosts = [] %}
+{% for host, grains in salt.saltutil.runner(
     'mine.get',
     tgt='G@roles:elasticsearch and G@environment:operations', fun='grains.item', tgt_type='compound'
     ).items() %}
+{% do hosts.append(grains['external_ip']) %}
+{% endfor %}
 # PUT the mapper template into the ES _template index
 put_elasticsearch_mapper_template:
   http.query:
-    - name: http://{{ grains['ec2:local_ipv4'] }}:9200/_template/logstash
+    - name: http://{{ hosts }}:9200/_template/logstash
     - data: '
       {
         "template":   "logstash-*",
