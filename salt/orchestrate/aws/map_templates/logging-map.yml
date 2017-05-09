@@ -1,5 +1,5 @@
 elasticsearch:
-  {% for x in range(3) %}
+  {% for x in range(5) %}
   - es{{ x }}:
       network_interfaces:
         - DeviceIndex: 0
