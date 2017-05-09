@@ -76,7 +76,7 @@ build_logging_nodes:
 {% set grains = salt.saltutil.runner(
     'mine.get',
     tgt='G@roles:elasticsearch and G@environment:operations', fun='grains.item', tgt_type='compound'
-    ).items()[0][1] %}
+    ).items() %}
 # PUT the mapper template into the ES _template index
 put_elasticsearch_mapper_template:
   http.query:
