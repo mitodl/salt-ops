@@ -4,7 +4,7 @@ elasticsearch:
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
-          SubnetId: {{ subnetids[id_num % length(subnetids)] }}
+          SubnetId: {{ subnetids[0] }}
           SecurityGroupId: {{ securitygroupid }}
       grains:
         environment: operations
@@ -16,7 +16,7 @@ fluentd:
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
-          SubnetId: {{ subnetids[id_num % length(subnetids)] }}
+          SubnetId: {{ subnetids[0] }}
           SecurityGroupId: {{ securitygroupid }}
       grains:
         environment: operations
