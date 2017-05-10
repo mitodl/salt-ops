@@ -47,6 +47,8 @@ deploy_logging_cloud_map:
     - kwarg:
         path: /etc/salt/cloud.maps.d/logging-map.yml
         parallel: True
+    - require:
+      - file: generate_cloud_map_file
 
 resize_root_partitions_on_elasticsearch_nodes:
   salt.state:
@@ -59,12 +61,16 @@ load_pillar_data_on_logging_nodes:
     - name: saltutil.refresh_pillar
       tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:operations'
       tgt_type: compound
+    - require:
+      - salt: deploy_logging_cloud_map
 
 populate_mine_with_logging_node_data:
   salt.function:
     - name: mine.update
     - tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:operations'
     - tgt_type: compound
+    - require:
+      - salt: load_pillar_data_on_logging_nodes
 
 build_logging_nodes:
   salt.state:
