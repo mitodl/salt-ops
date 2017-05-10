@@ -28,6 +28,6 @@ kibana:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
           SubnetId: {{ subnetids[0] }}
-          SecurityGroupId: {{ securitygroupid }}
+          SecurityGroupId: ['sg-0a994772', 'sg-05a0327d']
       grains:
         environment: operations
