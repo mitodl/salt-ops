@@ -50,12 +50,6 @@ deploy_logging_cloud_map:
     - require:
       - file: generate_cloud_map_file
 
-resize_root_partitions_on_elasticsearch_nodes:
-  salt.state:
-    - tgt: 'G@roles:elasticsearch and G@environment:operations'
-    - tgt_type: compound
-    - sls: utils.grow_partition
-
 load_pillar_data_on_logging_nodes:
   salt.function:
     - name: saltutil.refresh_pillar

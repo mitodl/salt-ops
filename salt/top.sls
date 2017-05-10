@@ -20,8 +20,8 @@ base:
     - elasticsearch
     - elasticsearch.plugins
     - datadog.plugins
-  'roles:kibana':
-    - match: grain
+  'roles:kibana and G@environment:operations':
+    - match: compound
     - elasticsearch.kibana
     - elasticsearch.kibana.nginx_extra_config
     - elasticsearch.elastalert
