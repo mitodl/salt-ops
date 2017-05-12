@@ -27,8 +27,6 @@ generate_cloud_map_file:
     - makedirs: True
     - context:
         environment_name: {{ ENVIRONMENT }}
-        roles:
-          - elasticsearch
         securitygroupid: sg-0a994772
         subnetids:
           - subnet-13305e2e
@@ -53,7 +51,7 @@ deploy_logging_cloud_map:
 load_pillar_data_on_logging_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-      tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:operations'
+      tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:{{ ENVIRONMENT }}'
       tgt_type: compound
     - require:
       - salt: deploy_logging_cloud_map
@@ -61,55 +59,42 @@ load_pillar_data_on_logging_nodes:
 populate_mine_with_logging_node_data:
   salt.function:
     - name: mine.update
-    - tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:operations'
+    - tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
       - salt: load_pillar_data_on_logging_nodes
 
 build_logging_nodes:
   salt.state:
-    - tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:operations'
+    - tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:'
     - tgt_type: compound
     - highstate: True
 
-{% set hosts = [] %}
-{% for host, grains in salt.saltutil.runner(
-    'mine.get',
-    tgt='roles:kibana', fun='grains.item', tgt_type='grain'
-    ).items() %}
-{% do hosts.append(grains['external_ip']) %}
-{% endfor %}
-register_kibana_dns:
-  boto_route53.present:
-    - name: logs.odl.mit.edu
-    - value: {{ hosts }}
-    - zone: odl.mit.edu.
-    - record_type: A
+format_data_drive:
+  salt.function:
+    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - name: state.single
+    - arg:
+        - blockdev.formatted
+    - kwarg:
+        name: /dev/xvdb
+        fs_type: ext4
+    - require:
+        - salt: build_logging_nodes
 
-{% set hosts = [] %}
-{% for host, grains in salt.saltutil.runner(
-    'mine.get',
-    tgt='G@roles:fluentd and G@roles:aggregator', fun='grains.item', tgt_type='compound'
-    ).items() %}
-{% do hosts.append(grains['external_ip']) %}
-{% endfor %}
-register_log_aggregator_dns:
-  boto_route53.present:
-    - name: log-input.odl.mit.edu
-    - value: {{ hosts }}
-    - zone: odl.mit.edu.
-    - record_type: A
-
-{% set hosts = [] %}
-{% for host, grains in salt.saltutil.runner(
-    'mine.get',
-    tgt='G@roles:fluentd and G@roles:aggregator', fun='grains.item', tgt_type='compound'
-    ).items() %}
-{% do hosts.append(grains['ec2:local_ipv4']) %}
-{% endfor %}
-register_log_aggregator_internal_dns:
-  boto_route53.present:
-    - name: log-input.private.odl.mit.edu
-    - value: {{ hosts }}
-    - zone: private.odl.mit.edu.
-    - record_type: A
+mount_data_drive:
+  salt.function:
+    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - name: state.single
+    - arg:
+        - mount.mounted
+    - kwarg:
+        name: /var/log/elasticsearch
+        device: /dev/xvdb
+        fstype: ext4
+        mkmnt: True
+        opts: 'relatime,user'
+    - require:
+        - salt: format_data_drive
