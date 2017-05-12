@@ -266,6 +266,10 @@ create_rabbitmq_security_group:
           to_port: 5672
           source_group_name: edx-{{ VPC_RESOURCE_SUFFIX }}
         - ip_protocol: tcp
+          from_port: 5672
+          to_port: 5672
+          source_group_name: edx-worker-{{ VPC_RESOURCE_SUFFIX }}
+        - ip_protocol: tcp
           from_port: 4369
           to_port: 4369
           source_group_name: rabbitmq-{{ VPC_RESOURCE_SUFFIX }}
