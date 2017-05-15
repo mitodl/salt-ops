@@ -51,8 +51,8 @@ deploy_logging_cloud_map:
 load_pillar_data_on_logging_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-      tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:{{ ENVIRONMENT }}'
-      tgt_type: compound
+    - tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
     - require:
       - salt: deploy_logging_cloud_map
 
@@ -91,7 +91,7 @@ mount_data_drive:
     - arg:
         - mount.mounted
     - kwarg:
-        name: /var/log/elasticsearch
+        name: /var/lib/elasticsearch
         device: /dev/xvdb
         fstype: ext4
         mkmnt: True

@@ -8,43 +8,30 @@
     ).items() %}
 {% do hosts.append(grains['external_ip']) %}
 {% endfor %}
-# PUT the mapper template into the ES _template index
-put_elasticsearch_mapper_template:
-  http.query:
-    - name: http://{{ hosts[0] }}:9200/_template/logstash
-    - data: '
-      {
-        "template":   "logstash-*",
-        "settings" : {
-          "index.refresh_interval" : "5s"
-        },
-        "mappings": {
-          "_default_": {
-            "_all": {
-              "enabled": false
-            },
-            "dynamic_templates": [
-              {
-                "strings": {
-                  "match_mapping_type": "string",
-                  "mapping": {
-                    "type": "string",
-                    "fields": {
-                      "raw": {
-                        "type":  "string",
-                        "index": "not_analyzed",
-                        "ignore_above": 256
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        }
-      }'
-    - method: PUT
-    - status: 200
+
+create_elasticsearch_index_template:
+  elasticsearch_index_template.present:
+    - name: 'logstash-*'
+    - tgt: 'G@roles:elasticsearch and G@environment:operations'
+    - tgt_type: compound
+    - definition:
+        template: 'logstash-*'
+        settings:
+          index.refresh_interval : '5s'
+        mappings:
+          _default_:
+            _all_:
+              enabled: false
+            dynamic_templates:
+              - strings:
+                  match_mapping_type: string
+                  mapping:
+                    type: string
+                    fields:
+                      raw:
+                        type: string
+                        index: not_analyzed
+                        ignore_above: 256
 
 {% set hosts = [] %}
 {% for host, grains in salt.saltutil.runner(
