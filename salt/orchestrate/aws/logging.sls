@@ -12,8 +12,6 @@
 create_elasticsearch_index_template:
   elasticsearch_index_template.present:
     - name: 'logstash-*'
-    - tgt: 'G@roles:elasticsearch and G@environment:operations'
-    - tgt_type: compound
     - definition:
         template: 'logstash-*'
         settings:
