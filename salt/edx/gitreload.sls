@@ -100,6 +100,7 @@ import_{{ item.name }}_course:
       - git: pull_{{ item.name }}_repo
 {% endfor %}
 
+{% if salt.grains.get('osrelease') == '12.04' %}
 gitreload_init_script:
   file.managed:
     - name: /etc/init/gitreload.conf
@@ -109,6 +110,17 @@ gitreload_init_script:
     - context:
         gr_env: {{ gr_env }}
         gr_dir: {{ gr_dir }}
+{% else %}
+gitreload_systemd_service:
+    file.managed:
+      - name: /lib/systemd/system/gitreload.service
+      - source: salt://edx/templates/gitreload_systemd_service.conf.j2
+      - template: jinja
+      - mode: 644
+      - context:
+        gr_env: {{ gr_env }}
+        gr_dir: {{ gr_dir }}
+{% endif %}
 
 gitreload_htpasswd:
   file.managed:
@@ -156,5 +168,9 @@ start_gitreload:
     - name: gitreload
     - enable: True
     - require:
+      {% if salt.grains.get('osrelease') == '12.04' %}
       - file: gitreload_init_script
+      {% else %}
+      - file: gitreload_systemd_service
+      {% endif %}
       - file: create_gitreload_config

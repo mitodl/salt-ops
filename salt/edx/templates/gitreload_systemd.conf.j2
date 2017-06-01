@@ -1,0 +1,15 @@
+[Unit]
+Description=gunicorn server running gitreload
+Requires=network-online.target
+Restart=on-failure
+StartLimitInterval=60
+StartLimitBurst=3
+
+[Service]
+Environment=PID=/var/tmp/gitreload.pid
+Environment=WORKERS=1
+Environment=PORT={{ gr_env.PORT }}
+Environment=LANG=en_US.UTF-8
+WorkingDirectory={{ gr_dir }}
+User=www-data
+ExecStart={{ gr_env.VIRTUAL_ENV }}/bin/gunicorn --preload -b 0.0.0.0:${PORT} -w ${WORKERS} --timeout=10 gitreload.web:application
