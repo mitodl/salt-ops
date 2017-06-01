@@ -98,3 +98,10 @@ mount_data_drive:
         opts: 'relatime,user'
     - require:
         - salt: format_data_drive
+
+# Elasticsearch Curator is used for elasticsearch snapshots
+install_elasticsearch_curator:
+  pkg.installed:
+    - name: elasticsearch-curator
+    - require:
+      - salt: build_logging_nodes
