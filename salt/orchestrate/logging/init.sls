@@ -66,7 +66,7 @@ populate_mine_with_logging_node_data:
 
 build_logging_nodes:
   salt.state:
-    - tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:'
+    - tgt: 'P@roles:(elasticsearch|kibana|fluentd) and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - highstate: True
 
@@ -101,7 +101,7 @@ mount_data_drive:
 
 # Elasticsearch Curator is used for elasticsearch snapshots
 install_elasticsearch_curator:
-  pkg.installed:
+  pip.installed:
     - name: elasticsearch-curator
     - require:
       - salt: build_logging_nodes
