@@ -39,6 +39,17 @@
   'location': '/edx/app/nginx/gitreload.htpasswd'
 }) -%}
 
+{% set gitreload_service = salt.grains.filter_by({
+    'systemd': {
+      'destination_path': '/lib/systemd/system/gitreload.service',
+      'source_path': 'salt://edx/templates/gitreload_systemd_service.conf.j2',
+    },
+    'upstart': {
+      'destination_path': '/etc/init/gitreload.conf',
+      'source_path': 'salt://edx/templates/gitreload_init.conf.j2',
+    }
+  }, grain='init', merge=salt.pillar.get('gitreload:init_service')) %}
+
 install_mit_github_ssh_key:
   file.managed:
     - name: /var/www/.ssh/id_rsa
@@ -112,27 +123,21 @@ import_{{ item.name }}_course:
       - git: pull_{{ item.name }}_repo
 {% endfor %}
 
-{% if salt.grains.get('osrelease') == '12.04' %}
-gitreload_init_script:
+configure_gitreload_service:
   file.managed:
-    - name: /etc/init/gitreload.conf
-    - source: salt://edx/templates/gitreload_init.conf.j2
+    - name: {{ gitreload_service.destination_path }}
+    - source: salt://edx/templates/{{ gitreload_service.source_path }}
     - template: jinja
     - mode: 644
     - context:
         gr_env: {{ gr_env }}
         gr_dir: {{ gr_dir }}
-{% else %}
-gitreload_systemd_service:
-    file.managed:
-      - name: /lib/systemd/system/gitreload.service
-      - source: salt://edx/templates/gitreload_systemd_service.conf.j2
-      - template: jinja
-      - mode: 644
-      - context:
-        gr_env: {{ gr_env }}
-        gr_dir: {{ gr_dir }}
-{% endif %}
+  {% if salt.grains.get('init') == 'systemd' %}
+  cmd.wait:
+    - name: systemctl daemon-reload
+    - watch:
+        - file: configure_gitreload_service
+  {% endif %}
 
 gitreload_htpasswd:
   file.managed:
