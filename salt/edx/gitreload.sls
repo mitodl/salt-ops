@@ -1,3 +1,15 @@
+{% from "orchestrate/aws_env_macro.jinja" import ENVIRONMENT, PURPOSE_PREFIX with context %}
+{% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
+
+{% if 'live' in salt.grains.get('id') %}
+{% set edx_type = 'live' %}
+{% elif 'draft' in salt.grains.get('id') %}
+{% set edx_type = 'draft' %}
+{% endif %}
+
+{% set purpose_name = '{prefix}-{type}'.format(prefix=PURPOSE_PREFIX, type=edx_type) %}
+{% set purpose = env_settings.purposes[purpose_name] %}
+
 {% set gr_dir = salt.pillar.get('edx:gitreload:gr_dir', '/edx/app/gitreload') -%}
 {% set gr_env = salt.pillar.get('edx:gitreload:gr_env', {
     'PORT': 8095,
@@ -16,16 +28,27 @@
 {% set gr_version = salt.pillar.get('edx:gitreload:gr_version',
                                     'ba53a4b0e0618891535aa9107c3d113227540e39') -%}
 {% set ssh_hosts = salt.pillar.get('edx:ssh_hosts',
-   [{'name': 'github.com', 'fingerprint': '16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48'},
-    {'name': 'github.mit.edu', 'fingerprint': '03:3b:72:d6:20:6f:3e:1f:5e:2f:38:a2:80:01:f3:22'}]) %}
+   [{'name': 'github.com', 'fingerprint': 'SHA256:br9IjFspm1vxR3iA35FWE+4VTyz1hYVLIE2t1/CeyWQ'},
+    {'name': 'github.mit.edu', 'fingerprint': 'SHA256:mP1vMrsRkP6l42bs0dsXejq3YgxMD2r5NqboImqssw0'}]) %}
 {% set gr_log_dir = salt.pillar.get('edx:gitreload:gr_log_dir',
                                   '/edx/var/log/gr') -%}
-{% set hostname = salt.pillar.get('edx:gitreload:hostname') -%}
+{% set hostname = purpose.domains.gitreload -%}
 {% set basic_auth = salt.pillar.get('edx:gitreload:basic_auth', {
   'username': 'mitx',
   'password': 'change_me',
   'location': '/edx/app/nginx/gitreload.htpasswd'
 }) -%}
+
+{% set gitreload_service = salt.grains.filter_by({
+    'systemd': {
+      'destination_path': '/lib/systemd/system/gitreload.service',
+      'source_path': 'salt://edx/templates/gitreload_systemd_service.conf.j2',
+    },
+    'upstart': {
+      'destination_path': '/etc/init/gitreload.conf',
+      'source_path': 'salt://edx/templates/gitreload_init.conf.j2',
+    }
+  }, grain='init', merge=salt.pillar.get('gitreload:init_service')) %}
 
 install_mit_github_ssh_key:
   file.managed:
@@ -100,15 +123,21 @@ import_{{ item.name }}_course:
       - git: pull_{{ item.name }}_repo
 {% endfor %}
 
-gitreload_init_script:
+configure_gitreload_service:
   file.managed:
-    - name: /etc/init/gitreload.conf
-    - source: salt://edx/templates/gitreload_init.conf.j2
+    - name: {{ gitreload_service.destination_path }}
+    - source: salt://edx/templates/{{ gitreload_service.source_path }}
     - template: jinja
     - mode: 644
     - context:
         gr_env: {{ gr_env }}
         gr_dir: {{ gr_dir }}
+  {% if salt.grains.get('init') == 'systemd' %}
+  cmd.wait:
+    - name: systemctl daemon-reload
+    - watch:
+        - file: configure_gitreload_service
+  {% endif %}
 
 gitreload_htpasswd:
   file.managed:
@@ -155,6 +184,6 @@ start_gitreload:
   service.running:
     - name: gitreload
     - enable: True
+    - restart: True
     - require:
-      - file: gitreload_init_script
-      - file: create_gitreload_config
+      - file: configure_gitreload_service
