@@ -184,10 +184,6 @@ start_gitreload:
   service.running:
     - name: gitreload
     - enable: True
+    - reload: True
     - require:
-      {% if salt.grains.get('osrelease') == '12.04' %}
-      - file: gitreload_init_script
-      {% else %}
-      - file: gitreload_systemd_service
-      {% endif %}
-      - file: create_gitreload_config
+      - file: configure_gitreload_service
