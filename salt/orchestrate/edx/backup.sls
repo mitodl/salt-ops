@@ -7,6 +7,7 @@
     'public1-{}'.format(VPC_RESOURCE_SUFFIX), 'public2-{}'.format(VPC_RESOURCE_SUFFIX), 'public3-{}'.format(VPC_RESOURCE_SUFFIX)])['subnets'] %}
 {% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
+{% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token.data.value') %}
 
 ensure_backup_bucket_exists:
   boto_s3_bucket.present:
@@ -63,19 +64,6 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
         - file: load_backup_host_cloud_profile
         - boto_iam_role: ensure_instance_profile_exists_for_backups
 
-format_backup_drive:
-  salt.function:
-    - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - name: state.single
-    - arg:
-        - blockdev.formatted
-    - kwarg:
-        name: /dev/xvdb
-        fs_type: ext4
-    - require:
-        - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
-
 mount_backup_drive:
   salt.function:
     - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
@@ -89,8 +77,6 @@ mount_backup_drive:
         fstype: ext4
         mkmnt: True
         opts: 'relatime,user'
-    - require:
-        - salt: format_backup_drive
 
 execute_enabled_backup_scripts:
   salt.state:
@@ -122,7 +108,7 @@ alert_devops_channel_on_failure:
     - channel: '#devops'
     - from_name: saltbot
     - message: 'The scheduled backup for edX RP has failed.'
-    - api_key: {{ salt.pillar.get('slack_api_token') }}
+    - api_key: {{ slack_api_token }}
     - onfail:
         - salt: execute_enabled_backup_scripts
 
@@ -131,7 +117,7 @@ alert_devops_channel_on_success:
     - channel: '#devops'
     - from_name: saltbot
     - message: 'The scheduled backup for edX RP has succeeded.'
-    - api_key: {{ salt.pillar.get('slack_api_token') }}
+    - api_key: {{ slack_api_token }}
     - require:
         - salt: execute_enabled_backup_scripts
         - salt: terminate_backup_instance_in_{{ ENVIRONMENT }}
