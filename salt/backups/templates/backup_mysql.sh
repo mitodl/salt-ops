@@ -18,7 +18,6 @@ PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
           --archive-dir {{ cachedir }} \
           --full-if-older-than 1W \
           --allow-source-mismatch --tempdir /backups/tmp/ \
-          s3+http://odl-operations-backups/{{ settings.get('directory', 'mysql') }}/ \
-          {{ settings.database }}/
+          s3+http://odl-operations-backups/{{ settings.get('directory', 'mysql') }}
 
 rm -rf {{ backupdir }}
