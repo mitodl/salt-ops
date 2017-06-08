@@ -86,6 +86,19 @@ create_attach_backup_volume:
     - require:
         salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
 
+format_backup_drive:
+  salt.function:
+    - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - name: state.single
+    - arg:
+        - blockdev.formatted
+    - kwarg:
+        name: /dev/xvdb
+        fs_type: ext4
+    - require:
+        - salt: create_attach_backup_volume
+
 mount_backup_drive:
   salt.function:
     - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
