@@ -7,8 +7,9 @@
     'public1-{}'.format(VPC_RESOURCE_SUFFIX), 'public2-{}'.format(VPC_RESOURCE_SUFFIX), 'public3-{}'.format(VPC_RESOURCE_SUFFIX)])['subnets'] %}
 {% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
-{% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token.data.value') %}
+{% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token').data.value %}
 {% set backup_volume_name = 'odl-operations-backups-cache-{}'.format(ENVIRONMENT) %}
+{% set instance_name = 'backup-{}'.format(ENVIRONMENT) %}
 
 ensure_backup_bucket_exists:
   boto_s3_bucket.present:
@@ -66,8 +67,6 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
 {# Duplicity requires an archive directory otherwise it will have to create it and download files
 from s3 buckets when called. In order to accomodate that, we have an EBS volume that will be mounted
 by the ephemeral instance that is destroyed once backups are complete. #}
-{% set instance_id = salt.boto_ec2.find_instances('name=backups-{}'.format(ENVIRONMENT)) %}
-{% if instance_id %}
 create_attach_backup_volume:
   salt.function:
     - name: saltutil.runner
@@ -75,8 +74,8 @@ create_attach_backup_volume:
         - cloud.action
     - kwarg:
         func: ec2.create_attach_volume
+        name: {{ instance_name }}
         kwargs:
-          instance_id: {{ instance_id }}
           volumes:
             volume_name: {{ backup_volume_name }}
             device: /dev/xvdb
@@ -147,8 +146,8 @@ detach_backup_volume:
     - kwarg:
         func: boto_ec2.detach_volume
         kwargs:
-          tags: {{ backup_volume_name }}
-          instance_id: {{ instance_id }}
+          tags:
+            Name: {{ backup_volume_name }}
           device: /dev/xvdb
     - require:
         - salt: unmount_backup_drive
@@ -166,7 +165,6 @@ terminate_backup_instance_in_{{ ENVIRONMENT }}:
     - require:
         - salt: execute_enabled_backup_scripts
         - salt: detach_backup_volume
-{% endif %}
 
 alert_devops_channel_on_failure:
   slack.post_message:
