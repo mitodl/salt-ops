@@ -121,7 +121,7 @@ create_backup_directory:
     - arg:
         - file.directory
     - kwargs:
-        name: backups
+        name: /backups/tmp
         makedirs: True
 
 execute_enabled_backup_scripts:
