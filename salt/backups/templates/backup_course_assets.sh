@@ -11,7 +11,7 @@ PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
           --s3-use-server-side-encryption {{ backupdir }} \
           --archive-dir {{ cachedir }} \
           --full-if-older-than 1W \
-          --allow-source-mismatch --tempdir /backups \
+          --allow-source-mismatch --tempdir /backups/tmp/ \
           s3+http://odl-operations-backups/{{ settings.get('directory', 'course_assets') }}/
 
 umount /mnt/efs
