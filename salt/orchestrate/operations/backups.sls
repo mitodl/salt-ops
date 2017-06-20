@@ -54,7 +54,7 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
               SubnetId: {{ subnet_ids[0] }}
               SecurityGroupId:
                 - {{ salt.boto_secgroup.get_group_id(
-                     'default'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
+                     'default', vpc_name=VPC_NAME) }}
                 - {{ salt.boto_secgroup.get_group_id(
                      'consul-agent-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
     - require:
