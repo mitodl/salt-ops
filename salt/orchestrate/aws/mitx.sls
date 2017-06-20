@@ -104,7 +104,6 @@ create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_routing_table:
         - public1-{{ VPC_RESOURCE_SUFFIX }}
         - public2-{{ VPC_RESOURCE_SUFFIX }}
         - public3-{{ VPC_RESOURCE_SUFFIX }}
-        - private_db_subnet-{{ VPC_RESOURCE_SUFFIX }}
     - routes:
         - destination_cidr_block: 0.0.0.0/0
           internet_gateway_name: {{ VPC_RESOURCE_SUFFIX }}-igw
@@ -368,7 +367,7 @@ create_vault_backend_security_group:
         ACL to allow Vault to access data stores so that it
         can create dynamic credentials
     - tags:
-        Name: salt_master-{{ VPC_RESOURCE_SUFFIX }}
+        Name: vault-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
     - rules:
         {# MongoDB #}
