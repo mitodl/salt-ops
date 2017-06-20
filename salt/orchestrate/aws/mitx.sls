@@ -3,8 +3,14 @@
 # Make sure that instance profiles exist for node types so that
 # they can be granted access via permissions attached to those
 # profiles because it's easier than managing IAM keys
-{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- ENVIRONMENT, subnet_ids with context %}
+{% set VPC_NAME = salt.environ.get('VPC_NAME', 'MITx QA') %}
+{% set VPC_RESOURCE_SUFFIX = salt.environ.get(
+    'VPC_RESOURCE_SUFFIX',
+    VPC_NAME.lower().replace(' ', '-')) %}
+{% set ENVIRONMENT = salt.environ.get(
+    'ENVIRONMENT',
+    VPC_NAME.lower().replace(' ', '-')) %}
+{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', 'residential') %}
 
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 
@@ -32,6 +38,7 @@ create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc:
     - dns_hostnames: True
     - tags:
         Name: {{ VPC_NAME }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_internet_gateway:
   boto_vpc.internet_gateway_present:
@@ -41,6 +48,7 @@ create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_internet_gateway:
         - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc
     - tags:
         Name: {{ VPC_RESOURCE_SUFFIX }}-igw
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_public_subnet_1:
   boto_vpc.subnet_present:
@@ -52,6 +60,7 @@ create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_public_subnet_1:
         - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc
     - tags:
         Name: public1-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_public_subnet_2:
   boto_vpc.subnet_present:
@@ -63,6 +72,7 @@ create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_public_subnet_2:
         - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc
     - tags:
         Name: public2-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_public_subnet_3:
   boto_vpc.subnet_present:
@@ -74,6 +84,7 @@ create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_public_subnet_3:
         - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc
     - tags:
         Name: public3-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc_peering_connection_with_operations:
   boto_vpc.vpc_peering_connection_present:
@@ -107,6 +118,7 @@ create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_routing_table:
         - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc_peering_connection_with_operations
     - tags:
         Name: {{ VPC_RESOURCE_SUFFIX }}-route_table
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_edx_security_group:
   boto_secgroup.present:
@@ -136,6 +148,7 @@ create_edx_security_group:
         - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc
     - tags:
         Name: edx-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_edx_worker_security_group:
   boto_secgroup.present:
@@ -154,6 +167,7 @@ create_edx_worker_security_group:
         - boto_secgroup: create_edx_security_group
     - tags:
         Name: edx-worker-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_mongodb_security_group:
   boto_secgroup.present:
@@ -172,6 +186,7 @@ create_mongodb_security_group:
         - boto_secgroup: create_edx_security_group
     - tags:
         Name: mongodb-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_mitx_consul_security_group:
   boto_secgroup.present:
@@ -226,6 +241,7 @@ create_mitx_consul_security_group:
         - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc
     - tags:
         Name: consul-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_mitx_consul_agent_security_group:
   boto_secgroup.present:
@@ -254,6 +270,7 @@ create_mitx_consul_agent_security_group:
         - boto_secgroup: create_mitx_consul_security_group
     - tags:
         Name: consul-agent-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_rabbitmq_security_group:
   boto_secgroup.present:
@@ -282,6 +299,7 @@ create_rabbitmq_security_group:
         - boto_secgroup: create_edx_security_group
     - tags:
         Name: rabbitmq-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_elasticsearch_security_group:
   boto_secgroup.present:
@@ -302,6 +320,7 @@ create_elasticsearch_security_group:
         - boto_secgroup: create_edx_security_group
     - tags:
         Name: elasticsearch-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_rds_security_group:
   boto_secgroup.present:
@@ -322,6 +341,7 @@ create_rds_security_group:
         - boto_secgroup: create_edx_security_group
     - tags:
         Name: rds-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_salt_master_security_group:
   boto_secgroup.present:
@@ -330,6 +350,7 @@ create_salt_master_security_group:
     - description: ACL for allowing access to hosts from Salt Master
     - tags:
         Name: salt_master-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
     - rules:
         - ip_protocol: tcp
           from_port: 22
@@ -348,6 +369,7 @@ create_vault_backend_security_group:
         can create dynamic credentials
     - tags:
         Name: salt_master-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
     - rules:
         {# MongoDB #}
         - ip_protocol: tcp

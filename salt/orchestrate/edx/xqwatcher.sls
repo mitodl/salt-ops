@@ -1,8 +1,6 @@
-{% set net_map = {'MITx QA': '10.5', 'MITx RP': '10.6'} %}
 {% set VPC_NAME = salt.environ.get('VPC_NAME', 'MITx QA') %}
 {% set VPC_RESOURCE_SUFFIX = salt.environ.get('VPC_RESOURCE_SUFFIX',
                                               VPC_NAME.lower() | replace(' ', '-')) %}
-{% set VPC_NET_PREFIX = net_map[VPC_NAME] %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-qa') %}
 {% set subnet_ids = [] %}
 {% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[

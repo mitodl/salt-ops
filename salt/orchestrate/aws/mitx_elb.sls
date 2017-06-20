@@ -1,5 +1,5 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- ENVIRONMENT, PURPOSE_PREFIX, subnet_ids with context %}
+ BUSINESS_UNIT, ENVIRONMENT, PURPOSE_PREFIX, subnet_ids with context %}
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 
 {% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-{env}'.format(env=ENVIRONMENT)]) %}
@@ -50,6 +50,9 @@ create_elb_for_edx_{{ purpose_name }}:
         - policy_name: {{ elb_name }}-sticky-cookie-policy
           policy_type: LBCookieStickinessPolicyType
           policy: {}
+    - tags:
+        Name: {{ elb_name }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 register_edx_{{ purpose_name }}_nodes_with_elb:
   boto_elb.register_instances:
