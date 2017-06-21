@@ -54,7 +54,8 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
           network_interfaces:
             - DeviceIndex: 0
               AssociatePublicIpAddress: True
-              SubnetId: {{ subnet_ids[0] }}
+              {# Chose 2nd subnet because we want the instance to be in the same AZ as backup volume. #}
+              SubnetId: {{ subnet_ids[1] }}
               SecurityGroupId:
                 - {{ salt.boto_secgroup.get_group_id(
                      'salt_master-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
