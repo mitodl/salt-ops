@@ -61,35 +61,6 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
         - file: load_backup_host_cloud_profile
         - boto_iam_role: ensure_instance_profile_exists_for_backups
 
-format_backup_drive:
-  salt.function:
-    - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - name: state.single
-    - arg:
-        - blockdev.formatted
-    - kwarg:
-        name: /dev/xvda
-        fs_type: ext4
-    - require:
-        - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
-
-mount_backup_drive:
-  salt.function:
-    - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - name: state.single
-    - arg:
-        - mount.mounted
-    - kwarg:
-        name: /backups
-        device: /dev/xvda
-        fstype: ext4
-        mkmnt: True
-        opts: 'relatime,user'
-    - require:
-        - salt: format_backup_drive
-
 execute_enabled_backup_scripts:
   salt.state:
     - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
