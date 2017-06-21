@@ -69,7 +69,7 @@ format_backup_drive:
     - arg:
         - blockdev.formatted
     - kwarg:
-        name: /dev/xvdb
+        name: /dev/xvda
         fs_type: ext4
     - require:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
@@ -83,7 +83,7 @@ mount_backup_drive:
         - mount.mounted
     - kwarg:
         name: /backups
-        device: /dev/xvdb
+        device: /dev/xvda
         fstype: ext4
         mkmnt: True
         opts: 'relatime,user'
