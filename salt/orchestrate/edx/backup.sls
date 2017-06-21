@@ -86,7 +86,7 @@ create_attach_backup_volume:
             type: gp2
             size: 400
     - require:
-        salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
+        - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
 
 format_backup_drive:
   salt.function:
