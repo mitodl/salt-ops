@@ -2,11 +2,8 @@
 {% set VPC_NAME = salt.environ.get('VPC_NAME', 'Dogwood RP') %}
 {% set VPC_RESOURCE_SUFFIX = salt.environ.get('VPC_RESOURCE_SUFFIX',
                                               VPC_NAME.lower() | replace(' ', '-')) %}
-{% set subnet_ids = [] %}
-{% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
-    'public1-{}'.format(VPC_RESOURCE_SUFFIX), 'public2-{}'.format(VPC_RESOURCE_SUFFIX), 'public3-{}'.format(VPC_RESOURCE_SUFFIX)])['subnets'] %}
-{% do subnet_ids.append('{0}'.format(subnet['id'])) %}
-{% endfor %}
+{% set subnet = salt.boto_vpc.describe_subnet(subnet_name='public2-{}'.format(VPC_RESOURCE_SUFFIX)) %}
+{% set subnet_id = subnet['id'] %}
 {% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token').data.value %}
 {% set backup_volume_name = 'odl-operations-backups-cache-{}'.format(ENVIRONMENT) %}
 {% set instance_name = 'backup-{}'.format(ENVIRONMENT) %}
@@ -55,7 +52,7 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
             - DeviceIndex: 0
               AssociatePublicIpAddress: True
               {# Chose 2nd subnet because we want the instance to be in the same AZ as backup volume. #}
-              SubnetId: {{ subnet_ids[1] }}
+              SubnetId: {{ subnet_id }}
               SecurityGroupId:
                 - {{ salt.boto_secgroup.get_group_id(
                      'salt_master-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
