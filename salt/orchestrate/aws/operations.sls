@@ -1,6 +1,6 @@
 {% set VPC_NAME='mitodl-operations-services' %}
 {% set VPC_RESOURCE_SUFFIX = 'operations' %}
-{% set ENVIRONMENT = 'operations') %}
+{% set ENVIRONMENT = 'operations' %}
 {% set BUSINESS_UNIT = 'operations' %}
 
 create_operations_public_subnet_1:
