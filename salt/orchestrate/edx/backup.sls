@@ -3,7 +3,7 @@
 {% set VPC_RESOURCE_SUFFIX = salt.environ.get('VPC_RESOURCE_SUFFIX',
                                               VPC_NAME.lower() | replace(' ', '-')) %}
 {% set subnet = salt.boto_vpc.describe_subnet(subnet_name='public2-{}'.format(VPC_RESOURCE_SUFFIX)) %}
-{% set subnet_id = subnet['id'] %}
+{% set subnet_id = subnet['subnet']['id'] %}
 {% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token').data.value %}
 {% set backup_volume_name = 'odl-operations-backups-cache-{}'.format(ENVIRONMENT) %}
 {% set instance_name = 'backup-{}'.format(ENVIRONMENT) %}
