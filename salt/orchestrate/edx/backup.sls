@@ -73,7 +73,7 @@ create_attach_backup_volume:
     - arg:
         - cloud.action
     - kwarg:
-        func: ec2.create_attach_volume
+        func: ec2.create_attach_volumes
         name: {{ instance_name }}
         kwargs:
           volumes:
