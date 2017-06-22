@@ -1,6 +1,7 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, subnet_ids with context %}
 {% set rabbit_admin_password = salt.random.get_str(42) %}
+{% set SIX_MONTHS = '4368h' %}
 
 load_rabbitmq_cloud_profile:
   file.managed:
@@ -87,5 +88,7 @@ configure_vault_rabbitmq_backend:
         connection_uri: "http://rabbitmq.service.{{ ENVIRONMENT }}.consul:15672"
         username: admin
         password: {{ rabbit_admin_password }}
-    - ttl_max: 4368h
-    - ttl_default: 4368h
+    - ttl_max: {{ SIX_MONTHS }}
+    - ttl_default: {{ SIX_MONTHS }}
+    - lease_max: {{ SIX_MONTHS }}
+    - lease_default: {{ SIX_MONTHS }}
