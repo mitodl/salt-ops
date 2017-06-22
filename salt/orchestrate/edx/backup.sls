@@ -69,6 +69,8 @@ from s3 buckets when called. In order to accomodate that, we have an EBS volume 
 by the ephemeral instance that is destroyed once backups are complete. #}
 create_attach_backup_volume:
   salt.function:
+    - tgt: 'roles:master'
+    - tgt_type: grain
     - name: saltutil.runner
     - arg:
         - cloud.action
