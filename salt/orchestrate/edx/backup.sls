@@ -72,12 +72,11 @@ create_attach_backup_volume:
     - name: cloud.action
     - tgt: 'roles:master'
     - tgt_type: grain
-    - arg:
-        - ec2.create_attach_volumes
-        - kwarg:
-            name: {{ instance_name }}
-        - kwargs:
-            volumes:
+    - kwarg:
+        fun: ec2.create_attach_volumes
+        name: {{ instance_name }}
+        kwargs:
+          volumes:
             volume_name: {{ backup_volume_name }}
             device: /dev/xvdb
             zone: us-east-1b
