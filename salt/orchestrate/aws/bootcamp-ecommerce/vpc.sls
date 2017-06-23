@@ -2,6 +2,7 @@
 {% set VPC_RESOURCE_SUFFIX = VPC_NAME.lower() | replace(' ', '-') %}
 {% set VPC_NET_PREFIX = '10.11' %}
 {% set ENVIRONMENT = 'bootcamps' %}
+{% set BUSINESS_UNIT = 'bootcamps' %}
 
 create_{{ ENVIRONMENT }}_vpc:
   boto_vpc.present:
@@ -12,6 +13,7 @@ create_{{ ENVIRONMENT }}_vpc:
     - dns_hostnames: True
     - tags:
         Name: {{ VPC_NAME }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_{{ ENVIRONMENT }}_internet_gateway:
   boto_vpc.internet_gateway_present:
@@ -21,6 +23,7 @@ create_{{ ENVIRONMENT }}_internet_gateway:
         - boto_vpc: create_{{ VPC_NAME.lower() | replace(' ', '-') }}_vpc
     - tags:
         Name: {{ VPC_RESOURCE_SUFFIX }}-igw
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_{{ ENVIRONMENT }}_public_subnet_1:
   boto_vpc.subnet_present:
@@ -32,6 +35,7 @@ create_{{ ENVIRONMENT }}_public_subnet_1:
         - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX }}_vpc
     - tags:
         Name: public1-{{ ENVIRONMENT }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_{{ ENVIRONMENT }}_public_subnet_2:
   boto_vpc.subnet_present:
@@ -43,6 +47,7 @@ create_{{ ENVIRONMENT }}_public_subnet_2:
         - boto_vpc: create_{{ VPC_NAME }}_vpc
     - tags:
         Name: public2-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_{{ ENVIRONMENT }}_public_subnet_3:
   boto_vpc.subnet_present:
@@ -54,6 +59,7 @@ create_{{ ENVIRONMENT }}_public_subnet_3:
         - boto_vpc: create_{{ VPC_NAME }}_vpc
     - tags:
         Name: public3-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_{{ ENVIRONMENT }}_vpc_peering_connection_with_operations:
   boto_vpc.vpc_peering_connection_present:
@@ -86,6 +92,24 @@ create_{{ ENVIRONMENT }}_routing_table:
         - boto_vpc: create_{{ ENVIRONMENT }}_vpc_peering_connection_with_operations
     - tags:
         Name: {{ VPC_RESOURCE_SUFFIX }}-route_table
+        business_unit: {{ BUSINESS_UNIT }}
+
+create_postgresql_rds_security_group_in_{{ VPC_NAME }}:
+  boto_secgroup.present:
+    - name: postgresql-rds-{{ VPC_RESOURCE_SUFFIX }}
+    - vpc_name: {{ VPC_NAME }}
+    - description: ACL for RDS access
+    - rules:
+        - ip_protocol: tcp
+          from_port: 5432
+          to_port: 5432
+          cidr_ip:
+            - 0.0.0.0/0
+    - require:
+        - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX }}_vpc
+    - tags:
+        Name: rds-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_salt_master_security_group:
   boto_secgroup.present:
@@ -100,5 +124,25 @@ create_salt_master_security_group:
     - require:
         - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX }}_vpc
     - tags:
-        Name: elasticsearch-{{ VPC_RESOURCE_SUFFIX }}
-n
+        Name: salt_master-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
+
+create_vault_backend_security_group_in_{{ VPC_NAME }}:
+  boto_secgroup.present:
+    - name: vault-{{ VPC_RESOURCE_SUFFIX }}
+    - vpc_name: {{ VPC_NAME }}
+    - description: >-
+        ACL to allow Vault to access data stores so that it
+        can create dynamic credentials
+    - tags:
+        Name: vault-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
+    - rules:
+        {# PostGreSQL #}
+        - ip_protocol: tcp
+          from_port: 5432
+          to_port: 5432
+          cidr_ip:
+            - 10.0.0.0/22
+    - require:
+        - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX }}_vpc
