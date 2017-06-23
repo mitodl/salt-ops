@@ -74,6 +74,7 @@ create_attach_backup_volume:
     - tgt_type: grain
     - kwarg:
         fun: ec2.create_attach_volumes
+        instance: {{ instance_name }}
         name: {{ instance_name }}
         kwargs:
           volumes:
