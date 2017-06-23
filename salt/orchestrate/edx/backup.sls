@@ -74,8 +74,8 @@ create_attach_backup_volume:
     - tgt_type: grain
     - kwarg:
         fun: ec2.create_attach_volumes
+        name: {{ instance_name }}
         kwargs:
-          name: {{ instance_name }}
           volumes:
             volume_name: {{ backup_volume_name }}
             device: /dev/xvdb
