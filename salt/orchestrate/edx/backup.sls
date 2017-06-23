@@ -166,7 +166,7 @@ detach_backup_volume:
     - require:
         - salt: unmount_backup_drive
 
-{# terminate_backup_instance_in_{{ ENVIRONMENT }}:
+terminate_backup_instance_in_{{ ENVIRONMENT }}:
   salt.function:
     - name: saltutil.runner
     - tgt: 'roles:master'
@@ -178,7 +178,7 @@ detach_backup_volume:
           - backup-{{ ENVIRONMENT }}
     - require:
         - salt: execute_enabled_backup_scripts
-        - salt: detach_backup_volume #}
+        - salt: detach_backup_volume
 
 alert_devops_channel_on_failure:
   slack.post_message:
