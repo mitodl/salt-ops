@@ -46,4 +46,5 @@ configure_vault_postgresql_backend:
     - lease_max: {{ SIX_MONTHS }}
     - lease_default: {{ SIX_MONTHS }}
     - connection_config:
-        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@tcp(postgresql.service.{{ ENVIRONMENT }}.consul:15432)"
+        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@tcp(postgresql.service.{{ ENVIRONMENT }}.consul:15432)/micromasters"
+        verify_connection: False

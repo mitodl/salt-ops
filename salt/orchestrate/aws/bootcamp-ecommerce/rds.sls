@@ -3,7 +3,7 @@
 
 {% set SIX_MONTHS = '4368h' %}
 {% set master_pass = salt.random.get_str(42) %}
-{% set master_user = 'odl-devops' %}
+{% set master_user = 'odldevops' %}
 
 create_{{ ENVIRONMENT }}_rds_db_subnet_group:
   boto_rds.subnet_group_present:
@@ -31,7 +31,7 @@ create_{{ ENVIRONMENT }}_rds_store:
         - {{ salt.boto_secgroup.get_group_id(
              'vault-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         - {{ salt.boto_secgroup.get_group_id(
-             'rds-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+             'postgresql-rds-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
     - db_subnet_group_name: db-subnet-group-{{ VPC_RESOURCE_SUFFIX }}
     - copy_tags_to_snapshot: True
     - tags:
@@ -49,4 +49,5 @@ configure_vault_postgresql_backend:
     - lease_max: {{ SIX_MONTHS }}
     - lease_default: {{ SIX_MONTHS }}
     - connection_config:
-        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@tcp(postgresql.service.{{ ENVIRONMENT }}.consul:5432)"
+        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@tcp(postgresql.service.{{ ENVIRONMENT }}.consul:5432)/bootcamps"
+        verify_connection: False
