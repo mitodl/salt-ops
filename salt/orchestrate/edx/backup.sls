@@ -75,7 +75,7 @@ create_attach_backup_volume:
     - kwarg:
         fun: ec2.create_attach_volumes
         instance: {{ instance_name }}
-        provider: mitx
+        name: {{ instance_name }}
         kwargs:
           volumes:
             volume_name: {{ backup_volume_name }}
