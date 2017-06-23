@@ -68,17 +68,22 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
 from s3 buckets when called. In order to accomodate that, we have an EBS volume that will be mounted
 by the ephemeral instance that is destroyed once backups are complete. #}
 create_attach_backup_volume:
-  cloud.action:
-    - fun: ec2.create_attach_volumes
-    - name: {{ instance_name }}
-    - kwargs:
-        volumes:
-          volume_name: {{ backup_volume_name }}
-          device: /dev/xvdb
-          zone: us-east-1b
-          tags: backup
-          type: gp2
-          size: 400
+  salt.function:
+    - name: cloud.action
+    - tgt: 'roles:master'
+    - tgt_type: grain
+    - arg:
+        - ec2.create_attach_volumes
+        - kwarg:
+            name: {{ instance_name }}
+        - kwargs:
+            volumes:
+            volume_name: {{ backup_volume_name }}
+            device: /dev/xvdb
+            zone: us-east-1b
+            tags: backup
+            type: gp2
+            size: 400
     - require:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
 
