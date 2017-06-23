@@ -67,22 +67,14 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
 {# Duplicity requires an archive directory otherwise it will have to create it and download files
 from s3 buckets when called. In order to accomodate that, we have an EBS volume that will be mounted
 by the ephemeral instance that is destroyed once backups are complete. #}
-create_attach_backup_volume:
+attach_backup_volume:
   salt.function:
     - name: cloud.action
-    - tgt: 'roles:master'
-    - tgt_type: grain
+    - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
     - kwarg:
-        fun: ec2.create_attach_volumes
-        name: {{ instance_name }}
-        kwargs:
-          volumes:
-            volume_name: {{ backup_volume_name }}
-            device: /dev/xvdb
-            zone: us-east-1b
-            tags: backup
-            type: gp2
-            size: 400
+        fun: ec2.attach_volume
+        name: {{ backup_volume_name }}
     - require:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
 
