@@ -36,6 +36,7 @@ create_{{ ENVIRONMENT }}_rds_store:
     - copy_tags_to_snapshot: True
     - tags:
         Name: {{ VPC_RESOURCE_SUFFIX }}-rds-mysql
+        business_unit: bootcamps
     - require:
         - boto_rds: create_{{ ENVIRONMENT }}_rds_db_subnet_group
 
