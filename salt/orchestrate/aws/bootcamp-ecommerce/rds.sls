@@ -18,6 +18,7 @@ create_{{ ENVIRONMENT }}_rds_store:
     - name: {{ VPC_RESOURCE_SUFFIX }}-rds-postgresql
     - allocated_storage: 50
     - db_instance_class: db.t2.micro
+    - db_name: bootcamp_ecommerce
     - storage_type: gp2
     - engine: postgres
     - multi_az: True
@@ -50,5 +51,5 @@ configure_vault_postgresql_backend:
     - lease_max: {{ SIX_MONTHS }}
     - lease_default: {{ SIX_MONTHS }}
     - connection_config:
-        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@bootcamps-db.service.consul:5432/bootcamp-ecommerce"
+        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@bootcamps-db.service.consul:5432/bootcamp_ecommerce"
         verify_connection: False
