@@ -17,7 +17,7 @@ create_{{ ENVIRONMENT }}_rds_store:
   boto_rds.present:
     - name: {{ VPC_RESOURCE_SUFFIX }}-rds-postgresql
     - allocated_storage: 50
-    - db_instance_class: db.t2.small
+    - db_instance_class: db.t2.micro
     - storage_type: gp2
     - engine: postgres
     - multi_az: True
