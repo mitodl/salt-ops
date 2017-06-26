@@ -22,7 +22,7 @@ create_{{ ENVIRONMENT }}_rds_store:
     - engine: postgres
     - multi_az: True
     - auto_minor_version_upgrade: True
-    - publicly_accessible: False
+    - publicly_accessible: True
     - master_username: {{ master_user }}
     - master_user_password: {{ master_pass }}
     - vpc_security_group_ids:
