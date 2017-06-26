@@ -50,5 +50,5 @@ configure_vault_postgresql_backend:
     - lease_max: {{ SIX_MONTHS }}
     - lease_default: {{ SIX_MONTHS }}
     - connection_config:
-        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@tcp(bootcamps-db.service.consul:5432)/bootcamp-ecommerce"
+        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@bootcamps-db.service.consul:5432/bootcamp-ecommerce"
         verify_connection: False
