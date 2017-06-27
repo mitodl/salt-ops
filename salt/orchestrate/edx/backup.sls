@@ -78,12 +78,12 @@ create_attach_backup_volume:
         name: {{ instance_name }}
         kwargs:
           volumes:
-            volume_name: {{ backup_volume_name }}
-            device: /dev/xvdb
-            zone: us-east-1b
-            tags: backup
-            type: gp2
-            size: 400
+            - volume_name: {{ backup_volume_name }}
+              device: /dev/xvdb
+              zone: us-east-1b
+              tags: backup
+              type: gp2
+              size: 400
     - require:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
 
