@@ -1,5 +1,5 @@
 format_backup_drive:
-  blockdev.format:
+  blockdev.formatted:
     - device: /dev/xvdb
     - fs_type: ext4
 

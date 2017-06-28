@@ -72,7 +72,8 @@ create_attach_backup_volume:
     - name: cloud.action
     - tgt: 'roles:master'
     - tgt_type: grain
-    - fun: ec2.create_attach_volumes
+    - arg:
+        - create_attach_volumes
     - kwarg:
         instance: {{ instance_name }}
         name: {{ instance_name }}
