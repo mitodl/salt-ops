@@ -1,4 +1,4 @@
-{% from "orchestrate/edx/backup" import backup with context %}
+{% set backup_volume_name = 'odl-operations-backups-cache-{}'.format(salt.grains.get('environment')) %}
 
 unmount_backup_drive:
   mount.unmounted:
