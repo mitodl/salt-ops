@@ -1,4 +1,4 @@
-{% from "orchestrate/aws_env_macro.jinja" import ENVIRONMENT, PURPOSE_PREFIX with context %}
+{% set ENVIRONMENT = salt.grains.get('environment') %}
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 
 {% if 'live' in salt.grains.get('id') %}
@@ -7,7 +7,7 @@
 {% set edx_type = 'draft' %}
 {% endif %}
 
-{% set purpose_name = '{prefix}-{type}'.format(prefix=PURPOSE_PREFIX, type=edx_type) %}
+{% set purpose_name = salt.grains.get('purpose') %}
 {% set purpose = env_settings.purposes[purpose_name] %}
 
 {% set gr_dir = salt.pillar.get('edx:gitreload:gr_dir', '/edx/app/gitreload') -%}
