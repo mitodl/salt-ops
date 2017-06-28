@@ -1,9 +1,9 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- ENVIRONMENT, subnet_ids with context %}
+ ENVIRONMENT, BUSINESS_UNIT, subnet_ids with context %}
 
 {% set SIX_MONTHS = '4368h' %}
 {% set master_pass = salt.random.get_str(42) %}
-{% set master_user = salt.pillar.get('rds:master_username', salt.random.get_str(42) %}
+{% set master_user = salt.pillar.get('rds:master_username', 'odldevops' %}
 
 create_edx_rds_db_subnet_group:
   boto_rds.subnet_group_present:
@@ -14,7 +14,7 @@ create_edx_rds_db_subnet_group:
 
 create_edx_rds_store:
   boto_rds.present:
-    - name: {{ VPC_RESOURCE_SUFFIX }}-rds-mysql
+    - name: {{ ENVIRONMENT }}-rds-mysql
     - allocated_storage: 200
     - db_instance_class: db.t2.medium
     - storage_type: gp2
@@ -35,6 +35,7 @@ create_edx_rds_store:
     - copy_tags_to_snapshot: True
     - tags:
         Name: {{ VPC_RESOURCE_SUFFIX }}-rds-mysql
+        business_unit: {{ BUSINESS_UNIT }}
     - require:
         - boto_rds: create_edx_rds_db_subnet_group
 

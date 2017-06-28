@@ -1,5 +1,5 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- ENVIRONMENT, subnet_ids with context %}
+ ENVIRONMENT, BUSINESS_UNIT, subnet_ids with context %}
 load_consul_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/consul.conf
@@ -8,10 +8,14 @@ load_consul_cloud_profile:
 generate_cloud_map_file:
   file.managed:
     - name: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_consul_map.yml
-    - source: salt://orchestrate/aws/map_templates/consul.yml
+    - source: salt://orchestrate/aws/map_templates/instance_map.yml
     - template: jinja
     - makedirs: True
     - context:
+        num_instances: 3
+        service_name: consul
+        tags:
+          business_unit: {{ BUSINESS_UNIT }}
         environment_name: {{ ENVIRONMENT }}
         roles:
           - consul_server

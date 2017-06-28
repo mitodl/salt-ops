@@ -1,5 +1,5 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- ENVIRONMENT, subnet_ids with context %}
+ ENVIRONMENT, BUSINESS_UNIT, subnet_ids with context %}
 {% set mongo_admin_password = salt.random.get_str(42) %}
 {% set SIX_MONTHS = '4368h' %}
 
@@ -11,10 +11,15 @@ load_mongodb_cloud_profile:
 generate_mongodb_cloud_map_file:
   file.managed:
     - name: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_mongodb_map.yml
-    - source: salt://orchestrate/aws/map_templates/mongodb.yml
+    - source: salt://orchestrate/aws/map_templates/instance_map.yml
     - template: jinja
     - makedirs: True
     - context:
+        service_name: mongodb
+        environment_name: {{ ENVIRONMENT }}
+        num_instances: 3
+        tags:
+          business_unit: {{ BUSINESS_UNIT }}
         environment_name: {{ ENVIRONMENT }}
         roles:
           - mongodb
@@ -90,6 +95,16 @@ populate_mine_with_mongodb_node_data:
     - tgt_type: compound
     - require:
         - salt: load_pillar_data_on_mitx_mongodb_nodes
+
+set_node_primary_node:
+  salt.function:
+    - tgt: 'mongodb-{{ ENVIRONMENT }}-0'
+    - name: grains.append
+    - arg:
+        - roles
+        - mongodb_primary
+    - require:
+        - salt: populate_mine_with_mongodb_node_data
 
 build_mongodb_nodes:
   salt.state:

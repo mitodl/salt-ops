@@ -1,12 +1,5 @@
-{% set VPC_NAME = salt.environ.get('VPC_NAME', 'MITx QA') %}
-{% set VPC_RESOURCE_SUFFIX = salt.environ.get('VPC_RESOURCE_SUFFIX',
-                                              VPC_NAME.lower() | replace(' ', '-')) %}
-{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-qa') %}
-{% set subnet_ids = [] %}
-{% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
-    'public1-{}'.format(VPC_RESOURCE_SUFFIX), 'public2-{}'.format(VPC_RESOURCE_SUFFIX), 'public3-{}'.format(VPC_RESOURCE_SUFFIX)])['subnets'] %}
-{% do subnet_ids.append('{0}'.format(subnet['id'])) %}
-{% endfor %}
+{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
+ ENVIRONMENT, BUSINESS_UNIT, subnet_ids with context %}
 
 load_xqwatcher_cloud_profile:
   file.managed:
@@ -16,10 +9,15 @@ load_xqwatcher_cloud_profile:
 generate_xqwatcher_cloud_map_file:
   file.managed:
     - name: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_xqwatcher_map.yml
-    - source: salt://orchestrate/aws/map_templates/xqwatcher.yml
+    - source: salt://orchestrate/aws/map_templates/instance_map.yml
     - template: jinja
     - makedirs: True
     - context:
+        service_name: xqwatcher
+        environment_name: {{ ENVIRONMENT }}
+        num_instances: 2
+        tags:
+          business_unit: {{ BUSINESS_UNIT }}
         environment_name: {{ ENVIRONMENT }}
         roles:
           - xqwatcher
