@@ -87,43 +87,14 @@ create_attach_backup_volume:
     - require:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
 
-format_backup_drive:
-  salt.function:
+mount_and_format_backup_drive:
+  salt.state:
     - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
-    - name: state.single
-    - arg:
-        - blockdev.formatted
-    - kwarg:
-        name: /dev/xvdb
-        fs_type: ext4
+    - sls:
+        - backups.mount_drive
     - require:
         - salt: create_attach_backup_volume
-
-mount_backup_drive:
-  salt.function:
-    - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - name: state.single
-    - arg:
-        - mount.mounted
-    - kwarg:
-        name: /backups
-        device: /dev/xvdb
-        fstype: ext4
-        mkmnt: True
-        opts: 'relatime,user'
-
-create_backup_directory:
-  salt.function:
-    - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - name: state.single
-    - arg:
-        - file.directory
-    - kwargs:
-        name: /backups/tmp
-        makedirs: True
 
 execute_enabled_backup_scripts:
   salt.state:
@@ -135,36 +106,16 @@ execute_enabled_backup_scripts:
         - backups
     - require:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
-        - salt: mount_backup_drive
+        - salt: mount_and_format_backup_drive
 
-unmount_backup_drive:
-  salt.function:
+unmount_and_detach_backup_drive:
+  salt.state:
     - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
-    - name: state.single
-    - arg:
-        - mount.unmounted
-    - kwarg:
-        name: /backups
-        device: /dev/xvdb
+    - sls:
+        - backups.unmount_drive
     - require:
         - salt: execute_enabled_backup_scripts
-
-detach_backup_volume:
-  salt.function:
-    - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - name: saltutil.runner
-    - arg:
-        - cloud.action
-    - kwarg:
-        func: boto_ec2.detach_volume
-        kwargs:
-          tags:
-            Name: {{ backup_volume_name }}
-          device: /dev/xvdb
-    - require:
-        - salt: unmount_backup_drive
 
 terminate_backup_instance_in_{{ ENVIRONMENT }}:
   salt.function:
@@ -178,7 +129,7 @@ terminate_backup_instance_in_{{ ENVIRONMENT }}:
           - backup-{{ ENVIRONMENT }}
     - require:
         - salt: execute_enabled_backup_scripts
-        - salt: detach_backup_volume
+        - salt: unmount_and_detach_backup_drive
 
 alert_devops_channel_on_failure:
   slack.post_message:
