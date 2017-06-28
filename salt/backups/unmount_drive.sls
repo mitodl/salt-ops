@@ -10,7 +10,7 @@ detach_backup_volume:
     - func: boto_ec2.detach_volume
     - kwargs:
         tags:
-          Name: {{ backup.backup_volume_name }}
+          Name: {{ backup_volume_name }}
           device: /dev/xvdb
     - require:
         - salt: unmount_backup_drive
