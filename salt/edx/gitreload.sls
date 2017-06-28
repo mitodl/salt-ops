@@ -97,7 +97,7 @@ create_{{ path }}_directories:
     - group: www-data
     - makedirs: True
     - require_in:
-      - file: gitreload_init_script
+      - file: configure_gitreload_service
 {% endfor %}
 
 {% for item in gr_repos %}
