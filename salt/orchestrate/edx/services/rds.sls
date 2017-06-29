@@ -52,6 +52,6 @@ configure_vault_mysql_backend:
     - lease_default: {{ SIX_MONTHS }}
     - connection_config:
         connection_url: "{{ master_user }}:{{ master_pass }}@tcp(mysql.service.{{ ENVIRONMENT }}.consul:3306)/"
-        verify: False
+        verify_connection: False
     - require:
         - boto_rds: create_edx_rds_store
