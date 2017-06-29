@@ -2,7 +2,7 @@
  ENVIRONMENT, BUSINESS_UNIT, subnet_ids with context %}
 
 {% set SIX_MONTHS = '4368h' %}
-{% set master_pass = salt.random.get_str(42) %}
+{% set master_pass = salt.random.get_str(40) %}
 {% set master_user = salt.pillar.get('rds:master_username', 'odldevops') %}
 
 create_edx_rds_db_subnet_group:
