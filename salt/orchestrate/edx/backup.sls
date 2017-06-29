@@ -60,42 +60,40 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
                      'edx-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
                 - {{ salt.boto_secgroup.get_group_id(
                      'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+          block_device_mappings:
+            - DeviceName: /dev/xvda
+              Ebs.VolumeSize: 8
+              Ebs.VolumeType: gp2
+            - DeviceName: /dev/xvdb
+              Ebs.VolumeSize: 400
+              Ebs.VolumeType: gp2
+          enable_term_protect: True
     - require:
         - file: load_backup_host_cloud_profile
         - boto_iam_role: ensure_instance_profile_exists_for_backups
 
-{# Duplicity requires an archive directory otherwise it will have to create it and download files
-from s3 buckets when called. In order to accomodate that, we have an EBS volume that will be mounted
-by the ephemeral instance that is destroyed once backups are complete. #}
-create_attach_backup_volume:
-  salt.function:
-    - name: cloud.action
-    - tgt: 'roles:master'
-    - tgt_type: grain
-    - arg:
-        - create_attach_volumes
-    - kwarg:
-        instance: {{ instance_name }}
-        name: {{ instance_name }}
-        kwargs:
-          volumes:
-            - volume_name: {{ backup_volume_name }}
-              device: /dev/xvdb
-              zone: us-east-1b
-              tags: backup
-              type: gp2
-              size: 400
-    - require:
-        - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
-
-mount_and_format_backup_drive:
+format_and_mount_backup_drive:
   salt.state:
     - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - sls:
         - backups.mount_drive
     - require:
-        - salt: create_attach_backup_volume
+        - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
+
+{% if salt['cloud.get_instance'](instance_name)['state'] != 'running' %}
+start_backup_instance_in_{{ ENVIRONMENT }}:
+  salt.function:
+    - name: cloud.action
+    - tgt: 'roles:master'
+    - tgt_type: grain
+    - arg:
+        - start
+    - kwarg:
+        instance: backup-{{ ENVIRONMENT }}
+    - require:
+        - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
+{% endif %}
 
 execute_enabled_backup_scripts:
   salt.state:
@@ -109,28 +107,17 @@ execute_enabled_backup_scripts:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
         - salt: mount_and_format_backup_drive
 
-unmount_and_detach_backup_drive:
-  salt.state:
-    - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - sls:
-        - backups.unmount_drive
-    - require:
-        - salt: execute_enabled_backup_scripts
-
-terminate_backup_instance_in_{{ ENVIRONMENT }}:
+stop_backup_instance_in_{{ ENVIRONMENT }}:
   salt.function:
-    - name: saltutil.runner
+    - name: cloud.action
     - tgt: 'roles:master'
     - tgt_type: grain
     - arg:
-        - cloud.destroy
+        - stop
     - kwarg:
-        instances:
-          - backup-{{ ENVIRONMENT }}
+        instance: backup-{{ ENVIRONMENT }}
     - require:
         - salt: execute_enabled_backup_scripts
-        - salt: unmount_and_detach_backup_drive
 
 alert_devops_channel_on_failure:
   slack.post_message:
@@ -149,4 +136,4 @@ alert_devops_channel_on_success:
     - api_key: {{ slack_api_token }}
     - require:
         - salt: execute_enabled_backup_scripts
-        - salt: terminate_backup_instance_in_{{ ENVIRONMENT }}
+        - salt: stop_backup_instance_in_{{ ENVIRONMENT }}
