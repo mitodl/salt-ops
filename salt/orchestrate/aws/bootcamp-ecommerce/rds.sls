@@ -12,6 +12,7 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
     - subnet_ids: {{ subnet_ids }}
     - tags:
         Name: db-subnet-group-{{VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
 
 create_{{ ENVIRONMENT }}_rds_store:
   boto_rds.present:
