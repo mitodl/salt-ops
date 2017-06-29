@@ -1,9 +1,12 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, BUSINESS_UNIT, subnet_ids with context %}
+{% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', 3) %}
+
 load_consul_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/consul.conf
     - source: salt://orchestrate/aws/cloud_profiles/consul.conf
+    - template: jinja
 
 generate_cloud_map_file:
   file.managed:
@@ -12,7 +15,7 @@ generate_cloud_map_file:
     - template: jinja
     - makedirs: True
     - context:
-        num_instances: 3
+        num_instances: {{ INSTANCE_COUNT }}
         service_name: consul
         tags:
           business_unit: {{ BUSINESS_UNIT }}
@@ -68,14 +71,6 @@ reload_pillar_data_on_mitx_consul_nodes:
     - tgt_type: compound
     - require:
         - salt: populate_mine_with_mitx_consul_data
-
-install_git_on_consul_nodes_for_cloning_forked_python_packages:
-  salt.function:
-    - name: pkg.install
-    - tgt: 'G@roles:consul_server and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - arg:
-        - git
 
 build_mitx_consul_nodes:
   salt.state:
