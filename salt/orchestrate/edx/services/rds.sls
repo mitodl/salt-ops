@@ -3,7 +3,7 @@
 
 {% set SIX_MONTHS = '4368h' %}
 {% set master_pass = salt.random.get_str(42) %}
-{% set master_user = salt.pillar.get('rds:master_username', 'odldevops' %}
+{% set master_user = salt.pillar.get('rds:master_username', 'odldevops') %}
 
 create_edx_rds_db_subnet_group:
   boto_rds.subnet_group_present:
@@ -50,3 +50,4 @@ configure_vault_mysql_backend:
     - lease_default: {{ SIX_MONTHS }}
     - connection_config:
         connection_url: "{{ master_user }}:{{ master_pass }}@tcp(mysql.service.{{ ENVIRONMENT }}.consul:3306)"
+        verify: False
