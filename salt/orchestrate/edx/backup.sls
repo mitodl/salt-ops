@@ -61,12 +61,22 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
                 - {{ salt.boto_secgroup.get_group_id(
                      'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           block_device_mappings:
-            - DeviceName: /dev/xvda
+            - DeviceName: /dev/xvdb
               Ebs.VolumeSize: 400
               Ebs.VolumeType: gp2
+          enable_term_protect: True
     - require:
         - file: load_backup_host_cloud_profile
         - boto_iam_role: ensure_instance_profile_exists_for_backups
+
+format_and_mount_backup_drive:
+  salt.state:
+    - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - sls:
+        - backups.mount_drive
+    - require:
+        - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
 
 {% if salt['cloud.get_instance'](instance_name)['state'] != 'running' %}
 start_backup_instance_in_{{ ENVIRONMENT }}:
