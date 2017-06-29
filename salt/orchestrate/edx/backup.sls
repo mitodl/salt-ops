@@ -81,6 +81,7 @@ format_and_mount_backup_drive:
     - require:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
 
+{% if salt['cloud.get_instance'](instance_name) %}
 {% if salt['cloud.get_instance'](instance_name)['state'] != 'running' %}
 start_backup_instance_in_{{ ENVIRONMENT }}:
   salt.function:
@@ -93,6 +94,7 @@ start_backup_instance_in_{{ ENVIRONMENT }}:
         instance: backup-{{ ENVIRONMENT }}
     - require:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
+{% endif %}
 {% endif %}
 
 execute_enabled_backup_scripts:
