@@ -1,0 +1,25 @@
+{{ service_name }}:
+  {% set instance_count = num_instances|default(3)}
+  {% for id_num in range(instance_count) %}
+  - {{ service_name }}-{{ environment_name }}-{{ id_num }}:
+      network_interfaces:
+        - DeviceIndex: 0
+          AssociatePublicIpAddress: True
+          SubnetId: {{ subnetids[id_num] }}
+          SecurityGroupId: {{ securitygroupid }}
+      tag:
+        environment: {{ environment_name }}
+        role: {{ service_name }}
+        {% for tag_name, tag_value in tags.items() %}
+        {{ tag_name }}: {{ tag_value }}
+        {% endfor %}
+      grains:
+        environment: {{ environment_name }}
+        roles: {{ roles }}
+        {% for tag_name, tag_value in tags.items() %}
+        {{ tag_name }}: {{ tag_value }}
+        {% endfor %}
+      {% for profile_setting, profile_value in profile_overrides.items() % }
+      {{ profile_setting }}: {{ profile_value }}
+      {% endfor %}
+  {% endfor %}

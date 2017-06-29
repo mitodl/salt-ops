@@ -1,5 +1,5 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- ENVIRONMENT, subnet_ids with context %}
+ ENVIRONMENT, BUSINESS_UNIT, subnet_ids with context %}
 {% set rabbit_admin_password = salt.random.get_str(42) %}
 {% set SIX_MONTHS = '4368h' %}
 
@@ -11,10 +11,15 @@ load_rabbitmq_cloud_profile:
 generate_rabbitmq_cloud_map_file:
   file.managed:
     - name: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_rabbitmq_map.yml
-    - source: salt://orchestrate/aws/map_templates/rabbitmq.yml
+    - source: salt://orchestrate/aws/map_templates/instance_map.yml
     - template: jinja
     - makedirs: True
     - context:
+        service_name: rabbitmq
+        environment_name: {{ ENVIRONMENT }}
+        num_instances: 3
+        tags:
+          business_unit: {{ BUSINESS_UNIT }}
         environment_name: {{ ENVIRONMENT }}
         roles:
           - rabbitmq
