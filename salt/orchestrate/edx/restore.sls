@@ -8,6 +8,7 @@
 {% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
 {% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token').data.value) %}
+{% set instance_name = 'backup-{}'.format(ENVIRONMENT) %}
 
 ensure_backup_bucket_exists:
   boto_s3_bucket.present:
@@ -62,42 +63,46 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
                      'default', vpc_name=VPC_NAME) }}
                 - {{ salt.boto_secgroup.get_group_id(
                      'consul-agent-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
+          block_device_mappings:
+            - DeviceName: /dev/xvda
+              Ebs.VolumeSize: 8
+              Ebs.VolumeType: gp2
+            - DeviceName: /dev/xvdb
+              Ebs.VolumeSize: 400
+              Ebs.VolumeType: gp2
+          enable_term_protect: True
     - require:
         - file: load_backup_host_cloud_profile
         - boto_iam_role: ensure_instance_profile_exists_for_backups
 
-format_backup_drive:
-  salt.function:
-    - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
+format_and_mount_backup_drive:
+  salt.state:
+    - tgt: 'G@roles:restores and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
-    - name: state.single
-    - arg:
-        - blockdev.formatted
-    - kwarg:
-        name: /dev/xvdb
-        fs_type: ext4
+    - sls:
+        - backups.mount_drive
     - require:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
 
-mount_backup_drive:
+{% if salt['cloud.get_instance'](instance_name) %}
+{% if salt['cloud.get_instance'](instance_name)['state'] != 'running' %}
+start_backup_instance_in_{{ ENVIRONMENT }}:
   salt.function:
-    - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - name: state.single
+    - name: cloud.action
+    - tgt: 'roles:master'
+    - tgt_type: grain
     - arg:
-        - mount.mounted
+        - start
     - kwarg:
-        name: /backups
-        device: /dev/xvdb
-        fstype: ext4
-        mkmnt: True
-        opts: 'relatime,user'
+        instance: backup-{{ ENVIRONMENT }}
     - require:
-        - salt: format_backup_drive
+        - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
+{% endif %}
+{% endif %}
 
 execute_enabled_backup_scripts:
   salt.state:
-    - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:restores and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - sls:
         - consul
@@ -105,18 +110,17 @@ execute_enabled_backup_scripts:
         - backups.restore
     - require:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
-        - salt: mount_backup_drive
+        - salt: format_and_mount_backup_drive
 
-terminate_backup_instance_in_{{ ENVIRONMENT }}:
+stop_backup_instance_in_{{ ENVIRONMENT }}:
   salt.function:
-    - name: saltutil.runner
+    - name: cloud.action
     - tgt: 'roles:master'
     - tgt_type: grain
     - arg:
-        - cloud.destroy
+        - stop
     - kwarg:
-        instances:
-          - backup-{{ ENVIRONMENT }}
+        instance: backup-{{ ENVIRONMENT }}
     - require:
         - salt: execute_enabled_backup_scripts
 

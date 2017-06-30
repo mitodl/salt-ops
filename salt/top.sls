@@ -92,4 +92,7 @@ base:
     - edx.xqwatcher
   'roles:backups':
     - match: grain
-    - backups
+    - backups.backup
+  'roles:restores':
+    - match: grain
+    - backups.restore
