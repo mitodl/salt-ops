@@ -4,6 +4,7 @@ set -e
 {% set backupdir = '/backups/{}'.format(settings.get('directory', 'mongodb')) %}
 {% set cachedir = '/backups/.cache/{}'.format(settings.get('directory', 'mongodb')) %}
 mkdir -p {{ backupdir }}
+mkdir -p {{ cachedir }}
 
 /usr/bin/mongodump --host {{ settings.host }} \
                    --port {{ settings.get('port', 27017) }} \

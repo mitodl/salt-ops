@@ -4,6 +4,7 @@ set -e
 {% set backupdir = '/backups/{}'.format(settings.get('directory', 'mysql')) %}
 {% set cachedir = '/backups/.cache/{}'.format(settings.get('directory', 'mysql')) %}
 mkdir -p {{ backupdir }}
+mkdir -p {{ cachedir }}
 
 /usr/bin/mysqldump --host {{ settings.host }} \
                    --port {{ settings.get('port', 3306) }} \
