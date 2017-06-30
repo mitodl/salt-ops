@@ -9,11 +9,13 @@ load_edx_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/edx.conf
     - source: salt://orchestrate/aws/cloud_profiles/edx.conf
+    - template: jinja
 
 load_edx_worker_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/edx_worker.conf
     - source: salt://orchestrate/aws/cloud_profiles/edx-worker.conf
+    - template: jinja
 
 generate_edx_cloud_map_file:
   file.managed:

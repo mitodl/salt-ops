@@ -5,6 +5,7 @@ load_xqwatcher_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/xqwatcher.conf
     - source: salt://orchestrate/aws/cloud_profiles/xqwatcher.conf
+    - template: jinja
 
 generate_xqwatcher_cloud_map_file:
   file.managed:
