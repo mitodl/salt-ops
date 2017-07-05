@@ -39,7 +39,6 @@ generate_edx_cloud_map_file:
           consul-agent: {{ salt.boto_secgroup.get_group_id(
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids }}
-        ami_id: {{ purposes['{}-draft'.format(PURPOSE_PREFIX)].versions.ami_id }}
         app_types:
           draft: {{ purposes['{}-draft'.format(PURPOSE_PREFIX)].num_instances }}
           live:  {{ purposes['{}-live'.format(PURPOSE_PREFIX)].num_instances }}
