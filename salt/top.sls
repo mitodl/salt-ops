@@ -2,7 +2,7 @@ base:
   '*':
     - utils.install_pip
     - utils.inotify_watches
-  'P@environment:(operations|mitx-rp|rp|partners)':
+  'P@environment:(operations|mitx-rp|mitx-production)':
     - match: compound
     - datadog
   'roles:master':
@@ -41,7 +41,7 @@ base:
   'G@roles:edx_sandbox and G@sandbox_status:ami-provision':
     - match: compound
     - edx.sandbox_ami
-  'G@roles:mongodb and P@environment:(mitx-qa|mitx-rp)':
+  'G@roles:mongodb and P@environment:mitx-(qa|rp|production)':
     - match: compound
     - mongodb
     - mongodb.consul_check
@@ -50,7 +50,7 @@ base:
     - match: grain
     - fluentd.reverse_proxy
     - datadog.plugins
-  'P@environment:(operations|mitx-qa|mitx-rp)':
+  'P@environment:(operations|mitx-qa|mitx-rp|mitx-production)':
     - match: compound
     - consul
     - consul.dns_proxy
@@ -64,13 +64,13 @@ base:
     - vault
     - vault.tests
     - utils.file_limits
-  'G@roles:rabbitmq and P@environment:(mitx-qa|mitx-rp)':
+  'G@roles:rabbitmq and P@environment:mitx-(qa|rp|production)':
     - match: compound
     - rabbitmq
     - rabbitmq.autocluster
     - rabbitmq.tests
     - datadog.plugins
-  'G@roles:edx and P@environment:(mitx-qa|mitx-rp)':
+  'G@roles:edx and P@environment:mitx-(qa|rp|production)':
     - match: compound
     - edx.prod
     - edx.run_ansible
@@ -80,7 +80,7 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
-  'G@roles:edx-worker and P@environment:(mitx-qa|mitx-rp)':
+  'G@roles:edx-worker and P@environment:mitx-(qa|rp|production)':
     - match: compound
     - edx.prod
     - edx.run_ansible
