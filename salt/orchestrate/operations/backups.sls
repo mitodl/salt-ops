@@ -68,7 +68,7 @@ execute_enabled_backup_scripts:
     - sls:
         - consul
         - consul.dns_proxy
-        - backups
+        - backups.backup
     - require:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
 
