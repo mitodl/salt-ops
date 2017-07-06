@@ -29,6 +29,14 @@ generate_elasticsearch_cloud_map_file:
         tags:
           escluster: edx-{{ ENVIRONMENT }}
           business_unit: {{ BUSINESS_UNIT }}
+        profile_overrides:
+            block_device_mappings:
+              - DeviceName: /dev/xvda
+                Ebs.VolumeSize: 20
+                Ebs.VolumeType: gp2
+              - DeviceName: /dev/xvdb
+                Ebs.VolumeSize: 100
+                Ebs.VolumeType: gp2
     - require:
         - file: load_elasticsearch_cloud_profile
 
@@ -114,27 +122,3 @@ build_mitx_elasticsearch_nodes:
     - highstate: True
     - require:
         - salt: reload_pillar_data_on_mitx_elasticsearch_nodes
-
-remove_broken_line_from_elasticsearch_init_script:
-  salt.function:
-    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - name: file.comment_line
-    - arg:
-        - /etc/init.d/elasticsearch
-    - kwarg:
-        regex: ^test "\$START_DAEMON"
-
-reload_elasticsearch_systemd_unit:
-  salt.function:
-    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - name: systemd.systemctl_reload
-
-restart_elasticsearch_service:
-  salt.function:
-    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - name: service.restart
-    - arg:
-        - elasticsearch
