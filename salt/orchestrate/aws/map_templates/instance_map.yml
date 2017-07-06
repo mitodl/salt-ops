@@ -1,4 +1,6 @@
 {% set ISO8601 = '%Y-%m-%dT%H:%M:%S' %}
+{% set profile_overrides = profile_overrides|default({}) %}
+{% set tags = tags|default({}) %}
 
 {{ service_name }}:
   {% set instance_count = num_instances|default(3) %}
@@ -23,7 +25,7 @@
         {% for tag_name, tag_value in tags.items() %}
         {{ tag_name }}: {{ tag_value }}
         {% endfor %}
-      {% for profile_setting, profile_value in profile_overrides.items() % }
+      {% for profile_setting, profile_value in profile_overrides.items() %}
       {{ profile_setting }}: {{ profile_value }}
       {% endfor %}
   {% endfor %}
