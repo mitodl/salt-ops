@@ -120,14 +120,21 @@ remove_broken_line_from_elasticsearch_init_script:
     - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - name: file.comment_line
+    - arg:
+        - /etc/init.d/elasticsearch
     - kwarg:
-        name: /etc/init.d/elasticsearch
         regex: ^test "\$START_DAEMON"
 
 reload_elasticsearch_systemd_unit:
   salt.function:
     - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
-    - name: cmd.run
-    - kwarg:
-        name: systemctl daemon-reload && systemctl restart elasticsearch
+    - name: systemd.systemctl_reload
+
+restart_elasticsearch_service:
+  salt.function:
+    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - name: service.restart
+    - arg:
+        - elasticsearch
