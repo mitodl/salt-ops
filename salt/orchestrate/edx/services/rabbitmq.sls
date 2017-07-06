@@ -20,7 +20,6 @@ generate_rabbitmq_cloud_map_file:
         num_instances: 3
         tags:
           business_unit: {{ BUSINESS_UNIT }}
-        environment_name: {{ ENVIRONMENT }}
         roles:
           - rabbitmq
         securitygroupid:
