@@ -34,6 +34,8 @@ create_edx_rds_store:
              'default', vpc_name=VPC_NAME) }}
         - {{ salt.boto_secgroup.get_group_id(
              'vault-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+        - {{ salt.boto_secgroup.get_group_id(
+             'rds-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
     - db_subnet_group_name: db-subnet-group-{{ VPC_RESOURCE_SUFFIX }}
     - copy_tags_to_snapshot: True
     - tags:

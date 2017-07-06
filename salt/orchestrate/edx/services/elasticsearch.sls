@@ -15,8 +15,6 @@ generate_elasticsearch_cloud_map_file:
         service_name: elasticsearch
         environment_name: {{ ENVIRONMENT }}
         num_instances: 3
-        tags:
-          business_unit: {{ BUSINESS_UNIT }}
         roles:
           - elasticsearch
         securitygroupid:
@@ -30,6 +28,7 @@ generate_elasticsearch_cloud_map_file:
         volume_size: 200
         tags:
           escluster: edx-{{ ENVIRONMENT }}
+          business_unit: {{ BUSINESS_UNIT }}
     - require:
         - file: load_elasticsearch_cloud_profile
 
