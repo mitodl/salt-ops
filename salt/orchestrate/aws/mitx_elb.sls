@@ -53,7 +53,7 @@ create_elb_for_edx_{{ purpose_name }}:
     - tags:
         Name: {{ elb_name }}
         business_unit: {{ BUSINESS_UNIT }}
-        created_at: {{ salt.status.time(format=ISO8601) }}
+        created_at: "{{ salt.status.time(format=ISO8601) }}"
 
 register_edx_{{ purpose_name }}_nodes_with_elb:
   boto_elb.register_instances:

@@ -12,7 +12,7 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
     - tags:
         Name: db-subnet-group-{{VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
-        created_at: {{ salt.status.time(format=ISO8601) }}
+        created_at: "{{ salt.status.time(format=ISO8601) }}"
 
 create_{{ ENVIRONMENT }}_rds_store:
   boto_rds.present:
@@ -36,7 +36,7 @@ create_{{ ENVIRONMENT }}_rds_store:
     - tags:
         Name: {{ VPC_RESOURCE_SUFFIX }}-rds-mysql
         business_unit: {{ BUSINESS_UNIT }}
-        created_at: {{ salt.status.time(format=ISO8601) }}
+        created_at: "{{ salt.status.time(format=ISO8601) }}"
     - require:
         - boto_rds: create_{{ ENVIRONMENT }}_rds_db_subnet_group
 
