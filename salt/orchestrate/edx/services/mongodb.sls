@@ -148,3 +148,4 @@ configure_vault_mongodb_backend:
     - lease_default: {{ SIX_MONTHS }}
     - connection_config:
         uri: "mongodb://admin:{{ mongo_admin_password }}@mongodb-master.service.{{ ENVIRONMENT }}.consul:27017/admin"
+        verify_connection: False
