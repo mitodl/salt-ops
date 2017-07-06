@@ -6,6 +6,7 @@
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set network_prefix = env_settings.network_prefix %}
 {% set cidr_block = '{}.0.0/16'.format(network_prefix) %}
+{% set ISO8601 = '%Y-%m-%dT%H:%M:%S' %}
 
 create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc:
   boto_vpc.present:
@@ -17,6 +18,7 @@ create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc:
     - tags:
         Name: {{ VPC_NAME }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_{{ VPC_RESOURCE_SUFFIX }}_public_subnet_1:
   boto_vpc.subnet_present:
@@ -27,6 +29,7 @@ create_{{ VPC_RESOURCE_SUFFIX }}_public_subnet_1:
     - tags:
         Name: public1-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_{{ VPC_RESOURCE_SUFFIX }}_public_subnet_2:
   boto_vpc.subnet_present:
@@ -37,6 +40,7 @@ create_{{ VPC_RESOURCE_SUFFIX }}_public_subnet_2:
     - tags:
         Name: public2-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_{{ VPC_RESOURCE_SUFFIX }}_public_subnet_3:
   boto_vpc.subnet_present:
@@ -47,6 +51,7 @@ create_{{ VPC_RESOURCE_SUFFIX }}_public_subnet_3:
     - tags:
         Name: public3-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 manage_{{ VPC_RESOURCE_SUFFIX }}_routing_table:
   boto_vpc.route_table_present:
@@ -62,6 +67,7 @@ manage_{{ VPC_RESOURCE_SUFFIX }}_routing_table:
     - tags:
         Name: {{ VPC_RESOURCE_SUFFIX }}-route_table
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_{{ VPC_RESOURCE_SUFFIX }}_consul_security_group:
   boto_secgroup.present:
@@ -137,6 +143,7 @@ create_mitx_consul_agent_security_group:
     - tags:
         Name: consul-agent-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_vault_security_group:
   boto_secgroup.present:
@@ -151,3 +158,4 @@ create_vault_security_group:
     - tags:
         Name: vault-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
