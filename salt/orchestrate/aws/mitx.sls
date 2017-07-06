@@ -12,6 +12,8 @@
     VPC_NAME.lower().replace(' ', '-')) %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', 'residential') %}
 
+{% set ISO8601 = '%Y-%m-%dT%H:%M:%S' %}
+
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 
 {% for profile in ['consul', 'mongodb', 'rabbitmq', 'edx'] %}
@@ -39,6 +41,7 @@ create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc:
     - tags:
         Name: {{ VPC_NAME }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_internet_gateway:
   boto_vpc.internet_gateway_present:
@@ -49,6 +52,7 @@ create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_internet_gateway:
     - tags:
         Name: {{ VPC_RESOURCE_SUFFIX }}-igw
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_public_subnet_1:
   boto_vpc.subnet_present:
@@ -61,6 +65,7 @@ create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_public_subnet_1:
     - tags:
         Name: public1-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_public_subnet_2:
   boto_vpc.subnet_present:
@@ -73,6 +78,7 @@ create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_public_subnet_2:
     - tags:
         Name: public2-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_public_subnet_3:
   boto_vpc.subnet_present:
@@ -85,6 +91,7 @@ create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_public_subnet_3:
     - tags:
         Name: public3-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc_peering_connection_with_operations:
   boto_vpc.vpc_peering_connection_present:
@@ -118,6 +125,7 @@ create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_routing_table:
     - tags:
         Name: {{ VPC_RESOURCE_SUFFIX }}-route_table
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_edx_security_group:
   boto_secgroup.present:
@@ -148,6 +156,7 @@ create_edx_security_group:
     - tags:
         Name: edx-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_edx_worker_security_group:
   boto_secgroup.present:
@@ -167,6 +176,7 @@ create_edx_worker_security_group:
     - tags:
         Name: edx-worker-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_mongodb_security_group:
   boto_secgroup.present:
@@ -186,6 +196,7 @@ create_mongodb_security_group:
     - tags:
         Name: mongodb-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_mitx_consul_security_group:
   boto_secgroup.present:
@@ -241,6 +252,7 @@ create_mitx_consul_security_group:
     - tags:
         Name: consul-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_mitx_consul_agent_security_group:
   boto_secgroup.present:
@@ -270,6 +282,7 @@ create_mitx_consul_agent_security_group:
     - tags:
         Name: consul-agent-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_rabbitmq_security_group:
   boto_secgroup.present:
@@ -299,6 +312,7 @@ create_rabbitmq_security_group:
     - tags:
         Name: rabbitmq-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_elasticsearch_security_group:
   boto_secgroup.present:
@@ -320,6 +334,7 @@ create_elasticsearch_security_group:
     - tags:
         Name: elasticsearch-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_rds_security_group:
   boto_secgroup.present:
@@ -341,6 +356,7 @@ create_rds_security_group:
     - tags:
         Name: rds-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
 
 create_salt_master_security_group:
   boto_secgroup.present:
@@ -350,6 +366,7 @@ create_salt_master_security_group:
     - tags:
         Name: salt_master-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
     - rules:
         - ip_protocol: tcp
           from_port: 22
@@ -369,6 +386,7 @@ create_vault_backend_security_group:
     - tags:
         Name: vault-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
     - rules:
         {# MongoDB #}
         - ip_protocol: tcp

@@ -1,3 +1,5 @@
+{% set ISO8601 = '%Y-%m-%dT%H:%M:%S' %}
+
 edx:
   {% set num_subnets = subnetids|length %}
   {% for app_type, num_instances in app_types.items() %}
@@ -17,7 +19,9 @@ edx:
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
         purpose_prefix: {{ purpose_prefix }}
+        created_at: {{ salt.status.time(format=ISO8601) }}
       grains:
+        created_at: {{ salt.status.time(format=ISO8601) }}
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
         {% set modified_purpose = purpose_prefix + '-' + app_type %}
@@ -44,10 +48,12 @@ edx-worker:
               - {{ securitygroupids['consul-agent'] }}
         image: {{ ami_id }}
         tag:
+          created_at: {{ salt.status.time(format=ISO8601) }}
           business_unit: {{ business_unit }}
           environment: {{ environment_name }}
           purpose_prefix: {{ purpose_prefix }}
         grains:
+          created_at: {{ salt.status.time(format=ISO8601) }}
           business_unit: {{ business_unit }}
           environment: {{ environment_name }}
           {% set modified_purpose = purpose_prefix + '-' + app_type %}
