@@ -109,7 +109,6 @@ execute_enabled_backup_scripts:
         - backups.backup
     - require:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
-        - salt: format_and_mount_backup_drive
 
 stop_backup_instance_in_{{ ENVIRONMENT }}:
   salt.function:
