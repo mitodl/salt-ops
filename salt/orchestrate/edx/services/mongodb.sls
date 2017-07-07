@@ -113,13 +113,6 @@ build_mongodb_nodes:
     - highstate: True
     - require:
         - salt: populate_mine_with_mongodb_node_data
-    - pillar:
-        mongodb:
-          overrides:
-            pkgs:
-              - mongodb-org
-              - python
-              - python-pip
 
 build_mongodb_master_node:
   salt.state:
@@ -130,11 +123,6 @@ build_mongodb_master_node:
         - salt: populate_mine_with_mongodb_node_data
     - pillar:
         mongodb:
-          overrides:
-            pkgs:
-              - mongodb-org
-              - python
-              - python-pip
           admin_username: admin
           admin_password: {{ mongo_admin_password }}
 
