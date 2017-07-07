@@ -31,6 +31,7 @@ generate_elasticsearch_cloud_map_file:
           escluster: edx-{{ ENVIRONMENT }}
           business_unit: {{ BUSINESS_UNIT }}
         profile_overrides:
+          ebs_optimized: False
           size: t2.medium
           block_device_mappings:
             - DeviceName: /dev/xvda
