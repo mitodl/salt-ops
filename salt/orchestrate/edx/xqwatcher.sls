@@ -19,7 +19,6 @@ generate_xqwatcher_cloud_map_file:
         num_instances: 2
         tags:
           business_unit: {{ BUSINESS_UNIT }}
-        environment_name: {{ ENVIRONMENT }}
         roles:
           - xqwatcher
         securitygroupid:
