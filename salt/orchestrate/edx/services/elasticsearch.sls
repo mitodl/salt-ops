@@ -4,6 +4,7 @@ load_elasticsearch_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/elasticsearch.conf
     - source: salt://orchestrate/aws/cloud_profiles/elasticsearch.conf
+    - template: jinja
 
 generate_elasticsearch_cloud_map_file:
   file.managed:

@@ -7,6 +7,7 @@ load_rabbitmq_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/rabbitmq.conf
     - source: salt://orchestrate/aws/cloud_profiles/rabbitmq.conf
+    - template: jinja
 
 generate_rabbitmq_cloud_map_file:
   file.managed:

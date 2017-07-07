@@ -7,6 +7,7 @@ load_mongodb_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/mongodb.conf
     - source: salt://orchestrate/aws/cloud_profiles/mongodb.conf
+    - template: jinja
 
 generate_mongodb_cloud_map_file:
   file.managed:
