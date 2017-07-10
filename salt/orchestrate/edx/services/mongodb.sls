@@ -126,6 +126,16 @@ build_mongodb_master_node:
           admin_username: admin
           admin_password: {{ mongo_admin_password }}
 
+unset_primary_node_grain:
+  salt.function:
+    - tgt: 'mongodb-{{ ENVIRONMENT }}-0'
+    - name: grains.remove
+    - arg:
+        - roles
+        - mongodb_primary
+    - require:
+        - salt: build_mongodb_master_node
+
 configure_vault_mongodb_backend:
   vault.secret_backend_enabled:
     - backend_type: mongodb
