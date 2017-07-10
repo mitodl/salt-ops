@@ -46,6 +46,12 @@ deploy_rabbitmq_cloud_map:
     - require:
         - file: generate_rabbitmq_cloud_map_file
 
+sync_external_modules_for_rabbitmq_nodes:
+  salt.function:
+    - name: saltutil.sync_all
+    - tgt: 'G@roles:rabbitmq and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+
 load_pillar_data_on_rabbitmq_nodes:
   salt.function:
     - name: saltutil.refresh_pillar

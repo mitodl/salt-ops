@@ -48,6 +48,12 @@ deploy_mongodb_cloud_map:
     - require:
         - file: generate_mongodb_cloud_map_file
 
+sync_external_modules_for_elasticsearch_nodes:
+  salt.function:
+    - name: saltutil.sync_all
+    - tgt: 'G@roles:mongodb and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+
 format_data_drive:
   salt.function:
     - tgt: 'G@roles:mongodb and G@environment:{{ ENVIRONMENT }}'

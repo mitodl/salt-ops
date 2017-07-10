@@ -51,6 +51,12 @@ deploy_elasticsearch_nodes:
     - require:
         - file: generate_elasticsearch_cloud_map_file
 
+sync_external_modules_for_elasticsearch_nodes:
+  salt.function:
+    - name: saltutil.sync_all
+    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+
 format_data_drive:
   salt.function:
     - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'

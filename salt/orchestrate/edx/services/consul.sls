@@ -42,6 +42,12 @@ deploy_consul_nodes:
     - require:
         - file: generate_cloud_map_file
 
+sync_external_modules_for_consul_nodes:
+  salt.function:
+    - name: saltutil.sync_all
+    - tgt: 'G@roles:consul_server and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+
 load_pillar_data_on_mitx_consul_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
