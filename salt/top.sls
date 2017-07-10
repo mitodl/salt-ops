@@ -38,6 +38,11 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
+  'P@environment:(operations|mitx-qa|mitx-rp|mitx-production)':
+    - match: compound
+    - fluentd
+    - fluentd.plugins
+    - fluentd.config
   'G@roles:edx_sandbox and G@sandbox_status:ami-provision':
     - match: compound
     - edx.sandbox_ami
