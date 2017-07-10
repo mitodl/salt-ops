@@ -61,15 +61,10 @@ create_edx_s3_bucket_{{ bucket }}_{{ PURPOSE_PREFIX }}-{{ type }}_{{ ENVIRONMENT
 {% endfor %}
 
 deploy_edx_cloud_map:
-  salt.function:
-    - name: saltutil.runner
-    - tgt: 'roles:master'
-    - tgt_type: grain
-    - arg:
-        - cloud.map_run
-    - kwarg:
-        path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_edx_map.yml
-        parallel: True
+  salt.runner:
+    - name: cloud.map_run
+    - path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_edx_map.yml
+    - parallel: True
     - require:
         - file: generate_edx_cloud_map_file
 

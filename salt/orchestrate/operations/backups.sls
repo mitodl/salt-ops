@@ -73,15 +73,10 @@ execute_enabled_backup_scripts:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
 
 terminate_backup_instance_in_{{ ENVIRONMENT }}:
-  salt.function:
-    - name: saltutil.runner
-    - tgt: 'roles:master'
-    - tgt_type: grain
-    - arg:
-        - cloud.destroy
-    - kwarg:
-        instances:
-          - backup-{{ ENVIRONMENT }}
+  salt.runner:
+    - name: cloud.destroy
+    - instances:
+        - backup-{{ ENVIRONMENT }}
     - require:
         - salt: execute_enabled_backup_scripts
 

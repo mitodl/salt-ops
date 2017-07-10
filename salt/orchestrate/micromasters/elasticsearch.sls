@@ -38,15 +38,10 @@ generate_elasticsearch_cloud_map_file:
         - file: load_elasticsearch_cloud_profile
 
 deploy_elasticsearch_nodes:
-  salt.function:
-    - name: saltutil.runner
-    - tgt: 'roles:master'
-    - tgt_type: grain
-    - arg:
-        - cloud.map_run
-    - kwarg:
-        path: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_elasticsearch_map.yml
-        parallel: True
+  salt.runner:
+    - name: cloud.map_run
+    - path: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_elasticsearch_map.yml
+    - parallel: True
     - require:
         - file: generate_elasticsearch_cloud_map_file
 

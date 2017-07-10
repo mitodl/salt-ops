@@ -38,15 +38,10 @@ generate_cloud_map_file:
         - file: load_kibana_cloud_profile
 
 deploy_logging_cloud_map:
-  salt.function:
-    - name: saltutil.runner
-    - tgt: 'roles:master'
-    - tgt_type: grain
-    - arg:
-        - cloud.map_run
-    - kwarg:
-        path: /etc/salt/cloud.maps.d/logging-map.yml
-        parallel: True
+  salt.runner:
+    - name: cloud.map_run
+    - path: /etc/salt/cloud.maps.d/logging-map.yml
+    - parallel: True
     - require:
       - file: generate_cloud_map_file
 

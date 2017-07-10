@@ -33,15 +33,10 @@ ensure_instance_profile_exists_for_xqwatcher:
     - name: xqwatcher-instance-role
 
 deploy_xqwatcher_cloud_map:
-  salt.function:
-    - name: saltutil.runner
-    - tgt: 'roles:master'
-    - tgt_type: grain
-    - arg:
-        - cloud.map_run
-    - kwarg:
-        path: /etc/salt/cloud.maps.d/{{ ENVIRONMENT}}_xqwatcher_map.yml
-        parallel: True
+  salt.runner:
+    - name: cloud.map_run
+    - path: /etc/salt/cloud.maps.d/{{ ENVIRONMENT}}_xqwatcher_map.yml
+    - parallel: True
     - require:
         - file: generate_xqwatcher_cloud_map_file
 

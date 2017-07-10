@@ -39,15 +39,10 @@ ensure_instance_profile_exists_for_rabbitmq:
     - name: rabbitmq-instance-role
 
 deploy_rabbitmq_cloud_map:
-  salt.function:
-    - name: saltutil.runner
-    - tgt: 'roles:master'
-    - tgt_type: grain
-    - arg:
-        - cloud.map_run
-    - kwarg:
-        path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_rabbitmq_map.yml
-        parallel: True
+  salt.runner:
+    - name: cloud.map_run
+    - path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_rabbitmq_map.yml
+    - parallel: True
     - require:
         - file: generate_rabbitmq_cloud_map_file
 
