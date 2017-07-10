@@ -2,6 +2,9 @@ base:
   '*':
     - utils.install_pip
     - utils.inotify_watches
+    - fluentd
+    - fluentd.plugins
+    - fluentd.config
   'P@environment:(operations|mitx-rp|mitx-production)':
     - match: compound
     - datadog
@@ -35,11 +38,6 @@ base:
     - datadog.plugins
   'roles:fluentd':
     - match: grain
-    - fluentd
-    - fluentd.plugins
-    - fluentd.config
-  'P@environment:(operations|mitx-qa|mitx-rp|mitx-production)':
-    - match: compound
     - fluentd
     - fluentd.plugins
     - fluentd.config
