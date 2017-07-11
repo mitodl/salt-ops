@@ -78,6 +78,8 @@ build_rabbitmq_nodes:
     - pillar:
         rabbitmq:
           users:
+            - name: guest
+              state: absent
             - name: admin
               state: present
               settings:
