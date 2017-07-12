@@ -30,7 +30,7 @@
 {% set CELERY_BROKER_USER = 'edxapp' %}
 {% set DEFAULT_FEEDBACK_EMAIL = 'mitodl-devstack@example.com' %}
 {% set DEFAULT_FROM_EMAIL = 'mitodl-devstack@example.com' %}
-{% set GIT_REPO_DIR = '/mnt/data/repos' %}
+{% set GIT_REPO_DIR = '/repo' %}
 {% set MONGODB_HOST = 'mongodb.service.consul' %}
 {% set MONGODB_MODULESTORE_ENGINE = 'xmodule.modulestore.mongo.MongoModuleStore' %}
 {% set MONGODB_PORT = 27017 %}
