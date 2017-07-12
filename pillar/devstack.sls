@@ -3,7 +3,6 @@
 {% set business_unit = 'mitodl' %}
 {% set purpose = 'devstack' %}
 {% set environment = 'dev' %}
-{% set purpose_data =  %}
 {% set purpose_suffix = 'devstack' %}
 
 {% set xqueue_rabbitmq_username = 'xqueue_rabbitmq_user' %}
@@ -252,8 +251,6 @@ edx:
     EDXAPP_LMS_ENV_EXTRA:
       <<: *common_env_config
       BULK_EMAIL_DEFAULT_FROM_EMAIL: {{ DEFAULT_FEEDBACK_EMAIL }}
-      COURSE_ABOUT_VISIBILITY_PERMISSION: "staff"
-      COURSE_CATALOG_VISIBILITY_PERMISSION: "staff"
       EDXAPP_ANALYTICS_DASHBOARD_URL: !!null
       FEATURES:
         <<: *common_feature_flags
