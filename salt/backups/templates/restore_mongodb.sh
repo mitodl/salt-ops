@@ -11,9 +11,12 @@ PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity restore\
           --archive-dir {{ cachedir }} \
           --force --tempdir /backups/tmp/ {{ backupdir }}
 
+{% for key, value in mongodb.items() %}
 /usr/bin/mongorestore --host {{ settings.host }} \
                       --port {{ settings.get('port', 27017) }} \
                       --password {{ settings.password }} --username admin \
                       --authenticationDatabase admin \
-                      --db {{ settings.database }} \
-                      --drop {{ backupdir }}/{{ settings.database }}
+                      --db {{ value }} \
+                      --drop {{ backupdir }}/{{ key }}
+{% endfor %}
+rm -rf {{ backupdir }}
