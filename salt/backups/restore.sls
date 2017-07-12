@@ -8,7 +8,7 @@ install_duplicity_backend_requirements:
   pip.installed:
     - name: boto
 
-{% for service in salt.pillar.get('backups:enabled', []) %}
+{% for service in salt.pillar.get('restores', []) %}
 {% if service.get('pkgs') %}
 install_packages_for_{{ service.title }}_backup:
   pkg.installed:
