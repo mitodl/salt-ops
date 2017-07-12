@@ -6,33 +6,32 @@
 {% set purpose_data =  %}
 {% set purpose_suffix = 'devstack' %}
 
-{% set xqueue_rabbitmq_username = salt.random.get_str(12) %}
+{% set xqueue_rabbitmq_username = 'xqueue_rabbitmq_user' %}
 {% set xqueue_rabbitmq_password = salt.random.get_str(20) %}
-{% set edxapp_rabbitmq_username = salt.random.get_str(12) %}
+{% set edxapp_rabbitmq_username = 'edxapp_rabbitmq_user' %}
 {% set edxapp_rabbitmq_password = salt.random.get_str(20) %}
-{% set admin_mysql_username = salt.random.get_str(12) %}
+{% set admin_mysql_username = 'admin_mysql_user' %}
 {% set admin_mysql_password = salt.random.get_str(20) %}
-{% set xqueue_mysql_username = salt.random.get_str(12) %}
+{% set xqueue_mysql_username = 'xqueue_mysql_user') %}
 {% set xqueue_mysql_password = salt.random.get_str(20) %}
-{% set edxapp_mysql_username = salt.random.get_str(12) %}
+{% set edxapp_mysql_username = 'edxapp_mysql_user' %}
 {% set edxapp_mysql_password = salt.random.get_str(20) %}
-{% set edxapp_mongodb_username = salt.random.get_str(12) %}
+{% set edxapp_mongodb_username = 'edxapp_mongodb_user' %}
 {% set edxapp_mongodb_password = salt.random.get_str(20) %}
-{% set forum_mongodb_username = salt.random.get_str(12) %}
+{% set forum_mongodb_username = 'forum_mongodb_user' %}
 {% set forum_mongodb_password = salt.random.get_str(20) %}
-{% set gitlog_mongodb_username = salt.random.get_str(12)%}
+{% set gitlog_mongodb_username = 'gitlog_mongodb_user')%}
 {% set gitlog_mongodb_password = salt.random.get_str(20) %}
-{% set edxapp_xqueue_username = salt.random.get_str(12) %}
+{% set edxapp_xqueue_username = 'edxapp_xqueue_user' %}
 {% set edxapp_xqueue_password = salt.random.get_str(20) %}
-{% set xqwatcher_xqueue_username = salt.random.get_str(12) %}
+{% set xqwatcher_xqueue_username = 'xqwatcher_xqueue_user' %}
 {% set xqwatcher_xqueue_password = salt.random.get_str(20) %}
 
 {% set CELERY_BROKER_PASSWORD = salt.random.get_str(20) %}
 {% set CELERY_BROKER_USER = 'edxapp' %}
-{% set COMMENTS_SERVICE_KEY =  %}
 {% set DEFAULT_FEEDBACK_EMAIL = 'mitodl-devstack@example.com' %}
 {% set DEFAULT_FROM_EMAIL = 'mitodl-devstack@example.com' %}
-{% set GIT_REPO_DIR = edx.edxapp_git_repo_dir %}
+{% set GIT_REPO_DIR = '/mnt/data/repos' %}
 {% set MONGODB_HOST = 'mongodb.service.consul' %}
 {% set MONGODB_MODULESTORE_ENGINE = 'xmodule.modulestore.mongo.MongoModuleStore' %}
 {% set MONGODB_PORT = 27017 %}
@@ -118,12 +117,7 @@ edx:
         concurrency: 1
         monitor: False
         max_tasks_per_child: 1
-    EDXAPP_CMS_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
-    EDXAPP_CMS_ROOT_URL: "https://{{ CMS_DOMAIN }}"
-    {# Tell Ansible to install python dependencies from github. https://github.com/edx/edx-platform/blob/ned%2Ftest-ficus/requirements/edx/edx-private.txt#L1 (tmacey 2017/03/16) #}
     EDXAPP_INSTALL_PRIVATE_REQUIREMENTS: true
-    EDXAPP_LMS_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
-    EDXAPP_LMS_ROOT_URL: "https://{{ LMS_DOMAIN }}"
 
     ####################################################################
     ############### MongoDB SETTINGS ###################################
@@ -136,19 +130,12 @@ edx:
     EDXAPP_MONGO_USER: {{ edxapp_mongodb_username }}
     EDXAPP_MONGO_USE_SSL: {{ MONGODB_USE_SSL }}
 
-    {# Settings for Module Store #}
-    {# We have to replicate the data three times in order to allow for #}
-    {# a different database name between the content and module stores. #}
-    {# It is a quirk of how the edX Ansible repo has the vars configured. #}
-    {# (tmacey 2017/03/17) #}
     doc_store_config: &doc_store_config
       db: modulestore_{{ purpose_suffix }}
       host: "{{ MONGODB_HOST }}"
-      {# multivariate, vault #}
-      password: {{ edxapp_mongodb_modulestore_creds.data.password }}
+      password: {{ edxapp_mongodb_password }}
       port: {{ MONGODB_PORT }}
-      {# multivariate, vault #}
-      user: {{ edxapp_mongodb_modulestore_creds.data.username }}
+      user: {{ edxapp_mongodb_username }}
       collection:  'modulestore'
       replicaset: "{{ MONGODB_REPLICASET }}"
       readPreference: "nearest"
@@ -183,17 +170,11 @@ edx:
     EDXAPP_XQUEUE_DJANGO_AUTH:
       username: {{ edxapp_xqueue_username }}
       password: {{ edxapp_xqueue_password }}
-    EDXAPP_LMS_AUTH_EXTRA:
-      SECRET_KEY: {{ salt.vault.read('secret-residential/global/edxapp-lms-django-secret-key').data.value }}
       MONGODB_LOG:
         db: gitlog_{{ purpose_suffix }}
-        host: mongodb-master.service.consul
+        host: mongodb.service.consul
         user: {{ gitlog_mongodb_username }}
         password: {{ gitlog_mongodb_password }}
-        replicaset: "{{ MONGODB_REPLICASET }}"
-        readPreference: "nearest"
-    EDXAPP_CMS_AUTH_EXTRA:
-      SECRET_KEY: {{ salt.vault.read('secret-residential/global/edxapp-cms-django-secret-key').data.value }}
 
     #####################################################################
     ########### Environment Configs #####################################
@@ -207,8 +188,6 @@ edx:
       FSIZE: 1048576
       PROXY: 0
       VMEM: 536870912
-    EDXAPP_COMMENTS_SERVICE_KEY: |
-      {{ COMMENTS_SERVICE_KEY|indent(6) }}
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
     EDXAPP_CONTACT_EMAIL: {{ DEFAULT_FEEDBACK_EMAIL }}
     EDXAPP_COMPREHENSIVE_THEME_DIR: /edx/app/edxapp/themes/
@@ -258,7 +237,6 @@ edx:
       ENABLE_PEARSON_HACK_TEST: false
       ENABLE_RENDER_XBLOCK_API: true
       ENABLE_SPECIAL_EXAMS: true
-      PREVIEW_LMS_BASE: {{ purpose_data.domains.preview }}
       REROUTE_ACTIVATION_EMAIL: {{ DEFAULT_FEEDBACK_EMAIL }}
       SUBDOMAIN_BRANDING: false
       SUBDOMAIN_COURSE_LISTINGS: false
@@ -274,8 +252,8 @@ edx:
     EDXAPP_LMS_ENV_EXTRA:
       <<: *common_env_config
       BULK_EMAIL_DEFAULT_FROM_EMAIL: {{ DEFAULT_FEEDBACK_EMAIL }}
-      COURSE_ABOUT_VISIBILITY_PERMISSION: "{{ edx.edxapp_course_about_visibility_permission }}"
-      COURSE_CATALOG_VISIBILITY_PERMISSION: "{{ edx.edxapp_course_catalog_visibility_permission }}"
+      COURSE_ABOUT_VISIBILITY_PERMISSION: "staff"
+      COURSE_CATALOG_VISIBILITY_PERMISSION: "staff"
       EDXAPP_ANALYTICS_DASHBOARD_URL: !!null
       FEATURES:
         <<: *common_feature_flags
@@ -294,9 +272,8 @@ edx:
         RESTRICT_ENROLL_NO_ATSIGN_USERNAMES: true
       GIT_IMPORT_STATIC: false
       LOGGING_ENV: {{ edxapp_log_env }}
-      OAUTH_OIDC_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
-      PLATFORM_NAME: "OLD Devstack"
-      STUDENT_FILEUPLOAD_MAX_SIZE: "{{ edx.edxapp_max_upload_size * 1024 * 1024 }}"
+      PLATFORM_NAME: "ODL Devstack"
+      STUDENT_FILEUPLOAD_MAX_SIZE: 20 * 1024 * 1024
 
     EDXAPP_CMS_ENV_EXTRA:
       <<: *common_env_config
@@ -312,13 +289,11 @@ edx:
         SEGMENT_IO: false
         STAFF_EMAIL: {{ DEFAULT_FEEDBACK_EMAIL }}
       LOGGING_ENV: {{ edxapp_log_env }}
-      OAUTH_OIDC_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
 
     ################################################################################
     #################### Forum Settings ############################################
     ################################################################################
 
-    FORUM_API_KEY: "{{ COMMENTS_SERVICE_KEY }}"
     FORUM_ELASTICSEARCH_HOST: "elasticsearch.service.consul"
     FORUM_MONGO_USER: {{ forum_mongodb_username }}
     FORUM_MONGO_PASSWORD: {{ forum_mongodb_password }}
@@ -331,9 +306,3 @@ edx:
     FORUM_USE_TCP: True
 
     edx_platform_repo: 'https://github.com/mitodl/edx-platform.git'
-
-    EDXAPP_LMS_PREVIEW_NGINX_PORT: 80
-    EDXAPP_CMS_NGINX_PORT: 80
-    EDXAPP_LMS_NGINX_PORT: 80
-    EDXAPP_CMS_SSL_NGINX_PORT: 443
-    EDXAPP_LMS_SSL_NGINX_PORT: 443
