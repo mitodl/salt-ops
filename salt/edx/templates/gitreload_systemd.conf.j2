@@ -6,10 +6,12 @@ StartLimitInterval=60
 StartLimitBurst=3
 
 [Service]
-Environment=PID=/var/tmp/gitreload.pid
-Environment=WORKERS=1
-Environment=PORT={{ gr_env.PORT }}
+{%- for var, val in gr_env.items() %}
+Environment={{ var }}={{ val }}
+{% endfor -%}
 Environment=LANG=en_US.UTF-8
+Environment=WORKERS=1
+Environment=PID=/var/tmp/gitreload.pid
 WorkingDirectory={{ gr_dir }}
 User=www-data
-ExecStart={{ gr_env.VIRTUAL_ENV }}/bin/gunicorn --preload -b 0.0.0.0:${PORT} -w ${WORKERS} --timeout=10 gitreload.web:application
+ExecStart=/bin/sh -c '${VIRTUAL_ENV}/bin/gunicorn --preload -b 0.0.0.0:${PORT} -w ${WORKERS} --timeout=10 gitreload.web:application 2>&1 | tee -a ${LOGFILE}'
