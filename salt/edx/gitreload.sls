@@ -42,7 +42,7 @@
 {% set gitreload_service = salt.grains.filter_by({
     'systemd': {
       'destination_path': '/lib/systemd/system/gitreload.service',
-      'source_path': 'salt://edx/templates/gitreload_systemd_service.conf.j2',
+      'source_path': 'salt://edx/templates/gitreload_systemd.conf.j2',
     },
     'upstart': {
       'destination_path': '/etc/init/gitreload.conf',
@@ -126,7 +126,7 @@ import_{{ item.name }}_course:
 configure_gitreload_service:
   file.managed:
     - name: {{ gitreload_service.destination_path }}
-    - source: salt://edx/templates/{{ gitreload_service.source_path }}
+    - source: {{ gitreload_service.source_path }}
     - template: jinja
     - mode: 644
     - context:
