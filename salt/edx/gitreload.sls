@@ -16,7 +16,7 @@
     'UPDATE_LMS': True,
     'REPODIR': '/mnt/data/repos',
     'LOG_LEVEL': 'debug',
-    'NUM_THREADS': 1,
+    'WORKERS': 1,
     'LOGFILE': "/edx/var/log/gr/gitreload.log",
     'VIRTUAL_ENV': '/edx/app/edxapp/venvs/edxapp',
     'EDX_PLATFORM': '/edx/app/edxapp/edx-platform',
