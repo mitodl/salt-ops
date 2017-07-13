@@ -1,9 +1,9 @@
 {
   "PORT": "{{ gr_env.PORT }}",
   "UPDATE_LMS": {{ gr_env.UPDATE_LMS }},
-  "REPODIR": "{{ gr_data_repo }}",
+  "REPODIR": "{{ gr_env.REPODIR }}",
   "LOG_LEVEL": "{{ gr_env.LOG_LEVEL }}",
-  "NUM_THREADS": {{ gr_env.NUM_THREADS }},
+  "NUM_THREADS": {{ gr_env.WORKERS }},
   "LOGFILE": "{{ gr_env.LOGFILE }}",
   "VIRTUAL_ENV": "{{ gr_env.VIRTUAL_ENV }}",
   "EDX_PLATFORM": "{{ gr_env.EDX_PLATFORM }}",
