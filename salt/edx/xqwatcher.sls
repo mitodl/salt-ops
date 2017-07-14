@@ -13,7 +13,7 @@ configure_git_ppa_for_edx:
     - require_in:
         - pkg: install_os_packages
 
-install_os_packages:
+install_os_packages_for_xqwatcher:
   pkg.installed:
     - pkgs:
         - git
@@ -33,6 +33,13 @@ install_os_packages:
         - virtualenv: create_ansible_virtualenv
         - git: clone_edx_configuration
         - cmd: run_ansible
+
+link_venv_binary_to_expected_location:
+  file.symlink:
+    - name: /usr/local/bin/virtualenv
+    - target: /usr/bin/virtualenv
+    - require:
+        - pkg: install_os_packages_for_xqwatcher
 
 activate_xqwatcher_supervisor_config:
   file.symlink:
