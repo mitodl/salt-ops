@@ -17,10 +17,14 @@ install_os_packages:
   pkg.installed:
     - pkgs:
         - git
+        - python
+        - python-dev
         - python3
         - python3-dev
         - python-pip
+        - python3-pip
         - python-virtualenv
+        - python3-virtualenv
         - libmysqlclient-dev
         - libssl-dev
     - refresh: True
