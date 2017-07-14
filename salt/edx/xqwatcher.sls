@@ -17,8 +17,6 @@ install_os_packages:
   pkg.installed:
     - pkgs:
         - git
-        - python
-        - python-dev
         - python3
         - python3-dev
         - python-pip
@@ -28,7 +26,9 @@ install_os_packages:
     - refresh: True
     - refresh_modules: True
     - require_in:
-      - cmd: run_ansible
+        - virtualenv: create_ansible_virtualenv
+        - git: clone_edx_configuration
+        - cmd: run_ansible
 
 activate_xqwatcher_supervisor_config:
   file.symlink:
