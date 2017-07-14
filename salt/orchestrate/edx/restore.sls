@@ -8,7 +8,7 @@
 {% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
 {% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token').data.value %}
-{% set instance_name = 'backup-{}'.format(ENVIRONMENT) %}
+{% set instance_name = 'restore-{}'.format(ENVIRONMENT) %}
 
 ensure_backup_bucket_exists:
   boto_s3_bucket.present:
@@ -39,18 +39,20 @@ load_backup_host_cloud_profile:
     - source: salt://orchestrate/aws/cloud_profiles/backup_host.conf
     - template: jinja
 
-deploy_backup_instance_to_{{ ENVIRONMENT }}:
+deploy_restore_instance_to_{{ ENVIRONMENT }}:
   salt.function:
     - name: cloud.profile
     - tgt: 'roles:master'
     - tgt_type: grain
     - arg:
         - backup_host
-        - backup-{{ ENVIRONMENT }}
+        - {{ instance_name }}
     - kwarg:
         vm_overrides:
           grains:
             environment: {{ ENVIRONMENT }}
+            roles:
+              - restores
           network_interfaces:
             - DeviceIndex: 0
               AssociatePublicIpAddress: True
@@ -83,11 +85,11 @@ format_and_mount_backup_drive:
     - sls:
         - backups.mount_drive
     - require:
-        - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
+        - salt: deploy_restore_instance_to_{{ ENVIRONMENT }}
 
 {% if salt['cloud.get_instance'](instance_name) %}
 {% if salt['cloud.get_instance'](instance_name)['state'] != 'running' %}
-start_backup_instance_in_{{ ENVIRONMENT }}:
+start_restore_instance_in_{{ ENVIRONMENT }}:
   salt.function:
     - name: cloud.action
     - tgt: 'roles:master'
@@ -95,13 +97,13 @@ start_backup_instance_in_{{ ENVIRONMENT }}:
     - arg:
         - start
     - kwarg:
-        instance: backup-{{ ENVIRONMENT }}
+        instance: {{ instance_name }}
     - require:
-        - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
+        - salt: deploy_restore_instance_to_{{ ENVIRONMENT }}
 {% endif %}
 {% endif %}
 
-execute_enabled_backup_scripts:
+execute_enabled_restore_scripts:
   salt.state:
     - tgt: 'G@roles:restores and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
@@ -110,10 +112,10 @@ execute_enabled_backup_scripts:
         - consul.dns_proxy
         - backups.restore
     - require:
-        - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
+        - salt: deploy_restore_instance_to_{{ ENVIRONMENT }}
         - salt: format_and_mount_backup_drive
 
-stop_backup_instance_in_{{ ENVIRONMENT }}:
+stop_restore_instance_in_{{ ENVIRONMENT }}:
   salt.function:
     - name: cloud.action
     - tgt: 'roles:master'
@@ -121,9 +123,9 @@ stop_backup_instance_in_{{ ENVIRONMENT }}:
     - arg:
         - stop
     - kwarg:
-        instance: backup-{{ ENVIRONMENT }}
+        instance: {{ instance_name }}
     - require:
-        - salt: execute_enabled_backup_scripts
+        - salt: execute_enabled_restore_scripts
 
 alert_devops_channel_on_failure:
   slack.post_message:
@@ -132,7 +134,7 @@ alert_devops_channel_on_failure:
     - message: 'The scheduled restore for edX {{ ENVIRONMENT }} has failed.'
     - api_key: {{ slack_api_token }}
     - onfail:
-        - salt: execute_enabled_backup_scripts
+        - salt: execute_enabled_restore_scripts
 
 alert_devops_channel_on_success:
   slack.post_message:
@@ -141,5 +143,5 @@ alert_devops_channel_on_success:
     - message: 'The scheduled restore for edX {{ ENVIRONMENT }} has succeeded.'
     - api_key: {{ slack_api_token }}
     - require:
-        - salt: execute_enabled_backup_scripts
-        - salt: terminate_backup_instance_in_{{ ENVIRONMENT }}
+        - salt: execute_enabled_restore_scripts
+        - salt: stop_restore_instance_in_{{ ENVIRONMENT }}
