@@ -46,7 +46,7 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
     - tgt_type: grain
     - arg:
         - backup_host
-        - backup-{{ ENVIRONMENT }}
+        - {{ instance_name }}
     - kwarg:
         vm_overrides:
           grains:
@@ -94,9 +94,17 @@ start_backup_instance_in_{{ ENVIRONMENT }}:
     - arg:
         - start
     - kwarg:
-        instance: backup-{{ ENVIRONMENT }}
+        instance: {{ instance_name }}
     - require:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
+    - require_in:
+        - salt: execute_enabled_backup_scripts
+
+wait_for_restore_instance_to_connect:
+  salt.wait_for_event:
+    - name: salt/minion/{{ instance_name }}/start
+    - id_list:
+        - {{ instance_name }}
     - require_in:
         - salt: execute_enabled_backup_scripts
 {% endif %}
@@ -121,7 +129,7 @@ stop_backup_instance_in_{{ ENVIRONMENT }}:
     - arg:
         - stop
     - kwarg:
-        instance: backup-{{ ENVIRONMENT }}
+        instance: {{ instance_name }}
     - require:
         - salt: execute_enabled_backup_scripts
 

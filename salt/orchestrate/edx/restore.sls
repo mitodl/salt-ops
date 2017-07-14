@@ -102,6 +102,14 @@ start_restore_instance_in_{{ ENVIRONMENT }}:
         - salt: deploy_restore_instance_to_{{ ENVIRONMENT }}
     - require_in:
         - salt: execute_enabled_restore_scripts
+
+wait_for_restore_instance_to_connect:
+  salt.wait_for_event:
+    - name: salt/minion/{{ instance_name }}/start
+    - id_list:
+        - {{ instance_name }}
+    - require_in:
+        - salt: execute_enabled_restore_scripts
 {% endif %}
 {% endif %}
 
