@@ -7,7 +7,7 @@
     'public1-{}'.format(VPC_RESOURCE_SUFFIX), 'public2-{}'.format(VPC_RESOURCE_SUFFIX), 'public3-{}'.format(VPC_RESOURCE_SUFFIX)])['subnets'] %}
 {% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
-{% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token').data.value) %}
+{% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token').data.value %}
 {% set instance_name = 'backup-{}'.format(ENVIRONMENT) %}
 
 ensure_backup_bucket_exists:
