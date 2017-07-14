@@ -14,7 +14,7 @@ PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity restore\
 {% for key, value in settings.db_map.items() %}
 /usr/bin/mongorestore --host {{ settings.host }} \
                       --port {{ settings.get('port', 27017) }} \
-                      --password {{ settings.password }} --username admin \
+                      --password {{ settings.password }} --username {{ settings.username }} \
                       --authenticationDatabase admin \
                       --db {{ value }} \
                       --drop {{ backupdir }}/{{ key }}
