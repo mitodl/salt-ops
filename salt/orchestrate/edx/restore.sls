@@ -67,7 +67,7 @@ deploy_restore_instance_to_{{ ENVIRONMENT }}:
                 - {{ salt.boto_secgroup.get_group_id(
                      'consul-agent-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
           block_device_mappings:
-            - DeviceName: /dev/xvda
+            - DeviceName: xvda
               Ebs.VolumeSize: 8
               Ebs.VolumeType: gp2
             - DeviceName: /dev/xvdb
