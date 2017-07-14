@@ -100,6 +100,8 @@ start_restore_instance_in_{{ ENVIRONMENT }}:
         instance: {{ instance_name }}
     - require:
         - salt: deploy_restore_instance_to_{{ ENVIRONMENT }}
+    - require_in:
+        - salt: execute_enabled_restore_scripts
 {% endif %}
 {% endif %}
 
