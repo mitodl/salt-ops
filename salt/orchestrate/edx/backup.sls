@@ -97,6 +97,8 @@ start_backup_instance_in_{{ ENVIRONMENT }}:
         instance: backup-{{ ENVIRONMENT }}
     - require:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
+    - require_in:
+        - salt: execute_enabled_backup_scripts
 {% endif %}
 {% endif %}
 
