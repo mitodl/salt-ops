@@ -11,7 +11,7 @@ configure_git_ppa_for_edx:
   pkgrepo.managed:
     - ppa: git-core/ppa
     - require_in:
-        - pkg: install_os_packages
+        - pkg: install_os_packages_for_xqwatcher
 
 install_os_packages_for_xqwatcher:
   pkg.installed:
