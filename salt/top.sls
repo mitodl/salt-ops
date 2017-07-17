@@ -96,3 +96,17 @@ base:
   'roles:restores':
     - match: grain
     - backups.restore
+  'G@roles:devstack and P@environment:dev':
+    - match: compound
+    - consul
+    - consul.dns_proxy
+    - consul.tests
+    - consul.tests.test_dns_setup
+    - mysql.server
+    - mongodb
+    - mongodb.consul_check
+    - rabbitmq
+    - elasticsearch
+    - edx.prod
+    - edx.run_ansible
+    - edx.tests
