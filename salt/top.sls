@@ -102,7 +102,8 @@ base:
     - consul.dns_proxy
     - consul.tests
     - consul.tests.test_dns_setup
-    - mysql.server
+    - mysql
+    - mysql.remove_test_database
     - mongodb
     - mongodb.consul_check
     - rabbitmq
