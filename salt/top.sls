@@ -1,5 +1,6 @@
 base:
-  '*':
+  'not G@roles:devstack':
+    - match: compound
     - utils.install_pip
     - utils.inotify_watches
     - fluentd
