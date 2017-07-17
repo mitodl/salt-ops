@@ -1,5 +1,5 @@
 base:
-  '* and not G@roles:devstack':
+  'not G@roles:devstack':
     - match: compound
     - utils.install_pip
     - utils.inotify_watches
