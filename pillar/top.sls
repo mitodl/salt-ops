@@ -10,3 +10,4 @@ base:
     - mysql_devstack
     - rabbitmq_devstack
     - elasticsearch_devstack
+    - mongodb_devstack
