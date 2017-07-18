@@ -179,7 +179,6 @@ edx:
     #####################################################################
     EDXAPP_BUGS_EMAIL: {{ DEFAULT_FEEDBACK_EMAIL }}
     EDXAPP_CELERY_BROKER_VHOST: /celery_{{ purpose_suffix }}
-    EDXAPP_CMS_BASE: {{ CMS_DOMAIN }}
     EDXAPP_CODE_JAIL_LIMITS:
       REALTIME: 3
       CPU: 3
