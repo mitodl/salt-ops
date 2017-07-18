@@ -19,7 +19,7 @@
 {% set edxapp_mongodb_password = salt.random.get_str(20) %}
 {% set forum_mongodb_username = 'forum_mongodb_user' %}
 {% set forum_mongodb_password = salt.random.get_str(20) %}
-{% set gitlog_mongodb_username = 'gitlog_mongodb_user')%}
+{% set gitlog_mongodb_username = 'gitlog_mongodb_user'%}
 {% set gitlog_mongodb_password = salt.random.get_str(20) %}
 {% set edxapp_xqueue_username = 'edxapp_xqueue_user' %}
 {% set edxapp_xqueue_password = salt.random.get_str(20) %}
