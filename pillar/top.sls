@@ -8,3 +8,5 @@ base:
     - match: compound
     - devstack
     - mysql_devstack
+    - rabbitmq_devstack
+    - elasticsearch_devstack
