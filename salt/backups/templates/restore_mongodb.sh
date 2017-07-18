@@ -11,12 +11,12 @@ PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity restore\
           --archive-dir {{ cachedir }} --s3-use-multiprocessing \
           --force --tempdir /backups/tmp/ {{ backupdir }}
 
-{% for key, value in settings.db_map.items() %}
+{% for target_db, source_db in settings.db_map.items() %}
 /usr/bin/mongorestore --host {{ settings.host }} \
                       --port {{ settings.get('port', 27017) }} \
                       --password {{ settings.password }} --username {{ settings.username }} \
                       --authenticationDatabase admin \
-                      --db {{ value }} \
-                      --drop {{ backupdir }}/{{ key }}
+                      --db {{ target_db }} \
+                      --drop {{ backupdir }}/{{ source_db }}
 {% endfor %}
 rm -rf {{ backupdir }}
