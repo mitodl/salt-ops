@@ -38,5 +38,5 @@ run_backup_for_{{ service.title }}:
 {% endfor %}
 
 wait_for_backups_to_complete:
-  event.send:
-    - name: edx/backups/complete
+  file.touch:
+    - name: /backups/backup_complete

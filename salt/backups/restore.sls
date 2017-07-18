@@ -38,5 +38,5 @@ run_restore_for_{{ service.title }}:
 {% endfor %}
 
 wait_for_restores_to_complete:
-  event.send:
-    - name: edx/restores/complete
+  file.touch:
+    - name: /backups/restore_complete
