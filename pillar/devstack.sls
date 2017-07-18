@@ -136,7 +136,6 @@ edx:
       port: {{ MONGODB_PORT }}
       user: {{ edxapp_mongodb_username }}
       collection:  'modulestore'
-      replicaset: "{{ MONGODB_REPLICASET }}"
       readPreference: "nearest"
       ssl: {{ MONGODB_USE_SSL }}
       socketTimeoutMS: 3000
