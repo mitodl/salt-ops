@@ -8,7 +8,7 @@ mountpoint /mnt/efs || mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,
 
 PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity restore \
           --s3-use-server-side-encryption s3+http://odl-operations-backups/{{ backupdir }}/ \
-          --archive-dir /backups/.cache \
+          --archive-dir /backups/.cache --s3-use-multiprocessing \
           --force --tempdir /backups /backups/{{ backupdir }}_copy/
 
 rsync -auv --delete /backups/{{ backupdir }}_copy/ /mnt/efs/{{ backupdir }}

@@ -8,7 +8,7 @@ mkdir -p {{ cachedir }}
 
 PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity restore\
           --s3-use-server-side-encryption s3+http://odl-operations-backups/{{ settings.get('directory', 'mongodb') }} \
-          --archive-dir {{ cachedir }} \
+          --archive-dir {{ cachedir }} --s3-use-multiprocessing \
           --force --tempdir /backups/tmp/ {{ backupdir }}
 
 {% for key, value in settings.db_map.items() %}
