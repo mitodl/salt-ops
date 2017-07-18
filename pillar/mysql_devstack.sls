@@ -1,35 +1,34 @@
-{% from 'devstack.sls' import 'edx:ansible_vars:COMMON_MYSQL_ADMIN_USER', COMMON_MYSQL_ADMIN_PASS, MYSQL_HOST,
-  XQUEUE_MYSQL_DB_NAME, EDXAPP_MYSQL_DB_NAME, COMMON_MYSQL_MIGRATE_USER, COMMON_MYSQL_MIGRATE_PASS,
-  XQUEUE_MYSQL_USER, XQUEUE_MYSQL_PASSWORD, EDXAPP_MYSQL_USER, EDXAPP_MYSQL_PASSWORD with context %}
+{% from 'devstack.sls' import admin_mysql_username, admin_mysql_password, MYSQL_HOST,
+  xqueue_mysql_username, xqueue_mysql_password, edxapp_mysql_username, edxapp_mysql_password with context %}
 
 mysql:
   server:
-    root_user: {{ COMMON_MYSQL_ADMIN_USER }}
-    root_password: {{ COMMON_MYSQL_ADMIN_PASS }}
+    root_user: {{ admin_mysql_username }}
+    root_password: {{ admin_mysql_password }}
     mysql_host: {{ MYSQL_HOST }}
 
   database:
-    - {{ XQUEUE_MYSQL_DB_NAME }}
-    - {{ EDXAPP_MYSQL_DB_NAME }}
+    - xqueue_devstack
+    - edxapp_devstack
 
   user:
-    {{ COMMON_MYSQL_MIGRATE_USER }}:
-      password: {{ COMMON_MYSQL_MIGRATE_PASS }}
+    {{ admin_mysql_username }}:
+      password: {{ admin_mysql_username }}
       host: {{ MYSQL_HOST }}
       databases:
-        - database: {{ XQUEUE_MYSQL_DB_NAME }}
+        - database: xqueue_devstack
           grants: ['all privileges']
-        - database: {{ EDXAPP_MYSQL_DB_NAME }}
+        - database: edxapp_devstack
           grants: ['all privileges']
-    {{ XQUEUE_MYSQL_USER }}:
-      password: {{ XQUEUE_MYSQL_PASSWORD }}
+    {{ xqueue_mysql_username }}:
+      password: {{ xqueue_mysql_password }}
       host: {{ MYSQL_HOST }}
       databases:
-        - database: {{ XQUEUE_MYSQL_DB_NAME }}
+        - database: xqueue_devstack
           grants: ['all privileges']
-    {{ EDXAPP_MYSQL_USER }}:
-      password: {{ EDXAPP_MYSQL_PASSWORD }}
+    {{ edxapp_mysql_username }}:
+      password: {{ edxapp_mysql_password }}
       host: {{ MYSQL_HOST }}
       databases:
-        - database: {{ EDXAPP_MYSQL_DB_NAME }}
+        - database: edxapp_devstack
           grants: ['all privileges']
