@@ -107,6 +107,7 @@ wait_for_restore_instance_to_connect:
         - {{ instance_name }}
     - require_in:
         - salt: execute_enabled_backup_scripts
+        - salt: format_and_mount_backup_drive
 {% endif %}
 {% endif %}
 
