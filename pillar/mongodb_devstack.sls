@@ -1,5 +1,6 @@
 #!jinja|yaml
 
+{% set mongodb_admin_username = 'admin' %}
 {% set mongodb_admin_password = salt.random.get_str(20) %}
 
 mine_functions:
@@ -12,5 +13,5 @@ mongodb:
     pkgs:
       - mongodb
     service_name: mongodb
-  admin_username: admin
+  admin_username: {{ mongodb_admin_username }}
   admin_password: {{ mongodb_admin_password }}
