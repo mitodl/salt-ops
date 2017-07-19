@@ -10,7 +10,7 @@ mkdir -p {{ cachedir }}
                    --port {{ settings.get('port', 3306) }} \
                    --user {{ settings.username }} \
                    --password={{ settings.password }} --single-transaction \
-                   --add-drop-database --add-drop-table \
+                   --opt --skip-lock-tables \
                    --result-file {{ backupdir }}/{{ settings.database }}.dump \
                    {{ settings.database }}
 
