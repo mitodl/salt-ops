@@ -8,7 +8,7 @@ mkdir -p {{ cachedir }}
 
 PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity restore \
           --s3-use-server-side-encryption s3+http://odl-operations-backups/{{ settings.get('directory', 'mysql') }} \
-          --archive-dir {{ cachedir }} --s3-use-multiprocessing \
+          --archive-dir {{ cachedir }} \
           --force --tempdir /backups/tmp/ {{ backupdir }}/
 
 /usr/bin/mysql --host {{ settings.host }} \

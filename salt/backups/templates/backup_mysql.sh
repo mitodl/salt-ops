@@ -16,7 +16,7 @@ mkdir -p {{ cachedir }}
 
 PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
           --s3-use-server-side-encryption {{ backupdir }} \
-          --archive-dir {{ cachedir }} \
+          --archive-dir {{ cachedir }} --asynchronous-upload \
           --full-if-older-than 1W --s3-use-multiprocessing \
           --allow-source-mismatch --tempdir /backups/tmp/ \
           s3+http://odl-operations-backups/{{ settings.get('directory', 'mysql') }}
