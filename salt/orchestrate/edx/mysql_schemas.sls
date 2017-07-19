@@ -1,6 +1,6 @@
 #!jinja|yaml
 
-{% from "orchestrate/aws_env_macro.jinja" import ENVIRONMENT with context %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT') %}
 {% set environment = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set purposes = environment.purposes %}
 {% set edxlocal_databases = {
