@@ -1,16 +1,27 @@
+{% set ISO8601 = '%Y-%m-%dT%H:%M:%S' %}
+
 edx:
-  - ike-edx-mitx-rp-live:
+  - analytics-{{ environment_name }}-{{ purpose }}
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
-          SubnetId: subnet-0187862b
-          SecurityGroupId: ['sg-c46797be', 'sg-a96797d3', 'sg-c1dd21bb']
+          SubnetId: {{ subnetids[id_num % num_subnets] }}
+          SecurityGroupId:
+            - {{ securitygroupids.edxapp }}
+            - {{ securitygroupids.default }}
+            - {{ securitygroupids['salt-master'] }}
+            - {{ securitygroupids['consul-agent'] }}
       tag:
-        purpose: ike-analytics
-        environment: mitx-rp
+        business_unit: {{ business_unit }}
+        environment: {{ environment_name }}
+        purpose_prefix: {{ purpose_prefix }}
+        created_at: "{{ salt.status.time(format=ISO8601) }}"
       grains:
-        environment: mitx-rp
+        created_at: "{{ salt.status.time(format=ISO8601) }}"
+        business_unit: {{ business_unit }}
+        environment: {{ environment_name }}
+        purpose: {{ purpose }}
         roles:
           - edx
-          - edx-live
-          - ike-analytics
+          - edx-draft
+          - analytics

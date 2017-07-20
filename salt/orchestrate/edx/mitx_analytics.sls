@@ -1,10 +1,108 @@
-generate_ike_analytics_map_file:
+{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
+ ENVIRONMENT, BUSINESS_UNIT, PURPOSE_PREFIX, subnet_ids with context %}
+
+{% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
+{% set purposes = env_settings.purposes %}
+{% set bucket_prefixes = env_settings.secret_backends.aws.bucket_prefixes %}
+
+load_edx_cloud_profile:
+  file.managed:
+    - name: /etc/salt/cloud.profiles.d/edx.conf
+    - source: salt://orchestrate/aws/cloud_profiles/edx.conf
+    - template: jinja
+
+generate_analytics_edx_cloud_map_file:
+  file.managed:
+    - name: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_analytics_edx_map.yml
+    - source: salt://orchestrate/aws/map_templates/analytics_edx.yml
+    - template: jinja
+    - makedirs: True
+    - context:
+        business_unit: {{ BUSINESS_UNIT }}
+        environment_name: {{ ENVIRONMENT }}
+        purpose: {{ PURPOSE_PREFIX + '-draft' }}
+        securitygroupids:
+          edxapp: {{ salt.boto_secgroup.get_group_id(
+              'edx-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+          edx-worker: {{ salt.boto_secgroup.get_group_id(
+              'edx-worker-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+          default: {{ salt.boto_secgroup.get_group_id(
+              'default', vpc_name=VPC_NAME) }}
+          salt-master: {{ salt.boto_secgroup.get_group_id(
+            'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+          consul-agent: {{ salt.boto_secgroup.get_group_id(
+            'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+        subnetids: {{ subnet_ids }}
+    - require:
+        - file: load_edx_cloud_profile
+
+ensure_instance_profile_exists_for_edx:
+  boto_iam_role.present:
+    - name: edx-instance-role
+
+deploy_analytics_edx_cloud_map:
+  salt.runner:
+    - name: cloud.map_run
+    - path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_analytics_edx_map.yml
+    - parallel: True
+    - require:
+        - file: generate_analytics_edx_cloud_map_file
+
+sync_external_modules_for_edx_nodes:
+  salt.function:
+    - name: saltutil.sync_all
+    - tgt: 'P@roles:analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+
+load_pillar_data_on_edx_nodes:
+  salt.function:
+    - name: saltutil.refresh_pillar
+    - tgt: 'P@roles:analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - require:
+        - salt: deploy_edx_cloud_map
+
+populate_mine_with_edx_node_data:
+  salt.function:
+    - name: mine.update
+    - tgt: 'P@roles:analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - require:
+        - salt: load_pillar_data_on_edx_nodes
+
+{# Reload the pillar data to update values from the salt mine #}
+reload_pillar_data_on_edx_nodes:
+  salt.function:
+    - name: saltutil.refresh_pillar
+    - tgt: 'P@roles:analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - require:
+        - salt: populate_mine_with_edx_node_data
+
+{# Deploy Consul agent first so that the edx deployment can use provided DNS endpoints #}
+deploy_consul_agent_to_edx_nodes:
+  salt.state:
+    - tgt: 'P@roles:analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - sls:
+        - consul
+        - consul.dns_proxy
+
+build_edx_nodes:
+  salt.state:
+    - tgt: 'P@roles:analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - highstate: True
+    - require:
+        - salt: deploy_consul_agent_to_edx_nodes
+
+generate_analytics_map_file:
     file.managed:
-    - name: /etc/salt/cloud.maps.d/mitx_rp_ike_analytics_map.yml
-    - source: salt://orchestrate/aws/map_templates/ike_edx.yml
+    - name: /etc/salt/cloud.maps.d/mitx_rp_analytics_map.yml
+    - source: salt://orchestrate/aws/map_templates/analytics_edx.yml
     - makedirs: True
 
-deploy_ike_analytics_cloud_map:
+deploy_analytics_cloud_map:
   salt.function:
     - name: saltutil.runner
     - tgt: 'roles:master'
@@ -12,15 +110,15 @@ deploy_ike_analytics_cloud_map:
     - arg:
         - cloud.map_run
     - kwarg:
-        path: /etc/salt/cloud.maps.d/mitx_rp_ike_analytics_map.yml
+        path: /etc/salt/cloud.maps.d/mitx_rp_analytics_map.yml
         parallel: True
     - require:
-        - file: generate_ike_analytics_map_file
+        - file: generate_analytics_map_file
 
 {# Deploy Consul agent first so that the edx deployment can use provided DNS endpoints #}
 deploy_consul_agent_to_analytics_node:
   salt.state:
-    - tgt: 'G@roles:ike-analytics and G@environment:mitx-rp'
+    - tgt: 'G@roles:analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - sls:
         - consul
@@ -28,7 +126,7 @@ deploy_consul_agent_to_analytics_node:
 
 build_analytics_node:
   salt.state:
-    - tgt: 'G@roles:ike-analytics and G@environment:mitx-rp'
+    - tgt: 'G@roles:analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - highstate: True
     - require:
@@ -36,7 +134,7 @@ build_analytics_node:
 
 create_user_account:
   salt.function:
-    - tgt: 'G@roles:ike-analytics and G@environment:mitx-rp'
+    - tgt: 'G@roles:analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - name: user.add
     - kwarg:
@@ -55,7 +153,7 @@ create_user_account:
 {% set enc, key, comment = pubkey.split() %}
 add_{{ comment }}_public_key_to_user:
   salt.function:
-    - tgt: 'G@roles:ike-analytics and G@environment:mitx-rp'
+    - tgt: 'G@roles:analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - name: ssh.set_auth_key
     - kwarg:
