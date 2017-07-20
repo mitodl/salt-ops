@@ -32,3 +32,7 @@ mysql:
       databases:
         - database: edxapp_devstack
           grants: ['all privileges']
+
+  salt_user:
+    salt_user_name: {{ admin_mysql_username }}
+    salt_user_password: {{ admin_mysql_password }}

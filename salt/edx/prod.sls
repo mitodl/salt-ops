@@ -36,7 +36,7 @@ install_os_packages:
     - pkgs:
         - git
         - libmysqlclient-dev
-        - mariadb-client
+        - mariadb-client-10.0
         - landscape-common
         - libssl-dev
         - python2.7
