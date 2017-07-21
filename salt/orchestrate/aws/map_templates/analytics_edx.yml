@@ -1,11 +1,11 @@
 {% set ISO8601 = '%Y-%m-%dT%H:%M:%S' %}
 
 edx:
-  - analytics-{{ environment_name }}-{{ purpose }}
+  - analytics-{{ environment_name }}-{{ purpose }}:
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
-          SubnetId: {{ subnetids[id_num % num_subnets] }}
+          SubnetId: {{ subnetids[0] }}
           SecurityGroupId:
             - {{ securitygroupids.edxapp }}
             - {{ securitygroupids.default }}
@@ -14,7 +14,7 @@ edx:
       tag:
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
-        purpose_prefix: {{ purpose_prefix }}
+        purpose: {{ purpose }}
         created_at: "{{ salt.status.time(format=ISO8601) }}"
       grains:
         created_at: "{{ salt.status.time(format=ISO8601) }}"

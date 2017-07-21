@@ -59,7 +59,7 @@ load_pillar_data_on_edx_nodes:
     - tgt: 'P@roles:analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
-        - salt: deploy_edx_cloud_map
+        - salt: deploy_analytics_edx_cloud_map
 
 populate_mine_with_edx_node_data:
   salt.function:
@@ -79,45 +79,9 @@ reload_pillar_data_on_edx_nodes:
         - salt: populate_mine_with_edx_node_data
 
 {# Deploy Consul agent first so that the edx deployment can use provided DNS endpoints #}
-deploy_consul_agent_to_edx_nodes:
+deploy_consul_agent_to_analytics_nodes:
   salt.state:
     - tgt: 'P@roles:analytics and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - sls:
-        - consul
-        - consul.dns_proxy
-
-build_edx_nodes:
-  salt.state:
-    - tgt: 'P@roles:analytics and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - highstate: True
-    - require:
-        - salt: deploy_consul_agent_to_edx_nodes
-
-generate_analytics_map_file:
-    file.managed:
-    - name: /etc/salt/cloud.maps.d/mitx_rp_analytics_map.yml
-    - source: salt://orchestrate/aws/map_templates/analytics_edx.yml
-    - makedirs: True
-
-deploy_analytics_cloud_map:
-  salt.function:
-    - name: saltutil.runner
-    - tgt: 'roles:master'
-    - tgt_type: grain
-    - arg:
-        - cloud.map_run
-    - kwarg:
-        path: /etc/salt/cloud.maps.d/mitx_rp_analytics_map.yml
-        parallel: True
-    - require:
-        - file: generate_analytics_map_file
-
-{# Deploy Consul agent first so that the edx deployment can use provided DNS endpoints #}
-deploy_consul_agent_to_analytics_node:
-  salt.state:
-    - tgt: 'G@roles:analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - sls:
         - consul
@@ -125,11 +89,11 @@ deploy_consul_agent_to_analytics_node:
 
 build_analytics_node:
   salt.state:
-    - tgt: 'G@roles:analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - highstate: True
     - require:
-        - salt: deploy_consul_agent_to_analytics_node
+        - salt: deploy_consul_agent_to_analytics_nodes
 
 create_user_account:
   salt.function:
