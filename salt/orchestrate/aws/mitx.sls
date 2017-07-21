@@ -376,6 +376,24 @@ create_salt_master_security_group:
     - require:
         - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc
 
+create_public_ssh_security_group:
+  boto_secgroup.present:
+    - name: public-ssh-{{ VPC_RESOURCE_SUFFIX }}
+    - vpc_name: {{ VPC_NAME }}
+    - description: ACL for allowing access to hosts from the open internet
+    - tags:
+        Name: publich-ssh-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
+        created_at: "{{ salt.status.time(format=ISO8601) }}"
+    - rules:
+        - ip_protocol: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip:
+            - 0.0.0.0/0
+    - require:
+        - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc
+
 create_vault_backend_security_group:
   boto_secgroup.present:
     - name: vault-{{ VPC_RESOURCE_SUFFIX }}
