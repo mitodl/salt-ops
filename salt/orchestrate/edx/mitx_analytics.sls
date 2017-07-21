@@ -3,7 +3,6 @@
 
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set purposes = env_settings.purposes %}
-{% set bucket_prefixes = env_settings.secret_backends.aws.bucket_prefixes %}
 
 load_edx_cloud_profile:
   file.managed:
