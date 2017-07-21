@@ -41,7 +41,6 @@ create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc:
     - tags:
         Name: {{ VPC_NAME }}
         business_unit: {{ BUSINESS_UNIT }}
-        created_at: "{{ salt.status.time(format=ISO8601) }}"
 
 create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_internet_gateway:
   boto_vpc.internet_gateway_present:
