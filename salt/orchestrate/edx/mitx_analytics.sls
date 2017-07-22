@@ -45,7 +45,6 @@ deploy_analytics_edx_cloud_map:
   salt.runner:
     - name: cloud.map_run
     - path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_analytics_edx_map.yml
-    - parallel: True
     - require:
         - file: generate_analytics_edx_cloud_map_file
 
