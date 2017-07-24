@@ -181,6 +181,7 @@ create_mongodb_security_group:
           to_port: 27017
           source_group_name:
             - edx-{{ VPC_RESOURCE_SUFFIX }}
+            - edx-worker-{{ VPC_RESOURCE_SUFFIX }}
             - mongodb-{{ VPC_RESOURCE_SUFFIX }}
     - require:
         - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc
@@ -313,6 +314,10 @@ create_elasticsearch_security_group:
           to_port: 9200
           source_group_name: edx-{{ VPC_RESOURCE_SUFFIX }}
         - ip_protocol: tcp
+          from_port: 9200
+          to_port: 9200
+          source_group_name: edx-worker-{{ VPC_RESOURCE_SUFFIX }}
+        - ip_protocol: tcp
           from_port: 9300
           to_port: 9400
           source_group_name: elasticsearch-{{ VPC_RESOURCE_SUFFIX }}
@@ -333,6 +338,10 @@ create_rds_security_group:
           from_port: 3306
           to_port: 3306
           source_group_name: edx-{{ VPC_RESOURCE_SUFFIX }}
+        - ip_protocol: tcp
+          from_port: 3306
+          to_port: 3306
+          source_group_name: edx-worker-{{ VPC_RESOURCE_SUFFIX }}
         - ip_protocol: tcp
           from_port: 3306
           to_port: 3306
