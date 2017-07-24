@@ -84,6 +84,9 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
+  'G@roles:edx and G@environment:mitx-production':
+    - match: compound
+    - utils.ssh_users
   'G@roles:edx-worker and P@environment:mitx-(qa|rp|production)':
     - match: compound
     - edx.prod
