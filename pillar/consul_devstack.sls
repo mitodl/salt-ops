@@ -4,6 +4,7 @@ consul:
       enable_syslog: True
       server: True
       bootstrap_expect: 1
+      bind_addr: {{ grains['fqdn_ip4'][0] }}
       dns_config:
         allow_stale: True
         node_ttl: 30s
