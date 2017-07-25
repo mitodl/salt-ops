@@ -309,4 +309,4 @@ edx:
     FORUM_USE_TCP: True
 
     edx_platform_repo: 'https://github.com/mitodl/edx-platform.git'
-    edx_platform_version: {{ edx_platform_branch }}
+    edx_platform_version: 'mitx/ficus-1'
