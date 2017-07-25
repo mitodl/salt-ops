@@ -15,6 +15,6 @@ add_{{ comment }}_public_key_to_{{ user }}:
 create_sudoers_file_for_{{ user }}:
   file.managed:
     - name: /etc/sudoers.d/{{ user }}
-    - contens: "{{ user }} ALL=(ALL) NOPASSWD:ALL"
+    - contents: "{{ user }} ALL=(ALL) NOPASSWD:ALL"
     - mode: 0440
 {% endfor %}
