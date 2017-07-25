@@ -2,6 +2,7 @@
 create_user_for_ssh:
   user.present:
     - name: {{ user }}
+    - shell: /bin/bash
 
 {% for pubkey in pubkeys %}
 {% set enc, key, comment = pubkey.split() %}
