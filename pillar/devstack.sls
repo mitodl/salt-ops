@@ -4,13 +4,14 @@
 {% set purpose = 'devstack' %}
 {% set environment = 'dev' %}
 {% set purpose_suffix = 'devstack' %}
+{% set edx_platform_branch = 'open-release/ficus.master' %}
 
 {% set xqueue_rabbitmq_username = 'xqueue_rabbitmq_user' %}
 {% set xqueue_rabbitmq_password = salt.random.get_str(20) %}
 {% set edxapp_rabbitmq_username = 'edxapp_rabbitmq_user' %}
 {% set edxapp_rabbitmq_password = salt.random.get_str(20) %}
-{% set admin_mysql_username = 'admin_mysql_user' %}
-{% set admin_mysql_password = salt.random.get_str(20) %}
+{% set admin_mysql_username = 'root' %}
+{% set admin_mysql_password = 'changeme' %}
 {% set xqueue_mysql_username = 'xqueue_mysql_user' %}
 {% set xqueue_mysql_password = salt.random.get_str(20) %}
 {% set edxapp_mysql_username = 'edxapp_mysql_user' %}
@@ -43,8 +44,16 @@
 {% set XQUEUE_PASSWORD = salt.random.get_str(20) %}
 {% set XQUEUE_USER = 'lms' %}
 {% set edxapp_log_env = 'sandbox' %}
+{% set TLS_KEY_NAME = 'mitodl_devstack' %}
 
 edx:
+  generate_tls_certificate: True
+  ansible_env_config:
+    TLS_KEY_NAME: {{ TLS_KEY_NAME }}
+  config:
+    repo: 'https://github.com/mitodl/configuration.git'
+    branch: {{ edx_platform_branch }}
+
   ansible_vars:
     ### COMMON VARS ###
     COMMON_MYSQL_ADMIN_USER: {{ admin_mysql_username }}
@@ -300,3 +309,4 @@ edx:
     FORUM_USE_TCP: True
 
     edx_platform_repo: 'https://github.com/mitodl/edx-platform.git'
+    edx_platform_version: 'mitx/ficus-1'
