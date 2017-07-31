@@ -1,5 +1,5 @@
-{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-rp') %}
-{% set VPC_NAME = salt.environ.get('VPC_NAME', 'Dogwood RP') %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-production') %}
+{% set VPC_NAME = salt.environ.get('VPC_NAME', 'MITx Production') %}
 {% set VPC_RESOURCE_SUFFIX = salt.environ.get('VPC_RESOURCE_SUFFIX',
                                               VPC_NAME.lower() | replace(' ', '-')) %}
 {% set subnet_ids = [] %}
@@ -138,7 +138,7 @@ alert_devops_channel_on_failure:
   slack.post_message:
     - channel: '#devops'
     - from_name: saltbot
-    - message: 'The scheduled backup for edX RP has failed.'
+    - message: 'The scheduled backup for edX in {{ ENVIRONMENT }} has failed.'
     - api_key: {{ slack_api_token }}
     - onfail:
         - salt: execute_enabled_backup_scripts
@@ -147,7 +147,7 @@ alert_devops_channel_on_success:
   slack.post_message:
     - channel: '#devops'
     - from_name: saltbot
-    - message: 'The scheduled backup for edX RP has succeeded.'
+    - message: 'The scheduled backup for edX in {{ ENVIRONMENT }} has succeeded.'
     - api_key: {{ slack_api_token }}
     - require:
         - salt: execute_enabled_backup_scripts

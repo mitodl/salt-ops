@@ -1,7 +1,8 @@
 base:
+  '*':
+    - utils.install_pip
   'not G@roles:devstack':
     - match: compound
-    - utils.install_pip
     - utils.inotify_watches
     - fluentd
     - fluentd.plugins
@@ -118,4 +119,3 @@ base:
     - edx.prod
     - edx.run_ansible
     - edx.tests
-
