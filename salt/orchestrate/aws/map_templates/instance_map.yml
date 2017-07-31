@@ -1,4 +1,3 @@
-{% set ISO8601 = '%Y-%m-%dT%H:%M:%S' %}
 {% set profile_overrides = profile_overrides|default({}) %}
 {% set tags = tags|default({}) %}
 
@@ -14,12 +13,10 @@
       tag:
         environment: {{ environment_name }}
         role: {{ service_name }}
-        created_at: "{{ salt.status.time(format=ISO8601) }}"
         {% for tag_name, tag_value in tags.items() %}
         {{ tag_name }}: {{ tag_value }}
         {% endfor %}
       grains:
-        created_at: "{{ salt.status.time(format=ISO8601) }}"
         environment: {{ environment_name }}
         roles: {{ roles }}
         {% for tag_name, tag_value in tags.items() %}

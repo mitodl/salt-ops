@@ -3,6 +3,7 @@
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set ISO8601 = '%Y-%m-%dT%H:%M:%S' %}
 {% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-{env}'.format(env=ENVIRONMENT)]) %}
+{% set release_version = salt.sdb.get('sdb://consul/edxapp-release-version') %}
 
 {% for edx_type in ['draft', 'live'] %}
 {% set purpose_name = '{prefix}-{app}'.format(
@@ -60,8 +61,9 @@ register_edx_{{ purpose_name }}_nodes_with_elb:
     - name: {{ elb_name }}
     - instances:
         {% for instance_num in range(purpose.num_instances.edx) %}
-        - {{ salt.boto_ec2.get_id('edx-{env}-{t}-{num}'.format(
-            env=ENVIRONMENT, t=purpose_name, num=instance_num)) }}
+        - {{ salt.boto_ec2.get_id('edx-{env}-{t}-{num}-{version}'.format(
+            env=ENVIRONMENT, t=purpose_name, num=instance_num,
+            version=release_version)) }}
         {% endfor %}
     - require:
         - boto_elb: create_elb_for_edx_{{ purpose_name }}
