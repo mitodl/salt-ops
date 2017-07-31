@@ -116,6 +116,5 @@ base:
     - mongodb.consul_check
     - rabbitmq
     - elasticsearch
-    - edx.prod
     - edx.run_ansible
     - edx.tests

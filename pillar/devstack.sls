@@ -310,3 +310,5 @@ edx:
 
     edx_platform_repo: 'https://github.com/mitodl/edx-platform.git'
     edx_platform_version: 'mitx/ficus-1'
+
+    COMMON_ENABLE_AWS_ROLE: False
