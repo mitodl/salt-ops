@@ -89,7 +89,8 @@ load_pillar_data_on_edx_base_nodes:
     - tgt: 'P@roles:(edx-base|edx-base-worker) and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
-        - salt: deploy_edx_cloud_map
+        - salt: create_edx_worker_baseline_instance_in_{{ ENVIRONMENT }}
+        - salt: create_edx_baseline_instance_in_{{ ENVIRONMENT }}
 
 populate_mine_with_edx_node_data:
   salt.function:
@@ -97,7 +98,7 @@ populate_mine_with_edx_node_data:
     - tgt: 'P@roles:(edx-base|edx-base-worker) and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
-        - salt: load_pillar_data_on_edx_nodes
+        - salt: load_pillar_data_on_edx_base_nodes
 
 {# Reload the pillar data to update values from the salt mine #}
 reload_pillar_data_on_edx_nodes:
