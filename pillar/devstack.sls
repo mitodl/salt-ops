@@ -4,7 +4,7 @@
 {% set purpose = 'devstack' %}
 {% set environment = 'dev' %}
 {% set purpose_suffix = 'devstack' %}
-{% set edx_platform_branch = 'open-release/ficus.master' %}
+{% set edx_platform_branch = 'mitx/ficus-1' %}
 
 {% set xqueue_rabbitmq_username = 'xqueue_rabbitmq_user' %}
 {% set xqueue_rabbitmq_password = salt.random.get_str(20) %}
@@ -52,7 +52,7 @@ edx:
     TLS_KEY_NAME: {{ TLS_KEY_NAME }}
   config:
     repo: 'https://github.com/mitodl/configuration.git'
-    branch: {{ edx_platform_branch }}
+    branch: 'master'
 
   ansible_vars:
     ### COMMON VARS ###
