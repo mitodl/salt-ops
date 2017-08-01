@@ -25,7 +25,7 @@ create_edx_baseline_instance_in_{{ ENVIRONMENT }}:
           tag:
             business_unit: {{ BUSINESS_UNIT }}
             environment: {{ ENVIRONMENT }}
-            purpose_prefix: {{ purpose_prefix }}
+            purpose_prefix: {{ PURPOSE_PREFIX }}
           SecurityGroupId:
             - {{ salt.boto_secgroup.get_group_id(
             'edx-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
@@ -52,7 +52,7 @@ create_edx_worker_baseline_instance_in_{{ ENVIRONMENT }}:
           tag:
             business_unit: {{ BUSINESS_UNIT }}
             environment: {{ ENVIRONMENT }}
-            purpose_prefix: {{ purpose_prefix }}
+            purpose_prefix: {{ PURPOSE_PREFIX }}
           SecurityGroupId:
             - {{ salt.boto_secgroup.get_group_id(
             'edx-worker-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
