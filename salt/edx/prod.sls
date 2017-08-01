@@ -81,7 +81,7 @@ place_tls_{{ ext }}_file:
 {% endfor %}
 {% endif %}
 
-{% if salt.grains.get('roles') != 'devstack' %}
+{% if 'devstack' not in salt.grains.get('roles') %}
 mount_efs_filesystem_for_course_assets:
   mount.mounted:
     - name: /mnt/data
