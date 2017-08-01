@@ -7,9 +7,9 @@
     VPC_NAME.lower().replace(' ', '-')) %}
 {% set subnet_ids = [] %}
 {% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
-    'public1-{}'.format(ENVIRONMENT),
-    'public2-{}'.format(ENVIRONMENT),
-    'public3-{}'.format(ENVIRONMENT)])['subnets'] %}
+    'public1-{}'.format(VPC_RESOURCE_SUFFIX),
+    'public2-{}'.format(VPC_RESOURCE_SUFFIX),
+    'public3-{}'.format(VPC_RESOURCE_SUFFIX)])['subnets'] %}
 {% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', 'residential') %}
