@@ -21,7 +21,7 @@ create_edx_baseline_instance_in_{{ ENVIRONMENT }}:
     - grains:
         business_unit: {{ BUSINESS_UNIT }}
         environment: {{ ENVIRONMENT }}
-        purpose_prefix: {{ PURPOSE_PREFIX }}
+        purpose: {{ PURPOSE_PREFIX }}-draft
     - vm_overrides:
         tag:
           business_unit: {{ BUSINESS_UNIT }}
@@ -52,7 +52,7 @@ create_edx_worker_baseline_instance_in_{{ ENVIRONMENT }}:
     - grains:
         business_unit: {{ BUSINESS_UNIT }}
         environment: {{ ENVIRONMENT }}
-        purpose_prefix: {{ PURPOSE_PREFIX }}
+        purpose: {{ PURPOSE_PREFIX }}-draft
     - vm_overrides:
         tag:
           business_unit: {{ BUSINESS_UNIT }}
