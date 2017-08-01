@@ -23,11 +23,13 @@ our configurations. Test the following:
     'gitreload_service': 'tcp://0.0.0.0:8095',
     'xqueue': 'tcp://0.0.0.0:18040',
     'forum': 'tcp://0.0.0.0:4567',
-    'rabbitmq': 'tcp://rabbitmq.service.consul:15672',
-    'elasticsearch': 'tcp://elasticsearch.service.consul:9200',
-    'mysql':'tcp://mysql.service.consul:3306',
-    'mongodb': 'tcp://mongodb-master.service.consul:27017',
   } %}
+
+# Additional connections that should be tested in integration tests: (TMM 2017/07/31)
+# 'rabbitmq': 'tcp://rabbitmq.service.consul:15672',
+# 'elasticsearch': 'tcp://elasticsearch.service.consul:9200',
+# 'mysql':'tcp://mysql.service.consul:3306',
+# 'mongodb': 'tcp://mongodb-master.service.consul:27017',
 
 {% set running_services = [
     'nginx',
@@ -51,9 +53,9 @@ test_edxapp_supervisor_{{ sv_service }}:
 
 {% for connection, value in socket_connections.items() %}
 test_edxapp_{{ connection }}:
-  testinfra.socket_host:
+  testinfra.socket:
     - name: {{ value }}
-    - is_reachable: True
+    - is_listening: True
 {% endfor %}
 
 {% for service in running_services %}

@@ -4,6 +4,7 @@
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set purposes = env_settings.purposes %}
 {% set bucket_prefixes = env_settings.secret_backends.aws.bucket_prefixes %}
+{% set release_version = salt.sdb.get('sdb://consul/edxapp-release-version') %}
 
 load_edx_cloud_profile:
   file.managed:
@@ -39,6 +40,8 @@ generate_edx_cloud_map_file:
           consul-agent: {{ salt.boto_secgroup.get_group_id(
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids }}
+        tags:
+          release-version: {{ release_version }}
         app_types:
           draft: {{ purposes['{}-draft'.format(PURPOSE_PREFIX)].num_instances }}
           live:  {{ purposes['{}-live'.format(PURPOSE_PREFIX)].num_instances }}
@@ -71,13 +74,13 @@ deploy_edx_cloud_map:
 sync_external_modules_for_edx_nodes:
   salt.function:
     - name: saltutil.sync_all
-    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }}'
     - tgt_type: compound
 
 load_pillar_data_on_edx_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }}'
     - tgt_type: compound
     - require:
         - salt: deploy_edx_cloud_map
@@ -85,7 +88,7 @@ load_pillar_data_on_edx_nodes:
 populate_mine_with_edx_node_data:
   salt.function:
     - name: mine.update
-    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }}'
     - tgt_type: compound
     - require:
         - salt: load_pillar_data_on_edx_nodes
@@ -94,7 +97,7 @@ populate_mine_with_edx_node_data:
 reload_pillar_data_on_edx_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }}'
     - tgt_type: compound
     - require:
         - salt: populate_mine_with_edx_node_data
@@ -102,7 +105,7 @@ reload_pillar_data_on_edx_nodes:
 {# Deploy Consul agent first so that the edx deployment can use provided DNS endpoints #}
 deploy_consul_agent_to_edx_nodes:
   salt.state:
-    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }}'
     - tgt_type: compound
     - sls:
         - consul
@@ -110,7 +113,7 @@ deploy_consul_agent_to_edx_nodes:
 
 build_edx_nodes:
   salt.state:
-    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }}'
     - tgt_type: compound
     - highstate: True
     - require:
@@ -120,7 +123,7 @@ build_edx_nodes:
 stop_non_edx_worker_services_{{ service }}:
   salt.function:
     - name: supervisord.dead
-    - tgt: 'G@roles:edx-worker and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }}'
     - tgt_type: compound
     - kwarg:
         bin_env: '/edx/bin/supervisorctl'
