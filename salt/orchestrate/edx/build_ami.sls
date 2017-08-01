@@ -128,7 +128,7 @@ build_edx_base_nodes:
 
 {% set previous_release = salt.sdb.get('sdb://consul/edxapp-release-version')|int %}
 {% set release_number = previous_release + 1 %}
-{% salt.sdb.set('sdb://consul/edxapp-release-version', '{}'.format(release_number) %}
+{% do salt.sdb.set('sdb://consul/edxapp-release-version', '{}'.format(release_number)) %}
 
 snapshot_edx_app_node:
   boto_ec2.snapshot_created:
