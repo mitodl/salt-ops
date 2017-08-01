@@ -1,6 +1,7 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, BUSINESS_UNIT, PURPOSE_PREFIX, subnet_ids with context %}
 
+{% set EDX_VERSION = salt.environ.get('EDX_VERSION') %}
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set purposes = env_settings.purposes %}
 {% set instance_name = 'edxapp-base-{}'.format(ENVIRONMENT) %}
@@ -120,6 +121,12 @@ build_edx_base_nodes:
     - highstate: True
     - require:
         - salt: deploy_consul_agent_to_edx_nodes
+    {% if EDX_VERSION %}
+    - pillar:
+        edx:
+          ansible_vars:
+            edx_platform_version: {{ EDX_VERSION }}
+    {% endif %}
 
 {% set previous_release = salt.sdb.get('sdb://consul/edxapp-release-version')|int %}
 {% set release_number = previous_release + 1 %}
