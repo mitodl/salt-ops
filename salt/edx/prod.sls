@@ -81,6 +81,7 @@ place_tls_{{ ext }}_file:
 {% endfor %}
 {% endif %}
 
+{% if salt.grains.get('roles') != 'devstack' %}
 mount_efs_filesystem_for_course_assets:
   mount.mounted:
     - name: /mnt/data
@@ -90,32 +91,10 @@ mount_efs_filesystem_for_course_assets:
     - persist: True
     - mount: True
 
-{% if theme_name %}
-install_edxapp_theme:
-  file.directory:
-    - name: {{ theme_dir }}
-    - makedirs: True
-    - user: edxapp
-    - group: edxapp
-  git.latest:
-    - name: {{ theme_repo }}
-    - branch: {{ theme_branch }}
-    - target: {{ theme_dir }}/{{ theme_name }}
-    - user: edxapp
-    - force_checkout: True
-    - force_clone: True
-    - force_reset: True
-    - update_head: True
-    - require:
-      - file: install_edxapp_theme
-    - require_in:
-      - cmd: run_ansible
-{% endif %}
-
 create_course_asset_symlink:
   file.symlink:
     - name: /edx/var/edxapp/course_static
-    - target: {{ salt.pillar.get('edx:edxapp:GIT_REPO_DIR') }}
+    - target: {{ salt.pillar.get('edx:edxapp:GIT_REPO_DIR', '/mnt/data/prod_repos') }}
     - makedirs: True
     - force: True
     - user: edxapp
@@ -138,6 +117,29 @@ add_private_ssh_key_to_www-data_for_git_export:
     - dir_mode: 0700
     - user: www-data
     - group: www-data
+{% endif %}
+
+{% if theme_name %}
+install_edxapp_theme:
+  file.directory:
+    - name: {{ theme_dir }}
+    - makedirs: True
+    - user: edxapp
+    - group: edxapp
+  git.latest:
+    - name: {{ theme_repo }}
+    - branch: {{ theme_branch }}
+    - target: {{ theme_dir }}/{{ theme_name }}
+    - user: edxapp
+    - force_checkout: True
+    - force_clone: True
+    - force_reset: True
+    - update_head: True
+    - require:
+      - file: install_edxapp_theme
+    - require_in:
+      - cmd: run_ansible
+{% endif %}
 
 {% for host in git_servers %}
 add_{{ host.name }}_to_known_hosts_for_edxapp:

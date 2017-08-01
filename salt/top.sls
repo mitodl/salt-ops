@@ -117,5 +117,4 @@ base:
     - rabbitmq
     - elasticsearch
     - edx.prod
-    - edx.run_ansible
     - edx.tests
