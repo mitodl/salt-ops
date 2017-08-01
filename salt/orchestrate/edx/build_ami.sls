@@ -13,56 +13,50 @@ load_edx_base_cloud_profile:
     - template: jinja
 
 create_edx_baseline_instance_in_{{ ENVIRONMENT }}:
-  salt.function:
+  salt.runner:
     - name: cloud.profile
-    - tgt: 'roles:master'
-    - tgt_type: grain
-    - arg:
-        - edx_base
+    - prof: edx_base
+    - instances:
         - {{ instance_name }}
-    - kwarg:
-        vm_overrides:
-          tag:
-            business_unit: {{ BUSINESS_UNIT }}
-            environment: {{ ENVIRONMENT }}
-            purpose_prefix: {{ PURPOSE_PREFIX }}
-          SecurityGroupId:
-            - {{ salt.boto_secgroup.get_group_id(
-            'edx-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-            - {{ salt.boto_secgroup.get_group_id(
-            'default', vpc_name=VPC_NAME) }}
-            - {{ salt.boto_secgroup.get_group_id(
-            'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-            - {{ salt.boto_secgroup.get_group_id(
-            'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-          SubnetId: {{ subnet_ids[0] }}
+    - vm_overrides:
+        tag:
+          business_unit: {{ BUSINESS_UNIT }}
+          environment: {{ ENVIRONMENT }}
+          purpose_prefix: {{ PURPOSE_PREFIX }}
+        SecurityGroupId:
+          - {{ salt.boto_secgroup.get_group_id(
+          'edx-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+          - {{ salt.boto_secgroup.get_group_id(
+          'default', vpc_name=VPC_NAME) }}
+          - {{ salt.boto_secgroup.get_group_id(
+          'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+          - {{ salt.boto_secgroup.get_group_id(
+          'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+        SubnetId: {{ subnet_ids[0] }}
     - require:
         - file: load_edx_base_cloud_profile
 
 create_edx_worker_baseline_instance_in_{{ ENVIRONMENT }}:
-  salt.function:
+  salt.runner:
     - name: cloud.profile
-    - tgt: 'roles:master'
-    - tgt_type: grain
-    - arg:
-        - edx_worker_base
+    - prof: edx_worker_base
+    - instances:
         - {{ worker_instance_name }}
-    - kwarg:
-        vm_overrides:
-          tag:
-            business_unit: {{ BUSINESS_UNIT }}
-            environment: {{ ENVIRONMENT }}
-            purpose_prefix: {{ PURPOSE_PREFIX }}
-          SecurityGroupId:
-            - {{ salt.boto_secgroup.get_group_id(
-            'edx-worker-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-            - {{ salt.boto_secgroup.get_group_id(
-            'default', vpc_name=VPC_NAME) }}
-            - {{ salt.boto_secgroup.get_group_id(
-            'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-            - {{ salt.boto_secgroup.get_group_id(
-            'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-          SubnetId: {{ subnet_ids[0] }}
+    - vm_overrides:
+        tag:
+          business_unit: {{ BUSINESS_UNIT }}
+          environment: {{ ENVIRONMENT }}
+          purpose_prefix: {{ PURPOSE_PREFIX }}
+        SecurityGroupId:
+          - {{ salt.boto_secgroup.get_group_id(
+          'edx-worker-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+          - {{ salt.boto_secgroup.get_group_id(
+          'default', vpc_name=VPC_NAME) }}
+          - {{ salt.boto_secgroup.get_group_id(
+          'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+          - {{ salt.boto_secgroup.get_group_id(
+          'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+        SubnetId: {{ subnet_ids[0] }}
     - require:
         - file: load_edx_base_cloud_profile
 
