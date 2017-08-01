@@ -18,6 +18,10 @@ create_edx_baseline_instance_in_{{ ENVIRONMENT }}:
     - prof: edx_base
     - instances:
         - {{ instance_name }}
+    - grains:
+        business_unit: {{ BUSINESS_UNIT }}
+        environment: {{ ENVIRONMENT }}
+        purpose_prefix: {{ PURPOSE_PREFIX }}
     - vm_overrides:
         tag:
           business_unit: {{ BUSINESS_UNIT }}
@@ -45,6 +49,10 @@ create_edx_worker_baseline_instance_in_{{ ENVIRONMENT }}:
     - prof: edx_worker_base
     - instances:
         - {{ worker_instance_name }}
+    - grains:
+        business_unit: {{ BUSINESS_UNIT }}
+        environment: {{ ENVIRONMENT }}
+        purpose_prefix: {{ PURPOSE_PREFIX }}
     - vm_overrides:
         tag:
           business_unit: {{ BUSINESS_UNIT }}
