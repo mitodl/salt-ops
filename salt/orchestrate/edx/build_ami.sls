@@ -3,7 +3,6 @@
 
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set purposes = env_settings.purposes %}
-{% set bucket_prefixes = env_settings.secret_backends.aws.bucket_prefixes %}
 {% set instance_name = 'edxapp-base-{}'.format(ENVIRONMENT) %}
 {% set worker_instance_name = 'edx-worker-base-{}'.format(ENVIRONMENT) %}
 
@@ -67,21 +66,9 @@ create_edx_worker_baseline_instance_in_{{ ENVIRONMENT }}:
     - require:
         - file: load_edx_base_cloud_profile
 
-
 ensure_instance_profile_exists_for_edx:
   boto_iam_role.present:
     - name: edx-instance-role
-
-{% for bucket in bucket_prefixes %}
-{% for type in ['draft', 'live'] %}
-create_edx_s3_bucket_{{ bucket }}_{{ PURPOSE_PREFIX }}-{{ type }}_{{ ENVIRONMENT }}:
-  boto_s3_bucket.present:
-    - Bucket: {{ bucket }}-{{ PURPOSE_PREFIX }}-{{ type }}-{{ ENVIRONMENT }}
-    - region: us-east-1
-    - Versioning:
-       Status: "Enabled"
-{% endfor %}
-{% endfor %}
 
 load_pillar_data_on_edx_base_nodes:
   salt.function:
