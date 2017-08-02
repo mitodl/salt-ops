@@ -139,6 +139,28 @@ install_edxapp_theme:
       - file: install_edxapp_theme
     - require_in:
       - cmd: run_ansible
+
+compile_assets_for_lms:
+  cmd.run:
+    - name: /edx/bin/edxapp-update-assets-lms
+    - env:
+        - NO_PREREQ_INSTALL: False
+    - onchanges:
+        - git: install_edxapp_theme
+    - parallel: True
+    - require:
+        - cmd: run_ansible
+
+compile_assets_for_cms:
+  cmd.run:
+    - name: /edx/bin/edxapp-update-assets-cqms
+    - env:
+        - NO_PREREQ_INSTALL: False
+    - onchanges:
+        - git: install_edxapp_theme
+    - parallel: True
+    - require:
+        - cmd: run_ansible
 {% endif %}
 
 {% for host in git_servers %}
