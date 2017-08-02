@@ -168,6 +168,7 @@ add_{{ host.name }}_to_known_hosts_for_edxapp:
   ssh_known_hosts.present:
     - name: {{ host.name }}
     - user: www-data
+    - enc: ssh-rsa
     - fingerprint: {{ host.fingerprint }}
     - fingerprint_hash_type: sha256
 {% endfor %}
