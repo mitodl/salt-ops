@@ -80,8 +80,8 @@ base:
     - edx.prod
     - edx.run_ansible
     - edx.gitreload
+    - edx.patch_nginx
     - edx.tests
-    - edx.maintenance_tasks
     - fluentd
     - fluentd.plugins
     - fluentd.config
