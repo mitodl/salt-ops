@@ -130,7 +130,6 @@ build_edx_base_nodes:
 
 {% set previous_release = salt.sdb.get('sdb://consul/edxapp-release-version')|int %}
 {% set release_number = previous_release + 1 %}
-{% do salt.sdb.set('sdb://consul/edxapp-release-version', '{}'.format(release_number)) %}
 
 snapshot_edx_app_node:
   boto_ec2.snapshot_created:
@@ -158,7 +157,7 @@ update_release_version:
     - tgt_type: grain
     - name: sdb.set
     - arg:
-        - {{ release_number }}
+        - '{{ release_number }}'
     - require:
         - boto_ec2: snapshot_edx_app_node
         - boto_ec2: snapshot_edx_worker_node
