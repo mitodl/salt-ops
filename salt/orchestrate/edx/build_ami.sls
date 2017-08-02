@@ -1,6 +1,7 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, BUSINESS_UNIT, PURPOSE_PREFIX, subnet_ids with context %}
 
+{% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token').data.value %}
 {% set EDX_VERSION = salt.environ.get('EDX_VERSION') %}
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set purposes = env_settings.purposes %}
@@ -175,3 +176,23 @@ destroy_edx_worker_base_instance:
     - require:
         - salt: build_edx_base_nodes
         - boto_ec2: snapshot_edx_worker_node
+
+alert_devops_channel_on_ami_build_failure:
+  slack.post_message:
+    - channel: '#general'
+    - from_name: saltbot
+    - message: 'The AMI build for edX release {{ release_number }} has failed.'
+    - api_key: {{ slack_api_token }}
+    - onfail:
+        - boto_ec2: snapshot_edx_worker_node
+        - boto_ec2: snapshot_edx_app_node
+
+alert_devops_channel_on_ami_build_success:
+  slack.post_message:
+    - channel: '#general'
+    - from_name: saltbot
+    - message: 'The AMI build for edX release {{ release_number }} has succeeded.'
+    - api_key: {{ slack_api_token }}
+    - require:
+        - boto_ec2: snapshot_edx_worker_node
+        - boto_ec2: snapshot_edx_app_node
