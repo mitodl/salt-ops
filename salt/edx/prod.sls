@@ -6,9 +6,9 @@
                                          '/edx/var/edxapp/export_course_repos') -%}
 {% set git_servers = salt.pillar.get('edx:ssh_hosts',
                                      [{'name': 'github.com',
-                                       'fingerprint': '16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48'},
+                                       'fingerprint': '9d:38:5b:83:a9:17:52:92:56:1a:5e:c4:d4:81:8e:0a:ca:51:a2:64:f1:74:20:11:2e:f8:8a:c3:a1:39:49:8f'},
                                       {'name': 'github.mit.edu',
-                                       'fingerprint': '03:3b:72:d6:20:6f:3e:1f:5e:2f:38:a2:80:01:f3:22'}]) %}
+                                       'fingerprint': '98:fd:6f:32:bb:11:90:fe:a5:e3:66:ec:d1:db:17:7a:3a:b7:62:0c:4c:0f:6a:f9:36:a6:e8:22:6a:ac:b3:0d'}]) %}
 {% set theme_repo = salt.pillar.get('edx:edxapp:custom_theme:repo', 'https://github.com/mitodl/mitx-theme') -%}
 {% set theme_name = salt.pillar.get('edx:edxapp:THEME_NAME', None) -%}
 {% set theme_branch = salt.pillar.get('edx:edxapp:custom_theme:branch', 'mitx') -%}
@@ -147,6 +147,7 @@ add_{{ host.name }}_to_known_hosts_for_edxapp:
     - name: {{ host.name }}
     - user: www-data
     - fingerprint: {{ host.fingerprint }}
+    - fingerprint_hash_type: sha256
 {% endfor %}
 
 update_max_upload_size_for_lms:
