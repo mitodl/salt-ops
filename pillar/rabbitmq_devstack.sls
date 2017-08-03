@@ -19,18 +19,19 @@ rabbitmq:
       settings:
         tags:
           - administrator
-        perms:
-          - '/xqueue':
-              - '.*'
-              - '.*'
-              - '.*'
-          - '/celery':
-              - '.*'
-              - '.*'
-              - '.*'
         password: {{ rabbitmq_admin_password }}
   vhosts:
     - name: /xqueue
       state: present
+      settings:
+        perms:
+         - conf: '.*'
+         - write: '.*'
+         - read: '.*'
     - name: /celery
       state: present
+      settings:
+        perms:
+         - conf: '.*'
+         - write: '.*'
+         - read: '.*'
