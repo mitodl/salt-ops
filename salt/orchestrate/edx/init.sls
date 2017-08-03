@@ -1,6 +1,7 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, BUSINESS_UNIT, PURPOSE_PREFIX, subnet_ids with context %}
 
+{% set ANSIBLE_FLAGS = salt.environ.get('ANSIBLE_FLAGS') %}
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set purposes = env_settings.purposes %}
 {% set bucket_prefixes = env_settings.secret_backends.aws.bucket_prefixes %}
@@ -118,6 +119,11 @@ build_edx_nodes:
     - highstate: True
     - require:
         - salt: deploy_consul_agent_to_edx_nodes
+    {% if ANSIBLE_FLAGS %}
+    - pillar:
+        edx:
+          ansible_flags: {{ ANSIBLE_FLAGS }}
+    {% endif %}
 
 {% for service in ['edxapp:', 'forum', 'xqueue', 'xqueue_consumer'] %}
 stop_non_edx_worker_services_{{ service }}:
