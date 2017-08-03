@@ -2,8 +2,6 @@
   xqueue_mysql_username, xqueue_mysql_password, edxapp_mysql_username, edxapp_mysql_password with context %}
 
 mysql:
-  lookup:
-    server: mariadb-server
   server:
     root_user: {{ admin_mysql_username }}
     root_password: {{ admin_mysql_password }}
