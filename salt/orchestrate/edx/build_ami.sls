@@ -146,6 +146,14 @@ delete_{{ grain }}_from_grains:
         - boto_ec2: snapshot_edx_worker_node
 {% endfor %}
 
+disable_minion_service_before_snapshot:
+  salt.function:
+    - tgt: 'edx*base-{{ ENVIRONMENT }}'
+    - tgt_type: glob
+    - name: service.disable
+    - arg:
+        - salt-minion
+
 snapshot_edx_app_node:
   boto_ec2.snapshot_created:
     - name: edxapp_base_release_{{ release_number }}
