@@ -137,12 +137,14 @@ snapshot_edx_app_node:
     - name: edxapp_base_release_{{ release_number }}
     - ami_name: edxapp_base_release_{{ release_number }}
     - instance_name: {{ instance_name }}
+    - wait_until_available: False
 
 snapshot_edx_worker_node:
   boto_ec2.snapshot_created:
     - name: edx_worker_base_release_{{ release_number }}
     - ami_name: edx_worker_base_release_{{ release_number }}
     - instance_name: {{ worker_instance_name }}
+    - wait_until_available: False
 
 update_release_version:
   salt.function:
