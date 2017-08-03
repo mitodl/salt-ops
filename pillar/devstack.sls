@@ -58,7 +58,7 @@ edx:
       - git
       - libmysqlclient-dev
       - landscape-common
-      - libssldev
+      - libssl-dev
       - python2.7
       - python2.7-dev
       - python-pip
