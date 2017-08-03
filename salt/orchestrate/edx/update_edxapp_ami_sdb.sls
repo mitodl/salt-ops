@@ -1,6 +1,9 @@
 {% set release_number = salt.sdb.get('sdb://consul/edxapp-release-version') %}
 {% set app_ami_id = salt.boto_ec2.find_images(ami_name='edxapp_base_release_{}'.format(release_number))[0] %}
 {% set worker_ami_id = salt.boto_ec2.find_images(ami_name='edx_worker_base_release_{}'.format(release_number))[0] %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-qa') %}
+{% set instance_name = 'edxapp-base-{}'.format(ENVIRONMENT) %}
+{% set worker_instance_name = 'edx-worker-base-{}'.format(ENVIRONMENT) %}
 
 update_edxapp_ami_value:
   salt.function:
@@ -19,3 +22,17 @@ update_edx_worker_ami_value:
     - arg:
         - 'sdb://consul/edx_worker_ami_id'
         - '{{ worker_ami_id }}'
+
+destroy_edx_base_instance:
+  cloud.absent:
+    - name: {{ instance_name }}
+    - require:
+        - salt: build_edx_base_nodes
+        - boto_ec2: snapshot_edx_app_node
+
+destroy_edx_worker_base_instance:
+  cloud.absent:
+    - name: {{ worker_instance_name }}
+    - require:
+        - salt: build_edx_base_nodes
+        - boto_ec2: snapshot_edx_worker_node

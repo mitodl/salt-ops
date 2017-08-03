@@ -179,20 +179,6 @@ update_release_version:
         - boto_ec2: snapshot_edx_app_node
         - boto_ec2: snapshot_edx_worker_node
 
-destroy_edx_base_instance:
-  cloud.absent:
-    - name: {{ instance_name }}
-    - require:
-        - salt: build_edx_base_nodes
-        - boto_ec2: snapshot_edx_app_node
-
-destroy_edx_worker_base_instance:
-  cloud.absent:
-    - name: {{ worker_instance_name }}
-    - require:
-        - salt: build_edx_base_nodes
-        - boto_ec2: snapshot_edx_worker_node
-
 alert_devops_channel_on_ami_build_failure:
   slack.post_message:
     - channel: '#general'
