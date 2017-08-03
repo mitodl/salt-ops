@@ -53,6 +53,19 @@ edx:
   config:
     repo: 'https://github.com/mitodl/configuration.git'
     branch: 'master'
+  dependencies:
+    os_packages:
+      - git
+      - libmysqlclient-dev
+      - landscape-common
+      - libssldev
+      - python2.7
+      - python2.7-dev
+      - python-pip
+      - python-virtualenv
+      - nfs-common
+      - postfix
+      - memcached
 
   ansible_vars:
     ### COMMON VARS ###
