@@ -11,9 +11,12 @@ PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity restore \
           --archive-dir {{ cachedir }} \
           --force --tempdir /backups/tmp/ {{ backupdir }}/
 
-/usr/bin/mysql --host {{ settings.host }} \
-               --port {{ settings.get('port', 3306) }} \
-               --user {{ settings.username }} \
-               --password={{ settings.password }} \
-               --database={{ settings.restore_to }} \
-               < {{ backupdir }}/{{ settings.restore_from }}.dump
+/usr/bin/myloader --host {{ settings.host }} \
+                  --port {{ settings.get('port', 3306) }} \
+                  --user {{ settings.username }} \
+                  --password={{ settings.password }} \
+                  --database={{ settings.restore_to }} \
+                  --compress-protocol --overwrite-tables \
+                  --source-db {{ settings.restore_from }} \
+                  --directory {{ backupdir }} \
+                  --threads {{ settings.get('threads', 4) }}
