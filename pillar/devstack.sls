@@ -15,7 +15,7 @@
 {% set xqueue_mysql_username = 'xqueue_mysql_user' %}
 {% set xqueue_mysql_password = salt.random.get_str(20) %}
 {% set edxapp_mysql_username = 'edxapp_mysql_user' %}
-{% set edxapp_mysql_password = salt.random.get_str(20) %}
+{% set edxapp_mysql_password = 'changeme' %}
 {% set edxapp_mongodb_username = 'edxapp_mongodb_user' %}
 {% set edxapp_mongodb_password = salt.random.get_str(20) %}
 {% set forum_mongodb_username = 'forum_mongodb_user' %}
