@@ -20,15 +20,11 @@ rabbitmq:
         tags:
           - administrator
         perms:
-          - '/':
+          - '/xqueue':
               - '.*'
               - '.*'
               - '.*'
-          - '/prod':
-              - '.*'
-              - '.*'
-              - '.*'
-          - '/dev':
+          - '/celery':
               - '.*'
               - '.*'
               - '.*'
