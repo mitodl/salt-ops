@@ -13,7 +13,7 @@
 {% set theme_name = salt.pillar.get('edx:edxapp:THEME_NAME', None) -%}
 {% set theme_branch = salt.pillar.get('edx:edxapp:custom_theme:branch', 'mitx') -%}
 {% set theme_dir = salt.pillar.get('edx:edxapp:EDXAPP_COMPREHENSIVE_THEME_DIR', '/edx/app/edxapp/themes') -%}
-{% set os_packages = salt.pillar.get('edx:edxapp:os_packages:os_pkg',
+{% set os_packages = salt.pillar.get('edx:dependencies:os_packages',
                                      ['git',
                                       'libmysqlclient-dev',
                                       'mariadb-client-10.0',
@@ -44,16 +44,14 @@ configure_python_ppa_for_edx:
         - pkg: install_os_packages
 {% endif %}
 
-{% for os_pkg in os_packages %}
-install_{{ os_pkg }}:
+install_{{ os_packages }}:
   pkg.installed:
-    - pkgs: {{ os_pkg }}
+    - pkgs: {{ os_packages }}
     - refresh: True
     - refresh_modules: True
     - require_in:
         - virtualenv: create_ansible_virtualenv
         - git: clone_edx_configuration
-{% endfor %}
 
 {% if salt.pillar.get('edx:generate_tls_certificate') %}
 generate_self_signed_certificate:
