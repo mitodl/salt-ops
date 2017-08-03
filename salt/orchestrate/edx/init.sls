@@ -41,7 +41,7 @@ generate_edx_cloud_map_file:
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids }}
         tags:
-          release-version: {{ release_version }}
+          release-version: '{{ release_version }}'
         app_types:
           draft: {{ purposes['{}-draft'.format(PURPOSE_PREFIX)].num_instances }}
           live:  {{ purposes['{}-live'.format(PURPOSE_PREFIX)].num_instances }}

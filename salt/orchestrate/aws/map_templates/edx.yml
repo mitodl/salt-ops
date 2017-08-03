@@ -6,7 +6,7 @@
 edx:
   {% for app_type, num_instances in app_types.items() %}
   {% for id_num in range(num_instances.edx) %}
-  - edx-{{ environment_name }}-{{ purpose_prefix }}-{{ app_type }}-{{ id_num }}-{{ release_number }}:
+  - edx-{{ environment_name }}-{{ purpose_prefix }}-{{ app_type }}-{{ id_num }}-v{{ release_number }}:
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
@@ -43,7 +43,7 @@ edx:
 edx-worker:
   {% for app_type, num_instances in app_types.items() %}
   {% for id_num in range(num_instances['edx-worker']) %}
-  - edx-worker-{{ environment_name }}-{{ purpose_prefix }}-{{ app_type }}-{{ id_num }}-{{ release_number }}:
+  - edx-worker-{{ environment_name }}-{{ purpose_prefix }}-{{ app_type }}-{{ id_num }}-v{{ release_number }}:
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
