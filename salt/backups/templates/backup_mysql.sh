@@ -6,6 +6,8 @@ set -e
 mkdir -p {{ backupdir }}
 mkdir -p {{ cachedir }}
 
+cd /backups/
+
 /usr/bin/mydumper --host {{ settings.host }} \
                   --port {{ settings.get('port', 3306) }} \
                   --user {{ settings.username }} \
