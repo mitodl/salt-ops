@@ -6,13 +6,15 @@ set -e
 mkdir -p {{ backupdir }}
 mkdir -p {{ cachedir }}
 
-/usr/bin/mysqldump --host {{ settings.host }} \
-                   --port {{ settings.get('port', 3306) }} \
-                   --user {{ settings.username }} \
-                   --password={{ settings.password }} --single-transaction \
-                   --opt --skip-lock-tables \
-                   --result-file {{ backupdir }}/{{ settings.database }}.dump \
-                   {{ settings.database }}
+/usr/bin/mydumper --host {{ settings.host }} \
+                  --port {{ settings.get('port', 3306) }} \
+                  --user {{ settings.username }} \
+                  --password={{ settings.password }}
+                  --database {{ settings.database }} \
+                  --outputdir {{ backupdir }} \
+                  --threads {{ settings.get('threads', 4) }} \
+                  --compress-protocol \
+                  --logfile /backups/{{ settings.database }}-dump-log.txt
 
 PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
           --s3-use-server-side-encryption {{ backupdir }} \
