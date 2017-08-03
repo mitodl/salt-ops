@@ -80,6 +80,7 @@ run_ansible:
         repo_path: {{ repo_path }}
         conf_file: {{ conf_file }}
         playbooks: {{ playbooks }}
+        extra_flags: {{ salt.pillar.get('edx:ansible_flags', '') }}
     - require:
       - virtualenv: create_ansible_virtualenv
     - unless: {{ salt.pillar.get('edx:skip_ansible', False) }}
