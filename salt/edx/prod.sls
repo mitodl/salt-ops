@@ -13,6 +13,19 @@
 {% set theme_name = salt.pillar.get('edx:edxapp:THEME_NAME', None) -%}
 {% set theme_branch = salt.pillar.get('edx:edxapp:custom_theme:branch', 'mitx') -%}
 {% set theme_dir = salt.pillar.get('edx:edxapp:EDXAPP_COMPREHENSIVE_THEME_DIR', '/edx/app/edxapp/themes') -%}
+{% set os_packages = salt.pillar.get('edx:dependencies:os_packages',
+                                     ['git',
+                                      'libmysqlclient-dev',
+                                      'mariadb-client-10.0',
+                                      'landscape-common',
+                                      'libssl-dev',
+                                      'python2.7',
+                                      'python2.7-dev',
+                                      'python-pip',
+                                      'python-virtualenv',
+                                      'nfs-common',
+                                      'postfix',
+                                      'memcached']) -%}
 
 include:
   - .run_ansible
@@ -33,19 +46,7 @@ configure_python_ppa_for_edx:
 
 install_os_packages:
   pkg.installed:
-    - pkgs:
-        - git
-        - libmysqlclient-dev
-        - mariadb-client-10.0
-        - landscape-common
-        - libssl-dev
-        - python2.7
-        - python2.7-dev
-        - python-pip
-        - python-virtualenv
-        - nfs-common
-        - postfix
-        - memcached
+    - pkgs: {{ os_packages }}
     - refresh: True
     - refresh_modules: True
     - require_in:
