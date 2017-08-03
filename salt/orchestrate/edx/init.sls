@@ -114,7 +114,7 @@ build_edx_nodes:
     {% if ANSIBLE_FLAGS %}
     - pillar:
         edx:
-          ansible_flags: {{ ANSIBLE_FLAGS }}
+          ansible_flags: "{{ ANSIBLE_FLAGS }}"
     {% endif %}
 
 {% for service in ['edxapp:', 'forum', 'xqueue', 'xqueue_consumer'] %}
