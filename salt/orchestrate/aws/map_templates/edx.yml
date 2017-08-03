@@ -1,9 +1,9 @@
 {% set profile_overrides = profile_overrides|default({}) %}
 {% set tags = tags|default({}) %}
 {% set release_number = salt.sdb.get('sdb://consul/edxapp-release-version') %}
+{% set num_subnets = subnetids|length %}
 
 edx:
-  {% set num_subnets = subnetids|length %}
   {% for app_type, num_instances in app_types.items() %}
   {% for id_num in range(num_instances.edx) %}
   - edx-{{ environment_name }}-{{ purpose_prefix }}-{{ app_type }}-{{ id_num }}-{{ release_number }}:
@@ -41,7 +41,6 @@ edx:
 {% endfor %}
 
 edx-worker:
-  {% set num_subnets = subnetids|length %}
   {% for app_type, num_instances in app_types.items() %}
   {% for id_num in range(num_instances['edx-worker']) %}
   - edx-worker-{{ environment_name }}-{{ purpose_prefix }}-{{ app_type }}-{{ id_num }}-{{ release_number }}:
@@ -54,23 +53,23 @@ edx-worker:
             - {{ securitygroupids.default }}
             - {{ securitygroupids['salt-master'] }}
             - {{ securitygroupids['consul-agent'] }}
-        tag:
-          business_unit: {{ business_unit }}
-          environment: {{ environment_name }}
-          purpose_prefix: {{ purpose_prefix }}
-          {% for tag_name, tag_value in tags.items() %}
-          {{ tag_name }}: {{ tag_value }}
-          {% endfor %}
-        grains:
-          business_unit: {{ business_unit }}
-          environment: {{ environment_name }}
-          {% for tag_name, tag_value in tags.items() %}
-          {{ tag_name }}: {{ tag_value }}
-          {% endfor %}
-          {% set modified_purpose = purpose_prefix + '-' + app_type %}
-          purpose: {{ modified_purpose }}
-          roles:
-            - edx-worker
-            - edx-worker-{{ app_type }}
+      tag:
+        business_unit: {{ business_unit }}
+        environment: {{ environment_name }}
+        purpose_prefix: {{ purpose_prefix }}
+        {% for tag_name, tag_value in tags.items() %}
+        {{ tag_name }}: {{ tag_value }}
+        {% endfor %}
+      grains:
+        business_unit: {{ business_unit }}
+        environment: {{ environment_name }}
+        {% for tag_name, tag_value in tags.items() %}
+        {{ tag_name }}: {{ tag_value }}
+        {% endfor %}
+        {% set modified_purpose = purpose_prefix + '-' + app_type %}
+        purpose: {{ modified_purpose }}
+        roles:
+          - edx-worker
+          - edx-worker-{{ app_type }}
 {% endfor %}
 {% endfor %}
