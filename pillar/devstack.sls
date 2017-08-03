@@ -245,6 +245,7 @@ edx:
       REROUTE_ACTIVATION_EMAIL: {{ DEFAULT_FEEDBACK_EMAIL }}
       SUBDOMAIN_BRANDING: false
       SUBDOMAIN_COURSE_LISTINGS: false
+      PREVIEW_LMS_BASE: "preview.localhost:18020"
 
     common_env_config: &common_env_config
       ADDL_INSTALLED_APPS:
