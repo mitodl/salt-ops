@@ -48,6 +48,7 @@ generate_edx_cloud_map_file:
           live:  {{ purposes['{}-live'.format(PURPOSE_PREFIX)].num_instances }}
     - require:
         - file: load_edx_cloud_profile
+        - file: load_edx_worker_cloud_profile
 
 ensure_instance_profile_exists_for_edx:
   boto_iam_role.present:
@@ -93,15 +94,6 @@ populate_mine_with_edx_node_data:
     - tgt_type: compound
     - require:
         - salt: load_pillar_data_on_edx_nodes
-
-{# Reload the pillar data to update values from the salt mine #}
-reload_pillar_data_on_edx_nodes:
-  salt.function:
-    - name: saltutil.refresh_pillar
-    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }}'
-    - tgt_type: compound
-    - require:
-        - salt: populate_mine_with_edx_node_data
 
 {# Deploy Consul agent first so that the edx deployment can use provided DNS endpoints #}
 deploy_consul_agent_to_edx_nodes:
