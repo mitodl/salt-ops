@@ -44,7 +44,7 @@ configure_python_ppa_for_edx:
         - pkg: install_os_packages
 {% endif %}
 
-install_{{ os_packages }}:
+install_os_packages:
   pkg.installed:
     - pkgs: {{ os_packages }}
     - refresh: True
