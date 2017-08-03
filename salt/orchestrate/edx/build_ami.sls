@@ -132,6 +132,20 @@ build_edx_base_nodes:
 {% set previous_release = salt.sdb.get('sdb://consul/edxapp-release-version')|int %}
 {% set release_number = previous_release + 1 %}
 
+{# Delete grains before snapshotting so they can be set when building from the image #}
+{% for grain in ['business_unit', 'environment', 'purpose', 'roles'] %}
+delete_{{ grain }}_from_grains:
+  salt.function:
+    - tgt: 'P@roles:(edx-base|edx-base-worker) and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - name: grains.delkey
+    - arg:
+        - {{ grain }}
+    - require_in:
+        - boto_ec2: snapshot_edx_app_node
+        - boto_ec2: snapshot_edx_worker_node
+{% endfor %}
+
 snapshot_edx_app_node:
   boto_ec2.snapshot_created:
     - name: edxapp_base_release_{{ release_number }}
