@@ -136,7 +136,7 @@ build_edx_base_nodes:
 {% for grain in ['business_unit', 'environment', 'purpose', 'roles'] %}
 delete_{{ grain }}_from_grains:
   salt.function:
-    - tgt: 'P@roles:(edx-base|edx-base-worker) and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'edx*base-{{ ENVIRONMENT }}'
     - tgt_type: compound
     - name: grains.delkey
     - arg:
