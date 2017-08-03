@@ -78,6 +78,8 @@ sync_external_modules_for_edx_nodes:
     - name: saltutil.sync_all
     - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }}'
     - tgt_type: compound
+    - require:
+        - salt: deploy_edx_cloud_map
 
 load_pillar_data_on_edx_nodes:
   salt.function:
