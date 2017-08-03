@@ -137,20 +137,12 @@ snapshot_edx_app_node:
     - name: edxapp_base_release_{{ release_number }}
     - ami_name: edxapp_base_release_{{ release_number }}
     - instance_name: {{ instance_name }}
-    - tags:
-        release_number: {{ release_number }}
-        business_unit: residential
-    - description: MITx application image
 
 snapshot_edx_worker_node:
   boto_ec2.snapshot_created:
     - name: edx_worker_base_release_{{ release_number }}
     - ami_name: edx_worker_base_release_{{ release_number }}
     - instance_name: {{ worker_instance_name }}
-    - tags:
-        release_number: {{ release_number }}
-        business_unit: residential
-    - description: MITx application image
 
 update_release_version:
   salt.function:
