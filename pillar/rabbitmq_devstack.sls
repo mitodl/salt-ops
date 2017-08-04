@@ -19,7 +19,7 @@ rabbitmq:
       settings:
         tags:
           - administrator
-         perms:
+        perms:
           - '/xqueue':
               - '.*'
               - '.*'
