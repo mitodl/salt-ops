@@ -61,7 +61,7 @@ register_edx_{{ purpose_name }}_nodes_with_elb:
     - name: {{ elb_name }}
     - instances:
         {% for instance_num in range(purpose.num_instances.edx) %}
-        - {{ salt.boto_ec2.get_id('edx-{env}-{t}-{num}-{version}'.format(
+        - {{ salt.boto_ec2.get_id('edx-{env}-{t}-{num}-v{version}'.format(
             env=ENVIRONMENT, t=purpose_name, num=instance_num,
             version=release_version)) }}
         {% endfor %}
