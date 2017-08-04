@@ -30,6 +30,7 @@ rabbitmq:
     - name: /celery
       state: present
       settings:
-        - conf: '.*'
-        - write: '.*'
-        - read: '.*'
+        user: admin
+        conf: '.*'
+        write: '.*'
+        read: '.*'
