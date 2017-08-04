@@ -11,7 +11,7 @@ cd /backups/
 /usr/bin/mydumper --host {{ settings.host }} \
                   --port {{ settings.get('port', 3306) }} \
                   --user {{ settings.username }} \
-                  --password={{ settings.password }}
+                  --password={{ settings.password }} \
                   --database {{ settings.database }} \
                   --outputdir {{ backupdir }} \
                   --threads {{ settings.get('threads', 4) }} \
