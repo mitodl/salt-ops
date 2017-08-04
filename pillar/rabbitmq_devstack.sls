@@ -19,13 +19,13 @@ rabbitmq:
       settings:
         tags:
           - administrator
-         perms:		
-          - '/xqueue':		
-              - '.*'		
-              - '.*'		
-              - '.*'		
-          - '/celery':		
-              - '.*'		
-              - '.*'		
+         perms:
+          - '/xqueue':
+              - '.*'
+              - '.*'
+              - '.*'
+          - '/celery':
+              - '.*'
+              - '.*'
               - '.*'
         password: {{ rabbitmq_admin_password }}
