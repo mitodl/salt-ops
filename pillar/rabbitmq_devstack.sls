@@ -30,7 +30,7 @@ rabbitmq:
               - '.*'
         password: {{ rabbitmq_admin_password }}
   vhosts:
-    - name: xqueue
+    - name: '/xqueue'
       state: present
-    - name: celery
+    - name: '/celery'
       state: present
