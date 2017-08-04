@@ -20,11 +20,11 @@ rabbitmq:
         tags:
           - administrator
         perms:
-          - '/xqueue':
+          - 'xqueue':
               - '.*'
               - '.*'
               - '.*'
-          - '/celery':
+          - 'celery':
               - '.*'
               - '.*'
               - '.*'
