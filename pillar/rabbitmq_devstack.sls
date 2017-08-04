@@ -20,12 +20,12 @@ rabbitmq:
         tags:
           - administrator
          perms:		
- -          - '/xqueue':		
- -              - '.*'		
- -              - '.*'		
- -              - '.*'		
- -          - '/celery':		
- -              - '.*'		
- -              - '.*'		
- -              - '.*'
+           - '/xqueue':		
+               - '.*'		
+               - '.*'		
+               - '.*'		
+           - '/celery':		
+               - '.*'		
+               - '.*'		
+               - '.*'
         password: {{ rabbitmq_admin_password }}
