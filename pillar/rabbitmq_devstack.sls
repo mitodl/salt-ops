@@ -24,14 +24,12 @@ rabbitmq:
     - name: /xqueue
       state: present
       settings:
-        perms:
-         - conf: '.*'
-         - write: '.*'
-         - read: '.*'
+        - conf: '.*'
+        - write: '.*'
+        - read: '.*'
     - name: /celery
       state: present
       settings:
-        perms:
-         - conf: '.*'
-         - write: '.*'
-         - read: '.*'
+        - conf: '.*'
+        - write: '.*'
+        - read: '.*'
