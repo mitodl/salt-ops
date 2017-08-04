@@ -8,7 +8,7 @@ mkdir -p {{ cachedir }}
 
 /usr/bin/mongodump --host {{ settings.host }} \
                    --port {{ settings.get('port', 27017) }} \
-                   --password {{ settings.password }} --username admin \
+                   --password={{ settings.password }} --username {{ settings.username }} \
                    --authenticationDatabase admin \
                    --out {{ backupdir }}
 
