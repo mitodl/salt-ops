@@ -24,9 +24,10 @@ rabbitmq:
     - name: /xqueue
       state: present
       settings:
-        - conf: '.*'
-        - write: '.*'
-        - read: '.*'
+        user: admin
+        conf: '.*'
+        write: '.*'
+        read: '.*'
     - name: /celery
       state: present
       settings:
