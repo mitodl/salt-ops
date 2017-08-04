@@ -112,6 +112,16 @@ deploy_consul_agent_to_edx_nodes:
         - consul
         - consul.dns_proxy
 
+restart_consul_service_to_load_updated_configs:
+  salt.function:
+    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }}'
+    - tgt_type: compound
+    - name: service.restart
+    - arg:
+        - consul
+    - require:
+        - salt: deploy_consul_agent_to_edx_nodes
+
 build_edx_nodes:
   salt.state:
     - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }}'
@@ -119,6 +129,7 @@ build_edx_nodes:
     - highstate: True
     - require:
         - salt: deploy_consul_agent_to_edx_nodes
+        - salt: restart_consul_service_to_load_updated_configs
     {% if ANSIBLE_FLAGS %}
     - pillar:
         edx:
