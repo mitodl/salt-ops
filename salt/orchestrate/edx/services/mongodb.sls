@@ -41,10 +41,16 @@ ensure_instance_profile_exists_for_mongodb:
     - name: mongodb-instance-role
 
 deploy_mongodb_cloud_map:
-  salt.runner:
-    - name: cloud.map_run
-    - path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_mongodb_map.yml
-    - parallel: True
+  salt.function:
+    - tgt: 'roles:master'
+    - tgt_type: grain
+    - name: saltutil.runner
+    - arg:
+        - cloud.map_run
+    - kwarg:
+        path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_mongodb_map.yml
+        parallel: True
+        full_return: True
     - require:
         - file: generate_mongodb_cloud_map_file
 
