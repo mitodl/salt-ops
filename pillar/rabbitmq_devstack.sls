@@ -29,3 +29,12 @@ rabbitmq:
               - '.*'
               - '.*'
         password: {{ rabbitmq_admin_password }}
+  vhosts:
+    - name: xqueue
+      state: present
+      settings:
+        owner: admin
+    - name: celery
+      state: present
+      settings:
+        ownder: admin
