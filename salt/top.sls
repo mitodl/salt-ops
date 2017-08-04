@@ -7,7 +7,7 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
-  'P@environment:(operations|mitx-rp|mitx-production)':
+  'P@environment:(operations|mitx-production)':
     - match: compound
     - datadog
   'roles:master':
@@ -50,6 +50,8 @@ base:
     - match: compound
     - mongodb
     - mongodb.consul_check
+  'G@roles:mongodb and G@environment:mitx-production':
+    - match: compound
     - datadog.plugins
   'roles:aggregator':
     - match: grain
