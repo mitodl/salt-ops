@@ -19,4 +19,5 @@ PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity restore \
                   --compress-protocol --overwrite-tables \
                   --source-db {{ settings.restore_from }} \
                   --directory {{ backupdir }} \
-                  --threads {{ settings.get('threads', 4) }}
+                  --threads {{ settings.get('threads', 4) }} \
+                  --overwrite-tables
