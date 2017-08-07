@@ -15,3 +15,4 @@ mongodb:
     service_name: mongodb
   admin_username: {{ mongodb_admin_username }}
   admin_password: {{ mongodb_admin_password }}
+  version: '3.4'
