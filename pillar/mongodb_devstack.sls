@@ -1,7 +1,7 @@
 #!jinja|yaml
 
 {% set mongodb_admin_username = 'admin' %}
-{% set mongodb_admin_password = salt.random.get_str(20) %}
+{% set mongodb_admin_password = 'changeme' %}
 
 mine_functions:
   network.ip_addrs: [eth0]
