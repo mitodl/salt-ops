@@ -1,6 +1,6 @@
 #!jinja|yaml
 
-{% set rabbitmq_admin_password = salt.random.get_str(20) %}
+{% set rabbitmq_admin_password = 'changeme' %}
 
 rabbitmq:
   overrides:
