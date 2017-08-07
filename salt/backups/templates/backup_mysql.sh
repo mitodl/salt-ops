@@ -15,7 +15,7 @@ cd /backups/
                   --database {{ settings.database }} \
                   --outputdir {{ backupdir }} \
                   --threads {{ settings.get('threads', 4) }} \
-                  --compress-protocol \
+                  --compress-protocol --no-locks \
                   --logfile /backups/{{ settings.database }}-dump-log.txt
 
 PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
