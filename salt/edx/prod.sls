@@ -101,6 +101,17 @@ create_course_asset_symlink:
     - user: edxapp
     - group: www-data
 
+create_edxapp_data_dir_symlink:
+  file.symlink:
+    - name: /edx/app/edxapp/data
+    - target: {{ salt.pillar.get('edx:edxapp:GIT_REPO_DIR', '/mnt/data/prod_repos') }}
+    - makedirs: True
+    - force: True
+    - user: edxapp
+    - group: www-data
+    - require:
+        - cmd: run_ansible
+
 {# Steps to enable git export for courses #}
 make_git_export_directory:
   file.directory:
