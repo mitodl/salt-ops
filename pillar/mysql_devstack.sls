@@ -5,7 +5,7 @@ mysql:
   server:
     root_user: {{ admin_mysql_username }}
     root_password: {{ admin_mysql_password }}
-    mysql_host: {{ MYSQL_HOST }}
+    mysql_host: 0.0.0.0
 
   database:
     - xqueue_devstack
