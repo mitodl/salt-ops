@@ -33,8 +33,9 @@ ensure_instance_profile_exists_for_backups:
 
 load_backup_host_cloud_profile:
   file.managed:
-    - name: /etc/salt/cloud.profiles.d/backup_host.conf
+    - name: /etc/salt/cloud.profiles.d/operations_backup_host.conf
     - source: salt://orchestrate/aws/cloud_profiles/backup_host.conf
+    - template: jinja
 
 deploy_backup_instance_to_{{ ENVIRONMENT }}:
   salt.function:
