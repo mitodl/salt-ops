@@ -22,13 +22,13 @@ mysql:
           grants: ['all privileges']
     {{ xqueue_mysql_username }}:
       password: {{ xqueue_mysql_password }}
-      host: 'localhost', {{ MYSQL_HOST }}
+      host: 'localhost'
       databases:
         - database: xqueue_devstack
           grants: ['all privileges']
     {{ edxapp_mysql_username }}:
       password: {{ edxapp_mysql_password }}
-      host: 'localhost', {{ MYSQL_HOST }}
+      host: 'localhost'
       databases:
         - database: edxapp_devstack
           grants: ['all privileges']
