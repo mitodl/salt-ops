@@ -35,9 +35,5 @@ mysql:
       databases:
         - database: edxapp_devstack
           grants: ['all privileges']
-    {{ edxapp_mysql_username }}:
-      password: {{ edxapp_mysql_password }}
-      host: 'localhost'
-      databases:
         - database: edxapp_csmh
           grants: ['all privileges']
