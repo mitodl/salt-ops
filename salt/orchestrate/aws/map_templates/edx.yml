@@ -71,5 +71,8 @@ edx-worker:
         roles:
           - edx-worker
           - edx-worker-{{ app_type }}
+      {% for profile_setting, profile_value in profile_overrides.items() %}
+      {{ profile_setting }}: {{ profile_value }}
+      {% endfor %}
 {% endfor %}
 {% endfor %}

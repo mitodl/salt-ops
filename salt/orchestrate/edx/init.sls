@@ -19,6 +19,15 @@ load_edx_worker_cloud_profile:
     - source: salt://orchestrate/aws/cloud_profiles/edx-worker.conf
     - template: jinja
 
+write_out_edx_userdata_file:
+  file.managed:
+    - name: /etc/salt/cloud.d/edx_userdata.yml
+    - contents: |
+        #cloud-config
+        runcmd:
+          - [rm, -r, /etc/salt/pki/minion]
+    - makedirs: True
+
 generate_edx_cloud_map_file:
   file.managed:
     - name: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_edx_map.yml
@@ -43,6 +52,8 @@ generate_edx_cloud_map_file:
         subnetids: {{ subnet_ids }}
         tags:
           release-version: '{{ release_version }}'
+        profile_overrides:
+          userdata_file: '/etc/salt/cloud.d/edx_userdata.yml'
         app_types:
           draft: {{ purposes['{}-draft'.format(PURPOSE_PREFIX)].num_instances }}
           live:  {{ purposes['{}-live'.format(PURPOSE_PREFIX)].num_instances }}
