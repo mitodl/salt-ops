@@ -119,4 +119,5 @@ base:
     - rabbitmq
     - elasticsearch
     - edx.prod
+    - edx.migration
     - edx.tests
