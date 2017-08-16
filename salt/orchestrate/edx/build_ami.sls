@@ -3,6 +3,7 @@
 
 {% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token').data.value %}
 {% set EDX_VERSION = salt.environ.get('EDX_VERSION') %}
+{% set THEME_VERSION = salt.environ.get('THEME_VERSION', 'ficus') %}
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set purposes = env_settings.purposes %}
 {% set instance_name = 'edxapp-base-{}'.format(ENVIRONMENT) %}
@@ -127,6 +128,9 @@ build_edx_base_nodes:
         edx:
           ansible_vars:
             edx_platform_version: {{ EDX_VERSION }}
+          edxapp:
+            custom_theme:
+              branch: {{ THEME_VERSION }}
     {% endif %}
 
 {% set previous_release = salt.sdb.get('sdb://consul/edxapp-release-version')|int %}
