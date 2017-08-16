@@ -19,13 +19,17 @@ load_edx_worker_cloud_profile:
     - source: salt://orchestrate/aws/cloud_profiles/edx-worker.conf
     - template: jinja
 
+{# Because these are being launched from pre-built AMIs we need to #}
+{# remove the existing minion keys and ensure that nothing is locking #}
+{# the package manager during bootstrap #}
 write_out_edx_userdata_file:
   file.managed:
     - name: /etc/salt/cloud.d/edx_userdata.yml
     - contents: |
         #cloud-config
         bootcmd:
-          - [rm, -r, /etc/salt/pki/minion]
+          - [cloud-init-per, once, regenkey, rm, -r, /etc/salt/pki/minion]
+          - [apt-get, remove, -y, unattended-upgrades]
     - makedirs: True
 
 generate_edx_cloud_map_file:
