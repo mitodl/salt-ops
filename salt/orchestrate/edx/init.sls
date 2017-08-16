@@ -24,7 +24,7 @@ write_out_edx_userdata_file:
     - name: /etc/salt/cloud.d/edx_userdata.yml
     - contents: |
         #cloud-config
-        runcmd:
+        bootcmd:
           - [rm, -r, /etc/salt/pki/minion]
     - makedirs: True
 
@@ -146,14 +146,3 @@ build_edx_nodes:
         edx:
           ansible_flags: "{{ ANSIBLE_FLAGS }}"
     {% endif %}
-
-{% for service in ['edxapp:', 'forum', 'xqueue', 'xqueue_consumer'] %}
-stop_non_edx_worker_services_{{ service }}:
-  salt.function:
-    - name: supervisord.dead
-    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }}'
-    - tgt_type: compound
-    - kwarg:
-        bin_env: '/edx/bin/supervisorctl'
-        name: '{{ service }}'
-{% endfor %}
