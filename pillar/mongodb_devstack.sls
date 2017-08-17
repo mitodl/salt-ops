@@ -8,8 +8,5 @@ mine_functions:
   network.get_hostname: []
 
 mongodb:
-  overrides:
-    pkgs:
-      - mongodb-org
   admin_username: {{ mongodb_admin_username }}
   admin_password: {{ mongodb_admin_password }}
