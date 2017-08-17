@@ -68,9 +68,7 @@ edx:
       - memcached
   playbooks:
     - 'edx-east/edxapp.yml'
-    - 'edx-east/xqueue.yml'
     - 'edx-east/forum.yml'
-    - 'edx-east/edxapp_migrate.yml'
 
   ansible_vars:
     ### COMMON VARS ###
