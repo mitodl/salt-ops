@@ -10,4 +10,4 @@ mine_functions:
 mongodb:
   admin_username: {{ mongodb_admin_username }}
   admin_password: {{ mongodb_admin_password }}
-  users: {{ mongodb_admin_username }}
+  users: [{{ mongodb_admin_username }}]
