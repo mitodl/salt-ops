@@ -16,11 +16,11 @@
 {% set xqueue_mysql_password = 'changeme' %}
 {% set edxapp_mysql_username = 'edxapp_mysql_user' %}
 {% set edxapp_mysql_password = 'changeme' %}
-{% set edxapp_mongodb_username = 'edxapp_mongodb_user' %}
+{% set edxapp_mongodb_username = 'admin' %}
 {% set edxapp_mongodb_password = 'changeme' %}
-{% set forum_mongodb_username = 'forum_mongodb_user' %}
+{% set forum_mongodb_username = 'admin' %}
 {% set forum_mongodb_password = 'changeme' %}
-{% set gitlog_mongodb_username = 'gitlog_mongodb_user'%}
+{% set gitlog_mongodb_username = 'admin'%}
 {% set gitlog_mongodb_password = 'changeme' %}
 {% set edxapp_xqueue_username = 'edxapp_xqueue_user' %}
 {% set edxapp_xqueue_password = 'changeme' %}

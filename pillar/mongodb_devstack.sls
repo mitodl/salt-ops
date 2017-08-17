@@ -9,7 +9,6 @@ mine_functions:
 
 mongodb:
   overrides:
-    install_pkgrepo: False
     pkgs:
       - mongodb
     service_name: mongodb
