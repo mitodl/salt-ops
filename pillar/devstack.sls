@@ -327,9 +327,7 @@ edx:
     FORUM_USE_TCP: True
 
     EDXAPP_LMS_PREVIEW_NGINX_PORT: 80
-    EDXAPP_CMS_NGINX_PORT: 80
     EDXAPP_LMS_NGINX_PORT: 80
-    EDXAPP_CMS_SSL_NGINX_PORT: 443
     EDXAPP_LMS_SSL_NGINX_PORT: 443
 
     edx_platform_repo: 'https://github.com/mitodl/edx-platform.git'
