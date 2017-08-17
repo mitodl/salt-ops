@@ -17,5 +17,5 @@ mongodb:
       roles: dbAdmin
     - name: {{ mongodb_admin_username }}
       password: {{ mongodb_admin_password }}
-      database: module_devstack
+      database: modulestore_devstack
       roles: dbAdmin
