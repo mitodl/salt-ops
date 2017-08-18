@@ -68,6 +68,7 @@ edx:
       - memcached
   playbooks:
     - 'edx-east/edxapp.yml'
+    - 'edx-east/worker.yml'
     - 'edx-east/forum.yml'
 
   ansible_vars:
@@ -213,7 +214,8 @@ edx:
       VMEM: 536870912
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
     EDXAPP_CONTACT_EMAIL: {{ DEFAULT_FEEDBACK_EMAIL }}
-    EDXAPP_COMPREHENSIVE_THEME_DIR: /edx/app/edxapp/themes/
+    EDXAPP_COMPREHENSIVE_THEME_DIRS:
+      - /edx/app/edxapp/themes/
     EDXAPP_ENABLE_CMSH_EXTENDED: False
     EDXAPP_ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES: False
     EDXAPP_CUSTOM_COURSES_EDX: True
@@ -228,6 +230,7 @@ edx:
     EDXAPP_ENABLE_OAUTH2_PROVIDER: False
     EDXAPP_ENABLE_SYSADMIN_DASHBOARD: True
     EDXAPP_GIT_REPO_DIR: "{{ GIT_REPO_DIR }}"
+    EDXAPP_LMS_BASE_SCHEME: http
     EDXAPP_MKTG_URL_LINK_MAP:
       CONTACT: !!null
       FAQ: !!null

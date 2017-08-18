@@ -8,6 +8,8 @@ mine_functions:
   network.get_hostname: []
 
 mongodb:
+  overrides:
+    enable_journal: False
   admin_username: {{ mongodb_admin_username }}
   admin_password: {{ mongodb_admin_password }}
   users: 
