@@ -52,7 +52,7 @@ edx:
     TLS_KEY_NAME: {{ TLS_KEY_NAME }}
   config:
     repo: 'https://github.com/mitodl/configuration.git'
-    branch: 'master'
+    branch: 'open-release/ficus.master'
   dependencies:
     os_packages:
       - git

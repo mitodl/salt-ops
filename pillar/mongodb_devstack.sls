@@ -9,10 +9,13 @@ mine_functions:
 
 mongodb:
   overrides:
-    enable_journal: False
+    config:
+      storage:
+        journal:
+          enabled: False
   admin_username: {{ mongodb_admin_username }}
   admin_password: {{ mongodb_admin_password }}
-  users: 
+  users:
     - name: {{ mongodb_admin_username }}
       password: {{ mongodb_admin_password }}
       database: contentstore_devstack
