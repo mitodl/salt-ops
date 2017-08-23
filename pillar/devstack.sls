@@ -67,9 +67,7 @@ edx:
       - postfix
       - memcached
   playbooks:
-    - 'edx-east/edxapp.yml'
-    - 'edx-east/worker.yml'
-    - 'edx-east/forum.yml'
+    - 'edx-stateless.yml'
 
   ansible_vars:
     ### COMMON VARS ###
