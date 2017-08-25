@@ -70,8 +70,8 @@ edx:
   playbooks:
     - 'edx-stateless.yml'
   django:
-    django_superuser: 'devstack'
-    django_superuser_password: 'changeme'
+    django_staff_user: 'devstack'
+    django_staff_password: 'changeme'
 
   ansible_vars:
     ### COMMON VARS ###
