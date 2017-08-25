@@ -7,6 +7,8 @@ rabbitmq:
     version: '3.6.10-1'
   configuration:
     rabbit:
+      disk_free_limit:
+        mem_relative: 0.2
       auth_backends:
         - '@rabbit_auth_backend_internal'
   env:

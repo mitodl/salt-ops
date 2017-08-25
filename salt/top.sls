@@ -119,5 +119,6 @@ base:
     - rabbitmq
     - elasticsearch
     - edx.prod
-    - edx.migration
+    - rabbitmq.configure
+    - edx.django_user
     - edx.tests
