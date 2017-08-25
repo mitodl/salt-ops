@@ -1,5 +1,5 @@
-{% set django_superuser = salt.pillar.get('devstack:edx:django:django_staff_user', 'devstack') %}
-{% set django_superuser_password = salt.pillar.get('devstack:edx:django:django_staff_password', 'changeme') %}
+{% set django_staff_user = salt.pillar.get('devstack:edx:django:django_staff_user', 'devstack') %}
+{% set django_staff_password = salt.pillar.get('devstack:edx:django:django_staff_password', 'changeme') %}
 
 create_django_staff_account:
   cmd.run:
