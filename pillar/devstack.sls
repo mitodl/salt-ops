@@ -6,9 +6,9 @@
 {% set purpose_suffix = 'devstack' %}
 {% set edx_platform_branch = 'mitx/ficus-1' %}
 
-{% set xqueue_rabbitmq_username = 'xqueue_rabbitmq_user' %}
+{% set xqueue_rabbitmq_username = 'admin' %}
 {% set xqueue_rabbitmq_password = 'changeme' %}
-{% set edxapp_rabbitmq_username = 'edxapp_rabbitmq_user' %}
+{% set edxapp_rabbitmq_username = 'admin' %}
 {% set edxapp_rabbitmq_password = 'changeme' %}
 {% set admin_mysql_username = 'root' %}
 {% set admin_mysql_password = 'changeme' %}
@@ -28,7 +28,7 @@
 {% set xqwatcher_xqueue_password = 'changeme' %}
 
 {% set CELERY_BROKER_PASSWORD = 'changeme' %}
-{% set CELERY_BROKER_USER = 'edxapp' %}
+{% set CELERY_BROKER_USER = 'admin' %}
 {% set DEFAULT_FEEDBACK_EMAIL = 'mitodl-devstack@example.com' %}
 {% set DEFAULT_FROM_EMAIL = 'mitodl-devstack@example.com' %}
 {% set GIT_REPO_DIR = '/repo' %}
@@ -45,6 +45,7 @@
 {% set XQUEUE_USER = 'lms' %}
 {% set edxapp_log_env = 'sandbox' %}
 {% set TLS_KEY_NAME = 'mitodl_devstack' %}
+{% set HOST_IP = '192.168.33.10' %}
 
 edx:
   generate_tls_certificate: True
@@ -68,6 +69,9 @@ edx:
       - memcached
   playbooks:
     - 'edx-stateless.yml'
+  django:
+    django_superuser: 'devstack'
+    django_superuser_password: 'changeme'
 
   ansible_vars:
     ### COMMON VARS ###
@@ -92,7 +96,7 @@ edx:
     XQUEUE_RABBITMQ_HOSTNAME: rabbitmq.service.consul
     XQUEUE_RABBITMQ_PASS: {{ xqueue_rabbitmq_password }}
     XQUEUE_RABBITMQ_USER: {{ xqueue_rabbitmq_username }}
-    XQUEUE_RABBITMQ_VHOST: /xqueue_{{ purpose_suffix }}
+    XQUEUE_RABBITMQ_VHOST: /xqueue
     XQUEUE_WORKERS_PER_QUEUE: 2
 
     common_debian_pkgs:
@@ -203,7 +207,7 @@ edx:
     ########### Environment Configs #####################################
     #####################################################################
     EDXAPP_BUGS_EMAIL: {{ DEFAULT_FEEDBACK_EMAIL }}
-    EDXAPP_CELERY_BROKER_VHOST: /celery_{{ purpose_suffix }}
+    EDXAPP_CELERY_BROKER_VHOST: /celery
     EDXAPP_CODE_JAIL_LIMITS:
       REALTIME: 3
       CPU: 3
@@ -272,6 +276,7 @@ edx:
       - ['Devstack Stacktrace Recipients', {{ DEFAULT_FEEDBACK_EMAIL }}]
       SERVER_EMAIL: {{ DEFAULT_FEEDBACK_EMAIL }}
       TIME_ZONE_DISPLAYED_FOR_DEADLINES: "{{ TIME_ZONE }}"
+      SITE_NAME: {{ HOST_IP }}
 
     EDXAPP_LMS_ENV_EXTRA:
       <<: *common_env_config
