@@ -3,7 +3,7 @@
 
 create_django_staff_account:
   cmd.run:
-    - name: python manage.py lms create_user -u {{ django_staff_user }} -e {{ django_staff_user }}@example.com -p {{ django_staff_password }} --staff --settings=aws
+    - name: /edx/bin/python.edxapp /edx/bin/manage.edxapp lms create_user -u {{ django_staff_user }} -e {{ django_staff_user }}@example.com -p {{ django_staff_password }} --staff --settings=aws
     - cwd: /edx/app/edxapp/edx-platform/
     - env: 
       - '/edx/app/edxapp/edxapp_env'
