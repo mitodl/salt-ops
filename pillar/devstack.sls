@@ -98,6 +98,7 @@ edx:
     XQUEUE_RABBITMQ_USER: {{ xqueue_rabbitmq_username }}
     XQUEUE_RABBITMQ_VHOST: /xqueue
     XQUEUE_WORKERS_PER_QUEUE: 2
+    forum_ruby_version: "2.4.1"
 
     common_debian_pkgs:
       - ntp
