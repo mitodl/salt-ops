@@ -118,6 +118,7 @@ base:
     - mongodb.consul_check
     - rabbitmq
     - elasticsearch
+    - edx.install_ruby
     - edx.prod
     - rabbitmq.configure
     - edx.django_user
