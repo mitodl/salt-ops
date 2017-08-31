@@ -121,4 +121,3 @@ base:
     - edx.prod
     - rabbitmq.configure
     - edx.django_user
-    - edx.tests
