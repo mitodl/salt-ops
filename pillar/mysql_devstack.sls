@@ -25,7 +25,7 @@ mysql:
           grants: ['all privileges']
     {{ edxapp_mysql_username }}:
       password: {{ edxapp_mysql_password }}
-      host: 'localhost'
+      host: {{ MYSQL_HOST }}
       databases:
         - database: edxapp_devstack
           grants: ['all privileges']
