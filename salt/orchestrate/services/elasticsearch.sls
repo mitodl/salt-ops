@@ -47,7 +47,8 @@ deploy_elasticsearch_nodes:
   salt.runner:
     - name: cloud.map_run
     - path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_elasticsearch_map.yml
-    - parallel: True
+    - kwargs:
+        parallel: True
     - require:
         - file: generate_elasticsearch_cloud_map_file
 
