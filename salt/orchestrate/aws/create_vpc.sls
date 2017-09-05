@@ -6,12 +6,8 @@
     VPC_NAME.lower().replace(' ', '-')) %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_settings.business_unit) %}
 
-{% set network_prefix = env_settings.network_prefix %}
-{% set cidr_block_public_subnet_1 = '{}.1.0/24'.format(network_prefix) %}
-{% set cidr_block_public_subnet_2 = '{}.2.0/24'.format(network_prefix) %}
-{% set cidr_block_public_subnet_3 = '{}.3.0/24'.format(network_prefix) %}
-{% set SUBNETS_CIDR = '{}.0.0/22'.format(network_prefix) %}
-{% set VPC_CIDR = '{}.0.0/16'.format(network_prefix) %}
+{% set VPC_CIDR = env_settings.cidr_block %}
+{% set purpose_data = env_settings.purposes %}
 
 create_{{ ENVIRONMENT }}_vpc:
   boto_vpc.present:
@@ -33,42 +29,26 @@ create_{{ ENVIRONMENT }}_internet_gateway:
     - tags:
         Name: {{ VPC_RESOURCE_SUFFIX }}-igw
         business_unit: {{ BUSINESS_UNIT }}
-
-create_{{ ENVIRONMENT }}_public_subnet_1:
+{% set subnet_list = [] %}
+{% for purpose, config in purpose_data.items() %}
+{% for az, cidr in config.subnets.items() %}
+{% set subnet_name = 'subnet-{p}-{a}-{v}'.format(p=purpose, a=az, v=VPC_RESOURCE_SUFFIX) %}
+create_{{ ENVIRONMENT }}_{{ purpose }}_{{ az }}_subnet:
   boto_vpc.subnet_present:
-    - name: public1-{{ ENVIRONMENT }}
+    - name: {{ subnet_name }}
     - vpc_name: {{ VPC_NAME }}
-    - cidr_block: {{ cidr_block_public_subnet_1 }}
-    - availability_zone: us-east-1b
+    - cidr_block: {{ cidr }}
+    - availability_zone: {{ az }}
     - require:
         - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX }}_vpc
     - tags:
-        Name: public1-{{ ENVIRONMENT }}
-        business_unit: {{ BUSINESS_UNIT }}
-
-create_{{ ENVIRONMENT }}_public_subnet_2:
-  boto_vpc.subnet_present:
-    - name: public2-{{ VPC_RESOURCE_SUFFIX }}
-    - vpc_name: {{ VPC_NAME }}
-    - cidr_block: {{ cidr_block_public_subnet_1 }}
-    - availability_zone: us-east-1c
-    - require:
-        - boto_vpc: create_{{ ENVIRONMENT }}_vpc
-    - tags:
-        Name: public2-{{ VPC_RESOURCE_SUFFIX }}
-        business_unit: {{ BUSINESS_UNIT }}
-
-create_{{ ENVIRONMENT }}_public_subnet_3:
-  boto_vpc.subnet_present:
-    - name: public3-{{ VPC_RESOURCE_SUFFIX }}
-    - vpc_name: {{ VPC_NAME }}
-    - cidr_block: {{ cidr_block_public_subnet_1 }}
-    - availability_zone: us-east-1d
-    - require:
-        - boto_vpc: create_{{ ENVIRONMENT }}_vpc
-    - tags:
-        Name: public3-{{ VPC_RESOURCE_SUFFIX }}
-        business_unit: {{ BUSINESS_UNIT }}
+        Name: {{ subnet_name }}
+        purpose: {{ purpose }}
+    - require_in:
+        - boto_vpc: create_{{ ENVIRONMENT }}_routing_table
+{% do subnet_list.append(subnet_name) %}
+{% endfor %}
+{% endfor %}
 
 create_{{ ENVIRONMENT }}_vpc_peering_connection_with_operations:
   boto_vpc.vpc_peering_connection_present:
@@ -80,10 +60,7 @@ create_{{ ENVIRONMENT }}_routing_table:
   boto_vpc.route_table_present:
     - name: {{ VPC_RESOURCE_SUFFIX }}-route_table
     - vpc_name: {{ VPC_NAME }}
-    - subnet_names:
-        - public1-{{ VPC_RESOURCE_SUFFIX }}
-        - public2-{{ VPC_RESOURCE_SUFFIX }}
-        - public3-{{ VPC_RESOURCE_SUFFIX }}
+    - subnet_names: {{ subnet_list }}
     - routes:
         - destination_cidr_block: 0.0.0.0/0
           internet_gateway_name: {{ VPC_RESOURCE_SUFFIX }}-igw
@@ -91,9 +68,6 @@ create_{{ ENVIRONMENT }}_routing_table:
           vpc_peering_connection_name: {{ VPC_RESOURCE_SUFFIX }}-operations-peer
     - require:
         - boto_vpc: create_{{ VPC_NAME }}_vpc
-        - boto_vpc: create_{{ VPC_NAME }}_public_subnet_1
-        - boto_vpc: create_{{ VPC_NAME }}_public_subnet_2
-        - boto_vpc: create_{{ VPC_NAME }}_public_subnet_3
         - boto_vpc: create_{{ ENVIRONMENT }}_vpc_peering_connection_with_operations
     - tags:
         Name: {{ VPC_RESOURCE_SUFFIX }}-route_table
@@ -114,29 +88,3 @@ create_salt_master_security_group:
     - tags:
         Name: salt-master-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
-
-create_vault_backend_security_group:
-  boto_secgroup.present:
-    - name: vault-{{ VPC_RESOURCE_SUFFIX }}
-    - vpc_name: {{ VPC_NAME }}
-    - description: >-
-        ACL to allow Vault to access data stores so that it
-        can create dynamic credentials
-    - tags:
-        Name: vault-{{ VPC_RESOURCE_SUFFIX }}
-        business_unit: {{ BUSINESS_UNIT }}
-    - rules:
-        {# RabbitMQ #}
-        - ip_protocol: tcp
-          from_port: 15672
-          to_port: 15672
-          cidr_ip:
-            - 10.0.0.0/22
-        {# PostGreSQL #}
-        - ip_protocol: tcp
-          from_port: 5432
-          to_port: 5432
-          cidr_ip:
-            - 10.0.0.0/22
-    - require:
-        - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc
