@@ -1,13 +1,22 @@
-{% set VPC_NAME = 'micromasters' %}
-{% set VPC_RESOURCE_SUFFIX = VPC_NAME.lower() | replace(' ', '-') %}
-{% set VPC_NET_PREFIX = '10.10' %}
-{% set ENVIRONMENT = 'micromasters' %}
-{% set BUSINESS_UNIT = 'micromasters' %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT') %}
+{% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
+{% set VPC_NAME = salt.environ.get('VPC_NAME', env_settings.vpc_name) %}
+{% set VPC_RESOURCE_SUFFIX = salt.environ.get(
+    'VPC_RESOURCE_SUFFIX',
+    VPC_NAME.lower().replace(' ', '-')) %}
+{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_settings.business_unit) %}
+
+{% set network_prefix = env_settings.network_prefix %}
+{% set cidr_block_public_subnet_1 = '{}.1.0/24'.format(network_prefix) %}
+{% set cidr_block_public_subnet_2 = '{}.2.0/24'.format(network_prefix) %}
+{% set cidr_block_public_subnet_3 = '{}.3.0/24'.format(network_prefix) %}
+{% set SUBNETS_CIDR = '{}.0.0/22'.format(network_prefix) %}
+{% set VPC_CIDR = '{}.0.0/16'.format(network_prefix) %}
 
 create_{{ ENVIRONMENT }}_vpc:
   boto_vpc.present:
     - name: {{ VPC_NAME }}
-    - cidr_block: {{ VPC_NET_PREFIX }}.0.0/16
+    - cidr_block: {{ VPC_CIDR }}
     - instance_tenancy: default
     - dns_support: True
     - dns_hostnames: True
@@ -20,17 +29,17 @@ create_{{ ENVIRONMENT }}_internet_gateway:
     - name: {{ ENVIRONMENT }}-igw
     - vpc_name: {{ VPC_NAME }}
     - require:
-        - boto_vpc: create_{{ VPC_NAME.lower() | replace(' ', '-') }}_vpc
+        - boto_vpc: create_{{ ENVIRONMENT }}_vpc
     - tags:
         Name: {{ VPC_RESOURCE_SUFFIX }}-igw
         business_unit: {{ BUSINESS_UNIT }}
 
 create_{{ ENVIRONMENT }}_public_subnet_1:
   boto_vpc.subnet_present:
-    - name: public1-{{ VPC_NAME.lower() | replace(' ', '-') }}
+    - name: public1-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
-    - cidr_block: {{ VPC_NET_PREFIX }}.1.0/24
-    - availability_zone: us-east-1d
+    - cidr_block: {{ cidr_block_public_subnet_1 }}
+    - availability_zone: us-east-1b
     - require:
         - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX }}_vpc
     - tags:
@@ -41,10 +50,10 @@ create_{{ ENVIRONMENT }}_public_subnet_2:
   boto_vpc.subnet_present:
     - name: public2-{{ VPC_RESOURCE_SUFFIX }}
     - vpc_name: {{ VPC_NAME }}
-    - cidr_block: {{ VPC_NET_PREFIX }}.2.0/24
-    - availability_zone: us-east-1b
+    - cidr_block: {{ cidr_block_public_subnet_1 }}
+    - availability_zone: us-east-1c
     - require:
-        - boto_vpc: create_{{ VPC_NAME }}_vpc
+        - boto_vpc: create_{{ ENVIRONMENT }}_vpc
     - tags:
         Name: public2-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
@@ -53,10 +62,10 @@ create_{{ ENVIRONMENT }}_public_subnet_3:
   boto_vpc.subnet_present:
     - name: public3-{{ VPC_RESOURCE_SUFFIX }}
     - vpc_name: {{ VPC_NAME }}
-    - cidr_block: {{ VPC_NET_PREFIX }}.3.0/24
-    - availability_zone: us-east-1c
+    - cidr_block: {{ cidr_block_public_subnet_1 }}
+    - availability_zone: us-east-1d
     - require:
-        - boto_vpc: create_{{ VPC_NAME }}_vpc
+        - boto_vpc: create_{{ ENVIRONMENT }}_vpc
     - tags:
         Name: public3-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
@@ -66,10 +75,6 @@ create_{{ ENVIRONMENT }}_vpc_peering_connection_with_operations:
     - conn_name: {{ VPC_RESOURCE_SUFFIX }}-operations-peer
     - requester_vpc_name: {{ VPC_NAME }}
     - peer_vpc_name: mitodl-operations-services
-
-accept_{{ ENVIRONMENT }}_vpc_peering_connection_with_operations:
-  boto_vpc.accept_vpc_peering_connection:
-    - conn_name: {{ VPC_RESOURCE_SUFFIX }}-operations-peer
 
 create_{{ ENVIRONMENT }}_routing_table:
   boto_vpc.route_table_present:
@@ -94,30 +99,6 @@ create_{{ ENVIRONMENT }}_routing_table:
         Name: {{ VPC_RESOURCE_SUFFIX }}-route_table
         business_unit: {{ BUSINESS_UNIT }}
 
-create_elasticsearch_security_group:
-  boto_secgroup.present:
-    - name: elasticsearch-{{ VPC_RESOURCE_SUFFIX }}
-    - vpc_name: {{ VPC_NAME }}
-    - description: ACL for elasticsearch servers
-    - rules:
-        - ip_protocol: tcp
-          from_port: 80
-          to_port: 80
-          cidr_ip: 0.0.0.0/0
-        - ip_protocol: tcp
-          from_port: 443
-          to_port: 443
-          cidr_ip: 0.0.0.0/0
-        - ip_protocol: tcp
-          from_port: 9300
-          to_port: 9400
-          source_group_name: elasticsearch-{{ VPC_RESOURCE_SUFFIX }}
-    - require:
-        - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX }}_vpc
-    - tags:
-        Name: elasticsearch-{{ VPC_RESOURCE_SUFFIX }}
-        business_unit: {{ BUSINESS_UNIT }}
-
 create_salt_master_security_group:
   boto_secgroup.present:
     - name: salt_master-{{ VPC_RESOURCE_SUFFIX }}
@@ -133,3 +114,29 @@ create_salt_master_security_group:
     - tags:
         Name: salt-master-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+
+create_vault_backend_security_group:
+  boto_secgroup.present:
+    - name: vault-{{ VPC_RESOURCE_SUFFIX }}
+    - vpc_name: {{ VPC_NAME }}
+    - description: >-
+        ACL to allow Vault to access data stores so that it
+        can create dynamic credentials
+    - tags:
+        Name: vault-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
+    - rules:
+        {# RabbitMQ #}
+        - ip_protocol: tcp
+          from_port: 15672
+          to_port: 15672
+          cidr_ip:
+            - 10.0.0.0/22
+        {# PostGreSQL #}
+        - ip_protocol: tcp
+          from_port: 5432
+          to_port: 5432
+          cidr_ip:
+            - 10.0.0.0/22
+    - require:
+        - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc

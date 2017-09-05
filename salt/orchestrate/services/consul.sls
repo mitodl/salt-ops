@@ -48,7 +48,7 @@ sync_external_modules_for_consul_nodes:
     - tgt: 'G@roles:consul_server and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
 
-load_pillar_data_on_mitx_consul_nodes:
+load_pillar_data_on_{{ ENVIRONMENT }}_consul_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
     - tgt: 'G@roles:consul_server and G@environment:{{ ENVIRONMENT }}'
@@ -56,27 +56,27 @@ load_pillar_data_on_mitx_consul_nodes:
     - require:
         - salt: deploy_consul_nodes
 
-populate_mine_with_mitx_consul_data:
+populate_mine_with_{{ ENVIRONMENT }}_consul_data:
   salt.function:
     - name: mine.update
     - tgt: 'G@roles:consul_server and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
-        - salt: load_pillar_data_on_mitx_consul_nodes
+        - salt: load_pillar_data_on_{{ ENVIRONMENT }}_consul_nodes
 
 {# Reload the pillar data to update values from the salt mine #}
-reload_pillar_data_on_mitx_consul_nodes:
+reload_pillar_data_on_{{ ENVIRONMENT }}_consul_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
     - tgt: 'G@roles:consul_server and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
-        - salt: populate_mine_with_mitx_consul_data
+        - salt: populate_mine_with_{{ ENVIRONMENT }}_consul_data
 
-build_mitx_consul_nodes:
+build_{{ ENVIRONMENT }}_consul_nodes:
   salt.state:
     - tgt: 'G@roles:consul_server and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - highstate: True
     - require:
-        - salt: reload_pillar_data_on_mitx_consul_nodes
+        - salt: reload_pillar_data_on_{{ ENVIRONMENT }}_consul_nodes
