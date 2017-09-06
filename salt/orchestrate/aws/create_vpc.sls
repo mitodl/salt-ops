@@ -76,6 +76,10 @@ create_{{ ENVIRONMENT }}_vpc_peering_connection_with_operations:
     - requester_vpc_name: {{ VPC_NAME }}
     - peer_vpc_name: mitodl-operations-services
 
+accept_{{ VPC_RESOURCE_SUFFIX }}_vpc_peering_connection_with_operations:
+  boto_vpc.accept_vpc_peering_connection:
+    - conn_name: {{ VPC_RESOURCE_SUFFIX }}-operations-peer
+
 create_{{ ENVIRONMENT }}_routing_table:
   boto_vpc.route_table_present:
     - name: {{ VPC_RESOURCE_SUFFIX }}-route_table
