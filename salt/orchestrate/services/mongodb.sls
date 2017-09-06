@@ -89,7 +89,7 @@ mount_data_drive:
     - require:
         - salt: format_data_drive
 
-load_pillar_data_on_mitx_mongodb_nodes:
+load_pillar_data_on_{{ ENVIRONMENT }}_mongodb_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
     - tgt: 'G@roles:mongodb and G@environment:{{ ENVIRONMENT }}'
@@ -101,7 +101,7 @@ populate_mine_with_mongodb_node_data:
     - tgt: 'G@roles:mongodb and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
-        - salt: load_pillar_data_on_mitx_mongodb_nodes
+        - salt: load_pillar_data_on_{{ ENVIRONMENT }}_mongodb_nodes
 
 set_node_primary_node:
   salt.function:

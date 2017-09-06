@@ -47,7 +47,8 @@ deploy_elasticsearch_nodes:
   salt.runner:
     - name: cloud.map_run
     - path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_elasticsearch_map.yml
-    - parallel: True
+    - kwargs:
+        parallel: True
     - require:
         - file: generate_elasticsearch_cloud_map_file
 
@@ -86,7 +87,7 @@ mount_data_drive:
     - require:
         - salt: format_data_drive
 
-load_pillar_data_on_mitx_elasticsearch_nodes:
+load_pillar_data_on_{{ ENVIRONMENT }}_elasticsearch_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
     - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
@@ -94,22 +95,22 @@ load_pillar_data_on_mitx_elasticsearch_nodes:
     - require:
         - salt: deploy_elasticsearch_nodes
 
-populate_mine_with_mitx_elasticsearch_data:
+populate_mine_with_{{ ENVIRONMENT }}_elasticsearch_data:
   salt.function:
     - name: mine.update
     - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
-        - salt: load_pillar_data_on_mitx_elasticsearch_nodes
+        - salt: load_pillar_data_on_{{ ENVIRONMENT }}_elasticsearch_nodes
 
 {# Reload the pillar data to update values from the salt mine #}
-reload_pillar_data_on_mitx_elasticsearch_nodes:
+reload_pillar_data_on_{{ ENVIRONMENT }}_elasticsearch_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
     - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
-        - salt: populate_mine_with_mitx_elasticsearch_data
+        - salt: populate_mine_with_{{ ENVIRONMENT }}_elasticsearch_data
 
 install_git_on_elasticsearch_nodes_for_cloning_forked_python_packages:
   salt.function:
@@ -119,10 +120,10 @@ install_git_on_elasticsearch_nodes_for_cloning_forked_python_packages:
     - arg:
         - git
 
-build_mitx_elasticsearch_nodes:
+build_{{ ENVIRONMENT }}_elasticsearch_nodes:
   salt.state:
     - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - highstate: True
     - require:
-        - salt: reload_pillar_data_on_mitx_elasticsearch_nodes
+        - salt: reload_pillar_data_on_{{ ENVIRONMENT }}_elasticsearch_nodes

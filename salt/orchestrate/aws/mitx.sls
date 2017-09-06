@@ -12,8 +12,6 @@
     VPC_NAME.lower().replace(' ', '-')) %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', 'residential') %}
 
-{% set ISO8601 = '%Y-%m-%dT%H:%M:%S' %}
-
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 
 {% for profile in ['consul', 'mongodb', 'rabbitmq', 'edx'] %}
@@ -378,7 +376,6 @@ create_public_ssh_security_group:
     - tags:
         Name: publich-ssh-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
-        created_at: "{{ salt.status.time(format=ISO8601) }}"
     - rules:
         - ip_protocol: tcp
           from_port: 22
