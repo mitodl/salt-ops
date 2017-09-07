@@ -19,7 +19,6 @@ create_{{ bucket_prefix}}-{{ bucket_purpose }}-{{ bucket_suffix }}:
 {% endfor %}
 
 {% for odl_video_bucket_suffix in ['rc', 'prod'] %}
-{% for odl_video_bucket_purpose in ['thumbnails', 'transcoded', 'dist'] %}
 create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_suffix }}:
   boto_cloudfront.present:
   - name: {{ odl_video_bucket_prefix }}-{{ odl_video_bucket_suffix }}
@@ -49,6 +48,7 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
             QueryString: false
           MaxTTL: 31536000
           MinTTL: 0
+          {% for odl_video_bucket_purpose in ['thumbnails', 'transcoded', 'dist'] %}
           PathPattern: /{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}*
           SmoothStreaming: false
           TargetOriginId: S3-{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}
