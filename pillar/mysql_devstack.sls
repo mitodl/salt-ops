@@ -27,7 +27,7 @@ mysql:
           grants: ['all privileges']
     {{ edxapp_mysql_username }}:
       password: {{ edxapp_mysql_password }}
-      host: {{ MYSQL_HOST }}
+      host: '%'
       databases:
         - database: xqueue_devstack
           grants: ['all privileges']
