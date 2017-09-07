@@ -30,6 +30,7 @@ write_out_edx_userdata_file:
         #cloud-config
         bootcmd:
           - [cloud-init-per, once, regenkey, rm, -r, /etc/salt/pki/minion]
+          - [cloud-init-per, once, resetconsul, rm, -r, /var/lib/consul]
           - [apt-get, remove, -y, unattended-upgrades]
     - makedirs: True
 
