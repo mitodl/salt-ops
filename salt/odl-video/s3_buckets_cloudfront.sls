@@ -23,6 +23,7 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
   boto_cloudfront.present:
   - name: {{ odl_video_bucket_prefix }}-{{ odl_video_bucket_suffix }}
   - config:
+      {% for odl_video_bucket_purpose in ['thumbnails', 'transcoded'] %}
       CacheBehaviors:
         Items:
         - AllowedMethods:
@@ -48,13 +49,13 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
             QueryString: false
           MaxTTL: 31536000
           MinTTL: 0
-          {% for odl_video_bucket_purpose in ['thumbnails', 'transcoded', 'dist'] %}
           PathPattern: /{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}*
           SmoothStreaming: false
           TargetOriginId: S3-{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}
           TrustedSigners:
             Enabled: false
           ViewerProtocolPolicy: redirect-to-https
+      {% endfor %}
       DefaultCacheBehavior:
         AllowedMethods:
           CachedMethods:
@@ -80,7 +81,7 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
         MaxTTL: 31536000
         MinTTL: 0
         SmoothStreaming: false
-        TargetOriginId: S3-{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_suffix }}
+        TargetOriginId: S3-{{ odl_video_bucket_prefix }}-dist-{{ odl_video_bucket_suffix }}
         TrustedSigners:
           Enabled: true
           Items:
@@ -95,11 +96,13 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
         Enabled: false
         IncludeCookies: false
         Prefix: ''
+      {% for odl_video_bucket_purpose in ['thumbnails', 'transcoded', 'dist'] %}
       Origins:
         Items:
-          DomainName: {{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}.s3.amazonaws.com
-          Id: S3-{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}
-          OriginPath: ''
+        - CustomHeaders:
+            DomainName: {{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}.s3.amazonaws.com
+            Id: S3-{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}
+            OriginPath: ''
       PriceClass: PriceClass_All
       Restrictions:
         GeoRestriction:
@@ -110,6 +113,6 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
         MinimumProtocolVersion: TLSv1.2
       WebACLId: ''
   - tags: { 'Name': '{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}' }
-{% endfor %}
+      {% endfor %}
 {% endfor %}
 
