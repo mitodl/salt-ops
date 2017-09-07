@@ -19,6 +19,7 @@ create_{{ bucket_prefix}}-{{ bucket_purpose }}-{{ bucket_suffix }}:
 {% endfor %}
 
 {% for odl_video_bucket_suffix in ['rc', 'prod'] %}
+{% for odl_video_bucket_purpose in ['thumbnails', 'transcoded', 'dist'] %}
 create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_suffix }}:
   boto_cloudfront.present:
   - name: {{ odl_video_bucket_prefix }}-{{ odl_video_bucket_suffix }}
@@ -48,9 +49,9 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
             QueryString: false
           MaxTTL: 31536000
           MinTTL: 0
-          PathPattern: /{{ odl_video_bucket_purposes }}-{{ odl_video_bucket_suffix }}*
+          PathPattern: /{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}*
           SmoothStreaming: false
-          TargetOriginId: S3-{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purposes }}-{{ odl_video_bucket_suffix }}
+          TargetOriginId: S3-{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}
           TrustedSigners:
             Enabled: false
           ViewerProtocolPolicy: redirect-to-https
@@ -96,8 +97,8 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
         Prefix: ''
       Origins:
         Items:
-          DomainName: {{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purposes }}-{{ odl_video_bucket_suffix }}.s3.amazonaws.com
-          Id: S3-{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purposes }}-{{ odl_video_bucket_suffix }}
+          DomainName: {{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}.s3.amazonaws.com
+          Id: S3-{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}
           OriginPath: ''
       PriceClass: PriceClass_All
       Restrictions:
@@ -106,7 +107,9 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
       ViewerCertificate:
         CertificateSource: cloudfront
         CloudFrontDefaultCertificate: true
-        MinimumProtocolVersion: SSLv3
+        MinimumProtocolVersion: TLSv1.2
       WebACLId: ''
-  - tags: { 'Name': '{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purposes }}-{{ odl_video_bucket_suffix }}' }
+  - tags: { 'Name': '{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}' }
 {% endfor %}
+{% endfor %}
+
