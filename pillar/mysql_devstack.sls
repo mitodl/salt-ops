@@ -29,6 +29,8 @@ mysql:
       password: {{ edxapp_mysql_password }}
       host: {{ MYSQL_HOST }}
       databases:
+        - database: xqueue_devstack
+          grants: ['all privileges']
         - database: edxapp_devstack
           grants: ['all privileges']
         - database: edxapp_csmh
