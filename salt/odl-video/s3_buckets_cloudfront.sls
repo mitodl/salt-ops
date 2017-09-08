@@ -55,7 +55,7 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
           TrustedSigners:
             Enabled: false
           ViewerProtocolPolicy: redirect-to-https
-      {% endfor %}
+        {% endfor %}
       DefaultCacheBehavior:
         AllowedMethods:
           CachedMethods:
@@ -103,8 +103,8 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
             DomainName: {{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}.s3.amazonaws.com
             Id: S3-{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}
             OriginPath: ''
-      PriceClass: PriceClass_All
         {% endfor %}
+      PriceClass: PriceClass_All
       Restrictions:
         GeoRestriction:
           RestrictionType: none
