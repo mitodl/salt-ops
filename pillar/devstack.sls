@@ -99,6 +99,8 @@ edx:
     XQUEUE_RABBITMQ_VHOST: /xqueue
     XQUEUE_WORKERS_PER_QUEUE: 2
     forum_ruby_version: "2.4.1"
+    edxapp_theme_source_repo: 'https://github.com/mitodl/mitx-theme.git'
+    edxapp_theme_version: 'ficus'
 
     common_debian_pkgs:
       - ntp
