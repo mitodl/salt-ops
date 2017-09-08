@@ -96,9 +96,9 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
         Enabled: false
         IncludeCookies: false
         Prefix: ''
-      {% for odl_video_bucket_purpose in ['thumbnails', 'transcoded', 'dist'] %}
       Origins:
         Items:
+        {% for odl_video_bucket_purpose in ['thumbnails', 'transcoded', 'dist'] %}
         - CustomHeaders:
             DomainName: {{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}.s3.amazonaws.com
             Id: S3-{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}
