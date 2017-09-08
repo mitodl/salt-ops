@@ -11,7 +11,7 @@ mongodb:
   overrides:
     config:
       net:
-        bindIP: 0.0.0.0
+        bindIP: 0.0.0.0,127.0.0.1
       storage:
         journal:
           enabled: False
