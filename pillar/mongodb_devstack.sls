@@ -10,6 +10,8 @@ mine_functions:
 mongodb:
   overrides:
     config:
+      net:
+        bindIP: 0.0.0.0
       storage:
         journal:
           enabled: False
