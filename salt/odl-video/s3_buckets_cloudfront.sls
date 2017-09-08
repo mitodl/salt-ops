@@ -23,9 +23,9 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
   boto_cloudfront.present:
   - name: {{ odl_video_bucket_prefix }}-{{ odl_video_bucket_suffix }}
   - config:
-      {% for odl_video_bucket_purpose in ['thumbnails', 'transcoded'] %}
       CacheBehaviors:
         Items:
+        {% for odl_video_bucket_purpose in ['thumbnails', 'transcoded'] %}
         - AllowedMethods:
             CachedMethods:
               Items:
@@ -104,6 +104,7 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
             Id: S3-{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}
             OriginPath: ''
       PriceClass: PriceClass_All
+        {% endfor %}
       Restrictions:
         GeoRestriction:
           RestrictionType: none
@@ -112,7 +113,6 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
         CloudFrontDefaultCertificate: true
         MinimumProtocolVersion: TLSv1.2
       WebACLId: ''
-  - tags: { 'Name': '{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}' }
-      {% endfor %}
+  - tags: { 'Name': '{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_suffix }}' }
 {% endfor %}
 
