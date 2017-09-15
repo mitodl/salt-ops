@@ -1,6 +1,6 @@
 {% set odl_video_bucket_prefix = 'odl-video-service' %}
 {% set odl_video_bucket_suffix = ['ci', 'rc', 'prod'] %}
-{% set odl_video_bucket_purposes = ['thumbnails', 'transcoded', 'uswitch', 'watch', 'dist'] %}
+{% set odl_video_bucket_purposes = ['dist', 'thumbnails', 'transcoded', 'transcripts', 'uswitch', 'watch'] %}
 
 {% for bucket_sffix in odl_video_bucket_suffix %}
 {% for bucket_purpose in odl_video_bucket_purposes %}
@@ -25,7 +25,7 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
   - config:
       CacheBehaviors:
         Items:
-        {% for odl_video_bucket_purpose in ['thumbnails', 'transcoded'] %}
+        {% for odl_video_bucket_purpose in ['thumbnails', 'transcoded', 'transcripts'] %}
         - AllowedMethods:
             CachedMethods:
               Items:
@@ -98,7 +98,7 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
         Prefix: ''
       Origins:
         Items:
-        {% for odl_video_bucket_purpose in ['thumbnails', 'transcoded', 'dist'] %}
+        {% for odl_video_bucket_purpose in ['dist', 'thumbnails', 'transcoded', 'transcripts'] %}
         - CustomHeaders:
             DomainName: {{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}.s3.amazonaws.com
             Id: S3-{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}
