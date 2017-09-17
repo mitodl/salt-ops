@@ -51,3 +51,9 @@ activate_xqwatcher_supervisor_config:
     - name: /edx/bin/supervisorctl reread && /edx/bin/supervisorctl update
     - watch:
         - file: activate_xqwatcher_supervisor_config
+
+configure_logging_for_xqwatcher:
+  file.managed:
+    - name: /edx/app/xqwatcher/logging.json
+    - contents: |
+        {{ salt.pillar.get('edx:xqwatcher:logconfig', {})|json }}
