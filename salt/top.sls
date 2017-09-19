@@ -83,6 +83,7 @@ base:
     - edx.run_ansible
     - edx.gitreload
     - edx.patch_nginx
+    - edx.edxapp_global_pre_commit
     - edx.tests
     - fluentd
     - fluentd.plugins

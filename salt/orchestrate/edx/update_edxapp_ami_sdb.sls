@@ -26,13 +26,7 @@ update_edx_worker_ami_value:
 destroy_edx_base_instance:
   cloud.absent:
     - name: {{ instance_name }}
-    - require:
-        - salt: build_edx_base_nodes
-        - boto_ec2: snapshot_edx_app_node
 
 destroy_edx_worker_base_instance:
   cloud.absent:
     - name: {{ worker_instance_name }}
-    - require:
-        - salt: build_edx_base_nodes
-        - boto_ec2: snapshot_edx_worker_node

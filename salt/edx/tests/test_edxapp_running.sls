@@ -19,7 +19,7 @@ our configurations. Test the following:
 
 {% set socket_connections = {
     'ssl': 'tcp://0.0.0.0:443',
-    'lms': 'tcp://0.0.0.0:8000',
+    'lms': 'tcp://127.0.0.1:8000',
     'gitreload_service': 'tcp://0.0.0.0:8095',
     'xqueue': 'tcp://0.0.0.0:18040',
     'forum': 'tcp://0.0.0.0:4567',
@@ -44,12 +44,12 @@ our configurations. Test the following:
   'rabbitmq_service': salt.pillar.get('edx:ansible_vars:xqueue_env_config:RABBIT_HOST')
   } %}
 
-{% for sv_service in supervisor_services %}
-test_edxapp_supervisor_{{ sv_service }}:
-  testinfra.supervisor:
-    - name: {{ sv_service }}
-    - is_running: True
-{% endfor %}
+# {% for sv_service in supervisor_services %}
+# test_edxapp_supervisor_{{ sv_service }}:
+#   testinfra.supervisor:
+#     - name: {{ sv_service }}
+#     - is_running: True
+# {% endfor %}
 
 {% for connection, value in socket_connections.items() %}
 test_edxapp_{{ connection }}:

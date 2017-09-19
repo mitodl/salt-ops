@@ -153,3 +153,14 @@ build_edx_nodes:
         edx:
           ansible_flags: "{{ ANSIBLE_FLAGS }}"
     {% endif %}
+
+{# Restart all of the supervisor processes to ensure that the updated settings get picked up #}
+restart_supervisor_processes_after_deploy:
+  salt.function:
+    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }} and G@launch-date:{{ launch_date }}'
+    - tgt_type: compound
+    - name: supervisord.restart
+    - arg:
+        - all
+    - kwarg:
+        bin_env: /edx/bin/supervisorctl
