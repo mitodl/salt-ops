@@ -1,6 +1,6 @@
 {% set odl_video_bucket_prefix = 'odl-video-service' %}
 {% set odl_video_bucket_suffix = ['rc', 'prod'] %}
-{% set odl_video_bucket_purposes = ['dist', 'thumbnails', 'transcoded', 'transcripts'] %}
+{% set odl_video_bucket_purposes = ['dist', 'thumbnails', 'transcoded', 'subtitles'] %}
 {% set cloudfront_OriginAccessIdentity = (salt.boto_cloudfront.get_distribution()['local']['result']['distribution']['DistributionConfig']['Origins']['Items'][0]['S3OriginConfig']['OriginAccessIdentity']).split('/')[-1] %}
 
 {% for bucket_suffix in odl_video_bucket_suffix %}
