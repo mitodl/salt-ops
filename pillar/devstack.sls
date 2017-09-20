@@ -4,7 +4,7 @@
 {% set purpose = 'devstack' %}
 {% set environment = 'dev' %}
 {% set purpose_suffix = 'devstack' %}
-{% set edx_platform_branch = 'mitx/ficus-1' %}
+{% set edx_platform_branch = 'mitx/ficus' %}
 
 {% set xqueue_rabbitmq_username = 'admin' %}
 {% set xqueue_rabbitmq_password = 'changeme' %}
@@ -341,6 +341,6 @@ edx:
     EDXAPP_LMS_SSL_NGINX_PORT: 443
 
     edx_platform_repo: 'https://github.com/mitodl/edx-platform.git'
-    edx_platform_version: 'mitx/ficus-1'
+    edx_platform_version: 'mitx/ficus'
 
     COMMON_ENABLE_AWS_ROLE: False
