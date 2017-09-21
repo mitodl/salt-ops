@@ -1,8 +1,7 @@
 {% set odl_video_bucket_prefix = 'odl-video-service' %}
-{% set odl_video_bucket_suffix = ['ci', 'rc', 'prod'] %}
+{% set odl_video_bucket_suffix = salt.environ.get('BUCKET_ENVIRONMENT_SUFFIX', 'rc') %}
 {% set odl_video_bucket_purposes = ['dist', 'thumbnails', 'transcoded', 'transcripts', 'uswitch', 'watch'] %}
 
-{% for bucket_suffix in odl_video_bucket_suffix %}
 {% for bucket_purpose in odl_video_bucket_purposes %}
 create_{{ odl_video_bucket_prefix }}-{{ bucket_purpose }}-{{ bucket_suffix }}:
   boto_s3_bucket.present:
@@ -16,9 +15,7 @@ create_{{ odl_video_bucket_prefix }}-{{ bucket_purpose }}-{{ bucket_suffix }}:
     - Versioning:
         Status: "Enabled"
 {% endfor %}
-{% endfor %}
 
-{% for odl_video_bucket_suffix in ['rc', 'prod'] %}
 create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_suffix }}:
   boto_cloudfront.present:
   - name: {{ odl_video_bucket_prefix }}-{{ odl_video_bucket_suffix }}
@@ -114,5 +111,3 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
         MinimumProtocolVersion: TLSv1.2
       WebACLId: ''
   - tags: { 'Name': '{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_suffix }}' }
-{% endfor %}
-
