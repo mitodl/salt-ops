@@ -100,6 +100,9 @@ base:
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
+    - fluentd
+    - fluentd.plugins
+    - fluentd.config
   'roles:backups':
     - match: grain
     - backups.backup
