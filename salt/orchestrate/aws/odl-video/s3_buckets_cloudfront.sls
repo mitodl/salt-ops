@@ -2,11 +2,11 @@
 {% set odl_video_bucket_suffix = ['ci', 'rc', 'prod'] %}
 {% set odl_video_bucket_purposes = ['dist', 'thumbnails', 'transcoded', 'transcripts', 'uswitch', 'watch'] %}
 
-{% for bucket_sffix in odl_video_bucket_suffix %}
+{% for bucket_suffix in odl_video_bucket_suffix %}
 {% for bucket_purpose in odl_video_bucket_purposes %}
-create_{{ bucket_prefix}}-{{ bucket_purpose }}-{{ bucket_suffix }}:
+create_{{ odl_video_bucket_prefix }}-{{ bucket_purpose }}-{{ bucket_suffix }}:
   boto_s3_bucket.present:
-    - Bucket: {{ bucket_prefix}}-{{ bucket_purpose }}-{{ bucket_suffix }}
+    - Bucket: {{ odl_video_bucket_prefix }}-{{ bucket_purpose }}-{{ bucket_suffix }}
     - region: us-east-1
     - CORSRules:
       - AllowedOrigin: ["*"]
