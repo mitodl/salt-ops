@@ -1,6 +1,6 @@
 {% set odl_video_bucket_prefix = 'odl-video-service' %}
 {% set odl_video_bucket_suffix = salt.environ.get('BUCKET_ENVIRONMENT_SUFFIX', 'rc') %}
-{% set odl_video_bucket_purposes = ['dist', 'thumbnails', 'transcoded', 'transcripts', 'uswitch', 'watch'] %}
+{% set odl_video_bucket_purposes = ['dist', 'thumbnails', 'transcoded', 'subtitles', 'uswitch', 'watch'] %}
 
 {% for bucket_purpose in odl_video_bucket_purposes %}
 create_{{ odl_video_bucket_prefix }}-{{ bucket_purpose }}-{{ bucket_suffix }}:
@@ -22,7 +22,7 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
   - config:
       CacheBehaviors:
         Items:
-        {% for odl_video_bucket_purpose in ['thumbnails', 'transcoded', 'transcripts'] %}
+        {% for odl_video_bucket_purpose in ['thumbnails', 'transcoded', 'subtitles'] %}
         - AllowedMethods:
             CachedMethods:
               Items:
@@ -95,7 +95,7 @@ create_cloudfront_distribution_{{ odl_video_bucket_prefix }}-{{ odl_video_bucket
         Prefix: ''
       Origins:
         Items:
-        {% for odl_video_bucket_purpose in ['dist', 'thumbnails', 'transcoded', 'transcripts'] %}
+        {% for odl_video_bucket_purpose in ['dist', 'thumbnails', 'transcoded', 'subtitles'] %}
         - CustomHeaders:
             DomainName: {{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}.s3.amazonaws.com
             Id: S3-{{ odl_video_bucket_prefix }}-{{ odl_video_bucket_purpose }}-{{ odl_video_bucket_suffix }}
