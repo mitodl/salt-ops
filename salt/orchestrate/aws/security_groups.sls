@@ -166,7 +166,7 @@ create_postgres_rds_security_group:
           cidr_ip:
             - {{ cidr_ip }}
     - tags:
-        Name: rabbitmq-{{ VPC_RESOURCE_SUFFIX }}
+        Name: postgres-rds-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
