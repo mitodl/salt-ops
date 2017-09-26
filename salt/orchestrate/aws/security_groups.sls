@@ -7,7 +7,7 @@
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_settings.business_unit) %}
 
 {% set network_prefix = env_settings.network_prefix %}
-{% set cidr_block_public_subnet_1 = '{}.16.0/24'.format(network_prefix) %}
+{% set cidr_block_public_subnet_1 = '{}.1.0/24'.format(network_prefix) %}
 {% set cidr_block_public_subnet_2 = '{}.2.0/24'.format(network_prefix) %}
 {% set cidr_block_public_subnet_3 = '{}.3.0/24'.format(network_prefix) %}
 {% set SUBNETS_CIDR = '{}.0.0/22'.format(network_prefix) %}
@@ -50,44 +50,44 @@ create_{{ ENVIRONMENT }}_consul_security_group:
           from_port: 8500
           to_port: 8500
           cidr_ip:
-            - {{ cidr_ip }}
+            - {{ VPC_CIDR }}
           {# HTTP access #}
         - ip_protocol: udp
           from_port: 8500
           to_port: 8500
           cidr_ip:
-            - {{ cidr_ip }}
+            - {{ VPC_CIDR }}
           {# HTTP access #}
         - ip_protocol: tcp
           from_port: 8600
           to_port: 8600
           cidr_ip:
-            - {{ cidr_ip }}
+            - {{ VPC_CIDR }}
           {# DNS access #}
         - ip_protocol: udp
           from_port: 8600
           to_port: 8600
           cidr_ip:
-            - {{ cidr_ip }}
+            - {{ VPC_CIDR }}
           {# DNS access #}
         - ip_protocol: tcp
           from_port: 8300
           to_port: 8301
           cidr_ip:
-            - {{ cidr_ip }}
+            - {{ VPC_CIDR }}
           {# LAN gossip protocol #}
         - ip_protocol: udp
           from_port: 8300
           to_port: 8301
           cidr_ip:
-            - {{ cidr_ip }}
+            - {{ VPC_CIDR }}
           {# LAN gossip protocol #}
         - ip_protocol: tcp
           from_port: 8300
           to_port: 8302
           cidr_ip:
             - 10.0.0.0/22
-            - {{ cidr_ip }}
+            - {{ VPC_CIDR }}
           {# WAN cluster interface #}
     - tags:
         Name: consul-{{ VPC_RESOURCE_SUFFIX }}
@@ -138,7 +138,7 @@ create_rabbitmq_security_group:
           from_port: 5672
           to_port: 5672
           cidr_ip:
-            - {{ cidr_ip }}
+            - {{ VPC_CIDR }}
         - ip_protocol: tcp
           from_port: 4369
           to_port: 4369
@@ -164,7 +164,7 @@ create_postgres_rds_security_group:
           from_port: 5432
           to_port: 5432
           cidr_ip:
-            - {{ cidr_ip }}
+            - {{ VPC_CIDR }}
     - tags:
         Name: postgres-rds-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
@@ -179,9 +179,15 @@ create_webapp_security_group:
     - description: ACL for web servers
     - rules:
         - ip_protocol: tcp
-        - from_port: 80
-        - to_port: 80
-        - cidr_ip:
+          from_port: 80
+          to_port: 80
+          cidr_ip:
+            - 0.0.0.0/0
+            - ::/0
+        - ip_protocol: tcp
+          from_port: 443
+          to_port: 443
+          cidr_ip:
             - 0.0.0.0/0
             - ::/0
     - tags:

@@ -55,6 +55,7 @@ create_{{ ENVIRONMENT }}_rds_store:
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
         Environment: {{ ENVIRONMENT }}
+        Purpose: {{ pg_configs.get('purpose', 'shared') }}
     - require:
         - boto_rds: create_{{ ENVIRONMENT }}_rds_db_subnet_group
 
@@ -68,5 +69,5 @@ configure_vault_postgresql_backend:
     - lease_max: {{ SIX_MONTHS }}
     - lease_default: {{ SIX_MONTHS }}
     - connection_config:
-        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@{{ PURPOSE }}-db.service.consul:15432/{{ PURPOSE }}"
+        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@postgres-db.service.consul:15432/postgres"
         verify_connection: False
