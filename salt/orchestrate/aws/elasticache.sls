@@ -45,13 +45,7 @@ create_{{ ENVIRONMENT }}_elasticache_subnet_group:
         - public1-{{ VPC_RESOURCE_SUFFIX }}
         - public2-{{ VPC_RESOURCE_SUFFIX }}
         - public3-{{ VPC_RESOURCE_SUFFIX }}
-    - region: us-east-1
-    - tags:
-        Name: elasticache-{{ VPC_RESOURCE_SUFFIX }}
-        business_unit: {{ BUSINESS_UNIT }}
-        Department: {{ BUSINESS_UNIT }}
-        OU: {{ BUSINESS_UNIT }}
-        Environment: {{ ENVIRONMENT }}
+    - CacheSubnetGroupDescription: Subnet group for {{ ENVIRONMENT }} elasticache clusters
 
 {% for cache_config in cache_configs %}
 {% set cache_purpose = cache_config.get('purpose', 'shared') %}
@@ -61,6 +55,7 @@ create_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_replication_group
   boto3_elasticache.replication_group_present:
     - ReplicationGroupId: {{ '{}-{}'.format(cache_purpose, cache_config.engine)[:20] }}
     - CacheParameterGroupName: {{ cache_config.get('parameter_group_name', 'default.redis3.2.cluster.on') }}
+    - ReplicationGroupDescription: Redis cluster in {{ ENVIRONMENT }} for {{ cache_purpose }} usage
     - NumNodeGroups: {{ cache_config.get('num_shards', 1) }}
     - ReplicasPerNodeGroup: {{ cache_config.get('num_replicas', 1) }}
     - AutomaticFailoverEnabled: True
@@ -69,7 +64,7 @@ create_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_cluster_{{ cache_
   boto3_elasticache.cache_cluster_present:
     - CacheClusterId: {{ '{}-{}'.format(cache_purpose, cache_config.engine)[:20] }}
     - NumCacheNodes: {{ cache_config.get('num_cache_nodes', 2) }}
-    - AZMode: cross-az
+    - AZMode: {{ 'cross-az' if cache_config.get('num_cache_nodes', 2) > 1 else 'single-az' }}
 {% endif %}
     - CacheNodeType: {{ cache_config.node_type }}
     - CacheSubnetGroupName: elasticache-subnet-group-{{ VPC_RESOURCE_SUFFIX }}
