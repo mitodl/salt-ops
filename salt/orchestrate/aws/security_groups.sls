@@ -96,7 +96,7 @@ create_{{ ENVIRONMENT }}_consul_security_group:
         Environment: {{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
 
-create_mitx_consul_agent_security_group:
+create_{{ ENVIRONMENT }}_consul_agent_security_group:
   boto_secgroup.present:
     - name: consul-agent-{{ VPC_RESOURCE_SUFFIX }}
     - description: Access rules for Consul agent in {{ VPC_NAME }} stack
@@ -119,7 +119,7 @@ create_mitx_consul_agent_security_group:
           to_port: 8301
           source_group_name: consul-{{ VPC_RESOURCE_SUFFIX }}
     - require:
-        - boto_secgroup: create_mitx_consul_security_group
+        - boto_secgroup: create_{{ ENVIRONMENT }}_consul_security_group
     - tags:
         Name: consul-agent-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
