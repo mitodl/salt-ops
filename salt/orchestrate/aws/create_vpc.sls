@@ -23,6 +23,9 @@ create_{{ ENVIRONMENT }}_vpc:
     - tags:
         Name: {{ VPC_NAME }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_{{ ENVIRONMENT }}_internet_gateway:
   boto_vpc.internet_gateway_present:
@@ -33,6 +36,9 @@ create_{{ ENVIRONMENT }}_internet_gateway:
     - tags:
         Name: {{ VPC_RESOURCE_SUFFIX }}-igw
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_{{ ENVIRONMENT }}_public_subnet_1:
   boto_vpc.subnet_present:
@@ -45,6 +51,9 @@ create_{{ ENVIRONMENT }}_public_subnet_1:
     - tags:
         Name: public1-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_{{ ENVIRONMENT }}_public_subnet_2:
   boto_vpc.subnet_present:
@@ -57,6 +66,9 @@ create_{{ ENVIRONMENT }}_public_subnet_2:
     - tags:
         Name: public2-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_{{ ENVIRONMENT }}_public_subnet_3:
   boto_vpc.subnet_present:
@@ -69,6 +81,9 @@ create_{{ ENVIRONMENT }}_public_subnet_3:
     - tags:
         Name: public3-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_{{ ENVIRONMENT }}_vpc_peering_connection_with_operations:
   boto_vpc.vpc_peering_connection_present:
@@ -102,6 +117,9 @@ create_{{ ENVIRONMENT }}_routing_table:
     - tags:
         Name: {{ VPC_RESOURCE_SUFFIX }}-route_table
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_salt_master_security_group:
   boto_secgroup.present:
@@ -118,3 +136,6 @@ create_salt_master_security_group:
     - tags:
         Name: salt-master-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
