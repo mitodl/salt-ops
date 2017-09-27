@@ -182,15 +182,15 @@ create_webapp_security_group:
           to_port: 80
           cidr_ip:
             - 0.0.0.0/0
-            - ::/0
+            - '::/0'
         - ip_protocol: tcp
           from_port: 443
           to_port: 443
           cidr_ip:
             - 0.0.0.0/0
-            - ::/0
+            - '::/0'
     - tags:
-        Name: rabbitmq-{{ VPC_RESOURCE_SUFFIX }}
+        Name: webapp-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
