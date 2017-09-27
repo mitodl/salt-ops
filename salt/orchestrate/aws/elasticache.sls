@@ -10,7 +10,7 @@
 {% set SUBNETS_CIDR = '{}.0.0/22'.format(network_prefix) %}
 
 {% set cache_configs = env_settings.backends.elasticache %}
-{% if cache_configs|mapping %}
+{% if cache_configs is mapping %}
   {% set cache_configs = [cache_configs] %}
 {% endif %}
 {% set default_port = {
@@ -24,7 +24,7 @@ create_{{ ENVIRONMENT }}_elasticache_security_group:
     - vpc_name: {{ VPC_NAME }}
     - description: ACL for Elasticache servers
     - rules:
-        {% for engine, port in default_port.items %}
+        {% for engine, port in default_port.items() %}
         - ip_protocol: tcp
           from_port: {{ port }}
           to_port: {{ port }}
