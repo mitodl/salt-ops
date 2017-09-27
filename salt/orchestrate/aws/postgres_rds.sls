@@ -16,12 +16,13 @@
 
 {% set SIX_MONTHS = '4368h' %}
 {% set master_pass = salt.random.get_str(42) %}
-{% set master_user = 'odl-devops' %}
+{% set master_user = 'odldevops' %}
 {% set pg_configs = env_settings.backends.postgres_rds %}
 
 create_{{ ENVIRONMENT }}_rds_db_subnet_group:
   boto_rds.subnet_group_present:
     - name: db-subnet-group-{{VPC_RESOURCE_SUFFIX }}
+    - description: Subnet group for {{ ENVIRONMENT }} RDS instances
     - subnet_ids: {{ subnet_ids }}
     - tags:
         Name: db-subnet-group-{{VPC_RESOURCE_SUFFIX }}
@@ -35,11 +36,12 @@ create_{{ ENVIRONMENT }}_rds_store:
     - name: {{ VPC_RESOURCE_SUFFIX }}-rds-postgresql
     - allocated_storage: {{ pg_configs.allocated_storage }}
     - db_instance_class: {{ pg_configs.db_instance_class }}
+    - db_name: {{ pg_configs.get('db_name', 'odldevops') }}
     - storage_type: gp2
     - engine: postgres
     - multi_az: {{ pg_configs.multi_az }}
     - auto_minor_version_upgrade: True
-    - publicly_accessible: False
+    - publicly_accessible: {{ pg_configs.get('public_access', False) }}
     - master_username: {{ master_user }}
     - master_user_password: {{ master_pass }}
     - vpc_security_group_ids:
@@ -69,5 +71,5 @@ configure_vault_postgresql_backend:
     - lease_max: {{ SIX_MONTHS }}
     - lease_default: {{ SIX_MONTHS }}
     - connection_config:
-        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@postgres-db.service.consul:15432/postgres"
+        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@postgres-db.service.consul:15432/{{ pg_configs.get('db_name', 'odldevops') }}"
         verify_connection: False
