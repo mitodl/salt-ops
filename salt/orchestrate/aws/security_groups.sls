@@ -119,7 +119,6 @@ create_mitx_consul_agent_security_group:
           to_port: 8301
           source_group_name: consul-{{ VPC_RESOURCE_SUFFIX }}
     - require:
-        - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX_UNDERSCORE }}_vpc
         - boto_secgroup: create_mitx_consul_security_group
     - tags:
         Name: consul-agent-{{ VPC_RESOURCE_SUFFIX }}
