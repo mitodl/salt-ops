@@ -59,6 +59,20 @@ deploy_scylladb_nodes:
     - require:
         - file: generate_cloud_map_file
 
+create_dummy_raid_device:
+  salt.function:
+    - tgt: 'G@roles:scylladb and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - name: state.single
+    - arg:
+        - raid.present
+    - kwarg:
+        name: /dev/md0
+        level: 0
+        devices:
+          - /dev/xvdb
+        force: True
+
 format_data_drive:
   salt.function:
     - tgt: 'G@roles:scylladb and G@environment:{{ ENVIRONMENT }}'
@@ -67,7 +81,7 @@ format_data_drive:
     - arg:
         - blockdev.formatted
     - kwarg:
-        name: /dev/xvdb
+        name: /dev/md0
         fs_type: xfs
     - require:
         - salt: deploy_scylladb_nodes
@@ -81,7 +95,7 @@ mount_data_drive:
         - mount.mounted
     - kwarg:
         name: /var/lib/scylla
-        device: /dev/xvdb
+        device: /dev/md0
         fstype: xfs
         mkmnt: True
         opts: 'relatime,user'
