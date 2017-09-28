@@ -57,7 +57,7 @@ format_data_drive:
         name: /dev/xvdb
         fs_type: xfs
     - require:
-        - salt: deploy_elasticsearch_nodes
+        - salt: deploy_scylladb_nodes
 
 mount_data_drive:
   salt.function:
