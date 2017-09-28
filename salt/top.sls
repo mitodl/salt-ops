@@ -125,3 +125,7 @@ base:
     - edx.prod
     - rabbitmq.configure
     - edx.django_user
+  'roles:scylladb':
+    - match: grain
+    - scylladb.configure
+    - scylladb.tests

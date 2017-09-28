@@ -171,6 +171,26 @@ create_postgres_rds_security_group:
         OU: {{ BUSINESS_UNIT }}
         Environment: {{ ENVIRONMENT }}
 
+create_scylladb_rds_security_group:
+  boto_secgroup.present:
+    - name: scylladb-{{ VPC_RESOURCE_SUFFIX }}
+    - vpc_name: {{ VPC_NAME }}
+    - description: ACL for Scylladb servers
+    - rules:
+        {% for portnum in [7000, 7001, 7199, 9042, 9100, 9160, 9180, 10000] %}
+        - ip_protocol: tcp
+          from_port: {{ portnum }}
+          to_port: {{ portnum }}
+          cidr_ip:
+            - {{ VPC_CIDR }}
+        {% endfor %}
+    - tags:
+        Name: scylladb-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
+
 create_webapp_security_group:
   boto_secgroup.present:
     - name: webapp-{{ VPC_RESOURCE_SUFFIX }}
