@@ -7,9 +7,18 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
-  'P@environment:(operations|mitx-production)':
-    - match: compound
-    - datadog
+  'roles:xqwatcher':
+    - match: grain
+    - edx.xqwatcher
+    - fluentd
+    - fluentd.plugins
+    - fluentd.config
+  'roles:backups':
+    - match: grain
+    - backups.backup
+  'roles:restores':
+    - match: grain
+    - backups.restore
   'roles:master':
     - match: grain
     - master
@@ -36,11 +45,24 @@ base:
     - consul.dns_proxy
     - consul.tests
     - consul.tests.test_dns_setup
+  'roles:fluentd':
+    - match: grain
+    - fluentd
+    - fluentd.plugins
+    - fluentd.config
+  'roles:aggregator':
+    - match: grain
+    - fluentd.reverse_proxy
+    - datadog.plugins
   'roles:kibana and G@environment:operations':
     - match: compound
     - elasticsearch.kibana
     - elasticsearch.kibana.nginx_extra_config
     - elasticsearch.elastalert
+    - datadog.plugins
+  'P@environment:(operations|mitx-production)':
+    - match: compound
+    - datadog
     - datadog.plugins
   'G@roles:elasticsearch and G@environment:micromasters':
     - match: compound
@@ -49,11 +71,6 @@ base:
     - nginx.ng
     - datadog
     - datadog.plugins
-  'roles:fluentd':
-    - match: grain
-    - fluentd
-    - fluentd.plugins
-    - fluentd.config
   'G@roles:edx_sandbox and G@sandbox_status:ami-provision':
     - match: compound
     - edx.sandbox_ami
@@ -64,11 +81,7 @@ base:
   'G@roles:mongodb and G@environment:mitx-production':
     - match: compound
     - datadog.plugins
-  'roles:aggregator':
-    - match: grain
-    - fluentd.reverse_proxy
-    - datadog.plugins
-  'P@environment:(operations|mitx-qa|mitx-rp|mitx-production)':
+  'P@environment:(operations|mitx-qa|mitx-production|rc-apps|production-apps)':
     - match: compound
     - consul
     - consul.dns_proxy
@@ -106,18 +119,6 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
-  'roles:xqwatcher':
-    - match: grain
-    - edx.xqwatcher
-    - fluentd
-    - fluentd.plugins
-    - fluentd.config
-  'roles:backups':
-    - match: grain
-    - backups.backup
-  'roles:restores':
-    - match: grain
-    - backups.restore
   'G@roles:devstack and P@environment:dev':
     - match: compound
     - consul
