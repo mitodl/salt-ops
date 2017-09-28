@@ -2,6 +2,7 @@
  ENVIRONMENT, BUSINESS_UNIT, subnet_ids with context %}
 {% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', 3) %}
 {% set scylla_admin_password = salt.random.get_str(42) %}
+{% set SIX_MONTHS = '4368h' %}
 
 load_scylladb_cloud_profile:
   file.managed:
