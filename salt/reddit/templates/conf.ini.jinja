@@ -1,0 +1,13 @@
+{# Template for a config file. Context object name: config #}
+{% for section, config in settings.items() %}
+[{{ section }}]
+  {% for key, value in config.items() -%}
+    {% if value is sequence and not value is string %}
+      {%- for v in value %}
+{{ key }}={{ v }}
+      {%- endfor %}
+    {%- else %}
+{{ key }}={{ value }}
+    {% endif -%}
+  {% endfor -%}
+{% endfor -%}
