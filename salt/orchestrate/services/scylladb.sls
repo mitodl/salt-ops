@@ -10,6 +10,10 @@ load_scylladb_cloud_profile:
     - source: salt://orchestrate/aws/cloud_profiles/scylladb.conf
     - template: jinja
 
+ensure_instance_profile_exists_for_edx:
+  boto_iam_role.present:
+    - name: scylladb-instance-role
+
 generate_cloud_map_file:
   file.managed:
     - name: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_scylladb_map.yml
