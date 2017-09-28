@@ -14,6 +14,14 @@ ensure_instance_profile_exists_for_edx:
   boto_iam_role.present:
     - name: scylladb-instance-role
 
+write_out_scylla_userdata_file:
+  file.managed:
+    - name: /etc/salt/cloud.d/scylladb_userdata.yml
+    - contents: >-
+        --clustername {{ ENVIRONMENT }}
+        --total-nodes {{ INSTANCE_COUNT }}
+    - makedirs: True
+
 generate_cloud_map_file:
   file.managed:
     - name: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_scylladb_map.yml
@@ -25,6 +33,9 @@ generate_cloud_map_file:
         service_name: scylladb
         tags:
           business_unit: {{ BUSINESS_UNIT }}
+          Department: {{ BUSINESS_UNIT }}
+          OU: {{ BUSINESS_UNIT }}
+          Environment: {{ ENVIRONMENT }}
         environment_name: {{ ENVIRONMENT }}
         roles:
           - scylladb
@@ -34,6 +45,8 @@ generate_cloud_map_file:
           - {{ salt.boto_secgroup.get_group_id(
             'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids }}
+        profile_overrides:
+          userdata_file: '/etc/salt/cloud.d/edx_userdata.yml'
     - require:
         - file: load_scylladb_cloud_profile
 

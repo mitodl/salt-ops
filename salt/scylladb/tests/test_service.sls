@@ -1,6 +1,6 @@
 ensure_scylladb_service_is_running:
   testinfra.service:
-    - name: scylla
+    - name: scylla-server
     - is_running: True
     - is_enabled: True
 

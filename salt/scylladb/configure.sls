@@ -6,7 +6,7 @@ create_scylladb_server_config_file:
 
 scylladb_service_enabled:
   service.running:
-    - name: scylla
+    - name: scylla-server
     - enable: True
     - onchanges:
         - file: create_scylladb_server_config_file
