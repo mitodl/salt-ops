@@ -25,6 +25,17 @@ base:
     - elasticsearch
     - elasticsearch.plugins
     - datadog.plugins
+  'roles:rabbitmq':
+    - match: grain
+    - rabbitmq
+    - rabbitmq.autocluster
+    - rabbitmq.tests
+  'roles:consul_server':
+    - match: grain
+    - consul
+    - consul.dns_proxy
+    - consul.tests
+    - consul.tests.test_dns_setup
   'roles:kibana and G@environment:operations':
     - match: compound
     - elasticsearch.kibana
@@ -73,9 +84,6 @@ base:
     - utils.file_limits
   'G@roles:rabbitmq and P@environment:mitx-(qa|rp|production)':
     - match: compound
-    - rabbitmq
-    - rabbitmq.autocluster
-    - rabbitmq.tests
     - datadog.plugins
   'G@roles:edx and P@environment:mitx-(qa|rp|production)':
     - match: compound
