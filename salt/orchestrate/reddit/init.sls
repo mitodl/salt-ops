@@ -20,15 +20,15 @@ generate_{{ app_name }}_cloud_map_file:
         business_unit: {{ BUSINESS_UNIT }}
         environment_name: {{ ENVIRONMENT }}
         purpose_prefix: {{ PURPOSE_PREFIX }}
+        num_instances: 2
         securitygroupids:
-          webapp:
-            - {{ salt.boto_secgroup.get_group_id(
-              'webapp-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-          default: {{ salt.boto_secgroup.get_group_id(
-              'default', vpc_name=VPC_NAME) }}
-          salt-master: {{ salt.boto_secgroup.get_group_id(
+          - {{ salt.boto_secgroup.get_group_id(
+            'webapp-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+          - {{ salt.boto_secgroup.get_group_id(
+            'default', vpc_name=VPC_NAME) }}
+          - {{ salt.boto_secgroup.get_group_id(
             'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-          consul-agent: {{ salt.boto_secgroup.get_group_id(
+          - {{ salt.boto_secgroup.get_group_id(
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids }}
         tags:
