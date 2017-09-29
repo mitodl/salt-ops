@@ -1,7 +1,6 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, BUSINESS_UNIT, PURPOSE_PREFIX, subnet_ids with context %}
-{% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
-{% set purposes = env_settings.purposes %}
+{% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', 1) %}
 {% set app_name = 'reddit' %}
 
 load_{{ app_name }}_cloud_profile:
@@ -17,21 +16,19 @@ generate_{{ app_name }}_cloud_map_file:
     - template: jinja
     - makedirs: True
     - context:
-        business_unit: {{ BUSINESS_UNIT }}
         environment_name: {{ ENVIRONMENT }}
-        purpose_prefix: {{ PURPOSE_PREFIX }}
-        num_instances: 2
-        securitygroupids:
+        num_instances: {{ INSTANCE_COUNT }}
+        service_name: scylladb
+        securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
             'webapp-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-          - {{ salt.boto_secgroup.get_group_id(
-            'default', vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
             'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids }}
         tags:
+          business_unit: {{ BUSINESS_UNIT }}
           Department: {{ BUSINESS_UNIT }}
           OU: {{ BUSINESS_UNIT }}
           Environment: {{ ENVIRONMENT }}
@@ -80,16 +77,6 @@ deploy_consul_agent_to_{{ app_name }}_nodes:
         - consul
         - consul.dns_proxy
 
-restart_consul_service_to_load_updated_configs:
-  salt.function:
-    - tgt: 'P@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - name: service.restart
-    - arg:
-        - consul
-    - require:
-        - salt: deploy_consul_agent_to_{{ app_name }}_nodes
-
 build_{{ app_name }}_nodes:
   salt.state:
     - tgt: 'P@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
@@ -99,6 +86,14 @@ build_{{ app_name }}_nodes:
     - require:
         - salt: deploy_consul_agent_to_{{ app_name }}_nodes
         - salt: restart_consul_service_to_load_updated_configs
+
+execute_post_install_scripts:
+  salt.state:
+    - tgt: 'P@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - subset: 1
+    - sls:
+        - reddit.post_install
 
 restart_{{ app_name }}_service:
   salt.function:
