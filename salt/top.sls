@@ -138,3 +138,6 @@ base:
     - match: grain
     - scylladb.configure
     - scylladb.tests
+  'G@roles:reddit and P@environment:(rc|production)-apps':
+    - match: compound
+    - reddit
