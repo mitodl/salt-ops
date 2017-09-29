@@ -21,7 +21,8 @@ generate_{{ app_name }}_cloud_map_file:
         environment_name: {{ ENVIRONMENT }}
         purpose_prefix: {{ PURPOSE_PREFIX }}
         securitygroupids:
-          webapp: {{ salt.boto_secgroup.get_group_id(
+          webapp:
+            - {{ salt.boto_secgroup.get_group_id(
               'webapp-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           default: {{ salt.boto_secgroup.get_group_id(
               'default', vpc_name=VPC_NAME) }}
@@ -94,6 +95,7 @@ build_{{ app_name }}_nodes:
     - tgt: 'P@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - highstate: True
+    - subset: 1
     - require:
         - salt: deploy_consul_agent_to_{{ app_name }}_nodes
         - salt: restart_consul_service_to_load_updated_configs
