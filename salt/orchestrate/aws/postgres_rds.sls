@@ -71,5 +71,5 @@ configure_vault_postgresql_backend:
     - lease_max: {{ SIX_MONTHS }}
     - lease_default: {{ SIX_MONTHS }}
     - connection_config:
-        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@postgres-db.service.consul:15432/{{ pg_configs.get('db_name', 'odldevops') }}"
+        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@postgresql.service.{{ ENVIRONMENT }}.consul:5432/{{ pg_configs.get('db_name', 'odldevops') }}"
         verify_connection: False
