@@ -54,6 +54,14 @@ base:
     - match: grain
     - fluentd.reverse_proxy
     - datadog.plugins
+  'roles:scylladb':
+    - match: grain
+    - scylladb.configure
+    - scylladb.tests
+  'roles:reddit':
+    - match: grain
+    - reddit
+    - nginx
   'roles:kibana and G@environment:operations':
     - match: compound
     - elasticsearch.kibana
@@ -134,10 +142,3 @@ base:
     - edx.prod
     - rabbitmq.configure
     - edx.django_user
-  'roles:scylladb':
-    - match: grain
-    - scylladb.configure
-    - scylladb.tests
-  'roles:reddit':
-    - match: grain
-    - reddit
