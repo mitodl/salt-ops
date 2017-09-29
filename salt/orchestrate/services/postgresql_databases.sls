@@ -11,11 +11,12 @@
         env=ENVIRONMENT)) %}
 
 {% for schema in environment.backends.postgres_rds.schemas %}
-create_db_{{ name }}_{{ purpose }}:
-  postgresql_database.present:
+create_db_{{ schema }}:
+  postgres_database.present:
     - name: {{ schema }}
-    - connection_user: {{ postgresql_creds.data.username }}
-    - connection_pass: {{ postgresql_creds.data.password }}
-    - connection_host: {{ postgresql_host }}
-    - connection_port: {{ postgresql_port }}
+    - encoding: utf8
+    - db_user: {{ postgresql_creds.data.username }}
+    - db_password: {{ postgresql_creds.data.password }}
+    - db_host: {{ postgresql_host }}
+    - db_port: {{ postgresql_port }}
 {% endfor %}
