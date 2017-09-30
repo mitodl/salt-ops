@@ -18,7 +18,9 @@ generate_{{ app_name }}_cloud_map_file:
     - context:
         environment_name: {{ ENVIRONMENT }}
         num_instances: {{ INSTANCE_COUNT }}
-        service_name: scylladb
+        service_name: reddit
+        roles:
+          - reddit
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
             'webapp-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
