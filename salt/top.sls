@@ -61,7 +61,8 @@ base:
   'roles:reddit':
     - match: grain
     - reddit
-    - nginx
+    - nginx.ng
+    - nginx.ng.certificates
   'roles:kibana and G@environment:operations':
     - match: compound
     - elasticsearch.kibana

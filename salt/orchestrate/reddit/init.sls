@@ -66,14 +66,14 @@ load_pillar_data_on_{{ app_name }}_nodes:
 populate_mine_with_{{ app_name }}_node_data:
   salt.function:
     - name: mine.update
-    - tgt: 'P@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
         - salt: load_pillar_data_on_{{ app_name }}_nodes
 
 deploy_consul_agent_to_{{ app_name }}_nodes:
   salt.state:
-    - tgt: 'P@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - sls:
         - consul
@@ -81,25 +81,25 @@ deploy_consul_agent_to_{{ app_name }}_nodes:
 
 build_{{ app_name }}_nodes:
   salt.state:
-    - tgt: 'P@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - highstate: True
-    - subset: 1
     - require:
         - salt: deploy_consul_agent_to_{{ app_name }}_nodes
-        - salt: restart_consul_service_to_load_updated_configs
 
 execute_post_install_scripts:
   salt.state:
-    - tgt: 'P@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
+    {% if INSTANCE_COUNT > 1 %}
     - subset: 1
+    {% endif %}
     - sls:
         - reddit.post_install
 
 restart_{{ app_name }}_service:
   salt.function:
-    - tgt: 'P@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - name: cmd.run
     - arg:
