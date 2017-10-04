@@ -77,6 +77,6 @@ configure_vault_postgresql_{{ dbconfig.name }}_backend:
     - lease_max: {{ SIX_MONTHS }}
     - lease_default: {{ SIX_MONTHS }}
     - connection_config:
-        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@postgresql.service.{{ ENVIRONMENT }}.consul:5432/{{ dbconfig.name }}"
+        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@postgresql-{{ dbconfig.name }}.service.{{ ENVIRONMENT }}.consul:5432/{{ dbconfig.name }}"
         verify_connection: False
 {% endfor %}
