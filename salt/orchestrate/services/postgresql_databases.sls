@@ -7,7 +7,7 @@
 {% set postgresql_host = 'postgresql.service.{}.consul'.format(ENVIRONMENT) %}
 {% set postgresql_port = 5432 %}
 {% set postgresql_creds = salt.vault.read(
-    'postgresql-{env}/creds/admin'.format(
+    'postgresql-{env}-odldevops/creds/admin'.format(
         env=ENVIRONMENT)) %}
 
 {% for schema in environment.backends.postgres_rds.schemas %}
