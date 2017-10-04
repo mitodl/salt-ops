@@ -171,6 +171,24 @@ create_postgres_rds_security_group:
         OU: {{ BUSINESS_UNIT }}
         Environment: {{ ENVIRONMENT }}
 
+create_public_postgres_rds_security_group:
+  boto_secgroup.present:
+    - name: postgres-rds-public-{{ VPC_RESOURCE_SUFFIX }}
+    - vpc_name: {{ VPC_NAME }}
+    - description: Allow public access to PostGres RDS servers
+    - rules:
+        - ip_protocol: tcp
+          from_port: 5432
+          to_port: 5432
+          cidr_ip:
+            - 0.0.0.0/0
+    - tags:
+        Name: postgres-rds-public-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
+
 create_scylladb_rds_security_group:
   boto_secgroup.present:
     - name: scylladb-{{ VPC_RESOURCE_SUFFIX }}

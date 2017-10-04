@@ -45,8 +45,13 @@ create_{{ ENVIRONMENT }}_rds_store:
     - master_username: {{ master_user }}
     - master_user_password: {{ master_pass }}
     - vpc_security_group_ids:
+        {% if pg_configs.get('public_access', False) %}
+        - {{ salt.boto_secgroup.get_group_id(
+             'postgres-rds-public-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+        {% else %}
         - {{ salt.boto_secgroup.get_group_id(
              'postgres-rds-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+        {% endif %}
         - {{ salt.boto_secgroup.get_group_id(
              'vault-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
     - db_subnet_group_name: db-subnet-group-{{ VPC_RESOURCE_SUFFIX }}
@@ -61,7 +66,9 @@ create_{{ ENVIRONMENT }}_rds_store:
     - require:
         - boto_rds: create_{{ ENVIRONMENT }}_rds_db_subnet_group
 
-{% for dbname in pg_configs.get('schemas', []).append(pg_configs.get('db_name', 'odldevops')) %}
+{% set dbnames = pg_configs.get('schemas', []) %}
+{% do dbnames.append(pg_configs.get('db_name', 'odldevops')) %}
+{% for dbname in dbnames %}
 configure_vault_postgresql_{{ dbname }}_backend:
   vault.secret_backend_enabled:
     - backend_type: postgresql
