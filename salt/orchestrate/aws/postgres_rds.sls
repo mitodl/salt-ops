@@ -61,15 +61,17 @@ create_{{ ENVIRONMENT }}_rds_store:
     - require:
         - boto_rds: create_{{ ENVIRONMENT }}_rds_db_subnet_group
 
-configure_vault_postgresql_backend:
+{% for dbname in pg_configs.get('schemas', []).append(pg_configs.get('db_name', 'odldevops') %}
+configure_vault_postgresql_{{ dbname }}_backend:
   vault.secret_backend_enabled:
     - backend_type: postgresql
     - description: Backend to create dynamic PostGreSQL credentials for {{ ENVIRONMENT }}
-    - mount_point: postgresql-{{ ENVIRONMENT }}
+    - mount_point: postgresql-{{ ENVIRONMENT }}-{{ dbname }}
     - ttl_max: {{ SIX_MONTHS }}
     - ttl_default: {{ SIX_MONTHS }}
     - lease_max: {{ SIX_MONTHS }}
     - lease_default: {{ SIX_MONTHS }}
     - connection_config:
-        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@postgresql.service.{{ ENVIRONMENT }}.consul:5432/{{ pg_configs.get('db_name', 'odldevops') }}"
+        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@postgresql.service.{{ ENVIRONMENT }}.consul:5432/{{ dbname }}"
         verify_connection: False
+{% endfor %}
