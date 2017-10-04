@@ -61,7 +61,7 @@ create_{{ ENVIRONMENT }}_rds_store:
     - require:
         - boto_rds: create_{{ ENVIRONMENT }}_rds_db_subnet_group
 
-{% for dbname in pg_configs.get('schemas', []).append(pg_configs.get('db_name', 'odldevops') %}
+{% for dbname in pg_configs.get('schemas', []).append(pg_configs.get('db_name', 'odldevops')) %}
 configure_vault_postgresql_{{ dbname }}_backend:
   vault.secret_backend_enabled:
     - backend_type: postgresql
