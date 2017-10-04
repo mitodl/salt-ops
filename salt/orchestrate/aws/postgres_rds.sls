@@ -31,21 +31,22 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
         OU: {{ BUSINESS_UNIT }}
         Environment: {{ ENVIRONMENT }}
 
-create_{{ ENVIRONMENT }}_rds_store:
+{% for dbconfig in pg_configs %}
+create_{{ ENVIRONMENT }}_{{ dbconfig.name }}_rds_store:
   boto_rds.present:
-    - name: {{ VPC_RESOURCE_SUFFIX }}-rds-postgresql
-    - allocated_storage: {{ pg_configs.allocated_storage }}
-    - db_instance_class: {{ pg_configs.db_instance_class }}
-    - db_name: {{ pg_configs.get('db_name', 'odldevops') }}
+    - name: {{ VPC_RESOURCE_SUFFIX }}-rds-postgresql-{{ dbconfig.name }}
+    - allocated_storage: {{ dbconfig.allocated_storage }}
+    - db_instance_class: {{ dbconfig.db_instance_class }}
+    - db_name: {{ dbconfig.name }}
     - storage_type: gp2
     - engine: postgres
-    - multi_az: {{ pg_configs.multi_az }}
+    - multi_az: {{ dbconfig.multi_az }}
     - auto_minor_version_upgrade: True
-    - publicly_accessible: {{ pg_configs.get('public_access', False) }}
+    - publicly_accessible: {{ dbconfig.get('public_access', False) }}
     - master_username: {{ master_user }}
     - master_user_password: {{ master_pass }}
     - vpc_security_group_ids:
-        {% if pg_configs.get('public_access', False) %}
+        {% if dbconfig.get('public_access', False) %}
         - {{ salt.boto_secgroup.get_group_id(
              'postgres-rds-public-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         {% else %}
@@ -62,23 +63,20 @@ create_{{ ENVIRONMENT }}_rds_store:
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
         Environment: {{ ENVIRONMENT }}
-        Purpose: {{ pg_configs.get('purpose', 'shared') }}
+        Purpose: {{ dbconfig.get('purpose', 'shared') }}
     - require:
         - boto_rds: create_{{ ENVIRONMENT }}_rds_db_subnet_group
 
-{% set dbnames = pg_configs.get('schemas', []) %}
-{% do dbnames.append(pg_configs.get('db_name', 'odldevops')) %}
-{% for dbname in dbnames %}
-configure_vault_postgresql_{{ dbname }}_backend:
+configure_vault_postgresql_{{ dbconfig.name }}_backend:
   vault.secret_backend_enabled:
     - backend_type: postgresql
     - description: Backend to create dynamic PostGreSQL credentials for {{ ENVIRONMENT }}
-    - mount_point: postgresql-{{ ENVIRONMENT }}-{{ dbname }}
+    - mount_point: postgresql-{{ ENVIRONMENT }}-{{ dbconfig.name }}
     - ttl_max: {{ SIX_MONTHS }}
     - ttl_default: {{ SIX_MONTHS }}
     - lease_max: {{ SIX_MONTHS }}
     - lease_default: {{ SIX_MONTHS }}
     - connection_config:
-        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@postgresql.service.{{ ENVIRONMENT }}.consul:5432/{{ dbname }}"
+        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@postgresql.service.{{ ENVIRONMENT }}.consul:5432/{{ dbconfig.name }}"
         verify_connection: False
 {% endfor %}
