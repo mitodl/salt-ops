@@ -63,6 +63,9 @@ base:
     - reddit
     - nginx.ng
     - nginx.ng.certificates
+  'roles:cassandra':
+    - match: grain
+    - cassandra
   'roles:kibana and G@environment:operations':
     - match: compound
     - elasticsearch.kibana
