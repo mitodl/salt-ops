@@ -141,6 +141,7 @@ install_edxapp_theme:
   git.latest:
     - name: {{ theme_repo }}
     - branch: {{ theme_branch }}
+    - rev: {{ theme_branch }}
     - target: {{ theme_dir }}/{{ theme_name }}
     - user: edxapp
     - force_checkout: True
