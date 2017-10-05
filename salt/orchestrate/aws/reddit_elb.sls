@@ -30,7 +30,7 @@ create_elb_for_{{ app_name }}_{{ ENVIRONMENT }}:
           enabled: True
           timeout: 300
     - cnames:
-        - name: discussions-{{ app_name }}-{{ ENVIRONMENT }}.odl.mit.edu.
+        - name: discussions-{{ app_name }}-{{ ENVIRONMENT }}.odl.mit.edu
           zone: odl.mit.edu.
           ttl: 60
     - health_check:
