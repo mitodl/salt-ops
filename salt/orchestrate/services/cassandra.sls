@@ -60,7 +60,7 @@ format_data_drive:
         name: /dev/xvdb
         fs_type: ext4
     - require:
-        - salt: deploy_mongodb_cloud_map
+        - salt: deploy_cassandra_nodes
 
 mount_data_drive:
   salt.function:
