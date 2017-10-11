@@ -103,6 +103,7 @@ start_backup_instance_in_{{ ENVIRONMENT }}:
 wait_for_restore_instance_to_connect:
   salt.wait_for_event:
     - name: salt/minion/{{ instance_name }}/start
+    - timeout: 900
     - id_list:
         - {{ instance_name }}
     - require_in:
