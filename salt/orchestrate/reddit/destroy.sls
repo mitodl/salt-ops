@@ -17,7 +17,7 @@ destroy_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_replication_grou
     - RetainPrimaryCluster: False
 {% else %}
 destroy_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_cluster_{{ cache_purpose }}:
-  boto3_elasticache.cache_cluster_present:
+  boto3_elasticache.cache_cluster_absent:
     - CacheClusterId: {{ '{}-{}'.format(cache_purpose, cache_config.engine)[:20].strip('-') }}
 {% endif %}
     - name: {{ name }}
@@ -40,7 +40,7 @@ destroy_{{ ENVIRONMENT }}_{{ dbconfig.name }}_rds_store:
   boto_rds.absent:
     - name: {{ ENVIRONMENT }}-rds-postgresql-{{ dbconfig.name }}
     - wait_for_deletion: False
-    - final_db_snapshot_identifier: {{ dbconfig.name }}-final-snapshot-{{ salt.status.time(format=ISO8601) }}
+    - final_db_snapshot_identifier: {{ dbconfig.name }}-{{ ENVIRONMENT }}-final-snapshot-{{ salt.status.time(format=ISO8601) }}
     - require:
         - salt: unmount_vault_postgresql_{{ dbconfig.name }}_backend
 {% endif %}
