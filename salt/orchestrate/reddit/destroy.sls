@@ -34,7 +34,7 @@ unmount_vault_postgresql_{{ dbconfig.name }}_backend:
     - tgt_type: grain
     - name: vault.delete
     - arg:
-        sys/mounts/postgresql-{{ ENVIRONMENT }}-{{ dbconfig.name }}
+        - sys/mounts/postgresql-{{ ENVIRONMENT }}-{{ dbconfig.name }}
 
 destroy_{{ ENVIRONMENT }}_{{ dbconfig.name }}_rds_store:
   boto_rds.absent:
