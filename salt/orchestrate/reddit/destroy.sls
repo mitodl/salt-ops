@@ -20,7 +20,7 @@ destroy_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_cluster_{{ cache
   boto3_elasticache.cache_cluster_absent:
     - CacheClusterId: {{ '{}-{}'.format(cache_purpose, cache_config.engine)[:20].strip('-') }}
 {% endif %}
-    - name: {{ name }}
+    - name: {{ '{}-{}'.format(cache_purpose, cache_config.engine)[:20].strip('-') }}
 {% endif %}
 {% endfor %}
 
