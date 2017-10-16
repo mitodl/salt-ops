@@ -27,7 +27,7 @@ destroy_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_cluster_{{ cache
 {% set pg_configs = env_settings.backends.postgres_rds %}
 {% set ISO8601 = '%Y-%m-%dT%H%M%S' %}
 {% for dbconfig in pg_configs %}
-{% if 'reddit' in dbconfig.name %}
+{% if 'reddit' in dbconfig.name or 'opendiscussions' in dbconfig.name %}
 unmount_vault_postgresql_{{ dbconfig.name }}_backend:
   salt.function:
     - tgt: 'roles:master'
@@ -45,6 +45,15 @@ destroy_{{ ENVIRONMENT }}_{{ dbconfig.name }}_rds_store:
         - salt: unmount_vault_postgresql_{{ dbconfig.name }}_backend
 {% endif %}
 {% endfor %}
+
+remove_reddit_vhost_from_rabbitmq:
+  salt.function:
+    - tgt: 'G@roles:rabbitmq and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - name: rabbitmq.delete_vhost
+    - arg:
+        - reddit
+    - subset: 1
 
 {% set cassandra_instances = [] %}
 {% for host, addr in salt.saltutil.runner(
