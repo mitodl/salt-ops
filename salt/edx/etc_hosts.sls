@@ -6,4 +6,5 @@ add_etc_hosts_entry:
   host.present:
     - ip: 127.0.0.1
     - names:
+      - localhost
       - {{ lms_site_name }}
