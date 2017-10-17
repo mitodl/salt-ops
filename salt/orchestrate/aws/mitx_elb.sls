@@ -19,7 +19,7 @@ create_elb_for_edx_{{ purpose_name }}:
           instance_port: 443
           elb_protocol: HTTPS
           instance_protocol: HTTPS
-          certificate: arn:aws:iam::610119931565:server-certificate/mitx-wildcard-cert
+          certificate: arn:aws:acm:us-east-1:610119931565:certificate/31cbdb62-7553-472b-979a-3063c3e1fddc
           policies:
             - {{ elb_name }}-sticky-cookie-policy
         - elb_port: 80
