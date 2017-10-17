@@ -34,7 +34,7 @@ create_elb_for_{{ app_name }}_{{ ENVIRONMENT }}:
           zone: odl.mit.edu.
           ttl: 60
     - health_check:
-        target: 'HTTPS:443/'
+        target: 'HTTPS:443/health'
     - subnets: {{ subnet_ids }}
     - security_groups: {{ security_groups }}
     - tags:
