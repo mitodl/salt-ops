@@ -147,6 +147,7 @@ install_edxapp_theme:
     - force_checkout: True
     - force_clone: True
     - force_reset: True
+    - force_fetch: True
     - update_head: True
     - require:
       - file: install_edxapp_theme
