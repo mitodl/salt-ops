@@ -81,3 +81,10 @@ build_{{ ENVIRONMENT }}_consul_nodes:
     - highstate: True
     - require:
         - salt: reload_pillar_data_on_{{ ENVIRONMENT }}_consul_nodes
+
+ensure_query_templates_are_present:
+  salt.state:
+    - tgt: 'G@roles:consul_server and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - sls: consul.query_template
+    - subset: 1
