@@ -60,6 +60,7 @@ base:
     - scylladb.tests
   'roles:reddit':
     - match: grain
+    - pgbouncer
     - reddit
     - nginx.ng
     - nginx.ng.certificates
