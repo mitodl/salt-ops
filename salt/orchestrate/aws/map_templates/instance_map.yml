@@ -1,4 +1,5 @@
 {% set profile_overrides = profile_overrides|default({}) %}
+{% set num_subnets = subnetids|length %}
 {% set tags = tags|default({}) %}
 
 {{ service_name }}:
@@ -8,7 +9,7 @@
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
-          SubnetId: {{ subnetids[id_num] }}
+          SubnetId: {{ subnetids[id_num % num_subnets] }}
           SecurityGroupId: {{ securitygroupid }}
       tag:
         environment: {{ environment_name }}
