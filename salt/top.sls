@@ -77,6 +77,10 @@ base:
     - match: compound
     - datadog
     - datadog.plugins
+  'environment:production-apps':
+    - match: grain
+    - datadog
+    - datadog.plugins
   'G@roles:elasticsearch and G@environment:micromasters':
     - match: compound
     - elasticsearch
