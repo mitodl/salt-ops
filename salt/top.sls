@@ -61,6 +61,7 @@ base:
     - scylladb.tests
   'roles:reddit':
     - match: grain
+    - utils.file_limits
     - pgbouncer
     - reddit
     - nginx.ng
