@@ -4,7 +4,7 @@
 {% set purpose = 'devstack' %}
 {% set environment = 'dev' %}
 {% set purpose_suffix = 'devstack' %}
-{% set edx_platform_branch = 'mitx/ficus' %}
+{% set edx_platform_branch = 'open-release/ginkgo.master' %}
 
 {% set xqueue_rabbitmq_username = 'admin' %}
 {% set xqueue_rabbitmq_password = 'changeme' %}
@@ -52,8 +52,8 @@ edx:
   ansible_env_config:
     TLS_KEY_NAME: {{ TLS_KEY_NAME }}
   config:
-    repo: 'https://github.com/mitodl/configuration.git'
-    branch: 'open-release/ficus.master'
+    repo: 'https://github.com/edx/configuration.git'
+    branch: 'open-release/ginkgo.master'
   dependencies:
     os_packages:
       - git
@@ -340,7 +340,7 @@ edx:
     EDXAPP_LMS_NGINX_PORT: 80
     EDXAPP_LMS_SSL_NGINX_PORT: 443
 
-    edx_platform_repo: 'https://github.com/mitodl/edx-platform.git'
-    edx_platform_version: 'mitx/ficus'
+    edx_platform_repo: 'https://github.com/edx/edx-platform.git'
+    edx_platform_version: 'open-release/ginkgo.master'
 
     COMMON_ENABLE_AWS_ROLE: False
