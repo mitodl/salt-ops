@@ -60,7 +60,7 @@ edx:
     repo: 'https://github.com/mitodl/configuration.git'
     branch: 'open-release/ficus.master'
     {% elif environment == 'dev-ginkgo' %}
-    repo: 'https://github.com/edx/configuration.git'
+    repo: 'https://github.com/mitodl/configuration.git'
     branch: 'open-release/ginkgo.master'
     {% endif %}
   dependencies:
