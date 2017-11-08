@@ -145,6 +145,7 @@ build_edx_base_nodes:
 
 {% set previous_release = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(edx_codename))|int %}
 {% set release_number = previous_release + 1 %}
+{% set edx_codename_release_version = '{}-release-version'.format(edx_codename) %}
 
 {# Delete grains before snapshotting so they can be set when building from the image #}
 {% for grain in ['business_unit', 'environment', 'purpose', 'roles'] %}
@@ -188,7 +189,7 @@ update_release_version:
     - tgt_type: grain
     - name: sdb.set
     - arg:
-        - 'sdb://consul/edxapp-{{ edx_codename}}-release-version'
+        - 'sdb://consul/edxapp-{{ edx_codename }}-release-version'
         - '{{ release_number }}'
     - require:
         - boto_ec2: snapshot_edx_app_node

@@ -1,5 +1,5 @@
-{% set edx_codename = salt.sdb.get('sdb://consul/edx_codename') %}
-{% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-release-version').format(edx_codename) %}
+{% set codename = salt.sdb.get('sdb://consul/edx_codename') %}
+{% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(edx_codename)) %}
 {% set app_ami_id = salt.boto_ec2.find_images(ami_name='edxapp_{}_base_release_{}'.format(edx_codename, release_number))[0] %}
 {% set worker_ami_id = salt.boto_ec2.find_images(ami_name='edx_worker_{}_base_release_{}'.format(edx_codename, release_number))[0] %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-qa') %}
@@ -12,7 +12,7 @@ update_edxapp_ami_value:
     - tgt_type: grain
     - name: sdb.set
     - arg:
-        - 'sdb://consul/edx_ami_id'
+        - 'sdb://consul/edx_{{ codename }}_ami_id'
         - '{{ app_ami_id }}'
 
 update_edx_worker_ami_value:
@@ -21,7 +21,7 @@ update_edx_worker_ami_value:
     - tgt_type: grain
     - name: sdb.set
     - arg:
-        - 'sdb://consul/edx_worker_ami_id'
+        - 'sdb://consul/edx_{{ codename }}_worker_ami_id'
         - '{{ worker_ami_id }}'
 
 destroy_edx_base_instance:

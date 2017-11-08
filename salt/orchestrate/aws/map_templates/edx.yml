@@ -1,12 +1,19 @@
+{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
+ ENVIRONMENT, BUSINESS_UNIT, PURPOSE_PREFIX, subnet_ids with context %}
+
 {% set profile_overrides = profile_overrides|default({}) %}
 {% set tags = tags|default({}) %}
-{% set release_number = salt.sdb.get('sdb://consul/edxapp-release-version') %}
+{% set env_settings = salt.pillar.get('environments:({})'.format(ENVIRONMENT)) %}
+{% set purposes = env_settings.purposes %}
+{% set codename = purposes[PURPOSE_PREFIX +'-live'].versions.codename %}
+{% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
 {% set num_subnets = subnetids|length %}
 
 edx:
   {% for app_type, num_instances in app_types.items() %}
   {% for id_num in range(num_instances.edx) %}
   - edx-{{ environment_name }}-{{ purpose_prefix }}-{{ app_type }}-{{ id_num }}-v{{ release_number }}:
+      image: {{ salt.sdb.get('sdb://consul/edx_{}_ami_id'.format(codename)) }}
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
@@ -44,6 +51,7 @@ edx-worker:
   {% for app_type, num_instances in app_types.items() %}
   {% for id_num in range(num_instances['edx-worker']) %}
   - edx-worker-{{ environment_name }}-{{ purpose_prefix }}-{{ app_type }}-{{ id_num }}-v{{ release_number }}:
+      image: {{ salt.sdb.get('sdb://consul/edx_worker_{}_ami_id'.format(codename)) }}
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
