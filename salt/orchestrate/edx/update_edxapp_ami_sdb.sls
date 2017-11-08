@@ -5,6 +5,8 @@
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-qa') %}
 {% set instance_name = 'edxapp-base-{}'.format(ENVIRONMENT) %}
 {% set worker_instance_name = 'edx-worker-base-{}'.format(ENVIRONMENT) %}
+{% set edx_codename_ami_id = '{}-{}'.format(edx_codename, app_ami_id) %}
+{% set edx_codename_worker_ami_id = '{}-{}'.format(edx_codename, worker_ami_id) %}
 
 update_edxapp_ami_value:
   salt.function:
@@ -12,7 +14,7 @@ update_edxapp_ami_value:
     - tgt_type: grain
     - name: sdb.set
     - arg:
-        - 'sdb://consul/edx_ami_id'
+        - 'sdb://consul/edx_codename_ami_id'
         - '{{ app_ami_id }}'
 
 update_edx_worker_ami_value:
@@ -21,7 +23,7 @@ update_edx_worker_ami_value:
     - tgt_type: grain
     - name: sdb.set
     - arg:
-        - 'sdb://consul/edx_worker_ami_id'
+        - 'sdb://consul/edx_codename_worker_ami_id'
         - '{{ worker_ami_id }}'
 
 destroy_edx_base_instance:

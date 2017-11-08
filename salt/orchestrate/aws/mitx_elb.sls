@@ -3,7 +3,7 @@
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set ISO8601 = '%Y-%m-%dT%H:%M:%S' %}
 {% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-{env}'.format(env=ENVIRONMENT)]) %}
-{% set release_version = salt.sdb.get('sdb://consul/edxapp-release-version') %}
+{% set release_version = salt.sdb.get('sdb://consul/edx_codename_release_version') %}
 
 {% for edx_type in ['draft', 'live'] %}
 {% set purpose_name = '{prefix}-{app}'.format(
