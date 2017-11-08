@@ -1,5 +1,5 @@
 {% set codename = salt.sdb.get('sdb://consul/edx_codename') %}
-{% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-release-version').format(edx_codename) %}
+{% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(edx_codename)) %}
 {% set app_ami_id = salt.boto_ec2.find_images(ami_name='edxapp_{}_base_release_{}'.format(edx_codename, release_number))[0] %}
 {% set worker_ami_id = salt.boto_ec2.find_images(ami_name='edx_worker_{}_base_release_{}'.format(edx_codename, release_number))[0] %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-qa') %}

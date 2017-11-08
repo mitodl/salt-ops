@@ -6,7 +6,7 @@
 {% set purposes = env_settings.purposes %}
 {% set bucket_prefixes = env_settings.secret_backends.aws.bucket_prefixes %}
 {% set codename = purposes[PURPOSE_PREFIX +'-live'].versions.codename %}
-{% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-release-version').format(codename) %}
+{% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
 {% set launch_date = salt.status.time(format="%Y-%m-%d") %}
 
 load_edx_cloud_profile:
