@@ -189,7 +189,7 @@ update_release_version:
     - tgt_type: grain
     - name: sdb.set
     - arg:
-        - 'sdb://consul/edxapp-{{ edx_codename }}-release-version }}'
+        - 'sdb://consul/edxapp-{{ edx_codename }}-release-version'
         - '{{ release_number }}'
     - require:
         - boto_ec2: snapshot_edx_app_node
