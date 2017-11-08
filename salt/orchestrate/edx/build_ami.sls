@@ -8,7 +8,7 @@
 {% set purposes = env_settings.purposes %}
 {% set instance_name = 'edxapp-base-{}'.format(ENVIRONMENT) %}
 {% set worker_instance_name = 'edx-worker-base-{}'.format(ENVIRONMENT) %}
-{% set edx_codename = purposes.[PURPOSE_PREFIX +'-live'].versions.codename %}
+{% set edx_codename = purposes[PURPOSE_PREFIX +'-live'].versions.codename %}
 
 load_edx_base_cloud_profile:
   file.managed:
