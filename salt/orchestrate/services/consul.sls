@@ -19,6 +19,9 @@ generate_cloud_map_file:
         service_name: consul
         tags:
           business_unit: {{ BUSINESS_UNIT }}
+          Department: {{ BUSINESS_UNIT }}
+          OU: {{ BUSINESS_UNIT }}
+          Environment: {{ ENVIRONMENT }}
         environment_name: {{ ENVIRONMENT }}
         roles:
           - consul_server

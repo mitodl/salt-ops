@@ -21,6 +21,9 @@ generate_mongodb_cloud_map_file:
         num_instances: 3
         tags:
           business_unit: {{ BUSINESS_UNIT }}
+          Department: {{ BUSINESS_UNIT }}
+          OU: {{ BUSINESS_UNIT }}
+          Environment: {{ ENVIRONMENT }}
         roles:
           - mongodb
         securitygroupid:

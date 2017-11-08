@@ -28,8 +28,11 @@ generate_elasticsearch_cloud_map_file:
         subnetids: {{ subnet_ids }}
         volume_size: 200
         tags:
-          escluster: edx-{{ ENVIRONMENT }}
+          escluster: {{ ENVIRONMENT }}
           business_unit: {{ BUSINESS_UNIT }}
+          Department: {{ BUSINESS_UNIT }}
+          OU: {{ BUSINESS_UNIT }}
+          Environment: {{ ENVIRONMENT }}
         profile_overrides:
           ebs_optimized: False
           size: t2.medium
