@@ -134,7 +134,7 @@ build_edx_base_nodes:
               branch: {{ THEME_VERSION }}
     {% endif %}
 
-{% set previous_release = salt.sdb.get('sdb://consul/edxapp-edx_codename-release-version')|int %}
+{% set previous_release = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(edx_codename))|int %}
 {% set release_number = previous_release + 1 %}
 
 {# Delete grains before snapshotting so they can be set when building from the image #}
