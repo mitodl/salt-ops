@@ -10,6 +10,15 @@
 {% set worker_instance_name = 'edx-worker-base-{}'.format(ENVIRONMENT) %}
 {% set edx_codename = purposes[PURPOSE_PREFIX +'-live'].versions.codename %}
 
+update_edxapp_codename_value:
+  salt.function:
+    - tgt: 'roles:master'
+    - tgt_type: grain
+    - name: sdb.set
+    - arg:
+        - 'sdb://consul/edx_codename'
+        - '{{ edx_codename }}'
+
 load_edx_base_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/edx_base.conf
