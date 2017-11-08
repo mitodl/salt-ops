@@ -1,9 +1,12 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  BUSINESS_UNIT, ENVIRONMENT, PURPOSE_PREFIX, subnet_ids with context %}
+
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set ISO8601 = '%Y-%m-%dT%H:%M:%S' %}
 {% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-{env}'.format(env=ENVIRONMENT)]) %}
-{% set release_version = salt.sdb.get('sdb://consul/edx_codename_release_version') %}
+{% set purposes = env_settings.purposes %}
+{% set codename = purposes[PURPOSE_PREFIX +'-live'].versions.codename %}
+{% set release_version = salt.sdb.get('sdb://consul/edx_{}_release_version').format(codename) %}
 
 {% for edx_type in ['draft', 'live'] %}
 {% set purpose_name = '{prefix}-{app}'.format(
