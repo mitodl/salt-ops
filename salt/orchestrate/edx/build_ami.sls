@@ -8,6 +8,7 @@
 {% set purposes = env_settings.purposes %}
 {% set instance_name = 'edxapp-base-{}'.format(ENVIRONMENT) %}
 {% set worker_instance_name = 'edx-worker-base-{}'.format(ENVIRONMENT) %}
+{% set edx_codename = purposes.[PURPOSE_PREFIX +'-live'].versions.codename %}
 
 load_edx_base_cloud_profile:
   file.managed:
@@ -133,7 +134,7 @@ build_edx_base_nodes:
               branch: {{ THEME_VERSION }}
     {% endif %}
 
-{% set previous_release = salt.sdb.get('sdb://consul/edxapp-release-version')|int %}
+{% set previous_release = salt.sdb.get('sdb://consul/edxapp-edx_codename-release-version')|int %}
 {% set release_number = previous_release + 1 %}
 
 {# Delete grains before snapshotting so they can be set when building from the image #}
@@ -160,15 +161,15 @@ disable_minion_service_before_snapshot:
 
 snapshot_edx_app_node:
   boto_ec2.snapshot_created:
-    - name: edxapp_base_release_{{ release_number }}
-    - ami_name: edxapp_base_release_{{ release_number }}
+    - name: edxapp_{{ edx_codename }}_base_release_{{ release_number }}
+    - ami_name: edxapp_{{ edx_codename }}_base_release_{{ release_number }}
     - instance_name: {{ instance_name }}
     - wait_until_available: False
 
 snapshot_edx_worker_node:
   boto_ec2.snapshot_created:
-    - name: edx_worker_base_release_{{ release_number }}
-    - ami_name: edx_worker_base_release_{{ release_number }}
+    - name: edx_worker_{{ edx_codename }}_base_release_{{ release_number }}
+    - ami_name: edx_worker_{{ edx_codename }}_base_release_{{ release_number }}
     - instance_name: {{ worker_instance_name }}
     - wait_until_available: False
 
@@ -178,7 +179,7 @@ update_release_version:
     - tgt_type: grain
     - name: sdb.set
     - arg:
-        - 'sdb://consul/edxapp-release-version'
+        - 'sdb://consul/edxapp-{{ edx_codename}}-release-version'
         - '{{ release_number }}'
     - require:
         - boto_ec2: snapshot_edx_app_node
@@ -188,7 +189,7 @@ alert_devops_channel_on_ami_build_failure:
   slack.post_message:
     - channel: '#general'
     - from_name: saltbot
-    - message: 'The AMI build for edX release {{ release_number }} has failed.'
+    - message: 'The AMI build for edX {{ edx_codename }}release {{ release_number }} has failed.'
     - api_key: {{ slack_api_token }}
     - onfail:
         - boto_ec2: snapshot_edx_worker_node
@@ -198,7 +199,7 @@ alert_devops_channel_on_ami_build_success:
   slack.post_message:
     - channel: '#general'
     - from_name: saltbot
-    - message: 'The AMI build for edX release {{ release_number }} has succeeded.'
+    - message: 'The AMI build for edX {{ edx_codename }} release {{ release_number }} has succeeded.'
     - api_key: {{ slack_api_token }}
     - require:
         - boto_ec2: snapshot_edx_worker_node
