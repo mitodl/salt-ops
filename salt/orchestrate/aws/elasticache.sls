@@ -62,7 +62,7 @@ create_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_replication_group
 {% else %}
 create_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_cluster_{{ cache_purpose }}:
   boto3_elasticache.cache_cluster_present:
-    - CacheClusterId: {{ '{}-{}'.format(cache_purpose, cache_config.engine)[:20].strip('-') }}
+    - CacheClusterId: {{ '{}'.format(cache_purpose)[:20].strip('-') }}
     - NumCacheNodes: {{ cache_config.get('num_cache_nodes', 2) }}
     - AZMode: {{ 'cross-az' if cache_config.get('num_cache_nodes', 2) > 1 else 'single-az' }}
 {% endif %}
