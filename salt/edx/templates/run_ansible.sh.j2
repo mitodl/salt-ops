@@ -3,15 +3,19 @@
 set -x
 
 # Checkout the Ansible submodules
-
-cd {{ venv_path }}/src/ansible/
-git submodule init
-git submodule update
-
+if [[ -e {{ venv_path }}/src/ansible/ ]]
+then
+    cd {{ venv_path }}/src/ansible/
+    git submodule init
+    git submodule update
+fi
 # Source the virtualenv and ansible dev environment script
 
 source {{ venv_path }}/bin/activate
-source {{ venv_path }}/src/ansible/hacking/env-setup
+if [[ -e {{ venv_path }}/src/ansible/ ]]
+then
+    source {{ venv_path }}/src/ansible/hacking/env-setup
+fi
 
 # Run ansible
 rm {{ data_path }}/ansible-log.txt
