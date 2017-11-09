@@ -8,17 +8,17 @@ then
     cd {{ venv_path }}/src/ansible/
     git submodule init
     git submodule update
-fi
-# Source the virtualenv and ansible dev environment script
-
-source {{ venv_path }}/bin/activate
-if [[ -e {{ venv_path }}/src/ansible/ ]]
-then
     source {{ venv_path }}/src/ansible/hacking/env-setup
 fi
 
+# Source the virtualenv and ansible dev environment script
+source {{ venv_path }}/bin/activate
+
 # Run ansible
-rm {{ data_path }}/ansible-log.txt
+if [[ -e {{ venv_path }}/src/ansible/ ]]
+then
+    rm {{ data_path }}/ansible-log.txt
+fi
 cd {{ repo_path }}/playbooks
 {% for playbook in playbooks %}
 ansible-playbook -c local -i localhost, {{ playbook }} --extra-vars @{{ conf_file }} {{ extra_flags }} 2>&1 | \
