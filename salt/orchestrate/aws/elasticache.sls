@@ -53,7 +53,7 @@ create_{{ ENVIRONMENT }}_elasticache_subnet_group:
 {% if cache_config.engine == 'redis' %}
 create_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_replication_group_{{ cache_purpose }}:
   boto3_elasticache.replication_group_present:
-    - ReplicationGroupId: {{ '{}-{}'.format(cache_purpose, cache_config.engine)[:20].strip('-') }}
+    - ReplicationGroupId: {{ cache_config.cluster_id[:20].strip('-') }}
     - CacheParameterGroupName: {{ cache_config.get('parameter_group_name', 'default.redis3.2.cluster.on') }}
     - ReplicationGroupDescription: Redis cluster in {{ ENVIRONMENT }} for {{ cache_purpose }} usage
     - NumNodeGroups: {{ cache_config.get('num_shards', 1) }}
@@ -62,7 +62,7 @@ create_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_replication_group
 {% else %}
 create_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_cluster_{{ cache_purpose }}:
   boto3_elasticache.cache_cluster_present:
-    - CacheClusterId: {{ '{}'.format(cache_purpose)[:20].strip('-') }}
+    - CacheClusterId: {{ cache_config.cluster_id[:20].strip('-') }}
     - NumCacheNodes: {{ cache_config.get('num_cache_nodes', 2) }}
     - AZMode: {{ 'cross-az' if cache_config.get('num_cache_nodes', 2) > 1 else 'single-az' }}
 {% endif %}
