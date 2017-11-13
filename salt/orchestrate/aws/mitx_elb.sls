@@ -23,10 +23,10 @@ create_elb_for_edx_{{ purpose_name }}:
           elb_protocol: HTTPS
           instance_protocol: HTTPS
           certificate: arn:aws:acm:us-east-1:610119931565:certificate/31cbdb62-7553-472b-979a-3063c3e1fddc
+          {% if edx_type == 'draft' %}
           policies:
-            {% if edx_type == 'draft' %}
             - {{ elb_name }}-sticky-cookie-policy
-            {% endif %}
+          {% endif %}
         - elb_port: 80
           instance_port: 80
           elb_protocol: HTTP
