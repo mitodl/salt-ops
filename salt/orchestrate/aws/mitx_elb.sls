@@ -31,10 +31,10 @@ create_elb_for_edx_{{ purpose_name }}:
           instance_port: 80
           elb_protocol: HTTP
           instance_protocol: HTTP
+          {% if edx_type == 'draft' %}
           policies:
-            {% if edx_type == 'draft' %}
             - {{ elb_name }}-sticky-cookie-policy
-            {% endif %}
+          {% endif %}
     - attributes:
         cross_zone_load_balancing:
           enabled: True
