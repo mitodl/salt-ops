@@ -15,7 +15,11 @@ ensure_instance_profile_exists_for_tracking:
         edx-old-tracking-logs-policy:
           Statement:
             - Action:
-                - s3:*
+                - s3:GetObject
+                - s3:ListAllMyBuckets
+                - s3:ListBucket
+                - s3:ListObjects
+                - s3:PutObject
               Effect: Allow
               Resource:
                 - arn:aws:s3:::{{ edx_tracking_bucket }}
