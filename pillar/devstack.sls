@@ -58,7 +58,7 @@ edx:
   config:
     {% if environment == 'dev-ficus' %}
     repo: 'https://github.com/mitodl/configuration.git'
-    branch: 'open-release/ginkgo.master'
+    branch: 'open-release/ficus.master'
     {% elif environment == 'dev-ginkgo' %}
     repo: 'https://github.com/mitodl/configuration.git'
     branch: 'open-release/ginkgo.master'
@@ -107,6 +107,8 @@ edx:
     XQUEUE_RABBITMQ_USER: {{ xqueue_rabbitmq_username }}
     XQUEUE_RABBITMQ_VHOST: /xqueue
     XQUEUE_WORKERS_PER_QUEUE: 2
+    xqueue_source_repo: "https://github.com/mitodl/xqueue.git"
+    xqueue_version: "master"
     forum_ruby_version: "2.4.1"
     edxapp_theme_source_repo: 'https://github.com/mitodl/mitx-theme.git'
     edxapp_theme_version: 'ficus'
@@ -353,7 +355,7 @@ edx:
     edx_platform_version: 'mitx/ficus'
     {% elif environment == 'dev-ginkgo' %}
     edx_platform_repo: 'https://github.com/mitodl/edx-platform.git'
-    edx_platform_version: 'mitx/ginkgo-1'
+    edx_platform_version: 'mitx/ginkgo'
     {% endif %}
 
     COMMON_ENABLE_AWS_ROLE: False
