@@ -12,5 +12,4 @@ upload_tar_to_s3:
   module.run:
     - name: s3.put
     - bucket: {{ edx_tracking_bucket }}
-    - path: 'retired-instance-logs'
     - local_file: {{ edx_tracking_local_folder }}/edx_tracking_{{ instance_id }}.tgz
