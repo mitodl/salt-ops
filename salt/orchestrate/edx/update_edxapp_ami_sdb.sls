@@ -3,8 +3,8 @@
 {% set app_ami_id = salt.boto_ec2.find_images(ami_name='edxapp_{}_base_release_{}'.format(codename, release_number))[0] %}
 {% set worker_ami_id = salt.boto_ec2.find_images(ami_name='edx_worker_{}_base_release_{}'.format(codename, release_number))[0] %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-qa') %}
-{% set instance_name = 'edxapp-base-{}'.format(ENVIRONMENT) %}
-{% set worker_instance_name = 'edx-worker-base-{}'.format(ENVIRONMENT) %}
+{% set instance_name = 'edxapp-{}-base-{}'.format(codename, ENVIRONMENT) %}
+{% set worker_instance_name = 'edx-worker-{}-base-{}'.format(codename, ENVIRONMENT) %}
 
 update_edxapp_ami_value:
   salt.function:
