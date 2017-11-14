@@ -7,7 +7,7 @@
 {% if environment == 'dev-ficus' %}
 {% set edx_platform_branch = 'mitx/ficus' %}
 {% elif environment == 'dev-ginkgo' %}
-{% set edx_platform_branch = 'mitx/ginkgo-1' %}
+{% set edx_platform_branch = 'mitx/ginkgo' %}
 {% endif %}
 
 {% set xqueue_rabbitmq_username = 'admin' %}
