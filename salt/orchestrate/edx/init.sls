@@ -8,6 +8,7 @@
 {% set codename = purposes[PURPOSE_PREFIX +'-live'].versions.codename %}
 {% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
 {% set launch_date = salt.status.time(format="%Y-%m-%d") %}
+{% set edx_tracking_bucket = 'odl-residential-tracking-backup' %}
 
 load_edx_cloud_profile:
   file.managed:
@@ -72,9 +73,30 @@ generate_edx_cloud_map_file:
         - file: load_edx_cloud_profile
         - file: load_edx_worker_cloud_profile
 
-ensure_instance_profile_exists_for_edx:
+ensure_tracking_bucket_exists:
+  boto_s3_bucket.present:
+    - Bucket: {{ edx_tracking_bucket }}
+    - region: us-east-1
+
+ensure_instance_profile_exists_for_tracking:
   boto_iam_role.present:
     - name: edx-instance-role
+    - delete_policies: False
+    - policies:
+        edx-old-tracking-logs-policy:
+          Statement:
+            - Action:
+                - s3:GetObject
+                - s3:ListAllMyBuckets
+                - s3:ListBucket
+                - s3:ListObjects
+                - s3:PutObject
+              Effect: Allow
+              Resource:
+                - arn:aws:s3:::{{ edx_tracking_bucket }}
+                - arn:aws:s3:::{{ edx_tracking_bucket }}/*
+    - require:
+        - boto_s3_bucket: ensure_tracking_bucket_exists
 
 {% for bucket in bucket_prefixes %}
 {% for type in ['draft', 'live'] %}
