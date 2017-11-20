@@ -43,7 +43,7 @@ create_elb_for_edx_{{ purpose_name }}:
           timeout: 300
     - cnames:
         {% for domain_key, domain in purpose.domains.items()  %}
-        {% if (edx_type == 'live' and domain_key in ['lms', 'gitreload'])
+        {% if (edx_type == 'live' and domain_key in ['lms', 'gitreload', 'preview'])
            or edx_type == 'draft' %}
         - name: {{ domain }}.
           zone: mitx.mit.edu.
