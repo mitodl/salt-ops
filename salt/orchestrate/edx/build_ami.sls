@@ -8,7 +8,7 @@
 {% set purposes = env_settings.purposes %}
 {% set edx_codename = purposes[PURPOSE_PREFIX +'-live'].versions.codename %}
 {% set instance_name = 'edxapp-{}-base-{}'.format(edx_codename, ENVIRONMENT) %}
-{% set worker_instance_name = 'edx-{}-worker-base-{}'.format(edx_codename, ENVIRONMENT) %}
+{% set worker_instance_name = 'edx-worker-{}-base-{}'.format(edx_codename, ENVIRONMENT) %}
 
 update_edxapp_codename_value:
   salt.function:
