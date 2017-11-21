@@ -6,9 +6,9 @@
 {% set THEME_VERSION = salt.environ.get('THEME_VERSION', 'ficus') %}
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set purposes = env_settings.purposes %}
-{% set instance_name = 'edxapp-base-{}'.format(ENVIRONMENT) %}
-{% set worker_instance_name = 'edx-worker-base-{}'.format(ENVIRONMENT) %}
 {% set edx_codename = purposes[PURPOSE_PREFIX +'-live'].versions.codename %}
+{% set instance_name = 'edxapp-{}-base-{}'.format(edx_codename, ENVIRONMENT) %}
+{% set worker_instance_name = 'edx-{}-worker-base-{}'.format(edx_codename, ENVIRONMENT) %}
 
 update_edxapp_codename_value:
   salt.function:
@@ -29,6 +29,7 @@ create_edx_baseline_instance_in_{{ ENVIRONMENT }}:
   salt.runner:
     - name: cloud.profile
     - prof: edx_base
+    - parallel: True
     - instances:
         - {{ instance_name }}
     - grains:
@@ -60,6 +61,7 @@ create_edx_worker_baseline_instance_in_{{ ENVIRONMENT }}:
   salt.runner:
     - name: cloud.profile
     - prof: edx_worker_base
+    - parallel: True
     - instances:
         - {{ worker_instance_name }}
     - grains:
