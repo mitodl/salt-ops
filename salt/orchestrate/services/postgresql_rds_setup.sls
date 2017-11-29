@@ -4,12 +4,13 @@
 {% set environment = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set purposes = environment.purposes %}
 
-{% for dbconfig in environment.backends.postgres_rds %}
+{% for dbconfig in environment.backends.rds %}
+{% if dbconfig.engine == 'postgres' %}
 {% set postgresql_host = 'postgresql-{}.service.{}.consul'.format(dbconfig.name, ENVIRONMENT) %}
 {% set postgresql_port = 5432 %}
 {% set postgresql_creds = salt.vault.read(
-    'postgresql-{env}-{dbname}/creds/admin'.format(
-        env=ENVIRONMENT, dbname=dbconfig.name)) %}
+    '{engine}-{env}-{dbname}/creds/admin'.format(
+        engine=dbconfig.engine, env=ENVIRONMENT, dbname=dbconfig.name)) %}
 
 create_db_app_role_{{ dbconfig.name }}:
   postgres_group.present:
@@ -63,4 +64,5 @@ create_db_{{ schema }}:
     - db_host: {{ postgresql_host }}
     - db_port: {{ postgresql_port }}
 {% endfor %}
+{% endif %}
 {% endfor %}
