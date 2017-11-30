@@ -81,9 +81,10 @@ configure_vault_postgresql_{{ dbconfig.name }}_backend:
     - connection_config:
         plugin_name: {{ dbconfig.vault_plugin }}
         {% if dbconfig.engine == 'postgres' %}
-        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@postgresql-{{ dbconfig.name }}.service.{{ ENVIRONMENT }}.consul:5432/{{ dbconfig.name }}"
+        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@{{ dbconfig.engine }}-{{ dbconfig.name }}.service.{{ ENVIRONMENT }}.consul:5432/{{ dbconfig.name }}"
         {% else %}
-        connection_url: "{{ master_user }}:{{ master_pass }}@tcp(mysql.service.{{ ENVIRONMENT }}.consul:3306)/"
+        connection_url: "{{ master_user }}:{{ master_pass }}@tcp({{ dbconfig.engine }}-{{ dbconfig.name }}.service.{{ ENVIRONMENT }}.consul:3306)/"
         {% endif %}
         verify_connection: False
+        allowed_roles: '*'
 {% endfor %}
