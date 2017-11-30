@@ -34,7 +34,7 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
 {% for dbconfig in db_configs %}
 create_{{ ENVIRONMENT }}_{{ dbconfig.name }}_rds_store:
   boto_rds.present:
-    - name: {{ VPC_RESOURCE_SUFFIX }}-rds-postgresql-{{ dbconfig.name }}
+    - name: {{ VPC_RESOURCE_SUFFIX }}-rds-{{ dbconfig.engine }}-{{ dbconfig.name }}
     - allocated_storage: {{ dbconfig.allocated_storage }}
     - db_instance_class: {{ dbconfig.db_instance_class }}
     - db_name: {{ dbconfig.name }}
