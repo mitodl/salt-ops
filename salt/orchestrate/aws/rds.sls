@@ -17,7 +17,7 @@
 {% set SIX_MONTHS = '4368h' %}
 {% set master_pass = salt.random.get_str(42) %}
 {% set master_user = 'odldevops' %}
-{% set pg_configs = env_settings.backends.postgres_rds %}
+{% set db_configs = env_settings.backends.rds %}
 
 create_{{ ENVIRONMENT }}_rds_db_subnet_group:
   boto_rds.subnet_group_present:
@@ -31,7 +31,7 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
         OU: {{ BUSINESS_UNIT }}
         Environment: {{ ENVIRONMENT }}
 
-{% for dbconfig in pg_configs %}
+{% for dbconfig in db_configs %}
 create_{{ ENVIRONMENT }}_{{ dbconfig.name }}_rds_store:
   boto_rds.present:
     - name: {{ VPC_RESOURCE_SUFFIX }}-rds-postgresql-{{ dbconfig.name }}
@@ -39,7 +39,7 @@ create_{{ ENVIRONMENT }}_{{ dbconfig.name }}_rds_store:
     - db_instance_class: {{ dbconfig.db_instance_class }}
     - db_name: {{ dbconfig.name }}
     - storage_type: gp2
-    - engine: postgres
+    - engine: {{ dbconfig.engine }}
     - multi_az: {{ dbconfig.multi_az }}
     - auto_minor_version_upgrade: True
     - publicly_accessible: {{ dbconfig.get('public_access', False) }}
@@ -48,10 +48,10 @@ create_{{ ENVIRONMENT }}_{{ dbconfig.name }}_rds_store:
     - vpc_security_group_ids:
         {% if dbconfig.get('public_access', False) %}
         - {{ salt.boto_secgroup.get_group_id(
-             'postgres-rds-public-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+             '{}-rds-public-{}'.format(dbconfig.engine, ENVIRONMENT), vpc_name=VPC_NAME) }}
         {% else %}
         - {{ salt.boto_secgroup.get_group_id(
-             'postgres-rds-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+             '{}-rds-{}'.format(dbconfig.engine, ENVIRONMENT), vpc_name=VPC_NAME) }}
         {% endif %}
         - {{ salt.boto_secgroup.get_group_id(
              'vault-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
@@ -67,16 +67,23 @@ create_{{ ENVIRONMENT }}_{{ dbconfig.name }}_rds_store:
     - require:
         - boto_rds: create_{{ ENVIRONMENT }}_rds_db_subnet_group
 
+{% set mount_point = '{}-{}-{}'.format(dbconfig.engine, ENVIRONMENT, dbconfig.name) %}
 configure_vault_postgresql_{{ dbconfig.name }}_backend:
   vault.secret_backend_enabled:
-    - backend_type: postgresql
-    - description: Backend to create dynamic PostGreSQL credentials for {{ ENVIRONMENT }}
-    - mount_point: postgresql-{{ ENVIRONMENT }}-{{ dbconfig.name }}
+    - backend_type: database
+    - description: Backend to create dynamic {{ dbconfig.engine }} credentials for {{ ENVIRONMENT }}
+    - mount_point: {{ mount_point }}
     - ttl_max: {{ SIX_MONTHS }}
     - ttl_default: {{ SIX_MONTHS }}
     - lease_max: {{ SIX_MONTHS }}
     - lease_default: {{ SIX_MONTHS }}
+    - connection_config_path: {{ mount_point }}/config/{{ dbconfig.name }}
     - connection_config:
+        plugin_name: {{ dbconfig.vault_plugin }}
+        {% if dbconfig.engine == 'postgres' %}
         connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@postgresql-{{ dbconfig.name }}.service.{{ ENVIRONMENT }}.consul:5432/{{ dbconfig.name }}"
+        {% else %}
+        connection_url: "{{ master_user }}:{{ master_pass }}@tcp(mysql.service.{{ ENVIRONMENT }}.consul:3306)/"
+        {% endif %}
         verify_connection: False
 {% endfor %}

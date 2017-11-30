@@ -189,6 +189,42 @@ create_public_postgres_rds_security_group:
         OU: {{ BUSINESS_UNIT }}
         Environment: {{ ENVIRONMENT }}
 
+create_mysql_rds_security_group:
+  boto_secgroup.present:
+    - name: mysql-rds-{{ VPC_RESOURCE_SUFFIX }}
+    - vpc_name: {{ VPC_NAME }}
+    - description: ACL for MySQL RDS servers
+    - rules:
+        - ip_protocol: tcp
+          from_port: 3306
+          to_port: 3306
+          cidr_ip:
+            - {{ VPC_CIDR }}
+    - tags:
+        Name: mysql-rds-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
+
+create_public_mysql_rds_security_group:
+  boto_secgroup.present:
+    - name: mysql-rds-public-{{ VPC_RESOURCE_SUFFIX }}
+    - vpc_name: {{ VPC_NAME }}
+    - description: Allow public access to MySQL RDS servers
+    - rules:
+        - ip_protocol: tcp
+          from_port: 3306
+          to_port: 3306
+          cidr_ip:
+            - 0.0.0.0/0
+    - tags:
+        Name: mysql-rds-public-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
+
 create_scylladb_rds_security_group:
   boto_secgroup.present:
     - name: scylladb-{{ VPC_RESOURCE_SUFFIX }}
