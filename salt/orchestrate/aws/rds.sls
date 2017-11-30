@@ -15,7 +15,7 @@
 {% endfor %}
 
 {% set SIX_MONTHS = '4368h' %}
-{% set master_pass = salt.random.get_str(42) %}
+{% set master_pass = salt.random.get_str(40) %}
 {% set master_user = 'odldevops' %}
 {% set db_configs = env_settings.backends.rds %}
 
