@@ -6,7 +6,7 @@
 
 {% for dbconfig in environment.backends.rds %}
 {% if dbconfig.engine == 'postgres' %}
-{% set postgresql_host = 'postgresql-{}.service.{}.consul'.format(dbconfig.name, ENVIRONMENT) %}
+{% set postgresql_host = 'postgres-{}.service.{}.consul'.format(dbconfig.name, ENVIRONMENT) %}
 {% set postgresql_port = 5432 %}
 {% set postgresql_creds = salt.vault.read(
     '{engine}-{env}-{dbname}/creds/admin'.format(
