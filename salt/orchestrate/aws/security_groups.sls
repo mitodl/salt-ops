@@ -269,24 +269,3 @@ create_webapp_security_group:
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
         Environment: {{ ENVIRONMENT }}
-
-create_fluentd_aggregator_security_group:
-  boto_secgroup.present:
-    - name: fluentd-{{ VPC_RESOURCE_SUFFIX }}
-    - vpc_name: {{ VPC_NAME }}
-    - description: ACL for Fluentd aggretators
-    - rules:
-        {% for portnum in [443, 5001] %}
-        - ip_protocol: tcp
-          from_port: {{ portnum }}
-          to_port: {{ portnum }}
-          cidr_ip:
-            - 0.0.0.0/0
-            - '::/0'
-        {% endfor %}
-    - tags:
-        Name: fluentd-{{ VPC_RESOURCE_SUFFIX }}
-        business_unit: {{ BUSINESS_UNIT }}
-        Department: {{ BUSINESS_UNIT }}
-        OU: {{ BUSINESS_UNIT }}
-        Environment: {{ ENVIRONMENT }}

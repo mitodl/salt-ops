@@ -3,6 +3,27 @@
 {% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', 2) %}
 {% set app_name = 'fluentd' %}
 
+create_fluentd_aggregator_security_group:
+  boto_secgroup.present:
+    - name: fluentd-{{ VPC_RESOURCE_SUFFIX }}
+    - vpc_name: {{ VPC_NAME }}
+    - description: ACL for Fluentd aggretators
+    - rules:
+        {% for portnum in [443, 5001] %}
+        - ip_protocol: tcp
+          from_port: {{ portnum }}
+          to_port: {{ portnum }}
+          cidr_ip:
+            - 0.0.0.0/0
+            - '::/0'
+        {% endfor %}
+    - tags:
+        Name: fluentd-{{ VPC_RESOURCE_SUFFIX }}
+        business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
+
 load_{{ app_name }}_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/{{ app_name }}.conf
@@ -19,10 +40,6 @@ generate_{{ app_name }}_cloud_map_file:
         environment_name: {{ ENVIRONMENT }}
         num_instances: {{ INSTANCE_COUNT }}
         service_name: {{ app_name }}
-        roles:
-          - fluentd-server
-          - log-aggregator
-          - {{ app_name }}
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
             'default', vpc_name='mitodl-operations-services') }}
@@ -75,14 +92,6 @@ populate_mine_with_{{ app_name }}_node_data:
     - require:
         - salt: load_pillar_data_on_{{ app_name }}_nodes
 
-deploy_consul_agent_to_{{ app_name }}_nodes:
-  salt.state:
-    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - sls:
-        - consul
-        - consul.dns_proxy
-
 build_{{ app_name }}_nodes:
   salt.state:
     - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
@@ -90,13 +99,3 @@ build_{{ app_name }}_nodes:
     - highstate: True
     - require:
         - salt: deploy_consul_agent_to_{{ app_name }}_nodes
-
-restart_{{ app_name }}_service:
-  salt.function:
-    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - name: service.restart
-    - arg:
-        - {{ app_name }}
-    - require:
-        - salt: build_{{ app_name }}_nodes
