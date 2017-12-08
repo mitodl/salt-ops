@@ -51,7 +51,7 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
-  'roles:aggregator':
+  'roles:log-aggregator':
     - match: grain
     - fluentd.reverse_proxy
     - datadog.plugins
