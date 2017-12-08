@@ -24,6 +24,20 @@ create_fluentd_aggregator_security_group:
         OU: {{ BUSINESS_UNIT }}
         Environment: {{ ENVIRONMENT }}
 
+{% set hosts = [] %}
+{% for host, grains in salt.saltutil.runner(
+    'mine.get',
+    tgt='G@roles:fluentd and G@roles:log-aggregator', fun='grains.item', tgt_type='compound'
+    ).items() %}
+{% do hosts.append(grains['external_ip']) %}
+{% endfor %}
+register_log_aggregator_dns:
+  boto_route53.present:
+    - name: log-input.odl.mit.edu
+    - value: {{ hosts }}
+    - zone: odl.mit.edu.
+    - record_type: A
+
 load_{{ app_name }}_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/{{ app_name }}.conf
