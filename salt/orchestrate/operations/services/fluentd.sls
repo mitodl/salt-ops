@@ -1,6 +1,7 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, BUSINESS_UNIT, PURPOSE_PREFIX, subnet_ids with context %}
 {% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', 2) %}
+{% set launch_date = salt.status.time(format="%Y-%m-%d") %}
 {% set app_name = 'fluentd' %}
 
 create_fluentd_aggregator_security_group:
@@ -23,6 +24,7 @@ create_fluentd_aggregator_security_group:
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
         Environment: {{ ENVIRONMENT }}
+        launch-date: '{{ launch_date }}'
 
 load_{{ app_name }}_cloud_profile:
   file.managed:
@@ -79,7 +81,7 @@ deploy_{{ app_name }}_cloud_map:
 load_pillar_data_on_{{ app_name }}_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'P@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
     - require:
         - salt: deploy_{{ app_name }}_cloud_map
@@ -87,14 +89,14 @@ load_pillar_data_on_{{ app_name }}_nodes:
 populate_mine_with_{{ app_name }}_node_data:
   salt.function:
     - name: mine.update
-    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
     - require:
         - salt: load_pillar_data_on_{{ app_name }}_nodes
 
 build_{{ app_name }}_nodes:
   salt.state:
-    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
     - highstate: True
     - require:
@@ -103,7 +105,7 @@ build_{{ app_name }}_nodes:
 update_mine_with_{{ app_name }}_node_data:
   salt.function:
     - name: mine.update
-    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
     - require:
         - salt: build_{{ app_name }}_nodes
