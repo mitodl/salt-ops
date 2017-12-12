@@ -44,7 +44,7 @@ generate_{{ app_name }}_cloud_map_file:
         service_name: {{ app_name }}
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
-            'default', vpc_name=VPN_NAME) }}
+            'default', vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
             'fluentd-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
