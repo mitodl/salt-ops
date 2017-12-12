@@ -98,7 +98,7 @@ build_{{ app_name }}_nodes:
     - tgt_type: compound
     - highstate: True
     - require:
-        - salt: deploy_consul_agent_to_{{ app_name }}_nodes
+        - salt: deploy_{{ app_name }}_cloud_map
 
 update_mine_with_{{ app_name }}_node_data:
   salt.function:
