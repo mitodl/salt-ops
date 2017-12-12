@@ -115,9 +115,12 @@ update_mine_with_{{ app_name }}_node_data:
     ).items() %}
 {% do hosts.append(grains['external_ip']) %}
 {% endfor %}
+
+{#
 register_log_aggregator_dns:
   boto_route53.present:
     - name: log-input.odl.mit.edu
     - value: {{ hosts }}
     - zone: odl.mit.edu.
     - record_type: A
+#}
