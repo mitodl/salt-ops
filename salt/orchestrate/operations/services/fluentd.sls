@@ -54,6 +54,11 @@ generate_{{ app_name }}_cloud_map_file:
           Department: {{ BUSINESS_UNIT }}
           OU: {{ BUSINESS_UNIT }}
           Environment: {{ ENVIRONMENT }}
+          role: 'log-aggregator'
+        roles:
+          - fluentd
+          - fluentd-server
+          - log-aggregator
     - require:
         - file: load_{{ app_name }}_cloud_profile
 
