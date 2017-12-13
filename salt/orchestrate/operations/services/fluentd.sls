@@ -83,7 +83,7 @@ deploy_{{ app_name }}_cloud_map:
 load_pillar_data_on_{{ app_name }}_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'P@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }} and G@launch-date:{{ launch_date }}'
+    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
     - require:
         - salt: deploy_{{ app_name }}_cloud_map
