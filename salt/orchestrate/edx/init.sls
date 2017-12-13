@@ -106,6 +106,18 @@ create_edx_s3_bucket_{{ bucket }}_{{ PURPOSE_PREFIX }}-{{ type }}_{{ ENVIRONMENT
     - region: us-east-1
     - Versioning:
        Status: "Enabled"
+    {% if 'storage' in bucket %}
+    - CORSRules:
+        - AllowedHeaders:
+            - "*"
+          AllowedMethods:
+            - GET
+            - POST
+            - PUT
+          AllowedOrigins:
+            - "*"
+          MaxAgeSeconds: 3000
+    {% endif %}
 {% endfor %}
 {% endfor %}
 
