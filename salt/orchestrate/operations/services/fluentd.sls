@@ -24,7 +24,6 @@ create_fluentd_aggregator_security_group:
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
         Environment: {{ ENVIRONMENT }}
-        launch-date: '{{ launch_date }}'
 
 load_{{ app_name }}_cloud_profile:
   file.managed:
