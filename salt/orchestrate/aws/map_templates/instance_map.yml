@@ -21,7 +21,7 @@
         environment: {{ environment_name }}
         roles: {{ roles|default([service_name]) }}
         {% for tag_name, tag_value in tags.items() %}
-        {{ tag_name }}: {{ tag_value }}
+        {{ tag_name }}: '{{ tag_value }}'
         {% endfor %}
       {% for profile_setting, profile_value in profile_overrides.items() %}
       {{ profile_setting }}: {{ profile_value }}
