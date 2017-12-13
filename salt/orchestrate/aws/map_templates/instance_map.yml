@@ -15,7 +15,7 @@
         environment: {{ environment_name }}
         role: {{ service_name }}
         {% for tag_name, tag_value in tags.items() %}
-        {{ tag_name }}: {{ tag_value }}
+        {{ tag_name }}: '{{ tag_value }}'
         {% endfor %}
       grains:
         environment: {{ environment_name }}
