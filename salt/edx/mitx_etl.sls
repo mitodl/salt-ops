@@ -31,7 +31,7 @@ install_mitx_residential_etl_requirements:
       - git: clone_mitx_etl_repo
       - pkg: install_etl_os_depencies
 
-{% set settings = salt.pillar.get('edx:mitx_etl:mitx_residential_etl:settings', {}).items() %}
+{% set settings = salt.pillar.get('edx:mitx_etl:mitx_residential_etl:settings', {}) %}
 mitx_residential_etl_config:
   file.managed:
     - name: /mitx/settings.json
@@ -49,7 +49,7 @@ ensure_upload_bucket_exists:
 
 add_task_to_cron:
   cron.present:
-    - name: 'source /mitx/mitx_etl/bin/python3 /mitx/mitx_residential_etl.py'
+    - name: '/mitx/mitx_etl/bin/python3 /mitx/mitx_residential_etl.py'
     - comment: mitx_residential_etl_script
     - special: '@daily'
     - require:
