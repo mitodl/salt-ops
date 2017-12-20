@@ -1,6 +1,10 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, BUSINESS_UNIT, subnet_ids with context %}
+{% set mongo_admin_password = salt.vault.read('secret-{}/{}/mongodb-admin-password'.format(BUSINESS_UNIT, ENVIRONMENT)).data.value %}
+{% if not mongo_admin_password %}
 {% set mongo_admin_password = salt.random.get_str(42) %}
+{% salt.vault.write('secret-{}/{}/mongodb-admin-password'.format(BUSINESS_UNIT, ENVIRONMENT), value=mongo_admin_password) %}
+{% endif %}
 {% set SIX_MONTHS = '4368h' %}
 
 load_mongodb_cloud_profile:
