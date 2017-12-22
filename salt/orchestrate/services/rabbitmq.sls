@@ -13,7 +13,7 @@ set_rabbitmq_admin_password_in_vault:
     - kwarg:
         value: rabbitmq_admin_password
 {% else %}
-{% set rabbitmq_admin_password = rabbitmq_admin_password.data.value}
+{% set rabbitmq_admin_password = rabbitmq_admin_password.data.value %}
 {% endif %}
 {% set SIX_MONTHS = '4368h' %}
 
