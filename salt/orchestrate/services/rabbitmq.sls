@@ -2,7 +2,7 @@
  ENVIRONMENT, BUSINESS_UNIT, subnet_ids with context %}
 {% set rabbit_admin_password = salt.vault.read('secret-{}/{}/rabbitmq-admin-password'.format(BUSINESS_UNIT, ENVIRONMENT)).data.value %}
 {% if not rabbit_admin_password %}
-{% set rabbit_admin_password = salt.random.get_str(42) %}
+{% set rabbitmq_admin_password = salt.random.get_str(42) %}
 {% salt.vault.write('secret-{}/{}/rabbitmq-admin-password'.format(BUSINESS_UNIT, ENVIRONMENT), value=rabbitmq_admin_password) %}
 {% endif %}
 {% set SIX_MONTHS = '4368h' %}
