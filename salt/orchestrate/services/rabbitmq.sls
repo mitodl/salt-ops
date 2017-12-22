@@ -1,7 +1,7 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, BUSINESS_UNIT, subnet_ids with context %}
-{% set rabbit_admin_password = salt.vault.read('secret-{}/{}/rabbitmq-admin-password'.format(BUSINESS_UNIT, ENVIRONMENT)).data.value %}
-{% if not rabbit_admin_password %}
+{% set rabbitmq_admin_password = salt.vault.read('secret-{}/{}/rabbitmq-admin-password'.format(BUSINESS_UNIT, ENVIRONMENT)).data.value %}
+{% if not rabbitmq_admin_password %}
 {% set rabbitmq_admin_password = salt.random.get_str(42) %}
 {% salt.vault.write('secret-{}/{}/rabbitmq-admin-password'.format(BUSINESS_UNIT, ENVIRONMENT), value=rabbitmq_admin_password) %}
 {% endif %}
@@ -93,7 +93,7 @@ build_rabbitmq_nodes:
               settings:
                 tags:
                   - administrator
-              password: {{ rabbit_admin_password }}
+              password: {{ rabbitmq_admin_password }}
 
 configure_vault_rabbitmq_backend:
   vault.secret_backend_enabled:
@@ -103,7 +103,7 @@ configure_vault_rabbitmq_backend:
     - connection_config:
         connection_uri: "http://rabbitmq.service.{{ ENVIRONMENT }}.consul:15672"
         username: admin
-        password: {{ rabbit_admin_password }}
+        password: {{ rabbitmq_admin_password }}
         verify_connection: False
     - ttl_max: {{ SIX_MONTHS }}
     - ttl_default: {{ SIX_MONTHS }}
