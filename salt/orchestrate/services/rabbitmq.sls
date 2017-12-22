@@ -1,6 +1,6 @@
 {% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
  ENVIRONMENT, BUSINESS_UNIT, subnet_ids with context %}
-{% set rabbitmq_admin_password = salt.vault.read('secret-{}/{}/rabbitmq-admin-password'.format(BUSINESS_UNIT, ENVIRONMENT)).data.value %}
+{% set rabbitmq_admin_password = salt.vault.read('secret-{}/{}/rabbitmq-admin-password'.format(BUSINESS_UNIT, ENVIRONMENT)) %}
 {% if not rabbitmq_admin_password %}
 {% set rabbitmq_admin_password = salt.random.get_str(42) %}
 set_rabbitmq_admin_password_in_vault:
@@ -12,6 +12,8 @@ set_rabbitmq_admin_password_in_vault:
         - secret-{{ BUSINESS_UNIT }}/{{ ENVIRONMENT }}/rabbitmq-admin-password
     - kwarg:
         value: rabbitmq_admin_password
+{% else %}
+{% set rabbitmq_admin_password = rabbitmq_admin_password.data.value}
 {% endif %}
 {% set SIX_MONTHS = '4368h' %}
 
