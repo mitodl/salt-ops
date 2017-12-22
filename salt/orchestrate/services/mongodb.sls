@@ -3,7 +3,15 @@
 {% set mongo_admin_password = salt.vault.read('secret-{}/{}/mongodb-admin-password'.format(BUSINESS_UNIT, ENVIRONMENT)).data.value %}
 {% if not mongo_admin_password %}
 {% set mongo_admin_password = salt.random.get_str(42) %}
-{% salt.vault.write('secret-{}/{}/mongodb-admin-password'.format(BUSINESS_UNIT, ENVIRONMENT), value=mongo_admin_password) %}
+set_mongo_admin_password_in_vault:
+  salt.function:
+    - tgt: 'roles:master'
+    - tgt_type: grain
+    - name: vault.write
+    - arg:
+        - secret-{{ BUSINESS_UNIT }}/{{ ENVIRONMENT }}/mongodb-admin-password
+    - kwarg:
+        value: mongo_admin_password
 {% endif %}
 {% set SIX_MONTHS = '4368h' %}
 
