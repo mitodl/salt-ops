@@ -11,7 +11,7 @@ set_mongo_admin_password_in_vault:
     - arg:
         - secret-{{ BUSINESS_UNIT }}/{{ ENVIRONMENT }}/mongodb-admin-password
     - kwarg:
-        value: mongo_admin_password
+        value: {{ mongo_admin_password }}
 {% else %}
 {% set mongo_admin_password = mongo_admin_password.data.value}
 {% endif %}

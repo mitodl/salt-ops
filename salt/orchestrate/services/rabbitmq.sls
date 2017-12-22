@@ -11,7 +11,7 @@ set_rabbitmq_admin_password_in_vault:
     - arg:
         - secret-{{ BUSINESS_UNIT }}/{{ ENVIRONMENT }}/rabbitmq-admin-password
     - kwarg:
-        value: rabbitmq_admin_password
+        value: {{ rabbitmq_admin_password }}
 {% else %}
 {% set rabbitmq_admin_password = rabbitmq_admin_password.data.value %}
 {% endif %}
