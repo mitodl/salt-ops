@@ -3,7 +3,15 @@
 {% set rabbitmq_admin_password = salt.vault.read('secret-{}/{}/rabbitmq-admin-password'.format(BUSINESS_UNIT, ENVIRONMENT)).data.value %}
 {% if not rabbitmq_admin_password %}
 {% set rabbitmq_admin_password = salt.random.get_str(42) %}
-{% salt.vault.write('secret-{}/{}/rabbitmq-admin-password'.format(BUSINESS_UNIT, ENVIRONMENT), value=rabbitmq_admin_password) %}
+set_rabbitmq_admin_password_in_vault:
+  salt.function:
+    - tgt: 'roles:master'
+    - tgt_type: grain
+    - name: vault.write
+    - arg:
+        - secret-{{ BUSINESS_UNIT }}/{{ ENVIRONMENT }}/rabbitmq-admin-password
+    - kwarg:
+        value: rabbitmq_admin_password
 {% endif %}
 {% set SIX_MONTHS = '4368h' %}
 
