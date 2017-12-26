@@ -13,7 +13,7 @@ set_mongo_admin_password_in_vault:
     - kwarg:
         value: {{ mongo_admin_password }}
 {% else %}
-{% set mongo_admin_password = mongo_admin_password.data.value}
+{% set mongo_admin_password = mongo_admin_password.data.value %}
 {% endif %}
 {% set SIX_MONTHS = '4368h' %}
 
