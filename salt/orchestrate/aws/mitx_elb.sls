@@ -46,7 +46,6 @@ create_elb_for_edx_{{ purpose_name }}:
         - name: {{ domain }}.
           zone: mitx.mit.edu.
           ttl: 60
-        {% endif %}
         {% endfor %}
     - health_check:
         target: 'HTTPS:443/heartbeat'
