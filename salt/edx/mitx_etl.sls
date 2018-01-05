@@ -31,7 +31,7 @@ install_mitx_residential_etl_requirements:
       - git: clone_mitx_etl_repo
       - pkg: install_etl_os_depencies
 
-{% set settings = salt.pillar.get('edx:mitx_etl:mitx_residential_etl:settings', {}) %}
+{% set settings = salt.pillar.get('mitx_residential_etl:settings', {}) %}
 mitx_residential_etl_config:
   file.managed:
     - name: /mitx/settings.json
