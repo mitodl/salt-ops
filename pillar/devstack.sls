@@ -2,13 +2,9 @@
 
 {% set business_unit = 'mitodl' %}
 {% set purpose = 'devstack' %}
-{% set environment = salt.environ.get('environment', 'dev-ficus') %}
+{% set environment = salt.environ.get('environment', 'dev-ginkgo') %}
 {% set purpose_suffix = 'devstack' %}
-{% if environment == 'dev-ficus' %}
-{% set edx_platform_branch = 'mitx/ficus' %}
-{% elif environment == 'dev-ginkgo' %}
 {% set edx_platform_branch = 'mitx/ginkgo' %}
-{% endif %}
 
 {% set xqueue_rabbitmq_username = 'admin' %}
 {% set xqueue_rabbitmq_password = 'changeme' %}
