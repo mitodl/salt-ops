@@ -121,7 +121,7 @@ create_elb_for_edx_studio_live:
         business_unit: {{ BUSINESS_UNIT }}
         created_at: "{{ salt.status.time(format=ISO8601) }}"
 
-register_edx_{{ purpose_name }}_nodes_with_elb:
+register_edx_studio_live_nodes_with_elb:
   boto_elb.register_instances:
     - name: {{ elb_name }}
     - instances:
