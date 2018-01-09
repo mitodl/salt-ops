@@ -40,13 +40,6 @@ mitx_residential_etl_config:
     - require:
       - git: clone_mitx_etl_repo
 
-ensure_upload_bucket_exists:
-  boto_s3_bucket.present:
-    - Bucket: {{ settings.S3Bucket.bucket }}
-    - Versioning:
-        Status: Enabled
-    - region: us-east-1
-
 add_task_to_cron:
   cron.present:
     - name: '/mitx/mitx_etl/bin/python3 /mitx/mitx_residential_etl.py'
@@ -54,4 +47,3 @@ add_task_to_cron:
     - special: '@daily'
     - require:
       - file: mitx_residential_etl_config
-      - boto_s3_bucket: ensure_upload_bucket_exists
