@@ -75,9 +75,9 @@ register_edx_{{ purpose_name }}_nodes_with_elb:
         - boto_elb: create_elb_for_edx_{{ purpose_name }}
 
 {% if edx_type == 'live' %}
-{% set elb_name = 'edx-studio-live-{env}'.format(
-   env=ENVIRONMENT)[:32].strip('-') %}
-create_elb_for_edx_studio_live:
+{% set elb_name = 'edx-{prefix}-studio-live-{env}'.format(
+   prefix=PURPOSE_PREFIX, env=ENVIRONMENT)[:32].strip('-') %}
+create_elb_for_edx_{{ PURPOSE_PREFIX }}_studio_live:
   boto_elb.present:
     - name: {{ elb_name }}
     - listeners:
@@ -121,7 +121,7 @@ create_elb_for_edx_studio_live:
         business_unit: {{ BUSINESS_UNIT }}
         created_at: "{{ salt.status.time(format=ISO8601) }}"
 
-register_edx_studio_live_nodes_with_elb:
+register_edx_{{ PURPOSE_PREFIX }}_studio_live_nodes_with_elb:
   boto_elb.register_instances:
     - name: {{ elb_name }}
     - instances:
@@ -131,6 +131,6 @@ register_edx_studio_live_nodes_with_elb:
             version=release_version)) }}
         {% endfor %}
     - require:
-        - boto_elb: create_elb_for_edx_studio_live
+        - boto_elb: create_elb_for_edx_{{ PURPOSE_PREFIX }}_studio_live
 {% endif %}
 {% endfor %}
