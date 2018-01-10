@@ -1,9 +1,10 @@
-install_etl_os_depencies:
+install_etl_os_dependencies:
   pkg.installed:
     - pkgs:
         - python3
         - python3-pip
         - git
+        - awscli
     - refresh: True
 
 create_mitx_directory:
