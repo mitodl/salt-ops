@@ -36,7 +36,7 @@ mitx_residential_etl_config:
   file.managed:
     - name: /mitx/settings.json
     - contents: |
-        settings: {{ settings|json(indent=2, sort_keys=True) |indent(8) }}
+        {{ settings|json(indent=2, sort_keys=True) |indent(8) }}
     - require:
       - git: clone_mitx_etl_repo
 
