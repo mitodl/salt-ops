@@ -17,7 +17,7 @@ clone_mitx_etl_repo:
     - target: /mitx
     - force_clone: True
     - require:
-      - pkg: install_etl_os_depencies
+      - pkg: install_etl_os_dependencies
       - file: create_mitx_directory
 
 install_mitx_residential_etl_requirements:
@@ -30,7 +30,7 @@ install_mitx_residential_etl_requirements:
         PATH_VAR: '/usr/local/bin/pip3'
     - require:
       - git: clone_mitx_etl_repo
-      - pkg: install_etl_os_depencies
+      - pkg: install_etl_os_dependencies
 
 {% set settings = salt.pillar.get('mitx_residential_etl:settings', {}) %}
 mitx_residential_etl_config:
