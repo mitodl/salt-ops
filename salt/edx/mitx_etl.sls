@@ -16,6 +16,7 @@ clone_mitx_etl_repo:
     - name: https://github.com/mitodl/odl-etl
     - target: /mitx
     - force_clone: True
+    - force_reset: True
     - require:
       - pkg: install_etl_os_dependencies
       - file: create_mitx_directory
