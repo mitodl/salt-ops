@@ -109,8 +109,6 @@ base:
   'G@roles:consul_server and G@environment:operations':
     - match: compound
     - datadog.plugins
-  'G@roles:vault_server and G@environment:operations':
-    - match: compound
     - vault
     - vault.tests
     - utils.file_limits
