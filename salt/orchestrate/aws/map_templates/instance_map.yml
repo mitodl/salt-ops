@@ -10,7 +10,7 @@
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
           SubnetId: {{ subnetids[id_num % num_subnets] }}
-          SecurityGroupId: {{ securitygroupid }}
+          SecurityGroupId: {{ securitygroupid|reject(None) }}
       tag:
         environment: {{ environment_name }}
         role: {{ service_name }}
