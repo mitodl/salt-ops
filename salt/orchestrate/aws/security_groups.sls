@@ -23,8 +23,6 @@ create_salt_master_security_group:
           from_port: 22
           to_port: 22
           cidr_ip: 10.0.0.0/16
-    - require:
-        - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX }}_vpc
     - tags:
         Name: salt-master-{{ VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}
