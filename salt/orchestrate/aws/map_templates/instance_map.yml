@@ -10,7 +10,12 @@
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
           SubnetId: {{ subnetids[id_num % num_subnets] }}
-          SecurityGroupId: {{ securitygroupid|reject(None) }}
+          SecurityGroupId:
+            {% for secgroup in securitygroupid %}
+            {% if secgroup and not secgroup.lower() == "none" %}
+            - {{ secgroup }}
+            {% endif %}
+            {% endfor %}
       tag:
         environment: {{ environment_name }}
         role: {{ service_name }}
