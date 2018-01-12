@@ -120,22 +120,3 @@ create_{{ ENVIRONMENT }}_routing_table:
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
         Environment: {{ ENVIRONMENT }}
-
-create_salt_master_security_group:
-  boto_secgroup.present:
-    - name: salt_master-{{ VPC_RESOURCE_SUFFIX }}
-    - vpc_name: {{ VPC_NAME }}
-    - description: ACL to allow Salt master to SSH to instances
-    - rules:
-        - ip_protocol: tcp
-          from_port: 22
-          to_port: 22
-          cidr_ip: 10.0.0.0/16
-    - require:
-        - boto_vpc: create_{{ VPC_RESOURCE_SUFFIX }}_vpc
-    - tags:
-        Name: salt-master-{{ VPC_RESOURCE_SUFFIX }}
-        business_unit: {{ BUSINESS_UNIT }}
-        Department: {{ BUSINESS_UNIT }}
-        OU: {{ BUSINESS_UNIT }}
-        Environment: {{ ENVIRONMENT }}
