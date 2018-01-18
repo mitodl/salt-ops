@@ -52,13 +52,8 @@ edx:
   ansible_env_config:
     TLS_KEY_NAME: {{ TLS_KEY_NAME }}
   config:
-    {% if environment == 'dev-ficus' %}
-    repo: 'https://github.com/mitodl/configuration.git'
-    branch: 'open-release/ficus.master'
-    {% elif environment == 'dev-ginkgo' %}
     repo: 'https://github.com/mitodl/configuration.git'
     branch: 'open-release/ginkgo.master'
-    {% endif %}
   dependencies:
     os_packages:
       - git
@@ -107,7 +102,7 @@ edx:
     xqueue_version: "master"
     forum_ruby_version: "2.4.1"
     edxapp_theme_source_repo: 'https://github.com/mitodl/mitx-theme.git'
-    edxapp_theme_version: 'ficus'
+    edxapp_theme_version: 'master'
 
     common_debian_pkgs:
       - ntp
@@ -346,12 +341,7 @@ edx:
     EDXAPP_LMS_PREVIEW_NGINX_PORT: 80
     EDXAPP_LMS_NGINX_PORT: 80
     EDXAPP_LMS_SSL_NGINX_PORT: 443
-    {% if environment == 'dev-ficus' %}
-    edx_platform_repo: 'https://github.com/mitodl/edx-platform.git'
-    edx_platform_version: 'mitx/ficus'
-    {% elif environment == 'dev-ginkgo' %}
     edx_platform_repo: 'https://github.com/mitodl/edx-platform.git'
     edx_platform_version: 'mitx/ginkgo'
-    {% endif %}
 
     COMMON_ENABLE_AWS_ROLE: False
