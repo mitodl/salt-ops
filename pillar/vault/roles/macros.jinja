@@ -1,0 +1,42 @@
+{% macro pg_app_user(approle) %}
+        {% raw %}
+        sql: >-
+          CREATE USER "{{name}}" WITH PASSWORD '{{password}}' VALID UNTIL '{{expiration}}';
+          GRANT "{{name}}" TO "bootcamp-ecommerce" WITH ADMIN OPTION;
+          GRANT "bootcamp-ecommerce" TO "{{name}}";
+          GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "{{name}}";
+          GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO "{{name}}";
+          ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON TABLES TO "{{name}}";
+          ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON SEQUENCES TO "{{name}}";
+        revocation_sql: >-
+          REASSIGN OWNED BY "{{name}}" TO "bootcamp-ecommerce";
+          DROP OWNED BY "{{name}}";
+          REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM "{{name}}";
+          REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM "{{name}}";
+          ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON TABLES FROM "{{name}}";
+          ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON SEQUENCES FROM "{{name}}";
+          REVOKE USAGE ON SCHEMA public FROM "{{name}}";
+          DROP USER "{{name}}";
+        {% endraw %}
+{% endmacro %}
+
+{% macro pg_readonly(approle) %}
+        {% raw %}
+        sql: >-
+          CREATE USER "{{name}}" WITH PASSWORD '{{password}}' VALID UNTIL '{{expiration}}';
+          GRANT "{{name}}" TO odldevops WITH ADMIN OPTION;
+          GRANT SELECT ON ALL TABLES IN SCHEMA public TO "{{name}}";
+          GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO "{{name}}";
+          ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO "{{name}}";
+          ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON SEQUENCES TO "{{name}}";
+        revocation_sql: >-
+          REASSIGN OWNED BY "{{name}}" TO "bootcamp-ecommerce";
+          DROP OWNED BY "{{name}}";
+          REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM "{{name}}";
+          REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM "{{name}}";
+          ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON TABLES FROM "{{name}}";
+          ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON SEQUENCES FROM "{{name}}";
+          REVOKE USAGE ON SCHEMA public FROM "{{name}}";
+          DROP USER "{{name}}";
+        {% endraw %}
+{% endmacro %}
