@@ -79,7 +79,6 @@ edx:
     COMMON_MYSQL_ADMIN_PASS: {{ admin_mysql_password }}
     COMMON_MYSQL_MIGRATE_USER: {{ admin_mysql_username }}
     COMMON_MYSQL_MIGRATE_PASS: {{ admin_mysql_password }}
-    CREATE_SERVICE_WORKER_USERS: False
 
     ### XQUEUE ENVIRONMENT ###
     XQUEUE_BASIC_AUTH_USER: mitx
