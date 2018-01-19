@@ -118,13 +118,13 @@ salt_master:
         - https://github.com/mitodl/django-formula
         - https://github.com/mitodl/aptly-formula
         - https://github.com/mitodl/pgbouncer-formula
+        - https://github.com/mitodl/python-formula
     ext_pillar:
       git_pillar_provider: pygit2
       ext_pillar:
         - git:
-            - master git@github.mit.edu:mitx-devops/salt-pillar:
-                - privkey: /etc/salt/keys/ssh/github_mit
-                - pubkey: /etc/salt/keys/ssh/github_mit.pub
+            - master https://github.com/mitodl/salt-ops:
+                - root: pillar
     logging:
       logstash_udp_handler:
         host: fluentd.service.operations.consul
