@@ -1,6 +1,5 @@
 base:
   '*':
-    - datadog
     - common
     - environment_settings
     - fluentd
@@ -66,6 +65,7 @@ base:
     - fluentd.reddit
   'P@environment:(mitx-qa|mitx-production|operations|rc-apps|production-apps)':
     - match: compound
+    - datadog
     - consul
   'P@environment:mitx-(qa|production)':
     - match: compound
