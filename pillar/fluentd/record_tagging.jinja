@@ -1,0 +1,17 @@
+{% set record_tagging = {
+    'directive': 'filter',
+    'directive_arg': '**',
+    'attrs': [
+        {'@type': 'record_transformer'},
+        {'nested_directives': [
+            {'directive': 'record',
+             'attrs': [
+                 {'minion_id': salt.grains.get('id')},
+                 {'environment': salt.grains.get('environment', 'blank')},
+                 {'roles': ",".join(salt.grains.get('roles'))},
+                 ]
+            }
+        ]
+        }
+    ]
+} %}

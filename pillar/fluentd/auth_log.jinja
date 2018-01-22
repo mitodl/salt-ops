@@ -1,0 +1,24 @@
+{% macro auth_log_source(tag='auth.log', log_file='/var/log/auth.log') %}
+{%- set auth_log_source = {
+      'directive': 'source',
+      'attrs': [
+        {'@type': 'tail'},
+        {'tag': tag},
+        {'enable_watch_timer': 'false'},
+        {'path': log_file},
+        {'pos_file': log_file+'.pos'},
+        {'format': 'syslog'},
+        ]} -%}
+{{ auth_log_source|yaml() }}
+{% endmacro %}
+
+{% macro auth_log_filter(filter_type='grep', exclude_type='agent', exclude_message='CRON', tag='syslog.auth') %}
+{%- set auth_log_filter = {
+      'directive': 'filter',
+      'directive_arg': tag,
+      'attrs': [
+         {'@type': filter_type},
+         {'exclude1': exclude_type + " " + exclude_message},
+         ]} -%}
+{{ auth_log_filter|yaml() }}
+{% endmacro %}
