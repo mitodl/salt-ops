@@ -101,7 +101,7 @@ edx:
     xqueue_version: "master"
     forum_ruby_version: "2.4.1"
     edxapp_theme_source_repo: 'https://github.com/mitodl/mitx-theme.git'
-    edxapp_theme_version: 'master'
+    edxapp_theme_version: 'ginkgo'
 
     common_debian_pkgs:
       - ntp

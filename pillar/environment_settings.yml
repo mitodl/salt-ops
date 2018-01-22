@@ -23,22 +23,22 @@ current_residential_versions_qa: &current_residential_versions_qa
   edxapp: mitx/ginkgo
   forum: open-release/ginkgo.master
   ami_id: ami-80861296
-  theme: master
+  theme: ginkgo
   codename: ginkgo
 
 current_residential_versions_rp: &current_residential_versions_rp
   edxapp: mitx/ginkgo
   forum: open-release/ginkgo.master
   ami_id: ami-80861296
-  theme: master
+  theme: ginkgo
   codename: ginkgo
 
 next_residential_versions: &next_residential_versions
-  edxapp: mitx/ginkgo
-  forum: open-release/ginkgo.master
+  edxapp: master
+  forum: master
   ami_id: ami-80861296
   theme: master
-  codename: ginkgo
+  codename: hawthorn
 
 environments:
   mitx-qa:
