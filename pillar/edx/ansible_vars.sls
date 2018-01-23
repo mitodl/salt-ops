@@ -310,9 +310,9 @@ edx:
 
     ########## START THEMING ########################################
     EDXAPP_COMPREHENSIVE_THEME_SOURCE_REPO: 'https://github.com/mitodl/mitx-theme.git'
-    EDXAPP_COMPREHENSIVE_THEME_VERSION: "master"
+    EDXAPP_COMPREHENSIVE_THEME_VERSION: {{ purpose_data.versions.theme }}
     edxapp_theme_source_repo: 'https://github.com/mitodl/mitx-theme.git'
-    edxapp_theme_version: 'master'
+    edxapp_theme_version: {{ purpose_data.versions.theme }}
     EDXAPP_COMPREHENSIVE_THEME_DIRS:
       - /edx/app/edxapp/themes/
     {# multivariate #}
