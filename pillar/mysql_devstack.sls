@@ -1,5 +1,5 @@
 {% from 'devstack.sls' import admin_mysql_username, admin_mysql_password, MYSQL_HOST,
-  edxapp_mysql_username, edxapp_mysql_password with context %}
+  edxapp_mysql_username, edxapp_mysql_password, xqueue_mysql_username, xqueue_mysql_password with context %}
 
 mysql:
   server:
@@ -28,6 +28,16 @@ mysql:
     {{ edxapp_mysql_username }}:
       password: {{ edxapp_mysql_password }}
       host: '%'
+      databases:
+        - database: xqueue_devstack
+          grants: ['all privileges']
+        - database: edxapp_devstack
+          grants: ['all privileges']
+        - database: edxapp_csmh
+          grants: ['all privileges']
+    {{ xqueue_mysql_username }}:
+      password: {{ xqueue_mysql_password }}
+      host: {{ MYSQL_HOST }}
       databases:
         - database: xqueue_devstack
           grants: ['all privileges']
