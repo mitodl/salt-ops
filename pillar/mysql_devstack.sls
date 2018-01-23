@@ -37,7 +37,7 @@ mysql:
           grants: ['all privileges']
     {{ xqueue_mysql_username }}:
       password: {{ xqueue_mysql_password }}
-      host: {{ MYSQL_HOST }}
+      host: '%'
       databases:
         - database: xqueue_devstack
           grants: ['all privileges']
