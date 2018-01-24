@@ -39,6 +39,13 @@ replace_nginx_static_asset_template_fragment:
     - require:
         - git: clone_edx_configuration
 
+add_mitx_devstack_playbook:
+  file.managed:
+    - name: {{ repo_path }}/playbooks/roles/mitx_devstack.yml
+    - source: salt://edx/files/mitx_devstack.yml
+    - require:
+        - git: clone_edx_configuration
+
 create_ansible_virtualenv:
   # Note: We need to use a virtualenv over here because the Salt minion bootstrap
   #       installs some OS `python-` packages that are also pulled in by the edX

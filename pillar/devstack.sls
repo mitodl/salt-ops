@@ -68,7 +68,7 @@ edx:
       - postfix
       - memcached
   playbooks:
-    - 'edx-stateless.yml'
+    - 'mitx_devstack.yml'
   django:
     django_staff_user: 'devstack'
     django_staff_password: 'changeme'
