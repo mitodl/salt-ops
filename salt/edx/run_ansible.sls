@@ -41,7 +41,7 @@ replace_nginx_static_asset_template_fragment:
 
 add_mitx_devstack_playbook:
   file.managed:
-    - name: {{ repo_path }}/playbooks/roles/mitx_devstack.yml
+    - name: {{ repo_path }}/playbooks/mitx_devstack.yml
     - source: salt://edx/files/mitx_devstack.yml
     - require:
         - git: clone_edx_configuration
