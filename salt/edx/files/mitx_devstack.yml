@@ -48,11 +48,6 @@
     # https://github.com/edx/cs_comments_service
     - forum
 
-    # Notifications service
-    # https://github.com/edx/notifier
-    - role: notifier
-      NOTIFIER_DIGEST_TASK_INTERVAL: '5'
-
     # XQueue interface for communicating with external grader services
     # https://github.com/edx/xqueue
     - role: xqueue
