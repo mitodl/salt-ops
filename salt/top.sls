@@ -151,4 +151,4 @@ base:
     - elasticsearch
     - edx.prod
     - rabbitmq.configure
-     - edx.django_user
+    - edx.django_user
