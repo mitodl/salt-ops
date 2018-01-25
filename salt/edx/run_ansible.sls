@@ -13,7 +13,7 @@ clone_edx_configuration:
     - makedirs: True
   git.latest:
     - name: {{ salt.pillar.get('edx:config:repo', 'https://github.com/edx/configuration.git') }}
-    - rev: {{ salt.pillar.get('edx:config:branch', 'open-release/eucalyptus.master') }}
+    - branch: {{ salt.pillar.get('edx:config:branch', 'open-release/eucalyptus.master') }}
     - target: {{ repo_path }}
     - user: root
     - force_checkout: True
