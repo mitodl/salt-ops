@@ -30,20 +30,6 @@
 include:
   - .run_ansible
 
-{% if salt.grains.get('osfinger') == 'Ubuntu-12.04' %}
-configure_git_ppa_for_edx:
-  pkgrepo.managed:
-    - ppa: git-core/ppa
-    - require_in:
-        - pkg: install_os_packages
-
-configure_python_ppa_for_edx:
-  pkgrepo.managed:
-    - ppa: fkrull/deadsnakes-python2.7
-    - require_in:
-        - pkg: install_os_packages
-{% endif %}
-
 install_os_packages:
   pkg.installed:
     - pkgs: {{ os_packages }}
