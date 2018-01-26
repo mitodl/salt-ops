@@ -141,8 +141,6 @@ base:
     - match: compound
     - consul
     - consul.dns_proxy
-    - consul.tests
-    - consul.tests.test_dns_setup
     - mysql
     - mysql.remove_test_database
     - mongodb
