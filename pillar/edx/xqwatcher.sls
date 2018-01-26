@@ -10,7 +10,7 @@ schedule:
   {% for queue_name in ['Watcher-MITx-6.0001r', 'Watcher-MITx-6.00x'] %}
   update_live_grader_for_{{ purpose }}_with_{{ queue_name }}_queue:
     function: git.pull
-    minutes: 15
+    minutes: 5
     args:
       - /edx/app/xqwatcher/data/mit-600x-{{ purpose }}-{{ queue_name }}/
     kwargs:
@@ -73,10 +73,14 @@ edx:
               purpose=purpose)) %}
       - COURSE: "mit-600x-{{ purpose }}-{{ queue_name }}"
         GIT_REPO: git@github.com:mitodl/graders-mit-600x
-        GIT_REF: master
+        GIT_REF: {{ purpose_data.versions.xqwatcher_courses }}
         PYTHON_REQUIREMENTS:
           - name: numpy
             version: 1.12.1
+          - name: scikit-learn
+            version: 0.19.1
+          - name: scipy
+            version: 1.0.0
         PYTHON_EXECUTABLE: /usr/bin/python3
         QUEUE_NAME: {{ queue_name }}
         QUEUE_CONFIG:
