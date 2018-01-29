@@ -336,6 +336,8 @@ edx:
     FORUM_RACK_ENV: "production"
     FORUM_SINATRA_ENV: "production"
     FORUM_USE_TCP: True
+    forum_source_repo: "https://github.com/mitodl/cs_comments_service.git"
+    forum_version: open-release/ginkgo.master
 
     EDXAPP_LMS_PREVIEW_NGINX_PORT: 80
     EDXAPP_LMS_NGINX_PORT: 80
