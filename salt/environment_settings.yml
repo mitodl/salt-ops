@@ -226,6 +226,7 @@ environments:
     purposes:
       odl-video-service:
         num_instances: 3
+        domain: video.odl.mit.edu
       reddit:
         num_instances: 3
     backends:
@@ -268,6 +269,7 @@ environments:
     vpc_name: RC Apps
     purposes:
       odl-video-service:
+        domain: video-rc.odl.mit.edu
         num_instances: 1
       reddit:
         num_instances: 2
@@ -305,6 +307,12 @@ environments:
           num_cache_nodes: 2
           purpose: reddit-rc
           cluster_id: reddit-rc-memcached
+        - engine: redis
+          engine_version: 3.
+          node_type: cache.t2.medium
+          num_cache_nodes: 2
+          purpose: odl-video-service
+          cluster_id: ovs-rc-redis
 
 business_units:
   - bootcamps

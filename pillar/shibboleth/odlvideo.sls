@@ -1,4 +1,7 @@
-{% set shibboleth_cert = salt.vault.read('secret-odl-video/{env}/'}
+{% import_yaml salt.cp.cache_file('salt://environment_settings.yml') as env_settings }
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
+{% set env_data = env_settings[ENVIRONMENT] %}
+{% set server_domain_name = env_data.purposes['odl-video-service'].domain %}
 
 nginx-shibboleth:
   overrides:

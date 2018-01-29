@@ -69,6 +69,13 @@ base:
   'roles:cassandra':
     - match: grain
     - cassandra
+  'roles:odl-video-service':
+    - match: grain
+    - python
+    - nginx-shibboleth
+    - uwsgi
+    - consul
+    - django
   'roles:kibana and G@environment:operations':
     - match: compound
     - elasticsearch.kibana
