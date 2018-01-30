@@ -108,6 +108,11 @@ django:
     - zlib1g-dev
     - libpqxx-dev
     - libxml2-dev
+  states:
+    setup:
+      - apps.odlvideo.install
+    post_install:
+      - apps.odlvideo.post_deploy
 
 uwsgi:
   overrides:
@@ -135,3 +140,15 @@ uwsgi:
         for-readline: /opt/{{ app_name }}/.env
         env: %(_)
         endfor: ''
+        touch-reload: /opt/{{ app_name }}/deploy_complete.txt
+        attach-daemon2: >-
+          cmd=celery worker -A odl_video --pidfile /var/run/{{ app_name }}/celery.pid,
+          pidfile=/var/run/{{ app_name }}/celery.pid,
+          daemonize=true,
+          touch=/opt/{{ app_name}}/deploy_complete.txt
+
+node:
+  install_from_ppa: True
+  version: 9.4.0
+  ppa:
+    repository_url: https://deb.nodesource.com/setup_9.x

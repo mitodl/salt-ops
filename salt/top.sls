@@ -71,10 +71,11 @@ base:
     - cassandra
   'roles:odl-video-service':
     - match: grain
+    - consul
     - python
+    - node
     - nginx-shibboleth
     - uwsgi
-    - consul
     - django
   'roles:kibana and G@environment:operations':
     - match: compound
