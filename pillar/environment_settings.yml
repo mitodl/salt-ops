@@ -22,6 +22,7 @@ edxapp_secret_backends: &edxapp_secret_backends
 current_residential_versions_qa: &current_residential_versions_qa
   edxapp: mitx/ginkgo
   forum: open-release/ginkgo.master
+  xqwatcher_courses: master
   ami_id: ami-80861296
   theme: ginkgo
   codename: ginkgo
@@ -29,6 +30,7 @@ current_residential_versions_qa: &current_residential_versions_qa
 current_residential_versions_rp: &current_residential_versions_rp
   edxapp: mitx/ginkgo
   forum: open-release/ginkgo.master
+  xqwatcher_courses: production
   ami_id: ami-80861296
   theme: ginkgo
   codename: ginkgo
@@ -36,6 +38,7 @@ current_residential_versions_rp: &current_residential_versions_rp
 next_residential_versions: &next_residential_versions
   edxapp: master
   forum: master
+  xqwatcher_courses: master
   ami_id: ami-80861296
   theme: master
   codename: hawthorn
@@ -162,6 +165,7 @@ environments:
           gitreload: gr-rp.mitx.mit.edu
         versions:
           <<: *current_residential_versions_rp
+          xqwatcher_courses: master
         num_instances:
           edx: 2
           edx-worker: 2
