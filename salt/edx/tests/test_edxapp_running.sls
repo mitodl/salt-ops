@@ -65,11 +65,6 @@ test_edxapp_{{ service }}:
     - is_running: True
 {% endfor %}
 
-test_edxapp_cms:
-  testinfra.supervisor:
-      - name: 'edxapp:cms'
-      - is_running: True
-
 # Check if AWS EFS is mounted
 test_edxapp_efs_mount:
   testinfra.mount_point:
@@ -84,8 +79,7 @@ test_edxapp_lms_env_{{ attribute }}:
   testinfra.file:
     - name: '/edx/app/edxapp/lms.env.json'
     - exists: True
-    - contains:
-        parameter: {{ value }}
-        expected: True
-        comparison: is_
+    - content_string:
+        expected: {{ value }}
+        comparison: search
 {% endfor %}
