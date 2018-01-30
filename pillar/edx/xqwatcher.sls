@@ -1,5 +1,5 @@
 #!jinja|yaml|gpg
-{% import_yaml "environment_settings.yml" as env_settings %}
+{% import_yaml salt.cp.cache_file("salt://environment_settings.yml") as env_settings %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set env_data = env_settings.environments[environment] %}
 {% set git_ssh_key = salt.vault.read('secret-residential/global/xqueue_watcher_git_ssh').data.value %}

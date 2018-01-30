@@ -1,5 +1,5 @@
 {% set ENVIRONMENT = salt.grains.get('environment') %}
-{% import_yaml "environment_settings.yml" as env_settings %}
+{% import_yaml salt.cp.cache_file("salt://environment_settings.yml") as env_settings %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 
 {% set mysql_endpoint = salt.boto_rds.get_endpoint('{env}-rds-mysql'.format(env=ENVIRONMENT)) %}

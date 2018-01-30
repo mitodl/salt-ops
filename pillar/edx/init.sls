@@ -1,5 +1,5 @@
 #!jinja|yaml|gpg
-{% import_yaml "environment_settings.yml" as env_settings %}
+{% import_yaml salt.cp.cache_file("salt://environment_settings.yml") as env_settings %}
 {% set business_unit = salt.grains.get('business_unit', 'residential') %}
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
 {% set purpose_suffix = purpose.replace('-', '_') %}
