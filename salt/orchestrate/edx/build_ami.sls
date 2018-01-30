@@ -159,6 +159,8 @@ delete_{{ grain }}_from_grains:
     - require_in:
         - boto_ec2: snapshot_edx_app_node
         - boto_ec2: snapshot_edx_worker_node
+    - require:
+        - salt: build_edx_base_nodes
 {% endfor %}
 
 disable_minion_service_before_snapshot:

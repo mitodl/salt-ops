@@ -10,7 +10,7 @@ test_git_export_dir_exists:
         expected: www-data
         comparison: eq
     - group:
-        expected: edxapp
+        expected: www-data
         comparison: eq
 
 test_git_package_latest_version:
@@ -18,5 +18,5 @@ test_git_package_latest_version:
     - name: git
     - is_installed: True
     - version:
-        expected: '2.9'
+        expected: '2.7'
         comparison: search
