@@ -40,6 +40,8 @@ link_venv_binary_to_expected_location:
     - target: /usr/bin/virtualenv
     - require:
         - pkg: install_os_packages_for_xqwatcher
+    - require_in:
+        - cmd: run_ansible
 
 activate_xqwatcher_supervisor_config:
   file.symlink:
@@ -47,6 +49,8 @@ activate_xqwatcher_supervisor_config:
     - target: /edx/app/supervisor/conf.available.d/xqwatcher.conf
     - user: supervisor
     - group: www-data
+    - require:
+        - cmd: run_ansible
   cmd.wait:
     - name: /edx/bin/supervisorctl reread && /edx/bin/supervisorctl update
     - watch:
