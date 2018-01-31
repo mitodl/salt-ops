@@ -60,4 +60,4 @@ configure_logging_for_xqwatcher:
   file.managed:
     - name: /edx/app/xqwatcher/logging.json
     - contents: |
-        {{ salt.pillar.get('edx:xqwatcher:logconfig', {})|json }}
+        {{ salt.pillar.get('edx:xqwatcher:logconfig', {})|json(indent=2)|indent(8) }}

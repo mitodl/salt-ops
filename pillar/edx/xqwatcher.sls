@@ -40,18 +40,16 @@ edx:
           class: logging.StreamHandler
           formatter: default
           level: DEBUG
-        file:
-          class: logging.handlers.RotatingFileHandler
+        syslog:
+          class: logging.handlers.SysLogHandler
           formatter: default
-          filename: /edx/var/log/xqwatcher/xqwatcher.log
           level: INFO
-          maxBytes: 10485760 {# 10 MB #}
-          backupCount: 10
+          address: /dev/log
       loggers:
         "":
           level: INFO
           handlers:
-            - file
+            - syslog
             - console
   config:
     repo: https://github.com/mitodl/configuration.git
