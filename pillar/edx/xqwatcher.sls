@@ -54,7 +54,7 @@ edx:
             - file
             - console
   config:
-    repo: https://github.com/edx/configuration.git
+    repo: https://github.com/mitodl/configuration.git
     branch: open-release/ginkgo.master
   playbooks:
     - 'edx-east/xqwatcher.yml'
