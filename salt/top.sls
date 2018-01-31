@@ -7,6 +7,12 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
+  'P@environment:(operations|mitx-qa|mitx-production|rc-apps|production-apps)':
+    - match: compound
+    - consul
+    - consul.dns_proxy
+    - consul.tests
+    - consul.tests.test_dns_setup
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
@@ -100,12 +106,6 @@ base:
   'G@roles:mongodb and G@environment:mitx-production':
     - match: compound
     - datadog.plugins
-  'P@environment:(operations|mitx-qa|mitx-production|rc-apps|production-apps)':
-    - match: compound
-    - consul
-    - consul.dns_proxy
-    - consul.tests
-    - consul.tests.test_dns_setup
   'G@roles:consul_server and G@environment:operations':
     - match: compound
     - datadog.plugins
