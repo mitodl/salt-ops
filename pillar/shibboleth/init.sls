@@ -15,13 +15,13 @@ nginx-shibboleth:
           type: Native
           RequestMap:
             Host:
-              name: {{ server_domain_name }}
+              name: '' # OVERRIDE_ME
               authType: shibboleth
               requireSession: 'true'
               Path:
                 name: secure
         ApplicationDefaults:
-          entityID: https://{{ server_domain_name }}/shibboleth
+          entityID: '' # OVERRIDE_ME
           REMOTE_USER: "eppn persistent-id targeted-id"
           Sessions:
             lifetime: 28800

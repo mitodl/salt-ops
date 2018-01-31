@@ -1,6 +1,7 @@
 # -*- mode: yaml -*-
-{% set app_name = 'odlvideo' %}
-{% set python_bin_dir = '/usr/local/pyenv/versions/3.6.3/bin' %}
+{% set app_name = 'odl-video-service' %}
+{% set python_version = '3.6.4' %}
+{% set python_bin_dir = '/usr/local/pyenv/versions/{0}/bin'.format(python_version) %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'dev') %}
 {% set aws_creds = salt.vault.read('aws-mitx/creds/odlvideo-{env}'.format(env=ENVIRONMENT) %}
 {% set pg_creds = salt.vault.read('postgres-{env}-odlvideo/creds/odlvideo'.format(env=ENVIRONMENT) %}
@@ -15,7 +16,8 @@
       'use_shibboleth': False,
       'ga_id': 'UA-108097284-1',
       'transcode_pipeline_id': '1506027488410-93oya5',
-      'youtube_project_id': 'ovs-youtube-qa'
+      'youtube_project_id': 'ovs-youtube-qa',
+      'release_branch': 'master'
       },
     'rc-apps': {
       'domain': 'video-rc.odl.mit.edu',
@@ -23,7 +25,8 @@
       'use_shibboleth': True,
       'ga_id': 'UA-5145472-27',
       'transcode_pipeline_id': '1506081628031-bepkel',
-      'youtube_project_id': 'ovs-youtube-qa'
+      'youtube_project_id': 'ovs-youtube-qa',
+      'release_branch': 'release-candidate'
       },
     'production-apps': {
       'domain': 'video.odl.mit.edu',
@@ -31,7 +34,8 @@
       'use_shibboleth': True,
       'ga_id': 'UA-5145472-27',
       'transcode_pipeline_id': '1497541042228-8mpenl',
-      'youtube_project_id': 'ovs-youtube-production'
+      'youtube_project_id': 'ovs-youtube-production',
+      'release_branch': 'release'
       }
 } %}
 
@@ -39,7 +43,7 @@
 
 python:
   versions:
-    - number: 3.6.3
+    - number: {{ python_version }}
       default: True
       user: root
 
@@ -51,10 +55,10 @@ django:
   automatic_migrations: True
   app_source:
     type: git # Options are: git, hg, archive
-    revision: release
+    revision: {{ release_branch }}
     repository_url: https://github.com/mitodl/odl-video-service
     state_params:
-      - branch: release
+      - branch: {{ release_branch }}
       - force_fetch: True
       - force_checkout: True
       - force_reset: True
@@ -127,7 +131,7 @@ uwsgi:
         socket: /var/run/uwsgi/{{ app_name }}.sock
         chown-socket: www-data:deploy
         chdir: /opt/{{ app_name }}
-        home: /usr/local/pyenv/versions/3.6.3/
+        pyhome: /usr/local/pyenv/versions/{{ python_version }}/
         uid: deploy
         gid: deploy
         processes: 1

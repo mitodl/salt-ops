@@ -1,4 +1,4 @@
-{% import_yaml salt.cp.cache_file('salt://environment_settings.yml') as env_settings }
+{% import_yaml salt.cp.cache_file('salt://environment_settings.yml') as env_settings %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
 {% set env_data = env_settings[ENVIRONMENT] %}
 {% set app_name = salt.environ.get('APP_NAME') %}
@@ -19,9 +19,9 @@ generate_{{ app_name }}_cloud_map_file:
     - context:
         environment_name: {{ ENVIRONMENT }}
         num_instances: {{ INSTANCE_COUNT }}
-        service_name: reddit
+        service_name: {{ app_name }}
         roles:
-          - reddit
+          - {{ app_name }}
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
             'webapp-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}

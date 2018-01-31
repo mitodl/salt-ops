@@ -263,6 +263,12 @@ environments:
           num_cache_nodes: 2
           purpose: reddit
           cluster_id: reddit-memcached
+        - engine: redis
+          engine_version: 3.2.10
+          node_type: cache.t2.medium
+          num_cache_nodes: 2
+          purpose: odl-video-service
+          cluster_id: ovs-production-redis
   rc-apps:
     business_unit: operations
     network_prefix: 10.12
@@ -308,9 +314,9 @@ environments:
           purpose: reddit-rc
           cluster_id: reddit-rc-memcached
         - engine: redis
-          engine_version: 3.
+          engine_version: 3.2.10
           node_type: cache.t2.medium
-          num_cache_nodes: 2
+          num_cache_nodes: 1
           purpose: odl-video-service
           cluster_id: ovs-rc-redis
 
