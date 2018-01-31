@@ -23,16 +23,6 @@ clone_edx_configuration:
     - require:
       - file: clone_edx_configuration
 
-mark_ansible_as_editable:
-  file.replace:
-    - name: {{ repo_path }}/requirements.txt
-    - pattern: |
-        ^git\+https://github\.com/edx/ansible.*
-    - repl: |
-        -e git+https://github.com/edx/ansible.git@stable-1.9.3-rc1-edx#egg=ansible==1.9.3-edx
-    - require:
-        - git: clone_edx_configuration
-
 replace_nginx_static_asset_template_fragment:
   file.managed:
     - name: {{ repo_path }}/playbooks/roles/nginx/templates/edx/app/nginx/sites-available/static-files.j2
