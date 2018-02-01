@@ -6,9 +6,9 @@
 {% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', env_data.purposes[app_name].num_instances) %}
 {% set BUSINESS_UNIT = env_data.purposes[app_name].business_unit %}
 {% set subnet_ids = salt.boto_vpc.describe_subnets(
-    salt.boto_vpc.describe_vpcs(
+    vpc_id=salt.boto_vpc.describe_vpcs(
         name=env_data.vpc_name).vpcs[0].id
-    ).subnets|map(attribute='id') %}
+    ).subnets|map(attribute='id')|list %}
 
 load_{{ app_name }}_cloud_profile:
   file.managed:
