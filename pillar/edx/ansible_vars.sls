@@ -173,7 +173,7 @@ edx:
     edxapp_course_data_dir: {{ GIT_REPO_DIR }}
 
     EDXAPP_AWS_STORAGE_BUCKET_NAME: mitx-storage-{{ purpose }}-{{ environment }}
-    EDXAPP_IMPORT_EXPORT_BUCKET: !!null
+    EDXAPP_IMPORT_EXPORT_BUCKET: "mitx-storage-{{ salt.grains.get('purpose') }}-{{ salt.grains.get('environment') }}"
     EDXAPP_AWS_S3_CUSTOM_DOMAIN: !!null
     EDXAPP_CELERY_WORKERS:
       - queue: low
@@ -368,7 +368,6 @@ edx:
     EDXAPP_GRADE_BUCKET: mitx-grades-{{ purpose }}-{{ environment }}
     EDXAPP_GRADE_ROOT_PATH: {{ edx.edxapp_aws_grades_root_path }}
     EDXAPP_GRADE_STORAGE_TYPE: S3
-    EDXAPP_IMPORT_EXPORT_BUCKET: "mitx-storage-{{ salt.grains.get('purpose') }}-{{ salt.grains.get('environment') }}"
     EDXAPP_JWT_SECRET_KEY: {{ salt.vault.read('secret-{business_unit}/{env}/edxapp-jwt-secret-key'.format(env=environment, business_unit=business_unit)).data.value }}
     EDXAPP_LMS_BASE: "{{ LMS_DOMAIN }}"
     EDXAPP_MKTG_URL_LINK_MAP:
