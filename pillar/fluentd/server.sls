@@ -1,8 +1,15 @@
 {% set app_name = "fluentd-aggregators" %}
 {% set micromasters_ir_bucket = 'odl-micromasters-ir-data' %}
+{% set micromasters_ir_bucket_creds = salt.vault.read('aws-mitx/creds/read-write-{bucket}'.format(bucket=micromasters_ir_bucket)) %}
 {% set residential_tracking_bucket = 'odl-residential-tracking-data' %}
 {% set xpro_tracking_bucket = 'odl-xpro-edx-tracking-data' %}
 {% set data_lake_bucket = 'mitodl-data-lake' %}
+{% set edx_tracking_bucket = 'odl-residential-tracking-data' %}
+{% set edx_tracking_bucket_creds = salt.vault.read('aws-mitx/creds/read-write-{bucket}'.format(bucket=edx_tracking_bucket)) %}
+{% set fluentd_shared_key = salt.vault.read('secret-operations/global/fluentd_shared_key').data.value %}
+{% set mailgun_webhooks_token = salt.vault.read('secret-operations/global/mailgun_webhooks_token').data.value %}
+{% set redash_webhook_token = salt.vault.read('secret-operations/global/redash_webhook_token').data.value %}
+{% set odl_wildcard_cert = salt.vault.read('secret-operations/global/odl_wildcard_cert') %}
 {% import_yaml 'fluentd/fluentd_directories.yml' as fluentd_directories %}
 
 schedule:
@@ -23,16 +30,12 @@ fluentd:
       cert_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>value
       key_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>key
   plugins:
-    - fluent-plugin-secure-forward
-    - fluent-plugin-heroku-syslog
     - fluent-plugin-s3
     - fluent-plugin-avro
     - fluent-plugin-anonymizer
     - fluent-plugin-logzio
+    - fluent-plugin-elasticsearch
   proxied_plugins:
-    - route: heroku-http
-      port: 9000
-      token: __vault__::secret-operations/global/heroku_http_token>data>value
     - route: mailgun-webhooks
       port: 9001
       token: __vault__::secret-operations/global/mailgun_webhooks_token>data>value
@@ -52,10 +55,15 @@ fluentd:
         - directive: source
           attrs:
             - '@id': heroku_logs_inbound
-            - '@type': heroku_syslog_http
-            - port: 9000
-            - bind: ::1
-            - format: 'none'
+            - '@type': syslog
+            - tag: heroku_logs
+            - bind: 127.0.0.1
+            - port: 5140
+            - protocol_type: tcp
+            - nested_directives:
+                - directive: parse
+                  attrs:
+                    - message_format: rfc5424
         - directive: source
           attrs:
             - '@id': mailgun-events
@@ -78,14 +86,6 @@ fluentd:
             - format: json
             - port: 9999
             - keep_time_key: 'true'
-        - directive: source
-          attrs:
-            - '@type': secure_forward
-            - port: 5001
-            - secure: 'false'
-            - cert_auto_generate: 'yes'
-            - self_hostname: {{ salt.grains.get('external_ip') }}
-            - shared_key: __vault__::secret-operations/global/fluentd_shared_key>data>value
         - directive: filter
           directive_arg: 'mailgun.**'
           attrs:
@@ -108,6 +108,18 @@ fluentd:
                     - keys: $["event-data"]["ip"]
                     - ipv4_mask_bits: 24
                     - ipv6_mask_bits: 104
+        - directive: source
+          attrs:
+            - '@id': secure_input
+            - '@type': forward
+            - port: 5001
+            - nested_directives:
+              - directive: transport
+                directive_arg: tls
+                attrs:
+                  - cert_path: '/etc/ssl/certs/log-input.crt'
+                  - private_key_path: '/etc/ssl/certs/log-input.key'
+                  - private_key_passphrase: ''
         {# The purpose of this block is to stream data from the
         micromasters application to S3 for analysis by the
         institutional research team. If they ever need to change
@@ -126,10 +138,20 @@ fluentd:
                     - s3_bucket: {{ micromasters_ir_bucket }}
                     - s3_region: us-east-1
                     - path: logs/
-                    - buffer_path: {{ fluentd_directories.micromasters_s3_buffers }}
-                    - format: json
-                    - include_time_key: 'true'
+                    - s3_object_key_format: '%{path}%{time_slice}_%{index}.%{file_extension}'
                     - time_slice_format: '%Y-%m-%d'
+                    - nested_directives:
+                      - directive: buffer
+                        attrs:
+                          - '@type': file
+                          - path: {{ fluentd_directories.micromasters_s3_buffers }}
+                          - timekey: 3600
+                          - timekey_wait: '10m'
+                          - timekey_use_utc: 'true'
+                    - nested_directives:
+                      - directive: format
+                        attrs:
+                          - '@type': json
                 - directive: store
                   attrs:
                     - '@type': relabel
@@ -183,11 +205,6 @@ fluentd:
           attrs:
             - '@type': relabel
             - '@label': '@es_logging'
-            # - nested_directives:
-            #     - directive: buffer
-            #       attrs:
-            #         - '@type': file
-            #         - path: {{ fluentd_directories.universal_buffer }}
         - directive: label
           directive_arg: '@es_logging'
           attrs:
@@ -216,7 +233,11 @@ fluentd:
                   directive_arg: 'edx.tracking'
                   attrs:
                     - '@type': grep
-                    - regexp1: environment mitx-production
+                    - nested_directives:
+                      - directive: regexp
+                        attrs:
+                          - key: environment
+                          - pattern: mitx-production
                 - directive: match
                   directive_arg: edx.tracking
                   attrs:
@@ -226,10 +247,20 @@ fluentd:
                     - s3_bucket: {{ residential_tracking_bucket }}
                     - s3_region: us-east-1
                     - path: logs/
-                    - buffer_path: {{ fluentd_directories.residential_tracking_logs }}
-                    - format: json
-                    - include_time_key: 'true'
-                    - time_slice_format: '%Y-%m-%d-%H'
+                    - s3_object_key_format: '%{path}%{time_slice}_%{index}.%{file_extension}'
+                    - time_slice_format: '%Y-%m-%d'
+                    - nested_directives:
+                      - directive: buffer
+                        attrs:
+                          - '@type': file
+                          - path: {{ fluentd_directories.residential_tracking_logs }}
+                          - timekey: 3600
+                          - timekey_wait: '10m'
+                          - timekey_use_utc: 'true'
+                    - nested_directives:
+                      - directive: format
+                        attrs:
+                          - '@type': json
         - directive: label
           directive_arg: '@prod_xpro_tracking_events'
           attrs:
@@ -248,10 +279,20 @@ fluentd:
                     - s3_bucket: {{ xpro_tracking_bucket }}
                     - s3_region: us-east-1
                     - path: logs/
-                    - buffer_path: {{ fluentd_directories.xpro_tracking_logs }}
-                    - format: json
-                    - include_time_key: 'true'
-                    - time_slice_format: '%Y-%m-%d-%H'
+                    - s3_object_key_format: '%{path}%{time_slice}_%{index}.%{file_extension}'
+                    - time_slice_format: '%Y-%m-%d'
+                    - nested_directives:
+                      - directive: buffer
+                        attrs:
+                          - '@type': file
+                          - path: {{ fluentd_directories.residential_tracking_logs }}
+                          - timekey: 3600
+                          - timekey_wait: '10m'
+                          - timekey_use_utc: 'true'
+                    - nested_directives:
+                      - directive: format
+                        attrs:
+                          - '@type': json
         - directive: label
           directive_arg: '@mailgun_s3_data_lake'
           attrs:

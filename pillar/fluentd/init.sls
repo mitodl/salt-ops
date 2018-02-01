@@ -1,6 +1,6 @@
 fluentd:
   overrides:
-    version: "1.1.1"
+    version: "1.7.4"
     user: root
     group: root
   plugins:
