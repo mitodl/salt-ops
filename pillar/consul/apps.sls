@@ -1,6 +1,6 @@
 {# Definition of services in the rc-apps and production-apps environments #}
 {% set ENVIRONMENT = salt.grains.get('environment') %}
-{% import_yaml "environment_settings.yml" as env_settings %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 
 consul:

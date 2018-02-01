@@ -119,6 +119,7 @@ salt_master:
         - https://github.com/mitodl/aptly-formula
         - https://github.com/mitodl/pgbouncer-formula
         - https://github.com/mitodl/python-formula
+        - https://github.com/mitodl/node-formula
     ext_pillar:
       git_pillar_provider: pygit2
       ext_pillar:

@@ -26,6 +26,10 @@ nginx:
           access_log: /var/log/nginx/access.log app_metrics
     servers:
       managed:
+        default: # Disable the default nginx config
+          enabled: False
+          deleted: True
+          config: None
         nginx_metrics:
           enabled: True
           config:

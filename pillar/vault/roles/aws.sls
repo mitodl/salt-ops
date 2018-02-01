@@ -1,4 +1,4 @@
-{% import_yaml "environment_settings.yml" as env_settings %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 vault:
   roles:
     {% for bucket in salt.boto_s3_bucket.list()['Buckets'] %}
