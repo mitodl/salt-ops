@@ -368,6 +368,7 @@ edx:
     EDXAPP_GRADE_BUCKET: mitx-grades-{{ purpose }}-{{ environment }}
     EDXAPP_GRADE_ROOT_PATH: {{ edx.edxapp_aws_grades_root_path }}
     EDXAPP_GRADE_STORAGE_TYPE: S3
+    EDXAPP_IMPORT_EXPORT_BUCKET: "mitx-storage-{{ salt.grains.get('purpose') }}-{{ salt.grains.get('environment') }}"
     EDXAPP_JWT_SECRET_KEY: {{ salt.vault.read('secret-{business_unit}/{env}/edxapp-jwt-secret-key'.format(env=environment, business_unit=business_unit)).data.value }}
     EDXAPP_LMS_BASE: "{{ LMS_DOMAIN }}"
     EDXAPP_MKTG_URL_LINK_MAP:
@@ -420,6 +421,16 @@ edx:
       BULK_EMAIL_DEFAULT_FROM_EMAIL: mitx-support@mit.edu
       COURSE_ABOUT_VISIBILITY_PERMISSION: "{{ edx.edxapp_course_about_visibility_permission }}"
       COURSE_CATALOG_VISIBILITY_PERMISSION: "{{ edx.edxapp_course_catalog_visibility_permission }}"
+      COURSE_MODE_DEFAULTS:
+        bulk_sku: !!null
+        currency: 'usd'
+        description: !!null
+        expiration_datetime: !!null
+        min_price: 0
+        name: 'Honor'
+        sku: !!null
+        slug: 'honor'
+        suggested_prices: ''
       FEATURES:
         <<: *common_feature_flags
         ALLOW_COURSE_STAFF_GRADE_DOWNLOADS: true
@@ -435,6 +446,8 @@ edx:
         LICENSING: true
         REQUIRE_COURSE_EMAIL_AUTH: false
         RESTRICT_ENROLL_NO_ATSIGN_USERNAMES: true
+      FIELD_OVERRIDE_PROVIDERS:
+        - courseware.student_field_overrides.IndividualStudentOverrideProvider
       GIT_IMPORT_STATIC: false
       LOGGING_ENV: lms-{{ edx.edxapp_log_env_suffix}}
       OAUTH_OIDC_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
