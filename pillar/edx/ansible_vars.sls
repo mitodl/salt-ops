@@ -10,7 +10,7 @@
 {# Move all following pillar data under a top-level key of `ansible_vars` #}
 {# Use subkeys for the respective apps/playbooks (e.g. `forum`, `xqueue`, etc.) #}
 
-{% import_yaml salt.cp.cache_file("salt://environment_settings.yml") as env_settings %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% from "shared/edx/mitx.jinja" import edx with context %}
 {% set business_unit = salt.grains.get('business_unit', 'residential') %}
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}

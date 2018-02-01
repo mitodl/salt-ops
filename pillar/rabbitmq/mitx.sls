@@ -1,6 +1,6 @@
 #!jinja|yaml|gpg
 
-{% import_yaml salt.cp.cache_file("salt://environment_settings.yml") as env_settings %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.grains.get('environment') %}
 {% set BUSINESS_UNIT = salt.grains.get('business_unit', 'residential') %}
 

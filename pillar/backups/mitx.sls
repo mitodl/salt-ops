@@ -1,6 +1,6 @@
 #!jinja|yaml|gpg
 
-{% import_yaml salt.cp.cache_file("salt://environment_settings.yml") as env_settings %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% from "shared/edx/mitx.jinja" import edx with context %}
 {% set duplicity_passphrase = salt.vault.read('secret-operations/global/duplicity-passphrase').data.value %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}

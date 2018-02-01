@@ -1,4 +1,4 @@
-{% import_yaml salt.cp.cache_file('salt://environment_settings.yml') as env_settings %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
 {% set env_data = env_settings[ENVIRONMENT] %}
 {% set server_domain_name = env_data.purposes['odl-video-service'].domain %}
