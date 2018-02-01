@@ -2,6 +2,7 @@
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set app_name = salt.environ.get('APP_NAME') %}
+{% set VPC_NAME = env_data.vpc_name %}
 {% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', env_data.purposes[app_name].num_instances) %}
 
 load_{{ app_name }}_cloud_profile:
@@ -12,7 +13,7 @@ load_{{ app_name }}_cloud_profile:
 
 generate_{{ app_name }}_cloud_map_file:
   file.managed:
-    - name: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_{{ app_name }}_map.yml
+    - name: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_{{ app_name }}_map.yml
     - source: salt://orchestrate/aws/map_templates/instance_map.yml
     - template: jinja
     - makedirs: True
@@ -50,7 +51,7 @@ deploy_{{ app_name }}_cloud_map:
     - arg:
         - cloud.map_run
     - kwarg:
-        path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_{{ app_name }}_map.yml
+        path: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_{{ app_name }}_map.yml
         parallel: True
         full_return: True
     - require:
