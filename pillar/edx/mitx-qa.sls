@@ -9,9 +9,6 @@ edx:
   ansible_vars:
     EDXAPP_LOG_LEVEL: 'DEBUG'
     EDXAPP_CAS_SERVER_URL: 'https://auth.mitx.mit.edu/cas'
-    EDXAPP_CMS_ENV_EXTRA:
-      FEATURES:
-        ENABLE_GIT_AUTO_EXPORT: true
     EDXAPP_LMS_ENV_EXTRA:
       SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: |
         {{ SAML_SP_CERT.data.value|indent(8) }}

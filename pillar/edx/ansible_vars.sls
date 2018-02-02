@@ -465,6 +465,7 @@ edx:
         DISABLE_COURSE_CREATION: true
         DISABLE_START_DATES: true
         ENABLE_EXPORT_GIT: true
+        ENABLE_GIT_AUTO_EXPORT: true
         ENABLE_SQL_TRACKING_LOGS: true
         SEGMENT_IO: false
         STAFF_EMAIL: mitx-support@mit.edu
