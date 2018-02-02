@@ -3,8 +3,8 @@
 {% set python_version = '3.6.4' %}
 {% set python_bin_dir = '/usr/local/pyenv/versions/{0}/bin'.format(python_version) %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'dev') %}
-{% set aws_creds = salt.vault.read('aws-mitx/creds/odlvideo-{env}'.format(env=ENVIRONMENT) %}
-{% set pg_creds = salt.vault.read('postgres-{env}-odlvideo/creds/odlvideo'.format(env=ENVIRONMENT) %}
+{% set aws_creds = salt.vault.read('aws-mitx/creds/odlvideo-{env}'.format(env=ENVIRONMENT)) %}
+{% set pg_creds = salt.vault.read('postgres-{env}-odlvideo/creds/odlvideo'.format(env=ENVIRONMENT)) %}
 {% set youtube_creds = salt.vault.read('secret-odl-video/global/youtube-credentials') %}
 {% set app_cert = salt.vault.read('secret-odl-video/creds/mit-application-certificate') %}
 {% set cloudfront_key = salt.vault.read('secret-odl-video/global/cloudfront-private-key') %}
@@ -92,7 +92,7 @@ django:
     STATUS_TOKEN: {{ salt.vault.read('secret-odl-video/{env}/django-status-token'.format(env=ENVIRONMENT)).data.value }}
     USE_SHIBBOLETH: {{ env_data.use_shibboleth }}
     USWITCH_URL: https://s3.amazonaws.com/odl-video-service-uswitch-dev/prod
-    VIDEO_CLOUDFRONT_DIST: {{ salt.boto_cloudfront.get_distribution('odl-video-service-{env}'.format(env=ENVIRONMENT).result.distribution.Id }}
+    VIDEO_CLOUDFRONT_DIST: {{ salt.boto_cloudfront.get_distribution('odl-video-service-{env}'.format(env=ENVIRONMENT)).result.distribution.Id }}
     VIDEO_S3_BUCKET: odl-video-service-{{ ENVIRONMENT }}
     VIDEO_S3_SUBTITLE_BUCKET: odl-video-service-subtitles-{{ ENVIRONMENT }}
     VIDEO_S3_THUMBNAIL_BUCKET: odl-video-service-thumbnails-{{ ENVIRONMENT }}
