@@ -170,6 +170,8 @@ disable_minion_service_before_snapshot:
     - name: service.disable
     - arg:
         - salt-minion
+    - require:
+        - salt: build_edx_base_nodes
 
 snapshot_edx_app_node:
   boto_ec2.snapshot_created:
