@@ -167,7 +167,7 @@ environments:
           <<: *current_residential_versions_rp
           xqwatcher_courses: master
         num_instances:
-          edx: 2
+          edx: 3
           edx-worker: 2
       residential-live:
         business_unit: residential
@@ -179,7 +179,7 @@ environments:
         versions:
           <<: *current_residential_versions_rp
         num_instances:
-          edx: 5
+          edx: 6
           edx-worker: 2
   micromasters:
     business_unit: micromasters
