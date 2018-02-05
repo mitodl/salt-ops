@@ -412,6 +412,7 @@ edx:
         - ubcpi
       ADMINS:
       - ['MITx Stacktrace Recipients', 'cuddle-bunnies@mit.edu']
+      BOOK_URL: ""
       SERVER_EMAIL: mitxmail@mit.edu
       TIME_ZONE_DISPLAYED_FOR_DEADLINES: "{{ TIME_ZONE }}"
 
