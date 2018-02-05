@@ -179,7 +179,7 @@ environments:
         versions:
           <<: *current_residential_versions_rp
         num_instances:
-          edx: 6
+          edx: 9
           edx-worker: 2
   micromasters:
     business_unit: micromasters
