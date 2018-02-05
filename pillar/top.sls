@@ -124,7 +124,7 @@ base:
     - match: compound
     - edx.mitx-qa
     - edx.inotify_mitx
-  'G@roles:edx and G@environment:mitx-production':
+  'P@roles:(edx|edx-worker) and G@environment:mitx-production':
     - match: compound
     - edx.mitx-production
     - edx.inotify_mitx
@@ -135,7 +135,7 @@ base:
     - match: compound
     - edx.mitx_etl
     - consul.mitx-live
-  'P@purpose:(current-|next-)?residential.*':
+  'P@purpose:next-residential.*':
     - match: compound
     - edx.next_residential
   'roles:xqwatcher':
