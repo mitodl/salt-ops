@@ -3,11 +3,11 @@
 {% set python_version = '3.6.4' %}
 {% set python_bin_dir = '/usr/local/pyenv/versions/{0}/bin'.format(python_version) %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'dev') %}
-{% set aws_creds = salt.vault.read('aws-mitx/creds/odlvideo-{env}'.format(env=ENVIRONMENT)) %}
+{% set aws_creds = salt.vault.read('aws-mitx/creds/odl-video-service-{env}'.format(env=ENVIRONMENT)) %}
 {% set pg_creds = salt.vault.read('postgres-{env}-odlvideo/creds/odlvideo'.format(env=ENVIRONMENT)) %}
-{% set youtube_creds = salt.vault.read('secret-odl-video/global/youtube-credentials') %}
-{% set app_cert = salt.vault.read('secret-odl-video/creds/mit-application-certificate') %}
-{% set cloudfront_key = salt.vault.read('secret-odl-video/global/cloudfront-private-key') %}
+{% set youtube_creds = salt.vault.read('secret-odl-video/{env}/youtube-credentials'.format(env=ENVIRONMENT)) %}
+{% set app_cert = salt.vault.read('secret-odl-video/global/mit-application-certificate') %}
+{% set cloudfront_key = salt.vault.read('secret-operations/global/cloudfront-private-key') %}
 
 {% set env_dict = {
     'ci': {
@@ -55,10 +55,10 @@ django:
   automatic_migrations: True
   app_source:
     type: git # Options are: git, hg, archive
-    revision: {{ release_branch }}
+    revision: {{ env_data.release_branch }}
     repository_url: https://github.com/mitodl/odl-video-service
     state_params:
-      - branch: {{ release_branch }}
+      - branch: {{ env_data.release_branch }}
       - force_fetch: True
       - force_checkout: True
       - force_reset: True
@@ -71,16 +71,16 @@ django:
     CLOUDFRONT_PRIVATE_KEY: {{ cloudfront_key.data.value }}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@postgres-odlvideo.service.consul:5432/odlvideo
     DJANGO_LOG_LEVEL: {{ env_data.log_level }}
-    DROPBOX_KEY: {{ salt.vault.read('secret-odl-video/{env}/dropbox-key'.format(env=ENVIRONMENT)).data.value }}
+    DROPBOX_KEY: {{ salt.vault.read('secret-odl-video/global/dropbox-key').data.value }}
     ENABLE_VIDEO_PERMISSIONS: False
     ET_PIPELINE_ID: {{ env_data.transcode_pipeline_id }}
     GA_DIMENSION_CAMERA: dimension1
     GA_TRACKING_ID: {{ env_data.ga_id }}
-    LECTURE_CAPTURE_USER: {{ salt.sdb.get('consul://ovs') }}
+    LECTURE_CAPTURE_USER: {{ salt.sdb.get('sdb://consul/odl-video-service/lecture-capture-user') }}
     MAILGUN_KEY: {{ salt.vault.read('secret-operations/global/mailgun-api-key').data.value }}
     MAILGUN_URL: https://api.mailgun.net/v3/video.odl.mit.edu
     MIT_WS_CERTIFICATE: {{ app_cert.data.certificate }}
-    MIT_WS_PRIVATE_KEY: {{ app_cert.data.key }}
+    MIT_WS_PRIVATE_KEY: {{ app_cert.data.private_key }}
     ODL_VIDEO_ADMIN_EMAIL: cuddle_bunnies@mit.edu
     ODL_VIDEO_BASE_URL: https://{{ env_data.domain }}
     ODL_VIDEO_ENVIRONMENT: {{ ENVIRONMENT }}
@@ -92,12 +92,12 @@ django:
     STATUS_TOKEN: {{ salt.vault.read('secret-odl-video/{env}/django-status-token'.format(env=ENVIRONMENT)).data.value }}
     USE_SHIBBOLETH: {{ env_data.use_shibboleth }}
     USWITCH_URL: https://s3.amazonaws.com/odl-video-service-uswitch-dev/prod
-    VIDEO_CLOUDFRONT_DIST: {{ salt.boto_cloudfront.get_distribution('odl-video-service-{env}'.format(env=ENVIRONMENT)).result.distribution.Id }}
+    VIDEO_CLOUDFRONT_DIST: {{ salt.boto_cloudfront.get_distribution('odl-video-service-{env}'.format(env=ENVIRONMENT.split('-')[0])).result.distribution.Id }}
     VIDEO_S3_BUCKET: odl-video-service-{{ ENVIRONMENT }}
     VIDEO_S3_SUBTITLE_BUCKET: odl-video-service-subtitles-{{ ENVIRONMENT }}
     VIDEO_S3_THUMBNAIL_BUCKET: odl-video-service-thumbnails-{{ ENVIRONMENT }}
     VIDEO_S3_TRANSCODE_BUCKET: odl-video-service-transcoded-{{ ENVIRONMENT }}
-    VIDEO_S3_WATCH_BUCKET: odl-video-service-uploaded-{{ ENVIRONMET }}
+    VIDEO_S3_WATCH_BUCKET: odl-video-service-uploaded-{{ ENVIRONMENT }}
     VIDEO_STATUS_UPDATE_FREQUENCY: 60
     VIDEO_WATCH_BUCKET_FREQUENCY: 30
     YT_ACCESS_TOKEN: {{ youtube_creds.data.access_token }}
@@ -142,7 +142,7 @@ uwsgi:
         module: hc.wsgi
         pidfile: /var/run/uwsgi/{{ app_name }}.pid
         for-readline: /opt/{{ app_name }}/.env
-        env: %(_)
+        env: '%(_)'
         endfor: ''
         touch-reload: /opt/{{ app_name }}/deploy_complete.txt
         attach-daemon2: >-

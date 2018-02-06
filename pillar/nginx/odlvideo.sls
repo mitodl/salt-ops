@@ -1,6 +1,7 @@
+{% set app_name = 'odl-video-service' %}
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
-{% set env_data = env_settings[ENVIRONMENT] %}
+{% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set server_domain_name = env_data.purposes['odl-video-service'].domain %}
 {% set odl_wildcard = salt.vault.read('secret-operations/global/odl_wildcard_cert') %}
 
@@ -75,6 +76,6 @@ nginx:
                   - uwsgi_pass: unix:/run/odl-video/uwsgi.sock
               - location /:
                   - try_files:
-                    - $uri
-                    - $uri/
-                    - @django
+                    - '$uri'
+                    - '$uri/'
+                    - '@django'
