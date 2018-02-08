@@ -129,7 +129,7 @@ uwsgi:
     {{ app_name }}:
       uwsgi:
         socket: /var/run/uwsgi/{{ app_name }}.sock
-        chown-socket: www-data:deploy
+        chown-socket: 'www-data:deploy'
         chdir: /opt/{{ app_name }}
         pyhome: /usr/local/pyenv/versions/{{ python_version }}/
         uid: deploy
@@ -139,7 +139,7 @@ uwsgi:
         enable-threads: 'true'
         thunder-lock: 'true'
         logto: /var/log/uwsgi/apps/%n.log
-        module: hc.wsgi
+        module: odl_video.wsgi
         pidfile: /var/run/uwsgi/{{ app_name }}.pid
         for-readline: /opt/{{ app_name }}/.env
         env: '%(_)'
