@@ -1,5 +1,14 @@
-{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- ENVIRONMENT, BUSINESS_UNIT, subnet_ids with context %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
+{% set env_data = env_settings.environments[ENVIRONMENT] %}
+{% set app_name = salt.environ.get('APP_NAME') %}
+{% set VPC_NAME = env_data.vpc_name %}
+{% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', 3) %}
+{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit %}
+{% set subnet_ids = salt.boto_vpc.describe_subnets(
+    vpc_id=salt.boto_vpc.describe_vpcs(
+        name=env_data.vpc_name).vpcs[0].id
+    ).subnets|map(attribute='id')|list %}
 load_elasticsearch_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/elasticsearch.conf
@@ -8,7 +17,7 @@ load_elasticsearch_cloud_profile:
 
 generate_elasticsearch_cloud_map_file:
   file.managed:
-    - name: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_elasticsearch_map.yml
+    - name: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_elasticsearch_map.yml
     - source: salt://orchestrate/aws/map_templates/instance_map.yml
     - template: jinja
     - makedirs: True
@@ -26,7 +35,6 @@ generate_elasticsearch_cloud_map_file:
           - {{ salt.boto_secgroup.get_group_id(
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids }}
-        volume_size: 200
         tags:
           escluster: {{ ENVIRONMENT }}
           business_unit: {{ BUSINESS_UNIT }}
@@ -49,7 +57,7 @@ generate_elasticsearch_cloud_map_file:
 deploy_elasticsearch_nodes:
   salt.runner:
     - name: cloud.map_run
-    - path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_elasticsearch_map.yml
+    - path: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_elasticsearch_map.yml
     - kwargs:
         parallel: True
     - require:
