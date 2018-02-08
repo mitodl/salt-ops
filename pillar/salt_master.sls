@@ -148,7 +148,7 @@ salt_master:
       vault.verify: False
   minion_configs:
     vault:
-      vault.url: https://vault.service.consul:8200
+      vault.url: https://active.vault.service.consul:8200
       vault.verify: False
     extra_settings:
       grains:
