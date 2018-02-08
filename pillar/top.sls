@@ -108,6 +108,7 @@ base:
   'G@roles:elasticsearch and G@environment:micromasters':
     - match: compound
     - elasticsearch.micromasters
+    - nginx.micromasters_es
     - datadog.nginx-integration
   'G@roles:elasticsearch and G@environment:operations':
     - match: compound
