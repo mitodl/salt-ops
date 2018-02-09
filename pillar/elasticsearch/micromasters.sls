@@ -6,9 +6,14 @@ elasticsearch:
   lookup:
     elastic_stack: True
     configuration_settings:
+      discovery:
+        zen.hosts_provider: ec2
       cluster.name: micromasters
-      discover.ec2.tag.escluster: micromasters
+      discovery.ec2.tag.escluster: micromasters
       rest.action.multi.allow_explicit_index: 'false'
+      network.host: [_eth0_, _lo_]
+  plugin_settings:
+    readonlyrest:
       readonlyrest:
         enable: 'true'
         response_if_req_forbidden: Acess Denied
@@ -101,5 +106,5 @@ elasticsearch:
       elasticsearch: '5.x'
   plugins:
     - name: discovery-ec2
-    - name: elasticsearch-readonlyrest
+    - name: readonlyrest
       location: https://raw.githubusercontent.com/mitodl/salt-ops/master/salt/artifacts/readonlyrest-1.16.15_es5.6.6.zip
