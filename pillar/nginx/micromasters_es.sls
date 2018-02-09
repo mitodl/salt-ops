@@ -3,8 +3,9 @@
 
 nginx:
   ng:
-    dh_contents: |
-      {{ dhparam|indent(6) }}
+    dh_param:
+      dhparam.pem: |
+        {{ dhparam|indent(8) }}
     certificates:
       micromasters-es:
         public_cert: |

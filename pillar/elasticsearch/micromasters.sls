@@ -5,8 +5,6 @@
 elasticsearch:
   lookup:
     elastic_stack: True
-    pkgs:
-      - elasticsearch: 5.6.6
     configuration_settings:
       cluster.name: micromasters
       discover.ec2.tag.escluster: micromasters
@@ -104,4 +102,4 @@ elasticsearch:
   plugins:
     - name: discovery-ec2
     - name: elasticsearch-readonlyrest
-      location: https://github.com/sscarduzio/elasticsearch-readonlyrest-plugin/archive/v1.16.15_es5.6.6.zip
+      location: https://github.com/sscarduzio/elasticsearch-readonlyrest-plugin/archive/v1.16.15_es5.6.7.zip
