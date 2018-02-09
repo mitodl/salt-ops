@@ -102,4 +102,4 @@ elasticsearch:
   plugins:
     - name: discovery-ec2
     - name: elasticsearch-readonlyrest
-      location: https://github.com/sscarduzio/elasticsearch-readonlyrest-plugin/archive/v1.16.15_es5.6.7.zip
+      location: https://raw.githubusercontent.com/mitodl/salt-ops/master/salt/artifacts/readonlyrest-1.16.15_es5.6.6.zip
