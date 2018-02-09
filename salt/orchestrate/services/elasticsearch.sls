@@ -4,7 +4,8 @@
 {% set app_name = salt.environ.get('APP_NAME') %}
 {% set VPC_NAME = env_data.vpc_name %}
 {% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', 3) %}
-{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit %}
+{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
+{% set launch_date = salt.status.time(format="%Y-%m-%d") %}
 {% set subnet_ids = salt.boto_vpc.describe_subnets(
     vpc_id=salt.boto_vpc.describe_vpcs(
         name=env_data.vpc_name).vpcs[0].id
@@ -24,7 +25,7 @@ generate_elasticsearch_cloud_map_file:
     - context:
         service_name: elasticsearch
         environment_name: {{ ENVIRONMENT }}
-        num_instances: 3
+        num_instances: {{ INSTANCE_COUNT }}
         roles:
           - elasticsearch
         securitygroupid:
@@ -41,6 +42,7 @@ generate_elasticsearch_cloud_map_file:
           Department: {{ BUSINESS_UNIT }}
           OU: {{ BUSINESS_UNIT }}
           Environment: {{ ENVIRONMENT }}
+          launch-date: '{{ launch_date }}'
         profile_overrides:
           ebs_optimized: False
           size: t2.medium
@@ -66,12 +68,12 @@ deploy_elasticsearch_nodes:
 sync_external_modules_for_elasticsearch_nodes:
   salt.function:
     - name: saltutil.sync_all
-    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
 
 format_data_drive:
   salt.function:
-    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
     - name: state.single
     - arg:
@@ -84,7 +86,7 @@ format_data_drive:
 
 mount_data_drive:
   salt.function:
-    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
     - name: state.single
     - arg:
@@ -101,7 +103,7 @@ mount_data_drive:
 load_pillar_data_on_{{ ENVIRONMENT }}_elasticsearch_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
     - require:
         - salt: deploy_elasticsearch_nodes
@@ -109,7 +111,7 @@ load_pillar_data_on_{{ ENVIRONMENT }}_elasticsearch_nodes:
 populate_mine_with_{{ ENVIRONMENT }}_elasticsearch_data:
   salt.function:
     - name: mine.update
-    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
     - require:
         - salt: load_pillar_data_on_{{ ENVIRONMENT }}_elasticsearch_nodes
@@ -118,22 +120,14 @@ populate_mine_with_{{ ENVIRONMENT }}_elasticsearch_data:
 reload_pillar_data_on_{{ ENVIRONMENT }}_elasticsearch_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
     - require:
         - salt: populate_mine_with_{{ ENVIRONMENT }}_elasticsearch_data
 
-install_git_on_elasticsearch_nodes_for_cloning_forked_python_packages:
-  salt.function:
-    - name: pkg.install
-    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - arg:
-        - git
-
 build_{{ ENVIRONMENT }}_elasticsearch_nodes:
   salt.state:
-    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:elasticsearch and G@environment:{{ ENVIRONMENT }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
     - highstate: True
     - require:
