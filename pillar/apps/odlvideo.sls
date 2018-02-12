@@ -106,6 +106,7 @@ django:
     YT_PROJECT_ID: {{ env_data.youtube_project_id }}
     YT_REFRESH_TOKEN: {{ youtube_creds.data.refresh_token }}
   pkgs:
+    - git
     - build-essential
     - libssl-dev
     - libjpeg-dev
