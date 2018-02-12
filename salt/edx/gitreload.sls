@@ -29,7 +29,7 @@
                                     'ba53a4b0e0618891535aa9107c3d113227540e39') -%}
 {% set ssh_hosts = salt.pillar.get('edx:ssh_hosts',
    [{'name': 'github.com', 'fingerprint': '9d:38:5b:83:a9:17:52:92:56:1a:5e:c4:d4:81:8e:0a:ca:51:a2:64:f1:74:20:11:2e:f8:8a:c3:a1:39:49:8f'},
-    {'name': 'github.mit.edu', 'fingerprint': '98:fd:6f:32:bb:11:90:fe:a5:e3:66:ec:d1:db:17:7a:3a:b7:62:0c:4c:0f:6a:f9:36:a6:e8:22:6a:ac:b3:0d'}]) %}
+    {'name': 'github.mit.edu', 'fingerprint': 'aa:d2:e9:66:7e:46:77:d3:7d:d9:39:3f:f4:9f:17:a1:18:c1:87:8f:69:cb:8f:d0:db:10:b7:71:5e:ad:57:68'}]) %}
 {% set gr_log_dir = salt.pillar.get('edx:gitreload:gr_log_dir',
                                   '/edx/var/log/gr') -%}
 {% set hostname = purpose.domains.gitreload -%}
@@ -65,7 +65,9 @@ add_{{ host.name }}_to_known_hosts_for_gitreload:
   ssh_known_hosts.present:
     - name: {{ host.name }}
     - user: www-data
+    - enc: ssh-rsa
     - fingerprint: {{ host.fingerprint }}
+    - fingerprint_hash_type: sha256
     - require:
       - file: install_mit_github_ssh_key
 {% endfor %}
