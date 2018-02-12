@@ -77,6 +77,7 @@ base:
     - cassandra
   'roles:odl-video-service':
     - match: grain
+    - utils.configure_debian_source_repos
     - consul
     - python
     - node
