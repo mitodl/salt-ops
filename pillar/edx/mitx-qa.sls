@@ -2,6 +2,9 @@
 {% set SAML_SP_CERT = salt.vault.read('secret-residential/mitx-qa/saml-sp-cert') %}
 
 edx:
+  config:
+    repo: https://github.com/mitodl/configuration.git
+    branch: open-release/ginkgo.master
   gitreload:
     basic_auth:
       username: mitx
