@@ -2,7 +2,7 @@
 elasticsearch:
   lookup:
     pkgs:
-      - openjdk-7-jre-headless
+      - openjdk-8-jre-headless
     verify_package: False
     configuration_settings:
       discovery:
