@@ -156,8 +156,8 @@ base:
   'G@roles:devstack and P@environment:dev':
     - match: compound
     - devstack
-    - consul_devstack
-    - mysql_devstack
-    - rabbitmq_devstack
-    - elasticsearch_devstack
-    - mongodb_devstack
+    - consul.devstack
+    - mongodb.devstack
+    - mysql.devstack
+    - elasticsearch.devstack
+    - rabbitmq.devstack
