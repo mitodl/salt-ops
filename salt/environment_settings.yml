@@ -1,0 +1,333 @@
+edxapp_secret_backends: &edxapp_secret_backends
+  mysql:
+    role_prefixes:
+      - edxapp
+      - xqueue
+  mongodb:
+    role_prefixes:
+      - modulestore
+      - contentstore
+      - gitlog
+      - forum
+  rabbitmq:
+    role_prefixes:
+      - xqueue
+      - celery
+  aws:
+    bucket_prefixes:
+      - mitx-etl
+      - mitx-grades
+      - mitx-storage
+
+current_residential_versions_qa: &current_residential_versions_qa
+  edxapp: mitx/ginkgo
+  forum: open-release/ginkgo.master
+  xqwatcher_courses: master
+  ami_id: ami-80861296
+  theme: ginkgo
+  codename: ginkgo
+
+current_residential_versions_rp: &current_residential_versions_rp
+  edxapp: mitx/ginkgo
+  forum: open-release/ginkgo.master
+  xqwatcher_courses: production
+  ami_id: ami-80861296
+  theme: ginkgo
+  codename: ginkgo
+
+next_residential_versions: &next_residential_versions
+  edxapp: master
+  forum: master
+  xqwatcher_courses: master
+  ami_id: ami-80861296
+  theme: master
+  codename: hawthorn
+
+environments:
+  mitx-qa:
+    business_unit: residential
+    network_prefix: 10.5
+    vpc_name: MITx QA
+    secret_backends:
+      <<: *edxapp_secret_backends
+    backends:
+      elasticache:
+        - engine: memcached
+          engine_version: 1.4.34
+          node_type: cache.t2.small
+          num_cache_nodes: 1
+          cluster_id: current-res-live
+          purpose: current-residential-live
+        - engine: memcached
+          engine_version: 1.4.34
+          node_type: cache.t2.small
+          num_cache_nodes: 1
+          cluster_id: current-res-draft
+          purpose: current-residential-draft
+        - engine: memcached
+          engine_version: 1.4.34
+          node_type: cache.t2.small
+          num_cache_nodes: 1
+          cluster_id: next-res-live
+          purpose: next-residential-live
+        - engine: memcached
+          engine_version: 1.4.34
+          node_type: cache.t2.small
+          num_cache_nodes: 1
+          cluster_id: next-res-draft
+          purpose: next-residential-draft
+    purposes:
+      current-residential-live:
+        business_unit: residential
+        domains:
+          cms: studio-mitx-qa.mitx.mit.edu
+          lms: mitx-qa.mitx.mit.edu
+          preview: preview-mitx-qa.mitx.mit.edu
+          gitreload: prod-gr-qa.mitx.mit.edu
+        versions:
+          <<: *current_residential_versions_qa
+        num_instances:
+          edx: 2
+          edx-worker: 1
+      current-residential-draft:
+        business_unit: residential
+        domains:
+          cms: studio-mitx-qa-draft.mitx.mit.edu
+          lms: mitx-qa-draft.mitx.mit.edu
+          preview: preview-mitx-qa-draft.mitx.mit.edu
+          gitreload: gr-qa.mitx.mit.edu
+        versions:
+          <<: *current_residential_versions_qa
+        num_instances:
+          edx: 1
+          edx-worker: 1
+      next-residential-live:
+        business_unit: residential
+        domains:
+          cms: studio-mitx-qa-next.mitx.mit.edu
+          lms: mitx-qa-next.mitx.mit.edu
+          preview: preview-mitx-qa-next.mitx.mit.edu
+          gitreload: prod-gr-qa-next.mitx.mit.edu
+        versions:
+          <<: *next_residential_versions
+        num_instances:
+          edx: 2
+          edx-worker: 1
+      next-residential-draft:
+        business_unit: residential
+        domains:
+          cms: studio-mitx-qa-draft-next.mitx.mit.edu
+          lms: mitx-qa-draft-next.mitx.mit.edu
+          preview: preview-mitx-qa-draft-next.mitx.mit.edu
+          gitreload: gr-qa-next.mitx.mit.edu
+        versions:
+          <<: *next_residential_versions
+        num_instances:
+          edx: 1
+          edx-worker: 1
+      sandbox:
+        business_unit: operations
+        versions:
+          edxapp: master
+          forum: master
+      continuous-delivery:
+        business_unit: operations
+        versions:
+          edxapp: master
+          forum: master
+  mitx-production:
+    business_unit: residential
+    network_prefix: 10.7
+    vpc_name: MITx Production
+    secret_backends:
+      <<: *edxapp_secret_backends
+    backends:
+      elasticache:
+        - engine: memcached
+          engine_version: 1.4.34
+          node_type: cache.t2.small
+          num_cache_nodes: 2
+          purpose: residential-live
+          cluster_id: residential-live
+        - engine: memcached
+          engine_version: 1.4.34
+          node_type: cache.t2.small
+          num_cache_nodes: 2
+          purpose: residential-draft
+          cluster_id: residential-draft
+    purposes:
+      residential-draft:
+        business_unit: residential
+        domains:
+          lms: staging.mitx.mit.edu
+          cms: studio-staging.mitx.mit.edu
+          preview: preview-staging.mitx.mit.edu
+          gitreload: gr-rp.mitx.mit.edu
+        versions:
+          <<: *current_residential_versions_rp
+          xqwatcher_courses: master
+        num_instances:
+          edx: 3
+          edx-worker: 2
+      residential-live:
+        business_unit: residential
+        domains:
+          lms: lms.mitx.mit.edu
+          cms: studio.mitx.mit.edu
+          preview: preview.mitx.mit.edu
+          gitreload: prod-gr-rp.mitx.mit.edu
+        versions:
+          <<: *current_residential_versions_rp
+        num_instances:
+          edx: 9
+          edx-worker: 2
+  micromasters:
+    business_unit: micromasters
+    network_prefix: 10.10
+    vpc_name: micromasters
+    secret_backends:
+      - postgresql
+      - aws
+    purposes:
+      - micromasters
+  bootcamps:
+    business_unit: bootcamps
+    network_prefix: 10.11
+    vpc_name: bootcamps
+    secret_backends:
+      - postgresql
+      - aws
+    purposes:
+      - bootcamps
+  operations:
+    business_unit: operations
+    network_prefix: 10.0
+    vpc_name: mitodl-operations-services
+    backends:
+      rds:
+        - name: saltmaster
+          multi_az: True
+          engine: postgres
+          vault_plugin: postgresql-database-plugin
+          db_instance_class: db.t2.micro
+          allocated_storage: 100
+          public_access: False
+        - name: techtvcopy
+          multi_az: False
+          engine: mariadb
+          vault_plugin: mysql-database-plugin
+          db_instance_class: db.t2.micro
+          allocated_storage: 25
+          public_access: False
+  production-apps:
+    business_unit: operations
+    network_prefix: 10.13
+    vpc_name: Production Apps
+    purposes:
+      odl-video-service:
+        num_instances: 3
+        domain: video.odl.mit.edu
+        business_unit: odl-video-service
+      reddit:
+        num_instances: 3
+    backends:
+      rds:
+        - name: reddit
+          multi_az: True
+          # This needs to be changed if/when we redeploy this host.
+          # It is only like this to fix Consul pillar rendering
+          engine: postgresql
+          vault_plugin: postgresql-database-plugin
+          db_instance_class: db.t2.medium
+          allocated_storage: 100
+          public_access: False
+        - name: opendiscussions
+          multi_az: True
+          # This needs to be changed if/when we redeploy this host.
+          # It is only like this to fix Consul pillar rendering
+          engine: postgresql
+          vault_plugin: postgresql-database-plugin
+          db_instance_class: db.t2.small
+          allocated_storage: 100
+          public_access: True
+        - name: odlvideo
+          multi_az: True
+          engine: postgres
+          vault_plugin: postgresql-database-plugin
+          db_instance_class: db.t2.small
+          allocated_storage: 100
+          public_acces: False
+      elasticache:
+        - engine: memcached
+          engine_version: 1.4.34
+          node_type: cache.t2.medium
+          num_cache_nodes: 2
+          purpose: reddit
+          cluster_id: reddit-memcached
+        - engine: redis
+          engine_version: 3.2.10
+          node_type: cache.t2.medium
+          num_cache_nodes: 2
+          purpose: odl-video-service
+          cluster_id: ovs-production-redis
+  rc-apps:
+    business_unit: operations
+    network_prefix: 10.12
+    vpc_name: RC Apps
+    purposes:
+      odl-video-service:
+        business_unit: odl-video-service
+        domain: video-rc.odl.mit.edu
+        num_instances: 1
+      reddit:
+        num_instances: 2
+    backends:
+      rds:
+        - name: reddit
+          multi_az: False
+          # This needs to be changed if/when we redeploy this host.
+          # It is only like this to fix Consul pillar rendering
+          engine: postgresql
+          vault_plugin: postgresql-database-plugin
+          db_instance_class: db.t2.small
+          allocated_storage: 100
+          public_access: False
+        - name: opendiscussions
+          multi_az: False
+          # This needs to be changed if/when we redeploy this host.
+          # It is only like this to fix Consul pillar rendering
+          engine: postgresql
+          vault_plugin: postgresql-database-plugin
+          db_instance_class: db.t2.micro
+          allocated_storage: 100
+          public_access: True
+        - name: odlvideo
+          multi_az: True
+          engine: postgres
+          vault_plugin: postgresql-database-plugin
+          db_instance_class: db.t2.micro
+          allocated_storage: 100
+          public_acces: False
+      elasticache:
+        - engine: memcached
+          engine_version: 1.4.34
+          node_type: cache.t2.medium
+          num_cache_nodes: 2
+          purpose: reddit-rc
+          cluster_id: reddit-rc-memcached
+        - engine: redis
+          engine_version: 3.2.10
+          node_type: cache.t2.medium
+          num_cache_nodes: 1
+          purpose: odl-video-service
+          cluster_id: ovs-rc-redis
+
+business_units:
+  - bootcamps
+  - micromasters
+  - mitxpro
+  - odl-video
+  - open-courseware
+  - operations
+  - residential
+  - starteam

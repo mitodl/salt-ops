@@ -39,9 +39,9 @@ our configurations. Test the following:
   ] %}
 
 {% set lms_env = {
-  'mitx_email': salt.pillar.get('edx:ansible_vars:edxapp_generic_env_config:DEFAULT_FROM_EMAIL'),
-  'mitx_theme': salt.pillar.get('edx:ansible_vars:edxapp_generic_env_config:THEME_NAME'),
-  'rabbitmq_service': salt.pillar.get('edx:ansible_vars:xqueue_env_config:RABBIT_HOST')
+  'mitx_email': salt.pillar.get('edx:ansible_vars:EDXAPP_DEFAULT_FROM_EMAIL'),
+  'mitx_theme': salt.pillar.get('edx:ansible_vars:EDXAPP_DEFAULT_SITE_THEME'),
+  'rabbitmq_service': salt.pillar.get('edx:ansible_vars:EDXAPP_RABBIT_HOSTNAME')
   } %}
 
 # {% for sv_service in supervisor_services %}
@@ -65,11 +65,6 @@ test_edxapp_{{ service }}:
     - is_running: True
 {% endfor %}
 
-test_edxapp_cms:
-  testinfra.supervisor:
-      - name: 'edxapp:cms'
-      - is_running: True
-
 # Check if AWS EFS is mounted
 test_edxapp_efs_mount:
   testinfra.mount_point:
@@ -84,8 +79,7 @@ test_edxapp_lms_env_{{ attribute }}:
   testinfra.file:
     - name: '/edx/app/edxapp/lms.env.json'
     - exists: True
-    - contains:
-        parameter: {{ value }}
-        expected: True
-        comparison: is_
+    - content_string:
+        expected: '{{ value }}'
+        comparison: search
 {% endfor %}

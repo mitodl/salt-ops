@@ -119,6 +119,7 @@ salt_master:
         - https://github.com/mitodl/aptly-formula
         - https://github.com/mitodl/pgbouncer-formula
         - https://github.com/mitodl/python-formula
+        - https://github.com/mitodl/node-formula
     ext_pillar:
       git_pillar_provider: pygit2
       ext_pillar:
@@ -138,22 +139,16 @@ salt_master:
             - salt://reactors/edx/inotify_mitx.sls
         - vault/lease/expiring/*:
             - salt://reactors/vault/alert_expiring_leases.sls
-    returner:
-      event_return: elasticsearch
-      master_job_cache: elasticsearch
-      elasticsearch:
-        hosts:
-          - http://elasticsearch.service.operations.consul:9200
     sdb:
       consul:
         driver: consul
         host: consul.service.operations.consul
     vault:
-      vault.url: https://vault.service.consul:8200
+      vault.url: https://active.vault.service.consul:8200
       vault.verify: False
   minion_configs:
     vault:
-      vault.url: https://vault.service.consul:8200
+      vault.url: https://active.vault.service.consul:8200
       vault.verify: False
     extra_settings:
       grains:

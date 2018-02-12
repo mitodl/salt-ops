@@ -37,6 +37,12 @@ base:
     - fluentd.mongodb
     - consul.mongodb
     - datadog.mongodb-integration
+  'roles:odl-video-service':
+    - match: grain
+    - apps.odlvideo
+    - nginx
+    - nginx.odlvideo
+    - consul
   'G@roles:rabbitmq and P@environment:(mitx-production|production-apps)':
     - match: compound
     - datadog.rabbitmq-integration
@@ -102,6 +108,7 @@ base:
   'G@roles:elasticsearch and G@environment:micromasters':
     - match: compound
     - elasticsearch.micromasters
+    - nginx.micromasters_es
     - datadog.nginx-integration
   'G@roles:elasticsearch and G@environment:operations':
     - match: compound
@@ -118,7 +125,7 @@ base:
     - match: compound
     - edx.mitx-qa
     - edx.inotify_mitx
-  'G@roles:edx and G@environment:mitx-production':
+  'P@roles:(edx|edx-worker) and G@environment:mitx-production':
     - match: compound
     - edx.mitx-production
     - edx.inotify_mitx
@@ -129,7 +136,7 @@ base:
     - match: compound
     - edx.mitx_etl
     - consul.mitx-live
-  'P@purpose:(current-|next-)?residential.*':
+  'P@purpose:next-residential.*':
     - match: compound
     - edx.next_residential
   'roles:xqwatcher':

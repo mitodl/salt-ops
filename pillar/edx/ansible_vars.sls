@@ -10,7 +10,7 @@
 {# Move all following pillar data under a top-level key of `ansible_vars` #}
 {# Use subkeys for the respective apps/playbooks (e.g. `forum`, `xqueue`, etc.) #}
 
-{% import_yaml "environment_settings.yml" as env_settings %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% from "shared/edx/mitx.jinja" import edx with context %}
 {% set business_unit = salt.grains.get('business_unit', 'residential') %}
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
@@ -173,7 +173,7 @@ edx:
     edxapp_course_data_dir: {{ GIT_REPO_DIR }}
 
     EDXAPP_AWS_STORAGE_BUCKET_NAME: mitx-storage-{{ purpose }}-{{ environment }}
-    EDXAPP_IMPORT_EXPORT_BUCKET: !!null
+    EDXAPP_IMPORT_EXPORT_BUCKET: "mitx-storage-{{ salt.grains.get('purpose') }}-{{ salt.grains.get('environment') }}"
     EDXAPP_AWS_S3_CUSTOM_DOMAIN: !!null
     EDXAPP_CELERY_WORKERS:
       - queue: low
@@ -309,10 +309,10 @@ edx:
     #####################################################################
 
     ########## START THEMING ########################################
-    EDXAPP_COMPREHENSIVE_THEME_SOURCE_REPO: 'https://github.com/mitodl/mitx-theme.git'
-    EDXAPP_COMPREHENSIVE_THEME_VERSION: "master"
-    edxapp_theme_source_repo: 'https://github.com/mitodl/mitx-theme.git'
-    edxapp_theme_version: 'master'
+    EDXAPP_COMPREHENSIVE_THEME_SOURCE_REPO: 'https://github.com/mitodl/mitx-theme'
+    EDXAPP_COMPREHENSIVE_THEME_VERSION: {{ purpose_data.versions.theme }}
+    edxapp_theme_source_repo: 'https://github.com/mitodl/mitx-theme'
+    edxapp_theme_version: {{ purpose_data.versions.theme }}
     EDXAPP_COMPREHENSIVE_THEME_DIRS:
       - /edx/app/edxapp/themes/
     {# multivariate #}
@@ -412,6 +412,7 @@ edx:
         - ubcpi
       ADMINS:
       - ['MITx Stacktrace Recipients', 'cuddle-bunnies@mit.edu']
+      BOOK_URL: ""
       SERVER_EMAIL: mitxmail@mit.edu
       TIME_ZONE_DISPLAYED_FOR_DEADLINES: "{{ TIME_ZONE }}"
 
@@ -420,6 +421,16 @@ edx:
       BULK_EMAIL_DEFAULT_FROM_EMAIL: mitx-support@mit.edu
       COURSE_ABOUT_VISIBILITY_PERMISSION: "{{ edx.edxapp_course_about_visibility_permission }}"
       COURSE_CATALOG_VISIBILITY_PERMISSION: "{{ edx.edxapp_course_catalog_visibility_permission }}"
+      COURSE_MODE_DEFAULTS:
+        bulk_sku: !!null
+        currency: 'usd'
+        description: !!null
+        expiration_datetime: !!null
+        min_price: 0
+        name: 'Honor'
+        sku: !!null
+        slug: 'honor'
+        suggested_prices: ''
       FEATURES:
         <<: *common_feature_flags
         ALLOW_COURSE_STAFF_GRADE_DOWNLOADS: true
@@ -435,6 +446,8 @@ edx:
         LICENSING: true
         REQUIRE_COURSE_EMAIL_AUTH: false
         RESTRICT_ENROLL_NO_ATSIGN_USERNAMES: true
+      FIELD_OVERRIDE_PROVIDERS:
+        - courseware.student_field_overrides.IndividualStudentOverrideProvider
       GIT_IMPORT_STATIC: false
       LOGGING_ENV: lms-{{ edx.edxapp_log_env_suffix}}
       OAUTH_OIDC_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
@@ -453,6 +466,7 @@ edx:
         DISABLE_COURSE_CREATION: true
         DISABLE_START_DATES: true
         ENABLE_EXPORT_GIT: true
+        ENABLE_GIT_AUTO_EXPORT: true
         ENABLE_SQL_TRACKING_LOGS: true
         SEGMENT_IO: false
         STAFF_EMAIL: mitx-support@mit.edu

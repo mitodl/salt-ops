@@ -1,5 +1,5 @@
 #!jinja|yaml|gpg
-{% import_yaml "environment_settings.yml" as env_settings %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set env_data = env_settings.environments[environment] %}
 {% set git_ssh_key = salt.vault.read('secret-residential/global/xqueue_watcher_git_ssh').data.value %}
@@ -10,7 +10,7 @@ schedule:
   {% for queue_name in ['Watcher-MITx-6.0001r', 'Watcher-MITx-6.00x'] %}
   update_live_grader_for_{{ purpose }}_with_{{ queue_name }}_queue:
     function: git.pull
-    minutes: 15
+    minutes: 5
     args:
       - /edx/app/xqwatcher/data/mit-600x-{{ purpose }}-{{ queue_name }}/
     kwargs:
@@ -40,21 +40,19 @@ edx:
           class: logging.StreamHandler
           formatter: default
           level: DEBUG
-        file:
-          class: logging.handlers.RotatingFileHandler
+        syslog:
+          class: logging.handlers.SysLogHandler
           formatter: default
-          filename: /edx/var/log/xqwatcher/xqwatcher.log
           level: INFO
-          maxBytes: 10485760 {# 10 MB #}
-          backupCount: 10
+          address: /dev/log
       loggers:
         "":
           level: INFO
           handlers:
-            - file
+            - syslog
             - console
   config:
-    repo: https://github.com/edx/configuration.git
+    repo: https://github.com/mitodl/configuration.git
     branch: open-release/ginkgo.master
   playbooks:
     - 'edx-east/xqwatcher.yml'
@@ -73,10 +71,14 @@ edx:
               purpose=purpose)) %}
       - COURSE: "mit-600x-{{ purpose }}-{{ queue_name }}"
         GIT_REPO: git@github.com:mitodl/graders-mit-600x
-        GIT_REF: master
+        GIT_REF: {{ purpose_data.versions.xqwatcher_courses }}
         PYTHON_REQUIREMENTS:
           - name: numpy
             version: 1.12.1
+          - name: scikit-learn
+            version: 0.19.1
+          - name: scipy
+            version: 1.0.0
         PYTHON_EXECUTABLE: /usr/bin/python3
         QUEUE_NAME: {{ queue_name }}
         QUEUE_CONFIG:

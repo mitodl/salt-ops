@@ -13,7 +13,8 @@ clone_edx_configuration:
     - makedirs: True
   git.latest:
     - name: {{ salt.pillar.get('edx:config:repo', 'https://github.com/edx/configuration.git') }}
-    - rev: {{ salt.pillar.get('edx:config:branch', 'open-release/eucalyptus.master') }}
+    - rev: {{ salt.pillar.get('edx:config:branch', 'open-release/ginkgo.master') }}
+    - branch: {{ salt.pillar.get('edx:config:branch', 'open-release/ginkgo.master') }}
     - target: {{ repo_path }}
     - user: root
     - force_checkout: True
@@ -22,20 +23,17 @@ clone_edx_configuration:
     - require:
       - file: clone_edx_configuration
 
-mark_ansible_as_editable:
-  file.replace:
-    - name: {{ repo_path }}/requirements.txt
-    - pattern: |
-        ^git\+https://github\.com/edx/ansible.*
-    - repl: |
-        -e git+https://github.com/edx/ansible.git@stable-1.9.3-rc1-edx#egg=ansible==1.9.3-edx
-    - require:
-        - git: clone_edx_configuration
-
 replace_nginx_static_asset_template_fragment:
   file.managed:
     - name: {{ repo_path }}/playbooks/roles/nginx/templates/edx/app/nginx/sites-available/static-files.j2
     - source: salt://edx/files/nginx_static_assets.j2
+    - require:
+        - git: clone_edx_configuration
+
+add_mitx_devstack_playbook:
+  file.managed:
+    - name: {{ repo_path }}/playbooks/mitx_devstack.yml
+    - source: salt://edx/files/mitx_devstack.yml
     - require:
         - git: clone_edx_configuration
 

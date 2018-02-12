@@ -7,6 +7,12 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
+  'P@environment:(operations|mitx-qa|mitx-production|rc-apps|production-apps)':
+    - match: compound
+    - consul
+    - consul.dns_proxy
+    - consul.tests
+    - consul.tests.test_dns_setup
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
@@ -69,6 +75,14 @@ base:
   'roles:cassandra':
     - match: grain
     - cassandra
+  'roles:odl-video-service':
+    - match: grain
+    - consul
+    - python
+    - node
+    - nginx-shibboleth
+    - uwsgi
+    - django
   'roles:kibana and G@environment:operations':
     - match: compound
     - elasticsearch.kibana
@@ -100,12 +114,6 @@ base:
   'G@roles:mongodb and G@environment:mitx-production':
     - match: compound
     - datadog.plugins
-  'P@environment:(operations|mitx-qa|mitx-production|rc-apps|production-apps)':
-    - match: compound
-    - consul
-    - consul.dns_proxy
-    - consul.tests
-    - consul.tests.test_dns_setup
   'G@roles:consul_server and G@environment:operations':
     - match: compound
     - datadog.plugins
@@ -141,8 +149,6 @@ base:
     - match: compound
     - consul
     - consul.dns_proxy
-    - consul.tests
-    - consul.tests.test_dns_setup
     - mysql
     - mysql.remove_test_database
     - mongodb
