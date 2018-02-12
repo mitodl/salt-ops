@@ -70,8 +70,8 @@ edx:
   playbooks:
     - 'mitx_devstack.yml'
   django:
-    django_staff_user: 'devstack'
-    django_staff_password: 'changeme'
+    django_superuser_account: 'devstack'
+    django_superuser_password: 'changeme'
 
   ansible_vars:
     ### COMMON VARS ###
