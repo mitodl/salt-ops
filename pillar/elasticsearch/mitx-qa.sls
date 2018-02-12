@@ -5,11 +5,13 @@ elasticsearch:
       - openjdk-7-jre-headless
     verify_package: False
     configuration_settings:
-      discovery.zen.hosts_provider: ec2
+      discovery:
+        type: ec2
       discovery.ec2.tag.escluster: {{ ENVIRONMENT }}
       gateway.recover_after_nodes: 2
       gateway.expected_nodes: 3
       discovery.zen.minimum_master_nodes: 2
+      discovery.zen.ping.multicast.enabled: 'false'
       cluster.name: {{ ENVIRONMENT }}
       repositories:
         s3:
