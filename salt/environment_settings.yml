@@ -89,6 +89,7 @@ environments:
         num_instances:
           edx: 2
           edx-worker: 1
+        instance_type: t2.large
       current-residential-draft:
         business_unit: residential
         domains:
@@ -101,6 +102,7 @@ environments:
         num_instances:
           edx: 1
           edx-worker: 1
+        instance_type: t2.large
       next-residential-live:
         business_unit: residential
         domains:
@@ -113,6 +115,7 @@ environments:
         num_instances:
           edx: 2
           edx-worker: 1
+        instance_type: t2.large
       next-residential-draft:
         business_unit: residential
         domains:
@@ -125,6 +128,7 @@ environments:
         num_instances:
           edx: 1
           edx-worker: 1
+        instance_type: t2.large
       sandbox:
         business_unit: operations
         versions:
@@ -169,6 +173,7 @@ environments:
         num_instances:
           edx: 3
           edx-worker: 2
+        instance_type: r4.large
       residential-live:
         business_unit: residential
         domains:
@@ -181,6 +186,7 @@ environments:
         num_instances:
           edx: 9
           edx-worker: 2
+        instance_type: r4.xlarge
   micromasters:
     business_unit: micromasters
     network_prefix: 10.10
