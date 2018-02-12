@@ -12,6 +12,7 @@ edx:
             - {{ securitygroupids.default }}
             - {{ securitygroupids['salt-master'] }}
             - {{ securitygroupids['consul-agent'] }}
+          associate_eip: eipalloc-838972e6
       tag:
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
