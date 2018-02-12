@@ -157,7 +157,7 @@ base:
     - match: compound
     - devstack
     - consul.devstack
-    - db.mongodb_devstack
-    - db.mysql_devstack
+    - mongodb.devstack
+    - mysql.devstack
     - elasticsearch.devstack
     - rabbitmq.devstack
