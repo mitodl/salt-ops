@@ -10,6 +10,8 @@
 
 elasticsearch:
   lookup:
+    pkgs:
+      - openjdk-7-jre-headless
     verify_package: False
     configuration_settings:
       discovery.zen.ping.unicast.hosts: {{ lan_nodes }}
@@ -19,6 +21,7 @@ elasticsearch:
         s3:
           bucket: {{ ENVIRONMENT }}-elasticsearch-backups
           region: us-east-1
+      network.host: [_eth0_, _lo_]
     products:
       elasticsearch: '1.5'
   plugins:

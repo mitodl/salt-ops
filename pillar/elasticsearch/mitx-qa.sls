@@ -21,6 +21,7 @@ elasticsearch:
         s3:
           bucket: mitx-qa-elasticsearch-backups
           region: us-east-1
+      network.host: [_eth0_, _lo_]
     products:
       elasticsearch: '1.7'
   plugins:
