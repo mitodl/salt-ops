@@ -197,7 +197,6 @@ environments:
           edx-worker:
             number: 2
             type: t2.large
-        instance_type: r4.large
       residential-live:
         business_unit: residential
         domains:
