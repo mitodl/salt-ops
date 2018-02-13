@@ -207,7 +207,7 @@ environments:
           gitreload: prod-gr-rp.mitx.mit.edu
         versions:
           <<: *current_residential_versions_rp
-        num_instances:
+        instances:
           edx:
             number: 9
             type: r4.xlarge
