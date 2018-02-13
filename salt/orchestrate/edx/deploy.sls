@@ -1,6 +1,6 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-qa') %}
-{% set env_settings = env_settings.environments[ENVIRONMENT] %}
+{% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set PURPOSE_PREFIX = salt.environ.get('PURPOSE_PREFIX', 'current-residential') %}
 {% set VPC_NAME = env_data.vpc_name %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
@@ -10,8 +10,8 @@
         name=env_data.vpc_name).vpcs[0].id
     ).subnets|map(attribute='id')|list %}
 {% set ANSIBLE_FLAGS = salt.environ.get('ANSIBLE_FLAGS') %}
-{% set purposes = env_settings.purposes %}
-{% set bucket_prefixes = env_settings.secret_backends.aws.bucket_prefixes %}
+{% set purposes = env_data.purposes %}
+{% set bucket_prefixes = env_data.secret_backends.aws.bucket_prefixes %}
 {% set codename = purposes[PURPOSE_PREFIX +'-live'].versions.codename %}
 {% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
 {% set launch_date = salt.status.time(format="%Y-%m-%d") %}
@@ -73,7 +73,6 @@ generate_edx_cloud_map_file:
           Environment: {{ ENVIRONMENT }}
         profile_overrides:
           userdata_file: '/etc/salt/cloud.d/edx_userdata.yml'
-          size: {{ purposes['{}-live'.format(PURPOSE_PREFIX)].instance_type }}
         app_types:
           draft:
             instances: {{ purposes['{}-draft'.format(PURPOSE_PREFIX)].instances }}
@@ -157,7 +156,7 @@ deploy_mitx_analytics_instance:
         purpose: {{ PURPOSE_PREFIX }}-draft
         launch-date: '{{ launch_date }}'
     - vm_overrides:
-        image: {{ salt.sdb.get('sdb://consul/edx_{}_ami_id'.format(codename) }}
+        image: {{ salt.sdb.get('sdb://consul/edx_{}_ami_id'.format(codename)) }}
         tag:
           business_unit: {{ BUSINESS_UNIT }}
           environment: {{ ENVIRONMENT }}
