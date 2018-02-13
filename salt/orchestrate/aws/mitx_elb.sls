@@ -1,17 +1,24 @@
-{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- BUSINESS_UNIT, ENVIRONMENT, PURPOSE_PREFIX, subnet_ids with context %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-qa') %}
+{% set env_data = env_settings.environments[ENVIRONMENT] %}
+{% set PURPOSE_PREFIX = salt.environ.get('PURPOSE_PREFIX', 'current-residential') %}
+{% set VPC_NAME = env_data.vpc_name %}
+{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
 
-{% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
-{% set ISO8601 = '%Y-%m-%dT%H:%M:%S' %}
+{% set launch_date = salt.status.time(format="%Y-%m-%d") %}
+{% set subnet_ids = salt.boto_vpc.describe_subnets(
+    vpc_id=salt.boto_vpc.describe_vpcs(
+        name=env_data.vpc_name).vpcs[0].id
+    ).subnets|map(attribute='id')|list %}
 {% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-{env}'.format(env=ENVIRONMENT)]) %}
-{% set purposes = env_settings.purposes %}
+{% set purposes = env_data.purposes %}
 {% set codename = purposes[PURPOSE_PREFIX +'-live'].versions.codename %}
 {% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
 
 {% for edx_type in ['draft', 'live'] %}
 {% set purpose_name = '{prefix}-{app}'.format(
     prefix=PURPOSE_PREFIX, app=edx_type) %}
-{% set purpose = env_settings.purposes[purpose_name] %}
+{% set purpose = purposes[purpose_name] %}
 {% set elb_name = 'edx-{purpose}-{env}'.format(
    purpose=purpose_name, env=ENVIRONMENT)[:32].strip('-') %}
 create_elb_for_edx_{{ purpose_name }}:
@@ -60,13 +67,13 @@ create_elb_for_edx_{{ purpose_name }}:
     - tags:
         Name: {{ elb_name }}
         business_unit: {{ BUSINESS_UNIT }}
-        created_at: "{{ salt.status.time(format=ISO8601) }}"
+        created_at: "{{ launch_date }}"
 
 register_edx_{{ purpose_name }}_nodes_with_elb:
   boto_elb.register_instances:
     - name: {{ elb_name }}
     - instances:
-        {% for instance_num in range(purpose.num_instances.edx) %}
+        {% for instance_num in range(purpose.instances.edx.number) %}
         - {{ salt.boto_ec2.get_id('edx-{env}-{t}-{num}-v{version}'.format(
             env=ENVIRONMENT, t=purpose_name, num=instance_num,
             version=release_version)) }}
@@ -119,13 +126,13 @@ create_elb_for_edx_{{ PURPOSE_PREFIX }}_studio_live:
     - tags:
         Name: {{ elb_name }}
         business_unit: {{ BUSINESS_UNIT }}
-        created_at: "{{ salt.status.time(format=ISO8601) }}"
+        created_at: "{{ launch_date }}"
 
 register_edx_{{ PURPOSE_PREFIX }}_studio_live_nodes_with_elb:
   boto_elb.register_instances:
     - name: {{ elb_name }}
     - instances:
-        {% for instance_num in range(purpose.num_instances.edx) %}
+        {% for instance_num in range(purpose.instances.edx.number) %}
         - {{ salt.boto_ec2.get_id('edx-{env}-{t}-{num}-v{version}'.format(
             env=ENVIRONMENT, t=purpose_name, num=instance_num,
             version=release_version)) }}
