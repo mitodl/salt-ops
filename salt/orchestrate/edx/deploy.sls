@@ -1,8 +1,15 @@
-{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- ENVIRONMENT, BUSINESS_UNIT, PURPOSE_PREFIX, subnet_ids with context %}
-
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-qa') %}
+{% set env_settings = env_settings.environments[ENVIRONMENT] %}
+{% set PURPOSE_PREFIX = salt.environ.get('PURPOSE_PREFIX', 'current-residential') %}
+{% set VPC_NAME = env_data.vpc_name %}
+{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
+{% set launch_date = salt.status.time(format="%Y-%m-%d") %}
+{% set subnet_ids = salt.boto_vpc.describe_subnets(
+    vpc_id=salt.boto_vpc.describe_vpcs(
+        name=env_data.vpc_name).vpcs[0].id
+    ).subnets|map(attribute='id')|list %}
 {% set ANSIBLE_FLAGS = salt.environ.get('ANSIBLE_FLAGS') %}
-{% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set purposes = env_settings.purposes %}
 {% set bucket_prefixes = env_settings.secret_backends.aws.bucket_prefixes %}
 {% set codename = purposes[PURPOSE_PREFIX +'-live'].versions.codename %}
@@ -38,7 +45,7 @@ write_out_edx_userdata_file:
 
 generate_edx_cloud_map_file:
   file.managed:
-    - name: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_edx_map.yml
+    - name: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_edx_map.yml
     - source: salt://orchestrate/aws/map_templates/edx.yml
     - template: jinja
     - makedirs: True
@@ -66,9 +73,12 @@ generate_edx_cloud_map_file:
           Environment: {{ ENVIRONMENT }}
         profile_overrides:
           userdata_file: '/etc/salt/cloud.d/edx_userdata.yml'
+          size: {{ purposes['{}-live'.format(PURPOSE_PREFIX)].instance_type }}
         app_types:
-          draft: {{ purposes['{}-draft'.format(PURPOSE_PREFIX)].num_instances }}
-          live:  {{ purposes['{}-live'.format(PURPOSE_PREFIX)].num_instances }}
+          draft:
+            instances: {{ purposes['{}-draft'.format(PURPOSE_PREFIX)].instances }}
+          live:
+            instances: {{ purposes['{}-live'.format(PURPOSE_PREFIX)].instances }}
     - require:
         - file: load_edx_cloud_profile
         - file: load_edx_worker_cloud_profile
@@ -129,11 +139,43 @@ deploy_edx_cloud_map:
     - arg:
         - cloud.map_run
     - kwarg:
-        path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_edx_map.yml
+        path: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_edx_map.yml
         parallel: True
         full_return: True
     - require:
         - file: generate_edx_cloud_map_file
+
+deploy_mitx_analytics_instance:
+  salt.runner:
+    - name: cloud.profile
+    - prof: edx
+    - intances:
+        - analytics-{{ ENVIRONMENT }}-{{ PURPOSE_PREFIX }}-live
+    - grains:
+        business_unit: {{ BUSINESS_UNIT }}
+        environment: {{ ENVIRONMENT }}
+        purpose: {{ PURPOSE_PREFIX }}-draft
+        launch-date: '{{ launch_date }}'
+    - vm_overrides:
+        image: {{ salt.sdb.get('sdb://consul/edx_{}_ami_id'.format(codename) }}
+        tag:
+          business_unit: {{ BUSINESS_UNIT }}
+          environment: {{ ENVIRONMENT }}
+          launch-date: '{{ launch_date }}'
+          purpose_prefix: {{ PURPOSE_PREFIX }}
+        network_interfaces:
+          - DeviceIndex: 0
+            AssociatePublicIpAddress: True
+            SecurityGroupId:
+              - {{ salt.boto_secgroup.get_group_id(
+              'edx-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+              - {{ salt.boto_secgroup.get_group_id(
+              'default', vpc_name=VPC_NAME) }}
+              - {{ salt.boto_secgroup.get_group_id(
+              'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+              - {{ salt.boto_secgroup.get_group_id(
+              'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+            SubnetId: {{ subnet_ids[0] }}
 
 sync_external_modules_for_edx_nodes:
   salt.function:
