@@ -86,10 +86,13 @@ environments:
           gitreload: prod-gr-qa.mitx.mit.edu
         versions:
           <<: *current_residential_versions_qa
-        num_instances:
-          edx: 2
-          edx-worker: 1
-        instance_type: t2.large
+        instances:
+          edx:
+            number: 2
+            type: t2.large
+          edx-worker:
+            number: 1
+            type: t2.medium
       current-residential-draft:
         business_unit: residential
         domains:
@@ -99,10 +102,13 @@ environments:
           gitreload: gr-qa.mitx.mit.edu
         versions:
           <<: *current_residential_versions_qa
-        num_instances:
-          edx: 1
-          edx-worker: 1
-        instance_type: t2.large
+        instances:
+          edx:
+            number: 1
+            type: t2.large
+          edx-worker:
+            number: 1
+            type: t2.medium
       next-residential-live:
         business_unit: residential
         domains:
@@ -112,10 +118,13 @@ environments:
           gitreload: prod-gr-qa-next.mitx.mit.edu
         versions:
           <<: *next_residential_versions
-        num_instances:
-          edx: 2
-          edx-worker: 1
-        instance_type: t2.large
+        instances:
+          edx:
+            number: 2
+            type: t2.large
+          edx-worker:
+            number: 1
+            type: t2.medium
       next-residential-draft:
         business_unit: residential
         domains:
@@ -125,15 +134,26 @@ environments:
           gitreload: gr-qa-next.mitx.mit.edu
         versions:
           <<: *next_residential_versions
-        num_instances:
-          edx: 1
-          edx-worker: 1
-        instance_type: t2.large
+        instances:
+          edx:
+            number: 1
+            type: t2.large
+          edx-worker:
+            number: 1
+            type: t2.medium
       sandbox:
         business_unit: operations
+        domains:
+          cms: studio-micromasters.d.mitx.mit.edu
+          lms: micromasters.d.mitx.mit.edu
+          preview: preview-micromasters.d.mitx.mit.edu
         versions:
           edxapp: master
           forum: master
+        instances:
+          edx:
+            number: 1
+            type: t2.medium
       continuous-delivery:
         business_unit: operations
         versions:
@@ -170,9 +190,13 @@ environments:
         versions:
           <<: *current_residential_versions_rp
           xqwatcher_courses: master
-        num_instances:
-          edx: 3
-          edx-worker: 2
+        instances:
+          edx:
+            number: 3
+            type: r4.large
+          edx-worker:
+            number: 2
+            type: t2.large
         instance_type: r4.large
       residential-live:
         business_unit: residential
@@ -184,9 +208,12 @@ environments:
         versions:
           <<: *current_residential_versions_rp
         num_instances:
-          edx: 9
-          edx-worker: 2
-        instance_type: r4.xlarge
+          edx:
+            number: 9
+            type: r4.xlarge
+          edx-worker:
+            number: 2
+            type: t2.large
   micromasters:
     business_unit: micromasters
     network_prefix: 10.10

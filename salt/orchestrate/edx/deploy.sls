@@ -76,11 +76,9 @@ generate_edx_cloud_map_file:
           size: {{ purposes['{}-live'.format(PURPOSE_PREFIX)].instance_type }}
         app_types:
           draft:
-            num_instances: {{ purposes['{}-draft'.format(PURPOSE_PREFIX)].num_instances }}
-            instance_type: {{ purposes['{}-draft'.format(PURPOSE_PREFIX)].instance_type }}
-            live:
-              num_instances:{{ purposes['{}-live'.format(PURPOSE_PREFIX)].num_instances }}
-              instance_type: {{ purposes['{}-live'.format(PURPOSE_PREFIX)].instance_type }}
+            instances: {{ purposes['{}-draft'.format(PURPOSE_PREFIX)].instances }}
+          live:
+            instances: {{ purposes['{}-live'.format(PURPOSE_PREFIX)].instances }}
     - require:
         - file: load_edx_cloud_profile
         - file: load_edx_worker_cloud_profile

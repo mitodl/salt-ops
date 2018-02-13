@@ -11,10 +11,10 @@
 
 edx:
   {% for app_type, settings in app_types.items() %}
-  {% for id_num in range(settings.num_instances.edx) %}
+  {% for id_num in range(settings.instances.edx.number) %}
   - edx-{{ environment_name }}-{{ purpose_prefix }}-{{ app_type }}-{{ id_num }}-v{{ release_number }}:
       image: {{ salt.sdb.get('sdb://consul/edx_{}_ami_id'.format(codename)) }}
-      size: {{ settings.instance_type }}
+      size: {{ settings.instances.edx.type }}
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
@@ -50,10 +50,10 @@ edx:
 
 edx-worker:
   {% for app_type, settings in app_types.items() %}
-  {% for id_num in range(settings.num_instances['edx-worker']) %}
+  {% for id_num in range(settings.instances['edx-worker'].number) %}
   - edx-worker-{{ environment_name }}-{{ purpose_prefix }}-{{ app_type }}-{{ id_num }}-v{{ release_number }}:
       image: {{ salt.sdb.get('sdb://consul/edx_worker_{}_ami_id'.format(codename)) }}
-      size: {{ settings.instance_type }}
+      size: {{ settings.instances['edx-worker'].type }}
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
