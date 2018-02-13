@@ -26,7 +26,7 @@ nginx:
                     - '[::]:443'
                     - ssl
                 - location ~ ^/(_alias|_aliases|micromasters|_refresh|_mapping):
-                    - proxy_pass: http://127.0.0.1:9200$uri
+                    - proxy_pass: http://127.0.0.1:9200$request_uri
                     - proxy_set_header: 'X-Forwarded-For $proxy_add_x_forwarded_for'
                     - proxy_pass_header: 'X-Api-Key'
                 - location /nginx_status:
