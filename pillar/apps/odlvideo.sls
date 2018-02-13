@@ -154,6 +154,5 @@ uwsgi:
 
 node:
   install_from_ppa: True
-  version: 8.9.4
   ppa:
     repository_url: https://deb.nodesource.com/node_8.x
