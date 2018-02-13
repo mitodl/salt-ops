@@ -11,7 +11,7 @@ mitx_residential_etl:
       AWS_ACCESS_KEY_ID: {{ AWS_CREDS.data.access_key }}
       AWS_SECRET_ACCESS_KEY: {{ AWS_CREDS.data.secret_key }}
     Paths:
-      csv_folder: /tmp/csv_query_folder
+      csv_folder: /mnt/data/csv_query_folder
     MySQL:
       user: {{ edxapp_mysql_creds.data.username }}
       pass: {{ edxapp_mysql_creds.data.password }}
