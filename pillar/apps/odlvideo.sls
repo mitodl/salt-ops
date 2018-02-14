@@ -113,6 +113,7 @@ django:
     - zlib1g-dev
     - libpqxx-dev
     - libxml2-dev
+    - libffi-dev
   states:
     setup:
       - apps.odlvideo.install
@@ -153,6 +154,5 @@ uwsgi:
           touch=/opt/{{ app_name}}/deploy_complete.txt
 
 node:
-  install_from_ppa: True
-  ppa:
-    repository_url: https://deb.nodesource.com/node_8.x
+  install_from_binary: True
+  version: 8.5.0
