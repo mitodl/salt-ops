@@ -7,3 +7,5 @@ install_node_dependencies:
   cmd.run:
     - name: yarn install
     - cwd: /opt/{{ salt.pillar.get('django:app_name') }}
+    - require:
+        - deploy_application_source_to_destination
