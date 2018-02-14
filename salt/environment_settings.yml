@@ -211,7 +211,7 @@ environments:
             number: 9
             type: r4.xlarge
           edx-worker:
-            number: 2
+            number: 3
             type: t2.large
   micromasters:
     business_unit: micromasters
