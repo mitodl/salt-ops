@@ -114,6 +114,8 @@ django:
     - libpqxx-dev
     - libxml2-dev
     - libffi-dev
+    - libmariadb-dev
+    - mariadb-client
   states:
     setup:
       - apps.odlvideo.install
