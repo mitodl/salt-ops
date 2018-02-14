@@ -8,9 +8,9 @@ build_static_assets_for_odlvideo:
     - user: deploy
 
 generate_deploy_hash_for_odlvideo:
-  file.managed:
-    - name: {{ app_dir }}/static/hash.txt
-    - contents: {{ salt.git.rev_parse(app_dir, 'HEAD') }}
+  cmd.run:
+    - name: 'git log --pretty=format:%H -n 1 > static/hash.txt'
+    - cwd: {{ app_dir }}
     - user: deploy
 
 signal_odlvideo_deploy_complete:
