@@ -87,6 +87,7 @@ django:
     ODL_VIDEO_FROM_EMAIL: MIT ODL Video <odl-video-support@mit.edu>
     ODL_VIDEO_LOG_LEVEL: {{ env_data.log_level }}
     ODL_VIDEO_SUPPORT_EMAIL: odl-video-support@mit.edu
+    REDIS_URL: redis://ovs-rc-redis.service.consul
     SECRET_KEY: {{ salt.vault.read('secret-odl-video/{env}/django-secret-key'.format(env=ENVIRONMENT)).data.value }}
     SENTRY_DSN: {{ salt.vault.read('secret-odl-video/global/sentry-dsn').data.value }}
     STATUS_TOKEN: {{ salt.vault.read('secret-odl-video/{env}/django-status-token'.format(env=ENVIRONMENT)).data.value }}
