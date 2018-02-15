@@ -196,6 +196,7 @@ elasticsearch:
           spike_height: 2
           timeframe:
             minutes: 30
+          threshold_ref: 50
           use_count_query: True
           doc_type: fluentd
           alert:
@@ -203,6 +204,10 @@ elasticsearch:
           alert_text: "<@tmacey> <@shaidar> The number of messages for tag {0} is outside of the normal bounds"
           alert_text_args:
             - fluentd_tag
+          slack_webhook_url: {{ slack_webhook_url_devops }}
+          slack_channel_override: "#devops"
+          slack_username_override: "Elastalert"
+          slack_msg_color: "warning"
 
 kibana:
   lookup:
