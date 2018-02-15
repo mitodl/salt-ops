@@ -150,7 +150,7 @@ uwsgi:
         endfor: ''
         touch-reload: /opt/{{ app_name }}/deploy_complete.txt
         attach-daemon2: >-
-          cmd=celery worker -A odl_video --pidfile /var/run/{{ app_name }}/celery.pid,
+          cmd=/usr/local/pyenv/versions/{{ python_version }}/bin/celery worker -A odl_video --pidfile /var/run/uwsgi/{{ app_name }}-celery.pid,
           pidfile=/var/run/{{ app_name }}/celery.pid,
           daemonize=true,
           touch=/opt/{{ app_name}}/deploy_complete.txt
