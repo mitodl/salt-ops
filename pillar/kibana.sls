@@ -182,6 +182,27 @@ elasticsearch:
                       type: ERROR
                   - term:
                       fluentd_tag: rabbitmq.server
+      - name: log_volume_spike
+        settings:
+          name: Alert for change in volume of logs
+          description: >-
+              Notify for any time that the volume of logs for a particular
+              log source is outside of normal bounds
+          type: spike
+          index: logstash-*
+          query_key: fluentd_tag
+          alert_on_new_data: False
+          spike_type: both
+          spike_height: 2
+          timeframe:
+            minutes: 30
+          use_count_query: True
+          doc_type: fluentd
+          alert:
+            - slack
+          alert_text: "<@tmacey> <@shaidar> The number of messages for tag {0} is outside of the normal bounds"
+          alert_text_args:
+            - fluentd_tag
 
 kibana:
   lookup:
