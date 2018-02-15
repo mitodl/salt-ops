@@ -168,7 +168,7 @@ elasticsearch:
             minutes: 5
           alert:
             - slack
-          alert_text: "Rabbitmq AMQPLAIN login refused due to expired vault credentials"
+          alert_text: "<@tmacey> <@shaidar> Rabbitmq AMQPLAIN login refused due to expired vault credentials"
           slack_webhook_url: {{ slack_webhook_url_devops }}
           slack_channel_override: "#devops"
           slack_username_override: "Elastalert"
@@ -178,10 +178,10 @@ elasticsearch:
                 must:
                   - match:
                       message: AMQPLAIN login refused
+                  - match:
+                      type: ERROR
                   - term:
                       fluentd_tag: rabbitmq.server
-                  - term:
-                      type: ERROR
 
 kibana:
   lookup:
