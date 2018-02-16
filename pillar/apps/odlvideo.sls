@@ -1,3 +1,4 @@
+#!jinja|yamlex
 # -*- mode: yaml -*-
 {% set app_name = 'odl-video-service' %}
 {% set python_version = '3.6.4' %}
@@ -150,8 +151,8 @@ uwsgi:
         endfor: ''
         touch-reload: /opt/{{ app_name }}/deploy_complete.txt
         attach-daemon2: >-
-          cmd=/usr/local/pyenv/versions/{{ python_version }}/bin/celery worker -A odl_video --pidfile /var/run/uwsgi/{{ app_name }}-celery.pid,
-          pidfile=/var/run/{{ app_name }}/celery.pid,
+          cmd=/usr/local/pyenv/versions/{{ python_version }}/bin/celery worker -A odl_video --pidfile /opt/{{ app_name }}/celery.pid,
+          pidfile=/opt/{{ app_name }}/celery.pid,
           daemonize=true,
           touch=/opt/{{ app_name}}/deploy_complete.txt
 

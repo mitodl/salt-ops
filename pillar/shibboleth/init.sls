@@ -1,4 +1,9 @@
+#!jinja|yamlex
 # -*- mode: yaml -*-
+{% import_yaml salt.cp.cache_file('salt://environment_settings.yml') as env_settings %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
+{% set env_data = env_settings.environments[ENVIRONMENT] %}
+{% set server_domain_name = env_data.purposes['odl-video-service'].domain %}
 nginx-shibboleth:
   overrides:
     conf_file: /etc/shibboleth/shibboleth2.xml
@@ -15,13 +20,13 @@ nginx-shibboleth:
           type: Native
           RequestMap:
             Host:
-              name: '' # OVERRIDE_ME
+              name: {{ server_domain_name }}
               authType: shibboleth
               requireSession: 'true'
               Path:
                 name: secure
         ApplicationDefaults:
-          entityID: '' # OVERRIDE_ME
+          entityID: {{ server_domain_name }}
           REMOTE_USER: "eppn persistent-id targeted-id"
           Sessions:
             lifetime: 28800

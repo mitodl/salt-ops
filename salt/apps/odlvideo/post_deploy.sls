@@ -3,6 +3,7 @@
 build_static_assets_for_odlvideo:
   cmd.script:
     - name: {{ app_dir }}/webpack_if_prod.sh
+    - cwd: {{ app_dir }}
     - env:
         - NODE_ENV: production
     - user: deploy

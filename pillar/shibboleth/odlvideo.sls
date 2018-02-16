@@ -9,12 +9,3 @@ nginx-shibboleth:
       {{ salt.vault.read('secret-odl-video/{env}/shibboleth/sp-key'.format(env=ENVIRONMENT)).data.value|replace('\\n', '\n')|indent(6) }}
     cert: |
       {{ salt.vault.read('secret-odl-video/{env}/shibboleth/sp-cert'.format(env=ENVIRONMENT)).data.value|replace('\\n', '\n')|indent(6) }}
-  config:
-    shibboleth2:
-      SPConfig:
-        RequestMapper:
-          RequestMap:
-            Host:
-              name: {{ server_domain_name }}
-        ApplicationDefaults:
-          entityID: https://{{ server_domain_name }}/shibboleth

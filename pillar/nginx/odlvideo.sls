@@ -72,10 +72,10 @@ nginx:
                     - shib_request: /shibauthorizer
                     - shib_request_use_headers: 'on'
                     - include: uwsgi_params
-                    - uwsgi_pass: unix:/run/odl-video/uwsgi.sock
+                    - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
                 - location @django:
                     - include: uwsgi_params
-                    - uwsgi_pass: unix:/run/odl-video/uwsgi.sock
+                    - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
                 - location /:
                     - try_files:
                       - '$uri'
