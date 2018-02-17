@@ -182,6 +182,34 @@ elasticsearch:
                       type: ERROR
                   - term:
                       fluentd_tag: rabbitmq.server
+      - name: fluent_s3_error
+        settings:
+          name: FluentD server S3 credentials
+          description: >-
+            Notify when the IAM credentials for FluentD are expired
+          type: frequency
+          index: logstash-*
+          num_events: 1
+          timeframe:
+            minutes: 30
+          alert:
+            - slack
+          alert_text: >-
+             <@tmacey> <@shaidar> The IAM credentials for the FluentD servers to ship
+             to S3 have expired and need to be regenerated.
+          slack_webhook_url: {{ slack_webhook_url_devops }}
+          slack_channel_override: "#devops"
+          slack_username_override: "Elastalert"
+          slack_msg_color: "warning"
+          filter:
+            - bool:
+                must:
+                  - match:
+                      message: failed to flush the buffer
+                  - match:
+                      error: 'Aws::S3::Errors::Forbidden'
+                  - term:
+                      fluentd_tag: fluent.warn
       - name: log_volume_spike
         settings:
           name: Alert for change in volume of logs
