@@ -135,11 +135,11 @@ fluentd:
           attrs:
             - '@type': relabel
             - '@label': '@es_logging'
-            - nested_directives:
-                - directive: buffer
-                  attrs:
-                    - '@type': file
-                    - path: {{ fluentd_directories.universal_buffer }}
+            # - nested_directives:
+            #     - directive: buffer
+            #       attrs:
+            #         - '@type': file
+            #         - path: {{ fluentd_directories.universal_buffer }}
 
         - directive: label
           directive_arg: '@es_logging'
