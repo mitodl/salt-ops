@@ -9,6 +9,14 @@
 {% set odl_wildcard_cert = salt.vault.read('secret-operations/global/odl_wildcard_cert') %}
 {% import_yaml 'fluentd/fluentd_directories.yml' as fluentd_directories %}
 
+schedule:
+  regenerate_fluentd_config:
+    # Needed to ensure that S3 credentials remain valid
+    days: 25
+    function: state.sls
+    args:
+      - fluentd.config
+
 fluentd:
   persistent_directories: {{ fluentd_directories }}
   overrides:
