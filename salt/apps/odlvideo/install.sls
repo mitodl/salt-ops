@@ -1,12 +1,3 @@
-mange_presence_and_permissions_for_source_code_directory:
-  file.directory:
-    - name: /opt/{{ salt.pillar.get('django:app_name') }}
-    - makedirs: True
-    - user: {{ salt.pillar.get('django:user', 'deploy') }}
-    - group: {{ salt.pillar.get('django:user', 'deploy') }}
-    - require_in:
-        - deploy_application_source_to_destination
-
 ensure_yarn_is_installed_for_odlvideo:
   npm.installed:
     - name: 'yarn@1.2.1'
