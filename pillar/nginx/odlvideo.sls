@@ -4,6 +4,7 @@
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set server_domain_name = env_data.purposes['odl-video-service'].domain %}
 {% set odl_wildcard = salt.vault.read('secret-operations/global/odl_wildcard_cert') %}
+{% set ovs_login_path = 'collections' %}
 
 nginx:
   ng:
@@ -66,16 +67,19 @@ nginx:
                     - include: fastcgi_params
                     - include: includes/shib_fastcgi_params
                     - fastcgi_pass: 'unix:/run/shibresponder.sock'
-                - location /login:
+                - location /{{ ovs_login_path }}:
                     - include: includes/shib_clear_headers
                     - shib_request: /shibauthorizer
                     - shib_request_use_headers: 'on'
                     - include: uwsgi_params
                     - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
+                - location /:
+                    - include: uwsgi_params
+                    - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
                 - location @django:
                     - include: uwsgi_params
                     - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
-                - location /:
+                - location /static:
                     - try_files:
                       - '$uri'
                       - '$uri/'
