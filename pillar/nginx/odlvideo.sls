@@ -17,6 +17,19 @@ nginx:
           {{ odl_wildcard.data.value|indent(10) }}
         private_key: |
           {{ odl_wildcard.data.key|indent(10) }}
+    server:
+      extra_config:
+        shib_params:
+          shib_request_set:
+            - $shib_remote_user $upstream_http_variable_remote_user
+            - $shib_eppn $upstream_http_variable_eppn
+            - $shib_mail $upstream_http_variable_mail
+            - $shib_displayname $upstream_http_variable_displayname
+          uwsgi_param:
+            - REMOTE_USER $shib_remote_user
+            - EPPN $shib_eppn
+            - MAIL $shib_mail
+            - DISPLAY_NAME $shib_displayname
     servers:
       managed:
         {{ app_name }}:
@@ -71,6 +84,7 @@ nginx:
                     - include: includes/shib_clear_headers
                     - shib_request: /shibauthorizer
                     - shib_request_use_headers: 'on'
+                    - include: conf.d/shib_params
                     - include: uwsgi_params
                     - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
                 - location /:
