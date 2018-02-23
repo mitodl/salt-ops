@@ -8,11 +8,13 @@ vault:
       options:
         tags: monitoring
     {% for env in ['rc-apps', 'production-apps'] %}
-    rabbitmq-{{ env }}-reddit:
+    {% for app in ['reddit', 'odlvideo'] %}
+    rabbitmq-{{ env }}-{{ app }}:
       backend: rabbitmq-{{ env }}
-      name: reddit
+      name: {{ app }}
       options:
-        vhosts: '{"/reddit": {"write": ".*", "read": ".*", "configure": ".*"}}'
+        vhosts: '{"/{{ app }}": {"write": ".*", "read": ".*", "configure": ".*"}}'
+    {% endfor %}
     {% for app in ['reddit', 'opendiscussions', 'odlvideo'] %}
     postgresql_{{ env }}_{{ app }}_admin:
       backend: postgres-{{ env }}-{{ app }}
