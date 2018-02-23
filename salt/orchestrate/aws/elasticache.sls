@@ -1,5 +1,6 @@
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
-{% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
+{% set env_data = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set env_settings = env_data.environments[ENVIRONMENT] %}
 {% set VPC_NAME = salt.environ.get('VPC_NAME', env_settings.vpc_name) %}
 {% set VPC_RESOURCE_SUFFIX = salt.environ.get(
     'VPC_RESOURCE_SUFFIX',
@@ -49,6 +50,7 @@ create_{{ ENVIRONMENT }}_elasticache_subnet_group:
 
 {% for cache_config in cache_configs %}
 {% set cache_purpose = cache_config.get('purpose', 'shared') %}
+{% set BUSINESS_UNIT = cache_config.get('business_unit', BUSINESS_UNIT) %}
 {% set name = '{}-{}-{}'.format(cache_config.engine, cache_purpose, VPC_RESOURCE_SUFFIX) %}
 {% if cache_config.engine == 'redis' %}
 create_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_replication_group_{{ cache_purpose }}:
@@ -58,7 +60,7 @@ create_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_replication_group
     - ReplicationGroupDescription: Redis cluster in {{ ENVIRONMENT }} for {{ cache_purpose }} usage
     - NumNodeGroups: {{ cache_config.get('num_shards', 1) }}
     - ReplicasPerNodeGroup: {{ cache_config.get('num_replicas', 1) }}
-    - AutomaticFailoverEnabled: True
+    - AutomaticFailoverEnabled: {{ cache_config.get('failover_enabled', True) }}
 {% else %}
 create_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_cluster_{{ cache_purpose }}:
   boto3_elasticache.cache_cluster_present:

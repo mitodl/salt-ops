@@ -302,6 +302,9 @@ environments:
           num_cache_nodes: 2
           purpose: odl-video-service
           cluster_id: ovs-production-redis
+          parameter_group_name: default.redis3.2
+          failover_enabled: False
+          business_unit: odl-video
   rc-apps:
     business_unit: operations
     network_prefix: 10.12
@@ -353,6 +356,9 @@ environments:
           num_cache_nodes: 1
           purpose: odl-video-service
           cluster_id: ovs-rc-redis
+          parameter_group_name: default.redis3.2
+          failover_enabled: False
+          business_unit: odl-video
 
 business_units:
   - bootcamps
