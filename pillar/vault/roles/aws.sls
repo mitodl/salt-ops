@@ -24,6 +24,19 @@ vault:
     {
       "Statement": [
         {
+          "Effect": "Allow",
+          "Action": [
+            "s3:ListBucket",
+            "s3:GetObject"
+          ],
+          "Resource": [
+            "arn:aws:s3:::ttv_videos",
+            "arn:aws:s3:::ttv_videos/*",
+            "arn:aws:s3:::ttv_static",
+            "arn:aws:s3:::ttv_static/*"
+          ]
+        },
+        {
           "Resource": "*",
           "Action": [
             "elastictranscoder:Read*",
