@@ -6,7 +6,7 @@
 {% set ENVIRONMENT = salt.grains.get('environment', 'dev') %}
 {% set aws_creds = salt.vault.read('aws-mitx/creds/odl-video-service-{env}'.format(env=ENVIRONMENT)) %}
 {% set pg_creds = salt.vault.read('postgres-{env}-odlvideo/creds/odlvideo'.format(env=ENVIRONMENT)) %}
-{% set rabbit_cres = salt.vault.read("rabbitmq-{env}/creds/odlvideo".format(env=ENVIRONMENT)) %}
+{% set rabbit_creds = salt.vault.read("rabbitmq-{env}/creds/odlvideo".format(env=ENVIRONMENT)) %}
 {% set youtube_creds = salt.vault.read('secret-odl-video/{env}/youtube-credentials'.format(env=ENVIRONMENT)) %}
 {% set app_cert = salt.vault.read('secret-odl-video/global/mit-application-certificate') %}
 {% set cloudfront_key = salt.vault.read('secret-operations/global/cloudfront-private-key') %}

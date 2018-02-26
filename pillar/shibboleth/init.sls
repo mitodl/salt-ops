@@ -1,4 +1,3 @@
-#!jinja|yamlex
 # -*- mode: yaml -*-
 {% import_yaml salt.cp.cache_file('salt://environment_settings.yml') as env_settings %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
@@ -48,32 +47,6 @@ nginx-shibboleth:
         <Attribute name="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" id="persistent-id">
           <AttributeDecoder xsi:type="NameIDAttributeDecoder" formatter="$NameQualifier!$SPNameQualifier!$Name" defaultQualifiers="true"/>
         </Attribute>
-
-        <!-- Some more eduPerson attributes, uncomment these to use them... -->
-        <!--
-            <Attribute name="urn:oid:1.3.6.1.4.1.5923.1.1.1.11" id="assurance"/>
-
-            <Attribute name="urn:oid:1.3.6.1.4.1.5923.1.5.1.1" id="member"/>
-
-            <Attribute name="urn:oid:1.3.6.1.4.1.5923.1.6.1.1" id="eduCourseOffering"/>
-            <Attribute name="urn:oid:1.3.6.1.4.1.5923.1.6.1.2" id="eduCourseMember"/>
-
-<Attribute name="urn:oid:1.3.6.1.4.1.5923.1.1.1.5" id="primary-affiliation">
-<AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
-</Attribute>
-<Attribute name="urn:oid:1.3.6.1.4.1.5923.1.1.1.2" id="nickname"/>
-<Attribute name="urn:oid:1.3.6.1.4.1.5923.1.1.1.8" id="primary-orgunit-dn"/>
-<Attribute name="urn:oid:1.3.6.1.4.1.5923.1.1.1.4" id="orgunit-dn"/>
-<Attribute name="urn:oid:1.3.6.1.4.1.5923.1.1.1.3" id="org-dn"/>
-
-<Attribute name="urn:mace:dir:attribute-def:eduPersonPrimaryAffiliation" id="primary-affiliation">
-<AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
-</Attribute>
-<Attribute name="urn:mace:dir:attribute-def:eduPersonNickname" id="nickname"/>
-<Attribute name="urn:mace:dir:attribute-def:eduPersonPrimaryOrgUnitDN" id="primary-orgunit-dn"/>
-<Attribute name="urn:mace:dir:attribute-def:eduPersonOrgUnitDN" id="orgunit-dn"/>
-<Attribute name="urn:mace:dir:attribute-def:eduPersonOrgDN" id="org-dn"/>
-        -->
         <Attribute name="urn:oid:2.5.4.3" id="cn"/>
         <Attribute name="urn:oid:2.5.4.4" id="sn"/>
         <Attribute name="urn:oid:2.5.4.42" id="givenName"/>
