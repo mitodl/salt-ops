@@ -25,11 +25,16 @@ consul:
         {% else %}
         {% set cache_data = salt.boto3_elasticache.describe_replication_groups(cache_config.cluster_id) %}
         {% endif %}
+        {% if cache_data[0].get('ConfigurationEndpoint') %}
+        {% set endpoint = cache_data[0].ConfigurationEndpoint %}
+        {% else %}
+        {% set endpoint = cache_data[0].NodeGroups[0].PrimaryEndpoint %}
+        {% endif %}
         - name: {{ cache_config.cluster_id }}
-          port: {{ cache_data[0].ConfigurationEndpoint.Port }}
-          address: {{ cache_data[0].ConfigurationEndpoint.Address }}
+          port: {{ endpoint.Port }}
+          address: {{ endpoint.Address }}
           check:
-            tcp: '{{ cache_data[0].ConfigurationEndpoint.Address }}:{{ cache_data[0].ConfigurationEndpoint.Port }}'
+            tcp: '{{ endpoint.Address }}:{{ endpoint.Port }}'
             interval: 10s
         {% endfor %}
-      {% endif %}
+    {% endif %}

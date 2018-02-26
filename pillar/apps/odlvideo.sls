@@ -13,6 +13,7 @@
 
 {% set env_dict = {
     'ci': {
+      'env_name': 'ci',
       'domain': 'video-ci.odl.mit.edu',
       'log_level': 'DEBUG',
       'use_shibboleth': False,
@@ -22,6 +23,7 @@
       'release_branch': 'master'
       },
     'rc-apps': {
+      'env_name': 'rc',
       'domain': 'video-rc.odl.mit.edu',
       'log_level': 'INFO',
       'use_shibboleth': True,
@@ -31,6 +33,7 @@
       'release_branch': 'release-candidate'
       },
     'production-apps': {
+      'env_name': 'production',
       'domain': 'video.odl.mit.edu',
       'log_level': 'WARN',
       'use_shibboleth': True,
@@ -97,11 +100,11 @@ django:
     USE_SHIBBOLETH: {{ env_data.use_shibboleth }}
     USWITCH_URL: https://s3.amazonaws.com/odl-video-service-uswitch-dev/prod
     VIDEO_CLOUDFRONT_DIST: {{ salt.boto_cloudfront.get_distribution('odl-video-service-{env}'.format(env=ENVIRONMENT.split('-')[0])).result.distribution.Id }}
-    VIDEO_S3_BUCKET: odl-video-service-{{ ENVIRONMENT }}
-    VIDEO_S3_SUBTITLE_BUCKET: odl-video-service-subtitles-{{ ENVIRONMENT }}
-    VIDEO_S3_THUMBNAIL_BUCKET: odl-video-service-thumbnails-{{ ENVIRONMENT }}
-    VIDEO_S3_TRANSCODE_BUCKET: odl-video-service-transcoded-{{ ENVIRONMENT }}
-    VIDEO_S3_WATCH_BUCKET: odl-video-service-uploaded-{{ ENVIRONMENT }}
+    VIDEO_S3_BUCKET: odl-video-service-{{ env_data.env_name }}
+    VIDEO_S3_SUBTITLE_BUCKET: odl-video-service-subtitles-{{ env_data.env_name }}
+    VIDEO_S3_THUMBNAIL_BUCKET: odl-video-service-thumbnails-{{ env_data.env_name }}
+    VIDEO_S3_TRANSCODE_BUCKET: odl-video-service-transcoded-{{ env_data.env_name }}
+    VIDEO_S3_WATCH_BUCKET: odl-video-service-uploaded-{{ env_data.env_name }}
     VIDEO_STATUS_UPDATE_FREQUENCY: 60
     VIDEO_WATCH_BUCKET_FREQUENCY: 30
     YT_ACCESS_TOKEN: {{ youtube_creds.data.access_token }}
