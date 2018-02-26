@@ -24,6 +24,19 @@ vault:
     {
       "Statement": [
         {
+          "Resource": "*",
+          "Action": [
+            "elastictranscoder:Read*",
+            "elastictranscoder:List*",
+            "elastictranscoder:*Job",
+            "elastictranscoder:*Preset",
+            "iam:List*",
+            "sns:List*",
+            "sns:Publish"
+          ],
+          "Effect": "Allow"
+        },
+        {
           "Resource": [
             "arn:aws:s3:::odl-video-service*",
             "arn:aws:s3:::odl-video-service*/*"

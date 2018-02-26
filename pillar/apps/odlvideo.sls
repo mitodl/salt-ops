@@ -1,16 +1,8 @@
-#!jinja|yamlex
 # -*- mode: yaml -*-
 {% set app_name = 'odl-video-service' %}
 {% set python_version = '3.6.4' %}
 {% set python_bin_dir = '/usr/local/pyenv/versions/{0}/bin'.format(python_version) %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'dev') %}
-{% set aws_creds = salt.vault.read('aws-mitx/creds/odl-video-service-{env}'.format(env=ENVIRONMENT)) %}
-{% set pg_creds = salt.vault.read('postgres-{env}-odlvideo/creds/odlvideo'.format(env=ENVIRONMENT)) %}
-{% set rabbit_creds = salt.vault.read("rabbitmq-{env}/creds/odlvideo".format(env=ENVIRONMENT)) %}
-{% set youtube_creds = salt.vault.read('secret-odl-video/{env}/youtube-credentials'.format(env=ENVIRONMENT)) %}
-{% set app_cert = salt.vault.read('secret-odl-video/global/mit-application-certificate') %}
-{% set cloudfront_key = salt.vault.read('secret-operations/global/cloudfront-private-key') %}
-
 {% set env_dict = {
     'ci': {
       'env_name': 'ci',
@@ -43,8 +35,13 @@
       'release_branch': 'release'
       }
 } %}
-
 {% set env_data = env_dict[ENVIRONMENT] %}
+{% set aws_creds = salt.vault.read('aws-mitx/creds/odl-video-service-{env}'.format(env=env_data.env_name)) %}
+{% set pg_creds = salt.vault.read('postgres-{env}-odlvideo/creds/odlvideo'.format(env=ENVIRONMENT)) %}
+{% set rabbit_creds = salt.vault.read("rabbitmq-{env}/creds/odlvideo".format(env=ENVIRONMENT)) %}
+{% set youtube_creds = salt.vault.read('secret-odl-video/{env}/youtube-credentials'.format(env=ENVIRONMENT)) %}
+{% set app_cert = salt.vault.read('secret-odl-video/global/mit-application-certificate') %}
+{% set cloudfront_key = salt.vault.read('secret-operations/global/cloudfront-private-key') %}
 
 python:
   versions:
@@ -151,9 +148,6 @@ uwsgi:
         - logto: /var/log/uwsgi/apps/%n.log
         - module: odl_video.wsgi
         - pidfile: /var/run/uwsgi/{{ app_name }}.pid
-        - for-readline: /opt/{{ app_name }}/.env
-        - env: '%(_)'
-        - endfor: ''
         - touch-reload: /opt/{{ app_name }}/deploy_complete.txt
         - attach-daemon2: >-
             cmd=/usr/local/pyenv/versions/{{ python_version }}/bin/celery worker -A odl_video --pidfile /opt/{{ app_name }}/celery.pid,

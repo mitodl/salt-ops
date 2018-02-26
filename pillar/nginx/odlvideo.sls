@@ -84,7 +84,7 @@ nginx:
                     - include: includes/shib_clear_headers
                     - shib_request: /shibauthorizer
                     - shib_request_use_headers: 'on'
-                    - include: conf.d/shib_params
+                    - include: conf.d/shib_params.conf
                     - include: uwsgi_params
                     - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
                 - location /:
