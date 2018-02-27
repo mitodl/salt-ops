@@ -82,8 +82,8 @@ base:
     - python
     - node
     - nginx-shibboleth
-    - uwsgi
     - django
+    - uwsgi
   'roles:kibana and G@environment:operations':
     - match: compound
     - elasticsearch.kibana
