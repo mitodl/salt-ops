@@ -17,3 +17,4 @@ generate_deploy_hash_for_odlvideo:
 signal_odlvideo_deploy_complete:
   file.touch:
     - name: {{ app_dir }}/deploy_complete.txt
+    - order: last
