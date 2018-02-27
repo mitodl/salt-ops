@@ -96,7 +96,7 @@ django:
     STATUS_TOKEN: {{ salt.vault.read('secret-odl-video/{env}/django-status-token'.format(env=ENVIRONMENT)).data.value }}
     USE_SHIBBOLETH: {{ env_data.use_shibboleth }}
     USWITCH_URL: https://s3.amazonaws.com/odl-video-service-uswitch-dev/prod
-    VIDEO_CLOUDFRONT_DIST: {{ salt.boto_cloudfront.get_distribution('odl-video-service-{env}'.format(env=ENVIRONMENT.split('-')[0])).result.distribution.Id }}
+    VIDEO_CLOUDFRONT_DIST: {{ salt.boto_cloudfront.get_distribution('odl-video-service-{env}'.format(env=env_data.env_name)).result.distribution.DomainName.split('.')[0] }}
     VIDEO_S3_BUCKET: odl-video-service-{{ env_data.env_name }}
     VIDEO_S3_SUBTITLE_BUCKET: odl-video-service-subtitles-{{ env_data.env_name }}
     VIDEO_S3_THUMBNAIL_BUCKET: odl-video-service-thumbnails-{{ env_data.env_name }}
