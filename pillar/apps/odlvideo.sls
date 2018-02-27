@@ -71,7 +71,7 @@ django:
     AWS_SECRET_ACCESS_KEY: {{ aws_creds.data.secret_key }}
     CLOUDFRONT_KEY_ID: {{ cloudfront_key.data.id }}
     CLOUDFRONT_PRIVATE_KEY: {{ cloudfront_key.data.value }}
-    CELERY_BROKER_URL: amqp://{{ rabbit_creds.data.username }}:{{ rabbit_creds.data.password }}@nearest-rabbitmq.query.consul/odlvideo
+    CELERY_BROKER_URL: amqp://{{ rabbit_creds.data.username }}:{{ rabbit_creds.data.password }}@nearest-rabbitmq.query.consul//odlvideo
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@postgres-odlvideo.service.consul:5432/odlvideo
     DJANGO_LOG_LEVEL: {{ env_data.log_level }}
     DROPBOX_KEY: {{ salt.vault.read('secret-odl-video/global/dropbox-key').data.value }}
