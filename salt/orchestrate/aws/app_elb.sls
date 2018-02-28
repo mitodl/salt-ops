@@ -1,14 +1,19 @@
-{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- BUSINESS_UNIT, ENVIRONMENT, subnet_ids with context %}
-{% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
+{% set env_data = env_settings.environments[ENVIRONMENT] %}
+{% set app_name = salt.environ.get('APP_NAME') %}
+{% set VPC_NAME = env_data.vpc_name %}
+{% set BUSINESS_UNIT = env_data.purposes[app_name].get('business_unit', env_data.business_unit) %}
+{% set subnet_ids = salt.boto_vpc.describe_subnets(
+    vpc_id=salt.boto_vpc.describe_vpcs(
+        name=env_data.vpc_name).vpcs[0].id
+    ).subnets|map(attribute='id')|list %}
 {% set security_groups = 'webapp-{}'.format(ENVIRONMENT) %}
-{% set app_name = 'reddit' %}
-{% set elb_name = 'discussions-{}-{}'.format(app_name, ENVIRONMENT)[:32].strip('-') %}
-
+{% set elb_name = '{}-{}'.format(app_name, ENVIRONMENT)[:32].strip('-') %}
 {% set instance_ids = [] %}
 {% for id, grains in salt.saltutil.runner(
     'mine.get',
-    tgt='G@roles:reddit and G@environment:{}'.format(ENVIRONMENT),
+    tgt='G@roles:{app} and G@environment:{env}'.format(app=app_name, env=ENVIRONMENT),
     fun='grains.item',
     tgt_type='compound').items() %}
 {% do instance_ids.append(grains['instance-id']) %}
@@ -30,7 +35,7 @@ create_elb_for_{{ app_name }}_{{ ENVIRONMENT }}:
           enabled: True
           timeout: 300
     - cnames:
-        - name: discussions-{{ app_name }}-{{ ENVIRONMENT }}.odl.mit.edu
+        - name: {{ env_data.purposes[app_name].domain }}
           zone: odl.mit.edu.
           ttl: 60
     - health_check:
