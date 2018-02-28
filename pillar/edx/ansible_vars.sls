@@ -338,6 +338,7 @@ edx:
     {# multivariate #}
     EDXAPP_CELERY_BROKER_VHOST: /celery_{{ purpose_suffix }}
     EDXAPP_CMS_BASE: {{ CMS_DOMAIN }}
+    EDXAPP_CMS_MAX_REQ: 1000
     EDXAPP_CODE_JAIL_LIMITS:
       REALTIME: 3
       CPU: 3
@@ -370,6 +371,7 @@ edx:
     EDXAPP_GRADE_STORAGE_TYPE: S3
     EDXAPP_JWT_SECRET_KEY: {{ salt.vault.read('secret-{business_unit}/{env}/edxapp-jwt-secret-key'.format(env=environment, business_unit=business_unit)).data.value }}
     EDXAPP_LMS_BASE: "{{ LMS_DOMAIN }}"
+    EDXAPP_LMS_MAX_REQ: 1000
     EDXAPP_MKTG_URL_LINK_MAP:
       CONTACT: !!null
       FAQ: !!null
@@ -442,6 +444,7 @@ edx:
         ENABLE_S3_GRADE_DOWNLOADS: true
         ENABLE_SHOPPING_CART: true
         ENABLE_SYSADMIN_DASHBOARD: true
+        ENABLE_UNICODE_USERNAME: true
         INDIVIDUAL_DUE_DATES: true
         LICENSING: true
         REQUIRE_COURSE_EMAIL_AUTH: false
