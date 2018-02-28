@@ -264,6 +264,7 @@ environments:
         domain: discussions-reddit-production-apps.odl.mit.edu
         num_instances: 3
         business_unit: operations
+        healthcheck: /health
     backends:
       rds:
         - name: reddit
@@ -320,6 +321,7 @@ environments:
         domain: discussions-reddit-rc-apps.odl.mit.edu
         num_instances: 2
         business_unit: operations
+        healthcheck: /health
     backends:
       rds:
         - name: reddit

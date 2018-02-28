@@ -93,7 +93,7 @@ django:
     REDIS_URL: redis://ovs-rc-redis.service.consul
     SECRET_KEY: {{ salt.vault.read('secret-odl-video/{env}/django-secret-key'.format(env=ENVIRONMENT)).data.value }}
     SENTRY_DSN: {{ salt.vault.read('secret-odl-video/global/sentry-dsn').data.value }}
-    STATUS_TOKEN: {{ salt.vault.read('secret-odl-video/{env}/django-status-token'.format(env=ENVIRONMENT)).data.value }}
+    STATUS_TOKEN: {{ ENVIRONMENT }}
     USE_SHIBBOLETH: {{ env_data.use_shibboleth }}
     USWITCH_URL: https://s3.amazonaws.com/odl-video-service-uswitch-dev/prod
     VIDEO_CLOUDFRONT_DIST: {{ salt.boto_cloudfront.get_distribution('odl-video-service-{env}'.format(env=env_data.env_name)).result.distribution.DomainName.split('.')[0] }}

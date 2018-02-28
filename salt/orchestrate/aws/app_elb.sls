@@ -2,6 +2,7 @@
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set app_name = salt.environ.get('APP_NAME') %}
+{% set purpose = env_data.purposes[app_name] %}
 {% set VPC_NAME = env_data.vpc_name %}
 {% set BUSINESS_UNIT = env_data.purposes[app_name].get('business_unit', env_data.business_unit) %}
 {% set subnet_ids = salt.boto_vpc.describe_subnets(
@@ -35,11 +36,11 @@ create_elb_for_{{ app_name }}_{{ ENVIRONMENT }}:
           enabled: True
           timeout: 300
     - cnames:
-        - name: {{ env_data.purposes[app_name].domain }}
+        - name: {{ purpose.domain }}
           zone: odl.mit.edu.
           ttl: 60
     - health_check:
-        target: 'HTTPS:443/health'
+        target: HTTPS:443{{ purpose.get('healthcheck', '/status/?token={env}'.format(env=ENVIRONMENT)) }}
     - subnets: {{ subnet_ids }}
     - security_groups: {{ security_groups }}
     - tags:
