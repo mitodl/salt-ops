@@ -212,7 +212,7 @@ environments:
             type: r4.xlarge
           edx-worker:
             number: 3
-            type: t2.large
+            type: t2.xlarge
   micromasters:
     business_unit: micromasters
     network_prefix: 10.10
