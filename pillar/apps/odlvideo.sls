@@ -77,6 +77,7 @@ django:
     DROPBOX_KEY: {{ salt.vault.read('secret-odl-video/global/dropbox-key').data.value }}
     ENABLE_VIDEO_PERMISSIONS: False
     ET_PIPELINE_ID: {{ env_data.transcode_pipeline_id }}
+    ET_PRESET_IDS: 1504127981769-6cnqhq,1504127981819-v44xlx,1504127981867-06dkm6,1504127981921-c2jlwt
     GA_DIMENSION_CAMERA: dimension1
     GA_TRACKING_ID: {{ env_data.ga_id }}
     LECTURE_CAPTURE_USER: {{ salt.sdb.get('sdb://consul/odl-video-service/lecture-capture-user') }}
@@ -95,7 +96,6 @@ django:
     SENTRY_DSN: {{ salt.vault.read('secret-odl-video/global/sentry-dsn').data.value }}
     STATUS_TOKEN: {{ ENVIRONMENT }}
     USE_SHIBBOLETH: {{ env_data.use_shibboleth }}
-    USWITCH_URL: https://s3.amazonaws.com/odl-video-service-uswitch-dev/prod
     VIDEO_CLOUDFRONT_DIST: {{ salt.boto_cloudfront.get_distribution('odl-video-service-{env}'.format(env=env_data.env_name)).result.distribution.DomainName.split('.')[0] }}
     VIDEO_S3_BUCKET: odl-video-service-{{ env_data.env_name }}
     VIDEO_S3_SUBTITLE_BUCKET: odl-video-service-subtitles-{{ env_data.env_name }}
