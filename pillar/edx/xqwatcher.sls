@@ -15,7 +15,6 @@ schedule:
       - /edx/app/xqwatcher/data/mit-600x-{{ purpose }}-{{ queue_name }}/
     kwargs:
       identity: /edx/app/xqwatcher/.ssh/xqwatcher-courses
-    run_on_start: False
   {% endfor %}
   {% endif %}
   {% endfor %}
