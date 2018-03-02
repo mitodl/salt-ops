@@ -12,7 +12,8 @@
       'ga_id': 'UA-108097284-1',
       'transcode_pipeline_id': '1506027488410-93oya5',
       'youtube_project_id': 'ovs-youtube-qa',
-      'release_branch': 'master'
+      'release_branch': 'master',
+      'cloudfront_subdomain': 'd2jnipcnro4zno'
       },
     'rc-apps': {
       'env_name': 'rc',
@@ -22,7 +23,8 @@
       'ga_id': 'UA-5145472-27',
       'transcode_pipeline_id': '1506081628031-bepkel',
       'youtube_project_id': 'ovs-youtube-qa',
-      'release_branch': 'release-candidate'
+      'release_branch': 'release-candidate',
+      'cloudfront_subdomain': 'du3yhovcx8dht'
       },
     'production-apps': {
       'env_name': 'production',
@@ -32,7 +34,8 @@
       'ga_id': 'UA-5145472-27',
       'transcode_pipeline_id': '1497541042228-8mpenl',
       'youtube_project_id': 'ovs-youtube-production',
-      'release_branch': 'release'
+      'release_branch': 'release',
+      'cloudfront_subdomain': 'd3tsb3m56iwvoq'
       }
 } %}
 {% set env_data = env_dict[ENVIRONMENT] %}
@@ -96,7 +99,7 @@ django:
     SENTRY_DSN: {{ salt.vault.read('secret-odl-video/global/sentry-dsn').data.value }}
     STATUS_TOKEN: {{ ENVIRONMENT }}
     USE_SHIBBOLETH: {{ env_data.use_shibboleth }}
-    VIDEO_CLOUDFRONT_DIST: {{ salt.boto_cloudfront.get_distribution('odl-video-service-{env}'.format(env=env_data.env_name)).result.distribution.DomainName.split('.')[0] }}
+    VIDEO_CLOUDFRONT_DIST: {{ env_data.cloudfront_subdomain }}
     VIDEO_S3_BUCKET: odl-video-service-{{ env_data.env_name }}
     VIDEO_S3_SUBTITLE_BUCKET: odl-video-service-subtitles-{{ env_data.env_name }}
     VIDEO_S3_THUMBNAIL_BUCKET: odl-video-service-thumbnails-{{ env_data.env_name }}
