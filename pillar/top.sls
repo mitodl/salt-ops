@@ -127,6 +127,7 @@ base:
     - match: compound
     - edx.mitx-qa
     - edx.inotify_mitx
+    - monit.nginx_cert_expiration
   'P@roles:(edx|edx-worker) and G@environment:mitx-production':
     - match: compound
     - edx.mitx-production
