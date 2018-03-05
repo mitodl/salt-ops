@@ -130,7 +130,6 @@ base:
     - monit.nginx_cert_expiration
     - monit.latex2edx
     - monit.mysql_connection
-    - monit.mongodb_connection
   'P@roles:(edx|edx-worker) and G@environment:mitx-production':
     - match: compound
     - edx.mitx-production
