@@ -14,4 +14,4 @@ Environment=PID=/var/tmp/gitreload.pid
 WorkingDirectory={{ gr_dir }}
 User=www-data
 ExecStart={{ gr_env.VIRTUAL_ENV }}/bin/gunicorn --preload -b 0.0.0.0:${PORT} -w ${WORKERS} --timeout=10 gitreload.web:app
-Restart=on-failure
+Restart=always
