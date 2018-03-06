@@ -209,7 +209,7 @@ environments:
         instances:
           edx:
             number: 9
-            type: r4.xlarge
+            type: r4.large
           edx-worker:
             number: 3
             type: t2.xlarge
