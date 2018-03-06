@@ -31,6 +31,7 @@ schedule:
     function: state.sls
     args:
       - reddit.config
+      - pgbouncer
 
 reddit:
   environment:
