@@ -184,22 +184,6 @@ sync_external_modules_for_edx_nodes:
     - require:
         - salt: deploy_edx_cloud_map
 
-load_pillar_data_on_edx_nodes:
-  salt.function:
-    - name: saltutil.refresh_pillar
-    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }} and G@launch-date:{{ launch_date }}'
-    - tgt_type: compound
-    - require:
-        - salt: deploy_edx_cloud_map
-
-populate_mine_with_edx_node_data:
-  salt.function:
-    - name: mine.update
-    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }} and G@launch-date:{{ launch_date }}'
-    - tgt_type: compound
-    - require:
-        - salt: load_pillar_data_on_edx_nodes
-
 {# Deploy Consul agent first so that the edx deployment can use provided DNS endpoints #}
 deploy_consul_agent_to_edx_nodes:
   salt.state:
