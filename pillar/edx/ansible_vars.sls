@@ -178,27 +178,27 @@ edx:
     EDXAPP_CELERY_WORKERS:
       - queue: low
         service_variant: cms
-        concurrency: 1
+        concurrency: 5
         monitor: True
       - queue: default
         service_variant: cms
-        concurrency: 1
+        concurrency: 4
         monitor: True
       - queue: high
         service_variant: cms
-        concurrency: 1
+        concurrency: 3
         monitor: True
       - queue: low
         service_variant: lms
-        concurrency: 1
+        concurrency: 5
         monitor: True
       - queue: default
         service_variant: lms
-        concurrency: 2
+        concurrency: 4
         monitor: True
       - queue: high
         service_variant: lms
-        concurrency: 2
+        concurrency: 3
         monitor: True
       - queue: high_mem
         service_variant: lms
