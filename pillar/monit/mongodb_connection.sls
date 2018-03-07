@@ -9,7 +9,7 @@
 monit_app:
   notification: 'slack'
   modules:
-    edx2mysql:
+    mysql_connection:
       host:
         custom:
           name: {{ mongodb_host }}
