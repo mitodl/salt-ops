@@ -1,9 +1,9 @@
 # -*- mode: yaml -*-
 {% import_yaml salt.cp.cache_file('salt://environment_settings.yml') as env_settings %}
-{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
+{% set ENVIRONMENT = salt.grains.get('environment', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
-{% set server_domain_name = env_data.purposes['odl-video-service'].domain %}
-{% set ovs_login_path = 'collections' %}
+{% set app_name = salt.grains.get('app') %}
+{% set server_domain_name = env_data.purposes[app_name].domain %}
 
 nginx-shibboleth:
   overrides:
@@ -117,11 +117,7 @@ nginx-shibboleth:
 
           <RequestMap>
 
-            <Host authType="shibboleth" name="{{ server_domain_name }}" requireSession="true">
-
-              <Path name="{{ ovs_login_path }}"/>
-
-            </Host>
+            <Host authType="shibboleth" name="{{ server_domain_name }}" requireSession="true"/>
 
           </RequestMap>
 
