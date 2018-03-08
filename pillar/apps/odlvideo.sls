@@ -6,6 +6,7 @@
 {% set env_dict = {
     'ci': {
       'env_name': 'ci',
+      'bucket_suffix': 'ci',
       'domain': 'video-ci.odl.mit.edu',
       'log_level': 'DEBUG',
       'use_shibboleth': False,
@@ -17,6 +18,7 @@
       },
     'rc-apps': {
       'env_name': 'rc',
+      'bucket_suffix': 'rc',
       'domain': 'video-rc.odl.mit.edu',
       'log_level': 'INFO',
       'use_shibboleth': True,
@@ -28,6 +30,7 @@
       },
     'production-apps': {
       'env_name': 'production',
+      'bucket_suffix': '',
       'domain': 'video.odl.mit.edu',
       'log_level': 'WARN',
       'use_shibboleth': True,
@@ -100,11 +103,11 @@ django:
     STATUS_TOKEN: {{ ENVIRONMENT }}
     USE_SHIBBOLETH: {{ env_data.use_shibboleth }}
     VIDEO_CLOUDFRONT_DIST: {{ env_data.cloudfront_subdomain }}
-    VIDEO_S3_BUCKET: odl-video-service-{{ env_data.env_name }}
-    VIDEO_S3_SUBTITLE_BUCKET: odl-video-service-subtitles-{{ env_data.env_name }}
-    VIDEO_S3_THUMBNAIL_BUCKET: odl-video-service-thumbnails-{{ env_data.env_name }}
-    VIDEO_S3_TRANSCODE_BUCKET: odl-video-service-transcoded-{{ env_data.env_name }}
-    VIDEO_S3_WATCH_BUCKET: odl-video-service-uploaded-{{ env_data.env_name }}
+    VIDEO_S3_BUCKET: odl-video-service{{ '-{}'.format(env_data.bucket_suffix).rstrip('-') }}
+    VIDEO_S3_SUBTITLE_BUCKET: odl-video-service-subtitles{{ '-{}'.format(env_data.bucket_suffix).rstrip('-') }}
+    VIDEO_S3_THUMBNAIL_BUCKET: odl-video-service-thumbnails{{ '-{}'.format(env_data.bucket_suffix).rstrip('-') }}
+    VIDEO_S3_TRANSCODE_BUCKET: odl-video-service-transcoded{{ '-{}'.format(env_data.bucket_suffix).rstrip('-') }}
+    VIDEO_S3_WATCH_BUCKET: odl-video-service-uploaded{{ '-{}'.format(env_data.bucket_suffix).rstrip('-') }}
     VIDEO_STATUS_UPDATE_FREQUENCY: 60
     VIDEO_WATCH_BUCKET_FREQUENCY: 30
     YT_ACCESS_TOKEN: {{ youtube_creds.data.access_token }}
