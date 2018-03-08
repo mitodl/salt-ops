@@ -27,6 +27,7 @@ vault:
           "Effect": "Allow",
           "Action": [
             "s3:ListBucket",
+            "s3:HeadObject",
             "s3:GetObject"
           ],
           "Resource": [
@@ -55,6 +56,7 @@ vault:
             "arn:aws:s3:::odl-video-service*/*"
           ],
           "Action": [
+            "s3:HeadObject",
             "s3:GetObject",
             "s3:ListAllMyBuckets",
             "s3:ListBucket",
@@ -70,16 +72,15 @@ vault:
             "arn:aws:s3:::odl-video-service-{{ env }}-transcoded/",
             "arn:aws:s3:::odl-video-service-{{ env }}-thumbnails/",
             "arn:aws:s3:::odl-video-service-{{ env }}-subtitles/",
-            "arn:aws:s3:::odl-video-service-{{ env }}-uswitch-dev/",
             "arn:aws:s3:::odl-video-service-{{ env }}/*",
             "arn:aws:s3:::odl-video-service-{{ env }}-transcoded/*",
             "arn:aws:s3:::odl-video-service-{{ env }}-thumbnails/*",
-            "arn:aws:s3:::odl-video-service-{{ env }}-subtitles/*",
-            "arn:aws:s3:::odl-video-service-{{ env }}-uswitch-dev/*"
+            "arn:aws:s3:::odl-video-service-{{ env }}-subtitles/*"
           ],
           "Action": [
             "s3:DeleteObject",
             "s3:DeleteObjectVersion",
+            "s3:HeadObject",
             "s3:GetAccelerateConfiguration",
             "s3:GetBucketAcl",
             "s3:GetBucketCORS",
