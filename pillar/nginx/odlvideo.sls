@@ -90,11 +90,13 @@ nginx:
                 - location /:
                     - include: uwsgi_params
                     - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
-                - location @django:
-                    - include: uwsgi_params
-                    - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
-                - location /static:
+
+                - location ~* /static/(.*$):
+                    - expires: max
+                    - add_header: 'Access-Control-Allow-Origin *'
                     - try_files:
-                      - '$uri'
-                      - '$uri/'
-                      - '@django'
+                        - $uri
+                        - $uri/
+                        - /staticfiles/$1
+                        - /staticfiles/$1/
+                        - =404
