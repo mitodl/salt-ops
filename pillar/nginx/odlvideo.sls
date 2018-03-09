@@ -88,6 +88,11 @@ nginx:
                     - include: conf.d/shib_params.conf
                     - include: uwsgi_params
                     - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
+
+                - location /status:
+                    - include: uwsgi_params
+                    - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
+
                 # - location /:
                 #     - include: uwsgi_params
                 #     - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
