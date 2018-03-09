@@ -69,6 +69,7 @@ elasticsearch:
               - 'indices:admin/get'
               - 'indices:admin/exists'
               - 'indices:admin/refresh[s]'
+              - 'indices:data/read/scroll'
             auth_key: {{ rc_auth_key }}
           - name: View existence of indices with CI Auth
             type: allow
@@ -85,6 +86,7 @@ elasticsearch:
               - 'indices:admin/get'
               - 'indices:admin/exists'
               - 'indices:admin/refresh[s]'
+              - 'indices:data/read/scroll'
             auth_key: {{ ci_auth_key }}
           - name: View existence of indices with Production Auth
             type: allow
@@ -101,6 +103,7 @@ elasticsearch:
               - 'indices:admin/get'
               - 'indices:admin/exists'
               - 'indices:admin/refresh[s]'
+              - 'indices:data/read/scroll'
             auth_key: {{ production_auth_key }}
     products:
       elasticsearch: '5.x'
