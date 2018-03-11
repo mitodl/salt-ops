@@ -45,6 +45,7 @@ base:
     - consul
     - shibboleth
     - shibboleth.odlvideo
+    - fluentd.odlvideo
   'G@roles:rabbitmq and P@environment:(mitx-production|production-apps)':
     - match: compound
     - datadog.rabbitmq-integration
