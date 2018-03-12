@@ -236,6 +236,34 @@ elasticsearch:
           slack_channel_override: "#devops"
           slack_username_override: "Elastalert"
           slack_msg_color: "warning"
+      - name: nginx_bad_gateway
+        settings:
+          name: Alert on bad gateway errors from Nginx
+          description: >-
+            Notify for occurrences of 502 errors on applications that use Nginx to proxy requests to an upstream
+            process
+          type: frequency
+          index: logstash-*
+          num_events: 1
+          timeframe:
+            minutes: 5
+          alert:
+            - slack
+          alert_text: >-
+            <@devopseng> The upstream service on {minion} is not responding to Nginx
+          alert_text_kw:
+            minion: minion_id
+          slack_webhook_url: {{ slack_webhook_url_devops }}
+          slack_channel_override: "#devops"
+          slack_username_override: Elastalert
+          slack_msg_color: warning
+          filter:
+            - bool:
+                must:
+                  - match:
+                      fluentd_tag: '*.nginx.*'
+                  - term:
+                      status: 502
 
 kibana:
   lookup:
