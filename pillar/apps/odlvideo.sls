@@ -141,20 +141,23 @@ uwsgi:
   apps:
     {{ app_name }}:
       uwsgi:
-        - socket: /var/run/uwsgi/{{ app_name }}.sock
-        - chown-socket: 'www-data:deploy'
+        - buffer-size: 65535
         - chdir: /opt/{{ app_name }}
-        - pyhome: /usr/local/pyenv/versions/{{ python_version }}/
-        - uid: deploy
-        - gid: deploy
-        - processes: 1
-        - threads: 10
+        - chown-socket: 'www-data:deploy'
         - enable-threads: 'true'
-        - thunder-lock: 'true'
+        - gid: deploy
         - logto: /var/log/uwsgi/apps/%n.log
+        - memory-report: 'true'
         - module: odl_video.wsgi
         - pidfile: /var/run/uwsgi/{{ app_name }}.pid
+        - post-buffering: 65535
+        - processes: 2
+        - pyhome: /usr/local/pyenv/versions/{{ python_version }}/
+        - socket: /var/run/uwsgi/{{ app_name }}.sock
+        - threads: 50
+        - thunder-lock: 'true'
         - touch-reload: /opt/{{ app_name }}/deploy_complete.txt
+        - uid: deploy
         - attach-daemon2: >-
             cmd=/usr/local/pyenv/versions/{{ python_version }}/bin/celery worker -A odl_video -B --pidfile /opt/{{ app_name }}/celery.pid,
             pidfile=/opt/{{ app_name }}/celery.pid,
