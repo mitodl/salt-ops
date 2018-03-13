@@ -80,23 +80,19 @@ nginx:
                     - include: fastcgi_params
                     - include: includes/shib_fastcgi_params
                     - fastcgi_pass: 'unix:/run/shibresponder.sock'
-                # - location /{{ ovs_login_path }}:
-                - location /:
+                - location /{{ ovs_login_path }}:
                     - include: includes/shib_clear_headers
                     - shib_request: /shibauthorizer
                     - shib_request_use_headers: 'on'
                     - include: conf.d/shib_params.conf
                     - include: uwsgi_params
                     - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
-
                 - location /status:
                     - include: uwsgi_params
                     - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
-
-                # - location /:
-                #     - include: uwsgi_params
-                #     - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
-
+                - location /:
+                    - include: uwsgi_params
+                    - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
                 - location ~* /static/(.*$):
                     - expires: max
                     - add_header: 'Access-Control-Allow-Origin *'
