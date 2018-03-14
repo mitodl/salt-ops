@@ -86,9 +86,9 @@ elasticsearch:
             minutes: 5
           alert:
             - slack
-          alert_text: "Operational Failure on mitx-production detected"
-          slack_webhook_url: {{ slack_webhook_url_devops }}
-          slack_channel_override: "#devops"
+          alert_text: "<!subteam^S9PK3B39V|devopseng> Operational Failure on mitx-production detected"
+          slack_webhook_url: {{ slack_webhook_url_odl }}
+          slack_channel_override: "#mitx-eng"
           slack_username_override: "Elastalert"
           slack_msg_color: "warning"
           filter:
@@ -111,8 +111,8 @@ elasticsearch:
             minutes: 5
           alert:
             - slack
-          alert_text: "git-reload error on mitx-production detected"
-          slack_webhook_url: {{ slack_webhook_url_devops }}
+          alert_text: "<!subteam^S9PK3B39V|devopseng> git-reload error on mitx-production detected"
+          slack_webhook_url: {{ slack_webhook_url_odl }}
           slack_channel_override: "#devops"
           slack_username_override: "Elastalert"
           slack_msg_color: "warning"
@@ -168,8 +168,8 @@ elasticsearch:
             minutes: 5
           alert:
             - slack
-          alert_text: "<@tmacey> <@shaidar> Rabbitmq AMQPLAIN login refused due to expired vault credentials"
-          slack_webhook_url: {{ slack_webhook_url_devops }}
+          alert_text: "<!subteam^S9PK3B39V|devopseng> Rabbitmq AMQPLAIN login refused due to expired vault credentials"
+          slack_webhook_url: {{ slack_webhook_url_odl }}
           slack_channel_override: "#devops"
           slack_username_override: "Elastalert"
           slack_msg_color: "warning"
@@ -195,9 +195,9 @@ elasticsearch:
           alert:
             - slack
           alert_text: >-
-             <@tmacey> <@shaidar> The IAM credentials for the FluentD servers to ship
+             <!subteam^S9PK3B39V|devopseng> The IAM credentials for the FluentD servers to ship
              to S3 have expired and need to be regenerated.
-          slack_webhook_url: {{ slack_webhook_url_devops }}
+          slack_webhook_url: {{ slack_webhook_url_odl }}
           slack_channel_override: "#devops"
           slack_username_override: "Elastalert"
           slack_msg_color: "warning"
@@ -229,10 +229,10 @@ elasticsearch:
           doc_type: fluentd
           alert:
             - slack
-          alert_text: "<@tmacey> <@shaidar> The number of messages for tag {0} is outside of the normal bounds"
+          alert_text: "<!subteam^S9PK3B39V|devopseng> The number of messages for tag {0} is outside of the normal bounds"
           alert_text_args:
             - fluentd_tag
-          slack_webhook_url: {{ slack_webhook_url_devops }}
+          slack_webhook_url: {{ slack_webhook_url_odl }}
           slack_channel_override: "#devops"
           slack_username_override: "Elastalert"
           slack_msg_color: "warning"
@@ -250,10 +250,10 @@ elasticsearch:
           alert:
             - slack
           alert_text: >-
-            <@devopseng> The upstream service on {0} is not responding to Nginx
+            <!subteam^S9PK3B39V|devopseng> The upstream service on {0} is not responding to Nginx
           alert_text_args:
             - minion_id
-          slack_webhook_url: {{ slack_webhook_url_devops }}
+          slack_webhook_url: {{ slack_webhook_url_odl }}
           slack_channel_override: "#devops"
           slack_username_override: Elastalert
           slack_msg_color: warning
