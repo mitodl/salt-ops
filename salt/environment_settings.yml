@@ -244,6 +244,14 @@ environments:
           db_instance_class: db.t2.micro
           allocated_storage: 100
           public_access: False
+        - name: redash
+          multi_az: True
+          engine: postgres
+          vault_plugin: postgresql-database-plugin
+          db_instance_class: db.t2.small
+          allocated_storage: 100
+          public_access: False
+          engine_version: 10.1
         - name: techtvcopy
           multi_az: False
           engine: mariadb
