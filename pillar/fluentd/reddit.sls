@@ -46,11 +46,16 @@ fluentd:
             - tag: reddit.nginx.access
             - path: /var/log/nginx/access.log
             - pos_file: /var/log/nginx/access.log.pos
-            - format: keyvalue
-            - key_value_seperator: '='
-            - pair_delimiter: '" "'
-            - time_key: time
-            - types: time:time
+            - nested_directives:
+                - directive: parse
+                  attrs:
+                    - '@type': ltsv
+                    - null_value_pattern: '-'
+                    - keep_time_key: 'true'
+                    - label_delimiter: '='
+                    - delimiter_pattern: '/\s+(?=(?:[^"]*"[^"]*")*[^"]*$)/'
+                    - time_key: time
+                    - types: time:time
         - directive: source
           attrs:
             - '@id': reddit_nginx_error_log
