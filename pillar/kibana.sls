@@ -250,9 +250,9 @@ elasticsearch:
           alert:
             - slack
           alert_text: >-
-            <@devopseng> The upstream service on {minion} is not responding to Nginx
-          alert_text_kw:
-            minion: minion_id
+            <@devopseng> The upstream service on {0} is not responding to Nginx
+          alert_text_args:
+            - minion_id
           slack_webhook_url: {{ slack_webhook_url_devops }}
           slack_channel_override: "#devops"
           slack_username_override: Elastalert
@@ -260,7 +260,7 @@ elasticsearch:
           filter:
             - bool:
                 must:
-                  - match:
+                  - wildcard:
                       fluentd_tag: '*.nginx.*'
                   - term:
                       status: 502
