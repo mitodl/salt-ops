@@ -3,6 +3,7 @@
 {% set python_bin_dir = '/usr/local/pyenv/versions/{0}/bin'.format(python_version) %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'dev') %}
 {% set mail_creds = salt.vault.read('secret-operations/operations/redash/sendgrid-credentials') %}
+{% set pg_creds = salt.vault.read('postgres-operations-redash/creds/redash') %}
 
 python:
   versions:
@@ -21,24 +22,24 @@ django:
       - overwrite: True
       - source_hash: d5b22cac0c37929a6da243692be5830c4840d19727f01ed43e3d2f803aa642f6
   environment:
-    REDASH_LOG_LEVEL: INFO
-    REDASH_NAME: MIT Open Learning Business Intelligence
-    REDASH_DATE_FORMAT: YYYY-MM-DD
-    REDASH_PASSWORD_LOGIN_ENABLED: false
-    REDASH_MULTI_ORG: false
-    REDASH_HOST: https://bi.odl.mit.edu
-    REDASH_DATABASE_URL: postgresql://{{ pg_creds.username }}:{{ pg_creds.password }}@postgres-operations-redash.service.consul:5432/redash
     REDASH_ADDITIONAL_QUERY_RUNNERS: redash.query_runner.google_analytics
-    REDASH_REDIS_URL: redis://redis-redash.service.consul:6379/0
+    REDASH_COOKIE_SECRET: {{ salt.vault.read('secret-operations/operations/redash/cookie-secret') }}
+    REDASH_DATABASE_URL: postgresql://{{ pg_creds.username }}:{{ pg_creds.password }}@postgres-operations-redash.service.consul:5432/redash
+    REDASH_DATE_FORMAT: YYYY-MM-DD
     REDASH_ENFORCE_HTTPS: true
-    REDASH_MAIL_USE_TLS: true
     REDASH_GOOGLE_CLIENT_ID: {{ google_creds.client_id }}
     REDASH_GOOGLE_CLIENT_SECRET: {{ google_creds.client_secret }}
+    REDASH_HOST: https://bi.odl.mit.edu
+    REDASH_LOG_LEVEL: INFO
     REDASH_MAIL_PASSWORD: {{ mail_creds.password }}
     REDASH_MAIL_PORT: {{ mail_creds.port }}
     REDASH_MAIL_SERVER: {{ mail_creds.server }}
     REDASH_MAIL_USERNAME: {{ mail_creds.username }}
-    REDASH_COOKIE_SECRET: {{ salt.vault.read('secret-operations/operations/redash/cookie-secret') }}
+    REDASH_MAIL_USE_TLS: true
+    REDASH_MULTI_ORG: false
+    REDASH_NAME: MIT Open Learning Business Intelligence
+    REDASH_PASSWORD_LOGIN_ENABLED: false
+    REDASH_REDIS_URL: redis://redis-redash.service.consul:6379/0
     REDASH_SENTRY_DSN: {{ salt.vault.read('secret-operations/operations/redash/sentry-dsn').data.value }}
   pgks:
     - libffi-dev

@@ -236,6 +236,16 @@ environments:
     network_prefix: 10.0
     vpc_name: mitodl-operations-services
     backends:
+      elasticache:
+        - engine: redis
+          engine_version: 3.2.10
+          node_type: cache.t2.medium
+          num_cache_nodes: 2
+          purpose: odl-video-service
+          cluster_id: ovs-production-redis
+          parameter_group_name: default.redis3.2
+          failover_enabled: False
+          business_unit: odl-video
       rds:
         - name: saltmaster
           multi_az: True
