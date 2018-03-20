@@ -13,7 +13,7 @@ create_django_staff_account:
     - cwd: /edx/app/edxapp/edx-platform/
     - runas: edxapp
 
-{% for account in [audit, honor, verified] %}
+{% for account in ["audit", "honor", "verified"] %}
 create_django_{{ account }}_account:
   cmd.run:
     - name: /edx/bin/python.edxapp /edx/bin/manage.edxapp lms create_user -u {{ account }} -e {{ account }}@example.com -p {{ django_superuser_password }} --settings=devstack
