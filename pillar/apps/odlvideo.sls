@@ -83,7 +83,7 @@ django:
     DJANGO_LOG_LEVEL: {{ env_data.log_level }}
     DROPBOX_FOLDER: /Captions
     DROPBOX_KEY: {{ dropbox_app.data.key }}
-    DROPBOX_TOKEN: {{ dropbox_app.data.token}}
+    DROPBOX_TOKEN: {{ dropbox_app.data.token }}
     ENABLE_VIDEO_PERMISSIONS: False
     ET_PIPELINE_ID: {{ env_data.transcode_pipeline_id }}
     ET_PRESET_IDS: 1504127981769-6cnqhq,1504127981819-v44xlx,1504127981867-06dkm6,1504127981921-c2jlwt
