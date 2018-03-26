@@ -8,7 +8,7 @@
 monit_app:
   notification: 'slack'
   modules:
-    mysql_connection:
+    mongodb_connection:
       host:
         custom:
           name: {{ mongodb_host }}
