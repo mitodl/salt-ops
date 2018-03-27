@@ -1,5 +1,3 @@
-#!jinja|yaml
-
 {% set env = salt.grains.get('environment', 'mitx-qa') %}
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
 {% set edxapp_mysql_host = 'mysql.service.consul' %}
@@ -7,7 +5,6 @@
 {% set edxapp_mysql_creds = salt.vault.read('mysql-{env}/creds/edxapp-{purpose}'.format(env=env, purpose=purpose)) %}
 
 monit_app:
-  notification: 'slack'
   modules:
     mysql_connection:
       host:

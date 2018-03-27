@@ -1,5 +1,4 @@
 monit_app:
-  notification: 'slack'
   modules:
     latex2edx:
       host:

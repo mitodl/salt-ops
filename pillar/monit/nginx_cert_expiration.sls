@@ -1,8 +1,4 @@
-{% set slack_webhook_url_devops = salt.vault.read('secret-operations/global/slack-odl/slack_webhook_url').data.value %}
-
 monit_app:
-  notification: 'slack'
-  slack_webhook_url: {{ slack_webhook_url_devops }}
   modules:
     nginx_cert_expiration:
       process:

@@ -1,12 +1,9 @@
-#!jinja|yaml
-
 {% set env = salt.grains.get('environment', 'mitx-qa') %}
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
 {% set mongodb_host = 'mongodb-master.service.consul' %}
 {% set mongodb_port = 27017 %}
 
 monit_app:
-  notification: 'slack'
   modules:
     mongodb_connection:
       host:
