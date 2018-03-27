@@ -86,6 +86,9 @@ base:
     - match: compound
     - rabbitmq.apps
     - consul.apps
+  'G@roles:analytics and G@environment:mitx-production':
+    - match: compound
+    - edx.mitx_etl
   'G@roles:consul_server and G@environment:operations':
     - match: compound
     - consul.bootcamps
@@ -141,7 +144,6 @@ base:
     - consul.mitx-draft
   'P@purpose:.*-live and P@environment:mitx-(qa|production)':
     - match: compound
-    - edx.mitx_etl
     - consul.mitx-live
   'P@purpose:next-residential.*':
     - match: compound
