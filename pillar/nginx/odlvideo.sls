@@ -36,7 +36,9 @@ nginx:
           enabled: True
           config:
             - server:
-                - server_name: {{ server_domain_name }}
+                - server_name:
+                    - {{ server_domain_name }}
+                    - techtv.mit.edu
                 - listen:
                     - 80
                 - listen:
@@ -44,7 +46,9 @@ nginx:
                 - location /:
                     - return: 301 https://$host$request_uri
             - server:
-                - server_name: {{ server_domain_name }}
+                - server_name:
+                    - {{ server_domain_name }}
+                    - techtv.mit.edu
                 - listen:
                     - 443
                     - ssl
