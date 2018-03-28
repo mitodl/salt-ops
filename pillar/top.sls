@@ -131,6 +131,7 @@ base:
     - match: compound
     - edx.mitx-qa
     - edx.inotify_mitx
+    - monit
     - monit.nginx_cert_expiration
     - monit.latex2edx
     - monit.mysql_connection
