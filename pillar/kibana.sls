@@ -2,6 +2,9 @@
 {% set slack_webhook_url_devops = salt.vault.read('secret-operations/global/slack/slack_webhook_url').data.value %}
 {% set opsgenie_ops_team_api = salt.vault.read('secret-operations/global/opsgenie/opsgenie_ops_team_api').data.value %}
 {% set mitca_ssl_cert = salt.vault.read('secret-operations/global/mitca_ssl_cert').data.value %}
+{% set mailgun_apps = {
+    'micromasters': 'micromasters-eng',
+    'discussions': 'mit-open-eng'} %}
 
 elasticsearch:
   lookup:
@@ -15,7 +18,8 @@ elasticsearch:
       settings:
         es_host: nearest-elasticsearch.query.consul
     rules:
-      - name: mailgun
+    {% for app,slack_channel in mailgun_apps.items() %}:
+      - name: mailgun-{{ app }}
         settings:
           name: Mailgun delivery failure
           description: >-
@@ -31,16 +35,17 @@ elasticsearch:
             - slack
           alert_text: "Email delivery via Mailgun failed."
           slack_webhook_url: {{ slack_webhook_url_odl }}
-          slack_channel_override: "#micromasters-eng"
+          slack_channel_override: "#{{ slack_channel }}"
           slack_username_override: "Elastalert"
           slack_msg_color: "warning"
           filter:
             - bool:
                 should:
                   - term:
-                      fluentd_tag: mailgun.micromasters.dropped
+                      fluentd_tag: mailgun.{{ app }}.dropped
                   - term:
-                      fluentd_tag: mailgun.micromasters.bounced
+                      fluentd_tag: mailgun.{{ app }}.bounced
+    {% endfor %}
       - name: ssh_mitx
         settings:
           name: SSH events on mitx instances
