@@ -1,5 +1,5 @@
 {% set app_name = 'redash' %}
-{% set python_version = '3.6.4' %}
+{% set python_version = '2.7.14' %}
 {% set python_bin_dir = '/usr/local/pyenv/versions/{0}/bin'.format(python_version) %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'dev') %}
 {% set mail_creds = salt.vault.read('secret-operations/operations/redash/sendgrid-credentials') %}

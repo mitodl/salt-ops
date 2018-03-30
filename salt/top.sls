@@ -84,6 +84,16 @@ base:
     - nginx-shibboleth
     - django
     - uwsgi
+  'roles:redash':
+    - match: grain
+    - utils.configure_debian_source_repos
+    - consul
+    - python
+    - nginx-shibboleth
+    - django.install
+    - django.deploy
+    - apps.redash.datasources
+    - uwsgi
   'roles:kibana and G@environment:operations':
     - match: compound
     - elasticsearch.kibana
