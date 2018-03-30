@@ -1,4 +1,4 @@
-{% set redash_env = salt.pillar.get('django:environment') %'}
+{% set redash_env = salt.pillar.get('django:environment') %}
 
 migrate_redash_database:
   cmd.run:

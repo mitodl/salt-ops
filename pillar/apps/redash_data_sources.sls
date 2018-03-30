@@ -12,23 +12,23 @@ redash:
     - name: MicroMasters
       type: pg
       options:
-        dbname: opendiscussions
+        dbname: micromasters
         host: micromasters-db.cbnm7ajau6mi.us-east-1.rds.amazonaws.com
         port: 5432
-        user: {{ ovs_postgres.data.username }}
-        password: {{ ovs_postgres.data.password }}
+        user: {{ mm_postgres.data.username }}
+        password: {{ mm_postgres.data.password }}
     - name: BootCamp Ecommerce
       type: pg
       options:
-        dbname: opendiscussions
+        dbname: bootcamps
         host: postgresql-bootcamps.service.production-apps.consul
         port: 5432
-        user: {{ ovs_postgres.data.username }}
-        password: {{ ovs_postgres.data.password }}
+        user: {{ bootcamp_postgres.data.username }}
+        password: {{ bootcamp_postgres.data.password }}
     - name: ODL Video Service
       type: pg
       options:
-        dbname: opendiscussions
+        dbname: odlvideo
         host: postgres-odlvideo.service.production-apps.consul
         port: 5432
         user: {{ ovs_postgres.data.username }}

@@ -1,9 +1,11 @@
 {% set app_name = 'redash' %}
 {% set python_version = '2.7.14' %}
 {% set python_bin_dir = '/usr/local/pyenv/versions/{0}/bin'.format(python_version) %}
-{% set ENVIRONMENT = salt.grains.get('environment', 'dev') %}
-{% set mail_creds = salt.vault.read('secret-operations/operations/redash/sendgrid-credentials') %}
-{% set pg_creds = salt.vault.read('postgres-operations-redash/creds/redash') %}
+{% set ENVIRONMENT = salt.grains.get('environment', 'operations') %}
+{% set env_data = env_settings.environments[ENVIRONMENT] %}
+{% set purpose_data = env_data.environments[ENVIRONMENT].purposes[app_name] %}
+{% set mail_creds = salt.vault.read('secret-' ~ purpose_data.business_unit ~ '/' ~ ENVIRONMENT ~ '/' ~ app_name ~ '/sendgrid-credentials') %}
+{% set pg_creds = salt.vault.read('postgres-' ~ ENVIRONMENT ~ '-redash/creds/redash') %}
 
 python:
   versions:
@@ -80,7 +82,7 @@ uwsgi:
             daemonize=true,
             touch=/opt/{{ app_name}}/deploy_complete.txt
         - attach-daemon2: >-
-            cmd=/usr/local/pyenv/versions/{{ python_version }}/bin/celery worker -A redash.worker -c2 -Qscheduled_queries --pidfile /opt/{{ app_name }}/celery.pid -Ofair
+            cmd=/usr/local/pyenv/versions/{{ python_version }}/bin/celery worker -A redash.worker -c2 -Qscheduled_queries --pidfile /opt/{{ app_name }}/celery.pid -Ofair,
             pidfile=/opt/{{ app_name }}/celery.pid,
             daemonize=true,
             touch=/opt/{{ app_name}}/deploy_complete.txt
