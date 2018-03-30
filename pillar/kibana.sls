@@ -276,7 +276,7 @@ kibana:
       - ssl_client_certificate /etc/salt/ssl/certs/mitca.pem;
       - ssl_verify_client on;
       - set $authorized "no";
-      - if ($ssl_client_s_dn ~ "/emailAddress=(tmacey|pdpinch|shaidar|ichuang|gsidebo|mkdavies|gschneel)@MIT.EDU") { set $authorized "yes"; }
+      - if ($ssl_client_s_dn ~ "/emailAddress=(tmacey|pdpinch|shaidar|ichuang|gsidebo|mkdavies|gschneel|mattbert)@MIT.EDU") { set $authorized "yes"; }
       - if ($authorized !~ "yes") { return 403; }
     nginx_extra_files:
       - name: mitca
