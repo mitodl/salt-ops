@@ -13,7 +13,6 @@
 {% endfor %}
 
 {% set SIX_MONTHS = '4368h' %}
-{% set master_pass = salt.random.get_str(40) %}
 {% set master_user = 'odldevops' %}
 {% set db_configs = env_settings.backends.rds %}
 
@@ -35,6 +34,24 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
 {% set public_access = dbconfig.pop('public_access', False) %}
 {% set dbpurpose = dbconfig.pop('purpose', 'shared') %}
 {% set vault_plugin = dbconfig.pop('vault_plugin') %}
+
+{% set vault_master_pass_path = 'secret-' ~ BUSINESS_UNIT ~ '/' ~ ENVIRONMENT ~ '/' ~ engine ~ '-' ~ dbpurpose ~ '-master-password' %}
+{% set master_pass = salt.vault.read(vault_master_pass_path ) %}
+{% if not master_pass %}
+{% set master_pass = salt.random.get_str(42) %}
+set_rabbitmq_admin_password_in_vault:
+  salt.function:
+    - tgt: 'roles:master'
+    - tgt_type: grain
+    - name: vault.write
+    - arg:
+        - {{ vault_master_pass_path }}
+    - kwarg:
+        value: {{ master_pass  }}
+{% else %}
+{% set master_pass = master_pass.data.value %}
+{% endif %}
+
 create_{{ ENVIRONMENT }}_{{ name }}_rds_store:
   boto_rds.present:
     - name: {{ ENVIRONMENT }}-rds-{{ engine }}-{{ name }}
