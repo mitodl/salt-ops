@@ -20,7 +20,7 @@ django:
   app_name: {{ app_name }}
   app_source:
     type: archive # Options are: git, hg, archive
-    source: https://s3.amazonaws.com/redash-releases/redash.4.0.0-rc.1.b3791.tar.gz
+    repository_url: https://s3.amazonaws.com/redash-releases/redash.4.0.0-rc.1.b3791.tar.gz
     state_params:
       - overwrite: True
       - source_hash: d5b22cac0c37929a6da243692be5830c4840d19727f01ed43e3d2f803aa642f6
