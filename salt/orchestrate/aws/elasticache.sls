@@ -2,9 +2,6 @@
 {% set env_data = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set env_settings = env_data.environments[ENVIRONMENT] %}
 {% set VPC_NAME = salt.environ.get('VPC_NAME', env_settings.vpc_name) %}
-{% set VPC_RESOURCE_SUFFIX = salt.environ.get(
-    'VPC_RESOURCE_SUFFIX',
-    VPC_NAME.lower().replace(' ', '-')) %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_settings.business_unit) %}
 
 {% set network_prefix = env_settings.network_prefix %}
@@ -21,7 +18,7 @@
 
 create_{{ ENVIRONMENT }}_elasticache_security_group:
   boto_secgroup.present:
-    - name: elasticache-{{ VPC_RESOURCE_SUFFIX }}
+    - name: elasticache-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
     - description: ACL for Elasticache servers
     - rules:
@@ -33,7 +30,7 @@ create_{{ ENVIRONMENT }}_elasticache_security_group:
             - {{ SUBNETS_CIDR }}
         {% endfor %}
     - tags:
-        Name: elasticache-{{ VPC_RESOURCE_SUFFIX }}
+        Name: elasticache-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
@@ -41,17 +38,17 @@ create_{{ ENVIRONMENT }}_elasticache_security_group:
 
 create_{{ ENVIRONMENT }}_elasticache_subnet_group:
   boto3_elasticache.cache_subnet_group_present:
-    - name: elasticache-subnet-group-{{ VPC_RESOURCE_SUFFIX }}
+    - name: elasticache-subnet-group-{{ ENVIRONMENT }}
     - subnets:
-        - public1-{{ VPC_RESOURCE_SUFFIX }}
-        - public2-{{ VPC_RESOURCE_SUFFIX }}
-        - public3-{{ VPC_RESOURCE_SUFFIX }}
+        - public1-{{ ENVIRONMENT }}
+        - public2-{{ ENVIRONMENT }}
+        - public3-{{ ENVIRONMENT }}
     - CacheSubnetGroupDescription: Subnet group for {{ ENVIRONMENT }} elasticache clusters
 
 {% for cache_config in cache_configs %}
 {% set cache_purpose = cache_config.get('purpose', 'shared') %}
 {% set BUSINESS_UNIT = cache_config.get('business_unit', BUSINESS_UNIT) %}
-{% set name = '{}-{}-{}'.format(cache_config.engine, cache_purpose, VPC_RESOURCE_SUFFIX) %}
+{% set name = '{}-{}-{}'.format(cache_config.engine, cache_purpose, ENVIRONMENT) %}
 {% if cache_config.engine == 'redis' %}
 create_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_replication_group_{{ cache_purpose }}:
   boto3_elasticache.replication_group_present:
@@ -69,13 +66,13 @@ create_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_cluster_{{ cache_
     - AZMode: {{ 'cross-az' if cache_config.get('num_cache_nodes', 2) > 1 else 'single-az' }}
 {% endif %}
     - CacheNodeType: {{ cache_config.node_type }}
-    - CacheSubnetGroupName: elasticache-subnet-group-{{ VPC_RESOURCE_SUFFIX }}
+    - CacheSubnetGroupName: elasticache-subnet-group-{{ ENVIRONMENT }}
     - Engine: {{ cache_config.engine }}
     - EngineVersion: {{ cache_config.engine_version }}
     - Port: {{ default_port[cache_config.engine] }}
     - name: {{ name }}
     - security_groups:
-        - elasticache-{{ VPC_RESOURCE_SUFFIX }}
+        - elasticache-{{ ENVIRONMENT }}
     - Tags:
         - Key: Name
           Value: {{ name }}
