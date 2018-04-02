@@ -50,6 +50,7 @@ django:
     - libffi-dev
     - libssl-dev
     - libmariadbclient-dev
+    - mariadb-client
     - libpq-dev
     - freetds-dev
     - libsasl2-dev
