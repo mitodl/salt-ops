@@ -260,6 +260,7 @@ environments:
           allocated_storage: 100
           public_access: False
           engine_version: 10.1
+          purpose: saltmaster
         - name: redash
           multi_az: True
           engine: postgres
@@ -268,6 +269,7 @@ environments:
           allocated_storage: 100
           public_access: False
           engine_version: 10.1
+          purpose: redash
         - name: techtvcopy
           multi_az: False
           engine: mariadb
@@ -275,6 +277,7 @@ environments:
           db_instance_class: db.t2.micro
           allocated_storage: 25
           public_access: False
+          purpose: techtv
   production-apps:
     business_unit: operations
     network_prefix: 10.13
