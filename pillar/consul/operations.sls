@@ -5,7 +5,7 @@
 {% set wan_nodes = [] %}
 {% for host, addr in salt.saltutil.runner(
     'mine.get',
-    tgt='G@roles:consul_server and not P@environment:{}'.format(ENVIRONMENT),
+    tgt='G@roles:consul_server and not G@environment:{}'.format(ENVIRONMENT),
     fun='grains.item',
     tgt_type='compound').items() %}
 {% do wan_nodes.append('{0}'.format(addr['ec2:local_ipv4'])) %}
