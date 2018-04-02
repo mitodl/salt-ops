@@ -90,6 +90,9 @@ uwsgi:
         - module: redash.wsgi
         - pidfile: /var/run/uwsgi/{{ app_name }}.pid
         - touch-reload: /opt/{{ app_name }}/deploy_complete.txt
+        - for-readline: /opt/{{ app_name }}/.env
+        - env: '%(_)'
+        - endfor: ''
         - attach-daemon2: >-
             cmd=/usr/local/pyenv/versions/{{ python_version }}/bin/celery worker -A redash.worker -B -c2 -Qqueries,celery --pidfile /opt/{{ app_name }}/celery.pid -Ofair,
             pidfile=/opt/{{ app_name }}/celery.pid,
