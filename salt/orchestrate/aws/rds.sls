@@ -39,7 +39,7 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
 {% set master_pass = salt.vault.read(vault_master_pass_path ) %}
 {% if not master_pass %}
 {% set master_pass = salt.random.get_str(42) %}
-set_rabbitmq_admin_password_in_vault:
+set_{{ name }}_master_password_in_vault:
   salt.function:
     - tgt: 'roles:master'
     - tgt_type: grain
