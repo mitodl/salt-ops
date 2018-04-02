@@ -21,7 +21,7 @@ elasticsearch:
     {% for app,slack_channel in mailgun_apps.items() %}
       - name: mailgun-{{ app }}
         settings:
-          name: Mailgun delivery failure
+          name: Mailgun {{ app }} delivery failure
           description: >-
             Send a message for any email delivery failures so that they
             are visible and can be evaluated to determine any common
