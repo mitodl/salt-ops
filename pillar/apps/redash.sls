@@ -44,7 +44,7 @@ django:
     REDASH_MULTI_ORG: false
     REDASH_NAME: MIT Open Learning Business Intelligence
     REDASH_PASSWORD_LOGIN_ENABLED: false
-    REDASH_REDIS_URL: redis://redis-redash.service.consul:6379/0
+    REDASH_REDIS_URL: redis://redash-redis.service.consul:6379/0
     REDASH_SENTRY_DSN: {{ salt.vault.read('secret-operations/operations/redash/sentry-dsn').data.value }}
   pgks:
     - libffi-dev
