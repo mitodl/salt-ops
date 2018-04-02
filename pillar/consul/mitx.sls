@@ -19,22 +19,4 @@ consul:
           check:
             tcp: '{{ mysql_endpoint }}'
             interval: 10s
-        {% for cache_config in env_data.get('backends', {}).get('elasticache', []) %}
-        {% if cache_config.engine == 'memcached' %}
-        {% set cache_data = salt.boto3_elasticache.describe_cache_clusters(cache_config.cluster_id) %}
-        {% else %}
-        {% set cache_data = salt.boto3_elasticache.describe_replication_groups(cache_config.cluster_id) %}
-        {% endif %}
-        {% if cache_data[0].get('ConfigurationEndpoint') %}
-        {% set endpoint = cache_data[0].ConfigurationEndpoint %}
-        {% else %}
-        {% set endpoint = cache_data[0].NodeGroups[0].PrimaryEndpoint %}
-        {% endif %}
-        - name: {{ cache_config.cluster_id }}
-          port: {{ endpoint.Port }}
-          address: {{ endpoint.Address }}
-          check:
-            tcp: '{{ endpoint.Address }}:{{ endpoint.Port }}'
-            interval: 10s
-        {% endfor %}
     {% endif %}
