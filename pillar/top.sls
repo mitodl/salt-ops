@@ -72,6 +72,15 @@ base:
     - nginx.reddit
     - reddit
     - fluentd.reddit
+  'G@environment:operations and G@roles:redash':
+    - match: compound
+    - nginx
+    - nginx.redash
+    - consul
+    - shibboleth
+    - shibboleth.redash
+    - apps.redash
+    - apps.redash_data_sources
   'P@environment:(mitx-qa|mitx-production|operations|rc-apps|production-apps)':
     - match: compound
     - datadog

@@ -235,15 +235,39 @@ environments:
     business_unit: operations
     network_prefix: 10.0
     vpc_name: mitodl-operations-services
+    purposes:
+      redash:
+        num_instances: 1
+        domain: bi.odl.mit.edu
+        business_unit: operations
     backends:
+      elasticache:
+        - engine: redis
+          engine_version: 3.2.10
+          node_type: cache.t2.medium
+          num_cache_nodes: 2
+          purpose: redash
+          cluster_id: redash-redis
+          parameter_group_name: default.redis3.2
+          failover_enabled: False
+          business_unit: operations
       rds:
         - name: saltmaster
           multi_az: True
           engine: postgres
           vault_plugin: postgresql-database-plugin
-          db_instance_class: db.t2.micro
+          db_instance_class: db.t2.small
           allocated_storage: 100
           public_access: False
+          engine_version: 10.1
+        - name: redash
+          multi_az: True
+          engine: postgres
+          vault_plugin: postgresql-database-plugin
+          db_instance_class: db.t2.small
+          allocated_storage: 100
+          public_access: False
+          engine_version: 10.1
         - name: techtvcopy
           multi_az: False
           engine: mariadb

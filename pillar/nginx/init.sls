@@ -20,6 +20,7 @@ nginx:
             upstream_addr=$upstream_addr
             upstream_status=$upstream_status
             request_time=$request_time
+            request_id=$request_id
             upstream_response_time=$upstream_response_time
             upstream_connect_time=$upstream_connect_time
             upstream_header_time=$upstream_header_time'

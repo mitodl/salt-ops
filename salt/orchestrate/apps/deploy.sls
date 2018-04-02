@@ -28,6 +28,7 @@ generate_{{ app_name }}_cloud_map_file:
         service_name: {{ app_name }}
         roles:
           - {{ app_name }}
+          - app-server
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
             'webapp-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
@@ -37,6 +38,7 @@ generate_{{ app_name }}_cloud_map_file:
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids }}
         tags:
+          app: {{ app_name }}
           business_unit: {{ BUSINESS_UNIT }}
           Department: {{ BUSINESS_UNIT }}
           OU: {{ BUSINESS_UNIT }}
