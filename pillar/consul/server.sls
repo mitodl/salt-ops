@@ -31,3 +31,32 @@ consul:
       retry_join_wan: {{ wan_nodes }}
       acl_datacenter: {{ ENVIRONMENT }}
       acl_master_token: {{ salt.vault.read('secret-operations/{}/consul-acl-master-token'.format(ENVIRONMENT)).data.value }}
+    aws_services:
+      services:
+        {% for dbconfig in env_data.backends.rds %}
+        {% set rds_endpoint = salt.boto_rds.get_endpoint('{env}-rds-{engine}-{db}'.format(env=ENVIRONMENT, engine=dbconfig.engine, db=dbconfig.name)) %}
+        - name: {{ dbconfig.engine }}-{{ dbconfig.name }}
+          port: {{ rds_endpoint.split(':')[1] }}
+          address: {{ rds_endpoint.split(':')[0] }}
+          check:
+            tcp: '{{ rds_endpoint }}'
+            interval: 10s
+        {% endfor %}
+        {% for cache_config in env_data.backends.elasticache %}
+        {% if cache_config.engine == 'memcached' %}
+        {% set cache_data = salt.boto3_elasticache.describe_cache_clusters(cache_config.cluster_id) %}
+        {% else %}
+        {% set cache_data = salt.boto3_elasticache.describe_replication_groups(cache_config.cluster_id) %}
+        {% endif %}
+        {% if cache_data[0].get('ConfigurationEndpoint') %}
+        {% set endpoint = cache_data[0].ConfigurationEndpoint %}
+        {% else %}
+        {% set endpoint = cache_data[0].NodeGroups[0].PrimaryEndpoint %}
+        {% endif %}
+        - name: {{ cache_config.cluster_id }}
+          port: {{ endpoint.Port }}
+          address: {{ endpoint.Address }}
+          check:
+            tcp: '{{ endpoint.Address }}:{{ endpoint.Port }}'
+            interval: 10s
+        {% endfor %}
