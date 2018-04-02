@@ -30,8 +30,8 @@ django:
     REDASH_DATABASE_URL: postgresql://{{ pg_creds.username }}:{{ pg_creds.password }}@postgres-operations-redash.service.consul:5432/redash
     REDASH_DATE_FORMAT: YYYY-MM-DD
     REDASH_ENFORCE_HTTPS: true
-    REDASH_GOOGLE_CLIENT_ID: {{ google_creds.client_id }}
-    REDASH_GOOGLE_CLIENT_SECRET: {{ google_creds.client_secret }}
+    # REDASH_GOOGLE_CLIENT_ID: {# google_creds.client_id #}
+    # REDASH_GOOGLE_CLIENT_SECRET: {# google_creds.client_secret #}
     REDASH_HOST: https://bi.odl.mit.edu
     REDASH_LOG_LEVEL: INFO
     REDASH_MAIL_PASSWORD: {{ mail_creds.password }}
