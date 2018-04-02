@@ -32,6 +32,9 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
 {% for dbconfig in db_configs %}
 {% set name = dbconfig.pop('name') %}
 {% set engine = dbconfig.pop('engine') %}
+{% set public_access = dbconfig.pop('public_access', False) %}
+{% set dbpurpose = dbconfig.pop('purpose', 'shared') %}
+{% set vault_plugin = dbconfig.pop('vault_plugin') %}
 create_{{ ENVIRONMENT }}_{{ name }}_rds_store:
   boto_rds.present:
     - name: {{ ENVIRONMENT }}-rds-{{ engine }}-{{ name }}
@@ -45,18 +48,18 @@ create_{{ ENVIRONMENT }}_{{ name }}_rds_store:
     - master_user_password: {{ master_pass }}
     - master_username: {{ master_user }}
     - multi_az: {{ dbconfig.pop('multi_az', True) }}
-    - publicly_accessible: {{ dbconfig.pop('public_access', False) }}
+    - publicly_accessible: {{ public_access }}
     - storage_type: gp2
     {% for attr, value in dbconfig.items() %}
     - {{ attr }}: {{ value }}
     {% endfor %}
     - vpc_security_group_ids:
-        {% if dbconfig.get('public_access', False) %}
+        {% if public_access %}
         - {{ salt.boto_secgroup.get_group_id(
-             '{}-rds-public-{}'.format(dbconfig.engine, ENVIRONMENT), vpc_name=VPC_NAME) }}
+             '{}-rds-public-{}'.format(engine, ENVIRONMENT), vpc_name=VPC_NAME) }}
         {% else %}
         - {{ salt.boto_secgroup.get_group_id(
-             '{}-rds-{}'.format(dbconfig.engine, ENVIRONMENT), vpc_name=VPC_NAME) }}
+             '{}-rds-{}'.format(engine, ENVIRONMENT), vpc_name=VPC_NAME) }}
         {% endif %}
         - {{ salt.boto_secgroup.get_group_id(
              'vault-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
@@ -66,27 +69,27 @@ create_{{ ENVIRONMENT }}_{{ name }}_rds_store:
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
         Environment: {{ ENVIRONMENT }}
-        Purpose: {{ dbconfig.get('purpose', 'shared') }}
+        Purpose: {{ dbpurpose }}
     - require:
         - boto_rds: create_{{ ENVIRONMENT }}_rds_db_subnet_group
 
-{% set mount_point = '{}-{}-{}'.format(dbconfig.engine, ENVIRONMENT, dbconfig.name) %}
-configure_vault_postgresql_{{ dbconfig.name }}_backend:
+{% set mount_point = '{}-{}-{}'.format(engine, ENVIRONMENT, name) %}
+configure_vault_postgresql_{{ name }}_backend:
   vault.secret_backend_enabled:
     - backend_type: database
-    - description: Backend to create dynamic {{ dbconfig.engine }} credentials for {{ ENVIRONMENT }}
+    - description: Backend to create dynamic {{ engine }} credentials for {{ ENVIRONMENT }}
     - mount_point: {{ mount_point }}
     - ttl_max: {{ SIX_MONTHS }}
     - ttl_default: {{ SIX_MONTHS }}
     - lease_max: {{ SIX_MONTHS }}
     - lease_default: {{ SIX_MONTHS }}
-    - connection_config_path: {{ mount_point }}/config/{{ dbconfig.name }}
+    - connection_config_path: {{ mount_point }}/config/{{ name }}
     - connection_config:
-        plugin_name: {{ dbconfig.vault_plugin }}
-        {% if dbconfig.engine == 'postgres' %}
-        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@{{ dbconfig.engine }}-{{ dbconfig.name }}.service.{{ ENVIRONMENT }}.consul:5432/{{ dbconfig.name }}"
+        plugin_name: {{ vault_plugin }}
+        {% if engine == 'postgres' %}
+        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@{{ engine }}-{{ name }}.service.{{ ENVIRONMENT }}.consul:5432/{{ name }}"
         {% else %}
-        connection_url: "{{ master_user }}:{{ master_pass }}@tcp({{ dbconfig.engine }}-{{ dbconfig.name }}.service.{{ ENVIRONMENT }}.consul:3306)/"
+        connection_url: "{{ master_user }}:{{ master_pass }}@tcp({{ engine }}-{{ name }}.service.{{ ENVIRONMENT }}.consul:3306)/"
         {% endif %}
         verify_connection: False
         allowed_roles: '*'
