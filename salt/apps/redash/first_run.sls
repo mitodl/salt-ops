@@ -1,10 +1,5 @@
-{% set app_name = 'redash' %}
-{% set ENVIRONMENT = salt.grains.get('environment', 'operations') %}
-{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
-{% set env_data = env_settings.environments[ENVIRONMENT] %}
-{% set purpose_data = env_data.purposes[app_name] %}
-{% set root_user = salt.vault.read('secret-' ~ purpose_data.business_unit ~ '/' ~ ENVIRONMENT ~ '/' ~ app_name ~ '/root-user').data %}
 {% set redash_env = salt.pillar.get('django:environment') %}
+{% set root_user = salt.pillar.get('redash:root_user') %}
 
 migrate_redash_database:
   cmd.run:

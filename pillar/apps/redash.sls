@@ -7,12 +7,16 @@
 {% set purpose_data = env_data.purposes[app_name] %}
 {% set mail_creds = salt.vault.read('secret-' ~ purpose_data.business_unit ~ '/' ~ ENVIRONMENT ~ '/' ~ app_name ~ '/sendgrid-credentials') %}
 {% set pg_creds = salt.vault.read('postgres-' ~ ENVIRONMENT ~ '-redash/creds/redash') %}
+{% set root_user = salt.vault.read('secret-' ~ purpose_data.business_unit ~ '/' ~ ENVIRONMENT ~ '/' ~ app_name ~ '/root-user').data %}
 
 python:
   versions:
     - number: {{ python_version }}
       default: True
       user: root
+
+redash:
+  root_user: {{ root_user|yaml() }}
 
 django:
   user: redash
