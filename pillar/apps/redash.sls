@@ -33,7 +33,7 @@ django:
   environment:
     REDASH_ADDITIONAL_QUERY_RUNNERS: redash.query_runner.google_analytics
     REDASH_COOKIE_SECRET: {{ salt.vault.read('secret-operations/operations/redash/cookie-secret').data.value }}
-    REDASH_DATABASE_URL: postgresql://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@postgres-operations-redash.service.consul:5432/redash
+    REDASH_DATABASE_URL: postgresql://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@postgres-redash.service.consul:5432/redash
     REDASH_DATE_FORMAT: YYYY-MM-DD
     REDASH_ENFORCE_HTTPS: true
     # REDASH_GOOGLE_CLIENT_ID: {# google_creds.client_id #}
