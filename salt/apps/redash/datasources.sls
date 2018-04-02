@@ -1,4 +1,4 @@
-{% set datasources = salt.pillar.get('redash:datasources', []) %}
+{% set datasources = salt.pillar.get('redash:data_sources', []) %}
 {% for source in datasources %}
 manage_datasource_settings_for_{{ source.name }}:
   cmd.script:

@@ -54,6 +54,13 @@ django:
     - freetds-dev
     - libsasl2-dev
     - xmlsec1
+  states:
+    setup:
+      - apps.redash.install
+    deploy:
+      - apps.redash.deploy
+    config:
+      - apps.redash.datasources
 
 uwsgi:
   overrides:
