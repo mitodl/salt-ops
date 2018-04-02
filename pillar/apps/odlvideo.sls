@@ -116,6 +116,7 @@ django:
     YT_ACCESS_TOKEN: {{ youtube_creds.data.access_token }}
     YT_CLIENT_ID: {{ youtube_creds.data.client_id }}
     YT_CLIENT_SECRET: {{ youtube_creds.data.client_secret }}
+    YT_DAILY_UPLOAD_LIMIT: 100
     YT_PROJECT_ID: {{ env_data.youtube_project_id }}
     YT_REFRESH_TOKEN: {{ youtube_creds.data.refresh_token }}
   pkgs:
