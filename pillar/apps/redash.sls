@@ -16,6 +16,7 @@ python:
 
 django:
   user: redash
+  group: redash
   pip_path: {{ python_bin_dir }}/pip3
   app_name: {{ app_name }}
   app_source:
