@@ -17,7 +17,7 @@ python:
 django:
   user: redash
   group: redash
-  pip_path: {{ python_bin_dir }}/pip3
+  pip_path: {{ python_bin_dir }}/pip
   app_name: {{ app_name }}
   app_source:
     type: archive # Options are: git, hg, archive
@@ -57,7 +57,7 @@ django:
 
 uwsgi:
   overrides:
-    pip_path: {{ python_bin_dir }}/pip3
+    pip_path: {{ python_bin_dir }}/pip
     uwsgi_path: {{ python_bin_dir }}/uwsgi
   emperor_config:
     uwsgi:
