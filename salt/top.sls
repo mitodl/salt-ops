@@ -88,6 +88,7 @@ base:
     - match: grain
     - utils.configure_debian_source_repos
     - consul
+    - consul.dns_proxy
     - python
     - nginx-shibboleth
     - django.install
