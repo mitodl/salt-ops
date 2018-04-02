@@ -26,18 +26,18 @@ django:
       - source_hash: d5b22cac0c37929a6da243692be5830c4840d19727f01ed43e3d2f803aa642f6
   environment:
     REDASH_ADDITIONAL_QUERY_RUNNERS: redash.query_runner.google_analytics
-    REDASH_COOKIE_SECRET: {{ salt.vault.read('secret-operations/operations/redash/cookie-secret') }}
-    REDASH_DATABASE_URL: postgresql://{{ pg_creds.username }}:{{ pg_creds.password }}@postgres-operations-redash.service.consul:5432/redash
+    REDASH_COOKIE_SECRET: {{ salt.vault.read('secret-operations/operations/redash/cookie-secret').data.value }}
+    REDASH_DATABASE_URL: postgresql://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@postgres-operations-redash.service.consul:5432/redash
     REDASH_DATE_FORMAT: YYYY-MM-DD
     REDASH_ENFORCE_HTTPS: true
     # REDASH_GOOGLE_CLIENT_ID: {# google_creds.client_id #}
     # REDASH_GOOGLE_CLIENT_SECRET: {# google_creds.client_secret #}
     REDASH_HOST: https://bi.odl.mit.edu
     REDASH_LOG_LEVEL: INFO
-    REDASH_MAIL_PASSWORD: {{ mail_creds.password }}
-    REDASH_MAIL_PORT: {{ mail_creds.port }}
-    REDASH_MAIL_SERVER: {{ mail_creds.server }}
-    REDASH_MAIL_USERNAME: {{ mail_creds.username }}
+    REDASH_MAIL_PASSWORD: {{ mail_creds.data.password }}
+    REDASH_MAIL_PORT: {{ mail_creds.data.port }}
+    REDASH_MAIL_SERVER: {{ mail_creds.data.server }}
+    REDASH_MAIL_USERNAME: {{ mail_creds.data.username }}
     REDASH_MAIL_USE_TLS: true
     REDASH_MULTI_ORG: false
     REDASH_NAME: MIT Open Learning Business Intelligence
