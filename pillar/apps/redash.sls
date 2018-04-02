@@ -25,6 +25,7 @@ django:
     state_params:
       - overwrite: True
       - source_hash: d5b22cac0c37929a6da243692be5830c4840d19727f01ed43e3d2f803aa642f6
+      - enforce_toplevel: False
   environment:
     REDASH_ADDITIONAL_QUERY_RUNNERS: redash.query_runner.google_analytics
     REDASH_COOKIE_SECRET: {{ salt.vault.read('secret-operations/operations/redash/cookie-secret').data.value }}
