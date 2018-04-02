@@ -51,16 +51,11 @@ ensure_instance_profile_exists_for_{{ app_name }}:
     - name: {{ app_name }}-instance-role
 
 deploy_{{ app_name }}_cloud_map:
-  salt.function:
-    - tgt: 'roles:master'
-    - tgt_type: grain
-    - name: saltutil.runner
-    - arg:
-        - cloud.map_run
-    - kwarg:
-        path: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_{{ app_name }}_map.yml
+  salt.runner:
+    - name: cloud.map_run
+    - path: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_{{ app_name }}_map.yml
+    - kwargs:
         parallel: True
-        full_return: True
     - require:
         - file: generate_{{ app_name }}_cloud_map_file
 
