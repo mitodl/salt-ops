@@ -46,11 +46,10 @@ django:
     REDASH_PASSWORD_LOGIN_ENABLED: false
     REDASH_REDIS_URL: redis://redash-redis.service.consul:6379/0
     REDASH_SENTRY_DSN: {{ salt.vault.read('secret-operations/operations/redash/sentry-dsn').data.value }}
-  pgks:
+  pkgs:
     - libffi-dev
     - libssl-dev
     - libmariadbclient-dev
-    - mariadb-client
     - libpq-dev
     - freetds-dev
     - libsasl2-dev
