@@ -1,6 +1,6 @@
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT') %}
 {% set env_dict = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
-{% set env_settings = env_dict[ENVIRONMENT] %}
+{% set env_settings = env_dict.environments[ENVIRONMENT] %}
 {% set VPC_NAME = salt.environ.get('VPC_NAME', env_settings.vpc_name) %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_settings.business_unit) %}
 
@@ -32,7 +32,7 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
 {% for dbconfig in db_configs %}
 {% set name = dbconfig.pop('name') %}
 {% set engine = dbconfig.pop('engine') %}
-create_{{ ENVIRONMENT }}_{{ dbconfig.name }}_rds_store:
+create_{{ ENVIRONMENT }}_{{ name }}_rds_store:
   boto_rds.present:
     - name: {{ ENVIRONMENT }}-rds-{{ engine }}-{{ name }}
     - allocated_storage: {{ dbconfig.pop('allocated_storage') }}
