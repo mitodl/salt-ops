@@ -79,7 +79,7 @@ vault:
           REVOKE USAGE ON SCHEMA public FROM "{{name}}";
           DROP USER "{{name}}";
         {% endraw %}
-    postgresql_saltstack_admin:
+    postgresql_redash_admin:
       backend: postgres-operations-redash
       name: admin
       options:
@@ -97,7 +97,7 @@ vault:
           REVOKE USAGE ON SCHEMA public FROM "{{name}}";
           DROP USER "{{name}}";
         {% endraw %}
-    postgresql_saltstack_master:
+    postgresql_redash_app:
       backend: postgres-operations-redash
       name: redash
       options:
