@@ -8,6 +8,7 @@
 {% set mail_creds = salt.vault.read('secret-' ~ purpose_data.business_unit ~ '/' ~ ENVIRONMENT ~ '/' ~ app_name ~ '/sendgrid-credentials') %}
 {% set pg_creds = salt.vault.read('postgres-' ~ ENVIRONMENT ~ '-redash/creds/redash') %}
 {% set root_user = salt.vault.read('secret-' ~ purpose_data.business_unit ~ '/' ~ ENVIRONMENT ~ '/' ~ app_name ~ '/root-user').data %}
+{% set redash_fluentd_webhook_token = salt.vault.read('secret-operations/global/redash_webhook_token').data.value %}
 
 python:
   versions:
@@ -31,13 +32,14 @@ django:
       - source_hash: d5b22cac0c37929a6da243692be5830c4840d19727f01ed43e3d2f803aa642f6
       - enforce_toplevel: False
   environment:
+    # REDASH_GOOGLE_CLIENT_ID: {# google_creds.client_id #}
+    # REDASH_GOOGLE_CLIENT_SECRET: {# google_creds.client_secret #}
     REDASH_ADDITIONAL_QUERY_RUNNERS: redash.query_runner.google_analytics
     REDASH_COOKIE_SECRET: {{ salt.vault.read('secret-operations/operations/redash/cookie-secret').data.value }}
     REDASH_DATABASE_URL: postgresql://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@postgres-redash.service.consul:5432/redash
     REDASH_DATE_FORMAT: YYYY-MM-DD
-    REDASH_ENFORCE_HTTPS: true
-    # REDASH_GOOGLE_CLIENT_ID: {# google_creds.client_id #}
-    # REDASH_GOOGLE_CLIENT_SECRET: {# google_creds.client_secret #}
+    REDASH_ENFORCE_HTTPS: 'true'
+    REDASH_EVENT_REPORTING_WEBHOOKS: https://log-input.odl.mit.edu/redash-webhook/redash/events?token={{ redash_fluentd_webhook_token }}
     REDASH_HOST: https://bi.odl.mit.edu
     REDASH_LOG_LEVEL: INFO
     REDASH_MAIL_PASSWORD: {{ mail_creds.data.password }}
@@ -47,9 +49,12 @@ django:
     REDASH_MAIL_USE_TLS: true
     REDASH_MULTI_ORG: false
     REDASH_NAME: MIT Open Learning Business Intelligence
-    REDASH_PASSWORD_LOGIN_ENABLED: false
+    REDASH_PASSWORD_LOGIN_ENABLED: 'false'
     REDASH_REDIS_URL: redis://redash-redis.service.consul:6379/0
+    REDASH_REMOTE_USER_HEADER: MAIL
+    REDASH_REMOTE_USER_LOGIN_ENABLED: 'true'
     REDASH_SENTRY_DSN: {{ salt.vault.read('secret-operations/operations/redash/sentry-dsn').data.value }}
+    REDASH_STATIC_ASSETS_PATH: /opt/{{ app_name }}/redash/templates/
   pkgs:
     - libffi-dev
     - libssl-dev
