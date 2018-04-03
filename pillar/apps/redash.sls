@@ -87,7 +87,7 @@ uwsgi:
         - enable-threads: 'true'
         - thunder-lock: 'true'
         - logto: /var/log/uwsgi/apps/%n.log
-        - module: redash.wsgi
+        - module: redash.wsgi:app
         - pidfile: /var/run/uwsgi/{{ app_name }}.pid
         - touch-reload: /opt/{{ app_name }}/deploy_complete.txt
         - for-readline: /opt/{{ app_name }}/.env
