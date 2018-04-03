@@ -26,10 +26,10 @@ django:
   app_name: {{ app_name }}
   app_source:
     type: archive # Options are: git, hg, archive
-    repository_url: https://s3.amazonaws.com/redash-releases/redash.4.0.0-rc.1.b3791.tar.gz
+    repository_url: 'https://3867-13926404-gh.circle-artifacts.com/0/tmp/circle-artifacts.cTBz6UT/redash.4.0.0-rc.1%252Bb3867.tar.gz'
     state_params:
       - overwrite: True
-      - source_hash: d5b22cac0c37929a6da243692be5830c4840d19727f01ed43e3d2f803aa642f6
+      - source_hash: 26fa1521317aef6ed4f940c6fc9dc21dcf1a48d762e81717e43bc6d1ccf5dbed
       - enforce_toplevel: False
   environment:
     # REDASH_GOOGLE_CLIENT_ID: {# google_creds.client_id #}
@@ -54,7 +54,6 @@ django:
     REDASH_REMOTE_USER_HEADER: MAIL
     REDASH_REMOTE_USER_LOGIN_ENABLED: 'true'
     REDASH_SENTRY_DSN: {{ salt.vault.read('secret-operations/operations/redash/sentry-dsn').data.value }}
-    REDASH_STATIC_ASSETS_PATH: /opt/{{ app_name }}/redash/templates/
   pkgs:
     - libffi-dev
     - libssl-dev
