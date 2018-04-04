@@ -88,6 +88,8 @@ django:
     ET_PIPELINE_ID: {{ env_data.transcode_pipeline_id }}
     ET_PRESET_IDS: 1504127981769-6cnqhq,1504127981819-v44xlx,1504127981867-06dkm6,1504127981921-c2jlwt
     GA_DIMENSION_CAMERA: dimension1
+    GA_KEYFILE_JSON: {{ salt.vault.read('secret-odl-video/{env}/ga-keyfile-json'.format(env=ENVIRONMENT)).data.value }}
+    GA_VIEW_ID: {{ salt.vault.read('secret-odl-video/{env}/ga-view-id'.format(env=ENVIRONMENT)).data.value }}
     GA_TRACKING_ID: {{ env_data.ga_id }}
     LECTURE_CAPTURE_USER: {{ salt.sdb.get('sdb://consul/odl-video-service/lecture-capture-user') }}
     MAILGUN_KEY: {{ salt.vault.read('secret-operations/global/mailgun-api-key').data.value }}
