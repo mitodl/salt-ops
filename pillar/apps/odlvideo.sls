@@ -11,6 +11,7 @@
       'log_level': 'DEBUG',
       'use_shibboleth': False,
       'ga_id': 'UA-108097284-1',
+      'ga_view_id': '163329706',
       'transcode_pipeline_id': '1506027488410-93oya5',
       'youtube_project_id': 'ovs-youtube-qa',
       'release_branch': 'master',
@@ -23,6 +24,7 @@
       'log_level': 'INFO',
       'use_shibboleth': True,
       'ga_id': 'UA-5145472-27',
+      'ga_view_id': '163330947',
       'transcode_pipeline_id': '1506081628031-bepkel',
       'youtube_project_id': 'ovs-youtube-qa',
       'release_branch': 'release-candidate',
@@ -35,6 +37,7 @@
       'log_level': 'WARN',
       'use_shibboleth': True,
       'ga_id': 'UA-5145472-27',
+      'ga_view_id': '163330947',
       'transcode_pipeline_id': '1497541042228-8mpenl',
       'youtube_project_id': 'ovs-youtube-production',
       'release_branch': 'release',
@@ -88,6 +91,8 @@ django:
     ET_PIPELINE_ID: {{ env_data.transcode_pipeline_id }}
     ET_PRESET_IDS: 1504127981769-6cnqhq,1504127981819-v44xlx,1504127981867-06dkm6,1504127981921-c2jlwt
     GA_DIMENSION_CAMERA: dimension1
+    GA_KEYFILE_JSON: {{ salt.vault.read('secret-odl-video/{env}/ga-keyfile-json'.format(env=ENVIRONMENT)).data.value }}
+    GA_VIEW_ID: {{ env_data.ga_view_id }}
     GA_TRACKING_ID: {{ env_data.ga_id }}
     LECTURE_CAPTURE_USER: {{ salt.sdb.get('sdb://consul/odl-video-service/lecture-capture-user') }}
     MAILGUN_KEY: {{ salt.vault.read('secret-operations/global/mailgun-api-key').data.value }}
