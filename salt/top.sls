@@ -157,6 +157,9 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
+  'purpose:sandbox':
+    - match: grain
+    - edx.django_user
   'G@roles:devstack and P@environment:dev':
     - match: compound
     - consul
