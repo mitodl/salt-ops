@@ -4,7 +4,7 @@
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set server_domain_name = env_data.purposes[app_name].domain %}
 {% set odl_wildcard = salt.vault.read('secret-operations/global/odl_wildcard_cert') %}
-{% set login_path = 'login' %}
+{% set login_path = 'remote_user/login' %}
 
 nginx:
   ng:
