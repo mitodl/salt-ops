@@ -54,6 +54,7 @@ django:
     REDASH_REMOTE_USER_HEADER: MAIL
     REDASH_REMOTE_USER_LOGIN_ENABLED: 'true'
     REDASH_SENTRY_DSN: {{ salt.vault.read('secret-operations/operations/redash/sentry-dsn').data.value }}
+    REDASH_STATIC_ASSETS_PATH: /opt/{{ app_name }}/client/dist/
   pkgs:
     - libffi-dev
     - libssl-dev
