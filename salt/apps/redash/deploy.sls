@@ -1,4 +1,5 @@
 {% set redash_env = salt.pillar.get('django:environment') %}
+{% set django = salt.pillar.get('django') %}
 
 create_env_file_for_redash:
   file.managed:
@@ -7,5 +8,6 @@ create_env_file_for_redash:
         {%- for var, val in redash_env.items() %}
         {{ var }}={{ val }}
         {%- endfor %}
-    - require:
-        - archive: deploy_application_source_to_destination
+    - makedirs: True
+    - user: {{ django.user }}
+    - group: {{ django.group }}
