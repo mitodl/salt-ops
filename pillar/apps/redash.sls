@@ -46,8 +46,8 @@ django:
     REDASH_MAIL_PORT: {{ mail_creds.data.port }}
     REDASH_MAIL_SERVER: {{ mail_creds.data.server }}
     REDASH_MAIL_USERNAME: {{ mail_creds.data.username }}
-    REDASH_MAIL_USE_TLS: true
-    REDASH_MULTI_ORG: false
+    REDASH_MAIL_USE_TLS: 'true'
+    REDASH_MULTI_ORG: 'false'
     REDASH_NAME: MIT Open Learning Business Intelligence
     REDASH_PASSWORD_LOGIN_ENABLED: 'false'
     REDASH_REDIS_URL: redis://redash-redis.service.consul:6379/0
@@ -68,7 +68,9 @@ django:
       - apps.redash.install
     deploy:
       - apps.redash.deploy
+      - apps.redash.post_deploy
     config:
+      - apps.redash.deploy
       - apps.redash.datasources
 
 uwsgi:
