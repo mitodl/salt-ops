@@ -71,6 +71,7 @@ generate_edx_cloud_map_file:
           Department: {{ BUSINESS_UNIT }}
           OU: {{ BUSINESS_UNIT }}
           Environment: {{ ENVIRONMENT }}
+          edx_codename: {{ codename }}
         profile_overrides:
           userdata_file: '/etc/salt/cloud.d/edx_userdata.yml'
         app_types:
