@@ -10,6 +10,13 @@
 {% set root_user = salt.vault.read('secret-' ~ purpose_data.business_unit ~ '/' ~ ENVIRONMENT ~ '/' ~ app_name ~ '/root-user').data %}
 {% set redash_fluentd_webhook_token = salt.vault.read('secret-operations/global/redash_webhook_token').data.value %}
 
+schedule:
+  refresh_redash_datasource_credentials:
+    days: 25
+    function: state.sls
+    args:
+      - django.config
+
 python:
   versions:
     - number: {{ python_version }}
