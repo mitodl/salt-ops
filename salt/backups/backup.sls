@@ -1,3 +1,5 @@
+{% set ENVIRONMENT = salt.grains.get('environment') %}
+
 install_duplicity:
   pkg.installed:
     - pkgs:
@@ -34,7 +36,8 @@ run_backup_for_{{ service.title }}:
         settings: {{ service.settings }}
     - parallel: True
     - require_in:
-        - event: wait_for_backups_to_complete
+        - file: wait_for_backups_to_complete
+    - fire_event: backup/{{ ENVIRONMENT }}/{{ service.title }}/result
 {% endfor %}
 
 wait_for_backups_to_complete:
