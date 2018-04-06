@@ -1,5 +1,6 @@
 {% set ONE_WEEK = 604800 %}
 {% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token').data.value %}
+{% set salt_pg_creds = salt.vault.read('postgres-operations-saltmaster/creds/saltmaster').data %}
 
 slack_api_token: {{ slack_api_token }}
 slack:
@@ -146,21 +147,13 @@ salt_master:
             - salt://reactors/slack/post_event.sls
     misc:
       cache: consul
-      master_job_cache: elasticsearch
-      event_return: elasticsearch
-      elasticsearch:
-        hosts:
-          - elasticsearch.service.operations.consul:9200
-        index_date: True
-        number_of_shards: 5
-        number_of_replicas: 1
-        debug_returner_payload: True
-        states_count: True
-        states_order_output: True
-        states_single_index: True
-        functions_blacklist:
-          - test.ping
-          - saltutil.find_job
+      master_job_cache: pgjsonb
+      event_return: pgjsonb
+      returner.pgjsonb.host: postgres-saltmaster.service.consul
+      returner.pgjsonb.port: 5432
+      returner.pgjsonb.user: {{ salt_pg_creds.username }}
+      returner.pgjsonb.pass: {{ salt_pg_creds.password }}
+      returner.pgjsonb.db: saltmaster
     sdb:
       consul:
         driver: consul
