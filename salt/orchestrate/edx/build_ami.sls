@@ -58,13 +58,13 @@ create_edx_baseline_instance_in_{{ ENVIRONMENT }}:
             AssociatePublicIpAddress: True
             SecurityGroupId:
               - {{ salt.boto_secgroup.get_group_id(
-              'edx-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
+              'edx-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
               - {{ salt.boto_secgroup.get_group_id(
               'default', vpc_name=VPC_NAME) }}
               - {{ salt.boto_secgroup.get_group_id(
-              'salt_master-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
+              'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
               - {{ salt.boto_secgroup.get_group_id(
-              'consul-agent-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
+              'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
             SubnetId: {{ subnet_ids[0] }}
     - require:
         - file: load_edx_base_cloud_profile
@@ -91,13 +91,13 @@ create_edx_worker_baseline_instance_in_{{ ENVIRONMENT }}:
             AssociatePublicIpAddress: True
             SecurityGroupId:
               - {{ salt.boto_secgroup.get_group_id(
-              'edx-worker-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
+              'edx-worker-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
               - {{ salt.boto_secgroup.get_group_id(
               'default', vpc_name=VPC_NAME) }}
               - {{ salt.boto_secgroup.get_group_id(
-              'salt_master-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
+              'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
               - {{ salt.boto_secgroup.get_group_id(
-              'consul-agent-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
+              'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
             SubnetId: {{ subnet_ids[0] }}
     - require:
         - file: load_edx_base_cloud_profile
