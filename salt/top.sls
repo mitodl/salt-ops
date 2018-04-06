@@ -116,9 +116,6 @@ base:
     - nginx.ng
     - datadog
     - datadog.plugins
-  'G@roles:edx_sandbox and G@sandbox_status:ami-provision':
-    - match: compound
-    - edx.sandbox_ami
   'G@roles:mongodb and P@environment:mitx-(qa|rp|production)':
     - match: compound
     - mongodb

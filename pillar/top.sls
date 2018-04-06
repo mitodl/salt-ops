@@ -132,6 +132,7 @@ base:
     - match: compound
     - edx
     - edx.ansible_vars
+    - edx.residential_ansible_vars
     - edx.scheduled_jobs
     - fluentd.mitx
     - datadog.nginx-integration
@@ -165,6 +166,7 @@ base:
   'purpose:sandbox':
     - match: grain
     - edx.sandbox
+    - edx.ansible_vars
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
