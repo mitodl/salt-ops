@@ -1,10 +1,21 @@
-{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- ENVIRONMENT, BUSINESS_UNIT, PURPOSE_PREFIX, subnet_ids with context %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT') %}
+{% set PURPOSE_PREFIX = salt.environ.get('PURPOSE_PREFIX') %}
+{% set env_dict = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set env_settings = env_dict.environments[ENVIRONMENT] %}
+{% set VPC_NAME = salt.environ.get('VPC_NAME', env_settings.vpc_name) %}
+{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_settings.business_unit) %}
+
+{% set subnet_ids = [] %}
+{% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
+    'public1-{}'.format(ENVIRONMENT),
+    'public2-{}'.format(ENVIRONMENT),
+    'public3-{}'.format(ENVIRONMENT)])['subnets'] %}
+{% do subnet_ids.append('{0}'.format(subnet['id'])) %}
+{% endfor %}
 
 {% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token').data.value %}
 {% set EDX_VERSION = salt.environ.get('EDX_VERSION') %}
 {% set THEME_VERSION = salt.environ.get('THEME_VERSION', 'ficus') %}
-{% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set purposes = env_settings.purposes %}
 {% set edx_codename = purposes[PURPOSE_PREFIX +'-live'].versions.codename %}
 {% set instance_name = 'edxapp-{}-base-{}'.format(edx_codename, ENVIRONMENT) %}
@@ -35,11 +46,13 @@ create_edx_baseline_instance_in_{{ ENVIRONMENT }}:
         business_unit: {{ BUSINESS_UNIT }}
         environment: {{ ENVIRONMENT }}
         purpose: {{ PURPOSE_PREFIX }}-draft
+        edx_codename: {{ edx_codename }}
     - vm_overrides:
         tag:
           business_unit: {{ BUSINESS_UNIT }}
           environment: {{ ENVIRONMENT }}
           purpose_prefix: {{ PURPOSE_PREFIX }}
+          edx_codename: {{ edx_codename }}
         network_interfaces:
           - DeviceIndex: 0
             AssociatePublicIpAddress: True
@@ -66,11 +79,13 @@ create_edx_worker_baseline_instance_in_{{ ENVIRONMENT }}:
         business_unit: {{ BUSINESS_UNIT }}
         environment: {{ ENVIRONMENT }}
         purpose: {{ PURPOSE_PREFIX }}-draft
+        edx_codename: {{ edx_codename }}
     - vm_overrides:
         tag:
           business_unit: {{ BUSINESS_UNIT }}
           environment: {{ ENVIRONMENT }}
           purpose_prefix: {{ PURPOSE_PREFIX }}
+          edx_codename: {{ edx_codename }}
         network_interfaces:
           - DeviceIndex: 0
             AssociatePublicIpAddress: True
