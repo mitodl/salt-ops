@@ -1,3 +1,5 @@
+{% set ENVIRONMENT = salt.grains.get('environment') %}
+
 install_duplicity:
   pkg.installed:
     - pkgs:
@@ -34,7 +36,8 @@ run_restore_for_{{ service.title }}:
         settings: {{ service.settings }}
     - parallel: True
     - require_in:
-        - event: wait_for_restores_to_complete
+        - file: wait_for_restores_to_complete
+    - fire_event: restore/{{ ENVIRONMENT }}/{{ service.title }}
 {% endfor %}
 
 wait_for_restores_to_complete:

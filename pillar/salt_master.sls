@@ -140,6 +140,12 @@ salt_master:
             - salt://reactors/edx/inotify_mitx.sls
         - vault/lease/expiring/*:
             - salt://reactors/vault/alert_expiring_leases.sls
+        - salt/state_result/*/restore/*/result:
+            - salt://reactors/slack/post_event.sls
+        - salt/state_result/*/backup/*/result:
+            - salt://reactors/slack/post_event.sls
+    misc:
+      cache: consul
     sdb:
       consul:
         driver: consul
