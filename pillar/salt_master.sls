@@ -146,6 +146,21 @@ salt_master:
             - salt://reactors/slack/post_event.sls
     misc:
       cache: consul
+      master_job_cache: elasticsearch
+      event_return: elasticsearch
+      elasticsearch:
+        hosts:
+          - elasticsearch.service.operations.consul:9200
+        index_date: True
+        number_of_shards: 5
+        number_of_replicas: 1
+        debug_returner_payload: True
+        states_count: True
+        states_order_output: True
+        states_single_index: True
+        functions_blacklist:
+          - test.ping
+          - saltutil.find_job
     sdb:
       consul:
         driver: consul
