@@ -98,7 +98,7 @@ edx:
       {% endfor %}
       {% endif %}
       {% endfor %}
-      {% set 686_xqueue_creds = salt.vault.read('secret-residential/global/course-686x-grader-xqueue-credentials') %}
+      {% set xqueue_686_creds = salt.vault.read('secret-residential/global/course-686x-grader-xqueue-credentials') %}
       - COURSE: mit-686x
         GIT_REPO: git@github.mit.edu:mitx/graders-mit-686x
         GIT_REF: master
@@ -134,8 +134,8 @@ edx:
               KWARGS:
                 grader_root: ../data/mit-686x/graders/
           AUTH:
-            - {{ 686_xqueue_creds.data.username }}
-            - {{ 686_xqueue_creds.data.password }}
+            - {{ xqueue_686_creds.data.username }}
+            - {{ xqueue_686_creds.data.password }}
     XQWATCHER_CONFIG:
       POLL_TIME: 10
       REQUESTS_TIMEOUT: 1.5
