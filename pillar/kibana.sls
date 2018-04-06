@@ -3,8 +3,8 @@
 {% set opsgenie_ops_team_api = salt.vault.read('secret-operations/global/opsgenie/opsgenie_ops_team_api').data.value %}
 {% set mitca_ssl_cert = salt.vault.read('secret-operations/global/mitca_ssl_cert').data.value %}
 {% set mailgun_apps = {
-    'micromasters': 'micromasters-eng',
-    'discussions': 'mit-open-eng'} %}
+    'micromasters': 'mailgun-eng',
+    'discussions': 'mailgun-eng'} %}
 
 elasticsearch:
   lookup:
@@ -281,7 +281,7 @@ kibana:
       - ssl_client_certificate /etc/salt/ssl/certs/mitca.pem;
       - ssl_verify_client on;
       - set $authorized "no";
-      - if ($ssl_client_s_dn ~ "/emailAddress=(tmacey|pdpinch|shaidar|ichuang|gsidebo|mkdavies|gschneel|mattbert)@MIT.EDU") { set $authorized "yes"; }
+      - if ($ssl_client_s_dn ~ "/emailAddress=(tmacey|pdpinch|shaidar|ichuang|gsidebo|mkdavies|gschneel|mattbert|nlevesq)@MIT.EDU") { set $authorized "yes"; }
       - if ($authorized !~ "yes") { return 403; }
     nginx_extra_files:
       - name: mitca
