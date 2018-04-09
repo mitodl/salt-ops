@@ -149,7 +149,7 @@ environments:
           edx-worker:
             number: 1
             type: t2.medium
-      sandbox-residential-live:
+      sandbox:
         business_unit: operations
         domains:
           cms: studio-mitx-qa-sandbox.mitx.mit.edu
