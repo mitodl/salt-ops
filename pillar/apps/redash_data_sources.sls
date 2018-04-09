@@ -4,7 +4,6 @@
 {% set ovs_postgres = salt.vault.read('postgres-production-apps-odlvideo/creds/readonly') %}
 {% set od_postgres = salt.vault.read('postgresql-production-apps-opendiscussions/creds/readonly') %}
 {% set reddit_postgres = salt.vault.read('postgresql-production-apps-reddit/creds/readonly') %}
-{% set techtv_mysql = salt.vault.read('mariadb-operations-techtvcopy/creds/readonly') %}
 {% set mm_es = salt.vault.read('secret-micromasters/production/elasticsearch-auth-key').data.value.split(':') %}
 
 redash:
@@ -55,12 +54,3 @@ redash:
         basic_auth_user: {{ mm_es[0] }}
         basic_auth_password: {{ mm_es[1] }}
         server: https://micromasters-es.odl.mit.edu
-    - name: TechTV
-      type: rds_mysql
-      options:
-        db: techtv
-        host: mariadb-techtvcopy.service.operations.consul
-        passwd: {{ techtv_mysql.data.password }}
-        user: {{ techtv_mysql.data.username }}
-        use_ssl: True
-        port: 3306
