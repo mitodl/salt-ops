@@ -116,9 +116,6 @@ base:
     - nginx.ng
     - datadog
     - datadog.plugins
-  'G@roles:edx_sandbox and G@sandbox_status:ami-provision':
-    - match: compound
-    - edx.sandbox_ami
   'G@roles:mongodb and P@environment:mitx-(qa|rp|production)':
     - match: compound
     - mongodb
@@ -157,6 +154,12 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
+  'purpose:sandbox':
+    - match: grain
+    - edx.prod
+    - edx.patch_nginx
+    - edx.tests
+    - edx.django_user
   'G@roles:devstack and P@environment:dev':
     - match: compound
     - consul
