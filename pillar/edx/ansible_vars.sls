@@ -78,12 +78,13 @@
 {# Begin Duplicated Variables #}
 {# multivariate #}
 {% set CMS_DOMAIN = purpose_data.domains.cms %}
-
+{% set EDXAPP_CMS_ISSUER = "https://{}/oauth2".format(CMS_DOMAIN) %}
 {% set COMMENTS_SERVICE_KEY = salt.vault.read('secret-residential/global/forum-api-key').data.value %} # TODO: randomly generate? (tmacey 2017/03/16)
 {# multivariate, needs to be different for Professional Education, sandbox, etc #}
 {% set GIT_REPO_DIR = edx.edxapp_git_repo_dir %}
 {# multivariate #}
 {% set LMS_DOMAIN = purpose_data.domains.lms %}
+{% set EDXAPP_LMS_ISSUER = "https://{}/oauth2".format(LMS_DOMAIN) %}
 {% set MONGODB_HOST = 'mongodb-master.service.consul' %}
 {% set MONGODB_MODULESTORE_ENGINE =  'xmodule.modulestore.mongo.MongoModuleStore' %}
 {% set MONGODB_REPLICASET = salt.pillar.get('mongodb:replset_name', 'rs0') %}
@@ -335,6 +336,7 @@ edx:
         - courseware.student_field_overrides.IndividualStudentOverrideProvider
       GIT_IMPORT_STATIC: false
       LOGGING_ENV: lms-{{ edx.edxapp_log_env_suffix}}
+      OAUTH_OIDC_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
 
     EDXAPP_CMS_ENV_EXTRA:
       <<: *common_env_config
@@ -350,6 +352,7 @@ edx:
         ENABLE_SQL_TRACKING_LOGS: true
         SEGMENT_IO: false
       LOGGING_ENV: cms-{{ edx.edxapp_log_env_suffix }}
+      OAUTH_OIDC_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
 
     ################################################################################
     #################### Forum Settings ############################################

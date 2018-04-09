@@ -155,14 +155,10 @@ environments:
           cms: studio-mitx-qa-sandbox.mitx.mit.edu
           lms: mitx-qa-sandbox.mitx.mit.edu
           preview: preview-mitx-qa-sandbox.mitx.mit.edu
-          gitreload: gr-qa-sandbox.mitx.mit.edu
         versions:
           <<: *sandbox_residential_versions
         instances:
           edx:
-            number: 1
-            type: t2.medium
-          edx-worker:
             number: 1
             type: t2.medium
       continuous-delivery:

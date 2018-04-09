@@ -156,6 +156,12 @@ base:
     - fluentd.config
   'purpose:sandbox':
     - match: grain
+    - edx.prod
+    - edx.run_ansible
+    - edx.patch_nginx
+    - edx.edxapp_global_pre_commit
+    - edx.etc_hosts
+    - edx.tests
     - edx.django_user
   'G@roles:devstack and P@environment:dev':
     - match: compound
