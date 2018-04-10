@@ -35,11 +35,10 @@ run_restore_for_{{ service.title }}:
     - context:
         settings: {{ service.settings }}
     - parallel: True
-    - require_in:
-        - file: wait_for_restores_to_complete
     - fire_event: restore/{{ ENVIRONMENT }}/{{ service.title }}
 {% endfor %}
 
 wait_for_restores_to_complete:
   file.touch:
     - name: /backups/restore_complete
+    - order: last
