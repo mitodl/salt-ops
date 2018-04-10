@@ -1,11 +1,19 @@
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% from "shared/edx/mitx.jinja" import edx with context %}
 {% set DEFAULT_FEEDBACK_EMAIL = 'mitx-support@mit.edu' %}
 {% set DEFAULT_FROM_EMAIL = 'mitx-support@mit.edu' %}
 {% set business_unit = salt.grains.get('business_unit', 'residential') %}
+{% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
+% set environment = salt.grains.get('environment', 'mitx-qa') %}
+{% set purpose_data = env_settings.environments[environment].purposes[purpose] %}
 {% set remote_gradebook = salt.vault.read(
     'secret-{business_unit}/{env}/remote_gradebook'.format(
         business_unit=business_unit, env=environment)) %}
+{% set LMS_DOMAIN = purpose_data.domains.lms %}
+{% set CMS_DOMAIN = purpose_data.domains.cms %}
 {% set EDXAPP_LMS_ISSUER = "https://{}/oauth2".format(LMS_DOMAIN) %}
 {% set EDXAPP_CMS_ISSUER = "https://{}/oauth2".format(CMS_DOMAIN) %}
+{% set GIT_REPO_DIR = edx.edxapp_git_repo_dir %}
 
 edx:
   ansible_vars:
