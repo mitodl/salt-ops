@@ -12,7 +12,7 @@ redash:
       type: pg
       options:
         dbname: micromasters
-        host: micromasters-db.cbnm7ajau6mi.us-east-1.rds.amazonaws.com
+        host: micromasters-db-read-replica.cbnm7ajau6mi.us-east-1.rds.amazonaws.com
         port: 15432
         user: {{ mm_postgres.data.username }}
         password: {{ mm_postgres.data.password }}
