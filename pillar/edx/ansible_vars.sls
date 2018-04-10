@@ -309,7 +309,6 @@ edx:
       ENABLE_PREREQUISITE_COURSES: true
 
     EDXAPP_LMS_ENV_EXTRA:
-      <<: *common_env_config
       COURSE_ABOUT_VISIBILITY_PERMISSION: "{{ edx.edxapp_course_about_visibility_permission }}"
       COURSE_CATALOG_VISIBILITY_PERMISSION: "{{ edx.edxapp_course_catalog_visibility_permission }}"
       COURSE_MODE_DEFAULTS:
@@ -339,7 +338,6 @@ edx:
       OAUTH_OIDC_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
 
     EDXAPP_CMS_ENV_EXTRA:
-      <<: *common_env_config
       FEATURES:
         <<: *common_feature_flags
         ALLOW_COURSE_RERUNS: true
