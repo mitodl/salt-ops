@@ -154,7 +154,7 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
-  'purpose:sandbox':
+  'roles:sandbox':
     - match: grain
     - edx.prod
     - edx.patch_nginx
