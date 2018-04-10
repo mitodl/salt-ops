@@ -166,8 +166,6 @@ base:
   'roles:sandbox':
     - match: grain
     - edx
-    - edx.sandbox
-    - edx.ansible_vars
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
