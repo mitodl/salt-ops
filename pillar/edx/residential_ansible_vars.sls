@@ -14,6 +14,7 @@
 {% set EDXAPP_LMS_ISSUER = "https://{}/oauth2".format(LMS_DOMAIN) %}
 {% set EDXAPP_CMS_ISSUER = "https://{}/oauth2".format(CMS_DOMAIN) %}
 {% set GIT_REPO_DIR = edx.edxapp_git_repo_dir %}
+{% set TIME_ZONE = 'America/New_York' %}
 
 edx:
   ansible_vars:
