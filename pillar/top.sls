@@ -163,7 +163,7 @@ base:
   'P@purpose:next-residential.*':
     - match: compound
     - edx.next_residential
-  'purpose:sandbox':
+  'roles:sandbox':
     - match: grain
     - edx
     - edx.sandbox
