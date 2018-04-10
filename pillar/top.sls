@@ -165,6 +165,7 @@ base:
     - edx.next_residential
   'purpose:sandbox':
     - match: grain
+    - edx
     - edx.sandbox
     - edx.ansible_vars
   'roles:xqwatcher':
