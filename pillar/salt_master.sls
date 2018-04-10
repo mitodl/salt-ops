@@ -147,7 +147,6 @@ salt_master:
             - salt://reactors/slack/post_event.sls
     misc:
       worker_threads: 25
-      cache: consul
       master_job_cache: pgjsonb
       event_return: pgjsonb
       returner.pgjsonb.host: postgres-saltmaster.service.consul
