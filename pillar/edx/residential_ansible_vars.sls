@@ -4,7 +4,7 @@
 {% set DEFAULT_FROM_EMAIL = 'mitx-support@mit.edu' %}
 {% set business_unit = salt.grains.get('business_unit', 'residential') %}
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
-% set environment = salt.grains.get('environment', 'mitx-qa') %}
+{% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set purpose_data = env_settings.environments[environment].purposes[purpose] %}
 {% set remote_gradebook = salt.vault.read(
     'secret-{business_unit}/{env}/remote_gradebook'.format(
