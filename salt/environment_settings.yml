@@ -156,7 +156,11 @@ environments:
           lms: mitx-qa-sandbox.mitx.mit.edu
           preview: preview-mitx-qa-sandbox.mitx.mit.edu
         versions:
-          <<: *sandbox_residential_versions
+          edxapp: master
+          forum: master
+          ami_id: ami-80861296
+          theme: master
+          codename: hawthorn
         instances:
           edx:
             number: 1
