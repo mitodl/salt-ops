@@ -28,13 +28,11 @@ run_backup_for_{{ service.title }}:
     - template: jinja
     - context:
         settings: {{ service.settings }}
-    - parallel: True
   cmd.script:
     - name: salt://backups/templates/backup_{{ service.name }}.sh
     - template: jinja
     - context:
         settings: {{ service.settings }}
-    - parallel: True
     - require_in:
         - file: wait_for_backups_to_complete
     - fire_event: backup/{{ ENVIRONMENT }}/{{ service.title }}/result
