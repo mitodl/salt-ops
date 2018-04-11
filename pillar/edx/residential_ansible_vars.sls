@@ -20,8 +20,8 @@
   {% set edxapp_course_about_visibility_permission = 'staff' %}
   {% set edxapp_course_catalog_visibility_permission = 'staff' %}
   {% set edxapp_aws_grades_root_path =  'rp-dev/grades' %}
-  {% set edxapp_upload_storage_prefix: 'submissions_attachments_dev' %}
-  {% set edxapp_log_env_suffix: 'dev' %}
+  {% set edxapp_upload_storage_prefix = 'submissions_attachments_dev' %}
+  {% set edxapp_log_env_suffix = 'dev' %}
 {% elif 'edx-live' in roles %}
   {% set edxapp_git_repo_dir = '/mnt/data/prod_repos' %}
   {% set edxapp_course_about_visibility_permission = 'see_exists' %}
@@ -32,9 +32,9 @@
 {% endif %}
 
 {% if environment == 'mitx-qa' %}
-  efs_id: 'fs-6f55af26'
+{% set efs_id = 'fs-6f55af26' %}
 {% elif environment == 'mitx-production' %}
-  efs_id: 'fs-1f27ae56'
+{% set efs_id = 'fs-1f27ae56' %}
 {% endif %}
 
 {% if environment == 'mitx-production' %}

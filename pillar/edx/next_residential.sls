@@ -1,5 +1,3 @@
-{% from "shared/edx/mitx.jinja" import edx with context %}
-
 edx:
   config:
     repo: https://github.com/edx/configuration.git

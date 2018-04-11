@@ -1,12 +1,16 @@
 #!jinja|yaml|gpg
 
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
-{% from "shared/edx/mitx.jinja" import edx with context %}
 {% set duplicity_passphrase = salt.vault.read('secret-operations/global/duplicity-passphrase').data.value %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set env_data = env_settings.environments[environment] %}
 {% set edxapp_mysql_creds = salt.vault.read('mysql-{}/creds/admin'.format(environment)) %}
 {% set edxapp_mongodb_creds = salt.vault.read('mongodb-{}/creds/admin'.format(environment)) %}
+{% if environment == 'mitx-qa' %}
+{% set efs_id = 'fs-6f55af26' %}
+{% elif environment == 'mitx-production' %}
+{% set efs_id = 'fs-1f27ae56' %}
+{% endif %}
 
 backups:
   enabled:
@@ -44,7 +48,7 @@ backups:
         - nfs-common
       settings:
         duplicity_passphrase: {{ duplicity_passphrase }}
-        efs_id: {{ edx.efs_id }}
+        efs_id: {{ efs_id }}
         directory: prod_repos
     - title: draft_course_assets
       name: course_assets
@@ -53,5 +57,5 @@ backups:
         - nfs-common
       settings:
         duplicity_passphrase: {{ duplicity_passphrase }}
-        efs_id: {{ edx.efs_id }}
+        efs_id: {{ efs_id }}
         directory: repos
