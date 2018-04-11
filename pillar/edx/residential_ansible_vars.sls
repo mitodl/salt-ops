@@ -13,23 +13,22 @@
 {% set EDXAPP_LMS_ISSUER = "https://{}/oauth2".format(LMS_DOMAIN) %}
 {% set EDXAPP_CMS_ISSUER = "https://{}/oauth2".format(CMS_DOMAIN) %}
 {% set TIME_ZONE = 'America/New_York' %}
-{% set mit_smtp = salt.vault.read('secret-operations/global/mit-smtp') %}
 {% set roles = [salt.grains.get('roles')] %}
 
 {% if 'edx-draft' in roles %}
-  edxapp_git_repo_dir: '/mnt/data/repos'
-  edxapp_course_about_visibility_permission: 'staff'
-  edxapp_course_catalog_visibility_permission: 'staff'
-  edxapp_aws_grades_root_path: 'rp-dev/grades'
-  edxapp_upload_storage_prefix: 'submissions_attachments_dev'
-  edxapp_log_env_suffix: 'dev'
+  {% set edxapp_git_repo_dir = '/mnt/data/repos' %}
+  {% set edxapp_course_about_visibility_permission = 'staff' %}
+  {% set edxapp_course_catalog_visibility_permission = 'staff' %}
+  {% set edxapp_aws_grades_root_path =  'rp-dev/grades' %}
+  {% set edxapp_upload_storage_prefix: 'submissions_attachments_dev' %}
+  {% set edxapp_log_env_suffix: 'dev' %}
 {% elif 'edx-live' in roles %}
-  edxapp_git_repo_dir: '/mnt/data/prod_repos'
-  edxapp_course_about_visibility_permission: 'see_exists'
-  edxapp_course_catalog_visibility_permission: 'see_exists'
-  edxapp_aws_grades_root_path: 'rp-prod/grades'
-  edxapp_upload_storage_prefix: 'submissions_attachments_prod'
-  edxapp_log_env_suffix: 'prod'
+  {% set edxapp_git_repo_dir = '/mnt/data/prod_repos' %}
+  {% set edxapp_course_about_visibility_permission = 'see_exists' %}
+  {% set edxapp_course_catalog_visibility_permission = 'see_exists' %}
+  {% set edxapp_aws_grades_root_path = 'rp-prod/grades' %}
+  {% set edxapp_upload_storage_prefix = 'submissions_attachments_prod' %}
+  {% set edxapp_log_env_suffix = 'prod' %}
 {% endif %}
 
 {% if environment == 'mitx-qa' %}
@@ -78,11 +77,7 @@ edx:
     gr_repos: []
     basic_auth:
       location: /edx/app/nginx/gitreload.htpasswd
-  smtp:
-    relay_host: {{ mit_smtp.data.relay_host }}
-    relay_username: {{ mit_smtp.data.relay_username }}
-    relay_password: {{ mit_smtp.data.relay_password }}
-    root_forward: {{ salt.sdb.get('sdb://consul/admin-email') }}
+
   ansible_vars:
     XQUEUE_WORKERS_PER_QUEUE: 2
     XQUEUE_QUEUES:
