@@ -166,6 +166,8 @@ base:
   'G@roles:sandbox and P@environment:mitx-qa':
     - match: compound
     - edx
+    - edx.sandbox
+    - edx.ansible_vars
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
