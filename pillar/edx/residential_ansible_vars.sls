@@ -1,5 +1,4 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
-{% from "shared/edx/mitx.jinja" import edx with context %}
 {% set DEFAULT_FEEDBACK_EMAIL = 'mitx-support@mit.edu' %}
 {% set DEFAULT_FROM_EMAIL = 'mitx-support@mit.edu' %}
 {% set business_unit = salt.grains.get('business_unit', 'residential') %}
@@ -13,10 +12,77 @@
 {% set CMS_DOMAIN = purpose_data.domains.cms %}
 {% set EDXAPP_LMS_ISSUER = "https://{}/oauth2".format(LMS_DOMAIN) %}
 {% set EDXAPP_CMS_ISSUER = "https://{}/oauth2".format(CMS_DOMAIN) %}
-{% set GIT_REPO_DIR = edx.edxapp_git_repo_dir %}
 {% set TIME_ZONE = 'America/New_York' %}
+{% set mit_smtp = salt.vault.read('secret-operations/global/mit-smtp') %}
+{% set roles = [salt.grains.get('roles')] %}
+
+{% if 'edx-draft' in roles %}
+  edxapp_git_repo_dir: '/mnt/data/repos'
+  edxapp_course_about_visibility_permission: 'staff'
+  edxapp_course_catalog_visibility_permission: 'staff'
+  edxapp_aws_grades_root_path: 'rp-dev/grades'
+  edxapp_upload_storage_prefix: 'submissions_attachments_dev'
+  edxapp_log_env_suffix: 'dev'
+{% elif 'edx-live' in roles %}
+  edxapp_git_repo_dir: '/mnt/data/prod_repos'
+  edxapp_course_about_visibility_permission: 'see_exists'
+  edxapp_course_catalog_visibility_permission: 'see_exists'
+  edxapp_aws_grades_root_path: 'rp-prod/grades'
+  edxapp_upload_storage_prefix: 'submissions_attachments_prod'
+  edxapp_log_env_suffix: 'prod'
+{% endif %}
+
+{% if environment == 'mitx-qa' %}
+  efs_id: 'fs-6f55af26'
+{% elif environment == 'mitx-production' %}
+  efs_id: 'fs-1f27ae56'
+{% endif %}
+
+{% if environment == 'mitx-production' %}
+    {% if 'edx-draft' in roles %}
+    edxapp_google_analytics_account: 'UA-5145472-5'
+    {% elif 'edx-live' in roles %}
+    edxapp_google_analytics_account: 'UA-5145472-4'
+    {% endif %}
+{% endif %}
 
 edx:
+  {% if 'edx-worker' in roles %}
+  playbooks:
+    - 'edx-east/worker.yml'
+  {% endif %}
+  efs_id: {{ efs_id }}
+
+  edxapp:
+    GIT_REPO_DIR: {{ edxapp_git_repo_dir }}
+
+  gitreload:
+    gr_dir: /edx/app/gitreload
+    gr_repo: github.com/mitodl/gitreload.git
+    gr_version: master
+    gr_log_dir: "/edx/var/log/gr"
+    course_checkout: false
+    gr_env:
+      PORT: '8095'
+      UPDATE_LMS: 'true'
+      LOG_LEVEL: debug
+      WORKERS: 1
+      LOGFILE: "/edx/var/log/gr/gitreload.log"
+      VIRTUAL_ENV: /edx/app/edxapp/venvs/edxapp
+      EDX_PLATFORM: /edx/app/edxapp/edx-platform
+      DJANGO_SETTINGS: aws
+      REPODIR: {{ edxapp_git_repo_dir }}
+      NUM_THREADS: 3
+      GITRELOAD_CONFIG: /edx/app/gitreload/gr.env.json
+      LOG_FILE_PATH: /edx/var/log/gr/gitreload.log
+    gr_repos: []
+    basic_auth:
+      location: /edx/app/nginx/gitreload.htpasswd
+  smtp:
+    relay_host: {{ mit_smtp.data.relay_host }}
+    relay_username: {{ mit_smtp.data.relay_username }}
+    relay_password: {{ mit_smtp.data.relay_password }}
+    root_forward: {{ salt.sdb.get('sdb://consul/admin-email') }}
   ansible_vars:
     XQUEUE_WORKERS_PER_QUEUE: 2
     XQUEUE_QUEUES:
@@ -35,12 +101,13 @@ edx:
         'open-ended-message': !!null
         'test-pull': !!null
         'certificates': !!null
+    XQUEUE_LOGGING_ENV: {{ edxapp_log_env_suffix }}
     {# residential only #}
     EDXAPP_AWS_STORAGE_BUCKET_NAME: mitx-storage-{{ purpose }}-{{ environment }}
     EDXAPP_IMPORT_EXPORT_BUCKET: "mitx-storage-{{ salt.grains.get('purpose') }}-{{ salt.grains.get('environment') }}"
     edxapp_course_static_dir: /edx/var/edxapp/course_static_dummy {# private variable, used to hack around the fact that we mount our course data via a shared file system (tmacey 2017-03-16) #}
     {# residential only, set this in order to verride the `fs_root` setting for module/content store, need to understand more fully how this gets used in GITHUB_REPO_ROOT (tmacey 2017/03/17) #}
-    edxapp_course_data_dir: {{ GIT_REPO_DIR }}
+    edxapp_course_data_dir: {{ edxapp_git_repo_dir }}
     EDXAPP_CELERY_WORKERS:
       - queue: low
         service_variant: cms
@@ -71,8 +138,8 @@ edx:
         concurrency: 1
         monitor: False
         max_tasks_per_child: 1
-    {# multivariate #}
-    EDXAPP_GOOGLE_ANALYTICS_ACCOUNT: {{ edx.edxapp_google_analytics_account }}
+
+    EDXAPP_GOOGLE_ANALYTICS_ACCOUNT: {{ edxapp_google_analytics_account }}
     EDXAPP_YOUTUBE_API_KEY: {{ salt.vault.read('secret-residential/global/edxapp-youtube-api-key').data.value }}
     EDXAPP_LMS_AUTH_EXTRA:
       REMOTE_GRADEBOOK_USER: {{ remote_gradebook.data.user }}
@@ -95,7 +162,7 @@ edx:
     EDXAPP_DEFAULT_FEEDBACK_EMAIL: "{{ DEFAULT_FEEDBACK_EMAIL }}"
     EDXAPP_DEFAULT_FROM_EMAIL: "{{ DEFAULT_FROM_EMAIL }}"
     EDXAPP_GRADE_BUCKET: mitx-grades-{{ purpose }}-{{ environment }}
-    EDXAPP_GRADE_ROOT_PATH: {{ edx.edxapp_aws_grades_root_path }}
+    EDXAPP_GRADE_ROOT_PATH: {{ edxapp_aws_grades_root_path }}
     EDXAPP_GRADE_STORAGE_TYPE: S3
     EDXAPP_PLATFORM_NAME: MITx Residential
     EDXAPP_TECH_SUPPORT_EMAIL: mitx-support@mit.edu
@@ -126,6 +193,8 @@ edx:
     EDXAPP_LMS_ENV_EXTRA:
       <<: *common_env_config
       BULK_EMAIL_DEFAULT_FROM_EMAIL: mitx-support@mit.edu
+      COURSE_ABOUT_VISIBILITY_PERMISSION: "{{ edxapp_course_about_visibility_permission }}"
+      COURSE_CATALOG_VISIBILITY_PERMISSION: "{{ edxapp_course_catalog_visibility_permission }}"
       FEATURES:
         <<: *common_feature_flags
         ALLOW_COURSE_STAFF_GRADE_DOWNLOADS: true
@@ -138,7 +207,8 @@ edx:
           URL: {{ remote_gradebook.data.url }}
           DEFAULT_NAME: !!null
       OAUTH_OIDC_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
-      STUDENT_FILEUPLOAD_MAX_SIZE: "{{ edx.edxapp_max_upload_size * 1024 * 1024 }}"
+      STUDENT_FILEUPLOAD_MAX_SIZE: "20 * 1024 * 1024"
+      LOGGING_ENV: lms-{{ edxapp_log_env_suffix}}
     EDXAPP_CMS_ENV_EXTRA:
       <<: *common_env_config
       FEATURES:
@@ -147,5 +217,7 @@ edx:
     EDXAPP_ENABLE_MOBILE_REST_API: True
     EDXAPP_ENABLE_SYSADMIN_DASHBOARD: True
     EDXAPP_FILE_UPLOAD_STORAGE_BUCKET_NAME: mitx-storage-{{ purpose }}-{{ environment }}
-    EDXAPP_FILE_UPLOAD_STORAGE_PREFIX: {{ edx.edxapp_upload_storage_prefix }}
+    EDXAPP_FILE_UPLOAD_STORAGE_PREFIX: "{{ edxapp_upload_storage_prefix }}"
     OAUTH_OIDC_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
+    LOGGING_ENV: cms-{{ edxapp_log_env_suffix }}
+

@@ -68,7 +68,7 @@ place_tls_{{ ext }}_file:
 {% endfor %}
 {% endif %}
 
-{% if 'devstack' not in salt.grains.get('roles') %}
+{% if 'devstack' or 'sandbox' not in salt.grains.get('roles') %}
 {% set device_name = '{}.{}.efs.us-east-1.amazonaws.com:/'.format(salt.grains.get('ec2:availability_zone', 'us-east-1b'), salt.pillar.get('edx:efs_id')) %}
 {% set fstab_contents = salt.mount.fstab() %}
 {% for fmount, settings in fstab_contents.items() %}
