@@ -168,7 +168,7 @@ edx:
     EDXAPP_GRADE_BUCKET: mitx-grades-{{ purpose }}-{{ environment }}
     EDXAPP_GRADE_ROOT_PATH: {{ edxapp_aws_grades_root_path }}
     EDXAPP_GRADE_STORAGE_TYPE: S3
-    EDXAPP_GIT_REPO_DIR: "{{ GIT_REPO_DIR }}"
+    EDXAPP_GIT_REPO_DIR: "{{ edxapp_git_repo_dir }}"
     EDXAPP_PLATFORM_NAME: MITx Residential
     EDXAPP_TECH_SUPPORT_EMAIL: mitx-support@mit.edu
     EDXAPP_CMS_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
