@@ -67,11 +67,6 @@
         business_unit=business_unit,
         env=environment,
         purpose=purpose)) %}
-{% set xqwatcher_xqueue_creds = salt.vault.read(
-    'secret-{business_unit}/{env}/xqwatcher-xqueue-django-auth-{purpose}'.format(
-        business_unit=business_unit,
-        env=environment,
-        purpose=purpose)) %}
 {# END VAULT DATA LOOKUPS #}
 
 {% set CMS_DOMAIN = purpose_data.domains.cms %}
@@ -117,7 +112,6 @@ edx:
       {{ XQUEUE_PASSWORD|indent(6) }}
     XQUEUE_DJANGO_USERS:
       {{ edxapp_xqueue_creds.data.username }}: {{ edxapp_xqueue_creds.data.password }}
-      {{ xqwatcher_xqueue_creds.data.username }}: {{ xqwatcher_xqueue_creds.data.password }}
 
     XQUEUE_MYSQL_DB_NAME: xqueue_{{ purpose_suffix }}
     XQUEUE_MYSQL_HOST: {{ MYSQL_HOST }}
