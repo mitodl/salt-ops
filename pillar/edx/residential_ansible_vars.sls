@@ -20,20 +20,20 @@
         env=environment,
         purpose=purpose)) %}
 
-{% if 'edx-draft' in roles %}
-  {% set edxapp_git_repo_dir = '/mnt/data/repos' %}
-  {% set edxapp_course_about_visibility_permission = 'staff' %}
-  {% set edxapp_course_catalog_visibility_permission = 'staff' %}
-  {% set edxapp_aws_grades_root_path =  'rp-dev/grades' %}
-  {% set edxapp_upload_storage_prefix = 'submissions_attachments_dev' %}
-  {% set edxapp_log_env_suffix = 'dev' %}
-{% elif 'edx-live' in roles %}
+{% if 'edx-live' in roles %}
   {% set edxapp_git_repo_dir = '/mnt/data/prod_repos' %}
   {% set edxapp_course_about_visibility_permission = 'see_exists' %}
   {% set edxapp_course_catalog_visibility_permission = 'see_exists' %}
   {% set edxapp_aws_grades_root_path = 'rp-prod/grades' %}
   {% set edxapp_upload_storage_prefix = 'submissions_attachments_prod' %}
   {% set edxapp_log_env_suffix = 'prod' %}
+{% else %}
+  {% set edxapp_git_repo_dir = '/mnt/data/repos' %}
+  {% set edxapp_course_about_visibility_permission = 'staff' %}
+  {% set edxapp_course_catalog_visibility_permission = 'staff' %}
+  {% set edxapp_aws_grades_root_path =  'rp-dev/grades' %}
+  {% set edxapp_upload_storage_prefix = 'submissions_attachments_dev' %}
+  {% set edxapp_log_env_suffix = 'dev' %}
 {% endif %}
 
 {% if environment == 'mitx-qa' %}
