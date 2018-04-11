@@ -163,8 +163,8 @@ base:
   'P@purpose:next-residential.*':
     - match: compound
     - edx.next_residential
-  'roles:sandbox':
-    - match: grain
+  'G@roles:sandbox and P@environment:mitx-qa':
+    - match: compound
     - edx
   'roles:xqwatcher':
     - match: grain
