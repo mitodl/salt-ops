@@ -67,4 +67,4 @@ edx:
     max_upload_size: {{ edx.edxapp_max_upload_size }} {# size in MB #}
     custom_theme:
       repo: 'https://github.com/mitodl/mitx-theme'
-      branch: {{ purpose_data.versions.theme }}
+      branch: 'master'
