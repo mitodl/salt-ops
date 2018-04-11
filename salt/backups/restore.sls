@@ -28,13 +28,11 @@ run_restore_for_{{ service.title }}:
     - template: jinja
     - context:
         settings: {{ service.settings }}
-    - parallel: True
   cmd.script:
     - name: salt://backups/templates/restore_{{ service.name }}.sh
     - template: jinja
     - context:
         settings: {{ service.settings }}
-    - parallel: True
     - fire_event: restore/{{ ENVIRONMENT }}/{{ service.title }}
 {% endfor %}
 
