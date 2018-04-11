@@ -3,6 +3,7 @@
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set env_data = env_settings.environments[environment] %}
 {% set git_ssh_key = salt.vault.read('secret-residential/global/xqueue_watcher_git_ssh').data.value %}
+{% set xqwatcher_venv_base = '/edx/app/xqwatcher/venvs' %}
 
 schedule:
   {% for purpose, purpose_data in env_data.purposes.items() %}
