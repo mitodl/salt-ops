@@ -14,6 +14,11 @@
 {% set EDXAPP_CMS_ISSUER = "https://{}/oauth2".format(CMS_DOMAIN) %}
 {% set TIME_ZONE = 'America/New_York' %}
 {% set roles = [salt.grains.get('roles')] %}
+{% set xqwatcher_xqueue_creds = salt.vault.read(
+    'secret-{business_unit}/{env}/xqwatcher-xqueue-django-auth-{purpose}'.format(
+        business_unit=business_unit,
+        env=environment,
+        purpose=purpose)) %}
 
 {% if 'edx-draft' in roles %}
   {% set edxapp_git_repo_dir = '/mnt/data/repos' %}
@@ -97,7 +102,9 @@ edx:
         'test-pull': !!null
         'certificates': !!null
     XQUEUE_LOGGING_ENV: {{ edxapp_log_env_suffix }}
-    {# residential only #}
+    XQUEUE_DJANGO_USERS:
+      {{ xqwatcher_xqueue_creds.data.username }}: {{ xqwatcher_xqueue_creds.data.password }}
+ 
     EDXAPP_AWS_STORAGE_BUCKET_NAME: mitx-storage-{{ purpose }}-{{ environment }}
     EDXAPP_IMPORT_EXPORT_BUCKET: "mitx-storage-{{ salt.grains.get('purpose') }}-{{ salt.grains.get('environment') }}"
     edxapp_course_static_dir: /edx/var/edxapp/course_static_dummy {# private variable, used to hack around the fact that we mount our course data via a shared file system (tmacey 2017-03-16) #}
