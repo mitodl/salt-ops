@@ -11,7 +11,6 @@
 {# Use subkeys for the respective apps/playbooks (e.g. `forum`, `xqueue`, etc.) #}
 
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
-{% from "shared/edx/mitx.jinja" import edx with context %}
 {% set business_unit = salt.grains.get('business_unit', 'residential') %}
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
 {% set purpose_suffix = purpose.replace('-', '_') %}
@@ -75,13 +74,9 @@
         purpose=purpose)) %}
 {# END VAULT DATA LOOKUPS #}
 
-{# Begin Duplicated Variables #}
-{# multivariate #}
 {% set CMS_DOMAIN = purpose_data.domains.cms %}
 {% set EDXAPP_CMS_ISSUER = "https://{}/oauth2".format(CMS_DOMAIN) %}
 {% set COMMENTS_SERVICE_KEY = salt.vault.read('secret-residential/global/forum-api-key').data.value %} # TODO: randomly generate? (tmacey 2017/03/16)
-{# multivariate, needs to be different for Professional Education, sandbox, etc #}
-{% set GIT_REPO_DIR = edx.edxapp_git_repo_dir %}
 {# multivariate #}
 {% set LMS_DOMAIN = purpose_data.domains.lms %}
 {% set EDXAPP_LMS_ISSUER = "https://{}/oauth2".format(LMS_DOMAIN) %}
@@ -94,13 +89,19 @@
 {% set MYSQL_PORT = 3306 %}
 {% set THEME_NAME = 'mitx-theme' %}
 {% set TIME_ZONE = 'America/New_York' %}
-{% set TLS_LOCATION = edx.edxapp_tls_location_name %}
-{% set TLS_KEY_NAME = edx.edxapp_tls_key_name %}
+{% set TLS_LOCATION = '/etc/pki/tls/certs' %}
+{% set TLS_KEY_NAME = 'edx-ssl-cert' %}
 {% set XQUEUE_PASSWORD = salt.vault.read('secret-residential/global/xqueue-password').data.value %}
 {% set XQUEUE_USER = 'lms' %}
-{# End Duplicated Variables #}
+{% set mit_smtp = salt.vault.read('secret-operations/global/mit-smtp') %}
 
 edx:
+  smtp:
+    relay_host: {{ mit_smtp.data.relay_host }}
+    relay_username: {{ mit_smtp.data.relay_username }}
+    relay_password: {{ mit_smtp.data.relay_password }}
+    root_forward: {{ salt.sdb.get('sdb://consul/admin-email') }}
+
   ansible_vars:
     ### COMMON VARS ###
     COMMON_MYSQL_ADMIN_USER: {{ admin_mysql_creds.data.username }}
@@ -117,7 +118,7 @@ edx:
     XQUEUE_DJANGO_USERS:
       {{ edxapp_xqueue_creds.data.username }}: {{ edxapp_xqueue_creds.data.password }}
       {{ xqwatcher_xqueue_creds.data.username }}: {{ xqwatcher_xqueue_creds.data.password }}
-    XQUEUE_LOGGING_ENV: {{ edx.edxapp_log_env_suffix}}
+
     XQUEUE_MYSQL_DB_NAME: xqueue_{{ purpose_suffix }}
     XQUEUE_MYSQL_HOST: {{ MYSQL_HOST }}
     XQUEUE_MYSQL_PASSWORD: {{ xqueue_mysql_creds.data.password }}
@@ -309,8 +310,6 @@ edx:
       ENABLE_PREREQUISITE_COURSES: true
 
     EDXAPP_LMS_ENV_EXTRA:
-      COURSE_ABOUT_VISIBILITY_PERMISSION: "{{ edx.edxapp_course_about_visibility_permission }}"
-      COURSE_CATALOG_VISIBILITY_PERMISSION: "{{ edx.edxapp_course_catalog_visibility_permission }}"
       COURSE_MODE_DEFAULTS:
         bulk_sku: !!null
         currency: 'usd'
@@ -334,7 +333,6 @@ edx:
       FIELD_OVERRIDE_PROVIDERS:
         - courseware.student_field_overrides.IndividualStudentOverrideProvider
       GIT_IMPORT_STATIC: false
-      LOGGING_ENV: lms-{{ edx.edxapp_log_env_suffix}}
       OAUTH_OIDC_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
 
     EDXAPP_CMS_ENV_EXTRA:
@@ -349,7 +347,6 @@ edx:
         ENABLE_GIT_AUTO_EXPORT: true
         ENABLE_SQL_TRACKING_LOGS: true
         SEGMENT_IO: false
-      LOGGING_ENV: cms-{{ edx.edxapp_log_env_suffix }}
       OAUTH_OIDC_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
 
     ################################################################################
