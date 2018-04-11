@@ -44,10 +44,12 @@
 
 {% if environment == 'mitx-production' %}
     {% if 'edx-draft' in roles %}
-    edxapp_google_analytics_account: 'UA-5145472-5'
+    {% set edxapp_google_analytics_account = 'UA-5145472-5' %}
     {% elif 'edx-live' in roles %}
-    edxapp_google_analytics_account: 'UA-5145472-4'
+    {% set edxapp_google_analytics_account = 'UA-5145472-4' %}
     {% endif %}
+{% else %}
+{% set edxapp_google_analytics_account = '' %}
 {% endif %}
 
 edx:
@@ -166,6 +168,7 @@ edx:
     EDXAPP_GRADE_BUCKET: mitx-grades-{{ purpose }}-{{ environment }}
     EDXAPP_GRADE_ROOT_PATH: {{ edxapp_aws_grades_root_path }}
     EDXAPP_GRADE_STORAGE_TYPE: S3
+    EDXAPP_GIT_REPO_DIR: "{{ GIT_REPO_DIR }}"
     EDXAPP_PLATFORM_NAME: MITx Residential
     EDXAPP_TECH_SUPPORT_EMAIL: mitx-support@mit.edu
     EDXAPP_CMS_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"

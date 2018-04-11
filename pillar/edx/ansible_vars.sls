@@ -268,7 +268,6 @@ edx:
     {# multivariate #}
     EDXAPP_ENABLE_OAUTH2_PROVIDER: False
     {# multivariate #}
-    EDXAPP_GIT_REPO_DIR: "{{ GIT_REPO_DIR }}"
     EDXAPP_JWT_SECRET_KEY: {{ salt.vault.read('secret-{business_unit}/{env}/edxapp-jwt-secret-key'.format(env=environment, business_unit=business_unit)).data.value }}
     EDXAPP_LMS_BASE: "{{ LMS_DOMAIN }}"
     EDXAPP_LMS_MAX_REQ: 1000
