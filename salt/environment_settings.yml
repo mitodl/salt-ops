@@ -150,17 +150,13 @@ environments:
             number: 1
             type: t2.medium
       sandbox:
-        business_unit: operations
+        business_unit: residential
         domains:
           cms: studio-mitx-qa-sandbox.mitx.mit.edu
           lms: mitx-qa-sandbox.mitx.mit.edu
           preview: preview-mitx-qa-sandbox.mitx.mit.edu
         versions:
-          edxapp: master
-          forum: master
-          ami_id: ami-80861296
-          theme: master
-          codename: hawthorn
+          <<: *sandbox_residential_versions
         instances:
           edx:
             number: 1
