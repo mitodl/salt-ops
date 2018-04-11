@@ -16,6 +16,7 @@ consul:
     defaults:
       recursors:
         - {{ env_settings.environments[ENVIRONMENT].network_prefix }}.0.2
+        - 1.1.1.1
         - 8.8.8.8
     {% if 'consul_server' in salt.grains.get('roles', []) %}
       retry_join_wan: {{ wan_nodes }}

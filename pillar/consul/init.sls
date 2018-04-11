@@ -2,9 +2,9 @@
 {% set lan_nodes = [] %}
 {% for host, addr in salt.saltutil.runner(
     'mine.get',
-    tgt='G@roles:consul_server and G@environment:{}'.format(ENVIRONMENT),
+    tgt='consul-' ~ ENVIRONMENT ~ '-*',
     fun='grains.item',
-    tgt_type='compound').items() %}
+    tgt_type='glob').items() %}
 {% do lan_nodes.append('{0}'.format(addr['ec2:local_ipv4'])) %}
 {% endfor %}
 
