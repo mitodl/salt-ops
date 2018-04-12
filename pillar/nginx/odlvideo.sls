@@ -3,7 +3,7 @@
 {% set ENVIRONMENT = salt.grains.get('environment', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set server_domain_name = env_data.purposes['odl-video-service'].domain %}
-{% set odl_wildcard = salt.vault.read('secret-operations/global/odl_wildcard_cert') %}
+{% set odl_wildcard = salt.vault.read('secret-operations/global/ovs_techtv_cert') %}
 {% set ovs_login_path = 'collections' %}
 
 nginx:
