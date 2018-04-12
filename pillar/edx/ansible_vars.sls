@@ -325,7 +325,6 @@ edx:
         DISABLE_START_DATES: true
         ENABLE_EXPORT_GIT: true
         ENABLE_GIT_AUTO_EXPORT: true
-        ENABLE_SQL_TRACKING_LOGS: true
         SEGMENT_IO: false
       OAUTH_OIDC_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
 
