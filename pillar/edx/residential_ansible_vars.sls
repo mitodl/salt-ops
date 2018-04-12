@@ -62,6 +62,10 @@ edx:
 
   edxapp:
     GIT_REPO_DIR: {{ edxapp_git_repo_dir }}
+    THEME_NAME: 'mitx-theme'
+    custom_theme:
+      repo: 'https://github.com/mitodl/mitx-theme'
+      branch: {{ purpose_data.versions.theme }}
 
   gitreload:
     gr_dir: /edx/app/gitreload
