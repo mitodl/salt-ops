@@ -4,7 +4,6 @@ edx:
     branch: master
   playbooks:
     - 'edx-east/edxapp.yml'
-    - 'edx-east/xqueue.yml'
   ansible_vars:
     EDXAPP_MONGO_REPLICA_SET: rs0
     EDXAPP_CELERY_BROKER_HOSTNAME: nearest-rabbitmq.query.consul
