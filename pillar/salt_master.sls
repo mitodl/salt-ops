@@ -129,6 +129,8 @@ salt_master:
             - master https://github.com/mitodl/salt-ops:
                 - root: pillar
     logging:
+      log_granular_levels:
+        'py.warnings': 'quiet'
       logstash_udp_handler:
         host: fluentd.service.operations.consul
         port: 9999
