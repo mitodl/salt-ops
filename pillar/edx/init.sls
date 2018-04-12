@@ -23,10 +23,6 @@ edx:
     {{ mitx_wildcard_cert.data.value|indent(4) }}
 
   edxapp:
-    THEME_NAME: 'mitx-theme'
     TLS_LOCATION: '/etc/pki/tls/certs'
     TLS_KEY_NAME: 'edx-ssl-cert'
     max_upload_size: 20
-    custom_theme:
-      repo: 'https://github.com/mitodl/mitx-theme'
-      branch: {{ purpose_data.versions.theme }}
