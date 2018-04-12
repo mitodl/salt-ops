@@ -48,7 +48,6 @@ sandbox_residential_versions: &sandbox_residential_versions
   forum: master
   xqwatcher_courses: master
   ami_id: ami-80861296
-  theme: master
   codename: hawthorn
 
 environments:

@@ -13,6 +13,7 @@
 {% set EDXAPP_LMS_ISSUER = "https://{}/oauth2".format(LMS_DOMAIN) %}
 {% set EDXAPP_CMS_ISSUER = "https://{}/oauth2".format(CMS_DOMAIN) %}
 {% set TIME_ZONE = 'America/New_York' %}
+{% set THEME_NAME = 'mitx-theme' %}
 {% set roles = [salt.grains.get('roles')] %}
 {% set xqwatcher_xqueue_creds = salt.vault.read(
     'secret-{business_unit}/{env}/xqwatcher-xqueue-django-auth-{purpose}'.format(
@@ -106,7 +107,20 @@ edx:
     XQUEUE_LOGGING_ENV: {{ edxapp_log_env_suffix }}
     XQUEUE_DJANGO_USERS:
       {{ xqwatcher_xqueue_creds.data.username }}: {{ xqwatcher_xqueue_creds.data.password }}
- 
+
+    ########## START THEMING ########################################
+    EDXAPP_COMPREHENSIVE_THEME_SOURCE_REPO: 'https://github.com/mitodl/mitx-theme'
+    EDXAPP_COMPREHENSIVE_THEME_VERSION: {{ purpose_data.versions.theme }}
+    edxapp_theme_source_repo: 'https://github.com/mitodl/mitx-theme'
+    edxapp_theme_version: {{ purpose_data.versions.theme }}
+    EDXAPP_COMPREHENSIVE_THEME_DIRS:
+      - /edx/app/edxapp/themes/
+    {# multivariate #}
+    edxapp_theme_name: {{ THEME_NAME }}
+    {# multivariate #}
+    EDXAPP_DEFAULT_SITE_THEME: {{ THEME_NAME }}
+    ########## END THEMING ########################################
+
     EDXAPP_AWS_STORAGE_BUCKET_NAME: mitx-storage-{{ purpose }}-{{ environment }}
     EDXAPP_IMPORT_EXPORT_BUCKET: "mitx-storage-{{ salt.grains.get('purpose') }}-{{ salt.grains.get('environment') }}"
     edxapp_course_static_dir: /edx/var/edxapp/course_static_dummy {# private variable, used to hack around the fact that we mount our course data via a shared file system (tmacey 2017-03-16) #}
