@@ -317,7 +317,6 @@ edx:
         DISABLE_START_DATES: true
         ENABLE_EXPORT_GIT: true
         ENABLE_PUSH_TO_LMS: true
-        ENABLE_SQL_TRACKING_LOGS: true
         SEGMENT_IO: false
         STAFF_EMAIL: {{ DEFAULT_FEEDBACK_EMAIL }}
       LOGGING_ENV: {{ edxapp_log_env }}
