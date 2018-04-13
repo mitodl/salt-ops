@@ -20,33 +20,47 @@ edxapp_secret_backends: &edxapp_secret_backends
       - mitx-storage
 
 current_residential_versions_qa: &current_residential_versions_qa
+  edx_platform_repo: 'https://github.com/mitodl/edx-platform.git'
   edxapp: mitx/ginkgo
+  forum_source_repo: "https://github.com/mitodl/cs_comments_service.git"
   forum: open-release/ginkgo.master
+  xqueue_source_repo: "https://github.com/mitodl/xqueue.git"
+  xqueue: master
   xqwatcher_courses: master
   ami_id: ami-80861296
+  theme_source_repo: "https://github.com/mitodl/mitx-theme"
   theme: ginkgo
   codename: ginkgo
 
 current_residential_versions_rp: &current_residential_versions_rp
+  edx_platform_repo: 'https://github.com/mitodl/edx-platform.git'
   edxapp: mitx/ginkgo
+  forum_source_repo: "https://github.com/mitodl/cs_comments_service.git"
   forum: open-release/ginkgo.master
+  xqueue_source_repo: "https://github.com/mitodl/xqueue.git"
+  xqueue: master
   xqwatcher_courses: production
   ami_id: ami-80861296
+  theme_source_repo: "https://github.com/mitodl/mitx-theme"
   theme: ginkgo
   codename: ginkgo
 
 next_residential_versions: &next_residential_versions
+  edx_platform_repo: 'https://github.com/mitodl/edx-platform.git'
   edxapp: master
+  forum_source_repo: "https://github.com/mitodl/cs_comments_service.git"
   forum: master
+  xqueue_source_repo: "https://github.com/mitodl/xqueue.git"
+  xqueue: master
   xqwatcher_courses: master
   ami_id: ami-80861296
+  theme_source_repo: "https://github.com/mitodl/mitx-theme"
   theme: master
   codename: hawthorn
 
 sandbox_residential_versions: &sandbox_residential_versions
+  edx_platform_repo: 'https://github.com/edx/edx-platform.git'
   edxapp: open-release/ginkgo.master
-  forum: master
-  xqwatcher_courses: master
   ami_id: ami-80861296
   codename: hawthorn
 
