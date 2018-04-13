@@ -30,6 +30,7 @@ restores:
     settings:
       host: mysql.service.consul
       port: 3306
+      threads: 10
       password: {{ edxapp_mysql_creds.data.password }}
       username: {{ edxapp_mysql_creds.data.username }}
       duplicity_passphrase: {{ duplicity_passphrase }}
