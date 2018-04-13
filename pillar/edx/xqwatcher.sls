@@ -106,8 +106,6 @@ edx:
         PYTHON_REQUIREMENTS:
           - name: numpy
             version: 1.14.0
-          - name: numpydoc
-            version: 0.7.0
           - name: pandas
             version: 0.22.0
           - name: pandocfilters
