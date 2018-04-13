@@ -1,14 +1,7 @@
 #!jinja|yaml|gpg
 
-{# TODO: Incorporate this for deploying xqueue to a separate instance
-{# This needs to be set to a domain that is addressable by the xqueue server #}
-{# because it is used when constructing the callback URL #}
 {# EDXAPP_LMS_SITE_NAME: lms.service.consul #}
 {# EDXAPP_CMS_SITE_NAME: cms.service.consul #}
-{# EDXAPP_XQUEUE_URL: http://xqueue.service.consul #}
-
-{# Move all following pillar data under a top-level key of `ansible_vars` #}
-{# Use subkeys for the respective apps/playbooks (e.g. `forum`, `xqueue`, etc.) #}
 
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set business_unit = salt.grains.get('business_unit', 'residential') %}
@@ -23,10 +16,6 @@
 
 
 {# BEGIN VAULT DATA LOOKUPS #}
-{% set xqueue_rabbitmq_creds = salt.vault.read(
-    'rabbitmq-{env}/creds/xqueue-{purpose}'.format(
-        env=environment,
-        purpose=purpose)) %}
 {% set edxapp_rabbitmq_creds = salt.vault.read(
     'rabbitmq-{env}/creds/celery-{purpose}'.format(
         env=environment,
@@ -34,10 +23,6 @@
 {% set admin_mysql_creds = salt.vault.read(
     'mysql-{env}/creds/admin'.format(
         env=environment)) %}
-{% set xqueue_mysql_creds = salt.vault.read(
-    'mysql-{env}/creds/xqueue-{purpose}'.format(
-        env=environment,
-        purpose=purpose)) %}
 {% set edxapp_mysql_creds = salt.vault.read(
     'mysql-{env}/creds/edxapp-{purpose}'.format(
         env=environment,
@@ -50,10 +35,6 @@
     'mongodb-{env}/creds/modulestore-{purpose}'.format(
         env=environment,
         purpose=purpose)) %}
-{% set forum_mongodb_creds = salt.vault.read(
-    'mongodb-{env}/creds/forum-{purpose}'.format(
-        env=environment,
-        purpose=purpose)) %}
 {% set gitlog_mongodb_creds = salt.vault.read(
     'mongodb-{env}/creds/gitlog-{purpose}'.format(
         env=environment,
@@ -62,16 +43,10 @@
     'aws-mitx/creds/mitx-s3-{purpose}-{env}'.format(
         env=environment,
         purpose=purpose)) %}
-{% set edxapp_xqueue_creds = salt.vault.read(
-    'secret-{business_unit}/{env}/edxapp-xqueue-django-auth-{purpose}'.format(
-        business_unit=business_unit,
-        env=environment,
-        purpose=purpose)) %}
 {# END VAULT DATA LOOKUPS #}
 
 {% set CMS_DOMAIN = purpose_data.domains.cms %}
 {% set EDXAPP_CMS_ISSUER = "https://{}/oauth2".format(CMS_DOMAIN) %}
-{% set COMMENTS_SERVICE_KEY = salt.vault.read('secret-residential/global/forum-api-key').data.value %} # TODO: randomly generate? (tmacey 2017/03/16)
 {# multivariate #}
 {% set LMS_DOMAIN = purpose_data.domains.lms %}
 {% set EDXAPP_LMS_ISSUER = "https://{}/oauth2".format(LMS_DOMAIN) %}
@@ -86,7 +61,7 @@
 {% set TIME_ZONE = 'America/New_York' %}
 {% set TLS_LOCATION = '/etc/pki/tls/certs' %}
 {% set TLS_KEY_NAME = 'edx-ssl-cert' %}
-{% set XQUEUE_PASSWORD = salt.vault.read('secret-residential/global/xqueue-password').data.value %}
+
 {% set XQUEUE_USER = 'lms' %}
 {% set mit_smtp = salt.vault.read('secret-operations/global/mit-smtp') %}
 
@@ -103,28 +78,6 @@ edx:
     COMMON_MYSQL_ADMIN_PASS: {{ admin_mysql_creds.data.password }}
     COMMON_MYSQL_MIGRATE_USER: {{ admin_mysql_creds.data.username }}
     COMMON_MYSQL_MIGRATE_PASS: {{ admin_mysql_creds.data.password }}
-
-    ### XQUEUE ENVIRONMENT ###
-    XQUEUE_AWS_ACCESS_KEY_ID: {{ mitx_s3_creds.data.access_key }}
-    XQUEUE_AWS_SECRET_ACCESS_KEY: {{ mitx_s3_creds.data.secret_key }}
-    XQUEUE_BASIC_AUTH_USER: mitx
-    XQUEUE_BASIC_AUTH_PASSWORD: |
-      {{ XQUEUE_PASSWORD|indent(6) }}
-    XQUEUE_DJANGO_USERS:
-      {{ edxapp_xqueue_creds.data.username }}: {{ edxapp_xqueue_creds.data.password }}
-
-    XQUEUE_MYSQL_DB_NAME: xqueue_{{ purpose_suffix }}
-    XQUEUE_MYSQL_HOST: {{ MYSQL_HOST }}
-    XQUEUE_MYSQL_PASSWORD: {{ xqueue_mysql_creds.data.password }}
-    XQUEUE_MYSQL_PORT: {{ MYSQL_PORT }}
-    XQUEUE_MYSQL_USER: {{ xqueue_mysql_creds.data.username }}
-    XQUEUE_RABBITMQ_HOSTNAME: nearest-rabbitmq.query.consul
-    XQUEUE_RABBITMQ_PASS: {{ xqueue_rabbitmq_creds.data.password }}
-    XQUEUE_RABBITMQ_USER: {{ xqueue_rabbitmq_creds.data.username }}
-    XQUEUE_RABBITMQ_VHOST: /xqueue_{{ purpose_suffix }}
-    XQUEUE_S3_BUCKET: mitx-grades-{{ purpose }}-{{ environment }}
-    xqueue_source_repo: "https://github.com/mitodl/xqueue.git"
-    xqueue_version: "master"
 
     ### EDXAPP ENVIRONMENT ###
     {# TODO: Determine if this is still necessary (tmacey 2017/03/16) #}
@@ -217,10 +170,6 @@ edx:
     EDXAPP_AWS_SECRET_ACCESS_KEY: {{ mitx_s3_creds.data.secret_key }}
     EDXAPP_CELERY_PASSWORD: {{ edxapp_rabbitmq_creds.data.password }}
     EDXAPP_CELERY_USER: {{ edxapp_rabbitmq_creds.data.username }}
-    {# multivariate, vault #}
-    EDXAPP_XQUEUE_DJANGO_AUTH:
-      username: {{ edxapp_xqueue_creds.data.username }}
-      password: {{ edxapp_xqueue_creds.data.password }}
     EDXAPP_LMS_AUTH_EXTRA:
       SECRET_KEY: {{ salt.vault.read('secret-residential/global/edxapp-lms-django-secret-key').data.value }}
       MONGODB_LOG:
@@ -328,30 +277,11 @@ edx:
         SEGMENT_IO: false
       OAUTH_OIDC_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
 
-    ################################################################################
-    #################### Forum Settings ############################################
-    ################################################################################
-
-    FORUM_API_KEY: "{{ COMMENTS_SERVICE_KEY }}"
-    FORUM_ELASTICSEARCH_HOST: "nearest-elasticsearch.query.consul"
-    FORUM_MONGO_USER: {{ forum_mongodb_creds.data.username }}
-    FORUM_MONGO_PASSWORD: {{ forum_mongodb_creds.data.password }}
-    FORUM_MONGO_HOSTS:
-      - {{ MONGODB_HOST }}
-    FORUM_MONGO_PORT: {{ MONGODB_PORT }}
-    {# multivariate #}
-    FORUM_MONGO_DATABASE: forum_{{ purpose_suffix }}
-    FORUM_RACK_ENV: "production"
-    FORUM_SINATRA_ENV: "production"
-    FORUM_USE_TCP: True
-    forum_source_repo: "https://github.com/mitodl/cs_comments_service.git"
-    forum_version: {{ purpose_data.versions.forum }}
-
     ### Specific configuration overrides ###
 
     {# multivariate #}
     edx_platform_version: {{ purpose_data.versions.edxapp }}
-    edx_platform_repo: 'https://github.com/mitodl/edx-platform.git'
+    edx_platform_repo: {{ purpose_data.versions.edx_platform_repo }}
 
     EDXAPP_LMS_PREVIEW_NGINX_PORT: 80
     EDXAPP_CMS_NGINX_PORT: 80

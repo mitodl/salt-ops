@@ -15,11 +15,30 @@
 {% set TIME_ZONE = 'America/New_York' %}
 {% set THEME_NAME = 'mitx-theme' %}
 {% set roles = [salt.grains.get('roles')] %}
+{% set xqueue_mysql_creds = salt.vault.read(
+    'mysql-{env}/creds/xqueue-{purpose}'.format(
+        env=environment,
+        purpose=purpose)) %}
 {% set xqwatcher_xqueue_creds = salt.vault.read(
     'secret-{business_unit}/{env}/xqwatcher-xqueue-django-auth-{purpose}'.format(
         business_unit=business_unit,
         env=environment,
         purpose=purpose)) %}
+{% set edxapp_xqueue_creds = salt.vault.read(
+    'secret-{business_unit}/{env}/edxapp-xqueue-django-auth-{purpose}'.format(
+        business_unit=business_unit,
+        env=environment,
+        purpose=purpose)) %}
+{% set xqueue_rabbitmq_creds = salt.vault.read(
+    'rabbitmq-{env}/creds/xqueue-{purpose}'.format(
+        env=environment,
+        purpose=purpose)) %}
+{% set forum_mongodb_creds = salt.vault.read(
+    'mongodb-{env}/creds/forum-{purpose}'.format(
+        env=environment,
+        purpose=purpose)) %}
+{% set COMMENTS_SERVICE_KEY = salt.vault.read('secret-residential/global/forum-api-key').data.value %} # TODO: randomly generate? (tmacey 2017/03/16)
+{% set XQUEUE_PASSWORD = salt.vault.read('secret-residential/global/xqueue-password').data.value %}
 
 {% if 'edx-live' in roles %}
   {% set edxapp_git_repo_dir = '/mnt/data/prod_repos' %}
@@ -64,7 +83,7 @@ edx:
     GIT_REPO_DIR: {{ edxapp_git_repo_dir }}
     THEME_NAME: 'mitx-theme'
     custom_theme:
-      repo: 'https://github.com/mitodl/mitx-theme'
+      repo: {{ purpose_data.versions.theme_source_repo }}
       branch: {{ purpose_data.versions.theme }}
 
   gitreload:
@@ -91,6 +110,7 @@ edx:
       location: /edx/app/nginx/gitreload.htpasswd
 
   ansible_vars:
+    ### XQUEUE ENVIRONMENT ###
     XQUEUE_WORKERS_PER_QUEUE: 2
     XQUEUE_QUEUES:
         'MITx-42.01x': 'https://xserver.mitx.mit.edu/fgxserver'
@@ -111,11 +131,31 @@ edx:
     XQUEUE_LOGGING_ENV: {{ edxapp_log_env_suffix }}
     XQUEUE_DJANGO_USERS:
       {{ xqwatcher_xqueue_creds.data.username }}: {{ xqwatcher_xqueue_creds.data.password }}
+    XQUEUE_AWS_ACCESS_KEY_ID: {{ mitx_s3_creds.data.access_key }}
+    XQUEUE_AWS_SECRET_ACCESS_KEY: {{ mitx_s3_creds.data.secret_key }}
+    XQUEUE_BASIC_AUTH_USER: mitx
+    XQUEUE_BASIC_AUTH_PASSWORD: |
+      {{ XQUEUE_PASSWORD|indent(6) }}
+    XQUEUE_DJANGO_USERS:
+      {{ edxapp_xqueue_creds.data.username }}: {{ edxapp_xqueue_creds.data.password }}
+    XQUEUE_MYSQL_DB_NAME: xqueue_{{ purpose_suffix }}
+    XQUEUE_MYSQL_HOST: {{ MYSQL_HOST }}
+    XQUEUE_MYSQL_PASSWORD: {{ xqueue_mysql_creds.data.password }}
+    XQUEUE_MYSQL_PORT: {{ MYSQL_PORT }}
+    XQUEUE_MYSQL_USER: {{ xqueue_mysql_creds.data.username }}
+    XQUEUE_RABBITMQ_HOSTNAME: nearest-rabbitmq.query.consul
+    XQUEUE_RABBITMQ_PASS: {{ xqueue_rabbitmq_creds.data.password }}
+    XQUEUE_RABBITMQ_USER: {{ xqueue_rabbitmq_creds.data.username }}
+    XQUEUE_RABBITMQ_VHOST: /xqueue_{{ purpose_suffix }}
+    XQUEUE_S3_BUCKET: mitx-grades-{{ purpose }}-{{ environment }}
+    xqueue_source_repo: {{ purpose_data.versions.xqueue_source_repo }}
+    xqueue_version: {{ purpose_data.versions.xqueue }}
+    ########## END XQUEUE ########################################
 
     ########## START THEMING ########################################
-    EDXAPP_COMPREHENSIVE_THEME_SOURCE_REPO: 'https://github.com/mitodl/mitx-theme'
+    EDXAPP_COMPREHENSIVE_THEME_SOURCE_REPO: '{{ purpose_data.versions.theme_source_repo }}'
     EDXAPP_COMPREHENSIVE_THEME_VERSION: {{ purpose_data.versions.theme }}
-    edxapp_theme_source_repo: 'https://github.com/mitodl/mitx-theme'
+    edxapp_theme_source_repo: '{{ purpose_data.versions.theme_source_repo }}'
     edxapp_theme_version: {{ purpose_data.versions.theme }}
     EDXAPP_COMPREHENSIVE_THEME_DIRS:
       - /edx/app/edxapp/themes/
@@ -124,6 +164,25 @@ edx:
     {# multivariate #}
     EDXAPP_DEFAULT_SITE_THEME: {{ THEME_NAME }}
     ########## END THEMING ########################################
+
+    ################################################################################
+    #################### Forum Settings ############################################
+    ################################################################################
+    FORUM_API_KEY: "{{ COMMENTS_SERVICE_KEY }}"
+    FORUM_ELASTICSEARCH_HOST: "nearest-elasticsearch.query.consul"
+    FORUM_MONGO_USER: {{ forum_mongodb_creds.data.username }}
+    FORUM_MONGO_PASSWORD: {{ forum_mongodb_creds.data.password }}
+    FORUM_MONGO_HOSTS:
+      - {{ MONGODB_HOST }}
+    FORUM_MONGO_PORT: {{ MONGODB_PORT }}
+    {# multivariate #}
+    FORUM_MONGO_DATABASE: forum_{{ purpose_suffix }}
+    FORUM_RACK_ENV: "production"
+    FORUM_SINATRA_ENV: "production"
+    FORUM_USE_TCP: True
+    forum_source_repo: {{ purpose_data.versions.forum_source_repo }}
+    forum_version: {{ purpose_data.versions.forum }}
+    ########## END FORUM ########################################
 
     EDXAPP_AWS_STORAGE_BUCKET_NAME: mitx-storage-{{ purpose }}-{{ environment }}
     EDXAPP_IMPORT_EXPORT_BUCKET: "mitx-storage-{{ salt.grains.get('purpose') }}-{{ salt.grains.get('environment') }}"
@@ -243,4 +302,6 @@ edx:
     EDXAPP_FILE_UPLOAD_STORAGE_PREFIX: "{{ edxapp_upload_storage_prefix }}"
     OAUTH_OIDC_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
     LOGGING_ENV: cms-{{ edxapp_log_env_suffix }}
-
+    EDXAPP_XQUEUE_DJANGO_AUTH:
+      username: {{ edxapp_xqueue_creds.data.username }}
+      password: {{ edxapp_xqueue_creds.data.password }}
