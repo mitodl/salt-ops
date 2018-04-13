@@ -249,6 +249,8 @@ edx:
     EDXAPP_PLATFORM_NAME: MITx Residential
     EDXAPP_TECH_SUPPORT_EMAIL: mitx-support@mit.edu
     EDXAPP_CMS_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
+    EDXAPP_COMMENTS_SERVICE_KEY: {{ COMMENTS_SERVICE_KEY }}
+    EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
 
     common_feature_flags: &common_feature_flags
       AUTH_USE_CAS: true
