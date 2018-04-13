@@ -62,7 +62,7 @@ edx:
       {{ git_ssh_key|indent(6)}}
     XQWATCHER_COURSES:
       {% for purpose, purpose_data in env_data.purposes.items() %}
-      {% if purpose_data.business_unit == 'residential' %}
+      {% if 'residential' in purpose %}
       {% for queue_name in ['Watcher-MITx-6.0001r', 'Watcher-MITx-6.00x'] %}
       {% set xqwatcher_xqueue_creds = salt.vault.read(
           'secret-{business_unit}/{env}/xqwatcher-xqueue-django-auth-{purpose}'.format(
