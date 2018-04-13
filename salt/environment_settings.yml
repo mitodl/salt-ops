@@ -44,7 +44,7 @@ next_residential_versions: &next_residential_versions
   codename: hawthorn
 
 sandbox_residential_versions: &sandbox_residential_versions
-  edxapp: 619e7d8722ff73f21cbf4c9409e9701c7a15bc95
+  edxapp: open-release/ginkgo.master
   forum: master
   xqwatcher_courses: master
   ami_id: ami-80861296
