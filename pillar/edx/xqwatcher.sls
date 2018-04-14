@@ -106,10 +106,12 @@ edx:
         PYTHON_REQUIREMENTS:
           - name: numpy
             version: 1.14.0
+          # - name: numpydoc
+          #   version: 0.7.0
           - name: pandas
             version: 0.22.0
-          - name: pandocfilters
-            version: 1.4.2
+          # - name: pandocfilters
+          #   version: 1.4.2
           - name: scikit-image
             version: 0.13.1
           - name: scikit-learn
