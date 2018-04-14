@@ -198,7 +198,6 @@ edx:
     EDXAPP_ELASTIC_SEARCH_CONFIG:
       - host: nearest-elasticsearch.query.consul
         port: 9200
-    EDXAPP_ENABLE_COMPREHENSIVE_THEMING: true
     {# multivariate #}
     EDXAPP_ENABLE_OAUTH2_PROVIDER: False
     {# multivariate #}

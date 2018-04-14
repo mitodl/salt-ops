@@ -153,6 +153,7 @@ edx:
     ########## END XQUEUE ########################################
 
     ########## START THEMING ########################################
+    EDXAPP_ENABLE_COMPREHENSIVE_THEMING: true
     EDXAPP_COMPREHENSIVE_THEME_SOURCE_REPO: '{{ purpose_data.versions.theme_source_repo }}'
     EDXAPP_COMPREHENSIVE_THEME_VERSION: {{ purpose_data.versions.theme }}
     edxapp_theme_source_repo: '{{ purpose_data.versions.theme_source_repo }}'
