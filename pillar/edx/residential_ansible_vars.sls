@@ -37,6 +37,10 @@
     'mongodb-{env}/creds/forum-{purpose}'.format(
         env=environment,
         purpose=purpose)) %}
+{% set mitx_s3_creds = salt.vault.read(
+    'aws-mitx/creds/mitx-s3-{purpose}-{env}'.format(
+        env=environment,
+        purpose=purpose)) %}
 {% set COMMENTS_SERVICE_KEY = salt.vault.read('secret-residential/global/forum-api-key').data.value %} # TODO: randomly generate? (tmacey 2017/03/16)
 {% set XQUEUE_PASSWORD = salt.vault.read('secret-residential/global/xqueue-password').data.value %}
 
