@@ -60,8 +60,8 @@ next_residential_versions: &next_residential_versions
 
 sandbox_residential_versions: &sandbox_residential_versions
   edx_platform_repo: 'https://github.com/edx/edx-platform'
-  edxapp: master
-  codename: hawthorn
+  edxapp: open-release/ginkgo.master
+  codename: ginkgo
   ami_id: ami-80861296
 
 environments:
