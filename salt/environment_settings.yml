@@ -59,8 +59,8 @@ next_residential_versions: &next_residential_versions
   ami_id: ami-80861296
 
 sandbox_residential_versions: &sandbox_residential_versions
-  edx_platform_repo: 'https://github.com/edx/edx-platform'
-  edxapp: open-release/ginkgo.master
+  edx_platform_repo: 'https://github.com/mitodl/edx-platform'
+  edxapp: mitx/ginkgo
   codename: ginkgo
   ami_id: ami-80861296
 
