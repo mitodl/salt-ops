@@ -15,7 +15,7 @@
 {% set EDXAPP_CMS_ISSUER = "https://{}/oauth2".format(CMS_DOMAIN) %}
 {% set TIME_ZONE = 'America/New_York' %}
 {% set THEME_NAME = 'mitx-theme' %}
-{% set roles = [salt.grains.get('roles')] %}
+{% set roles = salt.grains.get('roles', 'edx-live') %}
 {% set MYSQL_HOST = 'mysql.service.consul' %}
 {% set MYSQL_PORT = 3306 %}
 {% set MONGODB_HOST = 'mongodb-master.service.consul' %}
