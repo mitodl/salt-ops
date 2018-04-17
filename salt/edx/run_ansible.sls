@@ -19,6 +19,7 @@ clone_edx_configuration:
     - user: root
     - force_checkout: True
     - force_clone: True
+    - force_fetch: True
     - force_reset: True
     - require:
       - file: clone_edx_configuration
