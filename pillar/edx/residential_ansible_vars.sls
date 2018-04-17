@@ -17,6 +17,7 @@
 {% set THEME_NAME = 'mitx-theme' %}
 {% set roles = [salt.grains.get('roles')] %}
 {% set MYSQL_HOST = 'mysql.service.consul' %}
+{% set MYSQL_PORT = 3306 %}
 {% set xqueue_mysql_creds = salt.vault.read(
     'mysql-{env}/creds/xqueue-{purpose}'.format(
         env=environment,
