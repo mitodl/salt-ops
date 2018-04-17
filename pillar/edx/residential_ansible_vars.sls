@@ -18,6 +18,8 @@
 {% set roles = [salt.grains.get('roles')] %}
 {% set MYSQL_HOST = 'mysql.service.consul' %}
 {% set MYSQL_PORT = 3306 %}
+{% set MONGODB_HOST = 'mongodb-master.service.consul' %}
+{% set MONGODB_PORT = 27017 %}
 {% set xqueue_mysql_creds = salt.vault.read(
     'mysql-{env}/creds/xqueue-{purpose}'.format(
         env=environment,
