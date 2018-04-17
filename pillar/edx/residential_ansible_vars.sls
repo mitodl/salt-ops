@@ -139,14 +139,13 @@ edx:
         'certificates': !!null
     XQUEUE_LOGGING_ENV: {{ edxapp_log_env_suffix }}
     XQUEUE_DJANGO_USERS:
+      {{ edxapp_xqueue_creds.data.username }}: {{ edxapp_xqueue_creds.data.password }}
       {{ xqwatcher_xqueue_creds.data.username }}: {{ xqwatcher_xqueue_creds.data.password }}
     XQUEUE_AWS_ACCESS_KEY_ID: {{ mitx_s3_creds.data.access_key }}
     XQUEUE_AWS_SECRET_ACCESS_KEY: {{ mitx_s3_creds.data.secret_key }}
     XQUEUE_BASIC_AUTH_USER: mitx
     XQUEUE_BASIC_AUTH_PASSWORD: |
       {{ XQUEUE_PASSWORD|indent(6) }}
-    XQUEUE_DJANGO_USERS:
-      {{ edxapp_xqueue_creds.data.username }}: {{ edxapp_xqueue_creds.data.password }}
     XQUEUE_MYSQL_DB_NAME: xqueue_{{ purpose_suffix }}
     XQUEUE_MYSQL_HOST: {{ MYSQL_HOST }}
     XQUEUE_MYSQL_PASSWORD: {{ xqueue_mysql_creds.data.password }}
