@@ -47,7 +47,7 @@ current_residential_versions_rp: &current_residential_versions_rp
 
 next_residential_versions: &next_residential_versions
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
-  edxapp: master
+  edxapp: mitx/hawthorn
   forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
   forum: master
   xqueue_source_repo: 'https://github.com/mitodl/xqueue'
