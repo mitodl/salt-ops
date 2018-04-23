@@ -9,11 +9,6 @@
 {% set purpose_suffix = purpose.replace('-', '_') %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set purpose_data = env_settings.environments[environment].purposes[purpose] %}
-{% set cache_configs = env_settings.environments[environment].backends.elasticache %}
-{% if cache_configs is mapping %}
-  {% set cache_configs = [cache_configs] %}
-{% endif %}
-
 
 {# BEGIN VAULT DATA LOOKUPS #}
 {% set edxapp_rabbitmq_creds = salt.vault.read(
@@ -100,17 +95,6 @@ edx:
     EDXAPP_LMS_ROOT_URL: "https://{{ LMS_DOMAIN }}"
     EDXAPP_LMS_SITE_NAME: {{ purpose_data.domains.lms }}
     EDXAPP_CMS_SITE_NAME: {{ purpose_data.domains.cms }}
-
-    EDXAPP_MEMCACHE:
-      {% for cache_config in cache_configs %}
-      {% set cache_purpose = cache_config.get('purpose', 'shared') %}
-      {% if cache_purpose in purpose %}
-      {% set ELASTICACHE_CONFIG = salt.boto3_elasticache.describe_cache_clusters(cache_config.cluster_id[:20].strip('-'), ShowCacheNodeInfo=True)[0] %}
-      {% for host in ELASTICACHE_CONFIG.CacheNodes %}
-      - {{ host.Endpoint.Address }}:{{ host.Endpoint.Port }}
-      {% endfor %}
-      {% endif %}
-      {% endfor %}
 
     ####################################################################
     ############### MongoDB SETTINGS ###################################
