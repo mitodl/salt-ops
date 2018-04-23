@@ -10,6 +10,8 @@ edx:
     EDXAPP_CELERY_BROKER_TRANSPORT: 'amqp'
     EDXAPP_PLATFORM_DESCRIPTION: 'MITx Residential Sandbox'
     EDXAPP_PLATFORM_NAME: 'MITx Residential Sandbox'
+    EDXAPP_MEMCACHE:
+      - 'localhost:11211'
     EDXAPP_LMS_ENV_EXTRA:
       FEATURES:
         ENABLE_COMBINED_LOGIN_REGISTRATION: false
