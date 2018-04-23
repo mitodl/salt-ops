@@ -53,4 +53,4 @@ redash:
       options:
         basic_auth_user: {{ mm_es[0] }}
         basic_auth_password: {{ mm_es[1] }}
-        server: https://micromasters-es.odl.mit.edu
+        server: https://micromasters-elasticsearch.odl.mit.edu/micromasters_private_enrollment_default
