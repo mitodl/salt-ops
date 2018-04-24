@@ -178,7 +178,6 @@ edx:
     EDXAPP_ENABLE_CSMH_EXTENDED: False
     EDXAPP_ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES: False
     EDXAPP_CUSTOM_COURSES_EDX: True
-    EDXAPP_DEFAULT_FILE_STORAGE: 'storages.backends.s3boto.S3BotoStorage'
     EDXAPP_ELASTIC_SEARCH_CONFIG:
       - host: nearest-elasticsearch.query.consul
         port: 9200

@@ -10,6 +10,8 @@ edx:
     EDXAPP_CELERY_BROKER_TRANSPORT: 'amqp'
     EDXAPP_PLATFORM_DESCRIPTION: 'MITx Residential Sandbox'
     EDXAPP_PLATFORM_NAME: 'MITx Residential Sandbox'
+    EDXAPP_AWS_STORAGE_BUCKET_NAME: ""
+    EDXAPP_DEFAULT_FILE_STORAGE: "django.core.files.storage.FileSystemStorage"
     EDXAPP_MEMCACHE:
       - 'localhost:11211'
     EDXAPP_LMS_ENV_EXTRA:
