@@ -1,7 +1,7 @@
 edx:
   config:
     repo: https://github.com/mitodl/configuration.git
-    branch: open-release/ginkgo.master
+    branch: master
   playbooks:
     - 'edx-east/edxapp.yml'
   ansible_vars:
