@@ -13,15 +13,15 @@
 {% endif %}
 {% set purpose_list = [] %}
 {% set mongo_map = {} %}
-{% set old_db_names = {
-    'contentstore': 'lms_xcontent',
-    'modulestore': 'lms_xmodule',
-    'gitlog': 'xlog',
-    'forum': 'cs_comments_service'
-} %}
+{% set db_prefixes = [
+    'contentstore',
+    'modulestore',
+    'gitlog',
+    'forum',
+] %}
 restores:
 {% for purpose, purpose_data in env_data.purposes.items() %}
-{% if purpose_data.business_unit == 'residential' %}
+{% if 'live' in purpose or 'draft' in purpose %}
 {% do purpose_list.append(purpose) %}
   - title: mysql-{{ purpose }}-{{ environment }}
     name: mysql
@@ -47,10 +47,7 @@ restores:
       restore_to: {{ value }}
       restore_from: {{ key }}
       {% endfor %}
-{% endif %}
-{% endfor %}
-{% for db, old_db in old_db_names.items() %}
-{% for purpose in purpose_list %}
+{% for db in db_prefixes %}
 {% if 'live' in purpose %}
 {% set suffix = 'live' %}
 {% else %}
@@ -59,6 +56,19 @@ restores:
 {% set map_key = '{}_{}'.format(db, purpose.replace('-', '_')) %}
 {% do mongo_map.update({map_key: '{}_residential_{}'.format(db, suffix)}) %}
 {% endfor %}
+  - title: mongodb-{{ environment }}-{{ purpose }}
+    name: mongodb
+    pkgs:
+      - mongodb-clients
+    settings:
+      host: mongodb-master.service.consul
+      port: 27017
+      password: {{ edxapp_mongodb_creds.data.password }}
+      username: {{ edxapp_mongodb_creds.data.username }}
+      duplicity_passphrase: {{ duplicity_passphrase }}
+      directory: mongodb-mitx-production
+      db_map: {{ mongo_map }}
+{% endif %}
 {% endfor %}
   - title: live_course_assets
     name: course_assets
@@ -78,15 +88,3 @@ restores:
       duplicity_passphrase: {{ duplicity_passphrase }}
       efs_id: {{ efs_id }}
       directory: repos
-  - title: mongodb-{{ environment }}
-    name: mongodb
-    pkgs:
-      - mongodb-clients
-    settings:
-      host: mongodb-master.service.consul
-      port: 27017
-      password: {{ edxapp_mongodb_creds.data.password }}
-      username: {{ edxapp_mongodb_creds.data.username }}
-      duplicity_passphrase: {{ duplicity_passphrase }}
-      directory: mongodb-mitx-production
-      db_map: {{ mongo_map }}
