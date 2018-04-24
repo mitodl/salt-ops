@@ -76,9 +76,9 @@
 {% endif %}
 
 {% if environment == 'mitx-production' %}
-    {% if 'edx-draft' in roles %}
+    {% if 'draft' in purpose %}
     {% set edxapp_google_analytics_account = 'UA-5145472-5' %}
-    {% elif 'edx-live' in roles %}
+    {% elif 'live' in purpose %}
     {% set edxapp_google_analytics_account = 'UA-5145472-4' %}
     {% endif %}
 {% else %}
