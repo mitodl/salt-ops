@@ -158,7 +158,7 @@ base:
   'roles:sandbox':
     - match: grain
     - edx.prod
-    - edx.migrations
+    - edx.migration
     - edx.patch_nginx
     - edx.tests
     - edx.django_user
