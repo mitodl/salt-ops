@@ -15,6 +15,7 @@
 {% set admins = 'odldevops' %}
 {% set reddit_oauth_client = salt.vault.read('secret-operations/{}/reddit/app-token'.format(ENVIRONMENT)) %}
 {% set reddit_admin = salt.vault.read('secret-operations/{}/reddit/admin-user'.format(ENVIRONMENT)) %}
+{% set reddit_system_user = salt.vault.read('secret-operations/{}/reddit/system-user'.format(ENVIRONMENT)) %}
 
 {% set cassandra_instances = [] %}
 {% for host, addr in salt.saltutil.runner(
@@ -42,6 +43,9 @@ reddit:
   admin_user:
     username: odldevops
     password: {{ reddit_admin.data.password }}
+  system_user:
+    username: deploy
+    password: {{ reddit_system_user.data.password }}
   overrides:
     queue_config_count:
       search_q: 0
