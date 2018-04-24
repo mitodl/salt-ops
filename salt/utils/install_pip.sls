@@ -20,7 +20,7 @@ install_global_pip_executable:
   cmd.run:
     - name: |
         curl -L "https://bootstrap.pypa.io/get-pip.py" > get_pip.py
-        sudo python get_pip.py
+        sudo python get_pip.py 'pip<10'
         rm get_pip.py
     - reload_modules: True
     - unless: which pip
