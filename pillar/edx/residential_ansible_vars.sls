@@ -272,6 +272,7 @@ edx:
     EDXAPP_GRADE_STORAGE_TYPE: S3
     EDXAPP_GIT_REPO_DIR: "{{ edxapp_git_repo_dir }}"
     EDXAPP_PLATFORM_NAME: MITx Residential
+    # EDXAPP_PLATFORM_DESCRIPTION: 'Your Platform Description Here'
     EDXAPP_TECH_SUPPORT_EMAIL: mitx-support@mit.edu
     EDXAPP_CMS_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
     EDXAPP_COMMENTS_SERVICE_KEY: {{ COMMENTS_SERVICE_KEY }}

@@ -22,6 +22,10 @@
     'mysql-{env}/creds/edxapp-{purpose}'.format(
         env=environment,
         purpose=purpose)) %}
+{% set edxapp_csmh_mysql_creds = salt.vault.read(
+    'mysql-{env}/creds/edxapp-csmh-{purpose}'.format(
+        env=environment,
+        purpose=purpose)) %}
 {% set edxapp_mongodb_contentstore_creds = salt.vault.read(
     'mongodb-{env}/creds/contentstore-{purpose}'.format(
         env=environment,
@@ -146,6 +150,11 @@ edx:
     EDXAPP_MYSQL_PASSWORD: {{ edxapp_mysql_creds.data.password }}
     EDXAPP_MYSQL_PORT: {{ MYSQL_PORT }}
     EDXAPP_MYSQL_USER: {{ edxapp_mysql_creds.data.username }}
+    EDXAPP_MYSQL_CSMH_DB_NAME: edxapp_csmh_{{ purpose_suffix }}
+    EDXAPP_MYSQL_CSMH_USER: {{ edxapp_csmh_mysql_creds.data.username }}
+    EDXAPP_MYSQL_CSMH_PASSWORD: {{ edxapp_csmh_mysql_creds.data.password }}
+    EDXAPP_MYSQL_CSMH_HOST: {{ MYSQL_HOST }}
+    EDXAPP_MYSQL_CSMH_PORT: {{ MYSQL_PORT }}
 
     #####################################################################
     ########### Auth Configs ############################################
@@ -173,6 +182,7 @@ edx:
     EDXAPP_ANALYTICS_DASHBOARD_URL: !!null
     {# multivariate #}
     EDXAPP_CELERY_BROKER_VHOST: /celery_{{ purpose_suffix }}
+    EDXAPP_CELERY_BROKER_TRANSPORT: 'amqp'
     EDXAPP_CMS_BASE: {{ CMS_DOMAIN }}
     EDXAPP_CMS_MAX_REQ: 1000
     EDXAPP_ENABLE_CSMH_EXTENDED: False

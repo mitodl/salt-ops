@@ -1,13 +1,9 @@
 #!jinja|yaml
 
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT') %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set environment = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set purposes = environment.purposes %}
-{% set edxlocal_databases = {
-  'XQUEUE_MYSQL_DB_NAME': 'xqueue',
-  'EDXAPP_MYSQL_DB_NAME': 'edxapp',
-  }
-%}
 
 {% set edxapp_mysql_host = 'mysql.service.{}.consul'.format(ENVIRONMENT) %}
 {% set edxapp_mysql_port = 3306 %}
@@ -15,11 +11,11 @@
     'mysql-{env}/creds/admin'.format(
         env=ENVIRONMENT)) %}
 
-{% for db,name in edxlocal_databases.iteritems() %}
+{% for name in env_settings.edxapp_secret_backends.mysql.role_prefixes %}
 {% for purpose in purposes %}
 edxapp_create_db_{{ name }}_{{ purpose }}:
   mysql_database.present:
-    - name: {{ name }}_{{ purpose|replace('-', '_') }}
+    - name: {{ name|replace('-', '_') }}_{{ purpose|replace('-', '_') }}
     - connection_user: {{ edxapp_mysql_creds.data.username }}
     - connection_pass: {{ edxapp_mysql_creds.data.password }}
     - connection_host: {{ edxapp_mysql_host }}

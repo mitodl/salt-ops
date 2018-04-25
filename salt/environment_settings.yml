@@ -2,6 +2,7 @@ edxapp_secret_backends: &edxapp_secret_backends
   mysql:
     role_prefixes:
       - edxapp
+      - edxapp-csmh
       - xqueue
   mongodb:
     role_prefixes:
