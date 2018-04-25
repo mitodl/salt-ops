@@ -312,9 +312,9 @@ edx:
         ENABLE_SHOPPING_CART: true
         ENABLE_SYSADMIN_DASHBOARD: true
         ENABLE_INSTRUCTOR_EMAIL: true
-        REMOTE_GRADEBOOK:
-          URL: {{ remote_gradebook.data.url }}
-          DEFAULT_NAME: !!null
+      REMOTE_GRADEBOOK:
+        URL: {{ remote_gradebook.data.url }}
+        DEFAULT_NAME: !!null
       OAUTH_OIDC_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
       STUDENT_FILEUPLOAD_MAX_SIZE: "20 * 1024 * 1024"
       LOGGING_ENV: lms-{{ edxapp_log_env_suffix}}
