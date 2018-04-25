@@ -52,11 +52,6 @@ base:
   'G@roles:rabbitmq and P@environment:mitx.*':
     - match: compound
     - rabbitmq.mitx
-  'roles:rabbitmq':
-    - match: grain
-    - rabbitmq
-    - fluentd.rabbitmq
-    - consul.rabbitmq
   'roles:scylladb':
     - match: grain
     - scylladb
@@ -190,3 +185,8 @@ base:
     - mysql.devstack
     - elasticsearch.devstack
     - rabbitmq.devstack
+  'roles:rabbitmq':
+    - match: grain
+    - rabbitmq
+    - fluentd.rabbitmq
+    - consul.rabbitmq
