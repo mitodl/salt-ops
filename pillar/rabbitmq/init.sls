@@ -16,7 +16,6 @@ rabbitmq:
       backend: '@consul'
       consul_host: localhost
       consul_port: 8500
-      consul_svc: rabbitmq-cluster
       cluster_name: {{ ENVIRONMENT }}
   env:
     RABBITMQ_USE_LONGNAMES: 'true'
