@@ -12,6 +12,7 @@ rabbitmq:
       auth_backends:
         - '@rabbit_auth_backend_internal'
     autocluster:
+      version: '0.10.0'
       backend: '@consul'
       consul_host: localhost
       consul_port: 8500
