@@ -5,7 +5,7 @@
 
 rabbitmq:
   overrides:
-    version: '3.6.10-1'
+    version: '3.6.15-1'
   configuration:
     rabbit:
       cluster_partition_handling: '@autoheal'
