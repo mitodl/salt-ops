@@ -19,7 +19,7 @@ rabbitmq:
       consul_svc: rabbitmq-cluster
       cluster_name: {{ ENVIRONMENT }}
   env:
-    RABBITMQ_USE_LONGNAMES: 'true'
+    USE_LONGNAMES: 'true'
   users:
     - name: guest
       state: absent
