@@ -1,7 +1,20 @@
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
+{% set purpose_suffix = purpose.replace('-', '_') %}
+{% set environment = salt.grains.get('environment', 'mitx-qa') %}
+{% set MYSQL_HOST = 'mysql.service.consul' %}
+{% set MYSQL_PORT = 3306 %}
+{% set edxapp_csmh_mysql_creds = salt.vault.read(
+    'mysql-{env}/creds/edxapp-csmh-{purpose}'.format(
+        env=environment,
+        purpose=purpose)) %}
+
 edx:
   ansible_vars:
     EDXAPP_CELERY_BROKER_HOSTNAME: nearest-rabbitmq.query.consul
     EDXAPP_CELERY_BROKER_TRANSPORT: 'amqp'
+    EDXAPP_ENABLE_CSMH_EXTENDED: True
+    EDXAPP_ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES: True
     EDXAPP_EXTRA_MIDDLEWARE_CLASSES: [] # Worth keeping track of in case we need to take advantage of it
     EDXAPP_MONGO_REPLICA_SET: rs0
     EDXAPP_MYSQL_CSMH_DB_NAME: edxapp_csmh_{{ purpose_suffix }}
