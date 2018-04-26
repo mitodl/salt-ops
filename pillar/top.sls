@@ -155,7 +155,7 @@ base:
   'P@purpose:.*-live and P@environment:mitx-(qa|production)':
     - match: compound
     - consul.mitx-live
-  'P@purpose:next-residential.*':
+  'P@purpose:.*residential.* and not G@edx_codename:ginkgo':
     - match: compound
     - edx.next_residential
   'G@roles:sandbox and P@environment:mitx-qa':

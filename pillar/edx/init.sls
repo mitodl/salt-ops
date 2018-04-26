@@ -7,6 +7,9 @@
 {% set mitx_wildcard_cert = salt.vault.read('secret-operations/global/mitx_wildcard_cert') %}
 
 edx:
+  config:
+    repo: {{ purpose_data.versions.edx_config_repo }}
+    branch: {{ purpose_data.versions.edx_config_version }}
   mongodb:
     replset_name: rs0
   ssh_key: |

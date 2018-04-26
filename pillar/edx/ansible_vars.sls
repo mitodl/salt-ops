@@ -150,11 +150,6 @@ edx:
     EDXAPP_MYSQL_PASSWORD: {{ edxapp_mysql_creds.data.password }}
     EDXAPP_MYSQL_PORT: {{ MYSQL_PORT }}
     EDXAPP_MYSQL_USER: {{ edxapp_mysql_creds.data.username }}
-    EDXAPP_MYSQL_CSMH_DB_NAME: edxapp_csmh_{{ purpose_suffix }}
-    EDXAPP_MYSQL_CSMH_USER: {{ edxapp_csmh_mysql_creds.data.username }}
-    EDXAPP_MYSQL_CSMH_PASSWORD: {{ edxapp_csmh_mysql_creds.data.password }}
-    EDXAPP_MYSQL_CSMH_HOST: {{ MYSQL_HOST }}
-    EDXAPP_MYSQL_CSMH_PORT: {{ MYSQL_PORT }}
 
     #####################################################################
     ########### Auth Configs ############################################

@@ -170,7 +170,7 @@ edx:
     XQUEUE_RABBITMQ_PASS: {{ xqueue_rabbitmq_creds.data.password }}
     XQUEUE_RABBITMQ_USER: {{ xqueue_rabbitmq_creds.data.username }}
     XQUEUE_RABBITMQ_VHOST: /xqueue_{{ purpose_suffix }}
-    XQUEUE_S3_BUCKET: mitx-grades-{{ purpose }}-{{ environment }}
+    XQUEUE_UPLOAD_BUCKET: mitx-grades-{{ purpose }}-{{ environment }}
     xqueue_source_repo: {{ purpose_data.versions.xqueue_source_repo }}
     xqueue_version: {{ purpose_data.versions.xqueue }}
     ########## END XQUEUE ########################################
