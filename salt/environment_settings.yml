@@ -2,6 +2,7 @@ edxapp_secret_backends: &edxapp_secret_backends
   mysql:
     role_prefixes:
       - edxapp
+      - edxapp-csmh
       - xqueue
   mongodb:
     role_prefixes:
@@ -20,6 +21,8 @@ edxapp_secret_backends: &edxapp_secret_backends
       - mitx-storage
 
 current_residential_versions_qa: &current_residential_versions_qa
+  edx_config_repo: https://github.com/mitodl/configuration
+  edx_config_version: open-release/ginkgo.master
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
   edxapp: mitx/ginkgo
   forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
@@ -33,6 +36,8 @@ current_residential_versions_qa: &current_residential_versions_qa
   ami_id: ami-80861296
 
 current_residential_versions_rp: &current_residential_versions_rp
+  edx_config_repo: https://github.com/mitodl/configuration
+  edx_config_version: open-release/ginkgo.master
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
   edxapp: mitx/ginkgo
   forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
@@ -46,6 +51,8 @@ current_residential_versions_rp: &current_residential_versions_rp
   ami_id: ami-80861296
 
 next_residential_versions: &next_residential_versions
+  edx_config_repo: https://github.com/edx/configuration.git
+  edx_config_version: open-release/hawthorn.beta1
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
   edxapp: mitx/hawthorn
   forum_source_repo: 'https://github.com/mitodl/cs_comments_service'

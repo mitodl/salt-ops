@@ -43,7 +43,7 @@ vault:
       backend: mysql-{{ env }}
       name: {{ role }}-{{ purpose }}
       options:
-        sql: "CREATE USER {% raw %}'{{name}}'@'%'{% endraw %} IDENTIFIED BY {% raw %}'{{password}}'{% endraw %};GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, INDEX, DROP, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES ON {{ role }}_{{ purpose_suffix }}.* TO {% raw %}'{{name}}'{% endraw %}@'%';"
+        sql: "CREATE USER {% raw %}'{{name}}'@'%'{% endraw %} IDENTIFIED BY {% raw %}'{{password}}'{% endraw %};GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, INDEX, DROP, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES ON {{ role|replace('-', '_') }}_{{ purpose_suffix }}.* TO {% raw %}'{{name}}'{% endraw %}@'%';"
         revocation_sql: {% raw %}"DROP USER '{{name}}';"{% endraw %}
     {% endfor %}{# role loop for mysql #}
     {% for role in env_settings.edxapp_secret_backends.rabbitmq.role_prefixes %}

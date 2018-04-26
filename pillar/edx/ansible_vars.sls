@@ -22,6 +22,10 @@
     'mysql-{env}/creds/edxapp-{purpose}'.format(
         env=environment,
         purpose=purpose)) %}
+{% set edxapp_csmh_mysql_creds = salt.vault.read(
+    'mysql-{env}/creds/edxapp-csmh-{purpose}'.format(
+        env=environment,
+        purpose=purpose)) %}
 {% set edxapp_mongodb_contentstore_creds = salt.vault.read(
     'mongodb-{env}/creds/contentstore-{purpose}'.format(
         env=environment,
@@ -173,6 +177,7 @@ edx:
     EDXAPP_ANALYTICS_DASHBOARD_URL: !!null
     {# multivariate #}
     EDXAPP_CELERY_BROKER_VHOST: /celery_{{ purpose_suffix }}
+    EDXAPP_CELERY_BROKER_TRANSPORT: 'amqp'
     EDXAPP_CMS_BASE: {{ CMS_DOMAIN }}
     EDXAPP_CMS_MAX_REQ: 1000
     EDXAPP_ENABLE_CSMH_EXTENDED: False
