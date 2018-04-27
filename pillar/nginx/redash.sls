@@ -86,7 +86,9 @@ nginx:
                     - shib_request_use_headers: 'on'
                     - include: conf.d/shib_params.conf
                     - include: uwsgi_params
+                    - uwsgi_ignore_client_abort: 'on'
                     - uwsgi_pass: unix:/var/run/uwsgi/{{ app_name }}.sock
                 - location /:
                     - include: uwsgi_params
+                    - uwsgi_ignore_client_abort: 'on'
                     - uwsgi_pass: unix:/var/run/uwsgi/{{ app_name }}.sock
