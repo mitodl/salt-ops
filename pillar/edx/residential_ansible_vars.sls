@@ -53,7 +53,7 @@
 {% set COMMENTS_SERVICE_KEY = salt.vault.read('secret-residential/global/forum-api-key').data.value %} # TODO: randomly generate? (tmacey 2017/03/16)
 {% set XQUEUE_PASSWORD = salt.vault.read('secret-residential/global/xqueue-password').data.value %}
 
-{% if 'live' in roles %}
+{% if 'live' in purpose %}
   {% set edxapp_git_repo_dir = '/mnt/data/prod_repos' %}
   {% set edxapp_course_about_visibility_permission = 'see_exists' %}
   {% set edxapp_course_catalog_visibility_permission = 'see_exists' %}
