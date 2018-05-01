@@ -250,3 +250,7 @@ pgbouncer:
         server_tls_sslmode: require
         server_tls_protocols: tlsv1.2
         auth_type: any
+
+beacons:
+  memusage:
+    - percent: 95%
