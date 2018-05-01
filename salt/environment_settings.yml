@@ -314,7 +314,10 @@ environments:
     purposes:
       odl-video-service:
         num_instances: 3
-        domain: video.odl.mit.edu
+        domain:
+          - video.odl.mit.edu
+          - techtv.mit.edu
+          - ttv.mit.edu
         business_unit: odl-video-service
       reddit:
         domain: discussions-reddit-production-apps.odl.mit.edu
@@ -371,7 +374,10 @@ environments:
     purposes:
       odl-video-service:
         business_unit: odl-video-service
-        domain: video-rc.odl.mit.edu
+        domain:
+          - video-rc.odl.mit.edu
+          - techtv-dev.mit.edu
+          - ttv-dev.mit.edu
         num_instances: 1
       reddit:
         domain: discussions-reddit-rc-apps.odl.mit.edu

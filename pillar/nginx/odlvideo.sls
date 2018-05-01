@@ -3,7 +3,7 @@
 {% set ENVIRONMENT = salt.grains.get('environment', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set server_domain_name = env_data.purposes['odl-video-service'].domain %}
-{% set ovs_web_cert = salt.vault.read('secret-operations/global/ovs_web_cert') %}
+{% set ovs_web_cert = salt.vault.read('secret-odl-video/{env}/ovs_web_cert'.format(env=ENVIRONMENT)) %}
 {% set ovs_login_path = 'collections' %}
 
 nginx:
@@ -37,8 +37,7 @@ nginx:
           config:
             - server:
                 - server_name:
-                    - {{ server_domain_name }}
-                    - techtv.mit.edu
+                    {{ server_domain_name }}
                 - listen:
                     - 80
                 - listen:
@@ -47,8 +46,7 @@ nginx:
                     - return: 301 https://$host$request_uri
             - server:
                 - server_name:
-                    - {{ server_domain_name }}
-                    - techtv.mit.edu
+                    {{ server_domain_name }}
                 - listen:
                     - 443
                     - ssl
