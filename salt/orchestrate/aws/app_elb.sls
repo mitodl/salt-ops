@@ -22,8 +22,6 @@
 {% do instance_ids.append(grains['instance-id']) %}
 {% endfor %}
 
-{% for zone_name, domain in zip(zone_names, domains) %}
-{% if zone_name.strip('.') in domain %}
 create_elb_for_{{ app_name }}_{{ ENVIRONMENT }}:
   boto_elb.present:
     - name: {{ elb_name }}
@@ -40,9 +38,13 @@ create_elb_for_{{ app_name }}_{{ ENVIRONMENT }}:
           enabled: True
           timeout: 300
     - cnames:
+    {% for zone_name, domain in zip(zone_names, domains) %}
+    {% if zone_name.strip('.') in domain %}
         - name: {{ purpose.domain }}
           zone: {{ zone_name }}
           ttl: 60
+    {% endif %}
+    {% endfor %}
     - health_check:
         target: HTTPS:443{{ purpose.get('healthcheck', '/status/?token={env}'.format(env=ENVIRONMENT)) }}
     - subnets: {{ subnet_ids }}
@@ -50,8 +52,6 @@ create_elb_for_{{ app_name }}_{{ ENVIRONMENT }}:
     - tags:
         Name: {{ elb_name }}
         business_unit: {{ BUSINESS_UNIT }}
-{% endif %}
-{% endfor %}
 
 register_{{ app_name }}_nodes_with_elb:
   boto_elb.register_instances:

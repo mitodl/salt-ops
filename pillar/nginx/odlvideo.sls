@@ -2,7 +2,7 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
-{% set server_domain_name = env_data.purposes['odl-video-service'].domain %}
+{% set server_domain_names = env_data.purposes['odl-video-service'].domain %}
 {% set ovs_web_cert = salt.vault.read('secret-odl-video/{env}/ovs_web_cert'.format(env=ENVIRONMENT)) %}
 {% set ovs_login_path = 'collections' %}
 
@@ -36,8 +36,7 @@ nginx:
           enabled: True
           config:
             - server:
-                - server_name:
-                    {{ server_domain_name }}
+                - server_name: {{ server_domain_names }}
                 - listen:
                     - 80
                 - listen:
@@ -45,8 +44,7 @@ nginx:
                 - location /:
                     - return: 301 https://$host$request_uri
             - server:
-                - server_name:
-                    {{ server_domain_name }}
+                - server_name: {{ server_domain_names }}
                 - listen:
                     - 443
                     - ssl
