@@ -33,7 +33,5 @@ edx:
         - name: git+https://github.com/open-craft/xblock-activetable.git@e933d41bb86a8d50fb878787ca680165a092a6d5#egg=xblock-activetable
           extra_args: -e
        # MITx Residential XBlocks
-        - name: git+https://github.com/mitodl/edx-sga@5f21fb4900e1cde573a5406572d3f31a0ea7d5dd#egg=edx-sga==0.8.1
-          extra_args: -e
-        - name: git+https://github.com/mitodl/rapid-response-xblock@4251bb15124bdf0b681b431fa1cd67fd094387c4#egg=rapid-response-xblock
-          extra_args: -e
+        - name: edx-sga==0.8.2
+        - name: rapid-response-xblock==0.0.2
