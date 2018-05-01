@@ -2,7 +2,7 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
-{% set server_domain_names = env_data.purposes['odl-video-service'].domain %}
+{% set server_domain_names = env_data.purposes['odl-video-service'].domains %}
 {% set ovs_web_cert = salt.vault.read('secret-odl-video/{env}/ovs_web_cert'.format(env=ENVIRONMENT)) %}
 {% set ovs_login_path = 'collections' %}
 

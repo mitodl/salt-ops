@@ -3,7 +3,7 @@
 {% set ENVIRONMENT = salt.grains.get('environment', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set app_name = salt.grains.get('app') %}
-{% set server_domain_name = env_data.purposes[app_name].domain %}
+{% set server_domain_names = env_data.purposes[app_name].domains %}
 
 nginx-shibboleth:
   overrides:
@@ -117,13 +117,13 @@ nginx-shibboleth:
 
           <RequestMap>
 
-            <Host authType="shibboleth" name="{{ server_domain_name }}" requireSession="true"/>
+            <Host authType="shibboleth" name="{{ server_domain_names }}" requireSession="true"/>
 
           </RequestMap>
 
         </RequestMapper>
 
-        <ApplicationDefaults entityID="https://{{ server_domain_name }}/shibboleth"
+        <ApplicationDefaults entityID="https://{{ server_domain_names }}/shibboleth"
                              REMOTE_USER="eppn persistent-id targeted-id">
 
           <Sessions lifetime="28800" timeout="3600" relayState="ss:mem"
