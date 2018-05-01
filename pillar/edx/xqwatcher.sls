@@ -19,6 +19,13 @@ schedule:
   {% endfor %}
   {% endif %}
   {% endfor %}
+  update_live_grader_for_mit_686x_queue:
+    function: git.pull
+    minutes: 5
+    args:
+      - /edx/app/xqwatcher/data/mit-686x
+    kwargs:
+      identity: /edx/app/xqwatcher/.ssh/xqwatcher-courses
   restart_weekly_to_refresh_login:
     function: supervisord.restart
     days: 7
