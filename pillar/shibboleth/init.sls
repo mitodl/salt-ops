@@ -116,14 +116,14 @@ nginx-shibboleth:
         <RequestMapper type="Native">
 
           <RequestMap>
-
-            <Host authType="shibboleth" name="{{ server_domain_names }}" requireSession="true"/>
-
+          {% for server_domain_name in server_domain_names %}
+            <Host authType="shibboleth" name="{{ server_domain_name }}" requireSession="true"/>
+          {% endfor %}
           </RequestMap>
 
         </RequestMapper>
 
-        <ApplicationDefaults entityID="https://{{ server_domain_names }}/shibboleth"
+        <ApplicationDefaults entityID="https://{{ server_domain_names[0] }}/shibboleth"
                              REMOTE_USER="eppn persistent-id targeted-id">
 
           <Sessions lifetime="28800" timeout="3600" relayState="ss:mem"

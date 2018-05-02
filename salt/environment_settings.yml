@@ -267,7 +267,8 @@ environments:
     purposes:
       redash:
         num_instances: 1
-        domains: bi.odl.mit.edu
+        domains:
+          - bi.odl.mit.edu
         business_unit: operations
     backends:
       elasticache:
@@ -320,7 +321,8 @@ environments:
           - ttv.mit.edu
         business_unit: odl-video-service
       reddit:
-        domains: discussions-reddit-production-apps.odl.mit.edu
+        domains:
+          - discussions-reddit-production-apps.odl.mit.edu
         num_instances: 3
         business_unit: operations
         healthcheck: /health
@@ -380,7 +382,8 @@ environments:
           - ttv-dev.mit.edu
         num_instances: 1
       reddit:
-        domains: discussions-reddit-rc-apps.odl.mit.edu
+        domains:
+          - discussions-reddit-rc-apps.odl.mit.edu
         num_instances: 2
         business_unit: operations
         healthcheck: /health
