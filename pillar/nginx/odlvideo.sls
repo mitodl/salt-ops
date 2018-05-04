@@ -84,6 +84,9 @@ nginx:
                     - include: fastcgi_params
                     - include: includes/shib_fastcgi_params
                     - fastcgi_pass: 'unix:/run/shibresponder.sock'
+                - location ~* /{{ ovs_login_path }}/([^?]+):
+                    - include: uwsgi_params
+                    - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
                 - location /{{ ovs_login_path }}:
                     - include: includes/shib_clear_headers
                     - shib_request: /shibauthorizer
