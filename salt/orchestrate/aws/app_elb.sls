@@ -9,6 +9,8 @@
     vpc_id=salt.boto_vpc.describe_vpcs(
         name=env_data.vpc_name).vpcs[0].id
     ).subnets|map(attribute='id')|list %}
+{% set zone_names = salt.boto_route53.describe_hosted_zones|map(attribute='Name')|list %}
+{% set domains = purpose.domains %}
 {% set security_groups = 'webapp-{}'.format(ENVIRONMENT) %}
 {% set elb_name = '{}-{}'.format(app_name, ENVIRONMENT)[:32].strip('-') %}
 {% set instance_ids = [] %}
@@ -36,9 +38,15 @@ create_elb_for_{{ app_name }}_{{ ENVIRONMENT }}:
           enabled: True
           timeout: 300
     - cnames:
-        - name: {{ purpose.domain }}
-          zone: odl.mit.edu.
+    {% for zone_name in zone_names %}
+    {% for domain in domains %}
+    {% if zone_name.strip('.') in domain %}
+        - name: {{ domain }}
+          zone: {{ zone_name }}
           ttl: 60
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
     - health_check:
         target: HTTPS:443{{ purpose.get('healthcheck', '/status/?token={env}'.format(env=ENVIRONMENT)) }}
     - subnets: {{ subnet_ids }}
