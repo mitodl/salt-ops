@@ -43,7 +43,6 @@ base:
   'roles:rabbitmq':
     - match: grain
     - rabbitmq
-    - rabbitmq.autocluster
     - rabbitmq.tests
     - rabbitmq.set_datadog_permissions
   'roles:consul_server':
