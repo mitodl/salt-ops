@@ -8,7 +8,7 @@
 {% set subnet_ids = salt.boto_vpc.describe_subnets(
     vpc_id=salt.boto_vpc.describe_vpcs(
         name=env_data.vpc_name).vpcs[0].id
-    ).subnets|map(attribute='id')|list %}
+    ).subnets|map(attribute='id')|list|sort(reverse=True) %}
 {% set ANSIBLE_FLAGS = salt.environ.get('ANSIBLE_FLAGS') %}
 {% set purposes = env_data.purposes %}
 {% set bucket_prefixes = env_data.secret_backends.aws.bucket_prefixes %}
