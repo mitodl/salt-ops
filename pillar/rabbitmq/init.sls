@@ -14,7 +14,10 @@ rabbitmq:
     cluster_formation.consul.host: localhost
     cluster_formation.consul.port: 8500
     cluster_formation.consul.scheme: http
+    cluster_formation.consul.svc_addr_auto: 'true'
     cluster_formation.consul.use_longname: 'true'
+    cluster_formation.consul.svc_addr_use_nodename: 'true'
+    cluster_formation.consul.domain_suffix: ec2.internal
     cluster_formation.consul.svc: rabbitmq-{{ ENVIRONMENT }}
     auth_backends.1: rabbit_auth_backend_internal
   users:
