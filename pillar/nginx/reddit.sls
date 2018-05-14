@@ -1,19 +1,16 @@
 {% set server_domain_name = 'discussions-reddit-{}.odl.mit.edu'.format(salt.grains.get('environment')) %}
 {% set ENVIRONMENT = salt.grains.get('environment') %}
-{% set access_token = salt.vault.read('secret-operations/{}/reddit/access-token'.format(ENVIRONMENT)).data.value %}
 
 reddit:
-  api_access_token: {{ access_token }}
+  api_access_token: __vault__::secret-operations/{{ ENVIRONMENT }}/reddit/access-token>data>value
 
 nginx:
   ng:
     install_from_ppa: True
     certificates:
       odl.mit.edu:
-        public_cert: |
-          {{ salt.vault.read('secret-operations/global/odl_wildcard_cert').data.value|indent(10) }}
-        private_key: |
-          {{ salt.vault.read('secret-operations/global/odl_wildcard_cert').data.key|indent(10) }}
+        public_cert: __vault__::secret-operations/global/odl_wildcard_cert>data>value
+        private_key: __vault__::secret-operations/global/odl_wildcard_cert>data>key
     servers:
       managed:
         default:

@@ -28,8 +28,5 @@ rabbitmq:
       settings:
         tags:
           - administrator
-        password: {{ salt.vault.read('secret-{BUSINESS_UNIT}/{ENVIRONMENT}/rabbitmq-admin-password'.format(
-                     BUSINESS_UNIT=BUSINESS_UNIT, ENVIRONMENT=ENVIRONMENT)).data.value }}
-  erlang_cookie: {{ salt.vault.read(
-      'secret-{BUSINESS_UNIT}/{ENVIRONMENT}/erlang_cookie'.format(
-          BUSINESS_UNIT=BUSINESS_UNIT, ENVIRONMENT=ENVIRONMENT)).data.value }}
+        password: secret-{{ BUSINESS_UNIT }}/{{ ENVIRONMENT }}/rabbitmq-admin-password>data>value
+  erlang_cookie: secret-{{ BUSINESS_UNIT }}/{{ ENVIRONMENT }}/erlang_cookie>data>value

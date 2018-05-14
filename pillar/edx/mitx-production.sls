@@ -4,7 +4,7 @@ edx:
   gitreload:
     basic_auth:
       username: mitx
-      password: {{ salt.vault.read('secret-residential/mitx-production/gitreload').data.value }}
+      password: __vault__::secret-residential/mitx-production/gitreload>data>value
 
 users:
   ichuang:

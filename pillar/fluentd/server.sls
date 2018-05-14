@@ -1,12 +1,5 @@
 {% set micromasters_ir_bucket = 'odl-micromasters-ir-data' %}
-{% set micromasters_ir_bucket_creds = salt.vault.read('aws-mitx/creds/read-write-{bucket}'.format(bucket=micromasters_ir_bucket)) %}
 {% set edx_tracking_bucket = 'odl-residential-tracking-data' %}
-{% set edx_tracking_bucket_creds = salt.vault.read('aws-mitx/creds/read-write-{bucket}'.format(bucket=edx_tracking_bucket)) %}
-{% set fluentd_shared_key = salt.vault.read('secret-operations/global/fluentd_shared_key').data.value %}
-{% set heroku_http_token = salt.vault.read('secret-operations/global/heroku_http_token').data.value %}
-{% set mailgun_webhooks_token = salt.vault.read('secret-operations/global/mailgun_webhooks_token').data.value %}
-{% set redash_webhook_token = salt.vault.read('secret-operations/global/redash_webhook_token').data.value %}
-{% set odl_wildcard_cert = salt.vault.read('secret-operations/global/odl_wildcard_cert') %}
 {% import_yaml 'fluentd/fluentd_directories.yml' as fluentd_directories %}
 
 schedule:
@@ -24,10 +17,8 @@ fluentd:
       server_name: log-input.odl.mit.edu
       cert_file: log-input.crt
       key_file: log-input.key
-      cert_contents: |
-        {{ odl_wildcard_cert.data.value|indent(8) }}
-      key_contents: |
-        {{ odl_wildcard_cert.data.key|indent(8) }}
+      cert_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>value
+      key_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>key
   plugins:
     - fluent-plugin-secure-forward
     - fluent-plugin-heroku-syslog
@@ -35,13 +26,13 @@ fluentd:
   proxied_plugins:
     - route: heroku-http
       port: 9000
-      token: {{ heroku_http_token }}
+      token: __vault__::secret-operations/global/heroku_http_token>data>value
     - route: mailgun-webhooks
       port: 9001
-      token: {{ mailgun_webhooks_token }}
+      token: __vault__::secret-operations/global/mailgun_webhooks_token>data>value
     - route: redash-webhook
       port: 9002
-      token: {{ redash_webhook_token }}
+      token: __vault__::secret-operations/global/redash_webhook_token>data>value
   configs:
     - name: monitor_agent
       settings:
@@ -88,7 +79,7 @@ fluentd:
             - secure: 'false'
             - cert_auto_generate: 'yes'
             - self_hostname: {{ salt.grains.get('external_ip') }}
-            - shared_key: {{ fluentd_shared_key }}
+            - shared_key: __vault__::secret-operations/global/fluentd_shared_key>data>value
         {# The purpose of this block is to stream data from the
         micromasters application to S3 for analysis by the
         institutional research team. If they ever need to change
@@ -102,8 +93,8 @@ fluentd:
                 - directive: store
                   attrs:
                     - '@type': s3
-                    - aws_key_id: {{ micromasters_ir_bucket_creds.data.access_key }}
-                    - aws_sec_key: {{ micromasters_ir_bucket_creds.data.secret_key }}
+                    - aws_key_id: __vault__:cache:aws-mitx/creds/read-write-{{ micromasters_ir_bucket }}>data>access_key
+                    - aws_sec_key: __vault__:cache:aws-mitx/creds/read-write-{{ micromasters_ir_bucket }}>data>secret_key
                     - s3_bucket: {{ micromasters_ir_bucket }}
                     - s3_region: us-east-1
                     - path: logs/
@@ -174,8 +165,8 @@ fluentd:
                   directive_arg: edx.tracking
                   attrs:
                     - '@type': s3
-                    - aws_key_id: {{ edx_tracking_bucket_creds.data.access_key }}
-                    - aws_sec_key: {{ edx_tracking_bucket_creds.data.secret_key }}
+                    - aws_key_id: __vault__:cache:aws-mitx/creds/read-write-{{ edx_tracking_bucket }}>data>access_key
+                    - aws_sec_key: __vault__:cache:aws-mitx/creds/read-write-{{ edx_tracking_bucket }}>data>secret_key
                     - s3_bucket: {{ edx_tracking_bucket }}
                     - s3_region: us-east-1
                     - path: logs/

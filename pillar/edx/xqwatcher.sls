@@ -2,7 +2,6 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set env_data = env_settings.environments[environment] %}
-{% set git_ssh_key = salt.vault.read('secret-residential/global/xqueue_watcher_git_ssh').data.value %}
 {% set xqwatcher_venv_base = '/edx/app/xqwatcher/venvs' %}
 
 schedule:
@@ -65,17 +64,11 @@ edx:
     - 'edx-east/xqwatcher.yml'
   ansible_vars:
     XQWATCHER_VERSION: 20ab9e6d645b0b8850f14db558499e62e554d8a2
-    XQWATCHER_GIT_IDENTITY: |
-      {{ git_ssh_key|indent(6)}}
+    XQWATCHER_GIT_IDENTITY: __vault__::secret-residential/global/xqueue_watcher_git_ssh>data>value
     XQWATCHER_COURSES:
       {% for purpose, purpose_data in env_data.purposes.items() %}
       {% if 'residential' in purpose %}
       {% for queue_name in ['Watcher-MITx-6.0001r', 'Watcher-MITx-6.00x'] %}
-      {% set xqwatcher_xqueue_creds = salt.vault.read(
-          'secret-{business_unit}/{env}/xqwatcher-xqueue-django-auth-{purpose}'.format(
-              business_unit='residential',
-              env=environment,
-              purpose=purpose)) %}
       - COURSE: "mit-600x-{{ purpose }}-{{ queue_name }}"
         GIT_REPO: git@github.com:mitodl/graders-mit-600x
         GIT_REF: {{ purpose_data.versions.xqwatcher_courses }}
@@ -101,12 +94,11 @@ edx:
               KWARGS:
                 grader_root: ../data/mit-600x-{{ purpose }}-{{ queue_name }}/graders/python3graders/
           AUTH:
-            - {{ xqwatcher_xqueue_creds.data.username }}
-            - {{ xqwatcher_xqueue_creds.data.password }}
+            - __vault__::secret-{{ business_unit }}/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>username
+            - __vault__::secret-{{ business_unit }}/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>password
       {% endfor %}
       {% endif %}
       {% endfor %}
-      {% set xqueue_686_creds = salt.vault.read('secret-residential/global/course-686x-grader-xqueue-credentials') %}
       - COURSE: mit-686x
         GIT_REPO: git@github.mit.edu:mitx/graders-mit-686x
         GIT_REF: master
@@ -142,8 +134,8 @@ edx:
               KWARGS:
                 grader_root: ../data/mit-686x/graders/
           AUTH:
-            - {{ xqueue_686_creds.data.username }}
-            - {{ xqueue_686_creds.data.password }}
+            - __vault__::secret-residential/global/course-686x-grader-xqueue-credentials>data>username
+            - __vault__::secret-residential/global/course-686x-grader-xqueue-credentials>data>password
     XQWATCHER_CONFIG:
       POLL_TIME: 10
       REQUESTS_TIMEOUT: 1.5

@@ -1,17 +1,11 @@
-{% set odl_wildcard_cert = salt.vault.read('secret-operations/global/odl_wildcard_cert') %}
-{% set dhparam = salt.vault.read('secret-micromasters/production/dhparam').data.value %}
-
 nginx:
   ng:
     dh_param:
-      dhparam.pem: |
-        {{ dhparam|indent(8) }}
+      dhparam.pem: __vault__::secret-micromasters/production/dhparam>data>value
     certificates:
       micromasters-es:
-        public_cert: |
-          {{ odl_wildcard_cert.data.value|indent(10) }}
-        private_key: |
-          {{ odl_wildcard_cert.data.key|indent(10) }}
+        public_cert: __vault__::secret-operations/global/odl_wildcard_cert>data>value
+        private_key: __vault__::secret-operations/global/odl_wildcard_cert>data>key
     servers:
       managed:
         elasticsearch:

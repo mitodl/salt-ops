@@ -3,7 +3,6 @@
 {% set ENVIRONMENT = salt.grains.get('environment', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set server_domain_names = env_data.purposes['odl-video-service'].domains %}
-{% set ovs_web_cert = salt.vault.read('secret-odl-video/{env}/ovs_web_cert'.format(env=ENVIRONMENT)) %}
 {% set ovs_login_path = 'login' %}
 
 nginx:
@@ -13,10 +12,8 @@ nginx:
     source_hash: 8410b6c31ff59a763abf7e5a5316e7629f5a5033c95a3a0ebde727f9ec8464c5
     certificates:
       ovs_web_cert:
-        public_cert: |
-          {{ ovs_web_cert.data.value|indent(10) }}
-        private_key: |
-          {{ ovs_web_cert.data.key|indent(10) }}
+        public_cert: __vault__::secret-odl-video/{{ ENVIRONMENT }}/ovs_web_cert>data>value
+        private_key: __vault__::secret-odl-video/{{ ENVIRONMENT }}/ovs_web_cert>data>key
     server:
       extra_config:
         shib_params:

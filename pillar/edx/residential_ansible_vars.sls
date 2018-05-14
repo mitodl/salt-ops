@@ -6,9 +6,6 @@
 {% set purpose_suffix = purpose.replace('-', '_') %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set purpose_data = env_settings.environments[environment].purposes[purpose] %}
-{% set remote_gradebook = salt.vault.read(
-    'secret-{business_unit}/{env}/remote_gradebook'.format(
-        business_unit=business_unit, env=environment)) %}
 {% set LMS_DOMAIN = purpose_data.domains.lms %}
 {% set CMS_DOMAIN = purpose_data.domains.cms %}
 {% set EDXAPP_LMS_ISSUER = "https://{}/oauth2".format(LMS_DOMAIN) %}
@@ -24,10 +21,6 @@
 {% if cache_configs is mapping %}
   {% set cache_configs = [cache_configs] %}
 {% endif %}
-{% set xqueue_mysql_creds = salt.vault.read(
-    'mysql-{env}/creds/xqueue-{purpose}'.format(
-        env=environment,
-        purpose=purpose)) %}
 {% set xqwatcher_xqueue_creds = salt.vault.read(
     'secret-{business_unit}/{env}/xqwatcher-xqueue-django-auth-{purpose}'.format(
         business_unit=business_unit,
@@ -38,20 +31,6 @@
         business_unit=business_unit,
         env=environment,
         purpose=purpose)) %}
-{% set xqueue_rabbitmq_creds = salt.vault.read(
-    'rabbitmq-{env}/creds/xqueue-{purpose}'.format(
-        env=environment,
-        purpose=purpose)) %}
-{% set forum_mongodb_creds = salt.vault.read(
-    'mongodb-{env}/creds/forum-{purpose}'.format(
-        env=environment,
-        purpose=purpose)) %}
-{% set mitx_s3_creds = salt.vault.read(
-    'aws-mitx/creds/mitx-s3-{purpose}-{env}'.format(
-        env=environment,
-        purpose=purpose)) %}
-{% set COMMENTS_SERVICE_KEY = salt.vault.read('secret-residential/global/forum-api-key').data.value %} # TODO: randomly generate? (tmacey 2017/03/16)
-{% set XQUEUE_PASSWORD = salt.vault.read('secret-residential/global/xqueue-password').data.value %}
 
 {% if 'live' in purpose %}
   {% set edxapp_git_repo_dir = '/mnt/data/prod_repos' %}
@@ -156,20 +135,19 @@ edx:
     XQUEUE_DJANGO_USERS:
       {{ edxapp_xqueue_creds.data.username }}: {{ edxapp_xqueue_creds.data.password }}
       {{ xqwatcher_xqueue_creds.data.username }}: {{ xqwatcher_xqueue_creds.data.password }}
-    XQUEUE_AWS_ACCESS_KEY_ID: {{ mitx_s3_creds.data.access_key }}
-    XQUEUE_AWS_SECRET_ACCESS_KEY: {{ mitx_s3_creds.data.secret_key }}
+    XQUEUE_AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/mitx-s3-{{ purpose }}-{{ environment }}>data>access_key
+    XQUEUE_AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/mitx-s3-{{ purpose }}-{{ environment }}>data>secret_key
     XQUEUE_BASIC_AUTH_USER: mitx
-    XQUEUE_BASIC_AUTH_PASSWORD: |
-      {{ XQUEUE_PASSWORD|indent(6) }}
+    XQUEUE_BASIC_AUTH_PASSWORD: __vault__::secret-residential/global/xqueue-password>data>value
     XQUEUE_MYSQL_DB_NAME: xqueue_{{ purpose_suffix }}
     XQUEUE_MYSQL_HOST: {{ MYSQL_HOST }}
-    XQUEUE_MYSQL_PASSWORD: {{ xqueue_mysql_creds.data.password }}
+    XQUEUE_MYSQL_PASSWORD: __vault__:cache:mysql-{{ environment }}/creds/xqueue-{{ purpose }}>data>password
     XQUEUE_MYSQL_PORT: {{ MYSQL_PORT }}
-    XQUEUE_MYSQL_USER: {{ xqueue_mysql_creds.data.username }}
+    XQUEUE_MYSQL_USER: __vault__:cache:mysql-{{ environment }}/creds/xqueue-{{ purpose }}>data>username
     XQUEUE_RABBITMQ_HOSTNAME: nearest-rabbitmq.query.consul
-    XQUEUE_RABBITMQ_PASS: {{ xqueue_rabbitmq_creds.data.password }}
-    XQUEUE_RABBITMQ_USER: {{ xqueue_rabbitmq_creds.data.username }}
-    XQUEUE_RABBITMQ_VHOST: /xqueue_{{ purpose_suffix }}
+    XQUEUE_RABBITMQ_PASS: __vault__:cache:rabbitmq-{{ environment }}/creds/xqueue-{{ purpose }}>data>password  # deprecated TMM 2018-05-14
+    XQUEUE_RABBITMQ_USER: __vault__:cache:rabbitmq-{{ environment }}/creds/xqueue-{{ purpose }}>data>username  # deprecated TMM 2018-05-14
+    XQUEUE_RABBITMQ_VHOST: /xqueue_{{ purpose_suffix }}  # deprecated TMM 2018-05-14
     XQUEUE_UPLOAD_BUCKET: mitx-grades-{{ purpose }}-{{ environment }}
     xqueue_source_repo: {{ purpose_data.versions.xqueue_source_repo }}
     xqueue_version: {{ purpose_data.versions.xqueue }}
@@ -192,10 +170,10 @@ edx:
     ################################################################################
     #################### Forum Settings ############################################
     ################################################################################
-    FORUM_API_KEY: "{{ COMMENTS_SERVICE_KEY }}"
+    FORUM_API_KEY: __vault__::secret-residential/global/forum-api-key>data>value
     FORUM_ELASTICSEARCH_HOST: "nearest-elasticsearch.query.consul"
-    FORUM_MONGO_USER: {{ forum_mongodb_creds.data.username }}
-    FORUM_MONGO_PASSWORD: {{ forum_mongodb_creds.data.password }}
+    FORUM_MONGO_USER: __vault__:cache:mongodb-{{ environment }}/creds/forum-{{ purpose }}>data>username
+    FORUM_MONGO_PASSWORD: __vault__:cache:mongodb-{{ environment }}/creds/forum-{{ purpose }}>data>password
     FORUM_MONGO_HOSTS:
       - {{ MONGODB_HOST }}
     FORUM_MONGO_PORT: {{ MONGODB_PORT }}
@@ -246,10 +224,10 @@ edx:
         max_tasks_per_child: 1
 
     EDXAPP_GOOGLE_ANALYTICS_ACCOUNT: {{ edxapp_google_analytics_account }}
-    EDXAPP_YOUTUBE_API_KEY: {{ salt.vault.read('secret-residential/global/edxapp-youtube-api-key').data.value }}
+    EDXAPP_YOUTUBE_API_KEY: __vault__::secret-residential/global/edxapp-youtube-api-key>data>value
     EDXAPP_LMS_AUTH_EXTRA:
-      REMOTE_GRADEBOOK_USER: {{ remote_gradebook.data.user }}
-      REMOTE_GRADEBOOK_PASSWORD: {{ remote_gradebook.data.password }}
+      REMOTE_GRADEBOOK_USER: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>user
+      REMOTE_GRADEBOOK_PASSWORD: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>password
     EDXAPP_BUGS_EMAIL: mitx-support@mit.edu
     EDXAPP_LMS_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
     {# multivariate, only needed for current deployment. will be removed in favor of SAML (tmacey 2017/03/20) #}
@@ -275,7 +253,7 @@ edx:
     # EDXAPP_PLATFORM_DESCRIPTION: 'Your Platform Description Here'
     EDXAPP_TECH_SUPPORT_EMAIL: mitx-support@mit.edu
     EDXAPP_CMS_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
-    EDXAPP_COMMENTS_SERVICE_KEY: {{ COMMENTS_SERVICE_KEY }}
+    EDXAPP_COMMENTS_SERVICE_KEY: __vault__::secret-residential/global/forum-api-key>data>value
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
 
     common_feature_flags: &common_feature_flags
@@ -314,7 +292,7 @@ edx:
         ENABLE_SYSADMIN_DASHBOARD: true
         ENABLE_INSTRUCTOR_EMAIL: true
       REMOTE_GRADEBOOK:
-        URL: {{ remote_gradebook.data.url }}
+        URL: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>url
         DEFAULT_NAME: !!null
       OAUTH_OIDC_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
       STUDENT_FILEUPLOAD_MAX_SIZE: "20 * 1024 * 1024"

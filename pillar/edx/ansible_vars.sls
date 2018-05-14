@@ -10,36 +10,6 @@
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set purpose_data = env_settings.environments[environment].purposes[purpose] %}
 
-{# BEGIN VAULT DATA LOOKUPS #}
-{% set edxapp_rabbitmq_creds = salt.vault.read(
-    'rabbitmq-{env}/creds/celery-{purpose}'.format(
-        env=environment,
-        purpose=purpose)) %}
-{% set admin_mysql_creds = salt.vault.read(
-    'mysql-{env}/creds/admin'.format(
-        env=environment)) %}
-{% set edxapp_mysql_creds = salt.vault.read(
-    'mysql-{env}/creds/edxapp-{purpose}'.format(
-        env=environment,
-        purpose=purpose)) %}
-{% set edxapp_mongodb_contentstore_creds = salt.vault.read(
-    'mongodb-{env}/creds/contentstore-{purpose}'.format(
-        env=environment,
-        purpose=purpose)) %}
-{% set edxapp_mongodb_modulestore_creds = salt.vault.read(
-    'mongodb-{env}/creds/modulestore-{purpose}'.format(
-        env=environment,
-        purpose=purpose)) %}
-{% set gitlog_mongodb_creds = salt.vault.read(
-    'mongodb-{env}/creds/gitlog-{purpose}'.format(
-        env=environment,
-        purpose=purpose)) %}
-{% set mitx_s3_creds = salt.vault.read(
-    'aws-mitx/creds/mitx-s3-{purpose}-{env}'.format(
-        env=environment,
-        purpose=purpose)) %}
-{# END VAULT DATA LOOKUPS #}
-
 {% set CMS_DOMAIN = purpose_data.domains.cms %}
 {% set EDXAPP_CMS_ISSUER = "https://{}/oauth2".format(CMS_DOMAIN) %}
 {# multivariate #}
@@ -58,21 +28,20 @@
 {% set TLS_KEY_NAME = 'edx-ssl-cert' %}
 
 {% set XQUEUE_USER = 'lms' %}
-{% set mit_smtp = salt.vault.read('secret-operations/global/mit-smtp') %}
 
 edx:
   smtp:
-    relay_host: {{ mit_smtp.data.relay_host }}
-    relay_username: {{ mit_smtp.data.relay_username }}
-    relay_password: {{ mit_smtp.data.relay_password }}
+    relay_host: __vault__::secret-operations/global/mit-smtp>data>relay_host{{ mit_smtp.data.relay_host }}
+    relay_username: __vault__::secret-operations/global/mit-smtp>data>relay_username
+    relay_password: __vault__::secret-operations/global/mit-smtp>data>relay_password
     root_forward: {{ salt.sdb.get('sdb://consul/admin-email') }}
 
   ansible_vars:
     ### COMMON VARS ###
-    COMMON_MYSQL_ADMIN_USER: {{ admin_mysql_creds.data.username }}
-    COMMON_MYSQL_ADMIN_PASS: {{ admin_mysql_creds.data.password }}
-    COMMON_MYSQL_MIGRATE_USER: {{ admin_mysql_creds.data.username }}
-    COMMON_MYSQL_MIGRATE_PASS: {{ admin_mysql_creds.data.password }}
+    COMMON_MYSQL_ADMIN_USER: __vault__:cache:mysql-{{ environment }}/creds/admin>data>username
+    COMMON_MYSQL_ADMIN_PASS: __vault__:cache:mysql-{{ environment }}/creds/admin>data>password
+    COMMON_MYSQL_MIGRATE_USER: __vault__:cache:mysql-{{ environment }}/creds/admin>data>username
+    COMMON_MYSQL_MIGRATE_PASS: __vault__:cache:mysql-{{ environment }}/creds/admin>data>password
 
     ### EDXAPP ENVIRONMENT ###
     {# TODO: Determine if this is still necessary (tmacey 2017/03/16) #}
@@ -102,9 +71,9 @@ edx:
     {# Settings for Content Store #}
     EDXAPP_MONGO_DB_NAME: contentstore_{{ purpose_suffix }}
     EDXAPP_MONGO_HOSTS: {{ MONGODB_HOST }}
-    EDXAPP_MONGO_PASSWORD: {{ edxapp_mongodb_contentstore_creds.data.password }}
+    EDXAPP_MONGO_PASSWORD: __vault__:cache:mongodb-{{ environment }}/creds/contentstore-{{ purpose }}>data>password
     EDXAPP_MONGO_PORTS: {{ MONGODB_PORT }}
-    EDXAPP_MONGO_USER: {{ edxapp_mongodb_contentstore_creds.data.username }}
+    EDXAPP_MONGO_USER: __vault__:cache:mongodb-{{ environment }}/creds/contentstore-{{ purpose }}>data>password
     {# TODO: revisit once PKI is deployed (tmacey 2017/03/17) #}
     EDXAPP_MONGO_USE_SSL: {{ MONGODB_USE_SSL }}
 
@@ -117,11 +86,11 @@ edx:
       db: modulestore_{{ purpose_suffix }}
       host: "{{ MONGODB_HOST }}"
       {# multivariate, vault #}
-      password: {{ edxapp_mongodb_modulestore_creds.data.password }}
+      password: __vault__:cache:mongodb-{{ environment }}/creds/modulestore-{{ purpose }}>data>password
       port: {{ MONGODB_PORT }}
       {# multivariate, vault #}
-      user: {{ edxapp_mongodb_modulestore_creds.data.username }}
-      collection:  'modulestore'
+      user: __vault__:cache:mongodb-{{ environment }}/creds/modulestore-{{ purpose }}>data>password
+      collection: 'modulestore'
       replicaset: "{{ MONGODB_REPLICASET }}"
       readPreference: "nearest"
       ssl: {{ MONGODB_USE_SSL }}
@@ -143,28 +112,28 @@ edx:
     #####################################################################
     EDXAPP_MYSQL_DB_NAME: edxapp_{{ purpose_suffix }}
     EDXAPP_MYSQL_HOST: {{ MYSQL_HOST }}
-    EDXAPP_MYSQL_PASSWORD: {{ edxapp_mysql_creds.data.password }}
+    EDXAPP_MYSQL_PASSWORD: __vault__:cache:mysql-{{ environment }}/creds/edxapp-{{ purpose }}>data>password
     EDXAPP_MYSQL_PORT: {{ MYSQL_PORT }}
-    EDXAPP_MYSQL_USER: {{ edxapp_mysql_creds.data.username }}
+    EDXAPP_MYSQL_USER: __vault__:cache:mysql-{{ environment }}/creds/edxapp-{{ purpose }}>data>password
 
     #####################################################################
     ########### Auth Configs ############################################
     #####################################################################
-    EDXAPP_AWS_ACCESS_KEY_ID: {{ mitx_s3_creds.data.access_key }}
-    EDXAPP_AWS_SECRET_ACCESS_KEY: {{ mitx_s3_creds.data.secret_key }}
-    EDXAPP_CELERY_PASSWORD: {{ edxapp_rabbitmq_creds.data.password }}
-    EDXAPP_CELERY_USER: {{ edxapp_rabbitmq_creds.data.username }}
+    EDXAPP_AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/mitx-s3-{{ purpose }}-{{ environment }}>data>access_key
+    EDXAPP_AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/mitx-s3-{{ purpose }}-{{ environment }}>data>secret_key
+    EDXAPP_CELERY_PASSWORD: __vault__:cache:rabbitmq-{{ environment }}/creds/celery-{{ purpose }}>data>password
+    EDXAPP_CELERY_USER: __vault__:cache:rabbitmq-{{ environment }}/creds/celery-{{ purpose }}>data>username
     EDXAPP_LMS_AUTH_EXTRA:
-      SECRET_KEY: {{ salt.vault.read('secret-residential/global/edxapp-lms-django-secret-key').data.value }}
+      SECRET_KEY: __vault__::secret-residential/global/edxapp-lms-django-secret-key>data>value
       MONGODB_LOG:
         db: gitlog_{{ purpose_suffix }}
         host: mongodb-master.service.consul
-        user: {{ gitlog_mongodb_creds.data.username }}
-        password: {{ gitlog_mongodb_creds.data.password }}
+        user: __vault__:cache:mongodb-{{ environment }}/creds/gitlog-{{ purpose }}>data>username
+        password: __vault__:cache:mongodb-{{ environment }}/creds/gitlog-{{ purpose }}>data>password
         replicaset: "{{ MONGODB_REPLICASET }}"
         readPreference: "nearest"
     EDXAPP_CMS_AUTH_EXTRA:
-      SECRET_KEY: {{ salt.vault.read('secret-residential/global/edxapp-cms-django-secret-key').data.value }}
+      SECRET_KEY: __vault__::secret-residential/global/edxapp-cms-django-secret-key>data>value
 
     #####################################################################
     ########### Environment Configs #####################################
@@ -185,7 +154,7 @@ edx:
     {# multivariate #}
     EDXAPP_ENABLE_OAUTH2_PROVIDER: False
     {# multivariate #}
-    EDXAPP_JWT_SECRET_KEY: {{ salt.vault.read('secret-{business_unit}/{env}/edxapp-jwt-secret-key'.format(env=environment, business_unit=business_unit)).data.value }}
+    EDXAPP_JWT_SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/edxapp-jwt-secret-key>data>value
     EDXAPP_LMS_BASE: "{{ LMS_DOMAIN }}"
     EDXAPP_LMS_MAX_REQ: 1000
     EDXAPP_MKTG_URL_LINK_MAP:

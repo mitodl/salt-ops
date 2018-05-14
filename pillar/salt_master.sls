@@ -1,11 +1,9 @@
 {% set ONE_WEEK = 604800 %}
-{% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token').data.value %}
-{% set salt_pg_creds = salt.vault.read('postgres-operations-saltmaster/creds/saltmaster').data %}
 
-slack_api_token: {{ slack_api_token }}
+slack_api_token: __vault__::secret-operations/global/slack/slack_api_token>data>value
 slack:
-  api_key: {{ slack_api_token }}
-slack_webhook_url: {{ salt.vault.read('secret-operations/global/slack/slack_webhook_url').data.value }}
+  api_key: __vault__::secret-operations/global/slack/slack_api_token>data>value
+slack_webhook_url: __vault__::secret-operations/global/slack/slack_webhook_url>data>value
 
 schedule:
   scan_for_expiring_vault_leases:
@@ -153,8 +151,8 @@ salt_master:
       event_return: pgjsonb
       returner.pgjsonb.host: postgres-saltmaster.service.consul
       returner.pgjsonb.port: 5432
-      returner.pgjsonb.user: {{ salt_pg_creds.username }}
-      returner.pgjsonb.pass: {{ salt_pg_creds.password }}
+      returner.pgjsonb.user: __vault__:cache:postgres-operations-saltmaster/creds/saltmaster>data>username
+      returner.pgjsonb.pass: __vault__:cache:postgres-operations-saltmaster/creds/saltmaster>data>password
       returner.pgjsonb.db: saltmaster
     sdb:
       consul:
@@ -186,10 +184,9 @@ salt_master:
           script_args: -U -Z -F
           sync_after_install: all
           delete_ssh_keys: True
-      {% set aws_staging_iam_credentials = salt.vault.read('secret-operations/global/mitx-staging-iam-credentials') %}
       - name: mitx-stage
-        id: {{ aws_staging_iam_credentials.data.id }}
-        key: {{ aws_staging_iam_credentials.data.secret_key }}
+        id: __vault__::secret-operations/global/mitx-staging-iam-credentials>data>id
+        key: __vault__::secret-operations/global/mitx-staging-iam-credentials>data>secret_key
         keyname: salt-master-stage
         private_key_path: /etc/salt/keys/aws/salt-master-stage.pem
         region: us-west-2
@@ -198,4 +195,4 @@ salt_master:
           sync_after_install: all
           delete_ssh_keys: True
   slack:
-    api_key: {{ slack_api_token }}
+    api_key: __vault__::secret-operations/global/slack/slack_api_token>data>value

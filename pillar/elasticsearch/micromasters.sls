@@ -1,7 +1,3 @@
-{% set production_auth_key = salt.vault.read('secret-micromasters/production/elasticsearch-auth-key').data.value %}
-{% set rc_auth_key = salt.vault.read('secret-micromasters/rc/elasticsearch-auth-key').data.value %}
-{% set ci_auth_key = salt.vault.read('secret-micromasters/ci/elasticsearch-auth-key').data.value %}
-
 elasticsearch:
   lookup:
     elastic_stack: True
@@ -37,7 +33,7 @@ elasticsearch:
             accept_x-forwarded-for_header: 'true'
             actions:
               - 'indices:*'
-            auth_key: {{ production_auth_key }}
+            auth_key: __vault__::secret-micromasters/production/elasticsearch-auth-key>data>value
           - name: Access for micromasters RC index with HTTP Auth
             type: allow
             indices:
@@ -45,7 +41,7 @@ elasticsearch:
             accept_x-forwarded-for_header: 'true'
             actions:
               - 'indices:*'
-            auth_key: {{ rc_auth_key }}
+            auth_key: __vault__::secret-micromasters/rc/elasticsearch-auth-key>data>value
           - name: Access for micromasters CI index with HTTP Auth
             type: allow
             indices:
@@ -53,7 +49,7 @@ elasticsearch:
             accept_x-forwarded-for_header: 'true'
             actions:
               - 'indices:*'
-            auth_key: {{ ci_auth_key }}
+            auth_key: __vault__::secret-micromasters/ci/elasticsearch-auth-key>data>value
           - name: View existence of indices with RC Auth
             type: allow
             accept_x-forwarded-for_header: 'true'
@@ -70,7 +66,7 @@ elasticsearch:
               - 'indices:admin/exists'
               - 'indices:admin/refresh[s]'
               - 'indices:data/read/scroll'
-            auth_key: {{ rc_auth_key }}
+            auth_key: __vault__::secret-micromasters/rc/elasticsearch-auth-key>data>value
           - name: View existence of indices with CI Auth
             type: allow
             accept_x-forwarded-for_header: 'true'
@@ -87,7 +83,7 @@ elasticsearch:
               - 'indices:admin/exists'
               - 'indices:admin/refresh[s]'
               - 'indices:data/read/scroll'
-            auth_key: {{ ci_auth_key }}
+            auth_key: __vault__::secret-micromasters/ci/elasticsearch-auth-key>data>value
           - name: View existence of indices with Production Auth
             type: allow
             accept_x-forwarded-for_header: 'true'
@@ -104,7 +100,7 @@ elasticsearch:
               - 'indices:admin/exists'
               - 'indices:admin/refresh[s]'
               - 'indices:data/read/scroll'
-            auth_key: {{ production_auth_key }}
+            auth_key: __vault__::secret-micromasters/production/elasticsearch-auth-key>data>value
     products:
       elasticsearch: '5.x'
   plugins:

@@ -7,15 +7,11 @@
 {% set CASSANDRA_PORT = 9160 %}
 {% set RABBITMQ_HOST = 'nearest-rabbitmq.query.consul' %}
 {% set RABBITMQ_PORT = 5672 %}
-{% set rabbitmq_creds = salt.vault.read('rabbitmq-{}/creds/reddit'.format(ENVIRONMENT)) %}
 {% set postgresql_creds = salt.vault.read('postgresql-{}-reddit/creds/reddit'.format(ENVIRONMENT)) %}
 {% set POSTGRESQL_PORT = 5432 %}
 {% set POSTGRESQL_HOST = 'postgresql-reddit.service.consul' %}
 {% set DISCUSSIONS_HOST = 'discussions-reddit-{}.odl.mit.edu'.format(ENVIRONMENT) %}
 {% set admins = 'odldevops' %}
-{% set reddit_oauth_client = salt.vault.read('secret-operations/{}/reddit/app-token'.format(ENVIRONMENT)) %}
-{% set reddit_admin = salt.vault.read('secret-operations/{}/reddit/admin-user'.format(ENVIRONMENT)) %}
-{% set reddit_system_user = salt.vault.read('secret-operations/{}/reddit/system-user'.format(ENVIRONMENT)) %}
 
 {% set cassandra_instances = [] %}
 {% for host, addr in salt.saltutil.runner(
@@ -38,14 +34,14 @@ reddit:
   environment:
     REDDIT_ERRORS_TO_SENTRY: True
   oauth_client:
-    client_id: {{ reddit_oauth_client.data.client_id }}
-    client_secret: {{ reddit_oauth_client.data.client_secret }}
+    client_id: __vault__::secret-operations/{{ ENVIRONMENT }}/reddit/app-token>data>client_id
+    client_secret: __vault__::secret-operations/{{ ENVIRONMENT }}/reddit/app-token>data>client_secret
   admin_user:
     username: odldevops
-    password: {{ reddit_admin.data.password }}
+    password: __vault__::secret-operations/{{ ENVIRONMENT }}/reddit/admin-user>data>password
   system_user:
     username: deploy
-    password: {{ reddit_system_user.data.password }}
+    password: __vault__::secret-operations/{{ ENVIRONMENT }}/reddit/system-user>data>password
   overrides:
     queue_config_count:
       search_q: 0
@@ -129,8 +125,8 @@ reddit:
       db_servers_flair: main
       db_servers_promocampaign: main
 
-      db_user: {{ postgresql_creds.data.username }}
-      db_pass: {{ postgresql_creds.data.password }}
+      db_user: __vault__:cache:postgresql-{{ ENVIRONMENT }}-reddit/creds/reddit>data>username
+      db_pass: __vault__:cache:postgresql-{{ ENVIRONMENT }}-reddit/creds/reddit>data>password
       db_port: {{ 6432 }}
       db_pool_size: 20
       db_pool_overflow_size: 5
@@ -159,8 +155,8 @@ reddit:
       cassandra_default_pool: main
 
       amqp_host: '{{ RABBITMQ_HOST }}:{{ RABBITMQ_PORT }}'
-      amqp_user: '{{ rabbitmq_creds.data.username }}'
-      amqp_pass: '{{ rabbitmq_creds.data.password }}'
+      amqp_user: __vault__:cache:rabbitmq-{{ ENVIRONMENT }}/creds/reddit>data>username
+      amqp_pass: __vault__:cache:rabbitmq-{{ ENVIRONMENT }}/creds/reddit>data>password
       amqp_virtual_host: /reddit
 
       smtp_server: ''
@@ -169,7 +165,7 @@ reddit:
       notification_email: ''
       ads_email: ''
 
-      sentry_dsn: {{ salt.vault.read('secret-operations/global/reddit/sentry-dsn').data.value }}
+      sentry_dsn: __vault__::secret-operations/global/reddit/sentry-dsn>data>value
       pool_name: {{ ENVIRONMENT }}
 
       zookeeper_connection: ''
@@ -213,8 +209,8 @@ reddit:
       factory: 'reddit_service_websockets.app:make_app'
       amqp.endpoint: nearest-rabbitmq.query.consul:5672
       amqp.vhost: /reddit
-      amqp.username: {{ rabbitmq_creds.data.username }}
-      amqp.password: {{ rabbitmq_creds.data.password }}
+      amqp.username: __vault__:cache:rabbitmq-{{ ENVIRONMENT }}/creds/reddit>data>username
+      amqp.password: __vault__:cache:rabbitmq-{{ ENVIRONMENT }}/creds/reddit>data>password
       amqp.exchange.broadcast: sutro
       amqp.exchange.status: reddit_exchange
       amqp.send_status_messages: 'false'
@@ -223,7 +219,7 @@ reddit:
       web.conn_shed_rate: 5
       metrics.namespace: websockets
       secrets.path: example_secrets.json
-      sentry.dsn: {{ salt.vault.read('secret-operations/global/reddit/sentry-dsn').data.value }}
+      sentry_dsn: __vault__::secret-operations/global/reddit/sentry-dsn>data>value
       sentry.environment: {{ ENVIRONMENT }}
 
     'server:main':

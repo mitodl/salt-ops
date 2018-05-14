@@ -5,9 +5,7 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set purpose_data = env_data.purposes[app_name] %}
-{% set mail_creds = salt.vault.read('secret-' ~ purpose_data.business_unit ~ '/' ~ ENVIRONMENT ~ '/' ~ app_name ~ '/sendgrid-credentials') %}
 {% set pg_creds = salt.vault.read('postgres-' ~ ENVIRONMENT ~ '-redash/creds/redash') %}
-{% set root_user = salt.vault.read('secret-' ~ purpose_data.business_unit ~ '/' ~ ENVIRONMENT ~ '/' ~ app_name ~ '/root-user').data %}
 {% set redash_fluentd_webhook_token = salt.vault.read('secret-operations/global/redash_webhook_token').data.value %}
 
 schedule:
@@ -24,7 +22,10 @@ python:
       user: root
 
 redash:
-  root_user: {{ root_user|yaml() }}
+  root_user:
+    email: __vault__::secret-{{ purpose_data.business_unit }}/{{ ENVIRONMENT }}/{{ app_name }}/root-user>data>email
+    name: __vault__::secret-{{ purpose_data.business_unit }}/{{ ENVIRONMENT }}/{{ app_name }}/root-user>data>name
+    password: __vault__::secret-{{ purpose_data.business_unit }}/{{ ENVIRONMENT }}/{{ app_name }}/root-user>data>password
 
 django:
   user: redash
@@ -42,14 +43,14 @@ django:
     # REDASH_GOOGLE_CLIENT_ID: {# google_creds.client_id #}
     # REDASH_GOOGLE_CLIENT_SECRET: {# google_creds.client_secret #}
     REDASH_ADDITIONAL_QUERY_RUNNERS: redash.query_runner.google_analytics
-    REDASH_COOKIE_SECRET: {{ salt.vault.read('secret-operations/operations/redash/cookie-secret').data.value }}
+    REDASH_COOKIE_SECRET: __vault__::secret-operations/operations/redash/cookie-secret>data>value
     REDASH_DATABASE_URL: postgresql://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@postgres-redash.service.consul:5432/redash
     REDASH_DATE_FORMAT: YYYY-MM-DD
     REDASH_ENFORCE_HTTPS: 'true'
     REDASH_EVENT_REPORTING_WEBHOOKS: https://log-input.odl.mit.edu/redash-webhook/redash/events?token={{ redash_fluentd_webhook_token }}
     REDASH_HOST: https://bi.odl.mit.edu
     REDASH_LOG_LEVEL: INFO
-    REDASH_MAIL_PASSWORD: {{ mail_creds.data.password }}
+    REDASH_MAIL_PASSWORD: __vault__::secret-{{ purpose_data.business_unit }}/{{ ENVIRONMENT }}/{{ app_name }} ~ '/sendgrid-credentials>data>password
     REDASH_MAIL_PORT: {{ mail_creds.data.port }}
     REDASH_MAIL_SERVER: {{ mail_creds.data.server }}
     REDASH_MAIL_USERNAME: {{ mail_creds.data.username }}
@@ -60,7 +61,7 @@ django:
     REDASH_REDIS_URL: redis://redash-redis.service.consul:6379/0
     REDASH_REMOTE_USER_HEADER: MAIL
     REDASH_REMOTE_USER_LOGIN_ENABLED: 'true'
-    REDASH_SENTRY_DSN: {{ salt.vault.read('secret-operations/operations/redash/sentry-dsn').data.value }}
+    REDASH_SENTRY_DSN: __vault__::secret-operations/operations/redash/sentry-dsn>data>value
     REDASH_STATIC_ASSETS_PATH: /opt/{{ app_name }}/client/dist/
   pkgs:
     - libffi-dev

@@ -1,7 +1,6 @@
 #!jinja|yaml|gpg
 
 {% set ENVIRONMENT = salt.grains.get('environment') %}
-{% set duplicity_passphrase = salt.vault.read('secret-operations/global/duplicity-passphrase').data.value %}
 
 backups:
   enabled:
@@ -16,6 +15,6 @@ backups:
       pkgs:
         - awscli
       settings:
-        acl_token: {{ salt.vault.read('secret-operations/{}/consul-acl-master-token'.format(ENVIRONMENT)).data.value }}
-        duplicity_passphrase: {{ duplicity_passphrase }}
+        acl_token: __vault__::secret-operations/{{ ENVIRONMENT }}/consul-acl-master-token>data>value
+        duplicity_passphrase: __vault__::secret-operations/global/duplicity-passphrase>data>value
         directory: consul-operations
