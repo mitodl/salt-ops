@@ -154,7 +154,7 @@ environments:
             type: t2.large
           edx-worker:
             number: 1
-            type: t2.medium
+            type: t2.large
       next-residential-draft:
         business_unit: residential
         domains:
