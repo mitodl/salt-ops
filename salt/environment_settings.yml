@@ -170,7 +170,7 @@ environments:
             type: t2.large
           edx-worker:
             number: 1
-            type: t2.medium
+            type: t2.large
       sandbox:
         business_unit: residential
         domains:
