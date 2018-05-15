@@ -94,8 +94,8 @@ edx:
               KWARGS:
                 grader_root: ../data/mit-600x-{{ purpose }}-{{ queue_name }}/graders/python3graders/
           AUTH:
-            - __vault__::secret-{{ business_unit }}/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>username
-            - __vault__::secret-{{ business_unit }}/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>password
+            - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>username
+            - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>password
       {% endfor %}
       {% endif %}
       {% endfor %}
