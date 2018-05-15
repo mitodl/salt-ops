@@ -31,7 +31,7 @@
 
 edx:
   smtp:
-    relay_host: __vault__::secret-operations/global/mit-smtp>data>relay_host{{ mit_smtp.data.relay_host }}
+    relay_host: __vault__::secret-operations/global/mit-smtp>data>relay_host
     relay_username: __vault__::secret-operations/global/mit-smtp>data>relay_username
     relay_password: __vault__::secret-operations/global/mit-smtp>data>relay_password
     root_forward: {{ salt.sdb.get('sdb://consul/admin-email') }}
@@ -73,7 +73,7 @@ edx:
     EDXAPP_MONGO_HOSTS: {{ MONGODB_HOST }}
     EDXAPP_MONGO_PASSWORD: __vault__:cache:mongodb-{{ environment }}/creds/contentstore-{{ purpose }}>data>password
     EDXAPP_MONGO_PORTS: {{ MONGODB_PORT }}
-    EDXAPP_MONGO_USER: __vault__:cache:mongodb-{{ environment }}/creds/contentstore-{{ purpose }}>data>password
+    EDXAPP_MONGO_USER: __vault__:cache:mongodb-{{ environment }}/creds/contentstore-{{ purpose }}>data>username
     {# TODO: revisit once PKI is deployed (tmacey 2017/03/17) #}
     EDXAPP_MONGO_USE_SSL: {{ MONGODB_USE_SSL }}
 
@@ -89,7 +89,7 @@ edx:
       password: __vault__:cache:mongodb-{{ environment }}/creds/modulestore-{{ purpose }}>data>password
       port: {{ MONGODB_PORT }}
       {# multivariate, vault #}
-      user: __vault__:cache:mongodb-{{ environment }}/creds/modulestore-{{ purpose }}>data>password
+      user: __vault__:cache:mongodb-{{ environment }}/creds/modulestore-{{ purpose }}>data>username
       collection: 'modulestore'
       replicaset: "{{ MONGODB_REPLICASET }}"
       readPreference: "nearest"
@@ -114,7 +114,7 @@ edx:
     EDXAPP_MYSQL_HOST: {{ MYSQL_HOST }}
     EDXAPP_MYSQL_PASSWORD: __vault__:cache:mysql-{{ environment }}/creds/edxapp-{{ purpose }}>data>password
     EDXAPP_MYSQL_PORT: {{ MYSQL_PORT }}
-    EDXAPP_MYSQL_USER: __vault__:cache:mysql-{{ environment }}/creds/edxapp-{{ purpose }}>data>password
+    EDXAPP_MYSQL_USER: __vault__:cache:mysql-{{ environment }}/creds/edxapp-{{ purpose }}>data>username
 
     #####################################################################
     ########### Auth Configs ############################################

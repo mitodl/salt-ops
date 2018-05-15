@@ -50,10 +50,10 @@ django:
     REDASH_EVENT_REPORTING_WEBHOOKS: https://log-input.odl.mit.edu/redash-webhook/redash/events?token={{ redash_fluentd_webhook_token }}
     REDASH_HOST: https://bi.odl.mit.edu
     REDASH_LOG_LEVEL: INFO
-    REDASH_MAIL_PASSWORD: __vault__::secret-{{ purpose_data.business_unit }}/{{ ENVIRONMENT }}/{{ app_name }} ~ '/sendgrid-credentials>data>password
-    REDASH_MAIL_PORT: {{ mail_creds.data.port }}
-    REDASH_MAIL_SERVER: {{ mail_creds.data.server }}
-    REDASH_MAIL_USERNAME: {{ mail_creds.data.username }}
+    REDASH_MAIL_PASSWORD: __vault__::secret-{{ purpose_data.business_unit }}/{{ ENVIRONMENT }}/{{ app_name }}/sendgrid-credentials>data>password
+    REDASH_MAIL_PORT: __vault__::secret-{{ purpose_data.business_unit }}/{{ ENVIRONMENT }}/{{ app_name }}/sendgrid-credentials>data>port
+    REDASH_MAIL_SERVER: __vault__::secret-{{ purpose_data.business_unit }}/{{ ENVIRONMENT }}/{{ app_name }}/sendgrid-credentials>data>server
+    REDASH_MAIL_USERNAME: __vault__::secret-{{ purpose_data.business_unit }}/{{ ENVIRONMENT }}/{{ app_name }}/sendgrid-credentials>data>username
     REDASH_MAIL_USE_TLS: 'true'
     REDASH_MULTI_ORG: 'false'
     REDASH_NAME: MIT Open Learning Business Intelligence

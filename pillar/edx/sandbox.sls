@@ -23,7 +23,7 @@ edx:
     EDXAPP_MYSQL_CSMH_HOST: {{ MYSQL_HOST }}
     EDXAPP_MYSQL_CSMH_PASSWORD: __vault__:cache:mysql-{{ environment }}/creds/edxapp-csmh-{{ purpose }}>data>password
     EDXAPP_MYSQL_CSMH_PORT: {{ MYSQL_PORT }}
-    EDXAPP_MYSQL_CSMH_USER: __vault__:cache:mysql-{{ environment }}/creds/edxapp-csmh-{{ purpose }}>data>password
+    EDXAPP_MYSQL_CSMH_USER: __vault__:cache:mysql-{{ environment }}/creds/edxapp-csmh-{{ purpose }}>data>username
     EDXAPP_MEMCACHE:
       - 'localhost:11211'
     EDXAPP_LMS_ENV_EXTRA:

@@ -1,8 +1,9 @@
 {% set server_domain_name = 'discussions-reddit-{}.odl.mit.edu'.format(salt.grains.get('environment')) %}
 {% set ENVIRONMENT = salt.grains.get('environment') %}
+{% set access_token = salt.vault.read('secret-operations/{}/reddit/access-token'.format(ENVIRONMENT)).data.value %}
 
 reddit:
-  api_access_token: __vault__::secret-operations/{{ ENVIRONMENT }}/reddit/access-token>data>value
+  api_access_token: {{ access_token }}
 
 nginx:
   ng:

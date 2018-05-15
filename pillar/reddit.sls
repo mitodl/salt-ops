@@ -12,7 +12,7 @@
 {% set POSTGRESQL_HOST = 'postgresql-reddit.service.consul' %}
 {% set DISCUSSIONS_HOST = 'discussions-reddit-{}.odl.mit.edu'.format(ENVIRONMENT) %}
 {% set admins = 'odldevops' %}
-
+{% set reddit_oauth_client = salt.vault.read('secret-operations/{}/reddit/app-token'.format(ENVIRONMENT)) %}
 {% set cassandra_instances = [] %}
 {% for host, addr in salt.saltutil.runner(
     'mine.get',

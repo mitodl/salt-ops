@@ -146,5 +146,4 @@ edx:
         REPO: "xqueue-watcher.git"
         VERSION: "20ab9e6d645b0b8850f14db558499e62e554d8a2"
         DESTINATION: "/edx/app/xqwatcher/src"
-        SSH_KEY: |
-          {{ git_ssh_key|indent(10)}}
+        SSH_KEY: __vault__::secret-residential/global/xqueue_watcher_git_ssh>data>value

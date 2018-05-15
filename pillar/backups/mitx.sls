@@ -22,7 +22,7 @@ backups:
         port: 3306
         threads: 10
         password: __vault__:cache:mysql-{{ environment }}/creds/admin>data>password
-        username: __vault__:cache:mysql-{{ environment }}/creds/admin>data>password
+        username: __vault__:cache:mysql-{{ environment }}/creds/admin>data>username
         directory: mysql-{{ environment }}-{{ purpose }}
         database: edxapp_{{ purpose|replace('-', '_') }}
         duplicity_passphrase: __vault__::secret-operations/global/duplicity-passphrase>data>value

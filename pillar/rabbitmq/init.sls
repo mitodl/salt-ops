@@ -28,5 +28,5 @@ rabbitmq:
       settings:
         tags:
           - administrator
-        password: secret-{{ BUSINESS_UNIT }}/{{ ENVIRONMENT }}/rabbitmq-admin-password>data>value
-  erlang_cookie: secret-{{ BUSINESS_UNIT }}/{{ ENVIRONMENT }}/erlang_cookie>data>value
+        password: __vault__:gen_if_missing:secret-{{ BUSINESS_UNIT }}/{{ ENVIRONMENT }}/rabbitmq-admin-password>data>value
+  erlang_cookie: __vault__:gen_if_missing:secret-{{ BUSINESS_UNIT }}/{{ ENVIRONMENT }}/erlang_cookie>data>value
