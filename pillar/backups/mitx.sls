@@ -3,6 +3,7 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set env_data = env_settings.environments[environment] %}
+{% set duplicity_passphrase = '__vault__::secret-operations/global/duplicity-passphrase>data>value' %}
 {% if environment == 'mitx-qa' %}
 {% set efs_id = 'fs-6f55af26' %}
 {% elif environment == 'mitx-production' %}
@@ -25,7 +26,7 @@ backups:
         username: __vault__:cache:mysql-{{ environment }}/creds/admin>data>username
         directory: mysql-{{ environment }}-{{ purpose }}
         database: edxapp_{{ purpose|replace('-', '_') }}
-        duplicity_passphrase: __vault__::secret-operations/global/duplicity-passphrase>data>value
+        duplicity_passphrase: {{ duplicity_passphrase }}
   {% endif %}
   {% endfor %}
     - title: mongodb-{{ environment }}
@@ -45,7 +46,7 @@ backups:
         - curl
         - nfs-common
       settings:
-        duplicity_passphrase: __vault__::secret-operations/global/duplicity-passphrase>data>value
+        duplicity_passphrase: {{ duplicity_passphrase }}
         efs_id: {{ efs_id }}
         directory: prod_repos
     - title: draft_course_assets
@@ -54,6 +55,6 @@ backups:
         - curl
         - nfs-common
       settings:
-        duplicity_passphrase: __vault__::secret-operations/global/duplicity-passphrase>data>value
+        duplicity_passphrase: {{ duplicity_passphrase }}
         efs_id: {{ efs_id }}
         directory: repos
