@@ -126,7 +126,7 @@ salt_master:
         - git:
             - master https://github.com/mitodl/salt-ops:
                 - root: pillar
-        - vault: ''
+        - vault: {}
     logging:
       log_granular_levels:
         'py.warnings': 'quiet'
