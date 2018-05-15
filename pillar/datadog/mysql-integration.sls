@@ -1,14 +1,12 @@
-{% set mysql_creds = salt.vault.read('mysql-{env}/creds/datadog'.format(env=salt.grains.get('environment')), ignore_invalid=True) %}
+{% set environment = salt.grains.get('environment') %}
 
-{% if mysql_creds %}
 datadog:
   integrations:
     mysql:
       settings:
         instances:
           - server: mysql.service.consul
-            user: {{ mysql_creds.data.username }}
-            pass: {{ mysql_creds.data.password }}
+            user: __vault__:cache:mysql-{{ environment }}/creds/datadog>data>username
+            pass: __vault__:cache:mysql-{{ environment }}/creds/datadog>data>password
             tags:
-              - {{ salt.grains.get('environment') }}
-{% endif %}
+              - {{ environment }}

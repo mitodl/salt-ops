@@ -1,11 +1,8 @@
-{% set rds_credentials = salt.vault.read('secret-micromasters/production/rds-credentials') %}
-{% set database_credentials = salt.vault.read('secret-micromasters/production/database-credentials') %}
-
 micromasters:
   db:
-    master_user: {{ rds_credentials.data.username }}
-    master_password: {{ rds_credentials.data.password }}
+    master_user: __vault__::secret-micromasters/production/rds-credentials>data>username
+    master_password: __vault__::secret-micromasters/production/rds-credentials>data>password
     port: 15432
     app_db: micromasters
-    app_user: {{ database_credentials.data.username }}
-    app_password: {{ database_credentials.data.password }}
+    app_user: __vault__::secret-micromasters/production/database-credentials>data>username
+    app_password: __vault__::secret-micromasters/production/database-credentials>data>password

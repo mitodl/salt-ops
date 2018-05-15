@@ -10,10 +10,8 @@ nginx:
     install_from_ppa: True
     certificates:
       odl.mit.edu:
-        public_cert: |
-          {{ salt.vault.read('secret-operations/global/odl_wildcard_cert').data.value|indent(10) }}
-        private_key: |
-          {{ salt.vault.read('secret-operations/global/odl_wildcard_cert').data.key|indent(10) }}
+        public_cert: __vault__::secret-operations/global/odl_wildcard_cert>data>value
+        private_key: __vault__::secret-operations/global/odl_wildcard_cert>data>key
     servers:
       managed:
         default:

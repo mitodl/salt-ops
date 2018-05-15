@@ -4,10 +4,6 @@
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set MYSQL_HOST = 'mysql.service.consul' %}
 {% set MYSQL_PORT = 3306 %}
-{% set edxapp_csmh_mysql_creds = salt.vault.read(
-    'mysql-{env}/creds/edxapp-csmh-{purpose}'.format(
-        env=environment,
-        purpose=purpose)) %}
 
 edx:
   ansible_vars:
@@ -19,9 +15,9 @@ edx:
     EDXAPP_MONGO_REPLICA_SET: rs0
     EDXAPP_MYSQL_CSMH_DB_NAME: edxapp_csmh_{{ purpose_suffix }}
     EDXAPP_MYSQL_CSMH_HOST: {{ MYSQL_HOST }}
-    EDXAPP_MYSQL_CSMH_PASSWORD: {{ edxapp_csmh_mysql_creds.data.password }}
+    EDXAPP_MYSQL_CSMH_PASSWORD: __vault__:cache:mysql-{{ environment }}/creds/edxapp-csmh-{{ purpose }}>data>password
     EDXAPP_MYSQL_CSMH_PORT: {{ MYSQL_PORT }}
-    EDXAPP_MYSQL_CSMH_USER: {{ edxapp_csmh_mysql_creds.data.username }}
+    EDXAPP_MYSQL_CSMH_USER: __vault__:cache:mysql-{{ environment }}/creds/edxapp-csmh-{{ purpose }}>data>username
     EDXAPP_PLATFORM_DESCRIPTION: 'MITx Residential Online Course Portal'
     EDXAPP_PRIVATE_REQUIREMENTS:
         # For Harvard courses:

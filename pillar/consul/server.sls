@@ -32,7 +32,7 @@ consul:
         http: 0.0.0.0
       retry_join_wan: {{ wan_nodes }}
       acl_datacenter: {{ ENVIRONMENT }}
-      acl_master_token: {{ salt.vault.read('secret-operations/{}/consul-acl-master-token'.format(ENVIRONMENT)).data.value }}
+      acl_master_token: __vault__::secret-operations/{{ ENVIRONMENT }/consul-acl-master-token>data>value
     aws_services:
       services:
         {% for dbconfig in env_data.backends.rds %}

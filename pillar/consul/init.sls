@@ -21,6 +21,6 @@ consul:
         node_ttl: 30s
         service_ttl:
           "*": 30s
-      encrypt: {{ salt.vault.read('secret-operations/global/consul-shared-secret').data.value }}
+      encrypt: __vault__::secret-operations/global/consul-shared-secret>data>value
       retry_join: {{ lan_nodes }}
       datacenter: {{ ENVIRONMENT }}

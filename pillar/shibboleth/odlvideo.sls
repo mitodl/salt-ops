@@ -3,7 +3,5 @@
 
 nginx-shibboleth:
   secrets:
-    key: |
-      {{ salt.vault.read('secret-odl-video/{env}/shibboleth/sp-key'.format(env=ENVIRONMENT)).data.value|replace('\\n', '\n')|indent(6) }}
-    cert: |
-      {{ salt.vault.read('secret-odl-video/{env}/shibboleth/sp-cert'.format(env=ENVIRONMENT)).data.value|replace('\\n', '\n')|indent(6) }}
+    key: __vault__::secret-odl-video/{{ ENVIRONMENT }}/shibboleth/sp-key>data>value
+    cert: __vault__::secret-odl-video/{{ ENVIRONMENT }}/shibboleth/sp-cert>data>value

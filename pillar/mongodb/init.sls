@@ -21,7 +21,7 @@ mongodb:
       - mongodb
     service_name: mongodb
   admin_username: admin
-  admin_password: {{ salt.vault.read('secret-{}/{}/mongodb-admin-password'.format(business_unit, environment)).data.value }}
+  admin_password: __vault__::secret-{{ business_unit }}/{{ environment }}/mongodb-admin-password>data>value
   replset_name: rs0
   replset_config: {{ replset_config }}
-  cluster_key: {{ salt.vault.read('secret-{}/{}/mongodb-cluster-key'.format(business_unit, environment)).data.value }}
+  cluster_key: __vault__::secret-{{ business_unit }}/{{ environment }}/mongodb-cluster-key>data>value

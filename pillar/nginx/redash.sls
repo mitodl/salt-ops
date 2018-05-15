@@ -3,7 +3,6 @@
 {% set ENVIRONMENT = salt.grains.get('environment', 'operations') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set server_domain_names = env_data.purposes[app_name].domains %}
-{% set odl_wildcard = salt.vault.read('secret-operations/global/odl_wildcard_cert') %}
 {% set login_path = 'remote_user/login' %}
 
 nginx:
@@ -13,10 +12,8 @@ nginx:
     source_hash: 8410b6c31ff59a763abf7e5a5316e7629f5a5033c95a3a0ebde727f9ec8464c5
     certificates:
       odl_wildcard:
-        public_cert: |
-          {{ odl_wildcard.data.value|indent(10) }}
-        private_key: |
-          {{ odl_wildcard.data.key|indent(10) }}
+        public_cert: __vault__::secret-operations/global/odl_wildcard_cert>data>value
+        private_key: __vault__::secret-operations/global/odl_wildcard_cert>data>key
     server:
       extra_config:
         shib_params:

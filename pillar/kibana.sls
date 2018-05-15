@@ -1,10 +1,7 @@
-{% set slack_webhook_url_odl = salt.vault.read('secret-operations/global/slack-odl/slack_webhook_url').data.value %}
-{% set slack_webhook_url_devops = salt.vault.read('secret-operations/global/slack/slack_webhook_url').data.value %}
-{% set opsgenie_ops_team_api = salt.vault.read('secret-operations/global/opsgenie/opsgenie_ops_team_api').data.value %}
-{% set mitca_ssl_cert = salt.vault.read('secret-operations/global/mitca_ssl_cert').data.value %}
 {% set mailgun_apps = {
     'micromasters': 'mailgun-eng',
     'discussions': 'mailgun-eng'} %}
+{% set slack_webhook_url = '__vault__::secret-operations/global/slack-odl/slack_webhook_url>data>value' %}
 
 elasticsearch:
   lookup:
@@ -34,7 +31,7 @@ elasticsearch:
           alert:
             - slack
           alert_text: "Email delivery via Mailgun failed."
-          slack_webhook_url: {{ slack_webhook_url_odl }}
+          slack_webhook_url: {{ slack_webhook_url }}
           slack_channel_override: "#{{ slack_channel }}"
           slack_username_override: "Elastalert"
           slack_msg_color: "warning"
@@ -60,7 +57,7 @@ elasticsearch:
           alert:
             - slack
           alert_text: "SSH session detected"
-          slack_webhook_url: {{ slack_webhook_url_devops }}
+          slack_webhook_url: __vault__::secret-operations/global/slack/slack_webhook_url>data>value
           slack_channel_override: "#devops"
           slack_username_override: "Elastalert"
           slack_msg_color: "warning"
@@ -92,7 +89,7 @@ elasticsearch:
           alert:
             - slack
           alert_text: "<!subteam^S9PK3B39V|devopseng> Operational Failure on mitx-production detected"
-          slack_webhook_url: {{ slack_webhook_url_odl }}
+          slack_webhook_url: {{ slack_webhook_url }}
           slack_channel_override: "#mitx-eng"
           slack_username_override: "Elastalert"
           slack_msg_color: "warning"
@@ -117,7 +114,7 @@ elasticsearch:
           alert:
             - slack
           alert_text: "<!subteam^S9PK3B39V|devopseng> git-reload error on mitx-production detected"
-          slack_webhook_url: {{ slack_webhook_url_odl }}
+          slack_webhook_url: {{ slack_webhook_url }}
           slack_channel_override: "#devops"
           slack_username_override: "Elastalert"
           slack_msg_color: "warning"
@@ -139,7 +136,7 @@ elasticsearch:
           description: >-
             Send a message anytime an error message containing git_import.py or
             git_export_utils.py is encountered in the mitx production logs.
-          opsgenie_key: {{ opsgenie_ops_team_api }}
+          opsgenie_key: __vault__::secret-operations/global/opsgenie/opsgenie_ops_team_api>data>value
           type: frequency
           index: logstash-*
           num_events: 5
@@ -174,7 +171,7 @@ elasticsearch:
           alert:
             - slack
           alert_text: "<!subteam^S9PK3B39V|devopseng> Rabbitmq AMQPLAIN login refused due to expired vault credentials"
-          slack_webhook_url: {{ slack_webhook_url_odl }}
+          slack_webhook_url: {{ slack_webhook_url }}
           slack_channel_override: "#devops"
           slack_username_override: "Elastalert"
           slack_msg_color: "warning"
@@ -202,7 +199,7 @@ elasticsearch:
           alert_text: >-
              <!subteam^S9PK3B39V|devopseng> The IAM credentials for the FluentD servers to ship
              to S3 have expired and need to be regenerated.
-          slack_webhook_url: {{ slack_webhook_url_odl }}
+          slack_webhook_url: {{ slack_webhook_url }}
           slack_channel_override: "#devops"
           slack_username_override: "Elastalert"
           slack_msg_color: "warning"
@@ -237,7 +234,7 @@ elasticsearch:
           alert_text: "<!subteam^S9PK3B39V|devopseng> The number of messages for tag {0} is outside of the normal bounds"
           alert_text_args:
             - fluentd_tag
-          slack_webhook_url: {{ slack_webhook_url_odl }}
+          slack_webhook_url: {{ slack_webhook_url }}
           slack_channel_override: "#devops"
           slack_username_override: "Elastalert"
           slack_msg_color: "warning"
@@ -258,7 +255,7 @@ elasticsearch:
             <!subteam^S9PK3B39V|devopseng> The upstream service on {0} is not responding to Nginx
           alert_text_args:
             - minion_id
-          slack_webhook_url: {{ slack_webhook_url_odl }}
+          slack_webhook_url: {{ slack_webhook_url }}
           slack_channel_override: "#devops"
           slack_username_override: Elastalert
           slack_msg_color: warning
@@ -286,14 +283,10 @@ kibana:
     nginx_extra_files:
       - name: mitca
         path: /etc/salt/ssl/certs/mitca.pem
-        contents: |
-          {{ mitca_ssl_cert|indent(10) }}
+        contents: __vault__::secret-operations/global/mitca_ssl_cert>data>value
   ssl:
-    {% set odl_wildcard = salt.vault.read('secret-operations/global/odl_wildcard_cert') %}
-    cert_source: |
-      {{ odl_wildcard.data.value|indent(6) }}
-    key_source: |
-      {{ odl_wildcard.data.key|indent(6) }}
+    cert_source: __vault__::secret-operations/global/odl_wildcard_cert>data>value
+    key_source: __vault__::secret-operations/global/odl_wildcard_cert>data>key
 
 beacons:
   service:
