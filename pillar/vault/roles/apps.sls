@@ -51,7 +51,7 @@ vault:
           ALTER DEFAULT PRIVILEGES FOR USER {% raw %}"{{name}}"{% endraw %} IN SCHEMA public GRANT ALL PRIVILEGES ON SEQUENCES TO "{{ app }}" WITH GRANT OPTION;
         {% raw %}
         revocation_statements: >-
-          REASSIGN OWNED BY "{{name}}" TO {% raw %}"{{ app }}"{% endraw %};
+          REASSIGN OWNED BY "{{name}}" TO "{{ app }}";
           REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM "{{name}}";
           REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM "{{name}}";
           REVOKE USAGE ON SCHEMA public FROM "{{name}}";
