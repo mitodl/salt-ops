@@ -29,27 +29,6 @@
 
 {% set XQUEUE_USER = 'lms' %}
 
-{# Settings for Module Store #}
-{# We have to replicate the data three times in order to allow for #}
-{# a different database name between the content and module stores. #}
-{# It is a quirk of how the edX Ansible repo has the vars configured. #}
-{# (tmacey 2017/03/17) #}
-doc_store_config: &doc_store_config
-  db: modulestore_{{ purpose_suffix }}
-  host: "{{ MONGODB_HOST }}"
-  {# multivariate, vault #}
-  password: __vault__:cache:mongodb-{{ environment }}/creds/modulestore-{{ purpose }}>data>password
-  port: {{ MONGODB_PORT }}
-  {# multivariate, vault #}
-  user: __vault__:cache:mongodb-{{ environment }}/creds/modulestore-{{ purpose }}>data>username
-  collection: 'modulestore'
-  replicaset: "{{ MONGODB_REPLICASET }}"
-  readPreference: "nearest"
-  ssl: {{ MONGODB_USE_SSL }}
-  socketTimeoutMS: 3000
-  connectTimeoutMS: 2000
-
-
 edx:
   smtp:
     relay_host: __vault__::secret-operations/global/mit-smtp>data>relay_host
@@ -98,14 +77,55 @@ edx:
     {# TODO: revisit once PKI is deployed (tmacey 2017/03/17) #}
     EDXAPP_MONGO_USE_SSL: {{ MONGODB_USE_SSL }}
 
+    {# Settings for Module Store #}
+    {# We have to replicate the data three times in order to allow for #}
+    {# a different database name between the content and module stores. #}
+    {# It is a quirk of how the edX Ansible repo has the vars configured. #}
+    {# (tmacey 2017/03/17) #}
     EDXAPP_LMS_DRAFT_DOC_STORE_CONFIG:
-      <<: *doc_store_config
+      db: modulestore_{{ purpose_suffix }}
+      host: "{{ MONGODB_HOST }}"
+      {# multivariate, vault #}
+      password: __vault__:cache:mongodb-{{ environment }}/creds/modulestore-{{ purpose }}>data>password
+      port: {{ MONGODB_PORT }}
+      {# multivariate, vault #}
+      user: __vault__:cache:mongodb-{{ environment }}/creds/modulestore-{{ purpose }}>data>username
+      collection: 'modulestore'
+      replicaset: "{{ MONGODB_REPLICASET }}"
+      readPreference: "nearest"
+      ssl: {{ MONGODB_USE_SSL }}
+      socketTimeoutMS: 3000
+      connectTimeoutMS: 2000
 
     EDXAPP_LMS_SPLIT_DOC_STORE_CONFIG:
-      <<: *doc_store_config
+      db: modulestore_{{ purpose_suffix }}
+      host: "{{ MONGODB_HOST }}"
+      {# multivariate, vault #}
+      password: __vault__:cache:mongodb-{{ environment }}/creds/modulestore-{{ purpose }}>data>password
+      port: {{ MONGODB_PORT }}
+      {# multivariate, vault #}
+      user: __vault__:cache:mongodb-{{ environment }}/creds/modulestore-{{ purpose }}>data>username
+      collection: 'modulestore'
+      replicaset: "{{ MONGODB_REPLICASET }}"
+      readPreference: "nearest"
+      ssl: {{ MONGODB_USE_SSL }}
+      socketTimeoutMS: 3000
+      connectTimeoutMS: 2000
 
     EDXAPP_CMS_DOC_STORE_CONFIG:
-      <<: *doc_store_config
+      db: modulestore_{{ purpose_suffix }}
+      host: "{{ MONGODB_HOST }}"
+      {# multivariate, vault #}
+      password: __vault__:cache:mongodb-{{ environment }}/creds/modulestore-{{ purpose }}>data>password
+      port: {{ MONGODB_PORT }}
+      {# multivariate, vault #}
+      user: __vault__:cache:mongodb-{{ environment }}/creds/modulestore-{{ purpose }}>data>username
+      collection: 'modulestore'
+      replicaset: "{{ MONGODB_REPLICASET }}"
+      readPreference: "nearest"
+      ssl: {{ MONGODB_USE_SSL }}
+      socketTimeoutMS: 3000
+      connectTimeoutMS: 2000
 
 
     #####################################################################
