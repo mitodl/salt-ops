@@ -36,7 +36,6 @@ base:
     - mongodb
     - fluentd.mongodb
     - consul.mongodb
-    - datadog.mongodb-integration
   'roles:odl-video-service':
     - match: grain
     - apps.odlvideo
