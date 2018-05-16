@@ -20,6 +20,12 @@ mongodb:
     pkgs:
       - mongodb
     service_name: mongodb
+    config:
+      net:
+        bindIp: '0.0.0.0,::'
+        unixDomainSocket:
+          enabled: False
+        ipv6: True
   admin_username: admin
   admin_password: __vault__::secret-{{ business_unit }}/{{ environment }}/mongodb-admin-password>data>value
   replset_name: rs0
