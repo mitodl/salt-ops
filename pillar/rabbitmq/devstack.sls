@@ -4,15 +4,11 @@
 
 rabbitmq:
   overrides:
-    version: '3.6.10-1'
+    version: '3.7.4-1'
+    erlang_version: '1:20.1'
   configuration:
-    rabbit:
-      disk_free_limit:
-        mem_relative: 0.2
-      auth_backends:
-        - '@rabbit_auth_backend_internal'
-  env:
-    RABBITMQ_USE_LONGNAMES: 'true'
+    disk_free_limit.relative: 0.2
+    auth_backends.1: rabbit_auth_backend_internal
   users:
     - name: guest
       state: absent

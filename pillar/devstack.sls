@@ -6,26 +6,14 @@
 {% set purpose_suffix = 'devstack' %}
 {% set edx_platform_branch = 'mitx/ginkgo' %}
 
-{% set xqueue_rabbitmq_username = 'admin' %}
-{% set xqueue_rabbitmq_password = 'changeme' %}
 {% set edxapp_rabbitmq_username = 'admin' %}
 {% set edxapp_rabbitmq_password = 'changeme' %}
 {% set admin_mysql_username = 'root' %}
 {% set admin_mysql_password = 'changeme' %}
-{% set xqueue_mysql_username = 'xqueue_mysql_user' %}
-{% set xqueue_mysql_password = 'changeme' %}
 {% set edxapp_mysql_username = 'edxapp_mysql_user' %}
 {% set edxapp_mysql_password = 'changeme' %}
 {% set edxapp_mongodb_username = 'admin' %}
 {% set edxapp_mongodb_password = 'changeme' %}
-{% set forum_mongodb_username = 'admin' %}
-{% set forum_mongodb_password = 'changeme' %}
-{% set gitlog_mongodb_username = 'admin'%}
-{% set gitlog_mongodb_password = 'changeme' %}
-{% set edxapp_xqueue_username = 'edxapp_xqueue_user' %}
-{% set edxapp_xqueue_password = 'changeme' %}
-{% set xqwatcher_xqueue_username = 'xqwatcher_xqueue_user' %}
-{% set xqwatcher_xqueue_password = 'changeme' %}
 
 {% set CELERY_BROKER_PASSWORD = 'changeme' %}
 {% set CELERY_BROKER_USER = 'admin' %}
@@ -41,8 +29,6 @@
 {% set MYSQL_PORT = 3306 %}
 {% set THEME_NAME = 'mitx-theme' %}
 {% set TIME_ZONE = 'America/New_York' %}
-{% set XQUEUE_PASSWORD = 'changeme' %}
-{% set XQUEUE_USER = 'lms' %}
 {% set edxapp_log_env = 'sandbox' %}
 {% set TLS_KEY_NAME = 'mitodl_devstack' %}
 {% set HOST_IP = '192.168.33.10' %}
@@ -79,27 +65,6 @@ edx:
     COMMON_MYSQL_ADMIN_PASS: {{ admin_mysql_password }}
     COMMON_MYSQL_MIGRATE_USER: {{ admin_mysql_username }}
     COMMON_MYSQL_MIGRATE_PASS: {{ admin_mysql_password }}
-
-    ### XQUEUE ENVIRONMENT ###
-    XQUEUE_BASIC_AUTH_USER: mitx
-    XQUEUE_BASIC_AUTH_PASSWORD: {{ XQUEUE_PASSWORD }}
-    XQUEUE_DJANGO_USERS:
-      {{ edxapp_xqueue_username }}: {{ edxapp_xqueue_password }}
-      {{ xqwatcher_xqueue_username }}: {{ xqwatcher_xqueue_password }}
-    XQUEUE_LOGGING_ENV: {{ edxapp_log_env }}
-    XQUEUE_MYSQL_DB_NAME: xqueue_{{ purpose_suffix }}
-    XQUEUE_MYSQL_HOST: {{ MYSQL_HOST }}
-    XQUEUE_MYSQL_PASSWORD: {{ xqueue_mysql_password }}
-    XQUEUE_MYSQL_PORT: {{ MYSQL_PORT }}
-    XQUEUE_MYSQL_USER: {{ xqueue_mysql_username }}
-    XQUEUE_RABBITMQ_HOSTNAME: rabbitmq.service.consul
-    XQUEUE_RABBITMQ_PASS: {{ xqueue_rabbitmq_password }}
-    XQUEUE_RABBITMQ_USER: {{ xqueue_rabbitmq_username }}
-    XQUEUE_RABBITMQ_VHOST: /xqueue
-    XQUEUE_WORKERS_PER_QUEUE: 2
-    xqueue_source_repo: "https://github.com/mitodl/xqueue.git"
-    xqueue_version: "master"
-    forum_ruby_version: "2.4.1"
     edxapp_theme_source_repo: 'https://github.com/mitodl/mitx-theme.git'
     edxapp_theme_version: 'ginkgo'
 
@@ -138,11 +103,11 @@ edx:
         monitor: True
       - queue: default
         service_variant: lms
-        concurrency: 2
+        concurrency: 1
         monitor: True
       - queue: high
         service_variant: lms
-        concurrency: 2
+        concurrency: 1
         monitor: True
       - queue: high_mem
         service_variant: lms
@@ -198,14 +163,6 @@ edx:
     #####################################################################
     EDXAPP_CELERY_PASSWORD: {{ edxapp_rabbitmq_password }}
     EDXAPP_CELERY_USER: {{ edxapp_rabbitmq_username }}
-    EDXAPP_XQUEUE_DJANGO_AUTH:
-      username: {{ edxapp_xqueue_username }}
-      password: {{ edxapp_xqueue_password }}
-      MONGODB_LOG:
-        db: gitlog_{{ purpose_suffix }}
-        host: mongodb.service.consul
-        user: {{ gitlog_mongodb_username }}
-        password: {{ gitlog_mongodb_password }}
 
     #####################################################################
     ########### Environment Configs #####################################
@@ -320,23 +277,6 @@ edx:
         SEGMENT_IO: false
         STAFF_EMAIL: {{ DEFAULT_FEEDBACK_EMAIL }}
       LOGGING_ENV: {{ edxapp_log_env }}
-
-    ################################################################################
-    #################### Forum Settings ############################################
-    ################################################################################
-
-    FORUM_ELASTICSEARCH_HOST: "elasticsearch.service.consul"
-    FORUM_MONGO_USER: {{ forum_mongodb_username }}
-    FORUM_MONGO_PASSWORD: {{ forum_mongodb_password }}
-    FORUM_MONGO_HOSTS:
-      - {{ MONGODB_HOST }}
-    FORUM_MONGO_PORT: {{ MONGODB_PORT }}
-    FORUM_MONGO_DATABASE: forum_{{ purpose_suffix }}
-    FORUM_RACK_ENV: "production"
-    FORUM_SINATRA_ENV: "production"
-    FORUM_USE_TCP: True
-    forum_source_repo: "https://github.com/mitodl/cs_comments_service.git"
-    forum_version: open-release/ginkgo.master
 
     EDXAPP_LMS_PREVIEW_NGINX_PORT: 80
     EDXAPP_LMS_NGINX_PORT: 80
