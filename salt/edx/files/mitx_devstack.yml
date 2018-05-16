@@ -44,15 +44,6 @@
       celery_worker: True
     - edxapp
 
-    # Discussion forums
-    # https://github.com/edx/cs_comments_service
-    - forum
-
-    # XQueue interface for communicating with external grader services
-    # https://github.com/edx/xqueue
-    - role: xqueue
-      update_users: True
-
     # memcached
     - role: memcache
       when: "'localhost' in ' '.join(EDXAPP_MEMCACHE)"
