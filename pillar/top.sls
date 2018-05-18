@@ -167,6 +167,10 @@ base:
     - edx.xqwatcher
     - edx.xqwatcher_600
     - fluentd.xqwatcher
+  'lightsail-xqwatcher-686':
+    - match: glob
+    - edx.xqwatcher
+    - edx.xqwatcher_686
   'G@roles:backups and P@environment:mitx-(qa|production)':
     - match: compound
     - backups.mitx

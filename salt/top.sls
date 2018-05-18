@@ -19,6 +19,9 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
+  'lightsail-xqwatcher-686':
+    - match: glob
+    - edx.xqwatcher
   'roles:backups':
     - match: grain
     - backups.backup
