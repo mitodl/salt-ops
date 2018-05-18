@@ -165,6 +165,7 @@ base:
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
+    - edx.xqwatcher_600
     - fluentd.xqwatcher
   'G@roles:backups and P@environment:mitx-(qa|production)':
     - match: compound

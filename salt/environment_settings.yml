@@ -30,6 +30,7 @@ current_residential_versions_qa: &current_residential_versions_qa
   xqueue_source_repo: 'https://github.com/mitodl/xqueue.git'
   xqueue: master
   xqwatcher_courses: master
+  xqwatcher_version: 20ab9e6d645b0b8850f14db558499e62e554d8a2
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
   theme: ginkgo
   codename: ginkgo
@@ -45,6 +46,7 @@ current_residential_versions_rp: &current_residential_versions_rp
   xqueue_source_repo: 'https://github.com/mitodl/xqueue'
   xqueue: master
   xqwatcher_courses: production
+  xqwatcher_version: 20ab9e6d645b0b8850f14db558499e62e554d8a2
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
   theme: ginkgo
   codename: ginkgo
@@ -60,6 +62,7 @@ next_residential_versions: &next_residential_versions
   xqueue_source_repo: 'https://github.com/mitodl/xqueue'
   xqueue: master
   xqwatcher_courses: master
+  xqwatcher_version: 20ab9e6d645b0b8850f14db558499e62e554d8a2
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
   theme: master
   codename: hawthorn
