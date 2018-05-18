@@ -136,10 +136,10 @@ salt_master:
         version: 1
     reactors:
       reactor:
-        - salt/beacon/edx-*/diskusage/*:
-            - salt://reactors/edx/draft_disk_cleanup.sls
         - salt/beacon/*/inotify/*:
             - salt://reactors/edx/inotify_mitx.sls
+        - salt/beacon/reddit-*/memusage/*:
+            - salt://reactors/reddit/restart_reddit_service_low_memory.sls
         - vault/lease/expiring/*:
             - salt://reactors/vault/alert_expiring_leases.sls
         - salt/state_result/*/restore/*/result:
