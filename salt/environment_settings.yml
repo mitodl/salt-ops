@@ -326,6 +326,10 @@ environments:
         num_instances: 3
         business_unit: operations
         healthcheck: /health
+      apps-es:
+        business_unit: operations
+        domains:
+          - elasticsearch-production-apps.odl.mit.edu
     backends:
       rds:
         - name: reddit
@@ -387,6 +391,10 @@ environments:
         num_instances: 2
         business_unit: operations
         healthcheck: /health
+      apps-es:
+        business_unit: operations
+        domains:
+          - elasticsearch-rc-apps.odl.mit.edu
     backends:
       rds:
         - name: reddit
