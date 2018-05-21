@@ -15,7 +15,7 @@
 
 create_salt_master_security_group:
   boto_secgroup.present:
-    - name: salt_master-{{ VPC_RESOURCE_SUFFIX }}
+    - name: salt_master-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
     - description: ACL to allow Salt master to SSH to instances
     - rules:
@@ -24,7 +24,7 @@ create_salt_master_security_group:
           to_port: 22
           cidr_ip: 10.0.0.0/16
     - tags:
-        Name: salt-master-{{ VPC_RESOURCE_SUFFIX }}
+        Name: salt-master-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
@@ -32,13 +32,13 @@ create_salt_master_security_group:
 
 create_vault_backend_security_group:
   boto_secgroup.present:
-    - name: vault-{{ VPC_RESOURCE_SUFFIX }}
+    - name: vault-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
     - description: >-
         ACL to allow Vault to access data stores so that it
         can create dynamic credentials
     - tags:
-        Name: vault-{{ VPC_RESOURCE_SUFFIX }}
+        Name: vault-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
@@ -59,7 +59,7 @@ create_vault_backend_security_group:
 
 create_{{ ENVIRONMENT }}_consul_security_group:
   boto_secgroup.present:
-    - name: consul-{{ VPC_RESOURCE_SUFFIX }}
+    - name: consul-{{ ENVIRONMENT }}
     - description: Access rules for Consul cluster in {{ VPC_NAME }} stack
     - vpc_name: {{ VPC_NAME }}
     - rules:
@@ -107,7 +107,7 @@ create_{{ ENVIRONMENT }}_consul_security_group:
             - {{ VPC_CIDR }}
           {# WAN cluster interface #}
     - tags:
-        Name: consul-{{ VPC_RESOURCE_SUFFIX }}
+        Name: consul-{{ ENVIRONMENT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
         Environment: {{ ENVIRONMENT }}
@@ -115,30 +115,30 @@ create_{{ ENVIRONMENT }}_consul_security_group:
 
 create_{{ ENVIRONMENT }}_consul_agent_security_group:
   boto_secgroup.present:
-    - name: consul-agent-{{ VPC_RESOURCE_SUFFIX }}
+    - name: consul-agent-{{ ENVIRONMENT }}
     - description: Access rules for Consul agent in {{ VPC_NAME }} stack
     - vpc_name: {{ VPC_NAME }}
     - rules:
         - ip_protocol: tcp
           from_port: 8301
           to_port: 8301
-          source_group_name: consul-agent-{{ VPC_RESOURCE_SUFFIX }}
+          source_group_name: consul-agent-{{ ENVIRONMENT }}
         - ip_protocol: udp
           from_port: 8301
           to_port: 8301
-          source_group_name: consul-agent-{{ VPC_RESOURCE_SUFFIX }}
+          source_group_name: consul-agent-{{ ENVIRONMENT }}
         - ip_protocol: tcp
           from_port: 8301
           to_port: 8301
-          source_group_name: consul-{{ VPC_RESOURCE_SUFFIX }}
+          source_group_name: consul-{{ ENVIRONMENT }}
         - ip_protocol: udp
           from_port: 8301
           to_port: 8301
-          source_group_name: consul-{{ VPC_RESOURCE_SUFFIX }}
+          source_group_name: consul-{{ ENVIRONMENT }}
     - require:
         - boto_secgroup: create_{{ ENVIRONMENT }}_consul_security_group
     - tags:
-        Name: consul-agent-{{ VPC_RESOURCE_SUFFIX }}
+        Name: consul-agent-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
@@ -146,7 +146,7 @@ create_{{ ENVIRONMENT }}_consul_agent_security_group:
 
 create_rabbitmq_security_group:
   boto_secgroup.present:
-    - name: rabbitmq-{{ VPC_RESOURCE_SUFFIX }}
+    - name: rabbitmq-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
     - description: ACL for RabbitMQ servers
     - rules:
@@ -158,13 +158,13 @@ create_rabbitmq_security_group:
         - ip_protocol: tcp
           from_port: 4369
           to_port: 4369
-          source_group_name: rabbitmq-{{ VPC_RESOURCE_SUFFIX }}
+          source_group_name: rabbitmq-{{ ENVIRONMENT }}
         - ip_protocol: tcp
           from_port: 25672
           to_port: 25672
-          source_group_name: rabbitmq-{{ VPC_RESOURCE_SUFFIX }}
+          source_group_name: rabbitmq-{{ ENVIRONMENT }}
     - tags:
-        Name: rabbitmq-{{ VPC_RESOURCE_SUFFIX }}
+        Name: rabbitmq-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
@@ -172,7 +172,7 @@ create_rabbitmq_security_group:
 
 create_postgres_rds_security_group:
   boto_secgroup.present:
-    - name: postgres-rds-{{ VPC_RESOURCE_SUFFIX }}
+    - name: postgres-rds-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
     - description: ACL for PostGreSQL RDS servers
     - rules:
@@ -182,7 +182,7 @@ create_postgres_rds_security_group:
           cidr_ip:
             - {{ VPC_CIDR }}
     - tags:
-        Name: postgres-rds-{{ VPC_RESOURCE_SUFFIX }}
+        Name: postgres-rds-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
@@ -190,7 +190,7 @@ create_postgres_rds_security_group:
 
 create_public_postgres_rds_security_group:
   boto_secgroup.present:
-    - name: postgres-rds-public-{{ VPC_RESOURCE_SUFFIX }}
+    - name: postgres-rds-public-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
     - description: Allow public access to PostGres RDS servers
     - rules:
@@ -200,7 +200,7 @@ create_public_postgres_rds_security_group:
           cidr_ip:
             - 0.0.0.0/0
     - tags:
-        Name: postgres-rds-public-{{ VPC_RESOURCE_SUFFIX }}
+        Name: postgres-rds-public-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
@@ -208,7 +208,7 @@ create_public_postgres_rds_security_group:
 
 create_mariadb_rds_security_group:
   boto_secgroup.present:
-    - name: mariadb-rds-{{ VPC_RESOURCE_SUFFIX }}
+    - name: mariadb-rds-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
     - description: ACL for MariaDB RDS servers
     - rules:
@@ -218,7 +218,7 @@ create_mariadb_rds_security_group:
           cidr_ip:
             - {{ VPC_CIDR }}
     - tags:
-        Name: mariadb-rds-{{ VPC_RESOURCE_SUFFIX }}
+        Name: mariadb-rds-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
@@ -226,7 +226,7 @@ create_mariadb_rds_security_group:
 
 create_public_mysql_rds_security_group:
   boto_secgroup.present:
-    - name: mariadb-rds-public-{{ VPC_RESOURCE_SUFFIX }}
+    - name: mariadb-rds-public-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
     - description: Allow public access to MariaDB RDS servers
     - rules:
@@ -236,7 +236,7 @@ create_public_mysql_rds_security_group:
           cidr_ip:
             - 0.0.0.0/0
     - tags:
-        Name: mariadb-rds-public-{{ VPC_RESOURCE_SUFFIX }}
+        Name: mariadb-rds-public-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
@@ -244,7 +244,7 @@ create_public_mysql_rds_security_group:
 
 create_scylladb_rds_security_group:
   boto_secgroup.present:
-    - name: scylladb-{{ VPC_RESOURCE_SUFFIX }}
+    - name: scylladb-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
     - description: ACL for Scylladb servers
     - rules:
@@ -256,7 +256,7 @@ create_scylladb_rds_security_group:
             - {{ VPC_CIDR }}
         {% endfor %}
     - tags:
-        Name: scylladb-{{ VPC_RESOURCE_SUFFIX }}
+        Name: scylladb-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
@@ -264,7 +264,7 @@ create_scylladb_rds_security_group:
 
 create_webapp_security_group:
   boto_secgroup.present:
-    - name: webapp-{{ VPC_RESOURCE_SUFFIX }}
+    - name: webapp-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
     - description: ACL for web servers
     - rules:
@@ -281,8 +281,26 @@ create_webapp_security_group:
             - 0.0.0.0/0
             - '::/0'
     - tags:
-        Name: webapp-{{ VPC_RESOURCE_SUFFIX }}
+        Name: webapp-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
         Environment: {{ ENVIRONMENT }}
+
+create_elasticsearch_security_group:
+  boto_secgroup.present:
+    - name: elasticsearch-{{ ENVIRONMENT }}
+    - vpc_name: {{ VPC_NAME }}
+    - description: ACL for elasticsearch servers
+    - rules:
+        - ip_protocol: tcp
+          from_port: 9200
+          to_port: 9200
+          source_group_name: default
+        - ip_protocol: tcp
+          from_port: 9300
+          to_port: 9400
+          source_group_name: elasticsearch-{{ ENVIRONMENT }}
+    - tags:
+        Name: elasticsearch-{{ ENVIRONMENT }}
+        business_unit: {{ BUSINESS_UNIT }}
