@@ -9,7 +9,7 @@ elasticsearch:
         zen.hosts_provider: ec2
       cluster.name: {{ ENVIRONMENT }}
       discovery.ec2.tag.escluster: {{ ENVIRONMENT }}
-      network.host: [_eth0_, _lo_]
+      network.host: ['_eth0:ipv4_', '_lo:ipv4_']
     products:
       elasticsearch: '6.x'
   plugins:
