@@ -8,6 +8,7 @@ base:
     - fluentd.cas
   'roles:elasticsearch':
     - match: grain
+    - elasticsearch
     - fluentd.elasticsearch
     - consul.elasticsearch
     - datadog.elasticsearch-integration
@@ -108,6 +109,9 @@ base:
     - vault.roles.micromasters
     - vault.roles.mitx
     - vault.roles.operations
+  'G@roles:elasticsearch and P@environment:{rc|production}-apps':
+    - match: compound
+    - elasticsearch.apps
   'G@roles:elasticsearch and G@environment:mitx-qa':
     - match: compound
     - elasticsearch.mitx-qa

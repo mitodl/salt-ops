@@ -4,6 +4,7 @@ elasticsearch:
     pkgs:
       - openjdk-8-jre-headless
     verify_package: False
+    elastic_stack: False
     configuration_settings:
       discovery:
         type: ec2
