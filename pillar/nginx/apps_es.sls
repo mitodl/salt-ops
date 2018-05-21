@@ -5,7 +5,7 @@ nginx:
     dh_param:
       dhparam.pem: __vault__::secret-operations/{{ ENVIRONMENT }}/dhparam>data>value
     certificates:
-      micromasters-es:
+      apps-es:
         public_cert: __vault__::secret-operations/global/odl_wildcard_cert>data>value
         private_key: __vault__::secret-operations/global/odl_wildcard_cert>data>key
     servers:
@@ -14,7 +14,7 @@ nginx:
           enabled: True
           config:
             - server:
-                - server_name: apps-es.odl.mit.edu
+                - server_name: elasticsearch-{{ ENVIRONMENT }}.odl.mit.edu
                 - listen:
                     - 443
                     - ssl
