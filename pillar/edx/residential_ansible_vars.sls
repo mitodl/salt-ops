@@ -114,7 +114,6 @@ edx:
       {% endif %}
       {% endfor %}
     ### XQUEUE ENVIRONMENT ###
-    XQUEUE_WORKERS_PER_QUEUE: 2
     XQUEUE_QUEUES:
         'MITx-42.01x': 'https://xserver.mitx.mit.edu/fgxserver'
         'MITx-8371': 'https://xqueue.mitx.mit.edu/qis_xserver'
