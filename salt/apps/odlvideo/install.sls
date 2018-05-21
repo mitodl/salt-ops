@@ -17,5 +17,10 @@ create_env_file_for_odlvideo:
         {%- for var, val in salt.pillar.get('django:environment').items() %}
         {{ var }}={{ val }}
         {%- endfor %}
+  service.running:
+    - name: uwsgi
+    - reload: True
+    - watch:
+      - file: create_env_file_for_odlvideo
     - require:
         - deploy_application_source_to_destination
