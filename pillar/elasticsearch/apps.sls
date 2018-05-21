@@ -5,9 +5,16 @@
 elasticsearch:
   lookup:
     configuration_settings:
+      discovery.zen.minimum_master_nodes: 2
+      gateway.recover_after_nodes: 2
+      gateway.expected_nodes: 3
+      gateway.recover_after_time: 5m
       rest.action.multi.allow_explicit_index: 'false'
   plugins:
     - name: discovery-ec2
+      config:
+        aws:
+          region: us-east-1
     - name: readonlyrest
       location: https://raw.githubusercontent.com/mitodl/salt-ops/master/salt/artifacts/readonlyrest-1.16.19_es6.2.4.zip
   plugin_settings:
