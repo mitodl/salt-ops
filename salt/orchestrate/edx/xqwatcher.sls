@@ -16,7 +16,7 @@ generate_xqwatcher_cloud_map_file:
     - context:
         service_name: xqwatcher
         environment_name: {{ ENVIRONMENT }}
-        num_instances: 2
+        num_instances: 3
         tags:
           business_unit: {{ BUSINESS_UNIT }}
         roles:
