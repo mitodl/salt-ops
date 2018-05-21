@@ -2,16 +2,8 @@
 
 elasticsearch:
   lookup:
-    elastic_stack: True
     configuration_settings:
-      discovery:
-        zen.hosts_provider: ec2
-      cluster.name: {{ ENVIRONMENT }}
-      discovery.ec2.tag.escluster: {{ ENVIRONMENT }}
       rest.action.multi.allow_explicit_index: 'false'
-      network.host: [_eth0_, _lo_]
-    products:
-      elasticsearch: '6.x'
   plugins:
     - name: discovery-ec2
     - name: readonlyrest

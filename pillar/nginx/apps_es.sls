@@ -1,7 +1,9 @@
+{% set ENVIRONMENT = salt.grains.get('environment', 'rc-apps') %}
+
 nginx:
   ng:
     dh_param:
-      dhparam.pem: __vault__::secret-micromasters/production/dhparam>data>value
+      dhparam.pem: __vault__::secret-operations/{{ ENVIRONMENT }}/dhparam>data>value
     certificates:
       micromasters-es:
         public_cert: __vault__::secret-operations/global/odl_wildcard_cert>data>value
@@ -31,8 +33,8 @@ nginx:
                     - stub_status: 'on'
                     - allow: 127.0.0.1
                     - deny: all
-                - ssl_certificate: /etc/nginx/ssl/micromasters-es.crt
-                - ssl_certificate_key: /etc/nginx/ssl/micromasters-es.key
+                - ssl_certificate: /etc/nginx/ssl/apps-es.crt
+                - ssl_certificate_key: /etc/nginx/ssl/apps-es.key
                 - ssl_dhparam: /etc/nginx/ssl/dhparam.pem
                 - ssl_stapling: 'on'
                 - ssl_stapling_verify: 'on'
