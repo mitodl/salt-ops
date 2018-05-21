@@ -109,7 +109,7 @@ base:
     - vault.roles.micromasters
     - vault.roles.mitx
     - vault.roles.operations
-  'G@roles:elasticsearch and P@environment:{rc|production}-apps':
+  'G@roles:elasticsearch and P@environment:(rc|production)-apps':
     - match: compound
     - elasticsearch.apps
   'G@roles:elasticsearch and G@environment:mitx-qa':

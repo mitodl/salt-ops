@@ -1,4 +1,5 @@
 elasticsearch:
+  version: '5.x'
   lookup:
     elastic_stack: True
     configuration_settings:

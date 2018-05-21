@@ -1,5 +1,6 @@
 {% set ENVIRONMENT = salt.grains.get('environment') %}
 elasticsearch:
+  version: '1.7'
   lookup:
     pkgs:
       - openjdk-7-jre-headless

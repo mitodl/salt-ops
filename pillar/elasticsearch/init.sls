@@ -1,6 +1,7 @@
 {% set ENVIRONMENT = salt.grains.get('environment', 'rc-apps') %}
 
 elasticsearch:
+  version: '6.x'
   lookup:
     elastic_stack: True
     configuration_settings:

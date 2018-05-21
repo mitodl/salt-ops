@@ -47,6 +47,7 @@ put_elasticsearch_mapper_template:
     - status: 200
 
 elasticsearch:
+  version: '5.x'
   lookup:
     elastic_stack: True
     configuration_settings:
