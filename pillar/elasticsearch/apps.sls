@@ -1,13 +1,21 @@
+{% set ENVIRONMENT = salt.grains.get('environment', 'rc-apps') %}
+
 elasticsearch:
   lookup:
     elastic_stack: True
     configuration_settings:
       discovery:
         zen.hosts_provider: ec2
-      cluster.name: rc-apps
-      discovery.ec2.tag.escluster: rc-apps
+      cluster.name: {{ ENVIRONMENT }}
+      discovery.ec2.tag.escluster: {{ ENVIRONMENT }}
       rest.action.multi.allow_explicit_index: 'false'
       network.host: [_eth0_, _lo_]
+    products:
+      elasticsearch: '6.x'
+  plugins:
+    - name: discovery-ec2
+    - name: readonlyrest
+      location: https://raw.githubusercontent.com/mitodl/salt-ops/master/salt/artifacts/readonlyrest-1.16.19_es6.2.4.zip
   plugin_settings:
     readonlyrest:
       readonlyrest:
@@ -101,9 +109,3 @@ elasticsearch:
               - 'indices:admin/refresh[s]'
               - 'indices:data/read/scroll'
             auth_key: __vault__:gen_if_missing:secret-operations/production-apps/discussions/elasticsearch-auth-key>data>value
-    products:
-      elasticsearch: '6.x'
-  plugins:
-    - name: discovery-ec2
-    - name: readonlyrest
-      location: https://raw.githubusercontent.com/mitodl/salt-ops/master/salt/artifacts/readonlyrest-1.16.15_es5.6.6.zip
