@@ -112,6 +112,9 @@ base:
   'G@roles:elasticsearch and P@environment:(rc|production)-apps':
     - match: compound
     - elasticsearch.apps
+    - nginx
+    - nginx.apps_es
+    - datadog.nginx-integration
   'G@roles:elasticsearch and G@environment:mitx-qa':
     - match: compound
     - elasticsearch.mitx-qa

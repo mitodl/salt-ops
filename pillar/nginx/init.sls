@@ -1,5 +1,6 @@
 nginx:
   ng:
+    install_from_repo: True
     server:
       config:
         http:
