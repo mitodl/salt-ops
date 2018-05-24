@@ -94,7 +94,7 @@ update_mine_with_{{ app_name }}_node_data:
 {% set hosts = [] %}
 {% for host, grains in salt.saltutil.runner(
     'mine.get',
-    tgt='G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}', fun='grains.item', tgt_type='compound'
+    tgt='G@roles:' ~ app_name ~ ' and G@environment:' ~ ENVIRONMENT, fun='grains.item', tgt_type='compound'
     ).items() %}
 {% do hosts.append(grains['external_ip']) %}
 {% endfor %}
