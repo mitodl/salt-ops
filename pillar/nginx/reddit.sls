@@ -48,6 +48,11 @@ nginx:
                      :AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS"
                 - ssl_prefer_server_ciphers: 'on'
                 - resolver: 8.8.8.8
+                - location /health:
+                    - proxy_pass: http://127.0.0.1:8001/health
+                    - proxy_set_header: Host $http_host
+                    - proxy_http_version: 1.1
+                    - proxy_set_header: X-Forwarded-For $remote_addr                    
                 - location /:
                     - 'if ($http_x_access_token != {{ access_token }})':
                         - return: 403
@@ -62,5 +67,3 @@ nginx:
                 - location /media/:
                     - expires: max
                     - alias: /var/www/media/
-                - location /heartbeat:
-                    - return: 200
