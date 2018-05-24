@@ -1,12 +1,13 @@
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'operations') %}
-{% set VPC_NAME = salt.environ.get('VPC_NAME', 'mitodl-operations-services') %}
-{% set VPC_RESOURCE_SUFFIX = salt.environ.get('VPC_RESOURCE_SUFFIX', 'operations') %}
-{% set subnet_ids = [] %}
-{% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
-    'public1-{}'.format(VPC_RESOURCE_SUFFIX), 'public2-{}'.format(VPC_RESOURCE_SUFFIX), 'public3-{}'.format(VPC_RESOURCE_SUFFIX)])['subnets'] %}
-{% do subnet_ids.append('{0}'.format(subnet['id'])) %}
-{% endfor %}
-{% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token').data.value %}
+{% set env_data = env_settings.environments[ENVIRONMENT] %}
+{% set VPC_NAME = env_data.vpc_name %}
+{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
+{% set launch_date = salt.status.time(format="%Y-%m-%d") %}
+{% set subnet_ids = salt.boto_vpc.describe_subnets(
+    vpc_id=salt.boto_vpc.describe_vpcs(
+        name=env_data.vpc_name).vpcs[0].id
+    ).subnets|map(attribute='id')|list %}
 
 ensure_backup_bucket_exists:
   boto_s3_bucket.present:
@@ -57,7 +58,7 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
                 - {{ salt.boto_secgroup.get_group_id(
                      'default', vpc_name=VPC_NAME) }}
                 - {{ salt.boto_secgroup.get_group_id(
-                     'consul-agent-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
+                     'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
     - require:
         - file: load_backup_host_cloud_profile
         - boto_iam_role: ensure_instance_profile_exists_for_backups
