@@ -45,8 +45,9 @@
       }
 } %}
 {% set env_data = env_dict[ENVIRONMENT] %}
-{% set pg_creds = salt.vault.read('postgres-{env}-odlvideo/creds/odlvideo'.format(env=ENVIRONMENT)) %}
-{% set rabbit_creds = salt.vault.read("rabbitmq-{env}/creds/odlvideo".format(env=ENVIRONMENT)) %}
+{% set minion_id = salt.grains.get('id', '') %}
+{% set pg_creds = salt.vault.cached_read('postgres-{env}-odlvideo/creds/odlvideo'.format(env=ENVIRONMENT), cache_prefix=minion_id) %}
+{% set rabbit_creds = salt.vault.cached_read("rabbitmq-{env}/creds/odlvideo".format(env=ENVIRONMENT), cache_prefix=minion_id) %}
 
 python:
   versions:

@@ -52,7 +52,7 @@ nginx:
                     - proxy_pass: http://127.0.0.1:8001/health
                     - proxy_set_header: Host $http_host
                     - proxy_http_version: 1.1
-                    - proxy_set_header: X-Forwarded-For $remote_addr                    
+                    - proxy_set_header: X-Forwarded-For $remote_addr
                 - location /:
                     - 'if ($http_x_access_token != {{ access_token }})':
                         - return: 403

@@ -2,7 +2,8 @@
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
 {% set edxapp_mysql_host = 'mysql.service.consul' %}
 {% set edxapp_mysql_port = 3306 %}
-{% set edxapp_mysql_creds = salt.vault.read('mysql-{env}/creds/edxapp-{purpose}'.format(env=env, purpose=purpose)) %}
+{% set minion_id = salt.grains.get('id', '') %}
+{% set edxapp_mysql_creds = salt.vault.cached_read('mysql-{env}/creds/edxapp-{purpose}'.format(env=env, purpose=purpose), cache_prefix=minion_id) %}
 
 monit_app:
   modules:
