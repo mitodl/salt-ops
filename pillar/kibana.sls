@@ -1,8 +1,3 @@
-{% set mailgun_apps = {
-    'micromasters': 'mailgun-eng',
-    'discussions': 'mailgun-eng'} %}
-{% set slack_webhook_url = '__vault__::secret-operations/global/slack-odl/slack_webhook_url>data>value' %}
-
 elasticsearch:
   lookup:
     elastic_stack: True
