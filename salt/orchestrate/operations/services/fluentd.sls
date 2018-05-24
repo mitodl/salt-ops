@@ -1,12 +1,19 @@
-{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- ENVIRONMENT, BUSINESS_UNIT, PURPOSE_PREFIX, subnet_ids with context %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'operations') %}
+{% set env_data = env_settings.environments[ENVIRONMENT] %}
+{% set app_name = salt.environ.get('APP_NAME', 'fluentd') %}
+{% set VPC_NAME = env_data.vpc_name %}
 {% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', 2) %}
+{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
 {% set launch_date = salt.status.time(format="%Y-%m-%d") %}
-{% set app_name = 'fluentd' %}
+{% set subnet_ids = salt.boto_vpc.describe_subnets(
+    vpc_id=salt.boto_vpc.describe_vpcs(
+        name=env_data.vpc_name).vpcs[0].id
+    ).subnets|map(attribute='id')|list %}
 
 create_fluentd_aggregator_security_group:
   boto_secgroup.present:
-    - name: fluentd-{{ VPC_RESOURCE_SUFFIX }}
+    - name: fluentd-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
     - description: ACL for Fluentd aggretators
     - rules:
@@ -19,7 +26,7 @@ create_fluentd_aggregator_security_group:
             - '::/0'
         {% endfor %}
     - tags:
-        Name: fluentd-{{ VPC_RESOURCE_SUFFIX }}
+        Name: fluentd-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
@@ -33,7 +40,7 @@ load_{{ app_name }}_cloud_profile:
 
 generate_{{ app_name }}_cloud_map_file:
   file.managed:
-    - name: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_{{ app_name }}_map.yml
+    - name: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_{{ app_name }}_map.yml
     - source: salt://orchestrate/aws/map_templates/instance_map.yml
     - template: jinja
     - makedirs: True
@@ -69,7 +76,7 @@ ensure_instance_profile_exists_for_{{ app_name }}:
 deploy_{{ app_name }}_cloud_map:
   salt.runner:
     - name: cloud.map_run
-    - path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_{{ app_name }}_map.yml
+    - path: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_{{ app_name }}_map.yml
     - kwarg:
         parallel: True
         full_return: True

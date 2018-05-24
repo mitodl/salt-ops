@@ -1,7 +1,15 @@
-{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- ENVIRONMENT, BUSINESS_UNIT, PURPOSE_PREFIX, subnet_ids with context %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'operations') %}
+{% set env_data = env_settings.environments[ENVIRONMENT] %}
+{% set app_name = salt.environ.get('APP_NAME', 'kibana') %}
+{% set VPC_NAME = env_data.vpc_name %}
 {% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', 1) %}
-{% set app_name = 'kibana' %}
+{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
+{% set launch_date = salt.status.time(format="%Y-%m-%d") %}
+{% set subnet_ids = salt.boto_vpc.describe_subnets(
+    vpc_id=salt.boto_vpc.describe_vpcs(
+        name=env_data.vpc_name).vpcs[0].id
+    ).subnets|map(attribute='id')|list %}
 
 load_{{ app_name }}_cloud_profile:
   file.managed:
@@ -11,7 +19,7 @@ load_{{ app_name }}_cloud_profile:
 
 generate_{{ app_name }}_cloud_map_file:
   file.managed:
-    - name: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_{{ app_name }}_map.yml
+    - name: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_{{ app_name }}_map.yml
     - source: salt://orchestrate/aws/map_templates/instance_map.yml
     - template: jinja
     - makedirs: True
@@ -47,7 +55,7 @@ deploy_{{ app_name }}_cloud_map:
     - arg:
         - cloud.map_run
     - kwarg:
-        path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_{{ app_name }}_map.yml
+        path: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_{{ app_name }}_map.yml
         parallel: True
         full_return: True
     - require:
