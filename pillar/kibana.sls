@@ -11,10 +11,9 @@ kibana:
     config:
       elasticsearch_url: http://nearest-elasticsearch.query.consul:9200
     nginx_config:
-      server.name: logs.odl.mit.edu
-      server.ssl.enabled: true
-      server.ssl.certificate: /etc/salt/ssl/certs/kibana.odl.mit.edu.crt
-      server.ssl.key: /etc/salt/ssl/certs/kibana.odl.mit.edu.key
+      server_name: logs.odl.mit.edu
+      cert_path: /etc/salt/ssl/certs/kibana.odl.mit.edu.crt
+      key_path: /etc/salt/ssl/certs/kibana.odl.mit.edu.key
     nginx_extra_config_list:
       - ssl_client_certificate /etc/salt/ssl/certs/mitca.pem;
       - ssl_verify_client on;
