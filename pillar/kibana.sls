@@ -44,4 +44,4 @@ beacons:
         elastalert:
           onchangeonly: True
           interval: 30
-    disable_during_state_run: True
+    - disable_during_state_run: True
