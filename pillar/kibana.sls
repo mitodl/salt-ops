@@ -8,6 +8,8 @@ elasticsearch:
 
 kibana:
   lookup:
+    config:
+      elasticsearch_url: http://nearest-elasticsearch.query.consul:9200
     nginx_config:
       server.name: logs.odl.mit.edu
       server.ssl.enabled: true
