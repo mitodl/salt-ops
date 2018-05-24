@@ -97,7 +97,7 @@ base:
     - django.deploy
     - apps.redash.datasources
     - uwsgi
-  'roles:kibana and G@environment:operations':
+  'G@roles:kibana and G@environment:operations':
     - match: compound
     - elasticsearch.kibana
     - elasticsearch.kibana.nginx_extra_config
