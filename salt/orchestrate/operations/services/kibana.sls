@@ -82,8 +82,6 @@ build_{{ app_name }}_nodes:
     - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - highstate: True
-    - require:
-        - salt: deploy_consul_agent_to_{{ app_name }}_nodes
 
 update_mine_with_{{ app_name }}_node_data:
   salt.function:
@@ -96,11 +94,11 @@ update_mine_with_{{ app_name }}_node_data:
 {% set hosts = [] %}
 {% for host, grains in salt.saltutil.runner(
     'mine.get',
-    tgt='G@roles:{{ app_name }} and G@environment: {{ ENVIRONMENT }}', fun='grains.item', tgt_type='compound'
+    tgt='G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}', fun='grains.item', tgt_type='compound'
     ).items() %}
 {% do hosts.append(grains['external_ip']) %}
 {% endfor %}
-register_log_aggregator_dns:
+register_kibana_nodes_with_dns:
   boto_route53.present:
     - name: logs.odl.mit.edu
     - value: {{ hosts }}
