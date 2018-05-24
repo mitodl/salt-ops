@@ -24,9 +24,9 @@ kibana:
       - name: mitca
         path: /etc/salt/ssl/certs/mitca.pem
         contents: __vault__::secret-operations/global/mitca_ssl_cert>data>value
-  ssl:
-    cert_source: __vault__::secret-operations/global/odl_wildcard_cert>data>value
-    key_source: __vault__::secret-operations/global/odl_wildcard_cert>data>key
+    ssl:
+      cert_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>value
+      key_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>key
 
 beacons:
   service:
