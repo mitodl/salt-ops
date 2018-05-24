@@ -9,7 +9,7 @@
     vpc_id=salt.boto_vpc.describe_vpcs(
         name=env_data.vpc_name).vpcs[0].id
     ).subnets|map(attribute='id')|list %}
-{% set zone_names = salt.boto_route53.describe_hosted_zones|map(attribute='Name')|list %}
+{% set zone_names = salt.boto_route53.describe_hosted_zones()|map(attribute='Name')|list %}
 {% set domains = purpose.domains %}
 {% set security_groups = 'webapp-{}'.format(ENVIRONMENT) %}
 {% set elb_name = '{}-{}'.format(app_name, ENVIRONMENT)[:32].strip('-') %}
