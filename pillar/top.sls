@@ -15,6 +15,7 @@ base:
   'roles:kibana':
     - match: grain
     - kibana
+    - elastalert
   'roles:master':
     - match: grain
     - salt_master
