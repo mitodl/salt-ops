@@ -175,7 +175,6 @@ base:
     - mongodb
     - mongodb.consul_check
     - rabbitmq
-    - elasticsearch
     - edx.prod
     - rabbitmq.configure
     - edx.django_user
