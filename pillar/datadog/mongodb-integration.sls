@@ -1,4 +1,5 @@
-{% set mongodb_creds = salt.vault.read('mongodb-{env}/creds/datadog'.format(env=salt.grains.get('environment')), ignore_invalid=True) %}
+{% set minion_id = salt.grains.get('id', '') %}
+{% set mongodb_creds = salt.vault.cached_read('mongodb-{env}/creds/datadog'.format(env=salt.grains.get('environment')), cache_prefix=minion_id, ignore_invalid=True) %}
 
 {% if mongodb_creds %}
 datadog:

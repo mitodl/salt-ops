@@ -5,7 +5,8 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set purpose_data = env_data.purposes[app_name] %}
-{% set pg_creds = salt.vault.read('postgres-' ~ ENVIRONMENT ~ '-redash/creds/redash') %}
+{% set minion_id = salt.grains.get('id', '') %}
+{% set pg_creds = salt.vault.cached_read('postgres-' ~ ENVIRONMENT ~ '-redash/creds/redash', cache_prefix=minion_id) %}
 {% set redash_fluentd_webhook_token = salt.vault.read('secret-operations/global/redash_webhook_token').data.value %}
 
 schedule:
