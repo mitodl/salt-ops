@@ -134,7 +134,7 @@ base:
     - match: compound
     - edx
     - edx.ansible_vars
-    - edx.residential_ansible_vars
+    - edx.ansible_vars.residential
     - edx.scheduled_jobs
     - fluentd.mitx
     - datadog.nginx-integration
@@ -164,7 +164,7 @@ base:
     - consul.mitx-live
   'P@purpose:.*residential.* and not G@edx_codename:ginkgo':
     - match: compound
-    - edx.next_residential
+    - edx.ansible_vars.next_residential
   'G@roles:sandbox and P@environment:mitx-qa':
     - match: compound
     - edx
