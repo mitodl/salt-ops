@@ -57,6 +57,8 @@ nginx:
                 - ssl_session_timeout: 1d
                 - ssl_session_tickets: 'off'
                 - ssl_protocols:
+                    - TLSv1
+                    - TLSv1.1
                     - TLSv1.2
                     - TLSv1.3
                 - ssl_ciphers: "ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256\
