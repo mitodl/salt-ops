@@ -5,56 +5,54 @@
   )
 %}
 upstream gitreload_app_server {
-	ip_hash;
-  # For a TCP configuration:
-  server 127.0.0.1:{{ gr_env.PORT }} fail_timeout=300;
+    ip_hash;
+    # For a TCP configuration:
+    server 127.0.0.1:{{ gr_env.PORT }} fail_timeout=300;
 }
 
 server {
-  listen 443;
-  server_name {{ hostname }};
+    listen 443;
+    server_name {{ hostname }};
 
-  # MIT SSL Configuration
-  ssl on;
+    # MIT SSL Configuration
+    ssl on;
 
-  ssl_certificate {{ key_path }}.crt;
-  ssl_certificate_key {{ key_path }}.key;
+    ssl_certificate {{ key_path }}.crt;
+    ssl_certificate_key {{ key_path }}.key;
 
-  ssl_session_timeout 5m;
+    ssl_session_timeout 5m;
 
-  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-  ssl_ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS;
-  ssl_prefer_server_ciphers on;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS;
+    ssl_prefer_server_ciphers on;
 
-  client_max_body_size 20m;
+    client_max_body_size 20m;
 
-  auth_basic "Restricted Access";
-  auth_basic_user_file {{ htpasswd }};
-
-
-  location / {
-    try_files $uri @proxy_to_app;
-  }
+    auth_basic "Restricted Access";
+    auth_basic_user_file {{ htpasswd }};
 
 
-location @proxy_to_app {
-    proxy_set_header X-Forwarded-Proto $scheme;
-    proxy_set_header X-Forwarded-Port $http_x_forwarded_port;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header Host $http_host;
-	  proxy_read_timeout 5m;
+    location / {
+        try_files $uri @proxy_to_app;
+    }
 
-	  # MITx headers
-    proxy_set_header HostIP  $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Protocol $scheme;	# sets HTTP_X_FORWARDED_PROTOCOL
-	  proxy_set_header HTTP_X_FORWARDED_PROTO $scheme;	# sets HTTP_X_FORWARDED_PROTOCOL
 
-    proxy_redirect off;
-    proxy_pass http://gitreload_app_server;
-  }
+    location @proxy_to_app {
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Port $http_x_forwarded_port;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_read_timeout 5m;
 
-  error_page 502 /502.html;
-  location = /502.html {
-    root /etc/nginx/status;
-  }
+        # MITx headers
+        proxy_set_header HostIP  $proxy_add_x_forwarded_for;
+
+        proxy_redirect off;
+        proxy_pass http://gitreload_app_server;
+    }
+
+    error_page 502 /502.html;
+    location = /502.html {
+        root /etc/nginx/status;
+    }
 }
