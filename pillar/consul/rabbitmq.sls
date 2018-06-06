@@ -1,6 +1,6 @@
 consul:
   overrides:
-    version: 1.1.0
+    version: 0.9.3
   extra_configs:
     rabbitmq_service:
       service:
