@@ -47,7 +47,6 @@ base:
     - match: grain
     - rabbitmq
     - rabbitmq.tests
-    - rabbitmq.set_datadog_permissions
   'roles:consul_server':
     - match: grain
     - consul
