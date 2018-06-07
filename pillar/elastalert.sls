@@ -164,7 +164,7 @@ elasticsearch:
             minutes: 5
           alert:
             - slack
-          alert_text: "<!subteam^S9PK3B39V|devopseng> Rabbitmq AMQPLAIN login refused due to expired vault credentials"
+          alert_text: "<!subteam^S9PK3B39V|devopseng> Rabbitmq access denied or login refused due to invalid credentials"
           slack_webhook_url: {{ slack_webhook_url }}
           slack_channel_override: "#devops"
           slack_username_override: "Elastalert"
@@ -173,7 +173,7 @@ elasticsearch:
             - bool:
                 must:
                   - match:
-                      message: AMQPLAIN login refused
+                      message: invalid credentials
                   - match:
                       type: ERROR
                   - term:
