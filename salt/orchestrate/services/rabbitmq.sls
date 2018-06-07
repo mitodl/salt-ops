@@ -1,5 +1,14 @@
-{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- ENVIRONMENT, BUSINESS_UNIT, subnet_ids with context %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
+{% set env_data = env_settings.environments[ENVIRONMENT] %}
+{% set VPC_NAME = env_data.vpc_name %}
+{% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', 3) %}
+{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
+{% set launch_date = salt.status.time(format="%Y-%m-%d") %}
+{% set subnet_ids = salt.boto_vpc.describe_subnets(
+    vpc_id=salt.boto_vpc.describe_vpcs(
+        name=env_data.vpc_name).vpcs[0].id
+    ).subnets|map(attribute='id')|list %}
 {% set rabbitmq_admin_password = salt.vault.read('secret-{}/{}/rabbitmq-admin-password'.format(BUSINESS_UNIT, ENVIRONMENT)) %}
 {% if not rabbitmq_admin_password %}
 {% set rabbitmq_admin_password = salt.random.get_str(42) %}
@@ -25,19 +34,20 @@ load_rabbitmq_cloud_profile:
 
 generate_rabbitmq_cloud_map_file:
   file.managed:
-    - name: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_rabbitmq_map.yml
+    - name: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_rabbitmq_map.yml
     - source: salt://orchestrate/aws/map_templates/instance_map.yml
     - template: jinja
     - makedirs: True
     - context:
         service_name: rabbitmq
         environment_name: {{ ENVIRONMENT }}
-        num_instances: 3
+        num_instances: {{ INSTANCE_COUNT }}
         tags:
           business_unit: {{ BUSINESS_UNIT }}
           Department: {{ BUSINESS_UNIT }}
           OU: {{ BUSINESS_UNIT }}
           Environment: {{ ENVIRONMENT }}
+          launch-date: '{{ launch_date }}'
         roles:
           - rabbitmq
         securitygroupid:
@@ -58,7 +68,7 @@ ensure_instance_profile_exists_for_rabbitmq:
 deploy_rabbitmq_cloud_map:
   salt.runner:
     - name: cloud.map_run
-    - path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_rabbitmq_map.yml
+    - path: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_rabbitmq_map.yml
     - kwargs:
         parallel: True
     - require:
@@ -88,7 +98,7 @@ populate_mine_with_rabbitmq_node_data:
 
 build_rabbitmq_nodes:
   salt.state:
-    - tgt: 'G@roles:rabbitmq and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:rabbitmq and G@environment:{{ ENVIRONMENT }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
     - highstate: True
     - require:
