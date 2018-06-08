@@ -151,6 +151,31 @@ elasticsearch:
                       log_level: ERROR
                   - term:
                       environment.raw: mitx-production
+      - name: mitx_multiple_forum_roles
+        settings:
+          name: Multiple Forum roles on mitx instances
+          description: >-
+            Send a message anytime a 'Multiple Forum roles' message is
+            encountered in the mitx production logs.
+          type: frequency
+          index: logstash-*
+          num_events: 1
+          timeframe:
+            minutes: 5
+          alert:
+            - slack
+          alert_text: "<!subteam^S9PK3B39V|devopseng> Multiple Forum roles on mitx-production detected"
+          slack_webhook_url: {{ slack_webhook_url }}
+          slack_channel_override: "#mitx-eng"
+          slack_username_override: "Elastalert"
+          slack_msg_color: "warning"
+          filter:
+            - bool:
+                must:
+                  - match:
+                      message: returned more than one Role
+                  - term:
+                      environment.raw: mitx-production
       - name: rabbitmq_creds_expired
         settings:
           name: Rabbitmq AMQPLAIN login refused
