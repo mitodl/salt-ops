@@ -16,6 +16,7 @@ base:
     - match: grain
     - kibana
     - elastalert
+    - monit.lms_503
   'roles:master':
     - match: grain
     - salt_master

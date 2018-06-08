@@ -102,6 +102,7 @@ base:
     - elasticsearch.kibana.nginx_extra_config
     - elasticsearch.elastalert
     - datadog.plugins
+    - monit
   'P@environment:(operations|mitx-production)':
     - match: compound
     - datadog
