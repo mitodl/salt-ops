@@ -1,9 +1,11 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
+{% set purpose_prefix = purpose.strip('-live').strip('-draft') %}
 {% set purpose_suffix = purpose.replace('-', '_') %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set MYSQL_HOST = 'mysql.service.consul' %}
 {% set MYSQL_PORT = 3306 %}
+{% set cloudfront_dist = salt.boto_cloudfront.get_distribution(name=purpose_prefix ~ '-' ~ ENVIRONMENT ~ '-cdn') %}
 
 edx:
   ansible_vars:
@@ -31,6 +33,6 @@ edx:
        # MITx Residential XBlocks
         - name: edx-sga==0.8.2
         - name: rapid-response-xblock==0.0.2
-    EDXAPP_STATIC_URL_BASE: "https://d2qn4lwm63grp6.cloudfront.net/static/"
+    EDXAPP_STATIC_URL_BASE: "https://{{ cloudfront_dist.result.distribution.DomainName }}/static/"
     EDXAPP_LMS_ENV_EXTRA:
       GIT_IMPORT_STATIC: true
