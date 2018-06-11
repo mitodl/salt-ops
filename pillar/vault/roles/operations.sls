@@ -32,6 +32,10 @@ vault:
           GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO {% raw %}"{{name}}"{% endraw %} WITH GRANT OPTION;
         {% raw %}
         revocation_statements: >-
+          GRANT "{{name}}" TO odldevops WITH ADMIN OPTION;
+          REASSIGN OWNED BY "{{name}}" TO "saltmaster";
+          DROP OWNED BY "{{name}}";
+          REVOKE "saltmaster" FROM "{{name}}";
           REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM "{{name}}";
           REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM "{{name}}";
           REVOKE USAGE ON SCHEMA public FROM "{{name}}";
@@ -74,6 +78,10 @@ vault:
           ALTER DEFAULT PRIVILEGES FOR USER {% raw %}"{{name}}"{% endraw %} IN SCHEMA public GRANT SELECT ON SEQUENCES TO "saltmaster" WITH GRANT OPTION;
         {% raw %}
         revocation_statements: >-
+          GRANT "{{name}}" TO odldevops WITH ADMIN OPTION;
+          REASSIGN OWNED BY "{{name}}" TO "saltmaster";
+          DROP OWNED BY "{{name}}";
+          REVOKE "saltmaster" FROM "{{name}}";
           REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM "{{name}}";
           REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM "{{name}}";
           REVOKE USAGE ON SCHEMA public FROM "{{name}}";
@@ -113,6 +121,10 @@ vault:
           ALTER DEFAULT PRIVILEGES FOR USER {% raw %}"{{name}}"{% endraw %} IN SCHEMA public GRANT ALL PRIVILEGES ON SEQUENCES TO "redash" WITH GRANT OPTION;
         {% raw %}
         revocation_statements: >-
+          GRANT "{{name}}" TO odldevops WITH ADMIN OPTION;
+          REASSIGN OWNED BY "{{name}}" TO "redash";
+          DROP OWNED BY "{{name}}";
+          REVOKE "redash" FROM "{{name}}";
           REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM "{{name}}";
           REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM "{{name}}";
           REVOKE USAGE ON SCHEMA public FROM "{{name}}";
@@ -127,13 +139,17 @@ vault:
         max_ttl: {{ SIX_MONTHS }}
         creation_statements: >-
           {% raw %}CREATE USER "{{name}}" WITH PASSWORD '{{password}}' VALID UNTIL '{{expiration}}'{% endraw %};
-          GRANT {% raw %}"{{name}}"{% endraw %} TO odldevops;
+          GRANT {% raw %}"{{name}}"{% endraw %} TO odldevops WITH ADMIN OPTION;
           GRANT SELECT ON ALL TABLES IN SCHEMA public TO {% raw %}"{{name}}";{% endraw %}
           GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO {% raw %}"{{name}}";{% endraw %}
           ALTER DEFAULT PRIVILEGES FOR USER {% raw %}"{{name}}"{% endraw %} IN SCHEMA public GRANT SELECT ON TABLES TO "redash" WITH GRANT OPTION;
           ALTER DEFAULT PRIVILEGES FOR USER {% raw %}"{{name}}"{% endraw %} IN SCHEMA public GRANT SELECT ON SEQUENCES TO "redash" WITH GRANT OPTION;
         {% raw %}
         revocation_statements: >-
+          GRANT "{{name}}" TO odldevops WITH ADMIN OPTION;
+          REASSIGN OWNED BY "{{name}}" TO "redash";
+          DROP OWNED BY "{{name}}";
+          REVOKE "redash" FROM "{{name}}";
           REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM "{{name}}";
           REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM "{{name}}";
           REVOKE USAGE ON SCHEMA public FROM "{{name}}";
