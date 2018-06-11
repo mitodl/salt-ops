@@ -5,19 +5,18 @@
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_settings.business_unit) %}
 
 {% for purpose, settings in env_settings.purposes.items() %}
-{% if 'live' in purpose %}
-{% set purpose_prefix = purpose.strip('-live').strip('-draft') %}
+{% if '-live' in purpose %}
+{% set purpose_prefix = purpose.rsplit('-', 1)[0] %}
 {% set name = [purpose_prefix, ENVIRONMENT, 'cdn']|join('-') %}
-{% set business_unit = distribution.pop('business_unit', BUSINESS_UNIT) %}
 provision_cloudfront_distribution_for_{{ purpose }}_in_{{ ENVIRONMENT }}:
   boto_cloudfront.present:
     - name: {{ name }}
     - tags:
         Environment: {{ ENVIRONMENT }}
         Name: {{ name }}
-        business_unit: {{ business_unit }}
-        Department: {{ business_unit }}
-        OU: {{ business_unit }}
+        business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
         purpose: {{ purpose }}
     - config:
         Enabled: true
@@ -90,8 +89,8 @@ provision_cloudfront_distribution_for_{{ purpose }}_in_{{ ENVIRONMENT }}:
                 - TLSv1.1
                 - TLSv1.2
                 Quantity: 2
-            DomainName: {{ env_settings.purposes[purpose_prefix + suffix].domains[domain] }}
-            Id: Custom-{{ env_settings.purposes[purpose_prefix + suffix].domains[domain] }}
+            DomainName: {{ env_settings.purposes[purpose_prefix + '-' + suffix].domains[domain] }}
+            Id: Custom-{{ env_settings.purposes[purpose_prefix + '-' + suffix].domains[domain] }}
             OriginPath: ''
           {% endfor %}
           {% endfor %}
@@ -108,5 +107,5 @@ provision_cloudfront_distribution_for_{{ purpose }}_in_{{ ENVIRONMENT }}:
           MinimumProtocolVersion: TLSv1.1_2016
           SSLSupportMethod: sni-only
         WebACLId: ''
-{% endfor %}
 {% endif %}
+{% endfor %}
