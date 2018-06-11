@@ -33,6 +33,6 @@ edx:
        # MITx Residential XBlocks
         - name: edx-sga==0.8.2
         - name: rapid-response-xblock==0.0.2
-    EDXAPP_STATIC_URL_BASE: "https://{{ cloudfront_dist.distribution.DomainName }}/static/"
+    EDXAPP_STATIC_URL_BASE: "https://{{ cloudfront_dist.result.distribution.DomainName }}/static/"
     EDXAPP_LMS_ENV_EXTRA:
       GIT_IMPORT_STATIC: true
