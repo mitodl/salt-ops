@@ -30,7 +30,6 @@ current_residential_versions_qa: &current_residential_versions_qa
   xqueue_source_repo: 'https://github.com/mitodl/xqueue.git'
   xqueue: master
   xqwatcher_courses: master
-  xqwatcher_version: 20ab9e6d645b0b8850f14db558499e62e554d8a2
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
   theme: ginkgo
   codename: ginkgo
@@ -46,7 +45,6 @@ current_residential_versions_rp: &current_residential_versions_rp
   xqueue_source_repo: 'https://github.com/mitodl/xqueue'
   xqueue: master
   xqwatcher_courses: production
-  xqwatcher_version: 20ab9e6d645b0b8850f14db558499e62e554d8a2
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
   theme: ginkgo
   codename: ginkgo
@@ -62,7 +60,6 @@ next_residential_versions: &next_residential_versions
   xqueue_source_repo: 'https://github.com/mitodl/xqueue'
   xqueue: master
   xqwatcher_courses: master
-  xqwatcher_version: 20ab9e6d645b0b8850f14db558499e62e554d8a2
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
   theme: master
   codename: hawthorn
@@ -110,6 +107,13 @@ environments:
           cluster_id: next-res-draft
           purpose: next-residential-draft
     purposes:
+      xqwatcher:
+        business_unit: residential
+        versions:
+          xqwatcher: 20ab9e6d645b0b8850f14db558499e62e554d8a2
+          edx_config_repo: https://github.com/edx/configuration
+          edx_config_version: open-release/hawthorn.beta1
+        num_instances: 2
       current-residential-live:
         business_unit: residential
         domains:
@@ -212,6 +216,13 @@ environments:
           purpose: residential-draft
           cluster_id: residential-draft
     purposes:
+      xqwatcher:
+        business_unit: residential
+        versions:
+          xqwatcher: 20ab9e6d645b0b8850f14db558499e62e554d8a2
+          config_repo: https://github.com/edx/configuration
+          config_repo_version: open-release/hawthorn.beta1
+        num_instances: 2
       residential-draft:
         business_unit: residential
         domains:
