@@ -1,8 +1,6 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set env_data = env_settings.environments[environment] %}
-{% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
-{% set purpose_data = env_settings.environments[environment].purposes[purpose] %}
 {% set xqwatcher_venv_base = '/edx/app/xqwatcher/venvs' %}
 
 edx:
