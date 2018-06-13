@@ -57,6 +57,10 @@ vault:
           ALTER DEFAULT PRIVILEGES FOR USER {% raw %}"{{name}}"{% endraw %} IN SCHEMA public GRANT ALL PRIVILEGES ON SEQUENCES TO "saltmaster" WITH GRANT OPTION;
         {% raw %}
         revocation_statements: >-
+          GRANT "{{name}}" TO odldevops WITH ADMIN OPTION;
+          REASSIGN OWNED BY "{{name}}" TO "saltmaster";
+          DROP OWNED BY "{{name}}";
+          REVOKE "saltmaster" FROM "{{name}}";
           REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM "{{name}}";
           REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM "{{name}}";
           REVOKE USAGE ON SCHEMA public FROM "{{name}}";
