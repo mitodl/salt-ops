@@ -11,8 +11,6 @@ edx:
   ansible_vars:
     EDXAPP_CELERY_BROKER_HOSTNAME: nearest-rabbitmq.query.consul
     EDXAPP_CELERY_BROKER_TRANSPORT: 'amqp'
-    EDXAPP_ENABLE_CSMH_EXTENDED: True
-    EDXAPP_ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES: True
     EDXAPP_EXTRA_MIDDLEWARE_CLASSES: [] # Worth keeping track of in case we need to take advantage of it
     EDXAPP_MONGO_REPLICA_SET: rs0
     EDXAPP_MYSQL_CSMH_DB_NAME: edxapp_csmh_{{ purpose_suffix }}
@@ -36,3 +34,5 @@ edx:
     EDXAPP_STATIC_URL_BASE: "https://{{ cloudfront_dist.result.distribution.DomainName }}/static/"
     EDXAPP_LMS_ENV_EXTRA:
       GIT_IMPORT_STATIC: true
+      ENABLE_CSMH_EXTENDED: True
+      ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES: True
