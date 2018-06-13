@@ -173,11 +173,11 @@ elasticsearch:
             - bool:
                 must:
                   - match:
-                      message: returned more than one Role
+                      message.raw: returned more than one Role
                   - term:
                       environment.raw: mitx-production
                   - term:
-                      fluentd_tag: edx.lms
+                      fluentd_tag.raw: edx.lms
       - name: rabbitmq_creds_expired
         settings:
           name: Rabbitmq AMQPLAIN login refused
