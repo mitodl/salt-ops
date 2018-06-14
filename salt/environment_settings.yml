@@ -220,8 +220,8 @@ environments:
         business_unit: residential
         versions:
           xqwatcher: 20ab9e6d645b0b8850f14db558499e62e554d8a2
-          config_repo: https://github.com/edx/configuration
-          config_repo_version: open-release/hawthorn.beta1
+          edx_config_repo: https://github.com/edx/configuration
+          edx_config_version: open-release/hawthorn.beta1
         num_instances: 2
       residential-draft:
         business_unit: residential
