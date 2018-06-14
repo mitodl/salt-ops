@@ -7,6 +7,9 @@ rabbitmq:
   overrides:
     version: '3.7.4-1'
     erlang_version: '1:20.1'
+  environment:
+    RABBITMQ_CTL_DIST_PORT_MIN: 35672
+    RABBITMQ_CTL_DIST_PORT_MAX: 35672
   configuration:
     cluster_partition_handling: autoheal
     cluster_partition_handling.pause_if_all_down.recover: autoheal
