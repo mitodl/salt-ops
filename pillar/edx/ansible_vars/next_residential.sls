@@ -5,7 +5,7 @@
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set MYSQL_HOST = 'mysql.service.consul' %}
 {% set MYSQL_PORT = 3306 %}
-{% set cloudfront_dist = salt.boto_cloudfront.get_distribution(name=purpose_prefix ~ '-' ~ environment ~ '-cdn') %}
+{% set cloudfront_domain = salt.sdb.get('sdb://consul/cloudfront/' ~ purpose_prefix ~ '-' ~ environment ~ '-cdn') %}
 
 edx:
   ansible_vars:
@@ -31,7 +31,7 @@ edx:
        # MITx Residential XBlocks
         - name: edx-sga==0.8.2
         - name: rapid-response-xblock==0.0.2
-    EDXAPP_STATIC_URL_BASE: "https://{{ cloudfront_dist.result.distribution.DomainName }}/static/"
+    EDXAPP_STATIC_URL_BASE: "https://{{ cloudfront_domain }}/static/"
     EDXAPP_LMS_ENV_EXTRA:
       ALLOW_ALL_ADVANCED_COMPONENTS: True
       GIT_IMPORT_STATIC: true
