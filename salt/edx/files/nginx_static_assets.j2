@@ -22,7 +22,7 @@
     }
 
     # Redirect registration page to authentication page
-    location ~ ^/register/(.*)$ {
+    location /register/ {
         return 301 https://$host/login;
     }
 
