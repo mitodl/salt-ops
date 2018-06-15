@@ -149,6 +149,7 @@ uwsgi:
         - buffer-size: 65535
         - chdir: /opt/{{ app_name }}
         - chown-socket: 'www-data:deploy'
+        - disable-write-exception: 'true'
         - enable-threads: 'true'
         - gid: deploy
         - logto: /var/log/uwsgi/apps/%n.log
