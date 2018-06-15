@@ -21,6 +21,11 @@
         try_files /staticfiles/$collected /course_static/$collected =404;
     }
 
+    # Redirect registration page to authentication page
+    location /register {
+        return 301 https://$host/login;
+    }
+
     # Expire other static files immediately (there should be very few / none of these)
     expires epoch;
   }
