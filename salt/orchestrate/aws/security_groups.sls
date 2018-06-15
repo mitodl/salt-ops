@@ -163,6 +163,10 @@ create_rabbitmq_security_group:
           from_port: 25672
           to_port: 25672
           source_group_name: rabbitmq-{{ ENVIRONMENT }}
+        - ip_protocol: tcp
+          from_port: 35672
+          to_port: 35682
+          source_group_name: rabbitmq-{{ ENVIRONMENT }}
     - tags:
         Name: rabbitmq-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
