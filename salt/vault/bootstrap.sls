@@ -14,7 +14,7 @@ enable_syslog_audit_backend:
     - backend_type: syslog
 
 create_salt_master_policy:
-  vault.policy_created:
+  vault.policy_present:
     - name: salt-master
     - rules:
         path:
