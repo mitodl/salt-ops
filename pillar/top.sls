@@ -78,7 +78,7 @@ base:
     - shibboleth.redash
     - apps.redash
     - apps.redash_data_sources
-  'P@environment:(mitx-qa|mitx-production|operations|rc-apps|production-apps)':
+  'P@environment:(mitx-qa|mitx-production|operations|rc-apps|production-apps|micromasters)':
     - match: compound
     - datadog
     - consul
