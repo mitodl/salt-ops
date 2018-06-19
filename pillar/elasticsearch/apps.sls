@@ -26,6 +26,8 @@ elasticsearch:
           - name: Cluster access within VPC
             type: allow
             accept_x-forwarded-for_header: 'true'
+            indices:
+              - <no-index>
             actions:
               - 'cluster:*'
             hosts:
