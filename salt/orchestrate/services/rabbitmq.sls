@@ -101,6 +101,7 @@ build_rabbitmq_nodes:
     - tgt: 'G@roles:rabbitmq and G@environment:{{ ENVIRONMENT }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
     - highstate: True
+    - batch: 1
     - require:
         - salt: populate_mine_with_rabbitmq_node_data
     - pillar:
