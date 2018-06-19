@@ -22,39 +22,39 @@ edxapp_secret_backends: &edxapp_secret_backends
 
 current_residential_versions_qa: &current_residential_versions_qa
   edx_config_repo: https://github.com/mitodl/configuration
-  edx_config_version: open-release/ginkgo.master
+  edx_config_version: open-release/hawthorn.beta1
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
-  edxapp: mitx/ginkgo
+  edxapp: mitx/hawthorn
   forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
-  forum: open-release/ginkgo.master
-  xqueue_source_repo: 'https://github.com/mitodl/xqueue.git'
-  xqueue: master
-  xqwatcher_courses: master
+  forum: open-release/hawthorn.beta1
+  xqueue_source_repo: 'https://github.com/mitodl/xqueue'
+  xqueue: open-release/hawthorn.beta1
+  xqwatcher_courses: production
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
-  theme: ginkgo
-  codename: ginkgo
+  theme: hawthorn
+  codename: hawthorn
   ami_id: ami-80861296
 
 current_residential_versions_rp: &current_residential_versions_rp
   edx_config_repo: https://github.com/mitodl/configuration
-  edx_config_version: open-release/ginkgo.master
+  edx_config_version: open-release/hawthorn.beta1
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
-  edxapp: mitx/ginkgo
+  edxapp: mitx/hawthorn
   forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
-  forum: open-release/ginkgo.master
+  forum: open-release/hawthorn.beta1
   xqueue_source_repo: 'https://github.com/mitodl/xqueue'
-  xqueue: master
+  xqueue: open-release/hawthorn.beta1
   xqwatcher_courses: production
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
-  theme: ginkgo
-  codename: ginkgo
+  theme: hawthorn
+  codename: hawthorn
   ami_id: ami-80861296
 
 next_residential_versions: &next_residential_versions
   edx_config_repo: https://github.com/edx/configuration.git
-  edx_config_version: open-release/hawthorn.beta1
+  edx_config_version: master
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
-  edxapp: mitx/hawthorn
+  edxapp: master
   forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
   forum: master
   xqueue_source_repo: 'https://github.com/mitodl/xqueue'
@@ -62,7 +62,7 @@ next_residential_versions: &next_residential_versions
   xqwatcher_courses: master
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
   theme: master
-  codename: hawthorn
+  codename: ironwood
   ami_id: ami-80861296
 
 sandbox_residential_versions: &sandbox_residential_versions
