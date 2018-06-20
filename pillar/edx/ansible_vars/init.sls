@@ -76,7 +76,7 @@ edx:
     EDXAPP_MONGO_USER: __vault__:cache:mongodb-{{ environment }}/creds/contentstore-{{ purpose }}>data>username
     {# TODO: revisit once PKI is deployed (tmacey 2017/03/17) #}
     EDXAPP_MONGO_USE_SSL: {{ MONGODB_USE_SSL }}
-    EDXAPP_CONTENTSTORE_ADDITIONAL_OPTIONS:
+    EDXAPP_CONTENTSTORE_ADDITIONAL_OPTS:
       default:
         db: contentstore_{{ purpose_suffix }}
         password: __vault__:cache:mongodb-{{ environment }}/creds/contentstore-{{ purpose }}>data>password
