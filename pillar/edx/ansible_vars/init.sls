@@ -113,13 +113,13 @@ edx:
       connectTimeoutMS: 2000
 
     EDXAPP_CMS_DOC_STORE_CONFIG:
-      db: modulestore_{{ purpose_suffix }}
+      db: contentstore_{{ purpose_suffix }}
       host: "{{ MONGODB_HOST }}"
       {# multivariate, vault #}
-      password: __vault__:cache:mongodb-{{ environment }}/creds/modulestore-{{ purpose }}>data>password
+      password: __vault__:cache:mongodb-{{ environment }}/creds/contentstore-{{ purpose }}>data>password
       port: {{ MONGODB_PORT }}
       {# multivariate, vault #}
-      user: __vault__:cache:mongodb-{{ environment }}/creds/modulestore-{{ purpose }}>data>username
+      user: __vault__:cache:mongodb-{{ environment }}/creds/contentstore-{{ purpose }}>data>username
       collection: 'modulestore'
       replicaset: "{{ MONGODB_REPLICASET }}"
       readPreference: "nearest"
