@@ -5,10 +5,10 @@
 # profiles because it's easier than managing IAM keys
 {% set env_data = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-qa') %}
-{% set env_settings = env_settings.environments[ENVIRONMENT] %}
+{% set env_settings = env_data.environments[ENVIRONMENT] %}
 {% set PURPOSE_PREFIX = salt.environ.get('PURPOSE_PREFIX', 'current-residential') %}
-{% set VPC_NAME = env_data.vpc_name %}
-{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
+{% set VPC_NAME = env_settings.vpc_name %}
+{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_settings.business_unit) %}
 
 {% for profile in ['consul', 'mongodb', 'rabbitmq', 'edx'] %}
 ensure_instance_profile_exists_for_{{ profile }}:
