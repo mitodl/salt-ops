@@ -76,6 +76,11 @@ edx:
     EDXAPP_MONGO_USER: __vault__:cache:mongodb-{{ environment }}/creds/contentstore-{{ purpose }}>data>username
     {# TODO: revisit once PKI is deployed (tmacey 2017/03/17) #}
     EDXAPP_MONGO_USE_SSL: {{ MONGODB_USE_SSL }}
+    EDXAPP_CONTENTSTORE_ADDITIONAL_OPTIONS:
+      default:
+        db: contentstore_{{ purpose_suffix }}
+        password: __vault__:cache:mongodb-{{ environment }}/creds/contentstore-{{ purpose }}>data>password
+        user: __vault__:cache:mongodb-{{ environment }}/creds/contentstore-{{ purpose }}>data>username
 
     {# Settings for Module Store #}
     {# We have to replicate the data three times in order to allow for #}
@@ -113,13 +118,13 @@ edx:
       connectTimeoutMS: 2000
 
     EDXAPP_CMS_DOC_STORE_CONFIG:
-      db: contentstore_{{ purpose_suffix }}
+      db: modulestore_{{ purpose_suffix }}
       host: "{{ MONGODB_HOST }}"
       {# multivariate, vault #}
-      password: __vault__:cache:mongodb-{{ environment }}/creds/contentstore-{{ purpose }}>data>password
+      password: __vault__:cache:mongodb-{{ environment }}/creds/modulestore-{{ purpose }}>data>password
       port: {{ MONGODB_PORT }}
       {# multivariate, vault #}
-      user: __vault__:cache:mongodb-{{ environment }}/creds/contentstore-{{ purpose }}>data>username
+      user: __vault__:cache:mongodb-{{ environment }}/creds/modulestore-{{ purpose }}>data>username
       collection: 'modulestore'
       replicaset: "{{ MONGODB_REPLICASET }}"
       readPreference: "nearest"
