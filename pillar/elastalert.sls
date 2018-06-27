@@ -2,6 +2,7 @@
     'micromasters': 'mailgun-eng',
     'discussions': 'mailgun-eng'} %}
 {% set slack_webhook_url = '__vault__::secret-operations/global/slack-odl/slack_webhook_url>data>value' %}
+{% set opsgenie_key = ' __vault__::secret-operations/global/opsgenie/opsgenie_ops_team_api>data>value' %}
 
 elasticsearch:
   elastalert:
@@ -43,18 +44,16 @@ elasticsearch:
           description: >-
             Send a message anytime an ssh session is established on any
             of the mitx instances so that it can be further investigated.
+          opsgenie_key: {{ opsgenie_key }}
+          opsgenie_priority: P2
           type: frequency
           index: logstash-*
           num_events: 1
           timeframe:
             minutes: 5
           alert:
-            - slack
+            - opsgenie
           alert_text: "SSH session detected"
-          slack_webhook_url: __vault__::secret-operations/global/slack/slack_webhook_url>data>value
-          slack_channel_override: "#devops"
-          slack_username_override: "Elastalert"
-          slack_msg_color: "warning"
           filter:
             - bool:
                 must:
@@ -75,18 +74,16 @@ elasticsearch:
           description: >-
             Send a message anytime an 'Operational Failure' message is
             encountered in the mitx production logs.
+          opsgenie_key: {{ opsgenie_key }}
+          opsgenie_priority: P1
           type: frequency
           index: logstash-*
           num_events: 1
           timeframe:
             minutes: 5
           alert:
-            - slack
-          alert_text: "<!subteam^S9PK3B39V|devopseng> Operational Failure on mitx-production detected"
-          slack_webhook_url: {{ slack_webhook_url }}
-          slack_channel_override: "#mitx-eng"
-          slack_username_override: "Elastalert"
-          slack_msg_color: "warning"
+            - opsgenie
+          alert_text: "Operational Failure on mitx-production detected"
           filter:
             - bool:
                 must:
@@ -94,43 +91,14 @@ elasticsearch:
                       message: OperationFailure
                   - term:
                       environment.raw: mitx-production
-      - name: mitx_gitreload_slack_alert
-        settings:
-          name: git reload error on mitx instances - slack
-          description: >-
-            Send a message anytime an error message containing git_import.py or
-            git_export_utils.py is encountered in the mitx production logs.
-          type: frequency
-          index: logstash-*
-          num_events: 1
-          timeframe:
-            minutes: 5
-          alert:
-            - slack
-          alert_text: "<!subteam^S9PK3B39V|devopseng> git-reload error on mitx-production detected"
-          slack_webhook_url: {{ slack_webhook_url }}
-          slack_channel_override: "#devops"
-          slack_username_override: "Elastalert"
-          slack_msg_color: "warning"
-          filter:
-            - bool:
-                should:
-                  - term:
-                      filename: git_import.py
-                  - term:
-                      filename: git_export_utils.py
-                must:
-                  - term:
-                      log_level: ERROR
-                  - term:
-                      environment.raw: mitx-production
-      - name: mitx_gitreload_opsgenie_alert
+      - name: mitx_gitreload_alert
         settings:
           name: git reload error on mitx instances - opsgenie
           description: >-
             Send a message anytime an error message containing git_import.py or
             git_export_utils.py is encountered in the mitx production logs.
-          opsgenie_key: __vault__::secret-operations/global/opsgenie/opsgenie_ops_team_api>data>value
+          opsgenie_key: {{ opsgenie_key }}
+          opsgenie_priority: P3
           type: frequency
           index: logstash-*
           num_events: 5
@@ -157,18 +125,16 @@ elasticsearch:
           description: >-
             Send a message anytime a 'Multiple Forum roles' message is
             encountered in the mitx production logs.
+          opsgenie_key: {{ opsgenie_key }}
+          opsgenie_priority: P3
           type: frequency
           index: logstash-*
           num_events: 1
           timeframe:
             minutes: 5
           alert:
-            - slack
-          alert_text: "<!subteam^S9PK3B39V|devopseng> Multiple Forum roles on mitx-production detected"
-          slack_webhook_url: {{ slack_webhook_url }}
-          slack_channel_override: "#mitx-eng"
-          slack_username_override: "Elastalert"
-          slack_msg_color: "warning"
+            - opsgenie
+          alert_text: "Multiple Forum roles on mitx-production detected"
           filter:
             - bool:
                 must:
@@ -184,18 +150,16 @@ elasticsearch:
           description: >-
             Send a message anytime an 'AMQPLAIN login refused' message is
             encountered in the rabbitmq.server logs due to expired vault credentials.
+          opsgenie_key: {{ opsgenie_key }}
+          opsgenie_priority: P2
           type: frequency
           index: logstash-*
           num_events: 1
           timeframe:
             minutes: 5
           alert:
-            - slack
-          alert_text: "<!subteam^S9PK3B39V|devopseng> Rabbitmq access denied or login refused due to invalid credentials"
-          slack_webhook_url: {{ slack_webhook_url }}
-          slack_channel_override: "#devops"
-          slack_username_override: "Elastalert"
-          slack_msg_color: "warning"
+            - opsgenie
+          alert_text: "Rabbitmq access denied or login refused due to invalid credentials"
           filter:
             - bool:
                 must:
@@ -210,20 +174,18 @@ elasticsearch:
           name: FluentD server S3 credentials
           description: >-
             Notify when the IAM credentials for FluentD are expired
+          opsgenie_key: {{ opsgenie_key }}
+          opsgenie_priority: P2
           type: frequency
           index: logstash-*
           num_events: 1
           timeframe:
             minutes: 30
           alert:
-            - slack
+            - opsgenie
           alert_text: >-
-             <!subteam^S9PK3B39V|devopseng> The IAM credentials for the FluentD servers to ship
+             The IAM credentials for the FluentD servers to ship
              to S3 have expired and need to be regenerated.
-          slack_webhook_url: {{ slack_webhook_url }}
-          slack_channel_override: "#devops"
-          slack_username_override: "Elastalert"
-          slack_msg_color: "warning"
           filter:
             - bool:
                 must:
@@ -239,6 +201,8 @@ elasticsearch:
           description: >-
               Notify for any time that the volume of logs for a particular
               log source is outside of normal bounds
+          opsgenie_key: {{ opsgenie_key }}
+          opsgenie_priority: P5
           type: spike
           index: logstash-*
           query_key: fluentd_tag
@@ -251,35 +215,29 @@ elasticsearch:
           use_count_query: True
           doc_type: fluentd
           alert:
-            - slack
-          alert_text: "<!subteam^S9PK3B39V|devopseng> The number of messages for tag {0} is outside of the normal bounds"
+            - opsgenie
+          alert_text: "The number of messages for tag {0} is outside of the normal bounds"
           alert_text_args:
             - fluentd_tag
-          slack_webhook_url: {{ slack_webhook_url }}
-          slack_channel_override: "#devops"
-          slack_username_override: "Elastalert"
-          slack_msg_color: "warning"
       - name: nginx_bad_gateway
         settings:
           name: Alert on bad gateway errors from Nginx
           description: >-
             Notify for occurrences of 502 errors on applications that use Nginx to proxy requests to an upstream
             process
+          opsgenie_key: {{ opsgenie_key }}
+          opsgenie_priority: P1
           type: frequency
           index: logstash-*
           num_events: 1
           timeframe:
             minutes: 5
           alert:
-            - slack
+            - opsgenie
           alert_text: >-
-            <!subteam^S9PK3B39V|devopseng> The upstream service on {0} is not responding to Nginx
+            The upstream service on {0} is not responding to Nginx
           alert_text_args:
             - minion_id
-          slack_webhook_url: {{ slack_webhook_url }}
-          slack_channel_override: "#devops"
-          slack_username_override: Elastalert
-          slack_msg_color: warning
           filter:
             - bool:
                 must:
