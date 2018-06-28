@@ -1,5 +1,5 @@
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT') %}
-{% set PURPOSE_PREFIX = salt.environ.get('PURPOSE_PREFIX') %}
+{% set PURPOSE = salt.environ.get('PURPOSE', 'current-residential-draft') %}
 {% set env_dict = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set env_settings = env_dict.environments[ENVIRONMENT] %}
 {% set VPC_NAME = salt.environ.get('VPC_NAME', env_settings.vpc_name) %}
@@ -17,7 +17,7 @@
 {% set EDX_VERSION = salt.environ.get('EDX_VERSION') %}
 {% set THEME_VERSION = salt.environ.get('THEME_VERSION', 'ficus') %}
 {% set purposes = env_settings.purposes %}
-{% set edx_codename = purposes[PURPOSE_PREFIX +'-live'].versions.codename %}
+{% set edx_codename = purposes[PURPOSE].versions.codename %}
 {% set instance_name = 'edxapp-{}-base-{}'.format(edx_codename, ENVIRONMENT) %}
 {% set worker_instance_name = 'edx-worker-{}-base-{}'.format(edx_codename, ENVIRONMENT) %}
 
@@ -45,13 +45,13 @@ create_edx_baseline_instance_in_{{ ENVIRONMENT }}:
     - grains:
         business_unit: {{ BUSINESS_UNIT }}
         environment: {{ ENVIRONMENT }}
-        purpose: {{ PURPOSE_PREFIX }}-draft
+        purpose: {{ PURPOSE }}
         edx_codename: {{ edx_codename }}
     - vm_overrides:
         tag:
           business_unit: {{ BUSINESS_UNIT }}
           environment: {{ ENVIRONMENT }}
-          purpose_prefix: {{ PURPOSE_PREFIX }}
+          purpose: {{ PURPOSE }}
           edx_codename: {{ edx_codename }}
         network_interfaces:
           - DeviceIndex: 0
@@ -78,13 +78,13 @@ create_edx_worker_baseline_instance_in_{{ ENVIRONMENT }}:
     - grains:
         business_unit: {{ BUSINESS_UNIT }}
         environment: {{ ENVIRONMENT }}
-        purpose: {{ PURPOSE_PREFIX }}-draft
+        purpose: {{ PURPOSE }}
         edx_codename: {{ edx_codename }}
     - vm_overrides:
         tag:
           business_unit: {{ BUSINESS_UNIT }}
           environment: {{ ENVIRONMENT }}
-          purpose_prefix: {{ PURPOSE_PREFIX }}
+          purpose: {{ PURPOSE }}
           edx_codename: {{ edx_codename }}
         network_interfaces:
           - DeviceIndex: 0
