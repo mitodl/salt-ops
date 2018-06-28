@@ -213,7 +213,7 @@ environments:
           preview: preview-mitx-qa-testing.mitx.mit.edu
           gitreload: prod-gr-qa-testing.mitx.mit.edu
         versions:
-          <<: *continous_delivery_versions
+          <<: *continuous_delivery_versions
         instances:
           edx:
             number: 1
