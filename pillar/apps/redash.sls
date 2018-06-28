@@ -51,6 +51,8 @@ django:
     REDASH_EVENT_REPORTING_WEBHOOKS: https://log-input.odl.mit.edu/redash-webhook/redash/events?token={{ redash_fluentd_webhook_token }}
     REDASH_HOST: https://bi.odl.mit.edu
     REDASH_LOG_LEVEL: INFO
+    REDASH_LOG_PREFIX: REDASH
+    REDASH_LOG_STDOUT: 'true'
     REDASH_MAIL_PASSWORD: __vault__::secret-{{ purpose_data.business_unit }}/{{ ENVIRONMENT }}/{{ app_name }}/sendgrid-credentials>data>password
     REDASH_MAIL_PORT: __vault__::secret-{{ purpose_data.business_unit }}/{{ ENVIRONMENT }}/{{ app_name }}/sendgrid-credentials>data>port
     REDASH_MAIL_SERVER: __vault__::secret-{{ purpose_data.business_unit }}/{{ ENVIRONMENT }}/{{ app_name }}/sendgrid-credentials>data>server
@@ -111,12 +113,7 @@ uwsgi:
         - env: '%(_)'
         - endfor: ''
         - attach-daemon2: >-
-            cmd=/usr/local/pyenv/versions/{{ python_version }}/bin/celery worker -A redash.worker -B -c2 -Qqueries,celery --pidfile /opt/{{ app_name }}/celery.pid -Ofair,
-            pidfile=/opt/{{ app_name }}/celery.pid,
-            daemonize=true,
-            touch=/opt/{{ app_name}}/deploy_complete.txt
-        - attach-daemon2: >-
-            cmd=/usr/local/pyenv/versions/{{ python_version }}/bin/celery worker -A redash.worker -c2 -Qscheduled_queries --pidfile /opt/{{ app_name }}/celery.pid -Ofair,
+            cmd=/usr/local/pyenv/versions/{{ python_version }}/bin/celery worker -A redash.worker -B -c2 -Qscheduled_queries\,queries\,celery --pidfile /opt/{{ app_name }}/celery.pid -Ofair --maxtasksperchild=10 -linfo,
             pidfile=/opt/{{ app_name }}/celery.pid,
             daemonize=true,
             touch=/opt/{{ app_name}}/deploy_complete.txt
