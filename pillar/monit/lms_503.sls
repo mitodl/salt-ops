@@ -7,5 +7,5 @@ monit_app:
         with:
           address: lms.mitx.mit.edu
         if:
-          failed: port 443 protocol https status = 503
+          failed: port 443 protocol https request "/heartbeat" status = 200
           action: exec "/bin/sh -c /usr/local/bin/slack.sh"
