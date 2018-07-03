@@ -24,7 +24,7 @@ edx:
       tag:
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
-        purpose_prefix: {{ purpose_prefix }}
+        purpose: {{ purpose }}
         {% for tag_name, tag_value in tags.items() %}
         {{ tag_name }}: '{{ tag_value }}'
         {% endfor %}
@@ -34,11 +34,9 @@ edx:
         {% for tag_name, tag_value in tags.items() %}
         {{ tag_name }}: '{{ tag_value }}'
         {% endfor %}
-        {% set modified_purpose = purpose_prefix + '-' + app_type %}
-        purpose: {{ modified_purpose }}
+        purpose: {{ purpose }}
         roles:
           - edx
-          - edx-{{ app_type }}
       {% for profile_setting, profile_value in profile_overrides.items() %}
       {{ profile_setting }}: {{ profile_value }}
       {% endfor %}
@@ -65,7 +63,7 @@ edx-worker:
       tag:
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
-        purpose_prefix: {{ purpose_prefix }}
+        purpose: {{ purpose }}
         {% for tag_name, tag_value in tags.items() %}
         {{ tag_name }}: '{{ tag_value }}'
         {% endfor %}
@@ -75,11 +73,9 @@ edx-worker:
         {% for tag_name, tag_value in tags.items() %}
         {{ tag_name }}: '{{ tag_value }}'
         {% endfor %}
-        {% set modified_purpose = purpose_prefix + '-' + app_type %}
-        purpose: {{ modified_purpose }}
+        purpose: {{ purpose }}
         roles:
           - edx-worker
-          - edx-worker-{{ app_type }}
       {% for profile_setting, profile_value in profile_overrides.items() %}
       {{ profile_setting }}: {{ profile_value }}
       {% endfor %}
