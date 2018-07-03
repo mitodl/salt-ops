@@ -1,18 +1,15 @@
-{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- ENVIRONMENT, BUSINESS_UNIT, PURPOSE_PREFIX, subnet_ids with context %}
-
 {% set profile_overrides = profile_overrides|default({}) %}
 {% set tags = tags|default({}) %}
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set purposes = env_settings.purposes %}
-{% set codename = purposes[PURPOSE_PREFIX +'-live'].versions.codename %}
-{% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
 {% set num_subnets = subnetids|length %}
 
 edx:
-  {% for app_type, settings in app_types.items() %}
+  {% for purpose, settings in app_types.items() %}
+  {% set codename = purposes[purpose].versions.codename %}
+  {% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
   {% for id_num in range(settings.instances.edx.number) %}
-  - edx-{{ environment_name }}-{{ purpose_prefix }}-{{ app_type }}-{{ id_num }}-v{{ release_number }}:
+  - edx-{{ environment_name }}-{{ purpose }}-{{ id_num }}-v{{ release_number }}:
       image: {{ salt.sdb.get('sdb://consul/edx_{}_ami_id'.format(codename)) }}
       size: {{ settings.instances.edx.type }}
       network_interfaces:
@@ -27,21 +24,23 @@ edx:
       tag:
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
-        purpose_prefix: {{ purpose_prefix }}
+        purpose: {{ purpose }}
+        edx_codename: {{ codename }}
+        release-version: {{ release_number }}
         {% for tag_name, tag_value in tags.items() %}
         {{ tag_name }}: '{{ tag_value }}'
         {% endfor %}
       grains:
+        edx_codename: {{ codename }}
+        release-version: {{ release_number }}
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
         {% for tag_name, tag_value in tags.items() %}
         {{ tag_name }}: '{{ tag_value }}'
         {% endfor %}
-        {% set modified_purpose = purpose_prefix + '-' + app_type %}
-        purpose: {{ modified_purpose }}
+        purpose: {{ purpose }}
         roles:
           - edx
-          - edx-{{ app_type }}
       {% for profile_setting, profile_value in profile_overrides.items() %}
       {{ profile_setting }}: {{ profile_value }}
       {% endfor %}
@@ -49,9 +48,11 @@ edx:
 {% endfor %}
 
 edx-worker:
-  {% for app_type, settings in app_types.items() %}
+  {% for purpose, settings in app_types.items() %}
+  {% set codename = purposes[purpose].versions.codename %}
+  {% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
   {% for id_num in range(settings.instances['edx-worker'].number) %}
-  - edx-worker-{{ environment_name }}-{{ purpose_prefix }}-{{ app_type }}-{{ id_num }}-v{{ release_number }}:
+  - edx-worker-{{ environment_name }}-{{ purpose }}-{{ id_num }}-v{{ release_number }}:
       image: {{ salt.sdb.get('sdb://consul/edx_worker_{}_ami_id'.format(codename)) }}
       size: {{ settings.instances['edx-worker'].type }}
       network_interfaces:
@@ -66,21 +67,24 @@ edx-worker:
       tag:
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
-        purpose_prefix: {{ purpose_prefix }}
+        purpose: {{ purpose }}
+        edx_codename: {{ codename }}
+        release-version: {{ release_number }}
+        release
         {% for tag_name, tag_value in tags.items() %}
         {{ tag_name }}: '{{ tag_value }}'
         {% endfor %}
       grains:
+        edx_codename: {{ codename }}
+        release-version: {{ release_number }}
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
         {% for tag_name, tag_value in tags.items() %}
         {{ tag_name }}: '{{ tag_value }}'
         {% endfor %}
-        {% set modified_purpose = purpose_prefix + '-' + app_type %}
-        purpose: {{ modified_purpose }}
+        purpose: {{ purpose }}
         roles:
           - edx-worker
-          - edx-worker-{{ app_type }}
       {% for profile_setting, profile_value in profile_overrides.items() %}
       {{ profile_setting }}: {{ profile_value }}
       {% endfor %}

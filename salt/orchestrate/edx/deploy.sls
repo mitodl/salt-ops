@@ -1,7 +1,7 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-qa') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
-{% set PURPOSE_PREFIX = salt.environ.get('PURPOSE_PREFIX', 'current-residential') %}
+{% set PURPOSES = salt.environ.get('PURPOSES', 'current-residential-draft,current-residential-live').split(',') %}
 {% set VPC_NAME = env_data.vpc_name %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
 {% set launch_date = salt.status.time(format="%Y-%m-%d") %}
@@ -10,10 +10,8 @@
         name=env_data.vpc_name).vpcs[0].id
     ).subnets|map(attribute='id')|list|sort(reverse=True) %}
 {% set ANSIBLE_FLAGS = salt.environ.get('ANSIBLE_FLAGS') %}
-{% set purposes = env_data.purposes %}
+{% set defined_purposes = env_data.purposes %}
 {% set bucket_prefixes = env_data.secret_backends.aws.bucket_prefixes %}
-{% set codename = purposes[PURPOSE_PREFIX +'-live'].versions.codename %}
-{% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
 {% set launch_date = salt.status.time(format="%Y-%m-%d") %}
 {% set edx_tracking_bucket = 'odl-residential-tracking-backup' %}
 
@@ -52,7 +50,6 @@ generate_edx_cloud_map_file:
     - context:
         business_unit: {{ BUSINESS_UNIT }}
         environment_name: {{ ENVIRONMENT }}
-        purpose_prefix: {{ PURPOSE_PREFIX }}
         securitygroupids:
           edxapp: {{ salt.boto_secgroup.get_group_id(
               'edx-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
@@ -66,19 +63,17 @@ generate_edx_cloud_map_file:
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids }}
         tags:
-          release-version: '{{ release_version }}'
           launch-date: '{{ launch_date }}'
           Department: {{ BUSINESS_UNIT }}
           OU: {{ BUSINESS_UNIT }}
           Environment: {{ ENVIRONMENT }}
-          edx_codename: {{ codename }}
         profile_overrides:
           userdata_file: '/etc/salt/cloud.d/edx_userdata.yml'
         app_types:
-          draft:
-            instances: {{ purposes['{}-draft'.format(PURPOSE_PREFIX)].instances }}
-          live:
-            instances: {{ purposes['{}-live'.format(PURPOSE_PREFIX)].instances }}
+          {% for purpose_name in PURPOSES %}
+          {{ purpose_name }}:
+            instances: {{ defined_purposes[purpose_name].instances }}
+          {% endfor %}
     - require:
         - file: load_edx_cloud_profile
         - file: load_edx_worker_cloud_profile
@@ -109,10 +104,10 @@ ensure_instance_profile_exists_for_tracking:
         - boto_s3_bucket: ensure_tracking_bucket_exists
 
 {% for bucket in bucket_prefixes %}
-{% for type in ['draft', 'live'] %}
-create_edx_s3_bucket_{{ bucket }}_{{ PURPOSE_PREFIX }}-{{ type }}_{{ ENVIRONMENT }}:
+{% for purpose in PURPOSES %}
+create_edx_s3_bucket_{{ bucket }}_{{ purpose }}_{{ ENVIRONMENT }}:
   boto_s3_bucket.present:
-    - Bucket: {{ bucket }}-{{ PURPOSE_PREFIX }}-{{ type }}-{{ ENVIRONMENT }}
+    - Bucket: {{ bucket }}-{{ purpose }}-{{ ENVIRONMENT }}
     - region: us-east-1
     - Versioning:
        Status: "Enabled"
@@ -145,38 +140,9 @@ deploy_edx_cloud_map:
     - require:
         - file: generate_edx_cloud_map_file
 
-deploy_mitx_analytics_instance:
-  salt.runner:
-    - name: cloud.profile
-    - prof: edx
-    - intances:
-        - analytics-{{ ENVIRONMENT }}-{{ PURPOSE_PREFIX }}-live
-    - grains:
-        business_unit: {{ BUSINESS_UNIT }}
-        environment: {{ ENVIRONMENT }}
-        purpose: {{ PURPOSE_PREFIX }}-draft
-        launch-date: '{{ launch_date }}'
-    - vm_overrides:
-        image: {{ salt.sdb.get('sdb://consul/edx_{}_ami_id'.format(codename)) }}
-        tag:
-          business_unit: {{ BUSINESS_UNIT }}
-          environment: {{ ENVIRONMENT }}
-          launch-date: '{{ launch_date }}'
-          purpose_prefix: {{ PURPOSE_PREFIX }}
-        network_interfaces:
-          - DeviceIndex: 0
-            AssociatePublicIpAddress: True
-            SecurityGroupId:
-              - {{ salt.boto_secgroup.get_group_id(
-              'edx-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-              - {{ salt.boto_secgroup.get_group_id(
-              'default', vpc_name=VPC_NAME) }}
-              - {{ salt.boto_secgroup.get_group_id(
-              'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-              - {{ salt.boto_secgroup.get_group_id(
-              'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-            SubnetId: {{ subnet_ids[0] }}
-
+{% for purpose in PURPOSES %}
+{% set codename = defined_purposes[purpose].versions.codename %}
+{% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
 sync_external_modules_for_edx_nodes:
   salt.function:
     - name: saltutil.sync_all
@@ -228,3 +194,4 @@ restart_supervisor_processes_after_deploy:
         - all
     - kwarg:
         bin_env: /edx/bin/supervisorctl
+{% endfor %}

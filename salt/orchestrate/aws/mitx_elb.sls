@@ -1,7 +1,7 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-qa') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
-{% set PURPOSE_PREFIX = salt.environ.get('PURPOSE_PREFIX', 'current-residential') %}
+{% set PURPOSES = salt.environ.get('PURPOSES', 'current-residential-live,current-residential-draft').split(',') %}
 {% set VPC_NAME = env_data.vpc_name %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
 
@@ -11,14 +11,12 @@
         name=env_data.vpc_name).vpcs[0].id
     ).subnets|map(attribute='id')|list %}
 {% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-{env}'.format(env=ENVIRONMENT)]) %}
-{% set purposes = env_data.purposes %}
-{% set codename = purposes[PURPOSE_PREFIX +'-live'].versions.codename %}
-{% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
+{% set defined_purposes = env_data.purposes %}
 
-{% for edx_type in ['draft', 'live'] %}
-{% set purpose_name = '{prefix}-{app}'.format(
-    prefix=PURPOSE_PREFIX, app=edx_type) %}
-{% set purpose = purposes[purpose_name] %}
+{% for purpose_name in PURPOSES %}
+{% set codename = defined_purposes[purpose_name].versions.codename %}
+{% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
+{% set purpose = defined_purposes[purpose_name] %}
 {% set elb_name = 'edx-{purpose}-{env}'.format(
    purpose=purpose_name, env=ENVIRONMENT)[:32].strip('-') %}
 create_elb_for_edx_{{ purpose_name }}:
@@ -81,10 +79,10 @@ register_edx_{{ purpose_name }}_nodes_with_elb:
     - require:
         - boto_elb: create_elb_for_edx_{{ purpose_name }}
 
-{% if edx_type == 'live' %}
+{% if 'live' in purpose_name %}
 {% set elb_name = 'edx-{prefix}-studio-live-{env}'.format(
-   prefix=PURPOSE_PREFIX, env=ENVIRONMENT)[:32].strip('-') %}
-create_elb_for_edx_{{ PURPOSE_PREFIX }}_studio_live:
+   prefix=purpose_name.rsplit('-', 1)[0], env=ENVIRONMENT)[:32].strip('-') %}
+create_elb_for_edx_{{ purpose_name }}_studio:
   boto_elb.present:
     - name: {{ elb_name }}
     - listeners:
@@ -128,7 +126,7 @@ create_elb_for_edx_{{ PURPOSE_PREFIX }}_studio_live:
         business_unit: {{ BUSINESS_UNIT }}
         created_at: "{{ launch_date }}"
 
-register_edx_{{ PURPOSE_PREFIX }}_studio_live_nodes_with_elb:
+register_edx_{{ purpose_name }}_studio_nodes_with_elb:
   boto_elb.register_instances:
     - name: {{ elb_name }}
     - instances:
@@ -138,6 +136,6 @@ register_edx_{{ PURPOSE_PREFIX }}_studio_live_nodes_with_elb:
             version=release_version)) }}
         {% endfor %}
     - require:
-        - boto_elb: create_elb_for_edx_{{ PURPOSE_PREFIX }}_studio_live
+        - boto_elb: create_elb_for_edx_{{ purpose_name }}_studio
 {% endif %}
 {% endfor %}
