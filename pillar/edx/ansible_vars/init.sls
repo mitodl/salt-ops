@@ -73,6 +73,7 @@ edx:
     EDXAPP_MONGO_HOSTS: {{ MONGODB_HOST }}
     EDXAPP_MONGO_PASSWORD: __vault__:cache:mongodb-{{ environment }}/creds/contentstore-{{ purpose }}>data>password
     EDXAPP_MONGO_PORTS: {{ MONGODB_PORT }}
+    EDXAPP_MONGO_REPLICA_SET: rs0
     EDXAPP_MONGO_USER: __vault__:cache:mongodb-{{ environment }}/creds/contentstore-{{ purpose }}>data>username
     {# TODO: revisit once PKI is deployed (tmacey 2017/03/17) #}
     EDXAPP_MONGO_USE_SSL: {{ MONGODB_USE_SSL }}
@@ -147,6 +148,8 @@ edx:
     #####################################################################
     EDXAPP_AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/mitx-s3-{{ purpose }}-{{ environment }}>data>access_key
     EDXAPP_AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/mitx-s3-{{ purpose }}-{{ environment }}>data>secret_key
+    EDXAPP_CELERY_BROKER_HOSTNAME: nearest-rabbitmq.query.consul
+    EDXAPP_CELERY_BROKER_TRANSPORT: 'amqp'
     EDXAPP_CELERY_PASSWORD: __vault__:cache:rabbitmq-{{ environment }}/creds/celery-{{ purpose }}>data>password
     EDXAPP_CELERY_USER: __vault__:cache:rabbitmq-{{ environment }}/creds/celery-{{ purpose }}>data>username
     EDXAPP_LMS_AUTH_EXTRA:
@@ -237,7 +240,7 @@ edx:
         RESTRICT_ENROLL_NO_ATSIGN_USERNAMES: true
       FIELD_OVERRIDE_PROVIDERS:
         - courseware.student_field_overrides.IndividualStudentOverrideProvider
-      GIT_IMPORT_STATIC: false
+      GIT_IMPORT_STATIC: True
       OAUTH_OIDC_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
 
     EDXAPP_CMS_ENV_EXTRA:

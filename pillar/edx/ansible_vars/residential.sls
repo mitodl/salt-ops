@@ -143,10 +143,6 @@ edx:
     XQUEUE_MYSQL_PASSWORD: __vault__:cache:mysql-{{ environment }}/creds/xqueue-{{ purpose }}>data>password
     XQUEUE_MYSQL_PORT: {{ MYSQL_PORT }}
     XQUEUE_MYSQL_USER: __vault__:cache:mysql-{{ environment }}/creds/xqueue-{{ purpose }}>data>username
-    XQUEUE_RABBITMQ_HOSTNAME: nearest-rabbitmq.query.consul
-    XQUEUE_RABBITMQ_PASS: __vault__:cache:rabbitmq-{{ environment }}/creds/xqueue-{{ purpose }}>data>password  # deprecated TMM 2018-05-14
-    XQUEUE_RABBITMQ_USER: __vault__:cache:rabbitmq-{{ environment }}/creds/xqueue-{{ purpose }}>data>username  # deprecated TMM 2018-05-14
-    XQUEUE_RABBITMQ_VHOST: /xqueue_{{ purpose_suffix }}  # deprecated TMM 2018-05-14
     XQUEUE_UPLOAD_BUCKET: mitx-grades-{{ purpose }}-{{ environment }}
     xqueue_source_repo: {{ purpose_data.versions.xqueue_source_repo }}
     xqueue_version: {{ purpose_data.versions.xqueue }}
@@ -184,6 +180,12 @@ edx:
     forum_source_repo: {{ purpose_data.versions.forum_source_repo }}
     forum_version: {{ purpose_data.versions.forum }}
     ########## END FORUM ########################################
+
+    EDXAPP_MYSQL_CSMH_DB_NAME: edxapp_csmh_{{ purpose_suffix }}
+    EDXAPP_MYSQL_CSMH_HOST: {{ MYSQL_HOST }}
+    EDXAPP_MYSQL_CSMH_PASSWORD: __vault__:cache:mysql-{{ environment }}/creds/edxapp-csmh-{{ purpose }}>data>password
+    EDXAPP_MYSQL_CSMH_PORT: {{ MYSQL_PORT }}
+    EDXAPP_MYSQL_CSMH_USER: __vault__:cache:mysql-{{ environment }}/creds/edxapp-csmh-{{ purpose }}>data>username
 
     EDXAPP_DEFAULT_FILE_STORAGE: 'storages.backends.s3boto.S3BotoStorage'
     EDXAPP_AWS_STORAGE_BUCKET_NAME: mitx-storage-{{ purpose }}-{{ environment }}
@@ -228,6 +230,8 @@ edx:
       REMOTE_GRADEBOOK_USER: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>user
       REMOTE_GRADEBOOK_PASSWORD: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>password
     EDXAPP_BUGS_EMAIL: mitx-support@mit.edu
+    EDXAPP_COMMENTS_SERVICE_KEY: __vault__::secret-residential/global/forum-api-key>data>value
+    EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
     EDXAPP_LMS_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
     {# multivariate, only needed for current deployment. will be removed in favor of SAML (tmacey 2017/03/20) #}
     EDXAPP_CAS_ATTRIBUTE_PACKAGE: 'git+https://github.com/mitodl/mitx_cas_mapper#egg=mitx_cas_mapper'
@@ -249,17 +253,30 @@ edx:
     EDXAPP_GRADE_STORAGE_TYPE: S3
     EDXAPP_GIT_REPO_DIR: "{{ edxapp_git_repo_dir }}"
     EDXAPP_PLATFORM_NAME: MITx Residential
-    # EDXAPP_PLATFORM_DESCRIPTION: 'Your Platform Description Here'
+    EDXAPP_PLATFORM_DESCRIPTION: 'MITx Residential Online Course Portal'
+    EDXAPP_PRIVATE_REQUIREMENTS:
+        # For Harvard courses:
+        # Peer instruction XBlock
+        - name: ubcpi-xblock==0.6.4
+        # Vector Drawing and ActiveTable XBlocks (Davidson)
+        - name: git+https://github.com/open-craft/xblock-vectordraw.git@c57df9d98119fd2ca4cb31b9d16c27333cdc65ca#egg=xblock-vectordraw==0.2.1
+          extra_args: -e
+        - name: git+https://github.com/open-craft/xblock-activetable.git@e933d41bb86a8d50fb878787ca680165a092a6d5#egg=xblock-activetable
+          extra_args: -e
+       # MITx Residential XBlocks
+        - name: edx-sga==0.8.2
+        - name: rapid-response-xblock==0.0.2
+    EDXAPP_STATIC_URL_BASE: "https://{{ cloudfront_domain }}/static/"
     EDXAPP_TECH_SUPPORT_EMAIL: mitx-support@mit.edu
     EDXAPP_CMS_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
-    EDXAPP_COMMENTS_SERVICE_KEY: __vault__::secret-residential/global/forum-api-key>data>value
-    EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
 
     common_feature_flags: &common_feature_flags
       AUTH_USE_CAS: true
       REROUTE_ACTIVATION_EMAIL: mitx-support@mit.edu
       ENABLE_INSTRUCTOR_ANALYTICS: true
       ENABLE_INSTRUCTOR_LEGACY_DASHBOARD: true
+      ENABLE_CSMH_EXTENDED: True
+      ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES: True
 
     common_env_config: &common_env_config
       ADDL_INSTALLED_APPS:
@@ -282,6 +299,7 @@ edx:
       BULK_EMAIL_DEFAULT_FROM_EMAIL: mitx-support@mit.edu
       COURSE_ABOUT_VISIBILITY_PERMISSION: "{{ edxapp_course_about_visibility_permission }}"
       COURSE_CATALOG_VISIBILITY_PERMISSION: "{{ edxapp_course_catalog_visibility_permission }}"
+      ALLOW_ALL_ADVANCED_COMPONENTS: True
       FEATURES:
         <<: *common_feature_flags
         ALLOW_COURSE_STAFF_GRADE_DOWNLOADS: true
