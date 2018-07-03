@@ -1,0 +1,56 @@
+#+AUTHOR: Tobias Macey
+#+TITLE: MIT Open Learning DevOps Post Mortem: Vault Lease Expirations
+#+DATE: 2018-06-15
+
+* Overview
+  On Friday, June 15th, 2018 a large number of credentials for data storage systems managed by Vault were revoked,
+  leading to an outage in the MITx Residential platform and the ODL Video Service.
+
+* Timeline
+  All times are in EST
+  - 11:24 - an automated alert identified an operational error in the ODL Video Service system due Nginx being
+    unable to communicate with the Python application process
+  - 11:28 - members of the MITx team began having troubles accessing the production LMS
+  - 11:36 - DevOps identifies revoked Vault leases as the cause of the service outages
+  - DevOps discovers that Salt master authentication to Vault has expired
+  - DevOps begins re-establishing connection between Vault and Salt by generating a new root certificate
+  - Generated root certificate fails to authenticate with Vault, delaying recovery process
+  - The reason for root token authentication failures is identified as the result of missing the final step of decoding the returned token
+  - Communication between the Salt master and the Vault cluster is re-established
+  - Pillar data for MITx QA and rc-apps environments are regenerated and applied to verify proper operation
+  - Pillar data for MITx Production, BI, and production-apps environments are regenerated and applied, restoring normal operation
+  - 13:31 - ODL Video Service resumes operation
+  - 13:32 - MITx Residential Production resumes operation
+
+* Resolution
+  The systems were recovered by re-establishing the connection between the Salt master and the Vault servers, followed
+  by regenerating the affected pillar data and recreating relevant configuration files with the new credentials. Once
+  this step was completed the Vault servers were stopped to prevent further lease revocation until the root cause could
+  be determined and understood.
+
+* Root Cause
+  The root cause of the lease revocation and the associated outage was that several of the dynamically generated
+  credentials used by the affected systems were set to expire at that time and were accordingly cleaned up by the Vault
+  task that periodically revokes expired leases. This was also affected by recent work that was done to resolve errors
+  in how expired leases for PostGreSQL databases revoked credentials that had prevented previously expired leases from
+  being removed.
+
+  There is a script that scans the active leases in Vault and alerts on those that will be expiring as a means of
+  identifying and addressing situations of this type before they impact running systems. The reason that this situation
+  was not identified and addressed before it impacted production was due to an incorrect parameter used during the
+  execution of this script the day prior. The script in question accepts a parameter labeled ~time_horizon~ which
+  accepts an integer parameter to indicate the number of seconds from the current time in which a lease will be
+  considered for notifying of imminent expiration. When it was run there was confusion as to the units expected by the
+  script and so rather than using 7*24*60*60 for that parameter, the value 7 was used instead with the belief that the
+  resulting output would correspond to the next 7 days of expiring leases.
+
+  A complicating factor in the recovery time was that the credentials for the Salt master were not renewed prior to
+  their expiration so that it was necessary to recover that connection prior to regenerating credentials for other
+  affected systems. If the connection between Salt and Vault had not been lost then the total time to recover would have
+  been substantially reduced.
+
+* Follow Up Tasks
+  - Update lease scanning script to use a more sensible default of 7 days instead of 0 seconds (Done)
+  - Re-enable periodic scanning of upcoming lease expiration (Done)
+  - Schedule weekly automatic configuration updates for systems that use dynamic credentials
+  - Research, document, and implement disaster recovery processes for total loss of Vault service
