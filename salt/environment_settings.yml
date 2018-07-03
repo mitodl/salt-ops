@@ -77,7 +77,7 @@ edxapp_continuous_delivery_versions: &continuous_delivery_versions
   xqwatcher_courses: master
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
   theme: master
-  codename: tumbleweed
+  codename: testing
   ami_id: ami-80861296
 
 sandbox_residential_versions: &sandbox_residential_versions
@@ -96,6 +96,16 @@ environments:
     secret_backends:
       <<: *edxapp_secret_backends
     backends:
+      rds:
+        - name: mitx-cas
+          multi_az: False
+          engine: postgres
+          vault_plugin: postgresql-database-plugin
+          db_instance_class: db.t2.small
+          allocated_storage: 50
+          public_access: False
+          engine_version: 10.1
+          purpose: mitx-cas
       elasticache:
         - engine: memcached
           engine_version: 1.4.34
@@ -234,6 +244,16 @@ environments:
     secret_backends:
       <<: *edxapp_secret_backends
     backends:
+      rds:
+        - name: mitx-cas
+          multi_az: True
+          engine: postgres
+          vault_plugin: postgresql-database-plugin
+          db_instance_class: db.t2.small
+          allocated_storage: 100
+          public_access: False
+          engine_version: 10.1
+          purpose: mitx-cas
       elasticache:
         - engine: memcached
           engine_version: 1.4.34
