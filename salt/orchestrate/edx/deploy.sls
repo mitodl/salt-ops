@@ -12,8 +12,6 @@
 {% set ANSIBLE_FLAGS = salt.environ.get('ANSIBLE_FLAGS') %}
 {% set defined_purposes = env_data.purposes %}
 {% set bucket_prefixes = env_data.secret_backends.aws.bucket_prefixes %}
-{% set codename = defined_purposes[PURPOSE_PREFIX +'-live'].versions.codename %}
-{% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
 {% set launch_date = salt.status.time(format="%Y-%m-%d") %}
 {% set edx_tracking_bucket = 'odl-residential-tracking-backup' %}
 
@@ -51,7 +49,6 @@ generate_edx_cloud_map_file:
     - makedirs: True
     - context:
         business_unit: {{ BUSINESS_UNIT }}
-        codename: {{ codename }}
         environment_name: {{ ENVIRONMENT }}
         securitygroupids:
           edxapp: {{ salt.boto_secgroup.get_group_id(
@@ -66,12 +63,10 @@ generate_edx_cloud_map_file:
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids }}
         tags:
-          release-version: '{{ release_version }}'
           launch-date: '{{ launch_date }}'
           Department: {{ BUSINESS_UNIT }}
           OU: {{ BUSINESS_UNIT }}
           Environment: {{ ENVIRONMENT }}
-          edx_codename: {{ codename }}
         profile_overrides:
           userdata_file: '/etc/salt/cloud.d/edx_userdata.yml'
         app_types:
@@ -145,6 +140,9 @@ deploy_edx_cloud_map:
     - require:
         - file: generate_edx_cloud_map_file
 
+{% for purpose in PURPOSES %}
+{% set codename = defined_purposes[purpose].versions.codename %}
+{% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
 sync_external_modules_for_edx_nodes:
   salt.function:
     - name: saltutil.sync_all
@@ -196,3 +194,4 @@ restart_supervisor_processes_after_deploy:
         - all
     - kwarg:
         bin_env: /edx/bin/supervisorctl
+{% endfor %}

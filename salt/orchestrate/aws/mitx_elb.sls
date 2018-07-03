@@ -12,10 +12,10 @@
     ).subnets|map(attribute='id')|list %}
 {% set security_groups = salt.pillar.get('edx:lb_security_groups', ['default', 'edx-{env}'.format(env=ENVIRONMENT)]) %}
 {% set defined_purposes = env_data.purposes %}
-{% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
 
 {% for purpose_name in PURPOSES %}
 {% set codename = defined_purposes[purpose_name].versions.codename %}
+{% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
 {% set purpose = defined_purposes[purpose_name] %}
 {% set elb_name = 'edx-{purpose}-{env}'.format(
    purpose=purpose_name, env=ENVIRONMENT)[:32].strip('-') %}
