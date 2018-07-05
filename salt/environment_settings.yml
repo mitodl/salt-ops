@@ -101,6 +101,12 @@ environments:
           engine_version: 1.4.34
           node_type: cache.t2.small
           num_cache_nodes: 1
+          cluster_id: continuous-delivery
+          purpose: continuous-delivery
+        - engine: memcached
+          engine_version: 1.4.34
+          node_type: cache.t2.small
+          num_cache_nodes: 1
           cluster_id: current-res-live
           purpose: current-residential-live
         - engine: memcached
