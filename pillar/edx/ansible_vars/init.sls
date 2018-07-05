@@ -171,7 +171,6 @@ edx:
     EDXAPP_ANALYTICS_DASHBOARD_URL: !!null
     {# multivariate #}
     EDXAPP_CELERY_BROKER_VHOST: /celery_{{ purpose_suffix }}
-    EDXAPP_CELERY_BROKER_TRANSPORT: 'amqp'
     EDXAPP_CMS_BASE: {{ CMS_DOMAIN }}
     EDXAPP_CMS_MAX_REQ: 1000
     EDXAPP_ENABLE_CSMH_EXTENDED: False
