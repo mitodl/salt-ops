@@ -1,6 +1,6 @@
 {% set profile_overrides = profile_overrides|default({}) %}
 {% set tags = tags|default({}) %}
-{% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
+{% set env_settings = salt.pillar.get('environments:{}'.format(environment_name)) %}
 {% set purposes = env_settings.purposes %}
 {% set num_subnets = subnetids|length %}
 
