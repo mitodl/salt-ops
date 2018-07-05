@@ -28,7 +28,7 @@ create_elb_for_edx_{{ purpose_name }}:
           elb_protocol: HTTPS
           instance_protocol: HTTPS
           certificate: arn:aws:acm:us-east-1:610119931565:certificate/31cbdb62-7553-472b-979a-3063c3e1fddc
-          {% if edx_type == 'draft' %}
+          {% if 'draft' in purpose_name %}
           policies:
             - {{ elb_name }}-sticky-cookie-policy
           {% endif %}
@@ -36,7 +36,7 @@ create_elb_for_edx_{{ purpose_name }}:
           instance_port: 80
           elb_protocol: HTTP
           instance_protocol: HTTP
-          {% if edx_type == 'draft' %}
+          {% if 'draft' in purpose_name %}
           policies:
             - {{ elb_name }}-sticky-cookie-policy
           {% endif %}
@@ -48,7 +48,7 @@ create_elb_for_edx_{{ purpose_name }}:
           timeout: 300
     - cnames:
         {% for domain_key, domain in purpose.domains.items()  %}
-        {% if not (edx_type == 'live' and domain_key == 'cms') %}
+        {% if not ('live' in purpose_name and domain_key == 'cms') %}
         - name: {{ domain }}.
           zone: mitx.mit.edu.
           ttl: 60
