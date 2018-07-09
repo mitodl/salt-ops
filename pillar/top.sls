@@ -177,8 +177,8 @@ base:
     - match: glob
     - edx.xqwatcher
     - edx.xqwatcher_686
-  'amps-redirect':
-    - match: glob
+  'roles:amps-redirect':
+    - match: grain
     - nginx
     - nginx.amps
   'G@roles:backups and P@environment:mitx-(qa|production)':
