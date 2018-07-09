@@ -22,8 +22,8 @@ base:
   'lightsail-xqwatcher-686':
     - match: glob
     - edx.xqwatcher
-  'amps-redirect':
-    - match: glob
+  'roles:amps-redirect':
+    - match: grain
     - nginx.ng
     - nginx.ng.certificates
   'roles:backups':
