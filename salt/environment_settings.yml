@@ -316,6 +316,11 @@ environments:
         domains:
           - bi.odl.mit.edu
         business_unit: operations
+      amps-redirect:
+        num_instances: 1
+        domains:
+          - amps.odl.mit.edu
+          business_unit: operations
     backends:
       elasticache:
         - engine: redis
