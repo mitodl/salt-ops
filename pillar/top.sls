@@ -180,7 +180,7 @@ base:
   'roles:amps-redirect':
     - match: grain
     - nginx
-    - nginx.amps
+    - nginx.amps_redirect
   'G@roles:backups and P@environment:mitx-(qa|production)':
     - match: compound
     - backups.mitx
