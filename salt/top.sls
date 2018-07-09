@@ -22,7 +22,7 @@ base:
   'lightsail-xqwatcher-686':
     - match: glob
     - edx.xqwatcher
-  'nginx-amps-redirect':
+  'amps-redirect':
     - match: glob
     - nginx.ng
     - nginx.ng.certificates
