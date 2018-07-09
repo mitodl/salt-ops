@@ -320,7 +320,7 @@ environments:
         num_instances: 1
         domains:
           - amps.odl.mit.edu
-          business_unit: operations
+        business_unit: operations
     backends:
       elasticache:
         - engine: redis
