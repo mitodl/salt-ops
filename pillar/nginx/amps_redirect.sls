@@ -15,7 +15,7 @@ nginx:
           enabled: True
           config:
             - server:
-                - server_name: amps.odl.mit.edu
+                - server_name: amps-web.amps.ms.mit.edu
                 - listen:
                     - 80
                 - listen:
@@ -23,7 +23,7 @@ nginx:
                 - location /:
                     - return: 301 https://docs.google.com/forms/d/e/1FAIpQLSdvkI2cPG1iMM4gN_KyKem4fNLh4irWzrmjX-JhcFXa51su5g/viewform?fbzx=2658557852628862500
             - server:
-                - server_name: amps.odl.mit.edu
+                - server_name: amps-web.amps.ms.mit.edu
                 - listen:
                     - 443
                     - ssl
