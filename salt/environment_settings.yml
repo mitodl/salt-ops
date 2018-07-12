@@ -250,7 +250,7 @@ environments:
       <<: *edxapp_secret_backends
     backends:
       rds:
-        - name: mitx-cas
+        - name: mitxcas
           multi_az: True
           engine: postgres
           vault_plugin: postgresql-database-plugin
