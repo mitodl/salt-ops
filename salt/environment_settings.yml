@@ -96,6 +96,16 @@ environments:
     secret_backends:
       <<: *edxapp_secret_backends
     backends:
+      rds:
+        - name: mitx-cas
+          multi_az: False
+          engine: postgres
+          vault_plugin: postgresql-database-plugin
+          db_instance_class: db.t2.small
+          allocated_storage: 50
+          public_access: False
+          engine_version: 10.1
+          purpose: mitx-cas
       elasticache:
         - engine: memcached
           engine_version: 1.4.34
@@ -227,6 +237,11 @@ environments:
           edx-worker:
             number: 1
             type: t2.large
+      mitx-cas:
+        business_unit: operations
+        domains:
+          - auth.mitx.mit.edu
+        num_instances: 1
   mitx-production:
     business_unit: residential
     network_prefix: 10.7
@@ -234,6 +249,16 @@ environments:
     secret_backends:
       <<: *edxapp_secret_backends
     backends:
+      rds:
+        - name: mitx-cas
+          multi_az: True
+          engine: postgres
+          vault_plugin: postgresql-database-plugin
+          db_instance_class: db.t2.small
+          allocated_storage: 100
+          public_access: False
+          engine_version: 10.1
+          purpose: mitx-cas
       elasticache:
         - engine: memcached
           engine_version: 1.4.34
@@ -288,6 +313,11 @@ environments:
           edx-worker:
             number: 3
             type: t2.xlarge
+      mitx-cas:
+        business_unit: operations
+        domains:
+          - cas.mitx.mit.edu
+        num_instances: 2
   micromasters:
     business_unit: micromasters
     network_prefix: 10.10
