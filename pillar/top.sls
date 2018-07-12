@@ -48,6 +48,15 @@ base:
     - shibboleth
     - shibboleth.odlvideo
     - fluentd.odlvideo
+  'roles:mitx-cas':
+    - match: grain
+    - apps.mitx_cas
+    - nginx
+    - nginx.mitx_cas
+    - consul
+    - shibboleth
+    - shibboleth.mitx_cas
+    - fluentd.cas
   'G@roles:rabbitmq and P@environment:mitx.*':
     - match: compound
     - rabbitmq.mitx

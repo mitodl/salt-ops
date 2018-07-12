@@ -80,8 +80,8 @@ base:
   'roles:cassandra':
     - match: grain
     - cassandra
-  'roles:odl-video-service':
-    - match: grain
+  'G@roles:odl-video-service or G@roles:mitx-cas':
+    - match: compound
     - utils.configure_debian_source_repos
     - consul
     - python
