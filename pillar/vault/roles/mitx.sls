@@ -142,4 +142,5 @@ vault:
           REVOKE USAGE ON SCHEMA public FROM "{{name}}";
           DROP USER "{{name}}";
         {% endraw %}
+    {% endfor %}{# end of app loop #}
     {% endfor %}{# environment loop #}
