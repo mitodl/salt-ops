@@ -9,33 +9,6 @@
 {% set PURPOSE_PREFIX = salt.environ.get('PURPOSE_PREFIX', 'current-residential') %}
 {% set VPC_NAME = env_settings.vpc_name %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_settings.business_unit) %}
-{% set edx_tracking_bucket = 'odl-residential-tracking-backup' %}
-
-{% for profile in ['consul', 'mongodb', 'rabbitmq'] %}
-ensure_instance_profile_exists_for_{{ profile }}:
-  boto_iam_role.present:
-    - name: {{ profile }}-instance-role
-{% endfor %}
-
-ensure_instance_profile_exists_for_edx:
-  boto_iam_role.present:
-    - name: edx-instance-role
-    - delete_policies: False
-    - policies:
-        edx-old-tracking-logs-policy:
-          Statement:
-            - Action:
-                - s3:GetObject
-                - s3:ListAllMyBuckets
-                - s3:ListBucket
-                - s3:ListObjects
-                - s3:PutObject
-              Effect: Allow
-              Resource:
-                - arn:aws:s3:::{{ edx_tracking_bucket }}
-                - arn:aws:s3:::{{ edx_tracking_bucket }}/*
-    - require:
-        - boto_s3_bucket: ensure_tracking_bucket_exists
 
 {% set network_prefix = env_settings.network_prefix %}
 {% set cidr_block_public_subnet_1 = '{}.1.0/24'.format(network_prefix) %}
