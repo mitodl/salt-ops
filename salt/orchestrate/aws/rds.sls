@@ -81,7 +81,7 @@ create_{{ ENVIRONMENT }}_{{ name }}_rds_store:
         - {{ salt.boto_secgroup.get_group_id(
              'vault-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
     - tags:
-        Name: {{ ENVIRONMENT }}-rds-mysql
+        Name: {{ ENVIRONMENT }}-rds-{{ engine }}-{{ name }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
