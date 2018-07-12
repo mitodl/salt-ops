@@ -77,7 +77,7 @@ edxapp_continuous_delivery_versions: &continuous_delivery_versions
   xqwatcher_courses: master
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
   theme: master
-  codename: testing
+  codename: tumbleweed
   ami_id: ami-80861296
 
 sandbox_residential_versions: &sandbox_residential_versions
@@ -237,6 +237,11 @@ environments:
           edx-worker:
             number: 1
             type: t2.large
+      mitx-cas:
+        business_unit: operations
+        domains:
+          - auth.mitx.mit.edu
+        num_instances: 1
   mitx-production:
     business_unit: residential
     network_prefix: 10.7
@@ -308,6 +313,11 @@ environments:
           edx-worker:
             number: 3
             type: t2.xlarge
+      mitx-cas:
+        business_unit: operations
+        domains:
+          - cas.mitx.mit.edu
+        num_instances: 2
   micromasters:
     business_unit: micromasters
     network_prefix: 10.10
