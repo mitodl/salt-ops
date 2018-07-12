@@ -3,13 +3,12 @@
 {% set ENVIRONMENT = salt.grains.get('environment', 'mitx-qa') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set server_domain_names = env_data.purposes['mitx-cas'].domains %}
-{% set ovs_login_path = 'login' %}
 
 nginx:
   ng:
     install_from_source: True
-    source_version: 1.13.8
-    source_hash: 8410b6c31ff59a763abf7e5a5316e7629f5a5033c95a3a0ebde727f9ec8464c5
+    source_version: 1.15.1
+    source_hash: c7206858d7f832b8ef73a45c9b8f8e436bcb1ee88db2bc85b8e438ecec9d5460
     certificates:
       mitx_wildcard:
         public_cert: __vault__::secret-operations/global/mitx_wildcard_cert>data>value
@@ -57,7 +56,6 @@ nginx:
                 - ssl_session_timeout: 1d
                 - ssl_session_tickets: 'off'
                 - ssl_protocols:
-                    - TLSv1
                     - TLSv1.1
                     - TLSv1.2
                     - TLSv1.3
@@ -69,7 +67,7 @@ nginx:
                      :DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256\
                      :AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS"
                 - ssl_prefer_server_ciphers: 'on'
-                - resolver: 8.8.8.8
+                - resolver: 1.1.1.1
                 - location /shibauthorizer:
                     - internal: ''
                     - include: fastcgi_params
