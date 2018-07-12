@@ -324,9 +324,9 @@ create_elasticsearch_security_group:
         Name: elasticsearch-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
 
-create_rds_security_group:
+create_mysql_rds_security_group:
   boto_secgroup.present:
-    - name: rds-{{ ENVIRONMENT }}
+    - name: mariadb-rds-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
     - description: ACL for RDS access
     - rules:
@@ -346,8 +346,26 @@ create_rds_security_group:
         - boto_vpc: create_{{ ENVIRONMENT }}_vpc
         - boto_secgroup: create_edx_security_group
     - tags:
-        Name: rds-{{ ENVIRONMENT }}
+        Name: mariadb-rds-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
+
+create_postgres_rds_security_group:
+  boto_secgroup.present:
+    - name: postgres-rds-{{ ENVIRONMENT }}
+    - vpc_name: {{ VPC_NAME }}
+    - description: ACL for PostGreSQL RDS servers
+    - rules:
+        - ip_protocol: tcp
+          from_port: 5432
+          to_port: 5432
+          cidr_ip:
+            - {{ cidr_ip }}
+    - tags:
+        Name: postgres-rds-{{ ENVIRONMENT }}
+        business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_salt_master_security_group:
   boto_secgroup.present:
@@ -410,6 +428,12 @@ create_vault_backend_security_group:
         - ip_protocol: tcp
           from_port: 3306
           to_port: 3306
+          cidr_ip:
+            - 10.0.0.0/22
+        {# PostGreSQL #}
+        - ip_protocol: tcp
+          from_port: 5432
+          to_port: 5432
           cidr_ip:
             - 10.0.0.0/22
     - require:
