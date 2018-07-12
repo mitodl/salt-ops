@@ -51,7 +51,7 @@ django:
     - libpqxx-dev
     - libxml2-dev
   states:
-    install:
+    setup:
       - apps.mitx_cas.install
     config:
       - apps.mitx_cas.configure

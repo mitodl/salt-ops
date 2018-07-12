@@ -11,6 +11,8 @@ add_deploy_key_for_cas_repo:
     - makedirs: True
     - require:
         - user: create_django_app_user
+    - require_in:
+        - git: deploy_application_source_to_destination
 
 {% for host in ssh_hosts %}
 add_{{ host.name }}_to_known_hosts_for_mitx_cas:
@@ -22,4 +24,6 @@ add_{{ host.name }}_to_known_hosts_for_mitx_cas:
     - fingerprint_hash_type: sha256
     - require:
       - file: add_deploy_key_for_cas_repo
+    - require_in:
+        - git: deploy_application_source_to_destination
 {% endfor %}
