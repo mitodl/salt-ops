@@ -1,4 +1,5 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set SIX_MONTHS = '4368h' %}
 vault:
   roles:
     {% for env in ['mitx-qa', 'mitx-production'] %}
