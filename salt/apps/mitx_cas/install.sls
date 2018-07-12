@@ -5,7 +5,7 @@
 
 add_deploy_key_for_cas_repo:
   file.managed:
-    - name: {{ salt.pillar.get('django:app_source:identity') }}
+    - name: /opt/keys/mitx_cas_deploy_key
     - contents_pillar: mitx_cas:deploy_key
     - user: {{ django.user }}
     - mode: 0600
@@ -28,3 +28,9 @@ add_{{ host.name }}_to_known_hosts_for_mitx_cas:
     - require_in:
         - git: deploy_application_source_to_destination
 {% endfor %}
+
+create_mitx_cas_log_directory:
+  file.directory:
+    - name: /opt/log/
+    - user: {{ django.user }}
+    - makedirs: True

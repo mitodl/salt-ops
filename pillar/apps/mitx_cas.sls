@@ -31,6 +31,8 @@ django:
   app_name: {{ app_name }}
   settings_module: mitx_cas.settings
   automatic_migrations: True
+  environment:
+    CONFIG_ROOT: /etc/mitx-cas/
   app_source:
     type: git # Options are: git, hg, archive
     revision: {{ env_data.release_branch }}
