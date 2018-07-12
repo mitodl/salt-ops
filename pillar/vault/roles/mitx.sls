@@ -68,4 +68,78 @@ vault:
       options:
         policy: "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Action\": [\"s3:*Object*\", \"s3:ListAllMyBuckets\", \"s3:ListBucket\"], \"Resource\": [\"arn:aws:s3:::mitx-grades-{{ purpose }}-{{ env }}\", \"arn:aws:s3:::mitx-grades-{{ purpose }}-{{ env }}/*\", \"arn:aws:s3:::mitx-storage-{{ purpose }}-{{ env }}\", \"arn:aws:s3:::mitx-storage-{{ purpose }}-{{ env }}/*\", \"arn:aws:s3:::mitx-etl-{{ purpose }}-{{ env }}\", \"arn:aws:s3:::mitx-etl-{{ purpose }}-{{ env }}/*\"]}]}"
     {% endfor %}{# purpose loop #}
+    {% for app in ['mitxcas'] %}
+    postgresql_{{ env }}_{{ app }}_admin:
+      backend: postgres-{{ env }}-{{ app }}
+      name: admin
+      options:
+        db_name: {{ app }}
+        default_ttl: {{ SIX_MONTHS }}
+        max_ttl: {{ SIX_MONTHS }}
+        creation_statements: >-
+          {% raw %}CREATE USER "{{name}}" WITH PASSWORD '{{password}}' VALID UNTIL '{{expiration}}'{% endraw %} IN ROLE "rds_superuser" INHERIT CREATEROLE CREATEDB;
+          GRANT "{{app}}" TO {% raw %}"{{name}}"{% endraw %} WITH ADMIN OPTION;
+          GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO {% raw %}"{{name}}"{% endraw %} WITH GRANT OPTION;
+          GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO {% raw %}"{{name}}"{% endraw %} WITH GRANT OPTION;
+        {% raw %}
+        revocation_statements: >-
+          GRANT "{{name}}" TO odldevops WITH ADMIN OPTION;
+          REASSIGN OWNED BY "{{name}}" TO {% endraw %}"{{ app }}"{% raw %};
+          DROP OWNED BY "{{name}}";
+          REVOKE {% endraw %}"{{ app }}"{% raw %} FROM "{{name}}";
+          REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM "{{name}}";
+          REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM "{{name}}";
+          REVOKE USAGE ON SCHEMA public FROM "{{name}}";
+          DROP USER "{{name}}";
+        {% endraw %}
+    postgresql_{{ env }}_{{ app }}:
+      backend: postgres-{{ env }}-{{ app }}
+      name: {{ app }}
+      options:
+        db_name: {{ app }}
+        default_ttl: {{ SIX_MONTHS }}
+        max_ttl: {{ SIX_MONTHS }}
+        creation_statements: >-
+          {% raw %}CREATE USER "{{name}}" WITH PASSWORD '{{password}}' VALID UNTIL '{{expiration}}'{% endraw %} IN ROLE "{{ app }}" INHERIT;
+          GRANT {% raw %}"{{name}}"{% endraw %} TO odldevops WITH ADMIN OPTION;
+          GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO {% raw %}"{{name}}"{% endraw %} WITH GRANT OPTION;
+          GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO {% raw %}"{{name}}"{% endraw %} WITH GRANT OPTION;
+          ALTER DEFAULT PRIVILEGES FOR USER {% raw %}"{{name}}"{% endraw %} IN SCHEMA public GRANT ALL PRIVILEGES ON TABLES TO "{{ app }}" WITH GRANT OPTION;
+          ALTER DEFAULT PRIVILEGES FOR USER {% raw %}"{{name}}"{% endraw %} IN SCHEMA public GRANT ALL PRIVILEGES ON SEQUENCES TO "{{ app }}" WITH GRANT OPTION;
+        {% raw %}
+        revocation_statements: >-
+          GRANT "{{name}}" TO odldevops WITH ADMIN OPTION;
+          REASSIGN OWNED BY "{{name}}" TO {% endraw %}"{{ app }}"{% raw %};
+          DROP OWNED BY "{{name}}";
+          REVOKE {% endraw %}"{{ app }}"{% raw %} FROM "{{name}}";
+          REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM "{{name}}";
+          REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM "{{name}}";
+          REVOKE USAGE ON SCHEMA public FROM "{{name}}";
+          DROP USER "{{name}}";
+        {% endraw %}
+    postgresql_{{ env }}_{{ app }}_readonly:
+      backend: postgres-{{ env }}-{{ app }}
+      name: readonly
+      options:
+        db_name: {{ app }}
+        default_ttl: {{ SIX_MONTHS }}
+        max_ttl: {{ SIX_MONTHS }}
+        creation_statements: >-
+          {% raw %}CREATE USER "{{name}}" WITH PASSWORD '{{password}}' VALID UNTIL '{{expiration}}'{% endraw %};
+          GRANT {% raw %}"{{name}}"{% endraw %} TO odldevops;
+          GRANT SELECT ON ALL TABLES IN SCHEMA public TO {% raw %}"{{name}}";{% endraw %}
+          GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO {% raw %}"{{name}}";{% endraw %}
+          ALTER DEFAULT PRIVILEGES FOR USER {% raw %}"{{name}}"{% endraw %} IN SCHEMA public GRANT SELECT ON TABLES TO "{{ app }}" WITH GRANT OPTION;
+          ALTER DEFAULT PRIVILEGES FOR USER {% raw %}"{{name}}"{% endraw %} IN SCHEMA public GRANT SELECT ON SEQUENCES TO "{{ app }}" WITH GRANT OPTION;
+        {% raw %}
+        revocation_statements: >-
+          GRANT "{{name}}" TO odldevops WITH ADMIN OPTION;
+          REASSIGN OWNED BY "{{name}}" TO {% endraw %}"{{ app }}"{% raw %};
+          DROP OWNED BY "{{name}}";
+          REVOKE {% endraw %}"{{ app }}"{% raw %} FROM "{{name}}";
+          REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM "{{name}}";
+          REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM "{{name}}";
+          REVOKE USAGE ON SCHEMA public FROM "{{name}}";
+          DROP USER "{{name}}";
+        {% endraw %}
     {% endfor %}{# environment loop #}
