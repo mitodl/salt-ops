@@ -8,6 +8,7 @@ add_deploy_key_for_cas_repo:
     - name: {{ salt.pillar.get('django:app_source:identity') }}
     - contents_pillar: mitx_cas:deploy_key
     - user: {{ django.user }}
+    - mode: 0600
     - makedirs: True
     - require:
         - user: create_django_app_user
