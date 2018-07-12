@@ -35,13 +35,13 @@ django:
     type: git # Options are: git, hg, archive
     revision: {{ env_data.release_branch }}
     repository_url: git@github.mit.edu:mitx-devops/mitx-cas
-    identity: /opt/keys/mitx_cas_deploy_key
-    user: deploy
     state_params:
       - branch: {{ env_data.release_branch }}
       - force_fetch: True
       - force_checkout: True
       - force_reset: True
+      - identity: /opt/keys/mitx_cas_deploy_key
+      - user: deploy
 
   pkgs:
     - git
