@@ -16,8 +16,8 @@ fluentd:
             - path: /var/log/rabbitmq/rabbit@{{ host }}.log
             - pos_file: /var/log/rabbitmq/rabbit@{{ host }}.log.pos
             - format: multiline
-            - format_firstline: '/^=\w+ REPORT=+/'
-            - format1: '/^=(?<type>\w+) REPORT=+ (?<time>\d{1,2}-\w{3}-\d{4}::\d{1,2}:\d{1,2}:\d{1,2}) =+\s(?<message>.*)$/'
+            - format_firstline: '/^(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+?) \[(?<type>\w+)\]/'
+            - format1: '/^(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+?) \[(?<type>\w+)\] (?<message>.*)$/'
             - multiline_flush_interval: '5s'
         - {{ auth_log_source('syslog.auth', '/var/log/auth.log') }}
         - {{ auth_log_filter('grep', 'ident', 'CRON') }}
