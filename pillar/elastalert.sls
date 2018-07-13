@@ -195,30 +195,30 @@ elasticsearch:
                       error: 'Aws::S3::Errors::Forbidden'
                   - term:
                       fluentd_tag: fluent.warn
-      - name: log_volume_spike
-        settings:
-          name: Alert for change in volume of logs
-          description: >-
-              Notify for any time that the volume of logs for a particular
-              log source is outside of normal bounds
-          opsgenie_key: {{ opsgenie_key }}
-          opsgenie_priority: P5
-          type: spike
-          index: logstash-*
-          query_key: fluentd_tag
-          alert_on_new_data: False
-          spike_type: both
-          spike_height: 2
-          timeframe:
-            minutes: 30
-          threshold_ref: 50
-          use_count_query: True
-          doc_type: fluentd
-          alert:
-            - opsgenie
-          alert_text: "The number of messages for tag {0} is outside of the normal bounds"
-          alert_text_args:
-            - fluentd_tag
+      # - name: log_volume_spike
+      #   settings:
+      #     name: Alert for change in volume of logs
+      #     description: >-
+      #         Notify for any time that the volume of logs for a particular
+      #         log source is outside of normal bounds
+      #     opsgenie_key: {{ opsgenie_key }}
+      #     opsgenie_priority: P5
+      #     type: spike
+      #     index: logstash-*
+      #     query_key: fluentd_tag
+      #     alert_on_new_data: False
+      #     spike_type: both
+      #     spike_height: 2
+      #     timeframe:
+      #       minutes: 30
+      #     threshold_ref: 50
+      #     use_count_query: True
+      #     doc_type: fluentd
+      #     alert:
+      #       - opsgenie
+      #     alert_text: "The number of messages for tag {0} is outside of the normal bounds"
+      #     alert_text_args:
+      #       - fluentd_tag
       - name: nginx_bad_gateway
         settings:
           name: Alert on bad gateway errors from Nginx
