@@ -17,15 +17,15 @@ nginx:
       extra_config:
         shib_params:
           shib_request_set:
-            - $shib_remote_user $upstream_http_variable_remote_user
-            - $shib_eppn $upstream_http_variable_eppn
+            - $shib_remote_user $upstream_http_variable_uid
+            - $shib_given_name $upstream_http_variable_givenName
             - $shib_mail $upstream_http_variable_mail
-            - $shib_displayname $upstream_http_variable_displayname
+            - $shib_surname $upstream_http_variable_sn
           uwsgi_param:
             - REMOTE_USER $shib_remote_user
-            - EPPN $shib_eppn
-            - MAIL $shib_mail
-            - DISPLAY_NAME $shib_displayname
+            - mail $shib_mail
+            - givenName $shib_given_name
+            - sn $shib_surname
     servers:
       managed:
         {{ app_name }}:
