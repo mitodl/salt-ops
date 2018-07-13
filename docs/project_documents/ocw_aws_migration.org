@@ -1,0 +1,56 @@
+#+AUTHOR: Tobias Macey
+#+DATE: 2018-07-06
+#+TITLE: OCW Cloud Migration Process
+#+OPTIONS: toc:nil num:nil
+
+* Terms
+  To reduce the potential for confusion this document adheres to the following definitions:
+  - Source System: The deployment of the OCW Plone application that is installed on physical hardware at the W91 co-location facility
+  - Target System: The deployment of the OCW Plone application that is installed on virtual servers in the Amazon Web Services EC2 cloud
+
+* Overview
+  The Open CourseWare publishing application is currently running on physical hardware located in the W91 co-location facility (Source System). The state of the Source System is unstable and outdated which creates difficulties for ongoing maintenance.
+
+  To date we have suffered numerous disk failures which resulted in partial corruption of the Zope database that used by the OCW Plone application. This is preventing us from running the routine tasks to compact and back up the data reliably.
+
+  The Source System servers are also running a distribution of Red Hat Linux that is no longer supported which increases the difficulty of performing diagnosis and repair of these instances. To reduce the overall burden of ongoing maintenance we are in the process of migrating the Plone application, its associated services, and all of the data to virtual servers running on Amazon Web Services (AWS) (Target System). In order to complete this transition we need to ensure parity with the current installation while minimizing service interruption.
+
+* Current State
+  We have currently provisioned EC2 servers to replicate the functionality and architecture of the production CMS installation. These servers have been provisioned with sufficient CPU, memory, and storage space to operate the application and a modern release of the Debian Linux distribution, providing us access to current versions of system tools for monitoring, diagnosis, and repair. This also allows us to dynamically modify the resources used and allocate new ones as needed.
+
+  We have successfully installed and configured the Plone application in the Target System, along with the associated database resources and publishing engines. This has been validated by processing a subset of courses through the standard workflow and running the publishing engines for staging and production.
+
+  The Target System servers where the published content is transferred to have been replaced with EC2 servers running a minimally configured Nginx service. The DNS for these destination servers has been overridden using the /etc/hosts file on the CMS application servers to reduce the amount of configuration changes required. These consist of the "aka-ocw", "ocw2", and "ocw-mirror" (aka "ocw-rsync") instances.
+
+* Remaining Work
+  In order to complete the transition from the Source System located in W91 to the Target System located in the Amazon cloud we need to verify feature parity between the systems, direct the publication of the Target System instances to a destination that is indexable by the Akamai CDN, and lastly migrate ancillary services to the Target System.
+
+** Planned Actions
+
+*** Establish Confidence In Output Parity
+    To establish parity between the Source System and Target System we will perform a full site republish on the Target System and compare the resulting output to the recently completed publication performed on the current hardware. To that end we have copied the database and relevant files to the Target System in preparation of this step. Following the action of publishing all courses in the Target System we will copy the files from the Source System and the Target System aka-ocw servers and run a recursive diff against the copied directory structures.
+
+    If there is no difference identified then we will have satisfactorily established confidence in the output parity of the two systems. At this point we can direct users of the OCW application to perform their work on the Target System as a means of preventing further data drift that would then require an additional process of synchronizing between the two running environments.
+
+*** Modify Access Permissions
+    The Source System uses an LDAP connection for defining authentication and authorization, however in the process of installing the Target System there were library incompatibilities that prevented us from replicating that functionality. This was not deemed to be a high priority as the primary reason for using LDAP was to support users at Sapient, who will no longer be accessing the OCW application. Because we are not using the same authentication mechanism it is necessary to modify object permissions so that newly created accounts in the Target System can perform actions on them.
+
+    The current plan is to create a script that will iterate over all of the system objects and assign them to a single owner (in this case Curt Newton). This will simplify management of permissions and access control as there are now fewer overall people who will be using the application and they are all employees of MIT.
+
+*** Configure Akamai Staging Target
+    Akamai has support for a staging environment that allows for testing of configuration and content prior to publishing to their production system. We would like to enable this and connect it to the origin server that is running as part of the Target System to verify that the output and server configuration are appropriate for publishing to Akamai.
+
+*** Connect Target System To Akamai Production
+    Once output parity has been established and connectivity to the Akamai CDN via their staging environment has been confirmed then we can begin publishing to the production CDN from the Target System. The options for this are to either:
+    - Connect the Plone publication engines in the Target System to the Akamai origin server running in the Source System
+    - Configure Akamai to use the aka-ocw server in the Target System as the new origin server
+
+*** Migrate OCW Mirror Server
+    We have not yet built a server in the Target System to replicate the functionality of the mirror/rsync server. This will be required before we can completely decommission the physical infrastructure in the Source System, though it is not a blocking requirement for migrating to use the Target System.
+
+** Future Efforts
+   Once we have completed the migration of the current architecture to a more maintainable environment there are a number of improvements and modifications that can be performed. Some of the identified projects that will be evaluated after the final transition are:
+   - Research and analyze alternative CDN providers for cost, performance, and ease of use
+   - Automate creation and management of the OCW servers, starting with those that are least complex (e.g. OCW2, AKA-OCW). This will simplify management of these servers, as well as accommodate the periodic retirement of instances that can occur in EC2
+   - Automate routine maintenance actions including code deployment, backups, full-site republish, etc.
+   - Add monitoring and alerting of the various servers
