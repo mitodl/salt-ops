@@ -3,5 +3,5 @@
 
 nginx-shibboleth:
   secrets:
-    key: __vault__::secret-residential/{{ ENVIRONMENT }}/shibboleth/sp-key>data>value
-    cert: __vault__::secret-residential/{{ ENVIRONMENT }}/shibboleth/sp-cert>data>value
+    key: __vault__::secret-residential/{{ ENVIRONMENT }}/mitx-cas/shibboleth/sp-key>data>value
+    cert: __vault__::secret-residential/{{ ENVIRONMENT }}/mitx-cas/shibboleth/sp-cert>data>value
