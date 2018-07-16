@@ -9,6 +9,8 @@
     vpc_id=salt.boto_vpc.describe_vpcs(
         name=env_data.vpc_name).vpcs[0].id
     ).subnets|map(attribute='id')|list %}
+{% set security_groups = env_data.purposes[app_name].get('security_groups', []) %}
+{% do security_groups + ['salt_master', 'consul-agent'] %}
 
 load_{{ app_name }}_cloud_profile:
   file.managed:
@@ -30,12 +32,10 @@ generate_{{ app_name }}_cloud_map_file:
           - {{ app_name }}
           - app-server
         securitygroupid:
+          {% for group_name in security_groups %}
           - {{ salt.boto_secgroup.get_group_id(
-            'webapp-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-          - {{ salt.boto_secgroup.get_group_id(
-            'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-          - {{ salt.boto_secgroup.get_group_id(
-            'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+            '{}-{}'.format(group_name, ENVIRONMENT), vpc_name=VPC_NAME) }}
+          {% endfor %}
         subnetids: {{ subnet_ids }}
         tags:
           app: {{ app_name }}

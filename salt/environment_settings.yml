@@ -318,6 +318,8 @@ environments:
         domains:
           - cas.mitx.mit.edu
         num_instances: 2
+        security_groups:
+          - edx
   micromasters:
     business_unit: micromasters
     network_prefix: 10.10
@@ -346,11 +348,15 @@ environments:
         domains:
           - bi.odl.mit.edu
         business_unit: operations
+        security_groups:
+          - webapp
       amps-redirect:
         num_instances: 1
         domains:
           - amps.odl.mit.edu
         business_unit: operations
+        security_groups:
+          - webapp
     backends:
       elasticache:
         - engine: redis
@@ -401,16 +407,22 @@ environments:
           - techtv.mit.edu
           - ttv.mit.edu
         business_unit: odl-video-service
+        security_groups:
+          - webapp
       reddit:
         domains:
           - discussions-reddit-production-apps.odl.mit.edu
         num_instances: 3
         business_unit: operations
         healthcheck: /health
+        security_groups:
+          - webapp
       apps-es:
         business_unit: operations
         domains:
           - elasticsearch-production-apps.odl.mit.edu
+        security_groups:
+          - webapp
     backends:
       rds:
         - name: reddit
@@ -466,16 +478,22 @@ environments:
           - techtv-dev.mit.edu
           - ttv-dev.mit.edu
         num_instances: 1
+        security_groups:
+          - webapp
       reddit:
         domains:
           - discussions-reddit-rc-apps.odl.mit.edu
         num_instances: 2
         business_unit: operations
         healthcheck: /health
+        security_groups:
+          - webapp
       apps-es:
         business_unit: operations
         domains:
           - elasticsearch-rc-apps.odl.mit.edu
+        security_groups:
+          - webapp
     backends:
       rds:
         - name: reddit
