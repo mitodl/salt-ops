@@ -48,6 +48,7 @@
 {% set minion_id = salt.grains.get('id', '') %}
 {% set pg_creds = salt.vault.cached_read('postgres-{env}-odlvideo/creds/odlvideo'.format(env=ENVIRONMENT), cache_prefix=minion_id) %}
 {% set rabbit_creds = salt.vault.cached_read("rabbitmq-{env}/creds/odlvideo".format(env=ENVIRONMENT), cache_prefix=minion_id) %}
+{% set ga_json = salt.vault.read('secret-odl-video/' ~ ENVIRONMENT ~ '/ga-keyfile-json').data.value|json %}
 
 python:
   versions:
@@ -87,7 +88,7 @@ django:
     ET_PIPELINE_ID: {{ env_data.transcode_pipeline_id }}
     ET_PRESET_IDS: 1504127981769-6cnqhq,1504127981819-v44xlx,1504127981867-06dkm6,1504127981921-c2jlwt
     GA_DIMENSION_CAMERA: dimension1
-    GA_KEYFILE_JSON: __vault__::secret-odl-video/{{ ENVIRONMENT }}/ga-keyfile-json>data>value
+    GA_KEYFILE_JSON: {{ ga_json }}
     GA_VIEW_ID: {{ env_data.ga_view_id }}
     GA_TRACKING_ID: {{ env_data.ga_id }}
     LECTURE_CAPTURE_USER: {{ salt.sdb.get('sdb://consul/odl-video-service/lecture-capture-user') }}
