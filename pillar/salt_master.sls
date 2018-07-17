@@ -3,7 +3,7 @@
 slack_api_token: __vault__::secret-operations/global/slack/slack_api_token>data>value
 slack:
   api_key: __vault__::secret-operations/global/slack/slack_api_token>data>value
-slack_webhook_url: __vault__::secret-operations/global/slack/slack_webhook_url>data>value
+slack_webhook_url: __vault__::secret-operations/global/slack-odl/slack_webhook_url>data>value
 
 schedule:
   scan_for_expiring_vault_leases:
@@ -140,12 +140,13 @@ salt_master:
             - salt://reactors/edx/inotify_mitx.sls
         - salt/beacon/reddit-*/memusage/*:
             - salt://reactors/reddit/restart_reddit_service_low_memory.sls
+            - salt://reactors/opsgenie/post_notification.sls
         - vault/lease/expiring/*:
             - salt://reactors/vault/alert_expiring_leases.sls
         - salt/state_result/*/restore/*/result:
-            - salt://reactors/slack/post_event.sls
+            - salt://reactors/opsgenie/post_notification.sls
         - salt/state_result/*/backup/*/result:
-            - salt://reactors/slack/post_event.sls
+            - salt://reactors/opsgenie/post_notification.sls
     misc:
       worker_threads: 25
       master_job_cache: pgjsonb
@@ -195,5 +196,3 @@ salt_master:
           script_args: -U -Z -P
           sync_after_install: all
           delete_ssh_keys: True
-  slack:
-    api_key: __vault__::secret-operations/global/slack/slack_api_token>data>value
