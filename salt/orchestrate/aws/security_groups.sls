@@ -12,6 +12,10 @@
 {% set cidr_block_public_subnet_3 = '{}.3.0/24'.format(network_prefix) %}
 {% set SUBNETS_CIDR = '{}.0.0/22'.format(network_prefix) %}
 {% set VPC_CIDR = '{}.0.0/16'.format(network_prefix) %}
+{% set ODL_WIRED_CIDR = '18.124.0.0/16' %}
+{% set ODL_WIRELESS_CIDR = '18.40.64.0/19' %}
+{% set MIT_VPN_0_CIDR = '18.100.0.0/16' %}
+{% set MIT_VPN_1_CIDR = '18.101.0.0/16' %}
 
 create_salt_master_security_group:
   boto_secgroup.present:
@@ -286,6 +290,27 @@ create_webapp_security_group:
             - '::/0'
     - tags:
         Name: webapp-{{ ENVIRONMENT }}
+        business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
+
+create_webapp_odl_vpn_security_group:
+  boto_secgroup.present:
+    - name: webapp-odl-vpn-{{ ENVIRONMENT }}
+    - vpc_name: {{ VPC_NAME }}
+    - description: ACL for web servers accessible only from ODL and VPN
+    - rules:
+        - ip_protocol: tcp
+          from_port: 443
+          to_port: 443
+          cidr_ip:
+            - {{ ODL_WIRED_CIDR }}
+            - {{ ODL_WIRELESS_CIDR }}
+            - {{ MIT_VPN_0_CIDR }}
+            - {{ MIT_VPN_1_CIDR }}
+    - tags:
+        Name: webapp-odl-vpn-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
