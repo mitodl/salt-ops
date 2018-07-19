@@ -349,7 +349,7 @@ environments:
           - bi.odl.mit.edu
         business_unit: operations
         security_groups:
-          - webapp
+          - webapp-odl-vpn
       amps-redirect:
         num_instances: 1
         domains:
