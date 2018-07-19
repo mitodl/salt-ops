@@ -10,6 +10,7 @@ kibana:
   lookup:
     config:
       elasticsearch.url: http://nearest-elasticsearch.query.consul:9200
+      logging.dest: /var/log/kibana.log
     nginx_config:
       server_name: logs.odl.mit.edu
       cert_path: /etc/salt/ssl/certs/kibana.odl.mit.edu.crt
