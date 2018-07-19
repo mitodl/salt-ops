@@ -35,3 +35,9 @@
 | salt scheduled                  | residential        | scheduled residential restore - failure   | ODLDevOps              | weekly   |          |
 | salt scheduled                  |                    | ami build - success                       | ODLDevOps              |          |          |
 | salt scheduled                  |                    | ami build - failure                       | ODLDevOps              |          |          |
+
+Notes:
+- Datadog does not have the ability to specify an OpsGenie Priority Level
+- Created a few OpsGenie Policies in order to be able to act on priority levels:
+  - If priority level is P4 or lower, post to devops-notifications and then automatically close alert
+  - If alert contains a `notification` alias set Priority level to P5
