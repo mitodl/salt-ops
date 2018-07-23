@@ -22,8 +22,8 @@ vault:
         sql: >-
           {% raw -%}
           CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';
-          GRANT REPLICATION CLIENT ON `%`.* TO '{{name}}'@'%';
-          GRANT PROCESS ON `%`.* TO '{{name}}'@'%';
+          GRANT REPLICATION CLIENT ON *.* TO '{{name}}'@'%';
+          GRANT PROCESS ON *.* TO '{{name}}'@'%';
           GRANT SELECT ON `performance_schema`.* TO '{{name}}'@'%';
           {%- endraw %}
         revocation_sql: {% raw %}"DROP USER '{{name}}';"{% endraw %}
