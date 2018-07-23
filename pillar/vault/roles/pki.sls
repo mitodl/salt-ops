@@ -1,5 +1,5 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
-{% set ttl = '8760h' %}
+{% set ttl = '8760h' %} # ONE_YEAR
 {% set ou = 'Open Learning' %}
 {% set org = 'Massachusetts Institute of Technology' %}
 {% set country = 'US' %}
@@ -12,7 +12,7 @@ vault:
     {% for env in env_settings.environments %}
     {% for app in env.backends.pki %}
     {{ app }}-{{ env }}-pki:
-      backend: pki_int_{{ env }}
+      backend: pki-int-{{ env }}
       {% for type in ['client', 'server'] %}
       name: pki-{{ env }}-{{ app }}-{{ type }}
       {% endfor %}
@@ -20,7 +20,7 @@ vault:
       max_ttl: {{ ttl }}
       allowed_domains:
         - {{ app }}.service.consul
-        - nearest-{{ app }}.service.consul
+        - nearest-{{ app }}.query.consul
         {% if app == 'mongodb' %}
         - {{ app }}-master.service.consul
         {% endif %}
