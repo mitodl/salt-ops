@@ -20,12 +20,12 @@ vault:
       name: datadog
       options:
         sql: >-
-          {% raw %}
+          {% raw -%}
           CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';
           GRANT REPLICATION CLIENT ON `%`.* TO '{{name}}'@'%';
           GRANT PROCESS ON `%`.* TO '{{name}}'@'%';
           GRANT SELECT ON `performance_schema`.* TO '{{name}}'@'%';
-          {% endraw %}
+          {%- endraw %}
         revocation_sql: {% raw %}"DROP USER '{{name}}';"{% endraw %}
     datadog-rabbitmq-{{ env }}:
       backend: rabbitmq-{{ env }}
