@@ -316,6 +316,7 @@ environments:
       mitx-cas:
         business_unit: operations
         domains:
+          - auth.mitx.mit.edu
           - cas.mitx.mit.edu
         num_instances: 2
         security_groups:
