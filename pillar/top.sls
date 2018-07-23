@@ -39,6 +39,7 @@ base:
     - mongodb
     - fluentd.mongodb
     - consul.mongodb
+    - datadog.mongodb-integration
   'roles:odl-video-service':
     - match: grain
     - apps.odlvideo
@@ -213,3 +214,4 @@ base:
     - rabbitmq
     - fluentd.rabbitmq
     - consul.rabbitmq
+    - datadog.rabbitmq-integration
