@@ -20,7 +20,7 @@ enable_mitx_aws_secret_backend:
 enable_pki_intermediate_backend:
   vault.secret_backend_enabled:
     - backend_type: pki
-    - mount_point: pki-int
+    - mount_point: pki-intermediate-ca
     - description: Backend to create certificates signed by our root CA
     - ttl_default: {{ pki_ttl }}
     - connection_config:
