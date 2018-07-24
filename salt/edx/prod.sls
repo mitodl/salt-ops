@@ -152,8 +152,6 @@ install_edxapp_theme:
     - require_in:
       - cmd: run_ansible
 
-{# TODO Remove this conditional once we release Hawthorn (TMM 2018-04-05) #}
-{% if salt.grains.get('edx_codename') == 'hawthorn' %}
 compile_assets_for_edx:
   cmd.run:
     - name: /edx/bin/edxapp-update-assets
@@ -161,23 +159,6 @@ compile_assets_for_edx:
         - git: install_edxapp_theme
     - require:
         - cmd: run_ansible
-{% else %}
-compile_assets_for_lms:
-  cmd.run:
-    - name: /edx/bin/edxapp-update-assets-lms
-    - onchanges:
-        - git: install_edxapp_theme
-    - require:
-        - cmd: run_ansible
-
-compile_assets_for_cms:
-  cmd.run:
-    - name: /edx/bin/edxapp-update-assets-cms
-    - onchanges:
-        - git: install_edxapp_theme
-    - require:
-        - cmd: run_ansible
-{% endif %}
 {% endif %}
 
 {% for host in git_servers %}
