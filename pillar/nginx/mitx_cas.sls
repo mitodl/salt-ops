@@ -3,6 +3,10 @@
 {% set ENVIRONMENT = salt.grains.get('environment', 'mitx-qa') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set server_domain_names = env_data.purposes['mitx-cas'].domains %}
+{% set server_domains = {
+  'mitx-qa': server_domain_names[0],
+  'mitx-production': server_domain_names[1]
+} %}
 
 nginx:
   ng:
@@ -32,7 +36,7 @@ nginx:
           enabled: True
           config:
             - server:
-                - server_name: {{ server_domain_names }}
+                - server_name: {{ server_domains[ENVIRONMENT] }} {# This is a hack to work around the way that shibboleth/init.sls is set up for entityID  (TMM 2018-07-24) #}
                 - listen:
                     - 80
                 - listen:
@@ -40,7 +44,7 @@ nginx:
                 - location /:
                     - return: 301 https://$host$request_uri
             - server:
-                - server_name: {{ server_domain_names }}
+                - server_name: {{ server_domains[ENVIRONMENT] }}{# This is a hack to work around the way that shibboleth/init.sls is set up for entityID  (TMM 2018-07-24) #}
                 - listen:
                     - 443
                     - ssl
