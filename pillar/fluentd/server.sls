@@ -23,6 +23,7 @@ fluentd:
     - fluent-plugin-secure-forward
     - fluent-plugin-heroku-syslog
     - fluent-plugin-s3
+    - fluent-plugin-avro
   proxied_plugins:
     - route: heroku-http
       port: 9000
@@ -56,7 +57,7 @@ fluentd:
             - '@type': http
             - port: 9001
             - bind: ::1
-            - format: none
+            - format: json
         - directive: source
           attrs:
             - '@id': redash-events
