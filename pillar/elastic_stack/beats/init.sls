@@ -17,7 +17,7 @@ elastic_stack:
           - add_host_metadata: ~
         output.elasticsearch:
           hosts:
-            - http://nearest-elasticsearch.service.operations.consul:9200
+            - http://nearest-elasticsearch.query.operations.consul:9200
           compression_level: 3
       modules:
         system:
