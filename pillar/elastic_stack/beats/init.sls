@@ -10,7 +10,7 @@ elastic_stack:
         tags:
           - {{ grains['id'] }}
           - {{ grains.get('environment') }}
-          - {{ grains.get('roles') }}
+          - {{ grains.get('roles')|join(',') }}
           - {{ grains.get('osfullname') }}
         processors:
           - add_cloud_metadata: ~
