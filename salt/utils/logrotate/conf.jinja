@@ -1,0 +1,13 @@
+{{ settings['conf_file'] }} {
+  {%- for item in settings['options'] %}
+    {% if item.startswith('prerotate') or item.startswith('postrotate') %}
+    {%- set prefix, postfix = item.split(' ', 1) -%}
+    {{ prefix }}
+        {{ postfix }}
+    endscript
+    {%- else -%}
+    {{ item }}
+    {%- endif -%}
+  {%- endfor %}
+}
+
