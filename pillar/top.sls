@@ -216,3 +216,6 @@ base:
     - fluentd.rabbitmq
     - consul.rabbitmq
     - datadog.rabbitmq-integration
+  'G@roles:ocw-cms and P@environment:ocw-production':
+    - match: compound
+    - logrotate.ocw_cms
