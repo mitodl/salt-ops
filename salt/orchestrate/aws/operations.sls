@@ -16,7 +16,7 @@
 {% set ISO8601 = '%Y-%m-%dT%H:%M:%S' %}
 {% set env_nets = [] %}
 {% for env, settings in env_settings.environments.items() %}
-{% do env_nets.append(settings.network_prefix ~ '0.0/22') %}
+{% do env_nets.append(settings.network_prefix ~ '.0.0/22') %}
 {% endfor %}
 {% set ODL_WIRED_CIDR = '18.124.0.0/16' %}
 {% set ODL_WIRELESS_CIDR = '18.40.64.0/19' %}
@@ -140,7 +140,7 @@ create_elasticsearch_security_group:
         business_unit: {{ BUSINESS_UNIT }}
 
 
-create_mitx_consul_agent_security_group:
+create_{{ ENVIRONMENT }}_consul_agent_security_group:
   boto_secgroup.present:
     - name: consul-agent-{{ ENVIRONMENT }}
     - description: Access rules for Consul agent in {{ VPC_NAME }} stack
@@ -164,7 +164,7 @@ create_mitx_consul_agent_security_group:
           source_group_name: consul-{{ ENVIRONMENT }}
     - require:
         - boto_vpc: create_{{ ENVIRONMENT }}_vpc
-        - boto_secgroup: create_mitx_consul_security_group
+        - boto_secgroup: create_{{ ENVIRONMENT }}_consul_security_group
     - tags:
         Name: consul-agent-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
