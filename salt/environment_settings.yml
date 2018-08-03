@@ -91,7 +91,7 @@ sandbox_residential_versions: &sandbox_residential_versions
 environments:
   mitx-qa:
     business_unit: residential
-    network_prefix: 10.5
+    network_prefix: '10.5'
     vpc_name: MITx QA
     secret_backends:
       <<: *edxapp_secret_backends
@@ -104,35 +104,35 @@ environments:
           db_instance_class: db.t2.small
           allocated_storage: 50
           public_access: False
-          engine_version: 10.1
+          engine_version: '10.1'
           purpose: mitx-cas
       elasticache:
         - engine: memcached
-          engine_version: 1.4.34
+          engine_version: '1.4.34'
           node_type: cache.t2.small
           num_cache_nodes: 1
           cluster_id: continuous-delivery
           purpose: continuous-delivery
         - engine: memcached
-          engine_version: 1.4.34
+          engine_version: '1.4.34'
           node_type: cache.t2.small
           num_cache_nodes: 1
           cluster_id: current-res-live
           purpose: current-residential-live
         - engine: memcached
-          engine_version: 1.4.34
+          engine_version: '1.4.34'
           node_type: cache.t2.small
           num_cache_nodes: 1
           cluster_id: current-res-draft
           purpose: current-residential-draft
         - engine: memcached
-          engine_version: 1.4.34
+          engine_version: '1.4.34'
           node_type: cache.t2.small
           num_cache_nodes: 1
           cluster_id: next-res-live
           purpose: next-residential-live
         - engine: memcached
-          engine_version: 1.4.34
+          engine_version: '1.4.34'
           node_type: cache.t2.small
           num_cache_nodes: 1
           cluster_id: next-res-draft
@@ -244,7 +244,7 @@ environments:
         num_instances: 1
   mitx-production:
     business_unit: residential
-    network_prefix: 10.7
+    network_prefix: '10.7'
     vpc_name: MITx Production
     secret_backends:
       <<: *edxapp_secret_backends
@@ -257,17 +257,17 @@ environments:
           db_instance_class: db.t2.small
           allocated_storage: 100
           public_access: False
-          engine_version: 10.1
+          engine_version: '10.1'
           purpose: mitx-cas
       elasticache:
         - engine: memcached
-          engine_version: 1.4.34
+          engine_version: '1.4.34'
           node_type: cache.t2.small
           num_cache_nodes: 2
           purpose: residential-live
           cluster_id: residential-live
         - engine: memcached
-          engine_version: 1.4.34
+          engine_version: '1.4.34'
           node_type: cache.t2.small
           num_cache_nodes: 2
           purpose: residential-draft
@@ -323,7 +323,7 @@ environments:
           - edx
   micromasters:
     business_unit: micromasters
-    network_prefix: 10.10
+    network_prefix: '10.10'
     vpc_name: micromasters
     secret_backends:
       - postgresql
@@ -332,7 +332,7 @@ environments:
       - micromasters
   bootcamps:
     business_unit: bootcamps
-    network_prefix: 10.11
+    network_prefix: '10.11'
     vpc_name: bootcamps
     secret_backends:
       - postgresql
@@ -341,7 +341,7 @@ environments:
       - bootcamps
   operations:
     business_unit: operations
-    network_prefix: 10.0
+    network_prefix: '10.0'
     vpc_name: mitodl-operations-services
     purposes:
       redash:
@@ -361,7 +361,7 @@ environments:
     backends:
       elasticache:
         - engine: redis
-          engine_version: 3.2.10
+          engine_version: '3.2.10'
           node_type: cache.t2.medium
           num_cache_nodes: 2
           purpose: redash
@@ -377,7 +377,7 @@ environments:
           db_instance_class: db.t2.small
           allocated_storage: 100
           public_access: False
-          engine_version: 10.1
+          engine_version: '10.1'
           purpose: saltmaster
         - name: redash
           multi_az: True
@@ -386,7 +386,7 @@ environments:
           db_instance_class: db.t2.small
           allocated_storage: 100
           public_access: False
-          engine_version: 10.1
+          engine_version: '10.1'
           purpose: redash
         - name: techtvcopy
           multi_az: False
@@ -398,7 +398,7 @@ environments:
           purpose: techtv
   production-apps:
     business_unit: operations
-    network_prefix: 10.13
+    network_prefix: '10.13'
     vpc_name: Production Apps
     purposes:
       odl-video-service:
@@ -453,13 +453,13 @@ environments:
           public_acces: False
       elasticache:
         - engine: memcached
-          engine_version: 1.4.34
+          engine_version: '1.4.34'
           node_type: cache.t2.medium
           num_cache_nodes: 2
           purpose: reddit
           cluster_id: reddit-memcached
         - engine: redis
-          engine_version: 3.2.10
+          engine_version: '3.2.10'
           node_type: cache.t2.medium
           num_cache_nodes: 2
           purpose: odl-video-service
@@ -469,7 +469,7 @@ environments:
           business_unit: odl-video
   rc-apps:
     business_unit: operations
-    network_prefix: 10.12
+    network_prefix: '10.12'
     vpc_name: RC Apps
     purposes:
       odl-video-service:
@@ -524,13 +524,13 @@ environments:
           public_acces: False
       elasticache:
         - engine: memcached
-          engine_version: 1.4.34
+          engine_version: '1.4.34'
           node_type: cache.t2.medium
           num_cache_nodes: 2
           purpose: reddit-rc
           cluster_id: reddit-rc-memcached
         - engine: redis
-          engine_version: 3.2.10
+          engine_version: '3.2.10'
           node_type: cache.t2.medium
           num_cache_nodes: 1
           purpose: odl-video-service
@@ -540,7 +540,7 @@ environments:
           business_unit: odl-video
   ocw:
     business_unit: open-courseware
-    network_prefix: 10.100
+    network_prefix: '10.100'
     vpc_name: OCW
 
 business_units:
