@@ -2,18 +2,9 @@
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'operations') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set VPC_NAME = salt.environ.get('VPC_NAME', env_data.vpc_name) %}
-{% set VPC_RESOURCE_SUFFIX = salt.environ.get(
-    'VPC_RESOURCE_SUFFIX',
-    VPC_NAME.lower().replace(' ', '-')) %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
-
-{% set VPC_NAME = salt.environ.get('VPC_NAME','mitodl-operations-services') %}
-{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'operations') %}
-{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', 'operations') %}
-{% set env_data = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set network_prefix = env_data.network_prefix %}
 {% set cidr_block = '{}.0.0/16'.format(network_prefix) %}
-{% set ISO8601 = '%Y-%m-%dT%H:%M:%S' %}
 {% set env_nets = [] %}
 {% for env, settings in env_settings.environments.items() %}
 {% do env_nets.append(settings.network_prefix ~ '.0.0/22') %}
