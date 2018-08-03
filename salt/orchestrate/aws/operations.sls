@@ -7,7 +7,7 @@
 {% set cidr_block = '{}.0.0/16'.format(network_prefix) %}
 {% set env_nets = [] %}
 {% for env, settings in env_settings.environments.items() %}
-{% do env_nets.append(settings.network_prefix ~ '.0.0/22') %}
+{% do env_nets.append('{}.0.0/22'.format(settings.network_prefix)) %}
 {% endfor %}
 {% set ODL_WIRED_CIDR = '18.124.0.0/16' %}
 {% set ODL_WIRELESS_CIDR = '18.40.64.0/19' %}
