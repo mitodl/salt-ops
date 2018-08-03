@@ -21,8 +21,8 @@ nginx:
       extra_config:
         shib_params:
           shib_request_set:
-            - $shib_uid $upstream_http_variable_uid;
-            - $shib_eppn $upstream_http_variable_eppn;
+            - $shib_uid $upstream_http_variable_uid
+            - $shib_eppn $upstream_http_variable_eppn
             - $shib_given_name $upstream_http_variable_givenName
             - $shib_mail $upstream_http_variable_mail
             - $shib_surname $upstream_http_variable_sn
