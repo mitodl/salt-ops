@@ -33,7 +33,6 @@ create_{{ ENVIRONMENT }}_vpc:
     - tags:
         Name: {{ VPC_NAME }}
         business_unit: {{ BUSINESS_UNIT }}
-        created_at: "{{ salt.status.time(format=ISO8601) }}"
 
 create_{{ ENVIRONMENT }}_public_subnet_1:
   boto_vpc.subnet_present:
@@ -44,7 +43,6 @@ create_{{ ENVIRONMENT }}_public_subnet_1:
     - tags:
         Name: public1-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
-        created_at: "{{ salt.status.time(format=ISO8601) }}"
 
 create_{{ ENVIRONMENT }}_public_subnet_2:
   boto_vpc.subnet_present:
@@ -55,7 +53,6 @@ create_{{ ENVIRONMENT }}_public_subnet_2:
     - tags:
         Name: public2-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
-        created_at: "{{ salt.status.time(format=ISO8601) }}"
 
 create_{{ ENVIRONMENT }}_public_subnet_3:
   boto_vpc.subnet_present:
@@ -66,7 +63,6 @@ create_{{ ENVIRONMENT }}_public_subnet_3:
     - tags:
         Name: public3-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
-        created_at: "{{ salt.status.time(format=ISO8601) }}"
 
 manage_{{ ENVIRONMENT }}_routing_table:
   boto_vpc.route_table_present:
@@ -82,7 +78,6 @@ manage_{{ ENVIRONMENT }}_routing_table:
     - tags:
         Name: {{ ENVIRONMENT }}-route_table
         business_unit: {{ BUSINESS_UNIT }}
-        created_at: "{{ salt.status.time(format=ISO8601) }}"
 
 create_{{ ENVIRONMENT }}_consul_security_group:
   boto_secgroup.present:
@@ -173,7 +168,6 @@ create_mitx_consul_agent_security_group:
     - tags:
         Name: consul-agent-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
-        created_at: "{{ salt.status.time(format=ISO8601) }}"
 
 create_vault_security_group:
   boto_secgroup.present:
@@ -188,7 +182,6 @@ create_vault_security_group:
     - tags:
         Name: vault-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
-        created_at: "{{ salt.status.time(format=ISO8601) }}"
 
 create_webapp_security_group:
   boto_secgroup.present:
