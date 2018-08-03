@@ -15,7 +15,7 @@
 {% set cidr_block = '{}.0.0/16'.format(network_prefix) %}
 {% set ISO8601 = '%Y-%m-%dT%H:%M:%S' %}
 {% set env_nets = [] %}
-{% for env, settings in env_settings.items() %}
+{% for env, settings in env_settings.environments.items() %}
 {% do env_nets.append(settings.network_prefix ~ '0.0/22') %}
 {% endfor %}
 {% set ODL_WIRED_CIDR = '18.124.0.0/16' %}
