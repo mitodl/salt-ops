@@ -21,12 +21,14 @@ nginx:
       extra_config:
         shib_params:
           shib_request_set:
-            - $shib_remote_user $upstream_http_variable_uid
+            - $shib_uid $upstream_http_variable_uid;
+            - $shib_eppn $upstream_http_variable_eppn;
             - $shib_given_name $upstream_http_variable_givenName
             - $shib_mail $upstream_http_variable_mail
             - $shib_surname $upstream_http_variable_sn
           uwsgi_param:
-            - REMOTE_USER $shib_remote_user
+            - REMOTE_USER $shib_eppn
+            - REMOTE_USER $shib_uid if_not_empty
             - mail $shib_mail
             - givenName $shib_given_name
             - sn $shib_surname
