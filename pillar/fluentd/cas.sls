@@ -9,28 +9,42 @@ fluentd:
       settings:
         - directive: source
           attrs:
-            - tag: cas.mitx.shibboleth.error
+            - '@id': cas_nginx_access_log
             - '@type': tail
             - enable_watch_timer: 'false'
-            - path: /var/log/apache2/mitx_shibboleth_error.log
-            - pos_file: /var/log/apache2/mitx_shibboleth_error.log.pos
-            - format: apache_error
+            - tag: cas.nginx.access
+            - path: /var/log/nginx/access.log
+            - pos_file: /var/log/nginx/access.log.pos
+            - nested_directives:
+                - directive: parse
+                  attrs:
+                    - '@type': ltsv
+                    - null_value_pattern: '-'
+                    - keep_time_key: 'true'
+                    - label_delimiter: '='
+                    - delimiter_pattern: '/\s+(?=(?:[^"]*"[^"]*")*[^"]*$)/'
+                    - time_key: time
+                    - types: time:time
         - directive: source
           attrs:
-            - tag: cas.mitx.shibboleth.access
+            - '@id': cas_nginx_error_log
             - '@type': tail
             - enable_watch_timer: 'false'
-            - path: /var/log/apache2/mitx_shibboleth_access.log
-            - pos_file: /var/log/apache2/mitx_shibboleth_access.log.pos
-            - format: apache2
-            - time_format: '%d/%b/%Y:%H:%M:%S'
+            - tag: cas.nginx.error
+            - path: /var/log/nginx/error.log
+            - pos_file: /var/log/nginx/error.log.pos
+            - nested_directives:
+                - directive: parse
+                  attrs:
+                    - '@type': regexp
+                    - expression: '^(?<time>\d+\/\d+\/\d+\s\d+:\d+:\d+)\s(?<level_name>\[.*])\s(?<message>.*)'
         - directive: source
           attrs:
             - tag: cas.django
             - '@type': tail
             - enable_watch_timer: 'false'
-            - path: /opt/cas/log/django.log
-            - pos_file: /opt/cas/log/django.log.pos
+            - path: /opt/log/django.log
+            - pos_file: /opt/log/django.log.pos
             - format: multiline
             - format_firstline: '/^\[\d{1,2}\/\w{3}\/\d{4}\s+\d{2}:\d{2}:\d{2}\]/'
             - format1: '/^\[(?<time>\d{1,2}\/\w{3}\/\d{4}\s+\d{2}:\d{2}:\d{2})\] (?<log_level>\w+) \[(?<module_name>[a-zA-Z0-9-_.]+):(?<line_number>\d+)\] (?<message>.*)/'
