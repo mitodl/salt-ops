@@ -2,9 +2,7 @@
 {% set business_unit = salt.grains.get('business_unit', 'residential') %}
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
-{% set purpose_prefix = purpose.rsplit('-', 1)[0] %}
 {% set purpose_suffix = purpose.replace('-', '_') %}
-{% set cloudfront_domain = salt.sdb.get('sdb://consul/cloudfront/' ~ purpose_prefix ~ '-' ~ environment ~ '-cdn') %}
 {% set purpose_data = env_settings.environments[environment].purposes[purpose] %}
 
 {% set DEFAULT_FEEDBACK_EMAIL = 'mitx-support@mit.edu' %}
@@ -269,11 +267,7 @@ edx:
        # MITx Residential XBlocks
         - name: edx-sga==0.8.2
         - name: rapid-response-xblock==0.0.2
-    {% if cloudfront_domain %}
-    EDXAPP_STATIC_URL_BASE: "https://{{ cloudfront_domain }}/static/"
-    {% else %}
     EDXAPP_STATIC_URL_BASE: /static/
-    {% endif %}
     EDXAPP_TECH_SUPPORT_EMAIL: mitx-support@mit.edu
     EDXAPP_CMS_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
 
