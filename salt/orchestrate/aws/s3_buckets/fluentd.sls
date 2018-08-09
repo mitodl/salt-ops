@@ -31,5 +31,5 @@ odl-micromasters-ir-data:
     - Tagging:
         OU: residental
         business_unit: residential
-        Department: 
+        Department: residential
         Environment: micromasters

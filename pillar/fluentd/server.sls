@@ -1,5 +1,6 @@
 {% set micromasters_ir_bucket = 'odl-micromasters-ir-data' %}
 {% set edx_tracking_bucket = 'odl-residential-tracking-data' %}
+{% set data_lake_bucket = 'mitodl-data-lake' %}
 {% import_yaml 'fluentd/fluentd_directories.yml' as fluentd_directories %}
 
 schedule:
@@ -144,7 +145,6 @@ fluentd:
             #       attrs:
             #         - '@type': file
             #         - path: {{ fluentd_directories.universal_buffer }}
-
         - directive: label
           directive_arg: '@es_logging'
           attrs:
@@ -195,9 +195,9 @@ fluentd:
                   directive_arg: mailgun.**
                   attrs:
                     - '@type': s3
-                    - aws_key_id: __vault__:cache:aws-mitx/creds/read-write-mitodl-data-lake>data>access_key
-                    - aws_sec_key: __vault__:cache:aws-mitx/creds/read-write-mitodl-data-lake>data>secret_key
-                    - s3_bucket: mitodl-data-lake/
+                    - aws_key_id: __vault__:cache:aws-mitx/creds/read-write-{{ data_lake_bucket }}>data>access_key
+                    - aws_sec_key: __vault__:cache:aws-mitx/creds/read-write-{{ data_lake_bucket }}>data>secret_key
+                    - s3_bucket: {{ data_lake_bucket }}
                     - s3_region: us-east-1
                     - path: mailgun
                     - buffer_path: {{ fluentd_directories.data_lake }}
