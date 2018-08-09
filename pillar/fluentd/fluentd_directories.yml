@@ -1,3 +1,4 @@
 micromasters_s3_buffers: /opt/logs/fluentd/micromasters
 universal_buffer: /opt/logs/fluentd/all
 residential_tracking_logs: /opt/logs/fluentd/residential/tracking
+data_lake: /opt/logs/fluentd/data/

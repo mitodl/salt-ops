@@ -121,7 +121,19 @@ fluentd:
                 attrs:
                   - '@type': relabel
                   - '@label': '@es_logging'
-
+        - directive: match
+          directive_arg: mailgun.**
+          attrs:
+            - '@type': copy
+            - nested_directives:
+              - directive: store
+                attrs:
+                  - '@type': relabel
+                  - '@label': '@mailgun_s3_data_lake'
+              - directive: store
+                attrs:
+                  - '@type': relabel
+                  - '@label': '@es_logging'
         - directive: match
           directive_arg: '**'
           attrs:
@@ -175,6 +187,23 @@ fluentd:
                     - format: json
                     - include_time_key: 'true'
                     - time_slice_format: '%Y-%m-%d-%H'
+        - directive: label
+          directive_arg: '@mailgun_s3_data_lake'
+          attrs:
+            - nested_directives:
+                - directive: match
+                  directive_arg: mailgun.**
+                  attrs:
+                    - '@type': s3
+                    - aws_key_id: __vault__:cache:aws-mitx/creds/read-write-mitodl-data-lake>data>access_key
+                    - aws_sec_key: __vault__:cache:aws-mitx/creds/read-write-mitodl-data-lake>data>secret_key
+                    - s3_bucket: mitodl-data-lake/
+                    - s3_region: us-east-1
+                    - path: mailgun
+                    - buffer_path: {{ fluentd_directories.data_lake }}
+                    - include_time_key: 'true'
+                    - time_slice_format: '%Y-%m-%d'
+                    - format: json
 
 
 beacons:
