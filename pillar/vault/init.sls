@@ -1,7 +1,7 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 vault:
   overrides:
-    version: 0.10.2
+    version: 0.10.4
     keybase_users:
       - renaissancedev
       - pdpinch
