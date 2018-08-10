@@ -16,5 +16,6 @@ consul:
             - mongodb
             - master
           check:
-            script: /consul/scripts/mongo_is_master.sh
+            args:
+              - /consul/scripts/mongo_is_master.sh
             interval: 10s
