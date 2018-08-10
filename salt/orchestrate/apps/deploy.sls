@@ -10,7 +10,7 @@
         name=env_data.vpc_name).vpcs[0].id
     ).subnets|map(attribute='id')|list %}
 {% set security_groups = env_data.purposes[app_name].get('security_groups', []) %}
-{% do security_groups + ['salt_master', 'consul-agent'] %}
+{% do security_groups.extend(['salt_master', 'consul-agent']) %}
 
 load_{{ app_name }}_cloud_profile:
   file.managed:
