@@ -14,5 +14,5 @@ salt_minion:
   extra_configs:
     logging:
       log_granular_levels:
-        salt: info
+        salt: warning
         salt.loader: warning
