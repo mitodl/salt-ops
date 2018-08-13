@@ -199,11 +199,18 @@ fluentd:
                     - aws_sec_key: __vault__:cache:aws-mitx/creds/read-write-{{ data_lake_bucket }}>data>secret_key
                     - s3_bucket: {{ data_lake_bucket }}
                     - s3_region: us-east-1
-                    - path: mailgun
-                    - buffer_path: {{ fluentd_directories.data_lake }}
+                    - path: mailgun/${tag.split('.').last'}/
+                    - nested_directives:
+                        - directive: buffer
+                          directive_arg: tag
+                          attrs:
+                            - '@type': file
+                            - path: {{ fluentd_directories.data_lake }}/mailgun-${tag.split('.').last}.buf
+                        - directive: format
+                          attrs:
+                            - '@type': json
                     - include_time_key: 'true'
                     - time_slice_format: '%Y-%m-%d'
-                    - format: json
 
 
 beacons:
