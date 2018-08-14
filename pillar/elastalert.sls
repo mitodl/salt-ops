@@ -159,7 +159,7 @@ elasticsearch:
             minutes: 5
           alert:
             - opsgenie
-          alert_text: "Rabbitmq access denied or login refused due to invalid credentials"
+          alert_text: "invalid credentials"
           filter:
             - bool:
                 must:
