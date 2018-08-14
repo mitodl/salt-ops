@@ -199,7 +199,7 @@ fluentd:
                     - aws_sec_key: __vault__:cache:aws-mitx/creds/read-write-{{ data_lake_bucket }}>data>secret_key
                     - s3_bucket: {{ data_lake_bucket }}
                     - s3_region: us-east-1
-                    - path: mailgun/${tag[3]}/
+                    - path: ${tag}/
                     - nested_directives:
                         - directive: buffer
                           directive_arg: tag,time
