@@ -206,12 +206,12 @@ fluentd:
                           attrs:
                             - '@type': file
                             - path: {{ fluentd_directories.data_lake }}mailgun
-                            - timekey: 43200 # 12 hours
+                            - timekey: 3600 # 12 hours
                         - directive: format
                           attrs:
                             - '@type': json
                     - include_time_key: 'true'
-                    - time_slice_format: '%Y-%m-%d'
+                    - time_slice_format: '%Y-%m-%d-%H'
 
 
 beacons:
