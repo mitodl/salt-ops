@@ -202,10 +202,11 @@ fluentd:
                     - path: mailgun/${tag.split('.').last'}/
                     - nested_directives:
                         - directive: buffer
-                          directive_arg: tag
+                          directive_arg: tag,time
                           attrs:
                             - '@type': file
-                            - path: {{ fluentd_directories.data_lake }}/mailgun-${tag.split('.').last}.buf
+                            - path: {{ fluentd_directories.data_lake }}mailgun
+                            - timekey: 43200 # 12 hours
                         - directive: format
                           attrs:
                             - '@type': json
