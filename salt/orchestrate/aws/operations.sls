@@ -107,7 +107,7 @@ create_{{ ENVIRONMENT }}_consul_security_group:
           source_group_name: default
           {# LAN gossip protocol #}
         - ip_protocol: tcp
-          from_port: 8302
+          from_port: 8300
           to_port: 8302
           cidr_ip: {{ env_nets }}
           {# WAN cluster interface #}
