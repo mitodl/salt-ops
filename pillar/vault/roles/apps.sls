@@ -2,12 +2,12 @@
 {% set SIX_MONTHS = '4368h' %}
 vault:
   roles:
-    datadog-rabbitmq-production-apps:
-      backend: rabbitmq-production-apps
+    {% for env in ['rc-apps', 'production-apps'] %}
+    datadog-rabbitmq-{{ env }}:
+      backend: rabbitmq-{{ env }}
       name: datadog
       options:
         tags: monitoring
-    {% for env in ['rc-apps', 'production-apps'] %}
     {% for app in ['reddit', 'odlvideo'] %}
     rabbitmq-{{ env }}-{{ app }}:
       backend: rabbitmq-{{ env }}
