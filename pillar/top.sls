@@ -210,12 +210,17 @@ base:
     - mysql.devstack
     - elasticsearch.devstack
     - rabbitmq.devstack
-  'roles:rabbitmq':
+  'G@roles:rabbitmq and P@environment:(mitx-production|production-apps)':
     - match: grain
     - rabbitmq
     - fluentd.rabbitmq
     - consul.rabbitmq
     - datadog.rabbitmq-integration
+  'roles:rabbitmq':
+    - match: grain
+    - rabbitmq
+    - fluentd.rabbitmq
+    - consul.rabbitmq
   'G@roles:ocw-cms and P@environment:ocw-production':
     - match: compound
     - logrotate.ocw_cms
