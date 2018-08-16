@@ -25,6 +25,7 @@ fluentd:
     - fluent-plugin-heroku-syslog
     - fluent-plugin-s3
     - fluent-plugin-avro
+    - fluent-plugin-anonymizer
   proxied_plugins:
     - route: heroku-http
       port: 9000
@@ -108,6 +109,24 @@ fluentd:
                   attrs:
                     - '@type': relabel
                     - '@label': '@es_logging'
+        - directive: filter
+          directive_arg: 'mailgun.**'
+          attrs:
+            - '@type': anonymizer
+            - nested_directives:
+                - directive: mask
+                  directive_arg: sha256
+                  attrs:
+                    - value_pattern: '^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$'
+                    - salt: __vault__:gen_if_missing:secret-operations/global/anonymizer-hash-salt>data>value
+                    - keys: $.event-data.envelope.targets,$.event-data.message.headers.to,$.event-data.message.recipients,$.event-data.recipient
+                    - mask_array_elements: 'true'
+                - directive: mask
+                  directive_arg: network
+                  attrs:
+                    - keys: $.event-data.ip
+                    - ipv4_mask_bits: 24
+                    - ipv6_mask_bits: 104
         {# End IR block #}
         - directive: match
           directive_arg: edx.tracking
@@ -191,6 +210,15 @@ fluentd:
           directive_arg: '@mailgun_s3_data_lake'
           attrs:
             - nested_directives:
+                - directive: filter
+                  directive_arg: 'mailgun.**'
+                  attrs:
+                    - '@type': record_transformer
+                    - enable_ruby: 'true'
+                    - nested_directives:
+                        - directive: record
+                          attrs:
+                            - event-data: ${JSON.load(record.to_json.gsub(/([{,]"\w+)\-(\w+":)/, "\\1_\\2"))}
                 - directive: match
                   directive_arg: mailgun.**
                   attrs:
