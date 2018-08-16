@@ -93,6 +93,10 @@ fluentd:
                   attrs:
                     - value_pattern: '^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$'
                     - salt: __vault__:gen_if_missing:secret-operations/global/anonymizer-hash-salt>data>value
+                - directive: mask
+                  directive_arg: sha256
+                  attrs:
+                    - salt: __vault__:gen_if_missing:secret-operations/global/anonymizer-hash-salt>data>value
                     - keys: $["event-data"]["envelope"]["targets"],$["event-data"]["message"]["headers"]["to"],$["event-data"]["message"]["recipients"],$["event-data"]["recipient"]
                     - mask_array_elements: 'true'
                 - directive: mask
