@@ -83,6 +83,24 @@ fluentd:
             - cert_auto_generate: 'yes'
             - self_hostname: {{ salt.grains.get('external_ip') }}
             - shared_key: __vault__::secret-operations/global/fluentd_shared_key>data>value
+        - directive: filter
+          directive_arg: 'mailgun.**'
+          attrs:
+            - '@type': anonymizer
+            - nested_directives:
+                - directive: mask
+                  directive_arg: sha256
+                  attrs:
+                    - value_pattern: '^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$'
+                    - salt: __vault__:gen_if_missing:secret-operations/global/anonymizer-hash-salt>data>value
+                    - keys: $["event-data"]["envelope"]["targets"],$["event-data"]["message"]["headers"]["to"],$["event-data"]["message"]["recipients"],$["event-data"]["recipient"]
+                    - mask_array_elements: 'true'
+                - directive: mask
+                  directive_arg: network
+                  attrs:
+                    - keys: $.event-data.ip
+                    - ipv4_mask_bits: 24
+                    - ipv6_mask_bits: 104
         {# The purpose of this block is to stream data from the
         micromasters application to S3 for analysis by the
         institutional research team. If they ever need to change
@@ -109,24 +127,6 @@ fluentd:
                   attrs:
                     - '@type': relabel
                     - '@label': '@es_logging'
-        - directive: filter
-          directive_arg: 'mailgun.**'
-          attrs:
-            - '@type': anonymizer
-            - nested_directives:
-                - directive: mask
-                  directive_arg: sha256
-                  attrs:
-                    - value_pattern: '^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$'
-                    - salt: __vault__:gen_if_missing:secret-operations/global/anonymizer-hash-salt>data>value
-                    - keys: $["event-data"]["envelope"]["targets"],$["event-data"]["message"]["headers"]["to"],$["event-data"]["message"]["recipients"],$["event-data"]["recipient"]
-                    - mask_array_elements: 'true'
-                - directive: mask
-                  directive_arg: network
-                  attrs:
-                    - keys: $.event-data.ip
-                    - ipv4_mask_bits: 24
-                    - ipv6_mask_bits: 104
         {# End IR block #}
         - directive: match
           directive_arg: edx.tracking
@@ -215,10 +215,11 @@ fluentd:
                   attrs:
                     - '@type': record_transformer
                     - enable_ruby: 'true'
+                    - remove_keys: event-data
                     - nested_directives:
                         - directive: record
                           attrs:
-                            - event-data: ${JSON.load(record["event-data"].to_json.gsub(/([{,]"\w+)\-(\w+":)/, "\\1_\\2"))}
+                            - event_data: ${JSON.load(record["event-data"].to_json.gsub(/([{,]"\w+)\-(\w+":)/, "\\1_\\2"))}
                 - directive: match
                   directive_arg: mailgun.**
                   attrs:
@@ -227,7 +228,7 @@ fluentd:
                     - aws_sec_key: __vault__:cache:aws-mitx/creds/read-write-{{ data_lake_bucket }}>data>secret_key
                     - s3_bucket: {{ data_lake_bucket }}
                     - s3_region: us-east-1
-                    - path: ${tag}/
+                    - path: mailgun/${tag}/
                     - nested_directives:
                         - directive: buffer
                           directive_arg: tag,time
