@@ -215,6 +215,8 @@ base:
     - rabbitmq
     - fluentd.rabbitmq
     - consul.rabbitmq
+  'G@roles:rabbitmq and P@environment:(mitx-production|production-apps)':
+    - match: compound
     - datadog.rabbitmq-integration
   'G@roles:ocw-cms and P@environment:ocw-production':
     - match: compound
