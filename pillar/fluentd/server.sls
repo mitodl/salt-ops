@@ -97,12 +97,12 @@ fluentd:
                   directive_arg: sha256
                   attrs:
                     - salt: __vault__:gen_if_missing:secret-operations/global/anonymizer-hash-salt>data>value
-                    - keys: $["event-data"]["envelope"]["targets"],$["event-data"]["message"]["headers"]["to"],$["event-data"]["message"]["recipients"],$["event-data"]["recipient"]
+                    - keys: $["event-data"]["envelope"]["targets"], $["event-data"]["message"]["headers"]["to"], $["event-data"]["message"]["recipients"], $["event-data"]["recipient"]
                     - mask_array_elements: 'true'
                 - directive: mask
                   directive_arg: network
                   attrs:
-                    - keys: $.event-data.ip
+                    - keys: $["event-data"]["ip"]
                     - ipv4_mask_bits: 24
                     - ipv6_mask_bits: 104
         {# The purpose of this block is to stream data from the
@@ -223,7 +223,7 @@ fluentd:
                     - nested_directives:
                         - directive: record
                           attrs:
-                            - event_data: ${JSON.load(record["event-data"].to_json.gsub(/([{,]"\w+)\-(\w+":)/, "\\1_\\2"))}
+                            - event_data: ${JSON.load(record.to_json.gsub(/([{,]"\w+)\-(\w+":)/, "\\1_\\2"))["event-data"]}
                 - directive: match
                   directive_arg: mailgun.**
                   attrs:
