@@ -223,7 +223,7 @@ fluentd:
                     - nested_directives:
                         - directive: record
                           attrs:
-                            - event_data: ${JSON.load(record["event-data"].to_json.gsub(/([{,]"\w+)\-(\w+":)/, "\\1_\\2"))}
+                            - event_data: ${JSON.load(record["event-data"].to_json.gsub(/[{,]"\w+-\w+?-?\w+":/){|m| m.gsub("-", "_")})}
                 - directive: match
                   directive_arg: mailgun.**
                   attrs:
