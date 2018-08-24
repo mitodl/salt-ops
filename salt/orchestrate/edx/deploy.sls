@@ -184,6 +184,15 @@ build_{{ purpose }}_{{ codename }}_edx_nodes:
           ansible_flags: "{{ ANSIBLE_FLAGS }}"
     {% endif %}
 
+{% if ENVIRONMENT == 'mitx-production' %}
+{# Recompile assets to pickup the production cloudfront domain #}
+compile_assets_for_edx_{{ purpose }}:
+  cmd.run:
+    - name: /edx/bin/edxapp-update-assets
+    - require:
+        - salt: build_{{ purpose }}_{{ codename }}_edx_nodes
+{% endif %}
+
 {# Restart all of the supervisor processes to ensure that the updated settings get picked up #}
 restart_supervisor_processes_on_{{ purpose }}_{{ codename }}_edx_nodes_after_deploy:
   salt.function:
