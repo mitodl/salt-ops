@@ -268,7 +268,7 @@ edx:
           extra_args: -e
        # MITx Residential XBlocks
         - name: edx-sga==0.8.2
-        - name: rapid-response-xblock==0.0.2
+        - name: rapid-response-xblock==0.0.3
     {% if cloudfront_domain %}
     EDXAPP_STATIC_URL_BASE: "https://{{ cloudfront_domain }}/static/"
     {% else %}
