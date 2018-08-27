@@ -1,7 +1,6 @@
 base:
   '*':
     - utils.install_pip
-    - elastic-stack.beats
   'not G@roles:devstack':
     - match: compound
     - utils.inotify_watches
