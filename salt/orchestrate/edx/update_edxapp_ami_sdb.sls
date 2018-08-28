@@ -12,7 +12,7 @@ update_edxapp_ami_value:
     - tgt_type: grain
     - name: sdb.set
     - arg:
-        - 'sdb://consul/edx_{{ ENVIRONMENT }}_{{ codename }}_ami_id'
+        - 'sdb://consul/edx_{{ codename }}_ami_id'
         - '{{ app_ami_id }}'
 
 update_edx_worker_ami_value:
@@ -21,7 +21,7 @@ update_edx_worker_ami_value:
     - tgt_type: grain
     - name: sdb.set
     - arg:
-        - 'sdb://consul/edx_worker_{{ ENVIRONMENT }}_{{ codename }}_ami_id'
+        - 'sdb://consul/edx_worker_{{ codename }}_ami_id'
         - '{{ worker_ami_id }}'
 
 destroy_edx_base_instance:

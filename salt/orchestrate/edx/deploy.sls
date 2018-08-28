@@ -142,7 +142,7 @@ deploy_edx_cloud_map:
 
 {% for purpose in PURPOSES %}
 {% set codename = defined_purposes[purpose].versions.codename %}
-{% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-{}-release-version'.format(ENVIRONMENT, codename)) %}
+{% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
 sync_external_modules_for_{{ purpose }}_{{ codename }}_edx_nodes:
   salt.function:
     - name: saltutil.sync_all
@@ -183,6 +183,15 @@ build_{{ purpose }}_{{ codename }}_edx_nodes:
         edx:
           ansible_flags: "{{ ANSIBLE_FLAGS }}"
     {% endif %}
+
+{% if ENVIRONMENT == 'mitx-production' %}
+{# Recompile assets to pickup the production cloudfront domain #}
+compile_assets_for_edx_{{ purpose }}:
+  cmd.run:
+    - name: /edx/bin/edxapp-update-assets
+    - require:
+        - salt: build_{{ purpose }}_{{ codename }}_edx_nodes
+{% endif %}
 
 {# Restart all of the supervisor processes to ensure that the updated settings get picked up #}
 restart_supervisor_processes_on_{{ purpose }}_{{ codename }}_edx_nodes_after_deploy:
