@@ -96,7 +96,7 @@ starcellbio:
     SECRET_KEY: __vault__:gen_if_missing:secret-starteam/{{ ENVIRONMENT }}/starcellbio/django-secret-key>data>value
     PROJECT_HOME: /opt/{{ app_name }}
     DEBUG: False
-    LOG_LEVEL: {{ env_dict[ENVIRONMENT].log_level }}
+    LOG_LEVEL: {{ env_data.log_level }}
     SCB_TIME_ZONE: America/New_York
     DB_ENGINE: django.db.backends.mysql
     DB_NAME: starcellbio

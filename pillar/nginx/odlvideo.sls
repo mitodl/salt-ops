@@ -69,7 +69,7 @@ nginx:
                      :DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256\
                      :AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS"
                 - ssl_prefer_server_ciphers: 'on'
-                - resolver: 8.8.8.8
+                - resolver: 1.1.1.1
                 - location /shibauthorizer:
                     - internal: ''
                     - include: fastcgi_params

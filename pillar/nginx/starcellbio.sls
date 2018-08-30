@@ -2,18 +2,21 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
-{% set server_domain_names = env_data.purposes['odl-video-service'].domains %}
+{% set server_domain_names = env_data.purposes[app_name].domains %}
 {% set ovs_login_path = 'login' %}
 
 nginx:
   ng:
-    install_from_source: True
-    source_version: 1.13.8
-    source_hash: 8410b6c31ff59a763abf7e5a5316e7629f5a5033c95a3a0ebde727f9ec8464c5
+    install_from_ppa: True
     certificates:
-      odl_wildcard:
+      starcellbio:
+        {% if ENVIRONMENT == 'production-apps' %}
+        public_cert: __vault__::secret-starteam/global/starcellbio/ssl>data>cert
+        private_key: __vault__::secret-starteam/global/starcellbio/ssl>data>key
+        {% else %}
         public_cert: __vault__::secret-operations/global/odl_wildcard_cert>data>value
         private_key: __vault__::secret-operations/global/odl_wildcard_cert>data>key
+        {% endif %}
     servers:
       managed:
         {{ app_name }}:
