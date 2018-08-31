@@ -148,7 +148,6 @@ base:
     - fluentd.mitx
     - datadog.nginx-integration
     - datadog.supervisord-integration
-    - nginx.mitx
   'P@roles:(edx|edx-worker) and G@environment:mitx-qa':
     - match: compound
     - edx.mitx-qa
