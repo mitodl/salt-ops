@@ -308,7 +308,7 @@ environments:
           <<: *current_residential_versions_rp
         instances:
           edx:
-            number: 6
+            number: 9
             type: r4.large
           edx-worker:
             number: 3
