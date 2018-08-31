@@ -34,11 +34,12 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
 {% set public_access = dbconfig.pop('public_access', False) %}
 {% set dbpurpose = dbconfig.pop('purpose', 'shared') %}
 {% set vault_plugin = dbconfig.pop('vault_plugin') %}
+{% set pw_length = dbconfig.pop('password_length', 42) %}
 
 {% set vault_master_pass_path = 'secret-' ~ BUSINESS_UNIT ~ '/' ~ ENVIRONMENT ~ '/' ~ engine ~ '-' ~ dbpurpose ~ '-master-password' %}
 {% set master_pass = salt.vault.read(vault_master_pass_path ) %}
 {% if not master_pass %}
-{% set master_pass = salt.random.get_str(42) %}
+{% set master_pass = salt.random.get_str(pw_length) %}
 set_{{ name }}_master_password_in_vault:
   salt.function:
     - tgt: 'roles:master'

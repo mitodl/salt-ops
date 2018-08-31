@@ -465,6 +465,7 @@ environments:
           allocated_storage: 25
           public_access: False
           purpose: starcellbio
+          password_length: 30
       elasticache:
         - engine: memcached
           engine_version: '1.4.34'
@@ -550,6 +551,7 @@ environments:
           allocated_storage: 25
           public_access: False
           purpose: starcellbio
+          password_length: 30
       elasticache:
         - engine: memcached
           engine_version: '1.4.34'
