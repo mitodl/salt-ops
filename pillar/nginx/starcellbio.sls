@@ -1,32 +1,22 @@
-{% set app_name = 'odl-video-service' %}
+{% set app_name = 'starcellbio' %}
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
-{% set server_domain_names = env_data.purposes['odl-video-service'].domains %}
+{% set server_domain_names = env_data.purposes[app_name].domains %}
 {% set ovs_login_path = 'login' %}
 
 nginx:
   ng:
-    install_from_source: True
-    source_version: 1.13.8
-    source_hash: 8410b6c31ff59a763abf7e5a5316e7629f5a5033c95a3a0ebde727f9ec8464c5
+    install_from_ppa: True
     certificates:
-      ovs_web_cert:
-        public_cert: __vault__::secret-odl-video/{{ ENVIRONMENT }}/ovs_web_cert>data>value
-        private_key: __vault__::secret-odl-video/{{ ENVIRONMENT }}/ovs_web_cert>data>key
-    server:
-      extra_config:
-        shib_params:
-          shib_request_set:
-            - $shib_remote_user $upstream_http_variable_remote_user
-            - $shib_eppn $upstream_http_variable_eppn
-            - $shib_mail $upstream_http_variable_mail
-            - $shib_displayname $upstream_http_variable_displayname
-          uwsgi_param:
-            - REMOTE_USER $shib_remote_user
-            - EPPN $shib_eppn
-            - MAIL $shib_mail
-            - DISPLAY_NAME $shib_displayname
+      starcellbio:
+        {% if ENVIRONMENT == 'production-apps' %}
+        public_cert: __vault__::secret-starteam/global/starcellbio/ssl>data>cert
+        private_key: __vault__::secret-starteam/global/starcellbio/ssl>data>key
+        {% else %}
+        public_cert: __vault__::secret-operations/global/odl_wildcard_cert>data>value
+        private_key: __vault__::secret-operations/global/odl_wildcard_cert>data>key
+        {% endif %}
     servers:
       managed:
         {{ app_name }}:
@@ -49,9 +39,9 @@ nginx:
                 - listen:
                     - '[::]:443'
                     - ssl
-                - root: /opt/odl-video-service/
-                - ssl_certificate: /etc/nginx/ssl/ovs_web_cert.crt
-                - ssl_certificate_key: /etc/nginx/ssl/ovs_web_cert.key
+                - root: /opt/{{ app_name }}/
+                - ssl_certificate: /etc/nginx/ssl/odl_wildcard.crt
+                - ssl_certificate_key: /etc/nginx/ssl/odl_wildcard.key
                 - ssl_stapling: 'on'
                 - ssl_stapling_verify: 'on'
                 - ssl_session_timeout: 1d
@@ -70,30 +60,12 @@ nginx:
                      :AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS"
                 - ssl_prefer_server_ciphers: 'on'
                 - resolver: 1.1.1.1
-                - location /shibauthorizer:
-                    - internal: ''
-                    - include: fastcgi_params
-                    - include: includes/shib_fastcgi_params
-                    - fastcgi_pass: 'unix:/run/shibauthorizer.sock'
-                - location /Shibboleth.sso:
-                    - include: fastcgi_params
-                    - include: includes/shib_fastcgi_params
-                    - fastcgi_pass: 'unix:/run/shibresponder.sock'
-                - location /{{ ovs_login_path }}:
-                    - include: includes/shib_clear_headers
-                    - shib_request: /shibauthorizer
-                    - shib_request_use_headers: 'on'
-                    - include: conf.d/shib_params.conf
-                    - include: uwsgi_params
-                    - uwsgi_ignore_client_abort: 'on'
-                    - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
                 - location /status:
-                    - include: uwsgi_params
-                    - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
+                    - return: 200
                 - location /:
                     - include: uwsgi_params
                     - uwsgi_ignore_client_abort: 'on'
-                    - uwsgi_pass: unix:/var/run/uwsgi/odl-video-service.sock
+                    - uwsgi_pass: unix:/var/run/uwsgi/{{ app_name }}.sock
                 - location ~* /static/(.*$):
                     - expires: max
                     - add_header: 'Access-Control-Allow-Origin *'

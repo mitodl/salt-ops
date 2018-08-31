@@ -424,6 +424,12 @@ environments:
           - elasticsearch-production-apps.odl.mit.edu
         security_groups:
           - webapp
+      starcellbio:
+        business_unit: starteam
+        domains:
+          - starcellbio.mit.edu
+        security_groups:
+          - webapp
     backends:
       rds:
         - name: reddit
@@ -451,6 +457,14 @@ environments:
           db_instance_class: db.t2.small
           allocated_storage: 100
           public_acces: False
+        - name: starcellbio
+          multi_az: True
+          engine: mariadb
+          vault_plugin: mysql-database-plugin
+          db_instance_class: db.t2.small
+          allocated_storage: 25
+          public_access: False
+          purpose: starcellbio
       elasticache:
         - engine: memcached
           engine_version: '1.4.34'
@@ -495,6 +509,12 @@ environments:
           - elasticsearch-rc-apps.odl.mit.edu
         security_groups:
           - webapp
+      starcellbio:
+        business_unit: starteam
+        domains:
+          - starcellbio-qa.odl.mit.edu
+        security_groups:
+          - webapp
     backends:
       rds:
         - name: reddit
@@ -522,6 +542,14 @@ environments:
           db_instance_class: db.t2.micro
           allocated_storage: 100
           public_acces: False
+        - name: starcellbio
+          multi_az: False
+          engine: mariadb
+          vault_plugin: mysql-database-plugin
+          db_instance_class: db.t2.micro
+          allocated_storage: 25
+          public_access: False
+          purpose: starcellbio
       elasticache:
         - engine: memcached
           engine_version: '1.4.34'
