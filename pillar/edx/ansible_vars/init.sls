@@ -275,6 +275,9 @@ edx:
     NGINX_SSL_CERTIFICATE: '{{ TLS_LOCATION }}/{{ TLS_KEY_NAME }}.crt'
     NGINX_SSL_KEY: '{{ TLS_LOCATION }}/{{ TLS_KEY_NAME }}.key'
 
+    # Specify nginx log format
+    NGINX_LOG_FORMAT_NAME: 'app_metrics'
+
     # Configure HTTP auth
     COMMON_ENABLE_BASIC_AUTH: False
 
