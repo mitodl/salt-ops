@@ -95,19 +95,28 @@ vault:
       backend: mariadb-{{ env }}-{{ app }}
       name: admin
       options:
-        sql: {% raw %}"CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT ALL ON `%`.* TO '{{name}}'@'%';"{% endraw %}
-        revocation_sql: {% raw %}"DROP USER '{{name}}';"{% endraw %}
+        db_name: {{ app }}
+        default_ttl: {{ SIX_MONTHS }}
+        max_ttl: {{ SIX_MONTHS }}
+        creation_statements: {% raw %}"CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT ALL ON `%`.* TO '{{name}}'@'%';"{% endraw %}
+        revocation_statements: {% raw %}"DROP USER '{{name}}';"{% endraw %}
     mariadb-{{ env }}-{{ app }}-readonly:
       backend: mariadb-{{ env }}-{{ app }}
       name: readonly
       options:
-        sql: {% raw %}"CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT, SHOW VIEW ON `%`.* TO '{{name}}'@'%';"{% endraw %}
-        revocation_sql: {% raw %}"DROP USER '{{name}}';"{% endraw %}
+        db_name: {{ app }}
+        default_ttl: {{ SIX_MONTHS }}
+        max_ttl: {{ SIX_MONTHS }}
+        creation_statements: {% raw %}"CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT, SHOW VIEW ON `%`.* TO '{{name}}'@'%';"{% endraw %}
+        revocation_statements: {% raw %}"DROP USER '{{name}}';"{% endraw %}
     mariadb-{{ env }}-{{ app }}:
       backend: mariadb-{{ env }}-{{ app }}
       name: {{ app }}
       options:
-        sql: "CREATE USER {% raw %}'{{name}}'@'%'{% endraw %} IDENTIFIED BY {% raw %}'{{password}}'{% endraw %};GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, INDEX, DROP, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES ON {{ app }}.* TO {% raw %}'{{name}}'{% endraw %}@'%';"
-        revocation_sql: {% raw %}"DROP USER '{{name}}';"{% endraw %}
+        db_name: {{ app }}
+        default_ttl: {{ SIX_MONTHS }}
+        max_ttl: {{ SIX_MONTHS }}
+        creation_statements: "CREATE USER {% raw %}'{{name}}'@'%'{% endraw %} IDENTIFIED BY {% raw %}'{{password}}'{% endraw %};GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, INDEX, DROP, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES ON {{ app }}.* TO {% raw %}'{{name}}'{% endraw %}@'%';"
+        revocation_statements: {% raw %}"DROP USER '{{name}}';"{% endraw %}
     {% endfor %}
     {% endfor %}{# End of env loop #}
