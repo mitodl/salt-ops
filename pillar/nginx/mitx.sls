@@ -1,7 +1,6 @@
 nginx:
   ng:
     server:
-      config:
       extra_config:
         logging:
           log_format app_metrics: >-
