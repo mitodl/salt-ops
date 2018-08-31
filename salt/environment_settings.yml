@@ -428,6 +428,7 @@ environments:
         business_unit: starteam
         domains:
           - starcellbio.mit.edu
+        num_instances: 3
         security_groups:
           - webapp
     backends:
@@ -514,6 +515,7 @@ environments:
         business_unit: starteam
         domains:
           - starcellbio-qa.odl.mit.edu
+        num_instances: 1
         security_groups:
           - webapp
     backends:
