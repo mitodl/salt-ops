@@ -2,7 +2,7 @@
 
 edx:
   - analytics-{{ environment_name }}-{{ purpose }}:
-      image: {{ salt.sdb.get('sdb://consul/edx_ginkgo_ami_id')|default('ami-973d0681', True) }}
+      image: {{ salt.sdb.get('sdb://consul/edx_hawthorn_ami_id')|default('ami-973d0681', True) }}
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
