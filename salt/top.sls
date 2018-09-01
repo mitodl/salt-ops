@@ -163,6 +163,9 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
+  'G@roles:analytics and G@environment:mitx-production':
+    - match: compound
+    - edx.mitx_etl
   'roles:sandbox':
     - match: grain
     - edx.prod
