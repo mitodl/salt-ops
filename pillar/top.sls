@@ -41,8 +41,12 @@ base:
     - fluentd.mongodb
     - consul.mongodb
     - datadog.mongodb-integration
-  'roles:odl-video-service':
-    - match: grain
+  starcellbio*:
+    - apps.starcellbio
+    - nginx
+    - nginx.starcellbio
+    - consul
+  odl-video-service*:
     - apps.odlvideo
     - nginx
     - nginx.odlvideo
