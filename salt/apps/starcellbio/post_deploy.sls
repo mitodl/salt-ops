@@ -13,9 +13,10 @@ populate_database_with_seed_data:
 
 compile_static_files:
   cmd.run:
-    - name: python html_app/build.py
+    - name: /usr/local/pyenv/shims/python html_app/build.py
     - cwd: {{ app_dir }}
+    - shell: /bin/bash
     - user: deploy
+    - prepend_path: {{ app_dir }}/node_modules/.bin
     - env:
         PROJECT_HOME: {{ app_dir }}/html_app
-        PATH: {{ app_dir }}/node_modules/.bin:{{ grains.get('path') }}

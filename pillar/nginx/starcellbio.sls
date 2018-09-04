@@ -40,8 +40,8 @@ nginx:
                     - '[::]:443'
                     - ssl
                 - root: /opt/{{ app_name }}/
-                - ssl_certificate: /etc/nginx/ssl/odl_wildcard.crt
-                - ssl_certificate_key: /etc/nginx/ssl/odl_wildcard.key
+                - ssl_certificate: /etc/nginx/ssl/starcellbio.crt
+                - ssl_certificate_key: /etc/nginx/ssl/starcellbio.key
                 - ssl_stapling: 'on'
                 - ssl_stapling_verify: 'on'
                 - ssl_session_timeout: 1d
