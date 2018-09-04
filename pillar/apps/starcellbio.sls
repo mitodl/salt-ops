@@ -47,7 +47,6 @@ django:
     - python-mysqldb
     - openjdk-8-jre
     - nodejs
-    - npm
     - libxml2-dev
     - libxslt-dev
     - git
