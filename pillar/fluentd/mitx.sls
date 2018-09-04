@@ -14,6 +14,24 @@ fluentd:
       settings:
         - directive: source
           attrs:
+            - '@id': edx_nginx_access_log
+            - '@type': tail
+            - enable_watch_timer: 'false'
+            - tag: edx.nginx.access
+            - path: /edx/var/log/nginx/access.log
+            - pos_file: /edx/var/log/nginx/access.log.pos
+            - nested_directives:
+                - directive: parse
+                  attrs:
+                    - '@type': ltsv
+                    - null_value_pattern: '-'
+                    - keep_time_key: 'true'
+                    - label_delimiter: '='
+                    - delimiter_pattern: '/\s+(?=(?:[^"]*"[^"]*")*[^"]*$)/'
+                    - time_key: time
+                    - types: time:time
+        - directive: source
+          attrs:
             - '@id': edx_cms_log
             - '@type': tail
             - enable_watch_timer: 'false'

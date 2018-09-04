@@ -144,6 +144,34 @@ elasticsearch:
                       environment.raw: mitx-production
                   - term:
                       fluentd_tag.raw: edx.lms
+      - name: rapid_response_xblock_status
+        settings:
+          name: Rapid Response XBlock status changed
+          description: >-
+            Send a message anytime a rapid response xblock is
+            enabled or disabled.
+          type: frequency
+          index: logstash-*
+          num_events: 1
+          timeframe:
+            minutes: 5
+          alert:
+            - slack
+          alert_text: "Rapid Response XBlock status changed"
+          slack_webhook_url: {{ slack_webhook_url }}
+          slack_channel_override: "#mitx-tech-notifs"
+          slack_username_override: "Elastalert"
+          slack_msg_color: "good"
+          filter:
+            - bool:
+                must:
+                  - match:
+                      #Request is the same whether xblock is enabled or disabled
+                      message.raw: rapid_response_xblock/handler/toggle_block_enabled
+                  - term:
+                      environment.raw: mitx-production
+                  - term:
+                      fluentd_tag.raw: edx.nginx.access
       - name: rabbitmq_creds_expired
         settings:
           name: Rabbitmq AMQPLAIN login refused
