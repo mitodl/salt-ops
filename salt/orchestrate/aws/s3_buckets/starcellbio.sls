@@ -4,6 +4,8 @@ scb-{{ env }}-microscopy-uploads:
     - Bucket: scb-{{ env }}-microscopy-uploads
     - Versioning:
         Status: Enabled
+    - ACL:
+        - public-read
     - region: us-east-1
     - Tagging:
         OU: starteam
