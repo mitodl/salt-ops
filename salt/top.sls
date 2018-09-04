@@ -84,9 +84,9 @@ base:
     - consul
     - python
     - node
-    - nginx.ng
-    - uwsgi
     - django
+    - uwsgi
+    - nginx.ng
   'G@roles:odl-video-service or G@roles:mitx-cas':
     - match: compound
     - utils.configure_debian_source_repos
