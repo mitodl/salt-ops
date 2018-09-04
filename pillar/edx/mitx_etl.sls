@@ -9,6 +9,7 @@ mitx_residential_etl:
       AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-mitx-etl-{{ purpose }}-{{ env }}>data>secret_key
     Paths:
       csv_folder: /mnt/data/csv_query_folder
+      courses: /mnt/data/mitx_etl/courses
     MySQL:
       user: __vault__:cache:mysql-{{ env }}/creds/admin>data>username
       pass: __vault__:cache:mysql-{{ env }}/creds/admin>data>password
