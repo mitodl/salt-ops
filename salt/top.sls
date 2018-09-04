@@ -80,6 +80,13 @@ base:
   'roles:cassandra':
     - match: grain
     - cassandra
+  starcellbio*:
+    - consul
+    - python
+    - node
+    - nginx.ng
+    - uwsgi
+    - django
   'G@roles:odl-video-service or G@roles:mitx-cas':
     - match: compound
     - utils.configure_debian_source_repos
