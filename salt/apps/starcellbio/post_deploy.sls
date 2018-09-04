@@ -13,7 +13,7 @@ populate_database_with_seed_data:
 
 compile_static_files:
   cmd.run:
-    - name: python build.py
+    - name: python html_app/build.py
     - cwd: {{ app_dir }}
     - user: deploy
     - env:
