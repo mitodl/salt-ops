@@ -38,7 +38,6 @@ django:
       - force_fetch: True
       - force_checkout: True
       - force_reset: True
-      - identity: /opt/keys/mitx_cas_deploy_key
       - user: deploy
 
   pkgs:
@@ -58,9 +57,11 @@ django:
     - zlib1g-dev
   states:
     setup:
-      - apps.mitx_cas.install
+      - apps.starcellbio.install
     config:
-      - apps.mitx_cas.configure
+      - apps.starcellbio.configure
+    post_install:
+      - apps.starcellbio.post_deploy
 
 uwsgi:
   overrides:
@@ -80,7 +81,7 @@ uwsgi:
         - gid: deploy
         - logto: /var/log/uwsgi/apps/%n.log
         - memory-report: 'true'
-        - module: mitx_cas.wsgi
+        - module: StarCellBio.wsgi
         - pidfile: /var/run/uwsgi/{{ app_name }}.pid
         - post-buffering: 65535
         - processes: 2
