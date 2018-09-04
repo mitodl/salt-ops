@@ -7,7 +7,7 @@ write_app_config_overrides:
   file.managed:
     - name: {{ app_dir }}/StarCellBio/settings.yml
     - contents: |
-        {{ salt.pillar.get('starcellbio', {})|yaml(False)|indent(8) }}
+        {{ salt.pillar.get('starcellbio:config', {})|yaml(False)|indent(8) }}
     - user: deploy
     - onchanges_in:
         - service: uwsgi_service_running
