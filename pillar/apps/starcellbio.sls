@@ -39,7 +39,6 @@ django:
       - force_checkout: True
       - force_reset: True
       - user: deploy
-
   pkgs:
     - libmariadbclient-dev
     - mariadb-client
@@ -59,7 +58,7 @@ django:
     setup:
       - apps.starcellbio.install
     config:
-      - apps.starcellbio.configure
+      - apps.starcellbio.config
     post_install:
       - apps.starcellbio.post_deploy
 

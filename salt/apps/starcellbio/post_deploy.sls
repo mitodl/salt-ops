@@ -1,4 +1,5 @@
 {% set app_dir = '/opt/{0}'.format(salt.pillar.get('django:app_name')) %}
+{% set django = salt.pillar.get('django') %}
 
 populate_database_with_seed_data:
   module.run:
@@ -7,7 +8,7 @@ populate_database_with_seed_data:
     - pythonpath: {{ app_dir }}
     - fixtures: auth,backend,courses,assignments,studentassignments
     - bin_env: {{ django.django_admin_path }}
-    - runas: {{ django.user }}
+    - runas: deploy
     - env: {{ django.get('environment', {}) }}
 
 compile_static_files:
