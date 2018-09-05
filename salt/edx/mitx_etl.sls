@@ -1,3 +1,5 @@
+{% set healthchecks_url = salt.vault.read('secret-operations/global/healthchecks/healthchecks_url').data.value %}
+
 install_etl_os_dependencies:
   pkg.installed:
     - pkgs:
@@ -44,7 +46,7 @@ mitx_residential_etl_config:
 
 add_task_to_cron:
   cron.present:
-    - name: '/mitx/mitx_etl/bin/python3 /mitx/mitx_residential_etl.py'
+    - name: '/mitx/mitx_etl/bin/python3 /mitx/mitx_residential_etl.py && curl -fsS --retry 3 {{ healthchecks_url }} > /dev/null'
     - comment: mitx_residential_etl_script
     - special: '@daily'
     - require:
