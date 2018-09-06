@@ -60,6 +60,12 @@ create_vault_backend_security_group:
           to_port: 5432
           cidr_ip:
             - 10.0.0.0/22
+        {# MySQL/MariaDB #}
+        - ip_protocol: tcp
+          from_port: 3306
+          to_port: 3306
+          cidr_ip:
+            - 10.0.0.0/22
 
 create_{{ ENVIRONMENT }}_consul_security_group:
   boto_secgroup.present:

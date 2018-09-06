@@ -92,7 +92,7 @@ create_{{ ENVIRONMENT }}_{{ name }}_rds_store:
         - boto_rds: create_{{ ENVIRONMENT }}_rds_db_subnet_group
 
 {% set mount_point = '{}-{}-{}'.format(engine, ENVIRONMENT, name) %}
-configure_vault_postgresql_{{ name }}_backend:
+configure_vault_{{ engine }}_{{ name }}_backend:
   vault.secret_backend_enabled:
     - backend_type: database
     - description: Backend to create dynamic {{ engine }} credentials for {{ ENVIRONMENT }}
