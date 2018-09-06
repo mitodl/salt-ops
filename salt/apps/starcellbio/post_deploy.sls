@@ -10,6 +10,10 @@ populate_database_with_seed_data:
     - bin_env: {{ django.django_admin_path }}
     - runas: deploy
     - env: {{ django.get('environment', {}) }}
+    {% if django.automatic_migrations %}
+    - require:
+        - module: migrate_database
+    {% endif %}
 
 compile_static_files:
   cmd.run:
