@@ -1,4 +1,4 @@
-{% set healthchecks_url = salt.vault.read('secret-operations/global/healthchecks/mitx_etl_nightly').data.value %}
+{% set healthchecks_url = salt.vault.read('secret-operations/global/healthchecks/mitx-etl-nightly').data.value %}
 
 install_etl_os_dependencies:
   pkg.installed:
