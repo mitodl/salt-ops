@@ -207,14 +207,14 @@ disable_minion_service_before_snapshot:
 snapshot_edx_app_{{ ENVIRONMENT }}_node:
   boto_ec2.snapshot_created:
     - name: edxapp_{{ ENVIRONMENT }}_{{ edx_codename }}_base_release_{{ release_number }}
-    - ami_name: edxapp_{{ ENVIRONEMNT }}_{{ edx_codename }}_base_release_{{ release_number }}
+    - ami_name: edxapp_{{ ENVIRONMENT }}_{{ edx_codename }}_base_release_{{ release_number }}
     - instance_name: {{ instance_name }}
     - wait_until_available: False
 
 snapshot_edx_worker_{{ ENVIRONMENT }}_node:
   boto_ec2.snapshot_created:
     - name: edx_worker_{{ ENVIRONMENT }}_{{ edx_codename }}_base_release_{{ release_number }}
-    - ami_name: edx_worker_{{ ENVIRONEMNT }}_{{ edx_codename }}_base_release_{{ release_number }}
+    - ami_name: edx_worker_{{ ENVIRONMENT }}_{{ edx_codename }}_base_release_{{ release_number }}
     - instance_name: {{ worker_instance_name }}
     - wait_until_available: False
 
