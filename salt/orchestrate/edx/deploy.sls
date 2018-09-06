@@ -142,7 +142,7 @@ deploy_edx_cloud_map:
 
 {% for purpose in PURPOSES %}
 {% set codename = defined_purposes[purpose].versions.codename %}
-{% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
+{% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-{}-release-version'.format(ENVIRONMENT, codename)) %}
 sync_external_modules_for_{{ purpose }}_{{ codename }}_edx_nodes:
   salt.function:
     - name: saltutil.sync_all
@@ -170,28 +170,14 @@ restart_consul_service_on_{{ purpose }}_{{ codename }}_edx_nodes_to_load_updated
     - require:
         - salt: deploy_consul_agent_to_{{ purpose }}_{{ codename }}_edx_nodes
 
-build_{{ purpose }}_{{ codename }}_edx_nodes:
+run_ansible_configuration_edx_nodes:
   salt.state:
     - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
-    - highstate: True
-    - require:
-        - salt: deploy_consul_agent_to_{{ purpose }}_{{ codename }}_edx_nodes
-        - salt: restart_consul_service_on_{{ purpose }}_{{ codename }}_edx_nodes_to_load_updated_configs
-    {% if ANSIBLE_FLAGS %}
+    - name: edx.run_ansible
     - pillar:
         edx:
-          ansible_flags: "{{ ANSIBLE_FLAGS }}"
-    {% endif %}
-
-{% if ENVIRONMENT == 'mitx-production' %}
-{# Recompile assets to pickup the production cloudfront domain #}
-compile_assets_for_edx_{{ purpose }}:
-  cmd.run:
-    - name: /edx/bin/edxapp-update-assets
-    - require:
-        - salt: build_{{ purpose }}_{{ codename }}_edx_nodes
-{% endif %}
+          ansible_flags: "--tags install:configuration"
 
 {# Restart all of the supervisor processes to ensure that the updated settings get picked up #}
 restart_supervisor_processes_on_{{ purpose }}_{{ codename }}_edx_nodes_after_deploy:
