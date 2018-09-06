@@ -18,8 +18,8 @@
 {% set THEME_VERSION = salt.environ.get('THEME_VERSION', 'ficus') %}
 {% set purposes = env_settings.purposes %}
 {% set edx_codename = purposes[PURPOSE].versions.codename %}
-{% set instance_name = 'edxapp-{}-base-{}'.format(edx_codename, ENVIRONMENT) %}
-{% set worker_instance_name = 'edx-worker-{}-base-{}'.format(edx_codename, ENVIRONMENT) %}
+{% set instance_name = 'edxapp-{}-{}-base'.format(ENVIRONMENT, edx_codename) %}
+{% set worker_instance_name = 'edx-worker-{}-{}-base'.format(ENVIRONMENT, edx_codename) %}
 
 update_edxapp_codename_value:
   salt.function:
@@ -141,6 +141,7 @@ deploy_consul_agent_to_edx_nodes:
         - consul
         - consul.dns_proxy
 
+{% if not ENVIRONMENT == 'mitx-production' %}
 build_edx_base_nodes:
   salt.state:
     - tgt: 'P@roles:(edx-base|edx-base-worker) and G@environment:{{ ENVIRONMENT }}'
@@ -157,30 +158,45 @@ build_edx_base_nodes:
             custom_theme:
               branch: {{ THEME_VERSION }}
     {% endif %}
+{% else %}
+run_ansible_configuration_edx_nodes:
+  salt.state:
+    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }} and G@launch-date:{{ launch_date }}'
+    - tgt_type: compound
+    - name: edx.run_ansible
+    - pillar:
+        edx:
+          ansible_flags: "--tags install:configuration"
+{% endif %}
 
-{% set previous_release = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(edx_codename))|int %}
+{% set previous_release = salt.sdb.get('sdb://consul/edxapp-{}-{}-release-version'.format(ENVIRONMENT, edx_codename))|int %}
 {% set release_number = previous_release + 1 %}
-{% set edx_codename_release_version = '{}-release-version'.format(edx_codename) %}
+
+compile_assets_for_edx_{{ purpose }}:
+  cmd.run:
+    - name: /edx/bin/edxapp-update-assets
+    - require:
+        - salt: build_edx_base_nodes
 
 {# Delete grains before snapshotting so they can be set when building from the image #}
 {% for grain in ['business_unit', 'environment', 'purpose', 'roles'] %}
 delete_{{ grain }}_from_grains:
   salt.function:
-    - tgt: 'edx*base-{{ ENVIRONMENT }}'
+    - tgt: 'edx*{{ ENVIRONMENT}}*base'
     - tgt_type: compound
     - name: grains.delkey
     - arg:
         - {{ grain }}
     - require_in:
-        - boto_ec2: snapshot_edx_app_node
-        - boto_ec2: snapshot_edx_worker_node
+        - boto_ec2: snapshot_edx_app_{{ ENVIRONMENT }}_node
+        - boto_ec2: snapshot_edx_worker_{{ ENVIRONMENT }}_node
     - require:
         - salt: build_edx_base_nodes
 {% endfor %}
 
 disable_minion_service_before_snapshot:
   salt.function:
-    - tgt: 'edx*base-{{ ENVIRONMENT }}'
+    - tgt: 'edx*{{ ENVIRONMENT}}*base'
     - tgt_type: glob
     - name: service.disable
     - arg:
@@ -188,17 +204,17 @@ disable_minion_service_before_snapshot:
     - require:
         - salt: build_edx_base_nodes
 
-snapshot_edx_app_node:
+snapshot_edx_app_{{ ENVIRONMENT }}_node:
   boto_ec2.snapshot_created:
-    - name: edxapp_{{ edx_codename }}_base_release_{{ release_number }}
-    - ami_name: edxapp_{{ edx_codename }}_base_release_{{ release_number }}
+    - name: edxapp_{{ ENVIRONMENT }}_{{ edx_codename }}_base_release_{{ release_number }}
+    - ami_name: edxapp_{{ ENVIRONEMNT }}_{{ edx_codename }}_base_release_{{ release_number }}
     - instance_name: {{ instance_name }}
     - wait_until_available: False
 
-snapshot_edx_worker_node:
+snapshot_edx_worker_{{ ENVIRONMENT }}_node:
   boto_ec2.snapshot_created:
-    - name: edx_worker_{{ edx_codename }}_base_release_{{ release_number }}
-    - ami_name: edx_worker_{{ edx_codename }}_base_release_{{ release_number }}
+    - name: edx_worker_{{ ENVIRONMENT }}_{{ edx_codename }}_base_release_{{ release_number }}
+    - ami_name: edx_worker_{{ ENVIRONEMNT }}_{{ edx_codename }}_base_release_{{ release_number }}
     - instance_name: {{ worker_instance_name }}
     - wait_until_available: False
 
@@ -208,28 +224,28 @@ update_release_version:
     - tgt_type: grain
     - name: sdb.set
     - arg:
-        - 'sdb://consul/edxapp-{{ edx_codename }}-release-version'
+        - 'sdb://consul/edxapp-{{ ENVIRONMENT }}-{{ edx_codename }}-release-version'
         - '{{ release_number }}'
     - require:
-        - boto_ec2: snapshot_edx_app_node
-        - boto_ec2: snapshot_edx_worker_node
+        - boto_ec2: snapshot_edx_app_{{ ENVIRONMENT }}_node
+        - boto_ec2: snapshot_edx_worker_{{ ENVIRONMENT }}_node
 
 alert_devops_channel_on_ami_build_failure:
   slack.post_message:
     - channel: '#general'
     - from_name: saltbot
-    - message: 'The AMI build for edX {{ edx_codename }}release {{ release_number }} has failed.'
+    - message: 'The AMI build for edX {{ edx_codename }} {{ ENVIRONMENT }} release {{ release_number }} has failed.'
     - api_key: {{ slack_api_token }}
     - onfail:
-        - boto_ec2: snapshot_edx_worker_node
-        - boto_ec2: snapshot_edx_app_node
+        - boto_ec2: snapshot_edx_app_{{ ENVIRONMENT }}_node
+        - boto_ec2: snapshot_edx_worker_{{ ENVIRONMENT }}_node
 
 alert_devops_channel_on_ami_build_success:
   slack.post_message:
     - channel: '#general'
     - from_name: saltbot
-    - message: 'The AMI build for edX {{ edx_codename }} release {{ release_number }} has succeeded.'
+    - message: 'The AMI build for edX {{ edx_codename }} {{ ENVIRONMENT }} release {{ release_number }} has succeeded.'
     - api_key: {{ slack_api_token }}
     - require:
-        - boto_ec2: snapshot_edx_worker_node
-        - boto_ec2: snapshot_edx_app_node
+        - boto_ec2: snapshot_edx_app_{{ ENVIRONMENT }}_node
+        - boto_ec2: napshot_edx_worker_{{ ENVIRONMENT }}_node
