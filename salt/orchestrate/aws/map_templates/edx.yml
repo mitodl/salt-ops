@@ -7,10 +7,10 @@
 edx:
   {% for purpose, settings in app_types.items() %}
   {% set codename = purposes[purpose].versions.codename %}
-  {% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
+  {% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-{}-release-version'.format(environment_name, codename)) %}
   {% for id_num in range(settings.instances.edx.number) %}
   - edx-{{ environment_name }}-{{ purpose }}-{{ id_num }}-v{{ release_number }}:
-      image: {{ salt.sdb.get('sdb://consul/edx_{}_ami_id'.format(codename)) }}
+      image: {{ salt.sdb.get('sdb://consul/edx_{}_{}_ami_id'.format(environment_name, codename)) }}
       size: {{ settings.instances.edx.type }}
       network_interfaces:
         - DeviceIndex: 0
@@ -50,10 +50,10 @@ edx:
 edx-worker:
   {% for purpose, settings in app_types.items() %}
   {% set codename = purposes[purpose].versions.codename %}
-  {% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-release-version'.format(codename)) %}
+  {% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-{}-release-version'.format(environment_name, codename)) %}
   {% for id_num in range(settings.instances['edx-worker'].number) %}
   - edx-worker-{{ environment_name }}-{{ purpose }}-{{ id_num }}-v{{ release_number }}:
-      image: {{ salt.sdb.get('sdb://consul/edx_worker_{}_ami_id'.format(codename)) }}
+      image: {{ salt.sdb.get('sdb://consul/edx_worker_{}_{}_ami_id'.format(environment_name, codename)) }}
       size: {{ settings.instances['edx-worker'].type }}
       network_interfaces:
         - DeviceIndex: 0
