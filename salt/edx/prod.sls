@@ -133,6 +133,7 @@ add_nginx_log_format:
   file.managed:
     - name: /etc/nginx/conf.d/logging.conf
     - source: salt://edx/files/nginx_logging.j2
+    - makedirs: True
 
 {% if theme_name %}
 install_edxapp_theme:
