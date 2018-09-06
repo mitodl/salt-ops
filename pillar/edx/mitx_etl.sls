@@ -26,3 +26,5 @@ mitx_residential_etl:
       level: 4
     S3Bucket:
       bucket: mitx-etl-{{ purpose }}-{{ env }}
+    Healthchecks:
+      url: __vault__::secret-operations/global/healthchecks/mitx-etl-nightly>data>value
