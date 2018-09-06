@@ -172,7 +172,7 @@ run_ansible_configuration_edx_nodes:
 {% set previous_release = salt.sdb.get('sdb://consul/edxapp-{}-{}-release-version'.format(ENVIRONMENT, edx_codename))|int %}
 {% set release_number = previous_release + 1 %}
 
-compile_assets_for_edx_{{ purpose }}:
+compile_assets_for_edx_{{ PURPOSE }}:
   cmd.run:
     - name: /edx/bin/edxapp-update-assets
     - require:
