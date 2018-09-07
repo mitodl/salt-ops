@@ -40,18 +40,19 @@ django:
       - force_reset: True
       - user: deploy
   pkgs:
-    - libmariadbclient-dev
-    - mariadb-client
     - build-essential
+    - git
+    - libjpeg-dev
+    - libmariadbclient-dev
     - libncurses5-dev
-    - python-mysqldb
-    - openjdk-8-jre
-    - nodejs
+    - libssl-dev
     - libxml2-dev
     - libxslt-dev
-    - git
-    - libssl-dev
-    - libjpeg-dev
+    - mariadb-client
+    - nodejs
+    - openjdk-8-jre
+    - python-mysqldb
+    - sendmail
     - zlib1g-dev
   states:
     setup:
