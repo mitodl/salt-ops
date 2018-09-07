@@ -248,4 +248,4 @@ alert_devops_channel_on_ami_build_success:
     - api_key: {{ slack_api_token }}
     - require:
         - boto_ec2: snapshot_edx_app_{{ ENVIRONMENT }}_node
-        - boto_ec2: napshot_edx_worker_{{ ENVIRONMENT }}_node
+        - boto_ec2: snapshot_edx_worker_{{ ENVIRONMENT }}_node
