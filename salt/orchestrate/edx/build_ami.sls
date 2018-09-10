@@ -20,6 +20,13 @@
 {% set edx_codename = purposes[PURPOSE].versions.codename %}
 {% set instance_name = 'edxapp-{}-{}-base'.format(ENVIRONMENT, edx_codename) %}
 {% set worker_instance_name = 'edx-worker-{}-{}-base'.format(ENVIRONMENT, edx_codename) %}
+{% if ENVIRONMENT == 'mitx-production' %}
+{{ set app_image = salt.sdb.get('sdb://consul/edx_{}_{}_ami_id'.format(ENVIRONMENT, codename)) }}
+{{ set worker_image = salt.sdb.get('sdb://consul/edx_worker_{}_{}_ami_id'.format(ENVIRONMENT, codename)) }}
+{% else %}
+{{ set app_image = salt.sdb.get('sdb://consul/xenial_ami_id') }}
+{{ set worker_image = salt.sdb.get('sdb://consul/xenial_ami_id') }}
+{% endif %}
 
 update_edxapp_codename_value:
   salt.function:
@@ -48,6 +55,7 @@ create_edx_baseline_instance_in_{{ ENVIRONMENT }}:
         purpose: {{ PURPOSE }}
         edx_codename: {{ edx_codename }}
     - vm_overrides:
+        image: {{ app_image }}
         tag:
           business_unit: {{ BUSINESS_UNIT }}
           environment: {{ ENVIRONMENT }}
@@ -81,6 +89,7 @@ create_edx_worker_baseline_instance_in_{{ ENVIRONMENT }}:
         purpose: {{ PURPOSE }}
         edx_codename: {{ edx_codename }}
     - vm_overrides:
+        image: {{ worker_image }}
         tag:
           business_unit: {{ BUSINESS_UNIT }}
           environment: {{ ENVIRONMENT }}
