@@ -168,11 +168,11 @@ build_edx_base_nodes:
               branch: {{ THEME_VERSION }}
     {% endif %}
 {% else %}
-run_ansible_configuration_edx_nodes:
+build_edx_base_nodes:
   salt.state:
     - tgt: 'P@roles:(edx-base|edx-base-worker) and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
-    - name: edx.run_ansible
+    - sls: edx.run_ansible
     - pillar:
         edx:
           ansible_flags: "--tags install:configuration"
