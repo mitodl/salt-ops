@@ -187,6 +187,14 @@ compile_assets_for_edx_{{ PURPOSE }}:
     - require:
         - salt: build_edx_base_nodes
 
+remove_unattended_upgrades_service:
+  salt.function:
+    - tgt: 'P@roles:(edx-base|edx-base-worker) and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - name: pkg.remove
+    - arg:
+        - unattended-upgrades
+
 {# Delete grains before snapshotting so they can be set when building from the image #}
 {% for grain in ['business_unit', 'environment', 'purpose', 'roles'] %}
 delete_{{ grain }}_from_grains:
