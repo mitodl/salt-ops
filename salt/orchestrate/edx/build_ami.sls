@@ -182,8 +182,12 @@ build_edx_base_nodes:
 {% set release_number = previous_release + 1 %}
 
 compile_assets_for_edx_{{ PURPOSE }}:
-  cmd.run:
-    - name: /edx/bin/edxapp-update-assets
+  salt.function:
+    - tgt: 'P@roles:(edx-base|edx-base-worker) and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - name: cmd.run
+    - arg:
+        - /edx/bin/edxapp-update-assets
     - require:
         - salt: build_edx_base_nodes
 
