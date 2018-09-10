@@ -21,11 +21,11 @@
 {% set instance_name = 'edxapp-{}-{}-base'.format(ENVIRONMENT, edx_codename) %}
 {% set worker_instance_name = 'edx-worker-{}-{}-base'.format(ENVIRONMENT, edx_codename) %}
 {% if ENVIRONMENT == 'mitx-production' %}
-{{ set app_image = salt.sdb.get('sdb://consul/edx_{}_{}_ami_id'.format(ENVIRONMENT, codename)) }}
-{{ set worker_image = salt.sdb.get('sdb://consul/edx_worker_{}_{}_ami_id'.format(ENVIRONMENT, codename)) }}
+{% set app_image = salt.sdb.get('sdb://consul/edx_{}_{}_ami_id'.format(ENVIRONMENT, edx_codename)) %}
+{% set worker_image = salt.sdb.get('sdb://consul/edx_worker_{}_{}_ami_id'.format(ENVIRONMENT, edx_codename)) %}
 {% else %}
-{{ set app_image = salt.sdb.get('sdb://consul/xenial_ami_id') }}
-{{ set worker_image = salt.sdb.get('sdb://consul/xenial_ami_id') }}
+{% set app_image = salt.sdb.get('sdb://consul/xenial_ami_id') %}
+{% set worker_image = salt.sdb.get('sdb://consul/xenial_ami_id') %}
 {% endif %}
 
 update_edxapp_codename_value:
