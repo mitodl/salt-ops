@@ -170,7 +170,7 @@ build_edx_base_nodes:
 {% else %}
 run_ansible_configuration_edx_nodes:
   salt.state:
-    - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }} and G@launch-date:{{ launch_date }}'
+    - tgt: 'P@roles:(edx-base|edx-base-worker) and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - name: edx.run_ansible
     - pillar:
