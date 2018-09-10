@@ -170,11 +170,11 @@ restart_consul_service_on_{{ purpose }}_{{ codename }}_edx_nodes_to_load_updated
     - require:
         - salt: deploy_consul_agent_to_{{ purpose }}_{{ codename }}_edx_nodes
 
-run_ansible_configuration_edx_nodes:
+run_ansible_configuration_on_{{ purpose }}_{{ codename }}_edx_nodes:
   salt.state:
     - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
-    - name: edx.run_ansible
+    - sls: edx.run_ansible
     - pillar:
         edx:
           ansible_flags: "--tags install:configuration"
