@@ -213,6 +213,7 @@ delete_{{ grain }}_from_grains:
         - boto_ec2: snapshot_edx_worker_{{ ENVIRONMENT }}_node
     - require:
         - salt: build_edx_base_nodes
+        - salt: compile_assets_for_edx_{{ PURPOSE }}
 {% endfor %}
 
 disable_minion_service_before_snapshot:
@@ -224,6 +225,7 @@ disable_minion_service_before_snapshot:
         - salt-minion
     - require:
         - salt: build_edx_base_nodes
+        - salt: compile_assets_for_edx_{{ PURPOSE }}
 
 snapshot_edx_app_{{ ENVIRONMENT }}_node:
   boto_ec2.snapshot_created:
@@ -260,6 +262,7 @@ alert_devops_channel_on_ami_build_failure:
     - onfail:
         - boto_ec2: snapshot_edx_app_{{ ENVIRONMENT }}_node
         - boto_ec2: snapshot_edx_worker_{{ ENVIRONMENT }}_node
+        - salt: compile_assets_for_edx_{{ PURPOSE }}
 
 alert_devops_channel_on_ami_build_success:
   slack.post_message:
