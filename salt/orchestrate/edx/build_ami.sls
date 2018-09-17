@@ -150,7 +150,6 @@ deploy_consul_agent_to_edx_nodes:
         - consul
         - consul.dns_proxy
 
-{% if not ENVIRONMENT == 'mitx-production' %}
 build_edx_base_nodes:
   salt.state:
     - tgt: 'P@roles:(edx-base|edx-base-worker) and G@environment:{{ ENVIRONMENT }}'
@@ -167,16 +166,11 @@ build_edx_base_nodes:
             custom_theme:
               branch: {{ THEME_VERSION }}
     {% endif %}
-{% else %}
-build_edx_base_nodes:
-  salt.state:
-    - tgt: 'P@roles:(edx-base|edx-base-worker) and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
-    - sls: edx.run_ansible
+    {% if ENVIRONMENT == 'mitx-production' %}
     - pillar:
         edx:
           ansible_flags: "--tags install:configuration"
-{% endif %}
+    {% endif %}
 
 {% set previous_release = salt.sdb.get('sdb://consul/edxapp-{}-{}-release-version'.format(ENVIRONMENT, edx_codename))|int %}
 {% set release_number = previous_release + 1 %}
