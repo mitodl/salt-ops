@@ -46,8 +46,8 @@ fluentd:
             - path: /opt/log/django.log
             - pos_file: /opt/log/django.log.pos
             - format: multiline
-            - format_firstline: '/^\[\d{1,2}\/\w{3}\/\d{4}\s+\d{2}:\d{2}:\d{2}\]/'
-            - format1: '/^\[(?<time>\d{1,2}\/\w{3}\/\d{4}\s+\d{2}:\d{2}:\d{2})\] (?<log_level>\w+) \[(?<module_name>[a-zA-Z0-9-_.]+):(?<line_number>\d+)\] (?<message>.*)/'
+            - format_firstline: '/^\[\d{4}-\d{2}-\d{2}\w+:\d{2}:\d{2}\]/'
+            - format1: '/^\[(?<time>\d{4}-\d{2}-\d{2}\w+:\d{2}:\d{2})\] (?<log_level>\w+) \[(?<module_name>[a-zA-Z0-9-_.]+):(?<line_number>\d+)\] (?<message>.*)/'
             - time_format: '%d/%b/%Y %H:%M:%S'
             - multiline_flush_interval: '5s'
         - directive: filter
