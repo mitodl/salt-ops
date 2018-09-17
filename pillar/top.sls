@@ -17,6 +17,7 @@ base:
     - match: grain
     - kibana
     - elastalert
+    - monit
     - monit.lms_503
   'roles:master':
     - match: grain
@@ -165,6 +166,7 @@ base:
     - match: compound
     - edx.mitx-production
     - edx.inotify_mitx
+    - monit
     - monit.nginx_cert_expiration
     - monit.latex2edx
     - monit.mysql_connection
