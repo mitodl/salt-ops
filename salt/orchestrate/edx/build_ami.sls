@@ -150,6 +150,14 @@ deploy_consul_agent_to_edx_nodes:
         - consul
         - consul.dns_proxy
 
+restart_consul_processes_to_pick_up_env_changes:
+  salt.function:
+    - tgt: 'P@roles:(edx-base|edx-base-worker) and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - name: service.restart
+    - arg:
+        - consul
+
 build_edx_base_nodes:
   salt.state:
     - tgt: 'P@roles:(edx-base|edx-base-worker) and G@environment:{{ ENVIRONMENT }}'
