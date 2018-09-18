@@ -51,7 +51,7 @@ current_residential_versions_rp: &current_residential_versions_rp
   ami_id: ami-80861296
 
 next_residential_versions: &next_residential_versions
-  edx_config_repo: https://github.com/mitx/configuration.git
+  edx_config_repo: https://github.com/edx/configuration.git
   edx_config_version: open-release/hawthorn.master
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
   edxapp: mitx/hawthorn-release
