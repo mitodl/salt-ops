@@ -83,3 +83,5 @@ run_ansible:
     - require:
       - virtualenv: create_ansible_virtualenv
     - unless: {{ salt.pillar.get('edx:skip_ansible', False) }}
+    - env:
+        HOME: /root
