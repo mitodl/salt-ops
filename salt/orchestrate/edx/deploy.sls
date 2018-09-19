@@ -174,7 +174,7 @@ run_ansible_configuration_on_{{ purpose }}_{{ codename }}_edx_nodes:
   salt.state:
     - tgt: 'P@roles:(edx|edx-worker) and G@environment:{{ ENVIRONMENT }} and G@release-version:{{ release_version }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
-    - sls: edx.run_ansible
+    - highstate: True
     - pillar:
         edx:
           ansible_flags: "--tags install:configuration"
