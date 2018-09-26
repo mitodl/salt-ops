@@ -183,6 +183,9 @@ edx:
     forum_source_repo: {{ purpose_data.versions.forum_source_repo }}
     forum_version: {{ purpose_data.versions.forum }}
     ########## END FORUM ########################################
+    COMMON_ENABLE_NEWRELIC: {{ environment == 'mitx-production' }}
+    COMMON_ENABLE_NEWRELIC_APP: {{ environment == 'mitx-production' }}
+    NEWRELIC_LICENSE_KEY: __vault__::secret-operations/global/newrelic-license-key>data>value
 
     EDXAPP_MYSQL_CSMH_DB_NAME: edxapp_csmh_{{ purpose_suffix }}
     EDXAPP_MYSQL_CSMH_HOST: {{ MYSQL_HOST }}
