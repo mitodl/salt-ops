@@ -107,7 +107,15 @@ edx:
   ansible_vars:
     ### EDXAPP ENVIRONMENT ###
     EDXAPP_MEMCACHE:
-      - localhost:11211
+      {% for cache_config in cache_configs %}
+      {% set cache_purpose = cache_config.get('purpose', 'shared') %}
+      {% if cache_purpose in purpose %}
+      {% set ELASTICACHE_CONFIG = salt.boto3_elasticache.describe_cache_clusters(cache_config.cluster_id[:20].strip('-'), ShowCacheNodeInfo=True)[0] %}
+      {% for host in ELASTICACHE_CONFIG.CacheNodes %}
+      - {{ host.Endpoint.Address }}:{{ host.Endpoint.Port }}
+      {% endfor %}
+      {% endif %}
+      {% endfor %}
     ### XQUEUE ENVIRONMENT ###
     XQUEUE_QUEUES:
         'MITx-42.01x': 'https://xserver.mitx.mit.edu/fgxserver'
