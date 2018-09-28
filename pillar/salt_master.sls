@@ -144,6 +144,8 @@ salt_master:
             - salt://reactors/opsgenie/post_notification.sls
         - vault/lease/expiring/*:
             - salt://reactors/vault/alert_expiring_leases.sls
+        - vault/cache/miss/*:
+            - salt://reactors/vault/alert_cache_read_misses.sls
         - salt/state_result/*/restore/*/result:
             - salt://reactors/opsgenie/post_notification.sls
         - salt/state_result/*/backup/*/result:
