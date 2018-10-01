@@ -14,8 +14,8 @@ redash:
     - name: BootCamp Ecommerce
       type: pg
       options:
-        dbname: bootcamps
-        host: postgresql-bootcamps.service.production-apps.consul
+        dbname: bootcamp_ecommerce
+        host: bootcamps-rds-postgresql.cbnm7ajau6mi.us-east-1.rds.amazonaws.com
         port: 5432
         user: __vault__:cache:postgresql-bootcamps/creds/readonly>data>username
         password: __vault__:cache:postgresql-bootcamps/creds/readonly>data>password
