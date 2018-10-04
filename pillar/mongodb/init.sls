@@ -39,3 +39,4 @@ refresh_datadog_mongodb-{{ ENVIRONMENT }}_credentials:
   function: state.sls
   args:
     - datadog.plugins
+{% endif %}

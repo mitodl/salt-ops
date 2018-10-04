@@ -38,3 +38,5 @@ refresh_datadog_rabbitmq-{{ ENVIRONMENT }}_credentials:
   function: state.sls
   args:
     - datadog.plugins
+    - rabbitmq.set_datadog_permissions
+{% endif %}

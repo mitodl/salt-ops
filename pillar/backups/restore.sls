@@ -17,13 +17,6 @@
     'forum',
 ] %}
 
-schedule:
-  refresh_{{ app_name }}_configs:
-    days: 21
-    function: state.sls
-    args:
-      - backups.restore
-
 restores:
 {% for purpose, purpose_data in env_data.purposes.items() %}
 {% if 'live' in purpose or 'draft' in purpose %}
