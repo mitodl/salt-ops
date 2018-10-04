@@ -141,6 +141,7 @@ django:
   states:
     setup:
       - apps.odlvideo.install
+    config:
       - apps.odlvideo.configure
     post_install:
       - apps.odlvideo.post_deploy

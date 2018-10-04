@@ -31,5 +31,5 @@ schedule:
     function: state.sls
     args:
       - edx.run_ansible
-      kwargs:
-        pillar: "{'edx': {'ansible_flags':  '--tags install:configuration'}}"
+    kwargs:
+      pillar: "{'edx': {'ansible_flags':  '--tags install:configuration'}}"
