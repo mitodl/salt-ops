@@ -1,7 +1,7 @@
 include:
   - vault.initialize
 
-{% for backend in ['github', 'app-id', 'aws-ec2'] %}
+{% for backend in ['github', 'app-id', 'aws'] %}
 enable_{{ backend }}_auth_backend:
   vault.auth_backend_enabled:
     - backend_type: {{ backend }}
