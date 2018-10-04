@@ -30,6 +30,7 @@ register_root_ec2_role:
     - bound_account_id: {{ salt.grains.get('ec2:account_id') }}
     - period: 720h
     - update_role: True
+    - auth_type: ec2
     - policies:
         - salt-master
 
