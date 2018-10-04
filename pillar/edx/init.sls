@@ -32,4 +32,6 @@ schedule:
     args:
       - edx.run_ansible
     kwargs:
-      pillar: "{'edx': {'ansible_flags':  '--tags install:configuration'}}"
+      pillar:
+        edx:
+          ansible_flags: '--tags install:configuration'
