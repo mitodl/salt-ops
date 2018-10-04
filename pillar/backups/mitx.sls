@@ -10,6 +10,13 @@
 {% set efs_id = 'fs-1f27ae56' %}
 {% endif %}
 
+schedule:
+  refresh_{{ app_name }}_configs:
+    days: 21
+    function: state.sls
+    args:
+      - backups.backup
+
 backups:
   enabled:
   {% for purpose, purpose_data in env_data.purposes.items() %}

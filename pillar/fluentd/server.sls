@@ -1,12 +1,13 @@
+{% set app_name = "fluentd-aggregators" %}
 {% set micromasters_ir_bucket = 'odl-micromasters-ir-data' %}
 {% set edx_tracking_bucket = 'odl-residential-tracking-data' %}
 {% set data_lake_bucket = 'mitodl-data-lake' %}
 {% import_yaml 'fluentd/fluentd_directories.yml' as fluentd_directories %}
 
 schedule:
-  regenerate_fluentd_config:
+  refresh_{{ app_name }}_configs:
     # Needed to ensure that S3 credentials remain valid
-    days: 25
+    days: 21
     function: state.sls
     args:
       - fluentd.config

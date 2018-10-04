@@ -10,8 +10,8 @@
 {% set redash_fluentd_webhook_token = salt.vault.read('secret-operations/global/redash_webhook_token').data.value %}
 
 schedule:
-  refresh_redash_datasource_credentials:
-    days: 25
+  refresh_{{ app_name }}_credentials:
+    days: 14
     function: state.sls
     args:
       - django.config

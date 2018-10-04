@@ -19,6 +19,13 @@
 {% set env_data = env_dict[ENVIRONMENT] %}
 
 
+schedule:
+  refresh_{{ app_name }}_credentials:
+    days: 21
+    function: state.sls
+    args:
+      - django.config
+
 python:
   versions:
     - number: {{ python_version }}

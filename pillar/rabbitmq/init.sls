@@ -30,3 +30,11 @@ rabbitmq:
           - administrator
         password: __vault__:gen_if_missing:secret-{{ BUSINESS_UNIT }}/{{ ENVIRONMENT }}/rabbitmq-admin-password>data>value
   erlang_cookie: __vault__:gen_if_missing:secret-{{ BUSINESS_UNIT }}/{{ ENVIRONMENT }}/erlang_cookie>data>value
+
+{% if 'production' in ENVIRONMENT %}
+schedule:
+refresh_datadog_rabbitmq-{{ ENVIRONMENT }}_credentials:
+  days: 21
+  function: state.sls
+  args:
+    - datadog.plugins

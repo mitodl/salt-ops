@@ -31,3 +31,11 @@ mongodb:
   replset_name: rs0
   replset_config: {{ replset_config }}
   cluster_key: __vault__::secret-{{ business_unit }}/{{ environment }}/mongodb-cluster-key>data>value
+
+{% if 'production' in environment %}
+schedule:
+refresh_datadog_mongodb-{{ ENVIRONMENT }}_credentials:
+  days: 21
+  function: state.sls
+  args:
+    - datadog.plugins
