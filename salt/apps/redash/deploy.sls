@@ -1,5 +1,7 @@
 {% set redash_env = salt.pillar.get('django:environment') %}
 {% set django = salt.pillar.get('django') %}
+include:
+  - uwsgi.service
 
 create_env_file_for_redash:
   file.managed:
@@ -11,3 +13,5 @@ create_env_file_for_redash:
     - makedirs: True
     - user: {{ django.user }}
     - group: {{ django.group }}
+    - onchanges_in:
+      - service: uwsgi_service_running

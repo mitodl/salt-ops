@@ -1,3 +1,6 @@
+include:
+    - uwsgi.service
+
 ensure_yarn_is_installed_for_odlvideo:
   npm.installed:
     - name: 'yarn@1.2.1'
@@ -19,3 +22,5 @@ create_env_file_for_odlvideo:
         {%- endfor %}
     - require:
         - deploy_application_source_to_destination
+    - onchanges_in:
+        - service: uwsgi_service_running
