@@ -28,7 +28,7 @@ register_root_ec2_role:
     - role: salt-master
     - bound_iam_instance_profile_arn: {{ salt.grains.get('ec2:iam:info:instance_profile_arn') }}
     - bound_account_id: {{ salt.grains.get('ec2:account_id') }}
-    - period: 720h
+    - period: '720h'
     - update_role: True
     - auth_type: ec2
     - policies:
