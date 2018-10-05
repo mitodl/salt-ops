@@ -14,10 +14,8 @@ schedule:
       time_horizon: {{ ONE_WEEK }}
   refresh_master_vault_token:
     maxrunning: 1
-    days: 29
-    function: state.sls
-    args:
-      - vault.refresh_master_token
+    days: 25
+    function: vault.renew_token
   backup_edx_rp_data:
     maxrunning: 1
     when: 1:00am
