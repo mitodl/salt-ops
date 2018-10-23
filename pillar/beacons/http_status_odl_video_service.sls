@@ -6,5 +6,7 @@ beacons:
           json_response:
             - path: 'certificate:status'
               value: up
+              comp: '=='
             - path: 'status_all'
               value: up
+              comp: '=='
