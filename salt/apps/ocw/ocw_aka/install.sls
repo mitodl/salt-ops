@@ -1,5 +1,5 @@
 {% set users = [fsuser, ocwuser, sshacs] %}
-{% set root_directory = '/ocwdata/apache-tomcat/webapps/' %}
+{% set root_directory = '/var/www/ocw' %}
 {% set directories = ['about', 'course', 'donate', 'educator', 'faculty', 'give',
                      'help', 'high-school', 'icons', 'images', 'jsp', 'jw-player-free',
                      'jwplayer', 'OcwWeb', 'ocw-labs', 'resources', 'rss', 'scp48112',
@@ -10,6 +10,12 @@
 create_{{ user }}_user:
   - name: {{ user }}
   - shell: /bin/bash
+
+set_{{ user }}_ssh_auth_key:
+  module.run:
+    ssh.set_auth_key:
+      - user: {{ user }}
+      - key: __vault__::secret-ocw/production/ssh_keys/{{ user }}>data>value
 {% endfor %}
 
 create_{{ root_directory }}_directory:
@@ -20,12 +26,11 @@ create_{{ root_directory }}_directory:
     - makedirs: True
     - require:
       - user: create_{{ user }}_user
-      - file: create_{{ root_directory }}_directory
 
 {% for dir in directories %}
 create_{{ dir }}_directory:
   file.directory:
-    - name: {{ dir }}
+    - name: {{ root_directory }}/{{ dir }}
     - user: fsuser
     - group: www-data
     - makedirs: True
