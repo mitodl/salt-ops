@@ -228,3 +228,7 @@ base:
   'G@roles:ocw-cms and P@environment:ocw-production':
     - match: compound
     - logrotate.ocw_cms
+  'roles:ocw-origin-server':
+    - match: grain
+    - letsencrypt.ocw-aka
+    - nginx.ocw_aka

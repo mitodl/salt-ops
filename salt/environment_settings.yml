@@ -574,6 +574,14 @@ environments:
     business_unit: open-courseware
     network_prefix: '10.100'
     vpc_name: OCW
+    purposes:
+      ocw-production-aka:
+        business_unit: open-courseware
+        domains:
+          - ocw-aka.odl.mit.edu
+        num_instances: 1
+        security_groups:
+          - ocw-production-webapp
 
 business_units:
   - bootcamps
