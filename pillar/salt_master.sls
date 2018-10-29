@@ -15,9 +15,7 @@ schedule:
   refresh_master_vault_token:
     maxrunning: 1
     days: 25
-    function: state.sls
-    args:
-      - vault.refresh_master_token
+    function: vault.renew_token
   refresh_master_configs:
     maxrunning: 1
     days: 21

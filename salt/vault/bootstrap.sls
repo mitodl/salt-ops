@@ -1,7 +1,7 @@
 include:
   - vault.initialize
 
-{% for backend in ['github', 'app-id', 'aws-ec2'] %}
+{% for backend in ['github', 'app-id', 'aws'] %}
 enable_{{ backend }}_auth_backend:
   vault.auth_backend_enabled:
     - backend_type: {{ backend }}
@@ -28,6 +28,9 @@ register_root_ec2_role:
     - role: salt-master
     - bound_iam_instance_profile_arn: {{ salt.grains.get('ec2:iam:info:instance_profile_arn') }}
     - bound_account_id: {{ salt.grains.get('ec2:account_id') }}
+    - period: '720h'
+    - update_role: True
+    - auth_type: ec2
     - policies:
         - salt-master
 
