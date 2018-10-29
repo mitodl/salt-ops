@@ -167,7 +167,7 @@ elasticsearch:
                 must:
                   - match:
                       #Request is the same whether xblock is enabled or disabled
-                      message.raw: rapid_response_xblock/handler/toggle_block_enabled
+                      request.raw: rapid_response_xblock/handler/toggle_block_enabled
                   - term:
                       environment.raw: mitx-production
                   - term:
