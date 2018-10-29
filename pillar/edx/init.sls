@@ -24,3 +24,14 @@ edx:
     TLS_LOCATION: '/etc/pki/tls/certs'
     TLS_KEY_NAME: 'edx-ssl-cert'
     max_upload_size: 20
+
+schedule:
+  refresh_mitx-{{ environment }}_configs:
+    days: 21
+    function: state.sls
+    args:
+      - edx.run_ansible
+    kwargs:
+      pillar:
+        edx:
+          ansible_flags: '--tags install:configuration'

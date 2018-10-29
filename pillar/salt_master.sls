@@ -16,6 +16,12 @@ schedule:
     maxrunning: 1
     days: 25
     function: vault.renew_token
+  refresh_master_configs:
+    maxrunning: 1
+    days: 21
+    function: state.sls
+    args:
+      - master.config
   backup_edx_rp_data:
     maxrunning: 1
     when: 1:00am

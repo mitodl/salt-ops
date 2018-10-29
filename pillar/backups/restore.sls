@@ -16,6 +16,7 @@
     'gitlog',
     'forum',
 ] %}
+
 restores:
 {% for purpose, purpose_data in env_data.purposes.items() %}
 {% if 'live' in purpose or 'draft' in purpose %}

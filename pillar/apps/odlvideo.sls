@@ -50,6 +50,13 @@
 {% set rabbit_creds = salt.vault.cached_read("rabbitmq-{env}/creds/odlvideo".format(env=ENVIRONMENT), cache_prefix=minion_id) %}
 {% set ga_json = salt.vault.read('secret-odl-video/' ~ ENVIRONMENT ~ '/ga-keyfile-json').data.value|json %}
 
+schedule:
+  refresh_{{ app_name }}_credentials:
+    days: 14
+    function: state.sls
+    args:
+      - django.config
+
 python:
   versions:
     - number: {{ python_version }}
@@ -134,6 +141,8 @@ django:
   states:
     setup:
       - apps.odlvideo.install
+    config:
+      - apps.odlvideo.configure
     post_install:
       - apps.odlvideo.post_deploy
 
