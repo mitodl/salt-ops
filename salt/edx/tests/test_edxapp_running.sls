@@ -51,13 +51,6 @@ our configurations. Test the following:
 #     - is_running: True
 # {% endfor %}
 
-{% for connection, value in socket_connections.items() %}
-test_edxapp_{{ connection }}:
-  testinfra.socket:
-    - name: {{ value }}
-    - is_listening: True
-{% endfor %}
-
 {% for service in running_services %}
 test_edxapp_{{ service }}:
   testinfra.service:
@@ -82,4 +75,11 @@ test_edxapp_lms_env_{{ attribute }}:
     - content_string:
         expected: '{{ value }}'
         comparison: search
+{% endfor %}
+
+{% for connection, value in socket_connections.items() %}
+test_edxapp_{{ connection }}:
+  testinfra.socket:
+    - name: {{ value }}
+    - is_listening: True
 {% endfor %}
