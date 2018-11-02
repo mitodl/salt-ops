@@ -9,12 +9,12 @@ install_etl_os_dependencies:
 
 create_mitx_directory:
   file.directory:
-    - name: /mitx
+    - name: /odl-etl
 
 clone_mitx_etl_repo:
   git.latest:
     - name: https://github.com/mitodl/odl-etl
-    - target: /mitx
+    - target: /odl-etl/
     - force_clone: True
     - force_reset: True
     - require:
@@ -23,9 +23,9 @@ clone_mitx_etl_repo:
 
 install_mitx_residential_etl_requirements:
   virtualenv.managed:
-    - name: /mitx/mitx_etl
+    - name: /odl-etl/mitx_etl
     - system_site_packages: False
-    - requirements: /mitx/requirements.txt
+    - requirements: /odl-etl/mitx/requirements.txt
     - python: /usr/bin/python3
     - env_vars:
         PATH_VAR: '/usr/local/bin/pip3'
@@ -36,7 +36,7 @@ install_mitx_residential_etl_requirements:
 {% set settings = salt.pillar.get('mitx_residential_etl:settings', {}) %}
 mitx_residential_etl_config:
   file.managed:
-    - name: /mitx/settings.json
+    - name: /odl-etl/mitx/settings.json
     - contents: |
         {{ settings|json(indent=2, sort_keys=True) |indent(8) }}
     - require:
@@ -44,7 +44,7 @@ mitx_residential_etl_config:
 
 add_task_to_cron:
   cron.present:
-    - name: '/mitx/mitx_etl/bin/python3 /mitx/mitx_residential_etl.py'
+    - name: '/odl-etl/mitx_etl/bin/python3 /odl-etl/mitx/mitx_residential_etl.py'
     - comment: mitx_residential_etl_script
     - special: '@daily'
     - require:
