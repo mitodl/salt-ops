@@ -13,7 +13,7 @@ beacons:
               value: up
               comp: '=='
             - path: 'status_all'
-              value: up
+              value: down
               comp: '=='
         odl-video-production-apps:
           url: "https://video.odl.mit.edu/status?token=production-apps"
