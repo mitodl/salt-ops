@@ -29,4 +29,4 @@ beacons:
             - path: 'status_all'
               value: up
               comp: '=='
-    - interval: 10
+    - interval: 1800
