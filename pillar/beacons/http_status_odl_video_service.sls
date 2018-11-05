@@ -3,7 +3,12 @@ beacons:
     - sites:
         odl-video-rc-apps:
           url: "https://video-rc.odl.mit.edu/status?token=rc-apps"
-          json_response:
+          status:
+            - value: 400
+              comp: '<'
+            - value: 300
+              comp: '>='
+          content:
             - path: 'certificate:status'
               value: up
               comp: '=='
@@ -12,7 +17,12 @@ beacons:
               comp: '=='
         odl-video-production-apps:
           url: "https://video.odl.mit.edu/status?token=production-apps"
-          json_response:
+          status:
+            - value: 400
+              comp: '<'
+            - value: 300
+              comp: '>='
+          content:
             - path: 'certificate:status'
               value: up
               comp: '=='
