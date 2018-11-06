@@ -20,10 +20,6 @@ edx:
         - name: rapid-response-xblock==0.0.4
         - name: git+https://github.com/mitodl/edx-git-auto-export.git@v0.1#egg=edx-git-auto-export
           extra_args: -e
-    EDXAPP_LMS_ENV_EXTRA:
-      ADDL_INSTALLED_APPS:
-        - ubcpi
-        - git_auto_export
     EDXAPP_CMS_ENV_EXTRA:
       ADDL_INSTALLED_APPS:
         - ubcpi
