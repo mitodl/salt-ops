@@ -6,8 +6,6 @@ beacons:
           status:
             - value: 400
               comp: '<'
-            - value: 300
-              comp: '>='
           content:
             - path: 'certificate:status'
               value: up
@@ -20,8 +18,6 @@ beacons:
           status:
             - value: 400
               comp: '<'
-            - value: 300
-              comp: '>='
           content:
             - path: 'certificate:status'
               value: up
