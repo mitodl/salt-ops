@@ -83,3 +83,10 @@ test_edxapp_{{ connection }}:
     - name: {{ value }}
     - is_listening: True
 {% endfor %}
+
+add_an_artificial_wait_for_forum:
+  module.run:
+    - name: test.sleep
+    - length: 10
+    - require_in:
+        - testinfra: test_edxapp_forum
