@@ -11,7 +11,7 @@ redash:
         port: 15432
         user: __vault__:cache:postgresql-micromasters/creds/readonly>data>username
         password: __vault__:cache:postgresql-micromasters/creds/readonly>data>password
-    - name: BootCamp Ecommerce
+    - name: Bootcamp Ecommerce
       type: pg
       options:
         dbname: bootcamp_ecommerce
