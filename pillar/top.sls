@@ -199,6 +199,7 @@ base:
     - nginx
     - nginx.amps_redirect
     - beacons.http_status_odl_video_service
+    - beacons.http_status_lmodproxy
   'G@roles:backups and P@environment:mitx-(qa|production)':
     - match: compound
     - backups.mitx
