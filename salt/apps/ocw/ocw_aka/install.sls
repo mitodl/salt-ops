@@ -15,7 +15,7 @@ set_{{ user }}_ssh_auth_key:
   module.run:
     ssh.set_auth_key:
       - user: {{ user }}
-      - key: __vault__::secret-ocw/production/ssh_keys/{{ user }}>data>value
+      - key: __vault__::secret-open-courseware/production/ssh_keys/{{ user }}>data>value
 {% endfor %}
 
 create_{{ root_directory }}_directory:
