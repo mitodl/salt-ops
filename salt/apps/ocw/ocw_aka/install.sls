@@ -8,8 +8,9 @@
 
 {% for user in users %}
 create_{{ user }}_user:
-  - name: {{ user }}
-  - shell: /bin/bash
+  user.present:
+    - name: {{ user }}
+    - shell: /bin/bash
 
 set_{{ user }}_ssh_auth_key:
   module.run:
