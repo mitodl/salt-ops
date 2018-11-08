@@ -173,11 +173,11 @@ base:
   'G@roles:analytics and G@environment:mitx-production':
     - match: compound
     - edx.mitx_etl
-  'roles:ocw-aka':
+  'roles:ocw-origin':
     - match: grain
     - nginx.ng
     - letsencrypt
-    - apps.ocw.ocw-aka.install
+    - apps.ocw.ocw-origin.install
   'roles:sandbox':
     - match: grain
     - edx.prod
