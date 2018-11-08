@@ -1,4 +1,4 @@
-{% set users = [fsuser, ocwuser] %}
+{% set users = ['fsuser', 'ocwuser'] %}
 {% set root_directory = '/var/www/ocw' %}
 {% set directories = ['about', 'course', 'donate', 'educator', 'faculty', 'give',
                      'help', 'high-school', 'icons', 'images', 'jsp', 'jw-player-free',
