@@ -17,7 +17,6 @@ set_{{ user }}_ssh_auth_key:
     ssh.set_auth_key:
       - user: {{ user }}
       - key: __vault__::secret-open-courseware/production/ssh_keys/{{ user }}>data>value
-{% endfor %}
 
 create_{{ root_directory }}_directory:
   file.directory:
@@ -39,3 +38,5 @@ create_{{ dir }}_directory:
       - user: create_{{ user }}_user
       - file: create_{{ root_directory }}_directory
 {% endfor %}
+{% endfor %}
+
