@@ -1,4 +1,4 @@
-{% set app_name = 'ocw-aka' %}
+{% set app_name = 'ocw-origin' %}
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'ocw') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
