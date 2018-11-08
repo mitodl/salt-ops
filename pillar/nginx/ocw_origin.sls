@@ -6,7 +6,6 @@
 
 nginx:
   ng:
-    install_from_ppa: True
     servers:
       managed:
         {{ app_name }}:
