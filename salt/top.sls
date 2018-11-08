@@ -177,7 +177,7 @@ base:
     - match: grain
     - nginx.ng
     - letsencrypt
-    - apps.ocw.ocw-aka.install
+    - apps.ocw.ocw_aka.install
   'roles:sandbox':
     - match: grain
     - edx.prod
