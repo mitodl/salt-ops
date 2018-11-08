@@ -231,5 +231,5 @@ base:
     - logrotate.ocw_cms
   'roles:ocw-origin':
     - match: grain
-    - letsencrypt.ocw-origin
+    - letsencrypt.ocw_origin
     - nginx.ocw_origin
