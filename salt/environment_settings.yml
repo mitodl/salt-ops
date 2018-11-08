@@ -581,7 +581,7 @@ environments:
           - ocw-origin.odl.mit.edu
         num_instances: 1
         security_groups:
-          - ocw-production-webapp
+          - webapp
 
 business_units:
   - bootcamps
