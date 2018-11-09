@@ -32,8 +32,8 @@ nginx:
                     - '[::]:443'
                     - ssl
                 - root: /var/www/ocw
-                - ssl_certificate: /etc/letsencrypt/live/{{ server_domain_names[0] }}/fullchain.pem
-                - ssl_certificate_key: /etc/letsencrypt/live/{{ server_domain_names[0] }}/privkey.pem
+                - ssl_certificate: __vault__::secret-operations/global/odl_wildcard_cert>data>value
+                - ssl_certificate_key: __vault__::secret-operations/global/odl_wildcard_cert>data>key
                 - ssl_stapling: 'on'
                 - ssl_stapling_verify: 'on'
                 - ssl_session_timeout: 1d
