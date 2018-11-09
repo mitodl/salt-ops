@@ -175,6 +175,7 @@ base:
     - edx.mitx_etl
   'roles:ocw-origin':
     - match: grain
+    - utils.configure_debian_source_repos
     - nginx.ng
     - letsencrypt
     - apps.ocw.ocw-origin.install
