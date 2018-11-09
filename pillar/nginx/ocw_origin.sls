@@ -6,6 +6,9 @@
 
 nginx:
   ng:
+    install_from_source: False
+    source_version: 1.15.6
+    source_hash: a3d8c67c2035808c7c0d475fffe263db8c353b11521aa7ade468b780ed826cc6
     servers:
       managed:
         {{ app_name }}:
