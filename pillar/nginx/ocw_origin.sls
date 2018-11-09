@@ -17,6 +17,14 @@ nginx:
             - server:
                 - server_name: {{ server_domain_names }}
                 - listen:
+                    - 80
+                - listen:
+                    - '[::]:80'
+                - location ~ /.well-known:
+                    - allow: all
+            - server:
+                - server_name: {{ server_domain_names }}
+                - listen:
                     - 443
                     - ssl
                     - default
