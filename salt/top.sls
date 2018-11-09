@@ -177,6 +177,7 @@ base:
     - match: grain
     - utils.configure_debian_source_repos
     - nginx.ng
+    - nginx.ng.certificates
     - letsencrypt
     - apps.ocw.ocw-origin.install
   'roles:sandbox':

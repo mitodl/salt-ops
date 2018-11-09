@@ -9,6 +9,10 @@ nginx:
     install_from_source: True
     source_version: 1.15.1
     source_hash: c7206858d7f832b8ef73a45c9b8f8e436bcb1ee88db2bc85b8e438ecec9d5460
+    certificates:
+      odl_wildcard:
+        public_cert: __vault__::secret-operations/global/odl_wildcard_cert>data>value
+        private_key: __vault__::secret-operations/global/odl_wildcard_cert>data>key
     servers:
       managed:
         {{ app_name }}:
@@ -32,8 +36,8 @@ nginx:
                     - '[::]:443'
                     - ssl
                 - root: /var/www/ocw
-                - ssl_certificate: __vault__::secret-operations/global/odl_wildcard_cert>data>value
-                - ssl_certificate_key: __vault__::secret-operations/global/odl_wildcard_cert>data>key
+                - ssl_certificate: /etc/nginx/ssl/odl_wildcard.crt
+                - ssl_certificate_key: /etc/nginx/ssl/odl_wildcard.key
                 - ssl_stapling: 'on'
                 - ssl_stapling_verify: 'on'
                 - ssl_session_timeout: 1d
