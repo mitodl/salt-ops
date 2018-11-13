@@ -18,12 +18,9 @@ elasticsearch:
           - name: Cluster access within VPC
             type: allow
             accept_x-forwarded-for_header: 'true'
-            indices:
-              - <no-index>
             actions:
               - 'cluster:*'
             hosts:
-              - localhost
               - 127.0.0.1
               - 10.10.0.0/16
           - name: Access for micromasters production index with HTTP Auth
