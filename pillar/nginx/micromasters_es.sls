@@ -12,7 +12,19 @@ nginx:
           enabled: True
           config:
             - server:
-                - server_name: micromasters-es.odl.mit.edu
+                - server_name:
+                    - micromasters-es.odl.mit.edu
+                    - '""'
+                - listen: 80
+                - location /_cluster:
+                    - allow: 10.10.0.0/16
+                    - proxy_pass: http://127.0.0.1:9200$request_uri
+                    - proxy_set_header: 'X-Forwarded-For $proxy_add_x_forwarded_for'
+                    - proxy_pass_header: 'X-Api-Key'
+            - server:
+                - server_name:
+                    - micromasters-es.odl.mit.edu
+                    - '""'
                 - listen:
                     - 443
                     - ssl
