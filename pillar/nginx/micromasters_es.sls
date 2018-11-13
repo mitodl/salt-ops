@@ -17,6 +17,7 @@ nginx:
                     - '""'
                 - listen: 80
                 - location /_cluster:
+                    - allow: 127.0.0.1
                     - allow: 10.10.0.0/16
                     - proxy_pass: http://127.0.0.1:9200$request_uri
                     - proxy_set_header: 'X-Forwarded-For $proxy_add_x_forwarded_for'
@@ -32,6 +33,7 @@ nginx:
                     - '[::]:443'
                     - ssl
                 - location /_cluster:
+                    - allow: 127.0.0.1
                     - allow: 10.10.0.0/16
                     - proxy_pass: http://127.0.0.1:9200$request_uri
                     - proxy_set_header: 'X-Forwarded-For $proxy_add_x_forwarded_for'
