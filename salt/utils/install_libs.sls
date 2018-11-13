@@ -4,10 +4,10 @@
       'pkgs': ['gcc', 'make']
     },
     'Debian': {
-      'pkgs': ['python-dev', 'python', 'curl'],
+      'pkgs': ['python-dev', 'python', 'curl', 'dnsutils'],
     },
     'RedHat': {
-      'pkgs': ['python', 'python-devel', 'curl'],
+      'pkgs': ['python', 'python-devel', 'curl', 'bind-utils'],
     },
 }, grain='os_family', merge=salt.pillar.get('python_dependencies'), base='default') %}
 

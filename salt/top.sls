@@ -1,6 +1,6 @@
 base:
   '*':
-    - utils.install_pip
+    - utils.install_libs
   'not G@roles:devstack':
     - match: compound
     - utils.inotify_watches
