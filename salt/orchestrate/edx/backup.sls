@@ -62,6 +62,8 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
                 - {{ salt.boto_secgroup.get_group_id(
                      'edx-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
                 - {{ salt.boto_secgroup.get_group_id(
+                     'default', vpc_name=VPC_NAME) }}
+                - {{ salt.boto_secgroup.get_group_id(
                      'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           block_device_mappings:
             - DeviceName: xvda
