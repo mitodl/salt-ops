@@ -16,6 +16,6 @@ PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity restore\
                       --port {{ settings.get('port', 27017) }} \
                       --password {{ settings.password }} --username {{ settings.username }} \
                       --authenticationDatabase admin \
-                      --db {{ target_db }} \
+                      --db {{ target_db }} --oplogReplay \
                       --drop {{ backupdir }}/{{ source_db }}
 {% endfor %}

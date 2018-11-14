@@ -10,7 +10,7 @@ mkdir -p {{ cachedir }}
                    --port {{ settings.get('port', 27017) }} \
                    --password={{ settings.password }} --username {{ settings.username }} \
                    --authenticationDatabase admin \
-                   --out {{ backupdir }}
+                   --oplog --out {{ backupdir }}
 
 PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
           --s3-use-server-side-encryption {{ backupdir }} \
