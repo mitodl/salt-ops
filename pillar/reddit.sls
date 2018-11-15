@@ -25,7 +25,7 @@
 
 schedule:
   refresh_{{ app_name }}_configs:
-    days: 14
+    days: 5
     function: state.sls
     args:
       - reddit.config

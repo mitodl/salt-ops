@@ -7,7 +7,7 @@
 schedule:
   refresh_{{ app_name }}_configs:
     # Needed to ensure that S3 credentials remain valid
-    days: 21
+    days: 5
     function: state.sls
     args:
       - fluentd.config

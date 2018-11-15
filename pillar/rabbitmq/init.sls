@@ -34,7 +34,7 @@ rabbitmq:
 {% if 'production' in ENVIRONMENT %}
 schedule:
 refresh_datadog_rabbitmq-{{ ENVIRONMENT }}_credentials:
-  days: 21
+  days: 5
   function: state.sls
   args:
     - datadog.plugins

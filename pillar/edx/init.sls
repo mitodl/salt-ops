@@ -27,7 +27,7 @@ edx:
 
 schedule:
   refresh_mitx-{{ environment }}_configs:
-    days: 21
+    days: 5
     function: state.sls
     args:
       - edx.run_ansible
