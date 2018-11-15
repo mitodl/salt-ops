@@ -35,7 +35,7 @@ mongodb:
 {% if 'production' in environment %}
 schedule:
 refresh_datadog_mongodb-{{ environment }}_credentials:
-  days: 21
+  days: 5
   function: state.sls
   args:
     - datadog.plugins

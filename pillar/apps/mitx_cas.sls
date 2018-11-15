@@ -21,7 +21,7 @@
 
 schedule:
   refresh_{{ app_name }}_credentials:
-    days: 21
+    days: 5
     function: state.sls
     args:
       - django.config
