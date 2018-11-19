@@ -24,7 +24,7 @@ python:
 
 redash:
   additional_python_pkgs:
-    - numpy
+    - pandas
   root_user:
     email: __vault__::secret-{{ purpose_data.business_unit }}/{{ ENVIRONMENT }}/{{ app_name }}/root-user>data>email
     name: __vault__::secret-{{ purpose_data.business_unit }}/{{ ENVIRONMENT }}/{{ app_name }}/root-user>data>name
