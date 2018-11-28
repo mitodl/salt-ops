@@ -157,14 +157,6 @@ install_edxapp_theme:
       - file: install_edxapp_theme
     - require_in:
       - cmd: run_ansible
-
-compile_assets_for_edx:
-  cmd.run:
-    - name: /edx/bin/edxapp-update-assets
-    - onchanges:
-        - git: install_edxapp_theme
-    - require:
-        - cmd: run_ansible
 {% endif %}
 
 {% for host in git_servers %}
