@@ -5,6 +5,7 @@
                      'jwplayer', 'OcwWeb', 'ocw-labs', 'resources', 'rss', 'scp48112',
                      'scripts', 'search', 'styles', 'subscribe', 'support', 'terms',
                      'webfonts', 'xml', 'xsd'] %}
+{% set pkgs = ['git'] %}
 
 {% for user in users %}
 create_{{ user }}_user:
@@ -27,6 +28,12 @@ create_{{ root_directory }}_directory:
     - makedirs: True
     - require:
       - user: create_fsuser_user
+
+install_{{ pkgs }}:
+  pkg.installed:
+    - pkgs: {{ pkgs }}
+    - refresh: True
+    - refresh_modules: True
 
 {% for dir in directories %}
 create_{{ dir }}_directory:
