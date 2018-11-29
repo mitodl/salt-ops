@@ -582,6 +582,7 @@ environments:
         num_instances: 1
         security_groups:
           - webapp
+          - ssh
 
 business_units:
   - bootcamps

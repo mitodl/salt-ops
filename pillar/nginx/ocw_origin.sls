@@ -26,6 +26,8 @@ nginx:
                     - '[::]:80'
                 - location ~ /.well-known:
                     - allow: all
+                - location /:
+                    - return: 301 https://$host$request_uri
             - server:
                 - server_name: {{ server_domain_names }}
                 - listen:
