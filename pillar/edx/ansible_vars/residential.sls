@@ -272,6 +272,7 @@ edx:
        # MITx Residential XBlocks
         - name: edx-sga==0.8.2
         - name: rapid-response-xblock==0.0.4
+    EDXAPP_SEARCH_HOST: elasticsearch.service.consul
     {% if cloudfront_domain %}
     EDXAPP_STATIC_URL_BASE: "https://{{ cloudfront_domain }}/static/"
     {% else %}
@@ -279,6 +280,19 @@ edx:
     {% endif %}
     EDXAPP_TECH_SUPPORT_EMAIL: mitx-support@mit.edu
     EDXAPP_CMS_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
+    EDXAPP_VIDEO_IMAGE_SETTINGS:
+      VIDEO_IMAGE_MAX_BYTES : 2097152
+      VIDEO_IMAGE_MIN_BYTES : 2048
+      STORAGE_CLASS: 'storages.backends.s3boto.S3BotoStorage'
+      STORAGE_KWARGS:
+        bucket: mitx-storage-{{ purpose }}-{{ environment }}
+      DIRECTORY_PREFIX: 'video-images/'
+    EDXAPP_VIDEO_TRANSCRIPTS_SETTINGS:
+      VIDEO_TRANSCRIPTS_MAX_BYTES : 3145728
+      STORAGE_CLASS: 'storages.backends.s3boto.S3BotoStorage'
+      STORAGE_KWARGS:
+        bucket: mitx-storage-{{ purpose }}-{{ environment }}
+      DIRECTORY_PREFIX: 'video-transcripts/'
 
     common_feature_flags: &common_feature_flags
       AUTH_USE_CAS: true

@@ -4,7 +4,6 @@ edx:
       username: mitx
       password: __vault__::secret-residential/mitx-qa/gitreload>data>value
   ansible_vars:
-    EDXAPP_LOG_LEVEL: 'DEBUG'
     EDXAPP_CAS_SERVER_URL: 'https://auth.mitx.mit.edu/cas'
     EDXAPP_LMS_ENV_EXTRA:
       FEATURES:
