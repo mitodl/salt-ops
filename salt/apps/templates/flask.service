@@ -1,0 +1,15 @@
+[Unit]
+Description={{ service }} web server
+After=network.target
+
+[Service]
+User={{ user }}
+Group={{ group }}
+ExecStart=/usr/bin/python {{ directory }}/{{ app_name}}.py
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target

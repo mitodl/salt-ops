@@ -1,5 +1,5 @@
 base:
-  '*':
+  '* and not roles:proxy':
     - common
     - environment_settings
     - fluentd
@@ -55,6 +55,10 @@ base:
     - shibboleth
     - shibboleth.odlvideo
     - fluentd.odlvideo
+  heroku_odl_sample_app:
+    - apps.proxy.heroku.odl_sample_app
+    - heroku
+    - heroku.odl_sample_app
   'roles:mitx-cas':
     - match: grain
     - apps.mitx_cas
