@@ -308,6 +308,7 @@ edx:
       ADMINS:
       - ['MITx Stacktrace Recipients', 'cuddle-bunnies@mit.edu']
       BOOK_URL: ""
+      DATA_DIR: {{ edxapp_git_repo_dir }}
       SERVER_EMAIL: mitxmail@mit.edu
       TIME_ZONE_DISPLAYED_FOR_DEADLINES: "{{ TIME_ZONE }}"
 
