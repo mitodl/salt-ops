@@ -1,15 +1,11 @@
 monit_app:
   modules:
     nginx_cert_expiration:
-      process:
+      host:
         custom:
-          name: nginx
+          name: nginx.service
         with:
-          pidfile: /var/run/nginx.pid
-        config:
-          group: www
-          start: "/etc/init.d/nginx start"
-          stop: "/etc/init.d/nginx stop"
+          address: localhost
         if:
           failed: port 443 protocol https request "/heartbeat" status = 200 and certificate valid > 30 days
           action: exec "/bin/sh -c /usr/local/bin/slack.sh"
