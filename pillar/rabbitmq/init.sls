@@ -33,10 +33,10 @@ rabbitmq:
 
 {% if 'production' in ENVIRONMENT %}
 schedule:
-refresh_datadog_rabbitmq-{{ ENVIRONMENT }}_credentials:
-  days: 5
-  function: state.sls
-  args:
-    - datadog.plugins
-    - rabbitmq.set_datadog_permissions
+  refresh_datadog_rabbitmq-{{ ENVIRONMENT }}_credentials:
+    days: 5
+    function: state.sls
+    args:
+      - datadog.plugins
+      - rabbitmq.set_datadog_permissions
 {% endif %}
