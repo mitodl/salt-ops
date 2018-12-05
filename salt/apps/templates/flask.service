@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User={{ user }}
 Group={{ group }}
-ExecStart=/usr/bin/python {{ directory }}/{{ app_name}}.py
+ExecStart=/usr/bin/python {{ directory }}/{{ app_name}}.py --address {{ flask.address }} --port {{ flask.port }}
 Restart=always
 KillSignal=SIGQUIT
 Type=notify

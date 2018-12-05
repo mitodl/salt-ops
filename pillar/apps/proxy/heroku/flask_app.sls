@@ -1,10 +1,6 @@
 {% set python_version = '3.7.1' %}
 {% set python_bin_dir = '/usr/local/pyenv/versions/{0}/bin'.format(python_version) %}
 
-proxy:
-  proxytype: rest_sample
-  url: https://amps.odl.mit.edu:8000
-
 django:
   user: flask
   group: flask
