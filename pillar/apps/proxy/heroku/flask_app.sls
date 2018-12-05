@@ -14,8 +14,8 @@ django:
     type: git
     repository_url: 'https://github.com/mitodl/salt-proxy/flask_app'
     state_params:
-      - overwrite: True
-      - enforce_toplevel: False
+      - force_checkout: True
+      - force_clone: True
   pkgs:
     - flask
   states:
