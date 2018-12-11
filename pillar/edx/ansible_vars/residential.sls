@@ -271,7 +271,7 @@ edx:
           extra_args: -e
        # MITx Residential XBlocks
         - name: edx-sga==0.8.2
-        - name: rapid-response-xblock==0.0.4
+        - name: rapid-response-xblock==0.0.5
     EDXAPP_SEARCH_HOST: elasticsearch.service.consul
     {% if cloudfront_domain %}
     EDXAPP_STATIC_URL_BASE: "https://{{ cloudfront_domain }}/static/"
