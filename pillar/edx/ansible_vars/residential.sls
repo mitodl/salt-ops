@@ -254,6 +254,10 @@ edx:
     EDXAPP_CONTACT_EMAIL: mitx-support@mit.edu
     EDXAPP_DEFAULT_FEEDBACK_EMAIL: "{{ DEFAULT_FEEDBACK_EMAIL }}"
     EDXAPP_DEFAULT_FROM_EMAIL: "{{ DEFAULT_FROM_EMAIL }}"
+    EDXAPP_EMAIL_HOST: __vault__::secret-operations/global/mit-smtp>data>relay_host
+    EDXAPP_EMAIL_HOST_USER: __vault__::secret-operations/global/mit-smtp>data>relay_username
+    EDXAPP_EMAIL_HOST_PASSWORD: __vault__::secret-operations/global/mit-smtp>data>relay_password
+    EDXAPP_EMAIL_USE_TLS: True
     EDXAPP_GRADE_BUCKET: mitx-grades-{{ purpose }}-{{ environment }}
     EDXAPP_GRADE_ROOT_PATH: {{ edxapp_aws_grades_root_path }}
     EDXAPP_GRADE_STORAGE_TYPE: S3
