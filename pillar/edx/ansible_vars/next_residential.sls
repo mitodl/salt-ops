@@ -17,7 +17,7 @@ edx:
           extra_args: -e
        # MITx Residential XBlocks
         - name: edx-sga==0.8.2
-        - name: rapid-response-xblock==0.0.4
+        - name: rapid-response-xblock==0.0.5
         - name: git+https://github.com/mitodl/edx-git-auto-export.git@v0.1#egg=edx-git-auto-export
           extra_args: -e
     EDXAPP_CMS_ENV_EXTRA:
