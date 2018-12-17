@@ -427,6 +427,7 @@ environments:
       starcellbio:
         business_unit: starteam
         domains:
+          - starcellbio.odl.mit.edu
           - starcellbio.mit.edu
         num_instances: 3
         security_groups:
