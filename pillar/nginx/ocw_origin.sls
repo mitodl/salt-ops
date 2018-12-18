@@ -63,4 +63,6 @@ nginx:
                     - try_files:
                         - $uri
                         - $uri/
+                        - index.htm
+                        - index.html
                         - =404
