@@ -59,3 +59,8 @@ nginx:
                 - resolver: 1.1.1.1
                 - location /status:
                     - return: 200
+                - location /:
+                    - try_files:
+                        - $uri
+                        - $uri/
+                        - =404
