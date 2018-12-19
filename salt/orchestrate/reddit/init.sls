@@ -1,6 +1,15 @@
-{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- ENVIRONMENT, BUSINESS_UNIT, PURPOSE_PREFIX, subnet_ids with context %}
-{% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', 1) %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
+{% set env_data = env_settings.environments[ENVIRONMENT] %}
+{% set VPC_NAME = env_data.vpc_name %}
+{% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', env_data.purposes[app_name].num_instances) %}
+{% set BUSINESS_UNIT = env_data.purposes[app_name].business_unit %}
+{% set subnet_ids = salt.boto_vpc.describe_subnets(
+    vpc_id=salt.boto_vpc.describe_vpcs(
+        name=env_data.vpc_name).vpcs[0].id
+    ).subnets|map(attribute='id')|list %}
+{% set security_groups = env_data.purposes[app_name].get('security_groups', []) %}
+{% do security_groups.extend(['salt_master', 'consul-agent']) %}
 {% set app_name = 'reddit' %}
 
 load_{{ app_name }}_cloud_profile:
@@ -11,25 +20,24 @@ load_{{ app_name }}_cloud_profile:
 
 generate_{{ app_name }}_cloud_map_file:
   file.managed:
-    - name: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_{{ app_name }}_map.yml
+    - name: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_{{ app_name }}_map.yml
     - source: salt://orchestrate/aws/map_templates/instance_map.yml
     - template: jinja
     - makedirs: True
     - context:
         environment_name: {{ ENVIRONMENT }}
         num_instances: {{ INSTANCE_COUNT }}
-        service_name: reddit
+        service_name: {{ app_name }}
         roles:
-          - reddit
+          - {{ app_name }}
         securitygroupid:
+          {% for group_name in security_groups %}
           - {{ salt.boto_secgroup.get_group_id(
-            'webapp-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-          - {{ salt.boto_secgroup.get_group_id(
-            'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-          - {{ salt.boto_secgroup.get_group_id(
-            'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+            '{}-{}'.format(group_name, ENVIRONMENT), vpc_name=VPC_NAME) }}
+          {% endfor %}
         subnetids: {{ subnet_ids }}
         tags:
+          app: {{ app_name }}
           business_unit: {{ BUSINESS_UNIT }}
           Department: {{ BUSINESS_UNIT }}
           OU: {{ BUSINESS_UNIT }}
@@ -42,16 +50,11 @@ ensure_instance_profile_exists_for_{{ app_name }}:
     - name: {{ app_name }}-instance-role
 
 deploy_{{ app_name }}_cloud_map:
-  salt.function:
-    - tgt: 'roles:master'
-    - tgt_type: grain
-    - name: saltutil.runner
-    - arg:
-        - cloud.map_run
-    - kwarg:
-        path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_{{ app_name }}_map.yml
+  salt.runner:
+    - name: cloud.map_run
+    - path: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_{{ app_name }}_map.yml
+    - kwargs:
         parallel: True
-        full_return: True
     - require:
         - file: generate_{{ app_name }}_cloud_map_file
 
