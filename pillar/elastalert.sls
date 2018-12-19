@@ -257,7 +257,7 @@ elasticsearch:
           opsgenie_priority: P1
           type: frequency
           index: logstash-*
-          num_events: 1
+          num_events: 5
           timeframe:
             minutes: 5
           alert:
