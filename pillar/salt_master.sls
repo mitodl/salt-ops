@@ -146,6 +146,9 @@ salt_master:
         - salt/beacon/reddit-*/memusage/*:
             - salt://reactors/reddit/restart_reddit_service_low_memory.sls
             - salt://reactors/opsgenie/post_notification.sls
+        - salt/beacon/odl-video-service-*/memusage/*:
+            - salt://reactors/apps/restart_uwsgi_service_low_memory.sls
+            - salt://reactors/opsgenie/post_notification.sls
         - salt/beacon/*/http_status/*:
             - salt://reactors/opsgenie/post_notification.sls
         - vault/lease/expiring/*:
