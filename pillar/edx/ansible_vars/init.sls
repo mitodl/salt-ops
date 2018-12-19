@@ -30,12 +30,6 @@
 {% set XQUEUE_USER = 'lms' %}
 
 edx:
-  smtp:
-    relay_host: __vault__::secret-operations/global/mit-smtp>data>relay_host
-    relay_username: __vault__::secret-operations/global/mit-smtp>data>relay_username
-    relay_password: __vault__::secret-operations/global/mit-smtp>data>relay_password
-    root_forward: {{ salt.sdb.get('sdb://consul/admin-email') }}
-
   ansible_vars:
     ### COMMON VARS ###
     COMMON_MYSQL_ADMIN_USER: __vault__:cache:mysql-{{ environment }}/creds/admin>data>username
