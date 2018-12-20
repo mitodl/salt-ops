@@ -1,3 +1,4 @@
+{% set app_name = 'reddit' %}
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
@@ -10,7 +11,6 @@
     ).subnets|map(attribute='id')|list %}
 {% set security_groups = env_data.purposes[app_name].get('security_groups', []) %}
 {% do security_groups.extend(['salt_master', 'consul-agent']) %}
-{% set app_name = 'reddit' %}
 
 load_{{ app_name }}_cloud_profile:
   file.managed:
