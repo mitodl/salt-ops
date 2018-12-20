@@ -275,7 +275,9 @@ edx:
           extra_args: -e
        # MITx Residential XBlocks
         - name: edx-sga==0.8.2
-        - name: rapid-response-xblock==0.0.4
+        - name: rapid-response-xblock==0.0.5
+        - name: git+https://github.com/mitodl/edx-git-auto-export.git@v0.1#egg=edx-git-auto-export
+          extra_args: -e
     EDXAPP_SEARCH_HOST: elasticsearch.service.consul
     {% if cloudfront_domain %}
     EDXAPP_STATIC_URL_BASE: "https://{{ cloudfront_domain }}/static/"
@@ -345,6 +347,9 @@ edx:
       LOGGING_ENV: lms-{{ edxapp_log_env_suffix}}
     EDXAPP_CMS_ENV_EXTRA:
       <<: *common_env_config
+      ADDL_INSTALLED_APPS:
+        - ubcpi
+        - git_auto_export
       FEATURES:
         <<: *common_feature_flags
         STAFF_EMAIL: mitx-support@mit.edu
