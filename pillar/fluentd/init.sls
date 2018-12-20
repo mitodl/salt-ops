@@ -6,6 +6,9 @@ fluentd:
 
 beacons:
   service:
-    fluentd:
-      onchangeonly: True
-    disable_during_state_run: True
+    - services:
+        fluentd:
+          onchangeonly: True
+          delay: 60
+          disable_during_state_run: True
+    - interval: 60
