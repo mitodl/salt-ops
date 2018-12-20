@@ -183,3 +183,7 @@ uwsgi:
 node:
   install_from_binary: True
   version: 8.5.0
+
+beacons:
+  memusage:
+    - percent: 95%
