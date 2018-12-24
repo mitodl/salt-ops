@@ -5,4 +5,3 @@
 edx:
   ansible_vars:
     EDXAPP_EXTRA_MIDDLEWARE_CLASSES: [] # Worth keeping track of in case we need to take advantage of it
-    NGINX_HTTPS_REDIRECT_STRATEGY: forward_for_proto

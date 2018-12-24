@@ -350,7 +350,7 @@ edx:
       <<: *common_env_config
       ADDL_INSTALLED_APPS:
         - ubcpi
-        # - git_auto_export
+        - git_auto_export
       FEATURES:
         <<: *common_feature_flags
         STAFF_EMAIL: mitx-support@mit.edu
