@@ -264,7 +264,7 @@ edx:
     # Configure TLS
     NGINX_ENABLE_SSL: True
     NGINX_REDIRECT_TO_HTTPS: True
-    NGINX_HTTPS_REDIRECT_STRATEGY: "scheme"
+    NGINX_HTTPS_REDIRECT_STRATEGY: forward_for_proto
 
     NGINX_SSL_CERTIFICATE: '{{ TLS_LOCATION }}/{{ TLS_KEY_NAME }}.crt'
     NGINX_SSL_KEY: '{{ TLS_LOCATION }}/{{ TLS_KEY_NAME }}.key'
