@@ -159,6 +159,8 @@ salt_master:
             - salt://reactors/opsgenie/post_notification.sls
         - salt/state_result/*/backup/*/result:
             - salt://reactors/opsgenie/post_notification.sls
+        - backup/*/*/completed:
+            - salt://reactors/slack/post_event.sls
     misc:
       worker_threads: 25
       master_job_cache: pgjsonb

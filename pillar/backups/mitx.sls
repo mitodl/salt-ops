@@ -27,6 +27,7 @@ backups:
         directory: mysql-{{ environment }}-{{ purpose }}
         database: edxapp_{{ purpose|replace('-', '_') }}
         duplicity_passphrase: {{ duplicity_passphrase }}
+        healthcheck_url: __vault__::secret-operations/global/healthchecks/mitx-backups-mysql-{{ purpose }}>data>value
   {% endif %}
   {% endfor %}
     - title: mongodb-{{ environment }}
@@ -40,6 +41,7 @@ backups:
         password: __vault__:cache:mongodb-{{ environment }}/creds/admin>data>password
         duplicity_passphrase: {{ duplicity_passphrase }}
         directory: mongodb-{{ environment }}
+        healthcheck_url: __vault__::secret-operations/global/healthchecks/mitx-backups-mongodb>data>value
     - title: live_course_assets
       name: course_assets
       pkgs:
@@ -49,6 +51,7 @@ backups:
         duplicity_passphrase: {{ duplicity_passphrase }}
         efs_id: {{ efs_id }}
         directory: prod_repos
+        healthcheck_url: __vault__::secret-operations/global/healthchecks/mitx-backups-course-assets-residential-live>data>value
     - title: draft_course_assets
       name: course_assets
       pkgs:
@@ -58,3 +61,4 @@ backups:
         duplicity_passphrase: {{ duplicity_passphrase }}
         efs_id: {{ efs_id }}
         directory: repos
+        healthcheck_url: __vault__::secret-operations/global/healthchecks/mitx-backups-course-assets-residential-draft>data>value

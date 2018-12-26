@@ -109,12 +109,12 @@ wait_for_restore_instance_to_connect:
     - id_list:
         - {{ instance_name }}
     - require_in:
-        - salt: execute_enabled_backup_scripts
+        - salt: schedule_enabled_backup_scripts
         - salt: format_and_mount_backup_drive
 {% endif %}
 {% endif %}
 
-execute_enabled_backup_scripts:
+schedule_enabled_backup_scripts:
   salt.state:
     - tgt: 'G@roles:backups and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
@@ -124,34 +124,3 @@ execute_enabled_backup_scripts:
         - backups.backup
     - require:
         - salt: deploy_backup_instance_to_{{ ENVIRONMENT }}
-
-stop_backup_instance_in_{{ ENVIRONMENT }}:
-  salt.function:
-    - name: cloud.action
-    - tgt: 'roles:master'
-    - tgt_type: grain
-    - arg:
-        - stop
-    - kwarg:
-        instance: {{ instance_name }}
-    - require:
-        - salt: execute_enabled_backup_scripts
-
-alert_devops_channel_on_failure:
-  slack.post_message:
-    - channel: '#general'
-    - from_name: saltbot
-    - message: 'The scheduled backup for edX in {{ ENVIRONMENT }} has failed.'
-    - api_key: {{ slack_api_token }}
-    - onfail:
-        - salt: execute_enabled_backup_scripts
-
-alert_devops_channel_on_success:
-  slack.post_message:
-    - channel: '#general'
-    - from_name: saltbot
-    - message: 'The scheduled backup for edX in {{ ENVIRONMENT }} has succeeded.'
-    - api_key: {{ slack_api_token }}
-    - require:
-        - salt: execute_enabled_backup_scripts
-        - salt: stop_backup_instance_in_{{ ENVIRONMENT }}

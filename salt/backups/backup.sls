@@ -21,23 +21,18 @@ install_packages_for_{{ service.title }}_backup:
 {% endfor %}
 
 {% for service in salt.pillar.get('backups:enabled', []) %}
-run_backup_for_{{ service.title }}:
+schedule_backups_for_{{ service.title }}:
   file.managed:
     - name: /backups/{{service.title}}_backup.sh
     - source: salt://backups/templates/backup_{{ service.name }}.sh
     - template: jinja
     - context:
         settings: {{ service.settings }}
-  cmd.script:
-    - name: salt://backups/templates/backup_{{ service.name }}.sh
-    - template: jinja
-    - context:
-        settings: {{ service.settings }}
-    - require_in:
-        - file: wait_for_backups_to_complete
-    - fire_event: backup/{{ ENVIRONMENT }}/{{ service.title }}/result
+        ENVIRONMENT: {{ ENVIRONMENT }}
+        title: {{ service.title }}
+  cron.present:
+    - name: /backups/{{ service.title }}_backup.sh
+    - minute: 0
+    - hour: 0
+    - identifier: backup_{{ service.title }}
 {% endfor %}
-
-wait_for_backups_to_complete:
-  file.touch:
-    - name: /backups/backup_complete

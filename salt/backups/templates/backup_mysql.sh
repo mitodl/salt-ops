@@ -26,3 +26,7 @@ PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
           s3+http://odl-operations-backups/{{ settings.get('directory', 'mysql') }}
 
 rm -rf {{ backupdir }}
+
+curl --retry 3 {{ setting.healthcheck_url }}
+
+salt-call event.fire_master '{"data": "Completed backup of MySQL"}' backup/{{ ENVIRONMENT }}/{{ title }}/completed
