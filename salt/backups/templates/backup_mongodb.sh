@@ -21,6 +21,6 @@ PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
 
 rm -rf {{ backupdir }}
 
-curl --retry 3 {{ setting.healthcheck_url }}
+curl --retry 3 {{ settings.healthcheck_url }}
 
 salt-call event.fire_master '{"data": "Completed backup of MongoDB"}' backup/{{ ENVIRONMENT }}/{{ title }}/completed

@@ -11,6 +11,6 @@ aws s3 cp $SNAPFILE s3://odl-operations-backups/{{ settings.get('directory', 'co
 
 rm $SNAPFILE
 
-curl --retry 3 {{ setting.healthcheck_url }}
+curl --retry 3 {{ settings.healthcheck_url }}
 
 salt-call event.fire_master '{"data": "Completed backup of Consul"}' backup/{{ ENVIRONMENT }}/{{ title }}/completed
