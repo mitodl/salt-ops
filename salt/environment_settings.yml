@@ -96,6 +96,12 @@ environments:
     secret_backends:
       <<: *edxapp_secret_backends
     backends:
+      pki:
+        - consul
+        - elasticsearch
+        - fluentd
+        - mongodb
+        - rabbitmq
       rds:
         - name: mitxcas
           multi_az: False
@@ -249,6 +255,12 @@ environments:
     secret_backends:
       <<: *edxapp_secret_backends
     backends:
+      pki:
+        - consul
+        - elasticsearch
+        - fluentd
+        - mongodb
+        - rabbitmq
       rds:
         - name: mitxcas
           multi_az: True
@@ -359,6 +371,10 @@ environments:
         security_groups:
           - webapp
     backends:
+      pki:
+        - consul
+        - elasticsearch
+        - fluentd
       elasticache:
         - engine: redis
           engine_version: '3.2.10'
@@ -433,6 +449,12 @@ environments:
         security_groups:
           - webapp
     backends:
+      pki:
+        - cassandra
+        - consul
+        - elasticsearch
+        - fluentd
+        - rabbitmq
       rds:
         - name: reddit
           multi_az: True
@@ -520,6 +542,12 @@ environments:
         security_groups:
           - webapp
     backends:
+      pki:
+        - cassandra
+        - consul
+        - elasticsearch
+        - fluentd
+        - rabbitmq
       rds:
         - name: reddit
           multi_az: False
