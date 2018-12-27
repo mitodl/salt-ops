@@ -1,5 +1,6 @@
 base:
-  '* and not roles:proxy':
+  '* and not G@roles:proxy':
+    - type: compound
     - common
     - environment_settings
     - fluentd

@@ -8,7 +8,7 @@ django:
   app_name: {{ app_name }}
   app_source:
     type: git
-    repository_url: 'https://github.com/mitodl/salt-proxy/flask_app'
+    repository_url: 'https://github.com/mitodl/salt-proxy'
     state_params:
       - force_checkout: True
       - force_clone: True
