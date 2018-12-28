@@ -1,5 +1,5 @@
 base:
-  '* and not G@roles:proxy':
+  'not G@roles:proxy':
     - type: compound
     - common
     - environment_settings
