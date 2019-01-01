@@ -24,6 +24,7 @@ install_packages_for_{{ service.title }}_backup:
 schedule_backups_for_{{ service.title }}:
   file.managed:
     - name: /backups/{{service.title}}_backup.sh
+    - mode: 0755
     - source: salt://backups/templates/backup_{{ service.name }}.sh
     - template: jinja
     - context:
