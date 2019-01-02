@@ -15,33 +15,33 @@ vault:
     {{ app }}-{{ env_name }}-{{ type }}-pki:
       backend: pki-int-{{ env_name }}
       name: pki-{{ env_name }}-{{ app }}-{{ type }}
-      {% if type == 'server' %}
-      server_flag: true
-      {% else %}
-      client_flag: true
-      {% endif %}
-      ttl: {{ ttl }}
-      max_ttl: {{ ttl }}
-      allowed_domains:
-        - {{ app }}.service.consul
-        - nearest-{{ app }}.query.consul
-        {% if app == 'mongodb' %}
-        - {{ app }}-master.service.consul
+      options:
+        {% if type == 'server' %}
+        server_flag: true
+        {% else %}
+        client_flag: true
         {% endif %}
-      key_type: rsa
-      key_bits: 4096
-      key_usage:
-        - DigitalSignature
-        - KeyAgreement
-        - KeyEncipherment
-      ou: {{ ou }}
-      organization: {{ org }}
-      country: {{ country }}
-      locality: {{ locality }}
-      street_address: {{ street_address }}
-      postal_code: {{ postal_code }}
-      require_cn: true
+        ttl: {{ ttl }}
+        max_ttl: {{ ttl }}
+        allowed_domains:
+          - {{ app }}.service.consul
+          - nearest-{{ app }}.query.consul
+          {% if app == 'mongodb' %}
+          - {{ app }}-master.service.consul
+          {% endif %}
+        key_type: rsa
+        key_bits: 4096
+        key_usage:
+          - DigitalSignature
+          - KeyAgreement
+          - KeyEncipherment
+        ou: {{ ou }}
+        organization: {{ org }}
+        country: {{ country }}
+        locality: {{ locality }}
+        street_address: {{ street_address }}
+        postal_code: {{ postal_code }}
+        require_cn: true
     {% endfor %}
     {% endfor %}
     {% endfor %}
-
