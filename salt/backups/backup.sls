@@ -32,7 +32,7 @@ schedule_backups_for_{{ service.title }}:
         ENVIRONMENT: {{ ENVIRONMENT }}
         title: {{ service.title }}
   cron.present:
-    - name: /backups/{{ service.title }}_backup.sh
+    - name: sh /backups/{{ service.title }}_backup.sh
     - minute: 0
     - hour: 0
     - identifier: backup_{{ service.title }}
