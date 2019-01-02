@@ -124,6 +124,7 @@ base:
     - vault.roles.micromasters
     - vault.roles.mitx
     - vault.roles.operations
+    - vault.roles.pki
   'G@roles:elasticsearch and P@environment:(rc|production)-apps':
     - match: compound
     - elasticsearch.apps
