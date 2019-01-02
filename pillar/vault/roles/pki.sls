@@ -9,13 +9,17 @@
 
 vault:
   roles:
-    {% for env in env_settings.environments %}
-    {% for app in env_settings[env].backends.pki %}
-    {{ app }}-{{ env }}-pki:
-      backend: pki-int-{{ env }}
-      {% for type in ['client', 'server'] %}
-      name: pki-{{ env }}-{{ app }}-{{ type }}
-      {% endfor %}
+    {% for env_name, env_data in env_settings.environments.items() %}
+    {% for app in env_data.get('backends', {}).get('pki', []) %}
+    {% for type in ['client', 'server'] %}
+    {{ app }}-{{ env_name }}-{{ type }}-pki:
+      backend: pki-int-{{ env_name }}
+      name: pki-{{ env_name }}-{{ app }}-{{ type }}
+      {% if type == 'server' %}
+      server_flag: true
+      {% else %}
+      client_flag: true
+      {% endif %}
       ttl: {{ ttl }}
       max_ttl: {{ ttl }}
       allowed_domains:
@@ -24,11 +28,6 @@ vault:
         {% if app == 'mongodb' %}
         - {{ app }}-master.service.consul
         {% endif %}
-      {% if type == 'server' %}
-      server_flag: true
-      {% else %}
-      client_flag: true
-      {% endif %}
       key_type: rsa
       key_bits: 4096
       key_usage:
@@ -44,3 +43,5 @@ vault:
       require_cn: true
     {% endfor %}
     {% endfor %}
+    {% endfor %}
+
