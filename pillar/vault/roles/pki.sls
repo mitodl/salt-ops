@@ -9,8 +9,8 @@
 
 vault:
   roles:
-    {% for env in env_settings['environments'] %}
-    {% for app in env.backends.pki %}
+    {% for env in env_settings.environments %}
+    {% for app in env_settings[env].backends.pki %}
     {{ app }}-{{ env }}-pki:
       backend: pki-int-{{ env }}
       {% for type in ['client', 'server'] %}
