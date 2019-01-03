@@ -27,20 +27,16 @@ enable_pki_intermediate_backend:
         issuing_certificates: 'https://vault.service.consul:8200/vi/pki-int/ca'
         crl_distribution_points: 'https://vault.service.consul:8200/v1/pki-int/crl'
 
-{% for env_name, env_data in env_settings.environments.items() %}
-{% for app in env_data.get('backends', {}).get('pki', []) %}
-{% for type in ['client', 'server'] %}
+{% for env_name in env_settings.environments %}
 enable_pki_intermediate_{{ environment }}_backend:
   vault.secret_backend_enabled:
     - backend_type: pki
-    - mount_point: pki-{{ env_name }}-{{ app }}-{{ type }}
-    - description: Backend to create certificates for {{ env_name }}-{{ app }}-{{ type }}
+    - mount_point: pki-int-{{ env_name }}
+    - description: Backend to create certificates for {{ env_name }}
     - ttl_default: {{ pki_ttl }}
     - connection_config:
-        issuing_certificates: 'https://vault.service.consul:8200/vi/pki-{{ env_name }}-{{ app }}-{{ type }}/ca'
-        crl_distribution_points: 'https://vault.service.consul:8200/v1/pki-{{ env_name }}-{{ app }}-{{ type }}/crl'
-{% endfor %}
-{% endfor %}
+        issuing_certificates: 'https://vault.service.consul:8200/vi/pki-int-{{ env_name }}/ca'
+        crl_distribution_points: 'https://vault.service.consul:8200/v1/pki-int-{{ env_name }}/crl'
 {% endfor %}
 
 {% for unit in salt.pillar.get('business_units', []) %}
