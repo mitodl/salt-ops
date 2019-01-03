@@ -13,7 +13,7 @@ vault:
     {% for app in env_data.get('backends', {}).get('pki', []) %}
     {% for type in ['client', 'server'] %}
     {{ app }}-{{ env_name }}-{{ type }}-pki:
-      backend: pki-int-{{ env_name }}
+      backend: pki-intermediate-{{ env_name }}
       name: pki-{{ env_name }}-{{ app }}-{{ type }}
       options:
         {% if type == 'server' %}
