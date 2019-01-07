@@ -28,7 +28,7 @@ enable_pki_intermediate_backend:
         crl_distribution_points: 'https://vault.service.consul:8200/v1/pki-int/crl'
 
 {% for env_name in env_settings.environments %}
-enable_pki_intermediate_{{ environment }}_backend:
+enable_pki_intermediate_{{ env_name }}_backend:
   vault.secret_backend_enabled:
     - backend_type: pki
     - mount_point: pki-intermediate-{{ env_name }}
