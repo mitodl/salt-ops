@@ -256,7 +256,6 @@ edx:
     EDXAPP_DEFAULT_FROM_EMAIL: "{{ DEFAULT_FROM_EMAIL }}"
     EDXAPP_EMAIL_HOST: __vault__::secret-operations/global/mit-smtp>data>relay_host
     EDXAPP_EMAIL_PORT: __vault__::secret-operations/global/mit-smtp>data>relay_port
-    EDXAPP_EMAIL_USE_TLS: True
     EDXAPP_EMAIL_HOST_USER: __vault__::secret-operations/global/mit-smtp>data>relay_username
     EDXAPP_EMAIL_HOST_PASSWORD: __vault__::secret-operations/global/mit-smtp>data>relay_password
     EDXAPP_EMAIL_USE_TLS: True
