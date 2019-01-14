@@ -26,7 +26,7 @@ vault:
         allowed_domains:
           {{ app }}.service.consul
           nearest-{{ app }}.query.consul
-          {{ app }}-master.service.consul]
+          {{ app }}-master.service.consul
         key_type: rsa
         key_bits: 4096
         key_usage:
