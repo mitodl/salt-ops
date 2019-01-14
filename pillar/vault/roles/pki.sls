@@ -23,10 +23,16 @@ vault:
         {% endif %}
         ttl: {{ ttl }}
         max_ttl: {{ ttl }}
-        allowed_domains: [{{ app }}.service.consul, nearest-{{ app }}.query.consul, {{ app }}-master.service.consul]
+        allowed_domains:
+          {{ app }}.service.consul
+          nearest-{{ app }}.query.consul
+          {{ app }}-master.service.consul]
         key_type: rsa
         key_bits: 4096
-        key_usage: [DigitalSignature, KeyAgreement, KeyEncipherment]
+        key_usage:
+          DigitalSignature
+          KeyAgreement
+          KeyEncipherment
         ou: {{ ou }}
         organization: {{ org }}
         country: {{ country }}
