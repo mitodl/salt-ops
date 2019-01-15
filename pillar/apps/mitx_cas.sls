@@ -175,5 +175,7 @@ mitx_cas:
         provider: touchstone
       - host: ^www.lore.odl.mit.edu$
         provider: touchstone
+      - host: ^introml.odl.mit.edu
+        provider: touchstone
     STATIC_ROOT: /opt/mitx-cas/static
     ZENDESK_PSK: __vault__::secret-operations/global/zendesk-cas-psk>data>value
