@@ -27,9 +27,9 @@ vault:
           {{ app }}.service.consul
           nearest-{{ app }}.query.consul
           {{ app }}-master.service.consul
-          {% for ['consul', 'fluentd'] in app %}
+          {% if app in ['consul', 'fluentd'] %}
           {{ app }}.service.operations.consul
-          {% endfor %}
+          {% endif %}
         allow_bare_domains: true
         key_type: rsa
         key_bits: 4096
