@@ -155,6 +155,7 @@ base:
     - edx.patch_nginx
     - edx.edxapp_global_pre_commit
     - edx.etc_hosts
+    - edx.hacks
     - edx.tests
     - fluentd
     - fluentd.plugins
