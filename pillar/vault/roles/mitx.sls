@@ -2,7 +2,7 @@
 {% set SIX_MONTHS = '4368h' %}
 vault:
   roles:
-    {% for env in ['mitx-qa', 'mitx-production'] %}
+    {% for env in ['mitx-qa', 'mitx-production', 'mitxpro-qa'] %}
     admin-mysql-{{ env }}:
       backend: mysql-{{ env }}
       name: admin
