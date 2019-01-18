@@ -14,8 +14,6 @@ PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
           --allow-source-mismatch --tempdir /backups/tmp/ \
           s3+http://odl-operations-backups/{{ settings.get('directory', 'course_assets') }}/
 
-umount /mnt/efs
-
 curl --retry 3 {{ settings.healthcheck_url }}
 
 salt-call event.fire_master '{"data": "Completed backup of MITx static assets"}' backup/{{ ENVIRONMENT }}/{{ title }}/completed
