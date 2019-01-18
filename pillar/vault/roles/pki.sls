@@ -14,7 +14,7 @@ vault:
     {% for type in ['client', 'server'] %}
     {{ app }}-{{ env_name }}-{{ type }}-pki:
       backend: pki-intermediate-{{ env_name }}
-      name: pki-{{ env_name }}-{{ app }}-{{ type }}
+      name: {{ app }}-{{ type }}
       options:
         {% if type == 'server' %}
         server_flag: true
@@ -27,6 +27,10 @@ vault:
           {{ app }}.service.consul
           nearest-{{ app }}.query.consul
           {{ app }}-master.service.consul
+          {% if app in ['consul', 'fluentd'] %}
+          {{ app }}.service.operations.consul
+          {% endif %}
+        allow_bare_domains: true
         key_type: rsa
         key_bits: 4096
         key_usage:
