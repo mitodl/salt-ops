@@ -107,6 +107,8 @@ base:
     - django.deploy
     - apps.redash.datasources
     - uwsgi
+    - etl
+    - etl.mit_open
   'G@roles:kibana and G@environment:operations':
     - match: compound
     - elasticsearch.kibana
@@ -173,7 +175,8 @@ base:
     - fluentd.config
   'G@roles:analytics and G@environment:mitx-production':
     - match: compound
-    - edx.mitx_etl
+    - etl
+    - etl.mitx
   'roles:ocw-origin':
     - match: grain
     - utils.configure_debian_source_repos
