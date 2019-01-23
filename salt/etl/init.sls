@@ -21,9 +21,9 @@ clone_odl_etl_repo:
 
 install_etl_requirements:
   virtualenv.managed:
-    - name: /odl-etl/mitx_etl
+    - name: /odl-etl/{{ task_name }}
     - system_site_packages: False
-    - requirements: /odl-etl/mitx/requirements.txt
+    - requirements: /odl-etl/{{ task_name }}/requirements.txt
     - python: /usr/bin/python3
     - env_vars:
         PATH_VAR: '/usr/local/bin/pip3'
