@@ -12,4 +12,4 @@ add_task_to_cron:
     - comment: mit_open_etl_script
     - special: '@daily'
     - require:
-      - file: mit_open__etl_config
+      - file: mit_open_etl_config
