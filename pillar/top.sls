@@ -91,6 +91,7 @@ base:
     - shibboleth.redash
     - apps.redash
     - apps.redash_data_sources
+    - data.mit_open_etl
   'P@environment:(mitx-qa|mitx-production|operations|rc-apps|production-apps|micromasters)':
     - match: compound
     - datadog
@@ -107,7 +108,7 @@ base:
     - consul.apps
   'G@roles:analytics and G@environment:mitx-production':
     - match: compound
-    - edx.mitx_etl
+    - data.mitx_etl
   'G@roles:consul_server and G@environment:operations':
     - match: compound
     - consul.bootcamps
