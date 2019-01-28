@@ -38,6 +38,7 @@ base:
     - master.api
     - master_utils.dns
     - master_utils.libgit
+    - heroku.proxy_config
   'G@roles:master and G@environment:operations':
     - match: compound
     - master.aws
