@@ -89,6 +89,64 @@ sandbox_residential_versions: &sandbox_residential_versions
   ami_id: ami-80861296
 
 environments:
+  mitxpro-qa:
+    business_unit: mitxpro
+    network_prefix: '10.6'
+    vpc_name: MITxPro QA
+    secret_backends:
+      <<: *edxapp_secret_backends
+      mysql:
+        role_prefixes:
+          - edxapp
+          - edxapp-csmh
+          - xqueue
+          - ecommerce
+      rabbitmq:
+        role_prefixes:
+          - xqueue
+          - celery
+          - ecommerce
+    backends:
+      pki:
+        - consul
+        - elasticsearch
+        - fluentd
+        - mongodb
+        - rabbitmq
+      rds:
+        - name: mitxpro-qa
+          multi_az: False
+          engine: mariadb
+          vault_plugin: mysql-database-plugin
+          db_instance_class: db.t2.medium
+          allocated_storage: 100
+          public_access: False
+          engine_version: '10.3'
+          purpose: xpro-qa
+      elasticache:
+        - engine: memcached
+          engine_version: '1.4.34'
+          node_type: cache.t2.small
+          num_cache_nodes: 1
+          cluster_id: xpro-qa
+          purpose: xpro-qa
+    purposes:
+      xpro:
+        business_unit: mitxpro
+        domains:
+          cms: studio-xpro-qa.mitx.mit.edu
+          lms: xpro-qa.mitx.mit.edu
+          preview: preview-xpro-qa.mitx.mit.edu
+          gitreload: prod-gr-qa.mitx.mit.edu
+        versions:
+          <<: *current_residential_versions_qa
+        instances:
+          edx:
+            number: 2
+            type: t2.large
+          edx-worker:
+            number: 1
+            type: t2.large
   mitx-qa:
     business_unit: residential
     network_prefix: '10.5'

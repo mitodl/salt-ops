@@ -176,7 +176,7 @@ edx:
     {# multivariate #}
     EDXAPP_ENABLE_OAUTH2_PROVIDER: False
     {# multivariate #}
-    EDXAPP_JWT_SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/edxapp-jwt-secret-key>data>value
+    EDXAPP_JWT_SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/edxapp-jwt-secret-key>data>value
     EDXAPP_LMS_BASE: "{{ LMS_DOMAIN }}"
     EDXAPP_LMS_MAX_REQ: 1000
     EDXAPP_MKTG_URL_LINK_MAP:
