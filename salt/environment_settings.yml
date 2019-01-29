@@ -130,8 +130,14 @@ environments:
           num_cache_nodes: 1
           cluster_id: xpro-qa
           purpose: xpro-qa
+        - engine: memcached
+          engine_version: '1.4.34'
+          node_type: cache.t2.small
+          num_cache_nodes: 1
+          cluster_id: xpro-ecommerce
+          purpose: xpro-qa
     purposes:
-      xpro:
+      xpro-qa:
         business_unit: mitxpro
         domains:
           cms: studio-xpro-qa.mitx.mit.edu
