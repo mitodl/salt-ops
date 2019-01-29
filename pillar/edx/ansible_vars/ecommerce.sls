@@ -58,15 +58,15 @@ edx:
     ECOMMERCE_OSCAR_FROM_EMAIL: 'oscar@example.com' # TODO: Determine appropriate value for this setting 2019-01-15 TMM
 
     # CyberSource related
-    ECOMMERCE_CYBERSOURCE_PROFILE_ID: 'SET-ME-PLEASE'
-    ECOMMERCE_CYBERSOURCE_MERCHANT_ID: 'SET-ME-PLEASE'
-    ECOMMERCE_CYBERSOURCE_ACCESS_KEY: 'SET-ME-PLEASE'
-    ECOMMERCE_CYBERSOURCE_SECRET_KEY: 'SET-ME-PLEASE'
-    ECOMMERCE_CYBERSOURCE_SOP_ACCESS_KEY: 'SET-ME-PLEASE'
-    ECOMMERCE_CYBERSOURCE_SOP_PROFILE_ID: 'SET-ME-PLEASE'
-    ECOMMERCE_CYBERSOURCE_SOP_SECRET_KEY: 'SET-ME-PLEASE'
+    ECOMMERCE_CYBERSOURCE_PROFILE_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/cybersource>data>profile_id
+    ECOMMERCE_CYBERSOURCE_MERCHANT_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/cybersource>data>merchant_id
+    ECOMMERCE_CYBERSOURCE_ACCESS_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/cybersource>data>access_key
+    ECOMMERCE_CYBERSOURCE_SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/cybersource>data>secret_key
+    ECOMMERCE_CYBERSOURCE_SOP_ACCESS_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/cybersource>data>access_key
+    ECOMMERCE_CYBERSOURCE_SOP_PROFILE_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/cybersource>data>profile_id
+    ECOMMERCE_CYBERSOURCE_SOP_SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/cybersource>data>secret_key
     ECOMMERCE_CYBERSOURCE_SOP_PAYMENT_PAGE_URL: 'https://testsecureacceptance.cybersource.com/silent/pay'
-    ECOMMERCE_CYBERSOURCE_TRANSACTION_KEY: 'SET-ME-PLEASE'
+    ECOMMERCE_CYBERSOURCE_TRANSACTION_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/cybersource>data>transaction_key
     ECOMMERCE_CYBERSOURCE_PAYMENT_PAGE_URL: 'https://testsecureacceptance.cybersource.com/pay'
     ECOMMERCE_CYBERSOURCE_RECEIPT_PAGE_URL: '/checkout/receipt/'
     ECOMMERCE_CYBERSOURCE_CANCEL_PAGE_URL: '/checkout/cancel-checkout/'
