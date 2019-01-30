@@ -42,7 +42,6 @@ base:
     - mongodb
     - fluentd.mongodb
     - consul.mongodb
-    - datadog.mongodb-integration
   starcellbio*:
     - apps.starcellbio
     - nginx
