@@ -134,8 +134,8 @@ base:
     - match: compound
     - datadog
     - datadog.plugins
-  'G@roles:mongodb and P@environment:mitx-(qa|rp|production)':
-    - match: compound
+  'roles:mongodb':
+    - match: grain
     - mongodb
     - mongodb.consul_check
   'G@roles:mongodb and G@environment:mitx-production':
