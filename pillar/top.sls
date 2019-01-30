@@ -33,6 +33,7 @@ base:
     - consul.fluentd
   'roles:consul_server':
     - match: grain
+    - consul
     - consul.server
     - fluentd.consul
     - datadog.consul-integration
