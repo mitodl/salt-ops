@@ -96,7 +96,7 @@ base:
     - match: compound
     - datadog
     - consul
-  'P@environment:mitx-(qa|production)':
+  'P@environment:mitx(pro)-(qa|production)':
     - match: compound
     - consul.mitx
   'environment:operations':
