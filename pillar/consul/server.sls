@@ -37,12 +37,14 @@ consul:
       services:
         {% for dbconfig in env_data.backends.get('rds', []) %}
         {% set rds_endpoint = salt.boto_rds.get_endpoint('{env}-rds-{engine}-{db}'.format(env=ENVIRONMENT, engine=dbconfig.engine, db=dbconfig.name)) %}
+        {% if rds_endpoint %}
         - name: {{ dbconfig.engine }}-{{ dbconfig.name }}
           port: {{ rds_endpoint.split(':')[1] }}
           address: {{ rds_endpoint.split(':')[0] }}
           check:
             tcp: '{{ rds_endpoint }}'
             interval: 10s
+        {% endif %}
         {% endfor %}
         {% for cache_config in env_data.backends.elasticache %}
         {% if cache_config.engine == 'memcached' %}
@@ -50,6 +52,7 @@ consul:
         {% else %}
         {% set cache_data = salt.boto3_elasticache.describe_replication_groups(cache_config.cluster_id) %}
         {% endif %}
+        {% if cache_data %}
         {% if cache_data[0].get('ConfigurationEndpoint') %}
         {% set endpoint = cache_data[0].ConfigurationEndpoint %}
         {% else %}
@@ -61,4 +64,5 @@ consul:
           check:
             tcp: '{{ endpoint.Address }}:{{ endpoint.Port }}'
             interval: 10s
+        {% endif %}
         {% endfor %}
