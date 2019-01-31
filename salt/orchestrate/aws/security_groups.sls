@@ -1,4 +1,5 @@
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT') %}
+{% if not ENVIRONMENT == 'operations' %}
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set VPC_NAME = salt.environ.get('VPC_NAME', env_settings.vpc_name) %}
 {% set VPC_RESOURCE_SUFFIX = salt.environ.get(
@@ -339,3 +340,4 @@ create_elasticsearch_security_group:
     - tags:
         Name: elasticsearch-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
+{% endif %}
