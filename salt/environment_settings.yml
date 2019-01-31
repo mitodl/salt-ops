@@ -129,14 +129,14 @@ environments:
           engine_version: '1.4.34'
           node_type: cache.t2.small
           num_cache_nodes: 1
-          cluster_id: xpro-qa
-          purpose: xpro-qa
+          cluster_id: xpro-edxapp
+          purpose: xpro-edx
         - engine: memcached
           engine_version: '1.4.34'
           node_type: cache.t2.small
           num_cache_nodes: 1
           cluster_id: xpro-ecommerce
-          purpose: xpro-qa
+          purpose: xpro-ecommerce
     purposes:
       xpro-qa:
         business_unit: mitxpro
