@@ -114,10 +114,11 @@ environments:
         - mongodb
         - rabbitmq
       rds:
-        - name: mitxpro-qa
+        - name: mitxproqa
           multi_az: False
           engine: mariadb
           vault_plugin: mysql-database-plugin
+          password_length: 40
           db_instance_class: db.t2.medium
           allocated_storage: 100
           public_access: False
