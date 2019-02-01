@@ -81,6 +81,7 @@ vault:
       options:
         policy: "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Action\": [\"s3:*Object*\", \"s3:ListAllMyBuckets\", \"s3:ListBucket\"], \"Resource\": [\"arn:aws:s3:::mitx-grades-{{ purpose }}-{{ env }}\", \"arn:aws:s3:::mitx-grades-{{ purpose }}-{{ env }}/*\", \"arn:aws:s3:::mitx-storage-{{ purpose }}-{{ env }}\", \"arn:aws:s3:::mitx-storage-{{ purpose }}-{{ env }}/*\", \"arn:aws:s3:::mitx-etl-{{ purpose }}-{{ env }}\", \"arn:aws:s3:::mitx-etl-{{ purpose }}-{{ env }}/*\"]}]}"
     {% endfor %}{# purpose loop #}
+    {% if not 'xpro' in env %}
     {% for app in ['mitxcas'] %}
     postgresql_{{ env }}_{{ app }}_admin:
       backend: postgres-{{ env }}-{{ app }}
@@ -156,4 +157,5 @@ vault:
           DROP USER "{{name}}";
         {% endraw %}
     {% endfor %}{# end of app loop #}
+    {% endif %}
     {% endfor %}{# environment loop #}
