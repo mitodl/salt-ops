@@ -124,6 +124,7 @@ environments:
           public_access: False
           engine_version: '10.3'
           purpose: xpro-qa
+          service_name: mysql
       elasticache:
         - engine: memcached
           engine_version: '1.4.34'

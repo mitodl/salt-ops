@@ -10,6 +10,7 @@ consul:
         - 8.8.8.8
     {% if 'consul_server' in salt.grains.get('roles', []) %}
     {% set mysql_endpoint = salt.boto_rds.get_endpoint('{env}-rds-mysql'.format(env=ENVIRONMENT)) %}
+    {% if mysql_endpoint %}
     hosted_services:
       services:
         - name: mysql
@@ -18,4 +19,5 @@ consul:
           check:
             tcp: '{{ mysql_endpoint }}'
             interval: 10s
+    {% endif %}
     {% endif %}
