@@ -7,20 +7,21 @@ vault:
       backend: mysql-{{ env }}
       name: admin
       options:
-        db_name: ''
+        db_name: {{ env|replace('-', '') }}
         creation_statements: {% raw %}"CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT ALL ON `%`.* TO '{{name}}'@'%';"{% endraw %}
         revocation_statements: {% raw %}"DROP USER '{{name}}';"{% endraw %}
     readonly-mysql-{{ env }}:
       backend: mysql-{{ env }}
       name: readonly
       options:
+        db_name: {{ env|replace('-', '') }}
         creation_statements: {% raw %}"CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT, SHOW VIEW ON `%`.* TO '{{name}}'@'%';"{% endraw %}
         revocation_statements: {% raw %}"DROP USER '{{name}}';"{% endraw %}
     datadog-mysql-{{ env }}:
       backend: mysql-{{ env }}
       name: datadog
       options:
-        db_name: ''
+        db_name: {{ env|replace('-', '') }}
         creation_statements: >-
           {% raw -%}
           CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';
@@ -59,7 +60,7 @@ vault:
       backend: mysql-{{ env }}
       name: {{ role }}-{{ purpose }}
       options:
-        db_name: {{ db_name }}
+        db_name: {{ env|replace('-', '') }}
         creation_statements: "CREATE USER {% raw %}'{{name}}'@'%'{% endraw %} IDENTIFIED BY {% raw %}'{{password}}'{% endraw %};GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, INDEX, DROP, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES ON {{ db_name }}.* TO {% raw %}'{{name}}'{% endraw %}@'%';"
         revocation_statements: {% raw %}"DROP USER '{{name}}';"{% endraw %}
     {% endfor %}{# role loop for mysql #}
