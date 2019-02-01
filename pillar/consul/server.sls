@@ -38,7 +38,8 @@ consul:
         {% for dbconfig in env_data.backends.get('rds', []) %}
         {% set rds_endpoint = salt.boto_rds.get_endpoint('{env}-rds-{engine}-{db}'.format(env=ENVIRONMENT, engine=dbconfig.engine, db=dbconfig.name)) %}
         {% if rds_endpoint %}
-        - name: {{ dbconfig.engine }}-{{ dbconfig.name }}
+        {% set service_name = dbconfig.pop('service_name', dbconfig.engine ~ '-' ~ dbconfig.name) %}
+        - name: {{ service_name }}
           port: {{ rds_endpoint.split(':')[1] }}
           address: {{ rds_endpoint.split(':')[0] }}
           check:

@@ -35,6 +35,7 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
 {% set dbpurpose = dbconfig.pop('purpose', 'shared') %}
 {% set vault_plugin = dbconfig.pop('vault_plugin') %}
 {% set pw_length = dbconfig.pop('password_length', 42) %}
+{% set service_name = dbconfig.pop('service_name', engine ~ '-' ~ name) %}
 
 {% set vault_master_pass_path = 'secret-' ~ BUSINESS_UNIT ~ '/' ~ ENVIRONMENT ~ '/' ~ engine ~ '-' ~ dbpurpose ~ '-master-password' %}
 {% set master_pass = salt.vault.read(vault_master_pass_path ) %}
@@ -105,9 +106,9 @@ configure_vault_{{ engine }}_{{ name }}_backend:
     - connection_config:
         plugin_name: {{ vault_plugin }}
         {% if engine == 'postgres' %}
-        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@{{ engine }}-{{ name }}.service.{{ ENVIRONMENT }}.consul:5432/{{ name }}"
+        connection_url: "postgresql://{{ master_user }}:{{ master_pass }}@{{ service_name }}.service.{{ ENVIRONMENT }}.consul:5432/{{ name }}"
         {% else %}
-        connection_url: "{{ master_user }}:{{ master_pass }}@tcp({{ engine }}-{{ name }}.service.{{ ENVIRONMENT }}.consul:3306)/"
+        connection_url: "{{ master_user }}:{{ master_pass }}@tcp({{ service_name }}.service.{{ ENVIRONMENT }}.consul:3306)/"
         {% endif %}
         verify_connection: False
         allowed_roles: '*'
