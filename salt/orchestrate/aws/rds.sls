@@ -35,7 +35,10 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
 {% set dbpurpose = dbconfig.pop('purpose', 'shared') %}
 {% set vault_plugin = dbconfig.pop('vault_plugin') %}
 {% set pw_length = dbconfig.pop('password_length', 42) %}
-{% set service_name = dbconfig.pop('service_name', engine ~ '-' ~ name) %}
+{% set service_name = dbconfig.pop('service_name',
+                                   engine ~ '-' ~ name) %}
+{% set mount_point = dbconfig.pop('mount_point',
+                                  '{}-{}-{}'.format(engine, ENVIRONMENT, name)) %}
 
 {% set vault_master_pass_path = 'secret-' ~ BUSINESS_UNIT ~ '/' ~ ENVIRONMENT ~ '/' ~ engine ~ '-' ~ dbpurpose ~ '-master-password' %}
 {% set master_pass = salt.vault.read(vault_master_pass_path ) %}
@@ -92,7 +95,6 @@ create_{{ ENVIRONMENT }}_{{ name }}_rds_store:
     - require:
         - boto_rds: create_{{ ENVIRONMENT }}_rds_db_subnet_group
 
-{% set mount_point = '{}-{}-{}'.format(engine, ENVIRONMENT, name) %}
 configure_vault_{{ engine }}_{{ name }}_backend:
   vault.secret_backend_enabled:
     - backend_type: database
