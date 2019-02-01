@@ -147,13 +147,13 @@ base:
     - match: compound
     - edx
     - edx.ansible_vars
-    - edx.ansible_vars.residential
     - edx.scheduled_jobs
     - fluentd.mitx
     - datadog.nginx-integration
     - datadog.supervisord-integration
   'P@roles:(edx|edx-worker) and G@environment:mitx-qa':
     - match: compound
+    - edx.ansible_vars.residential
     - edx.mitx-qa
     - edx.inotify_mitx
     - monit
@@ -163,6 +163,7 @@ base:
     - monit.mongodb_connection
   'P@roles:(edx|edx-worker) and G@environment:mitx-production':
     - match: compound
+    - edx.ansible_vars.residential
     - edx.mitx-production
     - edx.inotify_mitx
     - monit
