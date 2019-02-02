@@ -8,7 +8,8 @@ vault:
       name: admin
       options:
         db_name: {{ env|replace('-', '') }}
-        creation_statements: {% raw %}"CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, RELOAD, PROCESS, REFERENCES, INDEX, ALTER, SHOW DATABASES, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, CREATE USER, EVENT, TRIGGER ON `%`.* TO '{{name}}'@'%';"{% endraw %}
+        creation_statements: {% raw %}"CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';
+        GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON `%`.* TO '{{name}}' WITH GRANT OPTION;"{% endraw %}
         revocation_statements: {% raw %}"DROP USER '{{name}}';"{% endraw %}
     readonly-mysql-{{ env }}:
       backend: mysql-{{ env }}
