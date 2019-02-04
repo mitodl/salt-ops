@@ -2,7 +2,7 @@
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set VPC_NAME = env_data.vpc_name %}
-{% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', 3) %}
+{% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', env_data.get('backends', {}).get('mongodb', {}).get('instance_count', 3)) %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
 {% set launch_date = salt.status.time(format="%Y-%m-%d") %}
 {% set subnet_ids = salt.boto_vpc.describe_subnets(
@@ -41,7 +41,7 @@ generate_mongodb_cloud_map_file:
     - context:
         service_name: mongodb
         environment_name: {{ ENVIRONMENT }}
-        num_instances: 3
+        num_instances: {{ INSTANCE_COUNT }}
         tags:
           business_unit: {{ BUSINESS_UNIT }}
           Department: {{ BUSINESS_UNIT }}
@@ -171,13 +171,15 @@ unset_primary_node_grain:
 
 configure_vault_mongodb_backend:
   vault.secret_backend_enabled:
-    - backend_type: mongodb
+    - backend_type: database
     - description: Backend to create dynamic MongoDB credentials for {{ ENVIRONMENT }}
     - mount_point: mongodb-{{ ENVIRONMENT }}
     - ttl_max: {{ SIX_MONTHS }}
     - ttl_default: {{ SIX_MONTHS }}
     - lease_max: {{ SIX_MONTHS }}
     - lease_default: {{ SIX_MONTHS }}
+    - connection_config_path: mongodb-{{ ENVIRONMENT }}/config/mongodb
     - connection_config:
-        uri: "mongodb://admin:{{ mongo_admin_password }}@mongodb-master.service.{{ ENVIRONMENT }}.consul:27017/admin"
+        plugin_name: mongodb-database-plugin
+        connection_url: "mongodb://admin:{{ mongo_admin_password }}@mongodb-master.service.{{ ENVIRONMENT }}.consul:27017/admin"
         verify_connection: False

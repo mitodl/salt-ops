@@ -45,14 +45,18 @@ vault:
       backend: mongodb-{{ env }}
       name: datadog
       options:
-        db: admin
-        roles: '["read", {"role": "clusterMonitor", "db": "admin"}, {"role": "read", "db": "local"}]'
+        db_name: mongodb
+        creation_statements: >-
+          '{\"db\": \"admin\",
+          \"roles\": [\"read\", {\"role\": \"clusterMonitor\", \"db\": \"admin\"}, {\"role\": \"read\", \"db\": \"local\"}]}'
     admin-mongodb-{{ env }}:
       backend: mongodb-{{ env }}
       name: admin
       options:
-        db: admin
-        roles: '["superuser", "root"]'
+        db_name: mongodb
+        creation_statementsdb: >-
+          '{\"db\": \"admin\",
+          \"roles\": [\"superuser\", \"root\"]}'
     {% for purpose in env_settings['environments'][env].purposes %}
     {% set purpose_suffix = purpose|replace('-', '_') %}
     {% for role in env_settings.edxapp_secret_backends.mysql.role_prefixes %}
@@ -78,8 +82,10 @@ vault:
       name: {{ role }}-{{ purpose }}
       formatted_option: db
       options:
-        db: '{{ role }}_{{ purpose_suffix|trim }}'
-        roles: '["readWrite"]'
+        db_name: mongodb
+        creation_statements: >-
+          '{\"db\": \"{{ role }}_{{ purpose_suffix|trim }}\",
+          \"roles\": [\"readWrite\"]}'
     {% endfor %}{# role loop for MongoDB #}
     read_and_write_iam_bucket_access_for_mitx_{{ purpose }}_in_{{ env }}:
       backend: aws-mitx
