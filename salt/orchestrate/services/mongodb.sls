@@ -181,5 +181,6 @@ configure_vault_mongodb_backend:
     - connection_config_path: mongodb-{{ ENVIRONMENT }}/config/mongodb
     - connection_config:
         plugin_name: mongodb-database-plugin
-        connection_url: "mongodb://admin:{{ mongo_admin_password }}@mongodb-master.service.{{ ENVIRONMENT }}.consul:27017/admin"
-        verify_connection: False
+        connection_url: "mongodb://{% raw %}{{username}}:{{password}}{% endraw %}@mongodb-master.service.{{ ENVIRONMENT }}.consul:27017/admin"
+        username: admin
+        password: {{ mongo_admin_password }}
