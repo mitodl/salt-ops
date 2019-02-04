@@ -94,18 +94,26 @@ environments:
     network_prefix: '10.6'
     vpc_name: MITxPro QA
     secret_backends:
-      <<: *edxapp_secret_backends
       mysql:
         role_prefixes:
           - edxapp
           - edxapp-csmh
           - xqueue
           - ecommerce
+      mongodb:
+        role_prefixes:
+          - modulestore
+          - contentstore
+          - gitlog
+          - forum
       rabbitmq:
         role_prefixes:
-          - xqueue
-          - celery
+          - edxapp
           - ecommerce
+      aws:
+        bucket_prefixes:
+          - xpro-grades
+          - xpro-storage
     backends:
       pki:
         - consul
@@ -146,9 +154,8 @@ environments:
           cms: studio-xpro-qa.mitx.mit.edu
           lms: xpro-qa.mitx.mit.edu
           preview: preview-xpro-qa.mitx.mit.edu
-          gitreload: prod-gr-qa.mitx.mit.edu
         versions:
-          <<: *current_residential_versions_qa
+          <<: *continuous_delivery_versions
         instances:
           edx:
             number: 2
