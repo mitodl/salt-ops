@@ -1,5 +1,6 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set SIX_MONTHS = '4368h' %}
+
 vault:
   roles:
     {% for env in ['mitx-qa', 'mitx-production', 'mitxpro-qa'] %}
@@ -46,17 +47,13 @@ vault:
       name: datadog
       options:
         db_name: mongodb
-        creation_statements: >-
-          {"db": "admin",
-          "roles": ["read", {"role": "clusterMonitor", "db": "admin"}, {"role": "read", "db": "local"}]}
+        creation_statements: {{ '{"roles": [{"role": "read"}, {"db": "admin", "role": "clusterMonitor"}, {"db": "local", "role": "read"}], "db": "admin"}'|yaml_dquote }}
     admin-mongodb-{{ env }}:
       backend: mongodb-{{ env }}
       name: admin
       options:
         db_name: mongodb
-        creation_statements: >-
-          {"db": "admin",
-          "roles": ["superuser", "root"]}
+        creation_statements: {{ '{"roles": [{"role": "superuser"}, {"role": "root"}], "db": "admin"}'|yaml_dquote }}
     {% for purpose in env_settings['environments'][env].purposes %}
     {% set purpose_suffix = purpose|replace('-', '_') %}
     {% for role in env_settings.edxapp_secret_backends.mysql.role_prefixes %}
@@ -77,15 +74,14 @@ vault:
         vhosts: '{"/{{ role }}_{{ purpose_suffix }}": {"write": ".*", "read": ".*", "configure": ".*"}}'
     {% endfor %}{# role loop for RabbitMQ #}
     {% for role in env_settings.edxapp_secret_backends.mongodb.role_prefixes %}
+    {% set role_json = '{"roles": [{"role": "readWrite"}], "db": "' ~ role ~ '_' ~ purpose_suffix ~ '"}' %}
     {{ role }}-mongodb-{{ purpose }}-{{ env }}:
       backend: mongodb-{{ env }}
       name: {{ role }}-{{ purpose }}
       formatted_option: db
       options:
         db_name: mongodb
-        creation_statements: >-
-          {"db": "{{ role }}_{{ purpose_suffix|trim }}",
-          "roles": ["readWrite"]}
+        creation_statements: {{ role_json|yaml_dquote }}
     {% endfor %}{# role loop for MongoDB #}
     read_and_write_iam_bucket_access_for_mitx_{{ purpose }}_in_{{ env }}:
       backend: aws-mitx
