@@ -147,27 +147,29 @@ base:
     - vault
     - vault.tests
     - utils.file_limits
-  'G@roles:rabbitmq and P@environment:mitx-(qa|rp|production)':
+  'G@roles:rabbitmq and P@environment:mitx-(qa|production)':
     - match: compound
     - datadog.plugins
-  'G@roles:edx and P@environment:mitx-(qa|rp|production)':
-    - match: compound
+  'roles:edx':
+    - match: grain
     - edx.prod
     - edx.run_ansible
-    - edx.gitreload
     - edx.patch_nginx
-    - edx.edxapp_global_pre_commit
-    - edx.etc_hosts
     - edx.hacks
     - edx.tests
     - fluentd
     - fluentd.plugins
     - fluentd.config
+  'G@roles:edx and P@environment:mitx-(qa|production)':
+    - match: compound
+    - edx.gitreload
+    - edx.edxapp_global_pre_commit
+    - edx.etc_hosts
   'G@roles:edx and G@environment:mitx-production':
     - match: compound
     - monit
     - utils.ssh_users
-  'G@roles:edx-worker and P@environment:mitx-(qa|rp|production)':
+  'G@roles:edx-worker and P@environment:mitx-(qa|production)':
     - match: compound
     - edx.prod
     - edx.run_ansible
