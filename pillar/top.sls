@@ -147,6 +147,7 @@ base:
     - match: compound
     - edx
     - edx.ansible_vars
+    - edx.ansible_vars.cloud_deployment
     - edx.scheduled_jobs
     - fluentd.mitx
     - datadog.nginx-integration
