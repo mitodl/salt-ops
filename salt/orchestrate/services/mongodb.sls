@@ -184,3 +184,4 @@ configure_vault_mongodb_backend:
         connection_url: "mongodb://{% raw %}{{username}}:{{password}}{% endraw %}@mongodb-master.service.{{ ENVIRONMENT }}.consul:27017/admin"
         username: admin
         password: {{ mongo_admin_password }}
+        allowed_roles: '*'
