@@ -131,6 +131,7 @@ edx:
         # pull queues
         'Watcher-MITx-6.0001r': !!null
         'Watcher-MITx-6.00x': !!null
+        'mitx-686xgrader': !!null
         'open-ended': !!null
         'open-ended-message': !!null
         'test-pull': !!null
