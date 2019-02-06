@@ -72,7 +72,7 @@ edx:
       PYTHON_EXECUTABLE: /usr/bin/python3
       QUEUE_NAME: mitx-686xgrader
       QUEUE_CONFIG:
-        SERVER: http://xqueue-{{ purpose }}.service.consul:18040
+        SERVER: 'http://xqueue-{{ purpose }}.service.consul:18040'
         CONNECTIONS: 5
         HANDLERS:
           - HANDLER: 'xqueue_watcher.jailedgrader.JailedGrader'
