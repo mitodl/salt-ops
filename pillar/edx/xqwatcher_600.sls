@@ -37,7 +37,7 @@ edx:
           - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>username
           - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>password
     {% endfor %}
-    - COURSE: mit-686x
+    - COURSE: mit-686x-{{ purpose }}
       GIT_REPO: git@github.mit.edu:mitx/graders-mit-686x
       GIT_REF: master
       PYTHON_REQUIREMENTS:
@@ -82,7 +82,7 @@ edx:
               lang: python3
               bin_path: '{% raw %}{{ xqwatcher_venv_base }}{% endraw %}/mit-686x/bin/python'
             KWARGS:
-              grader_root: ../data/mit-686x/graders/
+              grader_root: ../data/mit-686x-{{ purpose }}/graders/
         AUTH:
          - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>username
          - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>password
