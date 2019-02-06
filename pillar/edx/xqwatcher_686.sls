@@ -9,12 +9,8 @@ edx:
        PYTHON_REQUIREMENTS:
          - name: numpy
            version: 1.14.0
-         # - name: numpydoc
-         #   version: 0.7.0
          - name: pandas
            version: 0.22.0
-         # - name: pandocfilters
-         #   version: 1.4.2
          - name: scikit-image
            version: 0.13.1
          - name: scikit-learn
@@ -23,6 +19,22 @@ edx:
            version: 1.0.0
          - name: matplotlib
            version: 2.1.2
+         - name: pytz
+           version: 2018.4
+         - name: networkx
+           version: 2.1
+         - name: cycler
+           version: 0.10.0
+         - name: decorator
+           version: 4.3.0
+         - name: Pillow
+           version: 5.1.0
+         - name: pyparsing
+           version: 2.2.0
+         - name: PyWavelets
+           version: 0.5.2
+         - name: six
+           version: 1.11.0
        PYTHON_EXECUTABLE: /usr/bin/python3
        QUEUE_NAME: mitx-686xgrader
        QUEUE_CONFIG:

@@ -189,6 +189,7 @@ base:
     - match: grain
     - edx.xqwatcher
     - edx.xqwatcher_600
+    - edx.xqwatcher_686
     - fluentd.xqwatcher
   'lightsail-xqwatcher-686':
     - match: glob
