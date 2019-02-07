@@ -63,7 +63,7 @@ configure_logging_for_xqwatcher:
         {{ salt.pillar.get('edx:xqwatcher:logconfig', {})|json(indent=2)|indent(8) }}
 
 {% for course in salt.pillar.get('edx:ansible_vars:XQWATCHER_COURSES', []) %}
-ensure_codejail_requirements_are_installed_for_{{ course.COURSE }}:
+ensure_codejail_requirements_are_installed_for_{{ course.QUEUE_CONFIG.HANDLERS[0].CODEJAIL.name }}:
   pip.installed:
     - requirements: /edx/app/xqwatcher/data/{{ course.QUEUE_CONFIG.HANDLERS[0].CODEJAIL.name }}-requirements.txt
     - bin_env: /edx/app/xqwatcher/venvs/{{ course.QUEUE_CONFIG.HANDLERS[0].CODEJAIL.name }}/bin/pip
