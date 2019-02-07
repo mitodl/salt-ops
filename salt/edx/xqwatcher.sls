@@ -3,7 +3,7 @@
 {% set repo_path = '/tmp/edx_config/configuration' -%}
 {% set conf_file = '/tmp/edx_config/edx-xqwatcher.conf' -%}
 {% set playbooks = salt.pillar.get('xqueue:playbooks', ['edx-east/xqwatcher.yml']) %}
-{% set course_name = salt.pillar.get('edx:ansible_vars:XQWATCHER_COURSES:QUEUE_CONFIG:HANDLERS:CODEJAIL:name' %}
+{% set course_name = salt.pillar.get('edx:ansible_vars:XQWATCHER_COURSES:QUEUE_CONFIG:HANDLERS:CODEJAIL:name') %}
 
 include:
   - .run_ansible
