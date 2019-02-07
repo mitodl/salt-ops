@@ -66,6 +66,8 @@ configure_logging_for_xqwatcher:
 ensure_codejail_requirements_are_installed_for_{{  course.COURSE }}:
   pip.installed:
     - requirements: /edx/app/xqwatcher/data/{{ course.QUEUE_CONFIG.HANDLERS[0].CODEJAIL.name }}-requirements.txt
-    - bin_env: /edx/app/xqwatcher/venvs/mit-600x/bin/pip
-    - cwd: /edx/app/xqwatcher/venvs/mit-600x/bin
+    - bin_env: /edx/app/xqwatcher/venvs/{{ course.QUEUE_CONFIG.HANDLERS[0].CODEJAIL.name }}/bin/pip
+    - env_vars:
+        HOME: /tmp
+        USER: {{ course.QUEUE_CONFIG.HANDLERS[0].CODEJAIL.user }}
 {% endfor %}
