@@ -67,7 +67,4 @@ ensure_codejail_requirements_are_installed_for_{{  course.COURSE }}:
   pip.installed:
     - requirements: /edx/app/xqwatcher/data/{{ course.QUEUE_CONFIG.HANDLERS[0].CODEJAIL.name }}-requirements.txt
     - bin_env: /edx/app/xqwatcher/venvs/mit-600x/
-    - env_vars:
-        HOME: /tmp
-        USER: {{ course.QUEUE_CONFIG.HANDLERS[0].CODEJAIL.user }}
 {% endfor %}
