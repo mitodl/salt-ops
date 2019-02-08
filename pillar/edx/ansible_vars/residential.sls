@@ -23,12 +23,6 @@
   {% set edxapp_log_env_suffix = 'dev' %}
 {% endif %}
 
-{% if environment == 'mitx-qa' %}
-{% set efs_id = 'fs-6f55af26' %}
-{% elif environment == 'mitx-production' %}
-{% set efs_id = 'fs-1f27ae56' %}
-{% endif %}
-
 {% if environment == 'mitx-production' %}
     {% if 'draft' in purpose %}
     {% set edxapp_google_analytics_account = 'UA-5145472-5' %}
