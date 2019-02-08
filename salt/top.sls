@@ -169,7 +169,7 @@ base:
     - match: compound
     - monit
     - utils.ssh_users
-  'G@roles:edx-worker and P@environment:mitx-(qa|production)':
+  'G@roles:edx-worker and P@environment:mitx(pro)?-(qa|production)':
     - match: compound
     - edx.prod
     - edx.run_ansible
