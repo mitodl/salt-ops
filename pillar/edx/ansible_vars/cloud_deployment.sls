@@ -87,7 +87,7 @@ edx:
     XQUEUE_AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/mitx-s3-{{ purpose }}-{{ environment }}>data>access_key
     XQUEUE_AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/mitx-s3-{{ purpose }}-{{ environment }}>data>secret_key
     XQUEUE_BASIC_AUTH_USER: mitx
-    XQUEUE_BASIC_AUTH_PASSWORD: __vault__::secret-residential/global/xqueue-password>data>value
+    XQUEUE_BASIC_AUTH_PASSWORD: __vault__:gen_if_missing:secret-{{ business_unit }}/global/xqueue-password>data>value
     XQUEUE_MYSQL_DB_NAME: xqueue_{{ purpose_suffix }}
     XQUEUE_MYSQL_HOST: {{ MYSQL_HOST }}
     XQUEUE_MYSQL_PASSWORD: __vault__:cache:mysql-{{ environment }}/creds/xqueue-{{ purpose }}>data>password
@@ -246,9 +246,6 @@ edx:
         ENABLE_SHOPPING_CART: true
         ENABLE_SYSADMIN_DASHBOARD: true
         ENABLE_INSTRUCTOR_EMAIL: true
-      REMOTE_GRADEBOOK:
-        URL: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>url
-        DEFAULT_NAME: !!null
       OAUTH_OIDC_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
       STUDENT_FILEUPLOAD_MAX_SIZE: "20 * 1024 * 1024"
       LOGGING_ENV: lms-{{ edxapp_log_env_suffix}}

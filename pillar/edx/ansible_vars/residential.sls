@@ -134,6 +134,9 @@ edx:
     EDXAPP_LMS_ENV_EXTRA:
       FEATURES:
         AUTH_USE_CAS: true
+      REMOTE_GRADEBOOK:
+        URL: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>url
+        DEFAULT_NAME: !!null
 
     EDXAPP_CMS_ENV_EXTRA:
       FEATURES:
