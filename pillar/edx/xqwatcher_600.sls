@@ -102,5 +102,12 @@ schedule:
     kwargs:
       identity: /edx/app/xqwatcher/.ssh/xqwatcher-courses
   {% endfor %}
+  update_live_686_grader_for_{{ purpose }}:
+    function: git.pull
+    minutes: 5
+    args:
+      - /edx/app/xqwatcher/data/mit-686x-{{ purpose }}/
+    kwargs:
+      identity: /edx/app/xqwatcher/.ssh/xqwatcher-courses
   {% endif %}
   {% endfor %}
