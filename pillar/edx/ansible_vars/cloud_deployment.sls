@@ -251,9 +251,6 @@ edx:
       LOGGING_ENV: lms-{{ edxapp_log_env_suffix}}
     EDXAPP_CMS_ENV_EXTRA:
       <<: *common_env_config
-      ADDL_INSTALLED_APPS:
-        - ubcpi
-        - git_auto_export
       FEATURES:
         <<: *common_feature_flags
         STAFF_EMAIL: mitx-support@mit.edu

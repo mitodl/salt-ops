@@ -139,5 +139,10 @@ edx:
         DEFAULT_NAME: !!null
 
     EDXAPP_CMS_ENV_EXTRA:
+      ADDL_INSTALLED_APPS:
+        - ubcpi
+        - git_auto_export
       FEATURES:
         AUTH_USE_CAS: true
+        ENABLE_GIT_AUTO_EXPORT: true
+        ENABLE_EXPORT_GIT: true
