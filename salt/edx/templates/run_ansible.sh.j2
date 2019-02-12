@@ -2,6 +2,9 @@
 
 set -x
 
+export LC_ALL='en_US.UTF-8'
+export LANG='en_US.UTF-8'
+
 # Checkout the Ansible submodules
 if [[ -e {{ venv_path }}/src/ansible/ ]]
 then
