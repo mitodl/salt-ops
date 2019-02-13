@@ -54,6 +54,7 @@ edx:
     EDXAPP_AWS_S3_CUSTOM_DOMAIN: !!null
     EDXAPP_CMS_ROOT_URL: "https://{{ CMS_DOMAIN }}"
     {# Tell Ansible to install python dependencies from github. https://github.com/edx/edx-platform/blob/ned%2Ftest-ficus/requirements/edx/edx-private.txt#L1 (tmacey 2017/03/16) #}
+    EDXAPP_EDXAPP_SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/edxapp-django-secret-key>data>value
     EDXAPP_INSTALL_PRIVATE_REQUIREMENTS: true
     EDXAPP_LMS_ROOT_URL: "https://{{ LMS_DOMAIN }}"
     EDXAPP_LMS_SITE_NAME: {{ purpose_data.domains.lms }}
@@ -147,7 +148,6 @@ edx:
     EDXAPP_CELERY_PASSWORD: __vault__:cache:rabbitmq-{{ environment }}/creds/celery-{{ purpose }}>data>password
     EDXAPP_CELERY_USER: __vault__:cache:rabbitmq-{{ environment }}/creds/celery-{{ purpose }}>data>username
     EDXAPP_LMS_AUTH_EXTRA:
-      SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
       MONGODB_LOG:
         db: gitlog_{{ purpose_suffix }}
         host: mongodb-master.service.consul
@@ -155,8 +155,6 @@ edx:
         password: __vault__:cache:mongodb-{{ environment }}/creds/gitlog-{{ purpose }}>data>password
         replicaset: "{{ MONGODB_REPLICASET }}"
         readPreference: "nearest"
-    EDXAPP_CMS_AUTH_EXTRA:
-      SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-cms-django-secret-key>data>value
 
     #####################################################################
     ########### Environment Configs #####################################

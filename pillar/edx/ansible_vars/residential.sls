@@ -100,8 +100,12 @@ edx:
     EDXAPP_YOUTUBE_API_KEY: __vault__::secret-residential/global/edxapp-youtube-api-key>data>value
 
     EDXAPP_LMS_AUTH_EXTRA:
+      SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
       REMOTE_GRADEBOOK_USER: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>user
       REMOTE_GRADEBOOK_PASSWORD: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>password
+
+    EDXAPP_CMS_AUTH_EXTRA:
+      SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-cms-django-secret-key>data>value
 
     {# multivariate, only needed for current deployment. will be removed in favor of SAML (tmacey 2017/03/20) #}
     EDXAPP_CAS_ATTRIBUTE_PACKAGE: 'git+https://github.com/mitodl/mitx_cas_mapper#egg=mitx_cas_mapper'
