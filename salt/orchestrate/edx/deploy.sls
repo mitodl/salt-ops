@@ -11,7 +11,6 @@
     ).subnets|map(attribute='id')|list|sort(reverse=True) %}
 {% set ANSIBLE_FLAGS = salt.environ.get('ANSIBLE_FLAGS') %}
 {% set defined_purposes = env_data.purposes %}
-{% set bucket_prefixes = env_data.secret_backends.aws.bucket_prefixes %}
 {% set launch_date = salt.status.time(format="%Y-%m-%d") %}
 {% set edx_tracking_bucket = 'odl-residential-tracking-backup' %}
 
@@ -102,29 +101,6 @@ ensure_instance_profile_exists_for_tracking:
                 - arn:aws:s3:::{{ edx_tracking_bucket }}/*
     - require:
         - boto_s3_bucket: ensure_tracking_bucket_exists
-
-{% for bucket in bucket_prefixes %}
-{% for purpose in PURPOSES %}
-create_edx_s3_bucket_{{ bucket }}_{{ purpose }}_{{ ENVIRONMENT }}:
-  boto_s3_bucket.present:
-    - Bucket: {{ bucket }}-{{ purpose }}-{{ ENVIRONMENT }}
-    - region: us-east-1
-    - Versioning:
-       Status: "Enabled"
-    {% if 'storage' in bucket %}
-    - CORSRules:
-        - AllowedHeaders:
-            - "*"
-          AllowedMethods:
-            - GET
-            - POST
-            - PUT
-          AllowedOrigins:
-            - "*"
-          MaxAgeSeconds: 3000
-    {% endif %}
-{% endfor %}
-{% endfor %}
 
 deploy_edx_cloud_map:
   salt.function:
