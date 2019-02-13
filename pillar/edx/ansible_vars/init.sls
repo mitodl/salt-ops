@@ -147,7 +147,7 @@ edx:
     EDXAPP_CELERY_PASSWORD: __vault__:cache:rabbitmq-{{ environment }}/creds/celery-{{ purpose }}>data>password
     EDXAPP_CELERY_USER: __vault__:cache:rabbitmq-{{ environment }}/creds/celery-{{ purpose }}>data>username
     EDXAPP_LMS_AUTH_EXTRA:
-      SECRET_KEY: __vault__::secret-residential/global/edxapp-lms-django-secret-key>data>value
+      SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
       MONGODB_LOG:
         db: gitlog_{{ purpose_suffix }}
         host: mongodb-master.service.consul
@@ -156,7 +156,7 @@ edx:
         replicaset: "{{ MONGODB_REPLICASET }}"
         readPreference: "nearest"
     EDXAPP_CMS_AUTH_EXTRA:
-      SECRET_KEY: __vault__::secret-residential/global/edxapp-cms-django-secret-key>data>value
+      SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-cms-django-secret-key>data>value
 
     #####################################################################
     ########### Environment Configs #####################################
