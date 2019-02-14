@@ -67,7 +67,7 @@
   {% set edxapp_course_default_invite_only = False %}
   {% set edxapp_aws_grades_root_path =  'grades' %}
   {% set edxapp_upload_storage_prefix = 'submissions_attachments' %}
-  {% set edxapp_log_env_suffix = '' %}
+  {% set edxapp_log_env_suffix = 'prod' %}
 {% endif %}
 
 edx:
