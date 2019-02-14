@@ -20,7 +20,6 @@ our configurations. Test the following:
 {% set socket_connections = {
     'ssl': 'tcp://0.0.0.0:443',
     'lms': 'tcp://127.0.0.1:8000',
-    'gitreload_service': 'tcp://0.0.0.0:8095',
     'xqueue': 'tcp://0.0.0.0:18040',
     'forum': 'tcp://0.0.0.0:4567',
   } %}
@@ -34,8 +33,7 @@ our configurations. Test the following:
 {% set running_services = [
     'nginx',
     'fluentd',
-    'supervisor',
-    'gitreload'
+    'supervisor'
   ] %}
 
 {% set lms_env = {
