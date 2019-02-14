@@ -2,10 +2,13 @@
 {% set business_unit = salt.grains.get('business_unit', 'residential') %}
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
+{% set env_data = env_settings.environments[environment] %}
 {% set purpose_prefix = purpose.rsplit('-', 1)[0] %}
 {% set purpose_suffix = purpose.replace('-', '_') %}
 {% set cloudfront_domain = salt.sdb.get('sdb://consul/cloudfront/' ~ purpose_prefix ~ '-' ~ environment ~ '-cdn') %}
-{% set purpose_data = env_settings.environments[environment].purposes[purpose] %}
+{% set purpose_data = env_data.purposes[purpose] %}
+{% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
+{% set bucket_uses = env_data.secret_backends.aws.bucket_uses %}
 
 {% set DEFAULT_FEEDBACK_EMAIL = 'mitx-support@mit.edu' %}
 {% set DEFAULT_FROM_EMAIL = 'mitx-support@mit.edu' %}
@@ -92,8 +95,8 @@ edx:
     XQUEUE_DJANGO_USERS:
       {{ edxapp_xqueue_creds.data.username }}: {{ edxapp_xqueue_creds.data.password }}
       {{ xqwatcher_xqueue_creds.data.username }}: {{ xqwatcher_xqueue_creds.data.password }}
-    XQUEUE_AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/mitx-s3-{{ purpose }}-{{ environment }}>data>access_key
-    XQUEUE_AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/mitx-s3-{{ purpose }}-{{ environment }}>data>secret_key
+    XQUEUE_AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/{{ bucket_prefix }}-s3-{{ purpose }}-{{ environment }}>data>access_key
+    XQUEUE_AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/{{ bucket_prefix }}-s3-{{ purpose }}-{{ environment }}>data>secret_key
     XQUEUE_BASIC_AUTH_USER: mitx
     XQUEUE_BASIC_AUTH_PASSWORD: __vault__:gen_if_missing:secret-{{ business_unit }}/global/xqueue-password>data>value
     XQUEUE_MYSQL_DB_NAME: xqueue_{{ purpose_suffix }}
@@ -101,7 +104,7 @@ edx:
     XQUEUE_MYSQL_PASSWORD: __vault__:cache:mysql-{{ environment }}/creds/xqueue-{{ purpose }}>data>password
     XQUEUE_MYSQL_PORT: {{ MYSQL_PORT }}
     XQUEUE_MYSQL_USER: __vault__:cache:mysql-{{ environment }}/creds/xqueue-{{ purpose }}>data>username
-    XQUEUE_UPLOAD_BUCKET: mitx-grades-{{ purpose }}-{{ environment }}
+    XQUEUE_UPLOAD_BUCKET: {{ bucket_prefix }}-grades-{{ purpose }}-{{ environment }}
     xqueue_source_repo: {{ purpose_data.versions.xqueue_source_repo }}
     xqueue_version: {{ purpose_data.versions.xqueue }}
     ########## END XQUEUE ########################################
@@ -136,8 +139,8 @@ edx:
     EDXAPP_MYSQL_CSMH_USER: __vault__:cache:mysql-{{ environment }}/creds/edxapp-csmh-{{ purpose }}>data>username
 
     EDXAPP_DEFAULT_FILE_STORAGE: 'storages.backends.s3boto.S3BotoStorage'
-    EDXAPP_AWS_STORAGE_BUCKET_NAME: mitx-storage-{{ purpose }}-{{ environment }}
-    EDXAPP_IMPORT_EXPORT_BUCKET: "mitx-storage-{{ salt.grains.get('purpose') }}-{{ salt.grains.get('environment') }}"
+    EDXAPP_AWS_STORAGE_BUCKET_NAME: {{ bucket_prefix }}-storage-{{ purpose }}-{{ environment }}
+    EDXAPP_IMPORT_EXPORT_BUCKET: {{ bucket_prefix }}-storage-{{ purpose }}-{{ environment }}
     edxapp_course_static_dir: /edx/var/edxapp/course_static_dummy {# private variable, used to hack around the fact that we mount our course data via a shared file system (tmacey 2017-03-16) #}
     {# residential only, set this in order to override the `fs_root` setting for module/content store, need to understand more fully how this gets used in GITHUB_REPO_ROOT (tmacey 2017/03/17) #}
     edxapp_course_data_dir: {{ edxapp_git_repo_dir }}
@@ -186,7 +189,7 @@ edx:
     EDXAPP_EMAIL_HOST_PASSWORD: __vault__::secret-operations/global/mit-smtp>data>relay_password
     EDXAPP_EMAIL_USE_TLS: True
     EDXAPP_EMAIL_USE_DEFAULT_FROM_FOR_BULK: True
-    EDXAPP_GRADE_BUCKET: mitx-grades-{{ purpose }}-{{ environment }}
+    EDXAPP_GRADE_BUCKET: {{ bucket_prefix }}-grades-{{ purpose }}-{{ environment }}
     EDXAPP_GRADE_ROOT_PATH: {{ edxapp_aws_grades_root_path }}
     EDXAPP_GRADE_STORAGE_TYPE: S3
     EDXAPP_GIT_REPO_DIR: "{{ edxapp_git_repo_dir }}"
@@ -206,13 +209,13 @@ edx:
       VIDEO_IMAGE_MIN_BYTES : 2048
       STORAGE_CLASS: 'storages.backends.s3boto.S3BotoStorage'
       STORAGE_KWARGS:
-        bucket: mitx-storage-{{ purpose }}-{{ environment }}
+        bucket: {{ bucket_prefix }}-storage-{{ purpose }}-{{ environment }}
       DIRECTORY_PREFIX: 'video-images/'
     EDXAPP_VIDEO_TRANSCRIPTS_SETTINGS:
       VIDEO_TRANSCRIPTS_MAX_BYTES : 3145728
       STORAGE_CLASS: 'storages.backends.s3boto.S3BotoStorage'
       STORAGE_KWARGS:
-        bucket: mitx-storage-{{ purpose }}-{{ environment }}
+        bucket: {{ bucket_prefix }}-storage-{{ purpose }}-{{ environment }}
       DIRECTORY_PREFIX: 'video-transcripts/'
 
     common_feature_flags: &common_feature_flags
@@ -264,7 +267,7 @@ edx:
         STAFF_EMAIL: mitx-support@mit.edu
     EDXAPP_ENABLE_MOBILE_REST_API: True
     EDXAPP_ENABLE_SYSADMIN_DASHBOARD: True
-    EDXAPP_FILE_UPLOAD_STORAGE_BUCKET_NAME: mitx-storage-{{ purpose }}-{{ environment }}
+    EDXAPP_FILE_UPLOAD_STORAGE_BUCKET_NAME: {{ bucket_prefix }}-storage-{{ purpose }}-{{ environment }}
     EDXAPP_FILE_UPLOAD_STORAGE_PREFIX: "{{ edxapp_upload_storage_prefix }}"
     OAUTH_OIDC_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
     LOGGING_ENV: cms-{{ edxapp_log_env_suffix }}

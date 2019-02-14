@@ -8,7 +8,9 @@
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
 {% set purpose_suffix = purpose.replace('-', '_') %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
-{% set purpose_data = env_settings.environments[environment].purposes[purpose] %}
+{% set env_data = env_settings.environments[environment] %}
+{% set purpose_data = env_data.purposes[purpose] %}
+{% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
 
 {% set CMS_DOMAIN = purpose_data.domains.cms %}
 {% set EDXAPP_CMS_ISSUER = "https://{}/oauth2".format(CMS_DOMAIN) %}
@@ -141,8 +143,8 @@ edx:
     #####################################################################
     ########### Auth Configs ############################################
     #####################################################################
-    EDXAPP_AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/mitx-s3-{{ purpose }}-{{ environment }}>data>access_key
-    EDXAPP_AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/mitx-s3-{{ purpose }}-{{ environment }}>data>secret_key
+    EDXAPP_AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/{{ bucket_prefix }}-s3-{{ purpose }}-{{ environment }}>data>access_key
+    EDXAPP_AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/{{ bucket_prefix }}-s3-{{ purpose }}-{{ environment }}>data>secret_key
     EDXAPP_CELERY_BROKER_HOSTNAME: nearest-rabbitmq.query.consul
     EDXAPP_CELERY_BROKER_TRANSPORT: 'amqp'
     EDXAPP_CELERY_PASSWORD: __vault__:cache:rabbitmq-{{ environment }}/creds/celery-{{ purpose }}>data>password
