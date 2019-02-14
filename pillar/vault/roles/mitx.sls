@@ -54,7 +54,9 @@ vault:
       options:
         db_name: mongodb
         creation_statements: {{ '{"roles": [{"role": "superuser"}, {"role": "root"}], "db": "admin"}'|yaml_dquote }}
-    {% for purpose in env_settings['environments'][env].purposes %}
+    {% set env_data = env_settings['environments'][env] %}
+    {% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
+    {% for purpose in env_data.purposes %}
     {% set purpose_suffix = purpose|replace('-', '_') %}
     {% for role in env_settings.edxapp_secret_backends.mysql.role_prefixes %}
     {% set db_name = role|replace('-', '_') ~ '_' ~ purpose_suffix %}
@@ -85,9 +87,9 @@ vault:
     {% endfor %}{# role loop for MongoDB #}
     read_and_write_iam_bucket_access_for_mitx_{{ purpose }}_in_{{ env }}:
       backend: aws-mitx
-      name: mitx-s3-{{ purpose }}-{{ env }}
+      name: {{ bucket_prefix }}-s3-{{ purpose }}-{{ env }}
       options:
-        policy: "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Action\": [\"s3:*Object*\", \"s3:ListAllMyBuckets\", \"s3:ListBucket\"], \"Resource\": [\"arn:aws:s3:::mitx-grades-{{ purpose }}-{{ env }}\", \"arn:aws:s3:::mitx-grades-{{ purpose }}-{{ env }}/*\", \"arn:aws:s3:::mitx-storage-{{ purpose }}-{{ env }}\", \"arn:aws:s3:::mitx-storage-{{ purpose }}-{{ env }}/*\", \"arn:aws:s3:::mitx-etl-{{ purpose }}-{{ env }}\", \"arn:aws:s3:::mitx-etl-{{ purpose }}-{{ env }}/*\"]}]}"
+        policy: "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Action\": [\"s3:*Object*\", \"s3:ListAllMyBuckets\", \"s3:ListBucket\"], \"Resource\": [\"arn:aws:s3:::{{ bucket_prefix }}-grades-{{ purpose }}-{{ env }}\", \"arn:aws:s3:::{{ bucket_prefix }}-grades-{{ purpose }}-{{ env }}/*\", \"arn:aws:s3:::{{ bucket_prefix }}-storage-{{ purpose }}-{{ env }}\", \"arn:aws:s3:::{{ bucket_prefix }}-storage-{{ purpose }}-{{ env }}/*\", \"arn:aws:s3:::{{ bucket_prefix }}-etl-{{ purpose }}-{{ env }}\", \"arn:aws:s3:::{{ bucket_prefix }}-etl-{{ purpose }}-{{ env }}/*\"]}]}"
     {% endfor %}{# purpose loop #}
     {% if not 'xpro' in env %}
     {% for app in ['mitxcas'] %}

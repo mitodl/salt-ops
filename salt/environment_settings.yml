@@ -15,10 +15,11 @@ edxapp_secret_backends: &edxapp_secret_backends
       - xqueue
       - celery
   aws:
-    bucket_prefixes:
-      - mitx-etl
-      - mitx-grades
-      - mitx-storage
+    bucket_prefix: mitx
+    bucket_uses:
+      - etl
+      - grades
+      - storage
 
 current_residential_versions_qa: &current_residential_versions_qa
   edx_config_repo: https://github.com/mitodl/configuration
@@ -124,9 +125,10 @@ environments:
           - edxapp
           - ecommerce
       aws:
-        bucket_prefixes:
-          - xpro-grades
-          - xpro-storage
+        bucket_prefix: xpro
+        bucket_uses:
+          - grades
+          - storage
     backends:
       pki:
         - consul
