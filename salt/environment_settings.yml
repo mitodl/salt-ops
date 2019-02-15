@@ -155,7 +155,7 @@ environments:
           node_type: cache.t2.small
           num_cache_nodes: 1
           cluster_id: xpro-edxapp
-          purpose: xpro-edx
+          purpose: xpro-qa
         - engine: memcached
           engine_version: '1.4.34'
           node_type: cache.t2.small
