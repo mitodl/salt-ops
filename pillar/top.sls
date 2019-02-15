@@ -189,12 +189,17 @@ base:
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
-    - edx.xqwatcher_600
     - fluentd.xqwatcher
   'lightsail-xqwatcher-686':
     - match: glob
     - edx.xqwatcher
     - edx.xqwatcher_686
+  'xqwatcher-600x*':
+    - match: glob
+    - edx.xqwatcher_600
+  'xqwatcher-686*':
+    - match: glob
+    - edx.xqwatcher_686_residential
   'roles:amps-redirect':
     - match: grain
     - nginx

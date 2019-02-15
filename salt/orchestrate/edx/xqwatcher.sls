@@ -1,5 +1,13 @@
-{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- ENVIRONMENT, BUSINESS_UNIT, subnet_ids with context %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
+{% set env_data = env_settings.environments[ENVIRONMENT] %}
+{% set app_name = 'xqwatcher' %}
+{% set VPC_NAME = env_data.vpc_name %}
+{% set BUSINESS_UNIT = env_data.purposes[app_name].business_unit %}
+{% set subnet_ids = salt.boto_vpc.describe_subnets(
+    vpc_id=salt.boto_vpc.describe_vpcs(
+        name=env_data.vpc_name).vpcs[0].id
+    ).subnets|map(attribute='id')|list %}
 
 load_xqwatcher_cloud_profile:
   file.managed:
@@ -7,39 +15,49 @@ load_xqwatcher_cloud_profile:
     - source: salt://orchestrate/aws/cloud_profiles/xqwatcher.conf
     - template: jinja
 
-generate_xqwatcher_cloud_map_file:
+ensure_instance_profile_exists_for_xqwatcher:
+  boto_iam_role.present:
+    - name: xqwatcher-instance-role
+
+{% for course, course_settings in env_data.purposes[app_name].courses %}
+{% set INSTANCE_COUNT = course_settings.num_instances) %}
+{% set security_groups = course_settings.get('security_groups', []) %}
+{% do security_groups.extend(['salt_master', 'consul-agent']) %}
+generate_xqwatcher_{{ course }}_cloud_map_file:
   file.managed:
     - name: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_xqwatcher_map.yml
     - source: salt://orchestrate/aws/map_templates/instance_map.yml
     - template: jinja
     - makedirs: True
     - context:
-        service_name: xqwatcher
+        service_name: xqwatcher-{{ course }}
         environment_name: {{ ENVIRONMENT }}
-        num_instances: 5
+        num_instances: {{ INSTANCE_COUNT }}
         tags:
           business_unit: {{ BUSINESS_UNIT }}
+          Department: {{ BUSINESS_UNIT }}
+          OU: {{ BUSINESS_UNIT }}
+          Environment: {{ ENVIRONMENT }}
         roles:
           - xqwatcher
         securitygroupid:
+          {% for group_name in security_groups %}
           - {{ salt.boto_secgroup.get_group_id(
-            'salt_master-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
+            '{}-{}'.format(group_name, ENVIRONMENT), vpc_name=VPC_NAME) }}
+          {% endfor %}
         subnetids: {{ subnet_ids }}
     - require:
         - file: load_xqwatcher_cloud_profile
 
-ensure_instance_profile_exists_for_xqwatcher:
-  boto_iam_role.present:
-    - name: xqwatcher-instance-role
-
-deploy_xqwatcher_cloud_map:
+deploy_xqwatcher_{{ course }}_cloud_map:
   salt.runner:
     - name: cloud.map_run
     - path: /etc/salt/cloud.maps.d/{{ ENVIRONMENT}}_xqwatcher_map.yml
     - kwargs:
         parallel: True
     - require:
-        - file: generate_xqwatcher_cloud_map_file
+        - file: generate_xqwatcher_{{ course }}_cloud_map_file
+{% endfor %}
 
 build_xqwatcher_nodes:
   salt.state:
