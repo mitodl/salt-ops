@@ -119,13 +119,13 @@ ensure_instance_profile_exists_for_edx:
 
 {% for use in bucket_uses %}
 {% for purpose in purposes %}
-create_edx_s3_bucket_{{ bucket }}_{{ purpose }}_{{ ENVIRONMENT }}:
+create_edx_s3_bucket_{{ use }}_{{ purpose }}_{{ ENVIRONMENT }}:
   boto_s3_bucket.present:
     - Bucket: {{ bucket_prefix }}-{{ use }}-{{ purpose }}-{{ ENVIRONMENT }}
     - region: us-east-1
     - Versioning:
        Status: "Enabled"
-    {% if 'storage' in bucket %}
+    {% if use == 'storage' %}
     - CORSRules:
         - AllowedHeaders:
             - "*"
