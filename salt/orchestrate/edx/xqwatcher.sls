@@ -19,18 +19,18 @@ ensure_instance_profile_exists_for_xqwatcher:
   boto_iam_role.present:
     - name: xqwatcher-instance-role
 
-{% for course, course_settings in env_data.purposes[app_name].courses.items() %}
-{% set INSTANCE_COUNT = course_settings.num_instances %}
-{% set security_groups = course_settings.get('security_groups', []) %}
+{% for course in env_data.purposes[app_name].courses %}
+{% set INSTANCE_COUNT = course.num_instances %}
+{% set security_groups = course.get('security_groups', []) %}
 {% do security_groups.extend(['salt_master', 'consul-agent']) %}
-generate_xqwatcher_{{ course }}_cloud_map_file:
+generate_xqwatcher_{{ course.name }}_cloud_map_file:
   file.managed:
     - name: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_xqwatcher_map.yml
     - source: salt://orchestrate/aws/map_templates/instance_map.yml
     - template: jinja
     - makedirs: True
     - context:
-        service_name: xqwatcher-{{ course }}
+        service_name: xqwatcher-{{ course.name }}
         environment_name: {{ ENVIRONMENT }}
         num_instances: {{ INSTANCE_COUNT }}
         tags:
@@ -49,14 +49,14 @@ generate_xqwatcher_{{ course }}_cloud_map_file:
     - require:
         - file: load_xqwatcher_cloud_profile
 
-deploy_xqwatcher_{{ course }}_cloud_map:
+deploy_xqwatcher_{{ course.name }}_cloud_map:
   salt.runner:
     - name: cloud.map_run
     - path: /etc/salt/cloud.maps.d/{{ ENVIRONMENT}}_xqwatcher_map.yml
     - kwargs:
         parallel: True
     - require:
-        - file: generate_xqwatcher_{{ course }}_cloud_map_file
+        - file: generate_xqwatcher_{{ course.name }}_cloud_map_file
 {% endfor %}
 
 build_xqwatcher_nodes:

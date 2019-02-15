@@ -240,10 +240,10 @@ environments:
           edx_config_repo: https://github.com/edx/configuration
           edx_config_version: open-release/hawthorn.beta1
         courses:
-          - 600x:
-              num_instances: 2
-          - 686:
-              num_instances: 1
+          - name: 600x
+            num_instances: 2
+          - name: 686
+            num_instances: 1
       current-residential-live:
         business_unit: residential
         domains:
@@ -385,10 +385,10 @@ environments:
           edx_config_repo: https://github.com/edx/configuration
           edx_config_version: open-release/hawthorn.beta1
         courses:
-          - 600x:
-              num_instances: 3
-          - 686:
-              num_instances: 1
+          - name: 600x
+            num_instances: 3
+          - name: 686
+            num_instances: 1
       residential-draft:
         business_unit: residential
         domains:
