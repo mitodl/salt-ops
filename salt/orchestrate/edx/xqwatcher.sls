@@ -19,8 +19,8 @@ ensure_instance_profile_exists_for_xqwatcher:
   boto_iam_role.present:
     - name: xqwatcher-instance-role
 
-{% for course, course_settings in env_data.purposes[app_name].courses %}
-{% set INSTANCE_COUNT = course_settings.num_instances) %}
+{% for course, course_settings in env_data.purposes[app_name].courses.items() %}
+{% set INSTANCE_COUNT = course_settings.num_instances %}
 {% set security_groups = course_settings.get('security_groups', []) %}
 {% do security_groups.extend(['salt_master', 'consul-agent']) %}
 generate_xqwatcher_{{ course }}_cloud_map_file:
