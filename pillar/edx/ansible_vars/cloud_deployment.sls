@@ -76,7 +76,8 @@ edx:
     - 'edx-east/worker.yml'
   {% endif %}
   efs_id: {{ efs_id }}
-
+  edxapp:
+    GIT_REPO_DIR: {{ edxapp_git_repo_dir }}
 
   ansible_vars:
     ### EDXAPP ENVIRONMENT ###
@@ -253,7 +254,7 @@ edx:
         <<: *common_feature_flags
         ALLOW_COURSE_STAFF_GRADE_DOWNLOADS: true
         ENABLE_INSTRUCTOR_REMOTE_GRADEBOOK_CONTROLS: true
-        ENABLE_S3_GRADE_DOWNLOADS: true
+        ENABLE_GRADE_DOWNLOADS: true
         ENABLE_SHOPPING_CART: true
         ENABLE_SYSADMIN_DASHBOARD: true
         ENABLE_INSTRUCTOR_EMAIL: true

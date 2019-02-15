@@ -36,7 +36,6 @@
 
 edx:
   edxapp:
-    GIT_REPO_DIR: {{ edxapp_git_repo_dir }}
     THEME_NAME: 'mitx-theme'
     custom_theme:
       repo: {{ purpose_data.versions.theme_source_repo }}
