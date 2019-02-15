@@ -81,6 +81,7 @@ edx:
 
   ansible_vars:
     ### EDXAPP ENVIRONMENT ###
+    EDXAPP_LOGIN_REDIRECT_WHITELIST: {{ purpose_data.domains.values() }}
     EDXAPP_MEMCACHE:
       {% for cache_config in cache_configs %}
       {% set cache_purpose = cache_config.get('purpose', 'shared') %}
