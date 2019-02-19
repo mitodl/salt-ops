@@ -1,8 +1,9 @@
+{% set profile_name = profile_name|default(service_name) %}
 {% set profile_overrides = profile_overrides|default({}) %}
 {% set num_subnets = subnetids|length %}
 {% set tags = tags|default({}) %}
 
-{{ service_name }}:
+{{ profile_name }}:
   {% set instance_count = num_instances|default(3) %}
   {% for id_num in range(instance_count) %}
   - {{ service_name }}-{{ environment_name }}-{{ id_num }}:

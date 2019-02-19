@@ -30,6 +30,7 @@ generate_xqwatcher_{{ course.name }}_cloud_map_file:
     - template: jinja
     - makedirs: True
     - context:
+        profile_name: xqwatcher
         service_name: xqwatcher-{{ course.name }}
         environment_name: {{ ENVIRONMENT }}
         num_instances: {{ INSTANCE_COUNT }}
