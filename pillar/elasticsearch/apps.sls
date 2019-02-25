@@ -10,6 +10,7 @@ elasticsearch:
       gateway.expected_nodes: 3
       gateway.recover_after_time: 5m
       rest.action.multi.allow_explicit_index: 'false'
+      xpack.security.enabled: false
   plugins:
     - name: discovery-ec2
       config:
