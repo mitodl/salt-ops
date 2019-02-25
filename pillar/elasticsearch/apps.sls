@@ -16,7 +16,7 @@ elasticsearch:
         aws:
           region: us-east-1
     - name: readonlyrest
-      location: https://raw.githubusercontent.com/mitodl/salt-ops/master/salt/artifacts/readonlyrest-1.16.19_es6.2.4.zip
+      location: https://raw.githubusercontent.com/mitodl/salt-ops/master/salt/artifacts/readonlyrest-1.17.0_es6.6.1.zip
   plugin_settings:
     readonlyrest:
       readonlyrest:
