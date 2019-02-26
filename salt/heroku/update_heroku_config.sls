@@ -6,4 +6,4 @@ update_heroku_{{ app_name }}_config:
   heroku.update_app_config_vars:
     - name: {{ app_name }}
     - api_key: {{ api_key }}
-    - config_vars: {{ config_vars }}
+    - config_vars: {{ config_vars|tojson }}

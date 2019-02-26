@@ -32,7 +32,7 @@ include:
 
 install_os_packages:
   pkg.installed:
-    - pkgs: {{ os_packages }}
+    - pkgs: {{ os_packages|tojson }}
     - refresh: True
     - refresh_modules: True
     - require_in:

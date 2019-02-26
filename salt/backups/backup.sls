@@ -16,7 +16,7 @@ install_duplicity_backend_requirements:
 {% if service.get('pkgs') %}
 install_packages_for_{{ service.title }}_backup:
   pkg.installed:
-    - pkgs: {{ service.pkgs }}
+    - pkgs: {{ service.pkgs|tojson }}
 {% endif %}
 {% endfor %}
 
@@ -28,7 +28,7 @@ schedule_backups_for_{{ service.title }}:
     - source: salt://backups/templates/backup_{{ service.name }}.sh
     - template: jinja
     - context:
-        settings: {{ service.settings }}
+        settings: {{ service.settings|tojson }}
         ENVIRONMENT: {{ ENVIRONMENT }}
         title: {{ service.title }}
   cron.present:

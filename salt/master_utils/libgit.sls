@@ -30,7 +30,7 @@
 
 install_libgit_build_tools:
   pkg.installed:
-    - pkgs: {{ libgit.pkgs }}
+    - pkgs: {{ libgit.pkgs|tojson }}
     - reload_modules: True
 
 download_libgit_source:

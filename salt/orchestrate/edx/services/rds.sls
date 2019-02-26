@@ -9,7 +9,7 @@ create_edx_rds_db_subnet_group:
   boto_rds.subnet_group_present:
     - name: db-subnet-group-{{VPC_RESOURCE_SUFFIX }}
     - description: Subnet group for MySQL instance in {{ ENVIRONMENT }}
-    - subnet_ids: {{ subnet_ids }}
+    - subnet_ids: {{ subnet_ids|tojson }}
     - tags:
         Name: db-subnet-group-{{VPC_RESOURCE_SUFFIX }}
         business_unit: {{ BUSINESS_UNIT }}

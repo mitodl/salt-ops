@@ -56,8 +56,8 @@ create_elb_for_edx_{{ purpose_name }}:
         {% endfor %}
     - health_check:
         target: 'HTTPS:443/heartbeat'
-    - subnets: {{ subnet_ids }}
-    - security_groups: {{ security_groups }}
+    - subnets: {{ subnet_ids|tojson }}
+    - security_groups: {{ security_groups|tojson }}
     - policies:
         - policy_name: {{ elb_name }}-sticky-cookie-policy
           policy_type: LBCookieStickinessPolicyType
@@ -115,8 +115,8 @@ create_elb_for_edx_{{ purpose_name }}_studio:
         {% endfor %}
     - health_check:
         target: 'HTTPS:443/heartbeat'
-    - subnets: {{ subnet_ids }}
-    - security_groups: {{ security_groups }}
+    - subnets: {{ subnet_ids|tojson }}
+    - security_groups: {{ security_groups|tojson }}
     - policies:
         - policy_name: {{ elb_name }}-sticky-cookie-policy
           policy_type: LBCookieStickinessPolicyType

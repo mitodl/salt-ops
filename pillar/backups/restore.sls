@@ -65,7 +65,7 @@ restores:
       username: __vault__:cache:mongodb-{{ environment }}/creds/admin>data>username
       duplicity_passphrase: __vault__::secret-operations/global/duplicity-passphrase>data>value
       directory: mongodb-mitx-production
-      db_map: {{ mongo_map }}
+      db_map: {{ mongo_map|tojson }}
 {% endif %}
 {% endfor %}
   - title: live_course_assets

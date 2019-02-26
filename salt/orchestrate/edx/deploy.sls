@@ -60,7 +60,7 @@ generate_edx_cloud_map_file:
             'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           consul-agent: {{ salt.boto_secgroup.get_group_id(
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-        subnetids: {{ subnet_ids }}
+        subnetids: {{ subnet_ids|tojson }}
         tags:
           launch-date: '{{ launch_date }}'
           Department: {{ BUSINESS_UNIT }}

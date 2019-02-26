@@ -33,7 +33,7 @@ nginx:
           enabled: True
           config:
             - server:
-                - server_name: {{ server_domain_names }}
+                - server_name: {{ server_domain_names|tojson }}
                 - listen:
                     - 80
                 - listen:
@@ -41,7 +41,7 @@ nginx:
                 - location /:
                     - return: 301 https://$host$request_uri
             - server:
-                - server_name: {{ server_domain_names }}
+                - server_name: {{ server_domain_names|tojson }}
                 - listen:
                     - 443
                     - ssl
