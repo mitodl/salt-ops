@@ -8,5 +8,5 @@ generate_{{ name }}_logrotate:
     - template: jinja
     - mode: '0644'
     - context:
-        settings: {{ settings }}
+        settings: {{ settings|tojson }}
 {% endfor %}

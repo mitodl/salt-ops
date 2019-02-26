@@ -7,7 +7,7 @@ manage_datasource_settings_for_{{ source.name }}:
     - template: jinja
     - cwd: /opt/redash
     - runas: redash
-    - env: {{ redash_env }}
+    - env: {{ redash_env|tojson }}
     - context:
         ds: {{ source }}
 {% endfor %}

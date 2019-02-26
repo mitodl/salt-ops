@@ -55,7 +55,7 @@ generate_{{ app_name }}_cloud_map_file:
             'fluentd-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-        subnetids: {{ subnet_ids }}
+        subnetids: {{ subnet_ids|tojson }}
         tags:
           business_unit: {{ BUSINESS_UNIT }}
           Department: {{ BUSINESS_UNIT }}
@@ -127,7 +127,7 @@ update_mine_with_{{ app_name }}_node_data:
 register_log_aggregator_dns:
   boto_route53.present:
     - name: log-input.odl.mit.edu
-    - value: {{ hosts }}
+    - value: {{ hosts|tojson }}
     - zone: odl.mit.edu.
     - record_type: A
 #}

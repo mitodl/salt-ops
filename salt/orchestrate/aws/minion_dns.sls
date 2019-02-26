@@ -11,6 +11,6 @@
 create_dns_entry_for_{{ instance_id }}:
   boto_route53.present:
     - name: {{ domain }}.{{ zone }}
-    - value: {{ ipaddrs }}
+    - value: {{ ipaddrs|tojson }}
     - record_type: A
     - zone: {{ zone }}

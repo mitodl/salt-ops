@@ -2,7 +2,7 @@
 
 install_etl_os_dependencies:
   pkg.installed:
-    - pkgs: {{ salt.pillar.get('etl_dependencies', ['python3', 'python3-pip', 'git']) }}
+    - pkgs: {{ salt.pillar.get('etl_dependencies', ['python3', 'python3-pip', 'git'])|tojson }}
     - refresh: True
 
 create_etl_directory:

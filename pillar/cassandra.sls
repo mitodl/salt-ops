@@ -25,7 +25,7 @@ cassandra:
     seed_provider:
       - class_name: org.apache.cassandra.locator.SimpleSeedProvider
         parameters:
-          - seeds: {{ lan_nodes|join(',') }}
+          - seeds: {{ lan_nodes|join(',')|tojson }}
     # authenticator: PasswordAuthenticator
 
 python_dependencies:

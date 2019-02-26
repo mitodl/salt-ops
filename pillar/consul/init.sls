@@ -22,5 +22,5 @@ consul:
         service_ttl:
           "*": 30s
       encrypt: __vault__::secret-operations/global/consul-shared-secret>data>value
-      retry_join: {{ lan_nodes }}
+      retry_join: {{ lan_nodes|tojson }}
       datacenter: {{ ENVIRONMENT }}

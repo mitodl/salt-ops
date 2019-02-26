@@ -9,7 +9,7 @@ populate_database_with_seed_data:
     - fixtures: auth,backend,courses,assignments,studentassignments
     - bin_env: {{ django.django_admin_path }}
     - runas: deploy
-    - env: {{ django.get('environment', {}) }}
+    - env: {{ django.get('environment', {})|tojson }}
     {% if django.automatic_migrations %}
     - require:
         - module: migrate_database

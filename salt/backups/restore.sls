@@ -16,7 +16,7 @@ install_duplicity_backend_requirements:
 {% if service.get('pkgs') %}
 install_packages_for_{{ service.title }}_backup:
   pkg.installed:
-    - pkgs: {{ service.pkgs }}
+    - pkgs: {{ service.pkgs|tojson }}
 {% endif %}
 {% endfor %}
 
@@ -27,12 +27,12 @@ run_restore_for_{{ service.title }}:
     - source: salt://backups/templates/restore_{{ service.name }}.sh
     - template: jinja
     - context:
-        settings: {{ service.settings }}
+        settings: {{ service.settings|tojson }}
   cmd.script:
     - name: salt://backups/templates/restore_{{ service.name }}.sh
     - template: jinja
     - context:
-        settings: {{ service.settings }}
+        settings: {{ service.settings|tojson }}
     - fire_event: restore/{{ ENVIRONMENT }}/{{ service.title }}
 {% endfor %}
 

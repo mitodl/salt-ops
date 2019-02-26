@@ -50,7 +50,7 @@ generate_cloud_map_file:
             'scylladb-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
             'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-        subnetids: {{ subnet_ids }}
+        subnetids: {{ subnet_ids|tojson }}
         profile_overrides:
           userdata_file: '/etc/salt/cloud.d/edx_userdata.yml'
     - require:

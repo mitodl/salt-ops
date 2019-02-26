@@ -6,11 +6,11 @@ create_redash_database_tables:
     - name: /opt/redash/bin/run ./manage.py database create_tables
     - cwd: /opt/redash
     - runas: redash
-    - env: {{ redash_env }}
+    - env: {{ redash_env|tojson }}
 
 create_redash_root_user:
   cmd.run:
     - name: /opt/redash/bin/run ./manage.py users create_root --password {{ root_user.password }} {{ root_user.email }} {{ root_user.name }}
     - cwd: /opt/redash
     - runas: redash
-    - env: {{ redash_env }}
+    - env: {{ redash_env|tojson }}

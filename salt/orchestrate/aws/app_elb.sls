@@ -49,8 +49,8 @@ create_elb_for_{{ app_name }}_{{ ENVIRONMENT }}:
     {% endfor %}
     - health_check:
         target: HTTPS:443{{ purpose.get('healthcheck', '/status/?token={env}'.format(env=ENVIRONMENT)) }}
-    - subnets: {{ subnet_ids }}
-    - security_groups: {{ security_groups }}
+    - subnets: {{ subnet_ids|tojson }}
+    - security_groups: {{ security_groups|tojson }}
     - tags:
         Name: {{ elb_name }}
         business_unit: {{ BUSINESS_UNIT }}
@@ -58,6 +58,6 @@ create_elb_for_{{ app_name }}_{{ ENVIRONMENT }}:
 register_{{ app_name }}_nodes_with_elb:
   boto_elb.register_instances:
     - name: {{ elb_name }}
-    - instances: {{ instance_ids }}
+    - instances: {{ instance_ids|tojson }}
     - require:
         - boto_elb: create_elb_for_{{ app_name }}_{{ ENVIRONMENT }}

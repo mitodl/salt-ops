@@ -46,7 +46,7 @@ generate_xqwatcher_{{ course.name }}_cloud_map_file:
           - {{ salt.boto_secgroup.get_group_id(
             '{}-{}'.format(group_name, ENVIRONMENT), vpc_name=VPC_NAME) }}
           {% endfor %}
-        subnetids: {{ subnet_ids }}
+        subnetids: {{ subnet_ids|tojson }}
     - require:
         - file: load_xqwatcher_cloud_profile
 

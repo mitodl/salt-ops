@@ -20,7 +20,7 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
   boto_rds.subnet_group_present:
     - name: db-subnet-group-{{ENVIRONMENT }}
     - description: Subnet group for {{ ENVIRONMENT }} RDS instances
-    - subnet_ids: {{ subnet_ids }}
+    - subnet_ids: {{ subnet_ids|tojson }}
     - tags:
         Name: db-subnet-group-{{ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}

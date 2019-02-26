@@ -13,7 +13,7 @@
 
 prepare_installation_of_pip_executable:
   pkg.installed:
-    - pkgs: {{ python_dependencies.pkgs }}
+    - pkgs: {{ python_dependencies.pkgs|tojson }}
     - reload_modules: True
 
 install_global_pip_executable:
@@ -28,5 +28,5 @@ install_global_pip_executable:
 
 install_python_libraries:
   pip.installed:
-    - names: {{ python_dependencies.python_libs }}
+    - names: {{ python_dependencies.python_libs|tojson }}
     - reload_modules: True

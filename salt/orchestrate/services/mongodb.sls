@@ -58,7 +58,7 @@ generate_mongodb_cloud_map_file:
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
             'vault-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-        subnetids: {{ subnet_ids }}
+        subnetids: {{ subnet_ids|tojson }}
     - require:
         - file: load_mongodb_cloud_profile
 
