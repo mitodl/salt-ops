@@ -1,0 +1,107 @@
+{% set environment = salt.grains.get('environment') %}
+
+{% if environment == 'production' %}
+{% set db_host = '10.100.0.7' %}
+{% set db_name = 'OCWDB' %}
+
+{% set cms_url = 'https://ocw-production-cms-2.odl.mit.edu' %}
+
+{% set dspace_test_host = 'sparkill.mit.edu' %}
+{% set dspace_test_endpoint = 'http://' ~ dspace_test_host ~ '/sword/deposit/' %}
+
+{% elif environment == 'qa' %}
+{% set db_host = '10.100.0.34' %}
+{% set db_name = 'OCWDB' %}
+
+{% set cms_url = 'https://ocw-qa-cms-2.odl.mit.edu' %}
+
+{% set dspace_test_host = 'dspace-partners-2.mit.edu' %}
+{% set dspace_test_endpoint = 'http://' ~ dspace_test_host ~ '/sword/deposit/' %}
+{% endif %}
+
+{% set staging_host = 'ocw2.mit.edu' %}
+{% set staging_url = 'https://' ~ staging_host %}
+{% set staging_rootdirectory = '/usr/local/tomcat/webapps' %}
+
+{% set production_host = 'ocw-origin.odl.mit.edu' %}
+{% set production_url = 'https://' ~ production_host %}
+{% set production_rootdirectory = '/var/www/ocw' %}
+
+{% set mirror_host = 'ocw-rsync.mit.edu' %}
+{% set mirror_url = 'http://' ~ mirror_host ~ ':8080' %}
+{% set mirror_rootdirectory = '/data2/prod' %}
+
+{% set netstorage_host = 'ocwzip.upload.akamai.com' %}
+{% set netstorage_user = 'sshacs' %}
+{% set netstorage_rootdirectory = '/15436/ZipForEndUsers' %}
+
+{% set dspace_retiredcourseziproot = '/prod/OCWEngines/RetiredCourseZips' %}
+
+{% set dspace_production_host = 'dspace.mit.edu' %}
+{% set dspace_production_endpoint = 'http://' ~ dspace_production_host ~ '/sword/deposit/' %}
+
+[engine]
+working_root_dir: /prod/OCWEngines/working
+production_holding_area: /prod/OCWEngines/PHA
+static_zip_file_dir: /prod/OCWEngines/static_files
+tombstone_zip_file_dir : tombstone_files
+dspace_tombstone_zip_file_dir : dspace_tombstone_files
+
+[database]
+host: {{ db_host }}
+port: 3306
+dbname: {{ db_name }}
+username: __vault__::secret-ocw/{{ environment }}/db>data>username
+password: __vault__::secret-ocw/{{ environment }}/db>data>password
+
+[CMS]
+url: {{ cms_url }}
+user: __vault__::secret-ocw/{{ environment }}/cms>data>username
+password: __vault__::secret-ocw/{{ environment }}/cms>data>password
+
+[Staging]
+url: {{ staging_url }}
+host: {{ staging_host }}
+user: fsuser
+rootdirectory: {{ staging_rootdirectory }}
+
+[Production]
+url: {{ production_url }}
+host: {{ production_host }}
+user: fsuser
+rootdirectory: {{ production_rootdirectory }}
+
+[Mirror]
+url: {{ mirror_url }}
+host: {{ mirror_host }}
+user: ocwuser
+rootdirectory: {{ mirror_rootdirectory }}
+mirror_create_snapshot_script: /data2/scripts/create_new_snapshot.sh
+mirror_update_snapshot_script: /data2/scripts/update_snapshot.sh
+
+[NetStorage]
+host: {{ netstorage_host }}
+user: sshacs
+rootdirectory: {{ netstorage_rootdirectory }}
+zipurlprefix: /ans15436/ZipForEndUsers
+
+[DSpace]
+retiredcourseziproot: {{ dspace_retiredcourseziproot }}
+deposit_uri_lookup_file_path = Configurations
+current_environment: Production_Dspace_conf
+
+[Test_Dspace_conf]
+dspace_host_id = {{ dspace_test_host}}
+dspace_host_port = 80
+dspace_connection_user = __vault__::secret-ocw/{{ environment }}/dspace/test>data>username
+dspace_connection_password = __vault__::secret-ocw/{{ environment }}/dspace/test>data>password
+dspace_endpoint_prefix = {{ dspace_test_endpoint }}
+deposit_uri_lookup_file_name = UAT_DepositURILookup.xml
+
+[Production_Dspace_conf]
+dspace_host_id = {{ dspace_production_host }}
+dspace_host_port = 80
+dspace_connection_user = __vault__::secret-ocw/{{ environment }}/dspace/production>data>username
+dspace_connection_password = __vault__::secret-ocw/{{ environment }}/dspace/production>data>password
+dspace_endpoint_prefix = {{ dspace_production_endpoint }}
+deposit_uri_lookup_file_name = DepositURILookup.xml
