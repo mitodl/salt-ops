@@ -85,11 +85,32 @@ vault:
         db_name: mongodb
         creation_statements: {{ role_json|yaml_dquote }}
     {% endfor %}{# role loop for MongoDB #}
+    {% load_json as bucket_policy %}
+    {
+        "Statement": [
+            {
+                "Resource": [
+                {% for use in env_data.secret_backends.aws.bucket_uses %}
+                    "arn:aws:s3:::{{ bucket_prefix }}-{{ use }}-{{ purpose }}-{{ env }}",
+                    "arn:aws:s3:::{{ bucket_prefix }}-{{ use }}-{{ purpose }}-{{ env }}/*"{% if not loop.last %},{% endif %}
+                {% endfor %}
+                ],
+                "Action": [
+                    "s3:*Object*",
+                    "s3:ListAllMyBuckets",
+                    "s3:ListBucket"
+                ],
+                "Effect": "Allow"
+            }
+        ],
+        "Version": "2012-10-17"
+    }
+    {% endload %}
     read_and_write_iam_bucket_access_for_mitx_{{ purpose }}_in_{{ env }}:
       backend: aws-mitx
       name: {{ bucket_prefix }}-s3-{{ purpose }}-{{ env }}
       options:
-        policy: "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Action\": [\"s3:*Object*\", \"s3:ListAllMyBuckets\", \"s3:ListBucket\"], \"Resource\": [\"arn:aws:s3:::{{ bucket_prefix }}-grades-{{ purpose }}-{{ env }}\", \"arn:aws:s3:::{{ bucket_prefix }}-grades-{{ purpose }}-{{ env }}/*\", \"arn:aws:s3:::{{ bucket_prefix }}-storage-{{ purpose }}-{{ env }}\", \"arn:aws:s3:::{{ bucket_prefix }}-storage-{{ purpose }}-{{ env }}/*\", \"arn:aws:s3:::{{ bucket_prefix }}-etl-{{ purpose }}-{{ env }}\", \"arn:aws:s3:::{{ bucket_prefix }}-etl-{{ purpose }}-{{ env }}/*\"]}]}"
+        policy: {{ bucket_policy }}
     {% endfor %}{# purpose loop #}
     {% if not 'xpro' in env %}
     {% for app in ['mitxcas'] %}
