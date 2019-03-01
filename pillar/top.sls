@@ -16,7 +16,10 @@ base:
     - datadog.elasticsearch-integration
   'roles:kibana':
     - match: grain
-    - kibana
+    - mitca
+    - elastic_stack.kibana
+    - nginx
+    - nginx.kibana
     - elastalert
     - monit
     - monit.lms_503
