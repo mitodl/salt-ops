@@ -1,0 +1,97 @@
+{% set internal_ip = salt.grains.get('ec2:local_ipv4') %}
+{% set blob_storage_folder = '/mnt/ocwfileshare/' %}
+
+[buildout]
+extends = base.cfg
+
+{% if 'ocw-db' in salt.grains.get('roles') %}
+[zeoserver]
+zeo-address = {{ internal_ip }}:8100
+zeo-var = ${buildout:directory}/var
+blob-storage = ${zeoserver:zeo-var}/blobstorage
+
+eggs +=
+    plone.app.blob
+
+zeo-conf-additional =
+    <filestorage 2>
+        path ${zeoserver:zeo-var}/catalogstorage/Catalog.fs
+    </filestorage>
+
+[versions]
+ZODB3 = 3.8.3
+
+{% elif 'ocw-cms' in salt.grains.get('roles') %}
+
+parts +=
+    zmysqlda
+
+develop +=
+    src/ocw.types
+    src/ocw.theme
+    src/ocw.publishing
+    src/ocwhs.theme
+    src/ocw.contentimport
+
+[client1]
+zeo-address = {{ internal_ip }}:8100
+zodb-cache-size = 2000000
+zeo-client-cache-size = 15000MB
+blob-storage = {{ blob_storage_folder }}blobstorage-cms1
+shared-blob = off
+eggs +=
+    MySQL-python
+    Products.DataGridField
+    Products.FCKEditor
+    pyExcelerator
+    plone.app.blob
+    ocw.types
+    ocw.theme
+    ocw.publishing
+    ocwhs.theme
+    ocw.contentimport
+
+zcml +=
+    plone.app.blob
+    ocw.types
+    ocw.theme
+    ocwhs.theme
+    ocw.publishing
+    ocw.contentimport
+
+zope-conf-additional =
+    <zodb_db catalog>
+        mount-point /Plone/portal_catalog
+        container-class Products.CMFPlone.CatalogTool.CatalogTool
+        cache-size 2000000
+        <zeoclient>
+            server ${client1:zeo-address}
+            storage 2
+            name catalogstorage
+            var ${buildout:directory}/parts/client1/var
+            cache-size 4000MB
+        </zeoclient>
+    </zodb_db>
+
+environment-vars +=
+    DISABLE_PTS 1
+    TEMP ${buildout:directory}/tmp
+
+[versions]
+Products.DataGridField = 1.6.1
+ZODB3 = 3.8.3
+
+[zmysqlda]
+recipe = collective.recipe.zmysqlda
+target = ${buildout:directory}/products
+
+[importer]
+recipe = zc.recipe.egg:scripts
+eggs =
+    setuptools
+    ocw.contentimport
+    ${client1:eggs}
+extra-paths = ${zeoserver:zope2-location}/lib/python
+scripts =
+    import_content
+{% endif %}
