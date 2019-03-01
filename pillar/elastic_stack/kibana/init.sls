@@ -1,0 +1,19 @@
+elastic_stack:
+  kibana:
+    config:
+      elasticsearch.url: http://nearest-elasticsearch.query.consul:9200
+      logging.dest: /var/log/kibana.log
+
+beacons:
+  service:
+    - services:
+        kibana:
+          onchangeonly: True
+          interval: 30
+        nginx:
+          onchangeonly: True
+          interval: 30
+        elastalert:
+          onchangeonly: True
+          interval: 30
+    - disable_during_state_run: True

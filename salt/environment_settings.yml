@@ -531,6 +531,14 @@ environments:
         business_unit: operations
         security_groups:
           - webapp
+      kibana:
+        app: kibana
+        num_instances: 1
+        domains:
+          - logs.odl.mit.edu
+        business_unit: operations
+        security_groups:
+          - webapp-odl-vpn
     backends:
       pki:
         - consul
