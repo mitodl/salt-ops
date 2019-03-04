@@ -1,4 +1,10 @@
 {% set environment = salt.grains.get('environment') %}
+{% set db_username = salt.pillar.get('ocw:db_username') %}
+{% set db_password = salt.pillar.get('ocw:db_password') %}
+{% set cms_username = salt.pillar.get('ocw:cms_username') %}
+{% set cms_password = salt.pillar.get('ocw:cms_password') %}
+{% set dspace_connection_user = salt.pillar.get('ocw:dspace_connection_user') %}
+{% set dspace_connection_password = salt.pillar.get('ocw:dspace_connection_password') %}
 
 {% if environment == 'production' %}
 {% set db_host = '10.100.0.7' %}
@@ -51,13 +57,13 @@ dspace_tombstone_zip_file_dir : dspace_tombstone_files
 host: {{ db_host }}
 port: 3306
 dbname: {{ db_name }}
-username: __vault__::secret-ocw/{{ environment }}/db>data>username
-password: __vault__::secret-ocw/{{ environment }}/db>data>password
+username: {{ db_username }}
+password: {{ db_password }}
 
 [CMS]
 url: {{ cms_url }}
-user: __vault__::secret-ocw/{{ environment }}/cms>data>username
-password: __vault__::secret-ocw/{{ environment }}/cms>data>password
+user: {{ cms_username }}
+password: {{ cms_password }}
 
 [Staging]
 url: {{ staging_url }}
@@ -93,15 +99,15 @@ current_environment: Production_Dspace_conf
 [Test_Dspace_conf]
 dspace_host_id = {{ dspace_test_host}}
 dspace_host_port = 80
-dspace_connection_user = __vault__::secret-ocw/{{ environment }}/dspace/test>data>username
-dspace_connection_password = __vault__::secret-ocw/{{ environment }}/dspace/test>data>password
+dspace_connection_user = {{ dspace_connection_user }}
+dspace_connection_password = {{ dspace_connection_password }}
 dspace_endpoint_prefix = {{ dspace_test_endpoint }}
 deposit_uri_lookup_file_name = UAT_DepositURILookup.xml
 
 [Production_Dspace_conf]
 dspace_host_id = {{ dspace_production_host }}
 dspace_host_port = 80
-dspace_connection_user = __vault__::secret-ocw/{{ environment }}/dspace/production>data>username
-dspace_connection_password = __vault__::secret-ocw/{{ environment }}/dspace/production>data>password
+dspace_connection_user = {{ dspace_connection_user }}
+dspace_connection_password = {{ dspace_connection_password }}
 dspace_endpoint_prefix = {{ dspace_production_endpoint }}
 deposit_uri_lookup_file_name = DepositURILookup.xml

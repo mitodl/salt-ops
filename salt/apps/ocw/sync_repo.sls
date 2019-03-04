@@ -6,19 +6,19 @@ configure_ocw_src_git_sparsecheckout:
 
 configure_ocw_publishing_git_sparsecheckout:
   git.config_set:
-    - name: core.sparsecheckout
+    - name: core.sparseCheckout
     - value: True
     - cwd: /usr/local/Plone/zeocluster/publishing
 
 add_ocw_publishing_to_sparsecheckout:
-  cmd.run:
-    - cwd: /usr/local/Plone/zeocluster/src
-    - name: echo plone/publishing >> .git/info/sparse-checkout
+  file.managed:
+    - name: /usr/local/Plone/zeocluster/src/.git/info/sparse-checkout
+    - contents: 'plone/publishing'
 
 add_ocw_src_to_sparsecheckout:
-  cmd.run:
-    - cwd: /mnt/ocwfileshare/OCWEngines
-    - name: echo plone/src >> .git/info/sparse-checkout
+  file.managed:
+    - name: /mnt/ocwfileshare/OCWEngines/.git/info/sparse-checkout
+    - contents: 'plone/src'
 
 git_pull_ocw_src_folder:
   git.latest:
