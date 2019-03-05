@@ -82,6 +82,9 @@ base:
     - nginx.reddit
     - reddit
     - fluentd.reddit
+  'roles:edx-video-pipeline':
+    - match: grain
+    - edx.ansible_vars.video_pipeline
   'G@environment:operations and G@roles:redash':
     - match: compound
     - nginx

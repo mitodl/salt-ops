@@ -167,10 +167,19 @@ environments:
           purpose: xpro-ecommerce
     purposes:
       xpro-video-qa:
-        app: video-pipeline
+        app: edx-video-pipeline
         business_unit: mitxpro
         domains:
           - veda-xpro-qa.mitx.mit.edu
+        instances:
+          edx-video-pipeline:
+            number: 1
+            type: t3.medium
+            security_groups:
+              - edx
+          edx-video-worker:
+            number: 2
+            type: t3.large
       xpro-qa:
         app: edx
         business_unit: mitxpro

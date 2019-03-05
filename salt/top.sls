@@ -88,6 +88,9 @@ base:
     - django
     - uwsgi
     - nginx.ng
+  'roles:edx-video-pipeline':
+    - match: grain
+    - edx.run_ansible
   'G@roles:odl-video-service or G@roles:mitx-cas':
     - match: compound
     - utils.configure_debian_source_repos
