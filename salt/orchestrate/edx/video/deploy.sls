@@ -1,5 +1,4 @@
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT') %}
-{% set PURPOSE = salt.environ.get('PURPOSE', 'current-residential-draft') %}
 {% set env_dict = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set env_settings = env_dict.environments[ENVIRONMENT] %}
 {% set VPC_NAME = salt.environ.get('VPC_NAME', env_settings.vpc_name) %}
@@ -20,20 +19,20 @@
 {% set bucket_prefix = env_settings.secret_backends.aws.bucket_prefix %}
 {% set edx_video_buckets = ['veda-upload', 'veda-delivery', 'veda-hotstore', 'edx-video', 'edx-video-delivery'] %}
 
-{% for purpose in purposes %}
-{% if purpose.app == 'video-pipeline' %}
-create_sns_topics_for_veda_on_{{ purpose }}:
+{% for purpose_name, purpose_data in purposes.items() %}
+{% if purpose_data.app == 'video-pipeline' %}
+create_sns_topics_for_veda_on_{{ purpose_name }}:
   boto_sns.present:
-    - name: {{ purpose }}_video_upload_notification
+    - name: {{ purpose_name }}_video_upload_notification
     - subscriptions:
         - protocol: https
-          endpoint: https://{{ purpose.domains[0] }}/api/ingest_from_s3/
+          endpoint: https://{{ purpose_data.domains[0] }}/api/ingest_from_s3/
     - region: us-east-1
 
 {% for bucket in edx_video_buckets %}
 create_{{ odl_video_bucket_prefix }}-{{ bucket_purpose }}-{{ bucket_suffix }}:
   boto_s3_bucket.present:
-    - Bucket: {{ bucket_prefix }}-{{ bucket }}-{{ purpose }}-{{ environment }}
+    - Bucket: {{ bucket_prefix }}-{{ bucket }}-{{ purpose_name }}-{{ environment }}
     - region: us-east-1
     - Versioning:
         Status: "Enabled"
@@ -49,12 +48,12 @@ create_{{ odl_video_bucket_prefix }}-{{ bucket_purpose }}-{{ bucket_suffix }}:
         MaxAgeSconds: 3000
     - NotificationConfiguration:
         TopicConfigurations:
-          - TopicArn: {% salt.boto_sns.get_arn(purpose ~ '_video_upload_notification') %}
+          - TopicArn: {% salt.boto_sns.get_arn(purpose_name ~ '_video_upload_notification') %}
             Events:
               - 's3:ObjectCreated:*'
     {% endif %}
 {% endfor %}
-{% for app_name, app_settings in purpose.instances.items() %}
+{% for app_name, app_settings in purpose_data.instances.items() %}
 {% do app_settings.security_groups.extend(['salt_master', 'consul-agent']) %}
 load_{{ app_name }}_cloud_profile:
   file.managed:
@@ -88,6 +87,7 @@ generate_{{ app_name }}_cloud_map_file:
           OU: {{ BUSINESS_UNIT }}
           Environment: {{ ENVIRONMENT }}
           launch_date: {{ salt.status.time(format="%Y-%m-%d") }}
+          purpose: {{ purpose_name }}
     - require:
         - file: load_{{ app_name }}_cloud_profile
 

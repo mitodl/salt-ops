@@ -163,8 +163,8 @@ environments:
           engine_version: '1.4.34'
           node_type: cache.t2.small
           num_cache_nodes: 1
-          cluster_id: xpro-ecommerce
-          purpose: xpro-ecommerce
+          cluster_id: xpro-video
+          purpose: xpro-video-qa
     purposes:
       xpro-video-qa:
         app: edx-video-pipeline

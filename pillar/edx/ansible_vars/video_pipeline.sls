@@ -10,6 +10,7 @@
 {% set purpose_data = env_data.purposes[purpose] %}
 {% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
 {% set bucket_uses = env_data.secret_backends.aws.bucket_uses %}
+{% set cache_configs = env_settings.environments[environment].backends.elasticache %}
 
 edx:
   playbooks:
@@ -70,13 +71,11 @@ edx:
     VIDEO_PIPELINE_BASE_CIELO24_API_ENVIRONMENT: {{ environment }}
     VIDEO_PIPELINE_BASE_TRANSCRIPT_PROVIDER_REQUEST_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/video-{{ purpose }}-transcript-request-token>data>value
 
-    VIDEO_PIPELINE_BASE_SOCIAL_AUTH_EDX_OIDC_KEY: "pipeline-key"
-    VIDEO_PIPELINE_BASE_SOCIAL_AUTH_EDX_OIDC_SECRET: "pipeline-secret"
+    VIDEO_PIPELINE_BASE_SOCIAL_AUTH_EDX_OIDC_KEY: {{ bucket_prefix }}-{{ environment }}-oidc-key
+    VIDEO_PIPELINE_BASE_SOCIAL_AUTH_EDX_OIDC_SECRET: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/edx-open-id-connect-secret>data>value
 
-    VIDEO_PIPELINE_BASE_VAL_CLIENT_ID: "{{ VIDEO_PIPELINE_BASE_SOCIAL_AUTH_EDX_OIDC_KEY }}"
-    VIDEO_PIPELINE_BASE_VAL_SECRET_KEY: "{{ VIDEO_PIPELINE_BASE_SOCIAL_AUTH_EDX_OIDC_SECRET }}"
     VIDEO_PIPELINE_BASE_VAL_USERNAME: "staff"
-    VIDEO_PIPELINE_BASE_VAL_PASSWORD: "edx"
+    VIDEO_PIPELINE_BASE_VAL_PASSWORD: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/edx-video-val-password>data>value
 
     VIDEO_PIPELINE_BASE_SG_SERVER_PATH: "SET-ME-PLEASE"
     VIDEO_PIPELINE_BASE_SG_SCRIPT_NAME: "SET-ME-PLEASE"
@@ -87,7 +86,16 @@ edx:
     ##################################################################
     #################### Video Web UI ################################
     ##################################################################
-    VEDA_WEB_FRONTEND_MEMCACHE: []
+    VEDA_WEB_FRONTEND_MEMCACHE:
+      {% for cache_config in cache_configs %}
+      {% set cache_purpose = cache_config.get('purpose', 'shared') %}
+      {% if cache_purpose in purpose %}
+      {% set ELASTICACHE_CONFIG = salt.boto3_elasticache.describe_cache_clusters(cache_config.cluster_id[:20].strip('-'), ShowCacheNodeInfo=True)[0] %}
+      {% for host in ELASTICACHE_CONFIG.CacheNodes %}
+      - {{ host.Endpoint.Address }}:{{ host.Endpoint.Port }}
+      {% endfor %}
+      {% endif %}
+      {% endfor %}
 
     VEDA_WEB_FRONTEND_DJANGO_SETTINGS_MODULE: "VEDA.settings.production"
 
@@ -122,5 +130,3 @@ edx:
 
     VEDA_WEB_FRONTEND_OAUTH2_URL: '{{ VIDEO_PIPELINE_BASE_URL_ROOT }}/api/val/v0'
     VEDA_WEB_FRONTEND_LOGOUT_URL: '{{ VIDEO_PIPELINE_BASE_URL_ROOT }}/logout/'
-    VEDA_WEB_FRONTEND_SOCIAL_AUTH_EDX_OIDC_KEY: '{{ VIDEO_PIPELINE_BASE_SOCIAL_AUTH_EDX_OIDC_KEY | default("pipeline-key") }}'
-    VEDA_WEB_FRONTEND_SOCIAL_AUTH_EDX_OIDC_SECRET: '{{ VIDEO_PIPELINE_BASE_SOCIAL_AUTH_EDX_OIDC_SECRET | default("pipeline-secret") }}'
