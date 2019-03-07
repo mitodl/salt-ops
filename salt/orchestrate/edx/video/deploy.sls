@@ -20,7 +20,7 @@
 {% set edx_video_buckets = ['veda-upload', 'veda-delivery', 'veda-hotstore', 'edx-video', 'edx-video-delivery'] %}
 
 {% for purpose_name, purpose_data in purposes.items() %}
-{% if purpose_data.app == 'video-pipeline' %}
+{% if purpose_data.app == 'edx-video-pipeline' %}
 create_sns_topics_for_veda_on_{{ purpose_name }}:
   boto_sns.present:
     - name: {{ purpose_name }}_video_upload_notification
@@ -30,7 +30,7 @@ create_sns_topics_for_veda_on_{{ purpose_name }}:
     - region: us-east-1
 
 {% for bucket in edx_video_buckets %}
-create_{{ odl_video_bucket_prefix }}-{{ bucket_purpose }}-{{ bucket_suffix }}:
+create_{{ bucket_prefix }}-{{ bucket }}-{{ bucket_suffix }}:
   boto_s3_bucket.present:
     - Bucket: {{ bucket_prefix }}-{{ bucket }}-{{ purpose_name }}-{{ environment }}
     - region: us-east-1
