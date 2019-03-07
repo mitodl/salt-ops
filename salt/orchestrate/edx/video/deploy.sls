@@ -48,7 +48,7 @@ create_{{ odl_video_bucket_prefix }}-{{ bucket_purpose }}-{{ bucket_suffix }}:
         MaxAgeSconds: 3000
     - NotificationConfiguration:
         TopicConfigurations:
-          - TopicArn: {% salt.boto_sns.get_arn(purpose_name ~ '_video_upload_notification') %}
+          - TopicArn: {{ salt.boto_sns.get_arn(purpose_name ~ '_video_upload_notification') }}
             Events:
               - 's3:ObjectCreated:*'
     {% endif %}
@@ -75,7 +75,7 @@ generate_{{ app_name }}_cloud_map_file:
           - {{ app_name }}
           - edx-video
         securitygroupid:
-          {% for group_name app_settings.security_groups %}
+          {% for group_name in app_settings.security_groups %}
           - {{ salt.boto_secgroup.get_group_id(
             '{}-{}'.format(group_name, ENVIRONMENT), vpc_name=VPC_NAME) }}
           {% endfor %}
