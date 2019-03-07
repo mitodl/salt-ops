@@ -131,5 +131,6 @@ build_{{ app_name }}_nodes:
     - highstate: True
     - require:
         - salt: deploy_consul_agent_to_{{ app_name }}_nodes
+{% endfor %}
 {% endif %}
 {% endfor %}
