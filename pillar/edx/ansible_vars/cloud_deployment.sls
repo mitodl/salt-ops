@@ -73,7 +73,7 @@
 edx:
   {% if 'edx-worker' in roles %}
   playbooks:
-    - 'edx-east/worker.yml'
+    - 'worker.yml'
   {% endif %}
   efs_id: {{ efs_id }}
   edxapp:

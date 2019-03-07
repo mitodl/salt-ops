@@ -114,6 +114,7 @@ environments:
           - edxapp-csmh
           - xqueue
           - ecommerce
+          - video
       mongodb:
         role_prefixes:
           - modulestore
@@ -123,12 +124,14 @@ environments:
       rabbitmq:
         role_prefixes:
           - edxapp
-          - ecommerce
+          - video
       aws:
         bucket_prefix: xpro
         bucket_uses:
           - grades
           - storage
+          - video-upload
+          - video-delivery
     backends:
       pki:
         - consul
@@ -160,10 +163,25 @@ environments:
           engine_version: '1.4.34'
           node_type: cache.t2.small
           num_cache_nodes: 1
-          cluster_id: xpro-ecommerce
-          purpose: xpro-ecommerce
+          cluster_id: xpro-video
+          purpose: xpro-video-qa
     purposes:
+      xpro-video-qa:
+        app: edx-video-pipeline
+        business_unit: mitxpro
+        domains:
+          - veda-xpro-qa.mitx.mit.edu
+        instances:
+          edx-video-pipeline:
+            number: 1
+            type: t3.medium
+            security_groups:
+              - edx
+          edx-video-worker:
+            number: 2
+            type: t3.large
       xpro-qa:
+        app: edx
         business_unit: mitxpro
         domains:
           cms: studio-xpro-qa.mitx.mit.edu
@@ -234,6 +252,7 @@ environments:
           purpose: next-residential-draft
     purposes:
       xqwatcher:
+        app: xqueue-watcher
         business_unit: residential
         versions:
           xqwatcher: 20ab9e6d645b0b8850f14db558499e62e554d8a2
@@ -245,6 +264,7 @@ environments:
           - name: 686
             num_instances: 1
       current-residential-live:
+        app: edx
         business_unit: residential
         domains:
           cms: studio-mitx-qa.mitx.mit.edu
@@ -261,6 +281,7 @@ environments:
             number: 1
             type: t2.large
       current-residential-draft:
+        app: edx
         business_unit: residential
         domains:
           cms: studio-mitx-qa-draft.mitx.mit.edu
@@ -277,6 +298,7 @@ environments:
             number: 1
             type: t2.large
       next-residential-live:
+        app: edx
         business_unit: residential
         domains:
           cms: studio-mitx-qa-next.mitx.mit.edu
@@ -293,6 +315,7 @@ environments:
             number: 1
             type: t2.large
       next-residential-draft:
+        app: edx
         business_unit: residential
         domains:
           cms: studio-mitx-qa-draft-next.mitx.mit.edu
@@ -309,6 +332,7 @@ environments:
             number: 1
             type: t2.large
       sandbox:
+        app: edx
         business_unit: residential
         domains:
           cms: studio-mitx-qa-sandbox.mitx.mit.edu
@@ -321,6 +345,7 @@ environments:
             number: 1
             type: t2.medium
       continuous-delivery:
+        app: edx
         business_unit: residential
         domains:
           cms: studio-mitx-qa-testing.mitx.mit.edu
@@ -337,6 +362,7 @@ environments:
             number: 1
             type: t2.large
       mitx-cas:
+        app: cas
         business_unit: operations
         domains:
           - auth.mitx.mit.edu
@@ -379,6 +405,7 @@ environments:
           cluster_id: residential-draft
     purposes:
       xqwatcher:
+        app: xqueue-watcher
         business_unit: residential
         versions:
           xqwatcher: 20ab9e6d645b0b8850f14db558499e62e554d8a2
@@ -390,6 +417,7 @@ environments:
           - name: 686
             num_instances: 1
       residential-draft:
+        app: edx
         business_unit: residential
         domains:
           lms: staging.mitx.mit.edu
@@ -407,6 +435,7 @@ environments:
             number: 2
             type: t2.large
       residential-live:
+        app: edx
         business_unit: residential
         domains:
           lms: lms.mitx.mit.edu
@@ -423,6 +452,7 @@ environments:
             number: 3
             type: t2.xlarge
       mitx-cas:
+        app: cas
         business_unit: operations
         domains:
           - auth.mitx.mit.edu
@@ -454,6 +484,7 @@ environments:
     vpc_name: mitodl-operations-services
     purposes:
       redash:
+        app: redash
         num_instances: 1
         domains:
           - bi.odl.mit.edu
@@ -461,6 +492,7 @@ environments:
         security_groups:
           - webapp-odl-vpn
       amps-redirect:
+        app: nginx
         num_instances: 1
         domains:
           - amps.odl.mit.edu
@@ -515,6 +547,7 @@ environments:
     vpc_name: Production Apps
     purposes:
       odl-video-service:
+        app: odl-video-service
         num_instances: 3
         domains:
           - video.odl.mit.edu
@@ -524,6 +557,7 @@ environments:
         security_groups:
           - webapp
       reddit:
+        app: reddit
         domains:
           - discussions-reddit-production-apps.odl.mit.edu
         num_instances: 3
@@ -532,12 +566,14 @@ environments:
         security_groups:
           - webapp
       apps-es:
+        app: elasticsearch
         business_unit: operations
         domains:
           - elasticsearch-production-apps.odl.mit.edu
         security_groups:
           - webapp
       starcellbio:
+        app: starcellbio
         business_unit: starteam
         domains:
           - starcellbio.odl.mit.edu
@@ -609,6 +645,7 @@ environments:
     vpc_name: RC Apps
     purposes:
       odl-video-service:
+        app: odl-video-service
         business_unit: odl-video-service
         domains:
           - video-rc.odl.mit.edu
@@ -618,6 +655,7 @@ environments:
         security_groups:
           - webapp
       reddit:
+        app: reddit
         domains:
           - discussions-reddit-rc-apps.odl.mit.edu
         num_instances: 2
@@ -626,12 +664,14 @@ environments:
         security_groups:
           - webapp
       apps-es:
+        app: elasticsearch
         business_unit: operations
         domains:
           - elasticsearch-rc-apps.odl.mit.edu
         security_groups:
           - webapp
       starcellbio:
+        app: starcellbio
         business_unit: starteam
         domains:
           - starcellbio-qa.odl.mit.edu
@@ -702,6 +742,7 @@ environments:
     vpc_name: OCW
     purposes:
       ocw-origin:
+        app: nginx
         business_unit: open-courseware
         domains:
           - ocw-origin.odl.mit.edu
