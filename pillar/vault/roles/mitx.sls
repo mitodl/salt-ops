@@ -110,7 +110,7 @@ vault:
       backend: aws-mitx
       name: {{ bucket_prefix }}-s3-{{ purpose }}-{{ env }}
       options:
-        policy: {{ bucket_policy }}
+        policy: {{ bucket_policy|tojson }}
     {% endfor %}{# purpose loop #}
     {% if not 'xpro' in env %}
     {% for app in ['mitxcas'] %}
