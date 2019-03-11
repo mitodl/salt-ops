@@ -109,7 +109,7 @@ base:
     - match: compound
     - rabbitmq.apps
     - consul.apps
-  'G@roles:analytics and G@environment:mitx-production':
+  'G@roles:edx-residential-analytics and G@environment:mitx-production':
     - match: compound
     - data.mitx_etl
   'G@roles:consul_server and G@environment:operations':

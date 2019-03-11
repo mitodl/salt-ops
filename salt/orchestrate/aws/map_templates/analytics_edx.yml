@@ -26,4 +26,4 @@ edx:
         roles:
           - edx
           - edx-draft
-          - analytics
+          - edx-residential-analytics
