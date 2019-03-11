@@ -1,9 +1,7 @@
-{% set github_ssh_key = salt.pillar.get('ocw:github_ssh_key') %}
-
 add_private_github_ssh_key:
   file.managed:
     - name: /root/.ssh/ocw_ssh_key
-    - contents_pillar: {{ github_ssh_key }}
+    - contents_pillar: {{ salt.pillar.get('ocw:github_ssh_key') }}
     - mode: 0600
     - makedirs: True
 
