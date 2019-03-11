@@ -30,16 +30,16 @@ create_sns_topics_for_veda_on_{{ purpose_name }}:
     - region: us-east-1
 
 {% for bucket in edx_video_buckets %}
-create_{{ bucket_prefix }}-{{ bucket }}-{{ environment }}:
+create_{{ bucket_prefix }}-{{ bucket }}-{{ ENVIRONMENT }}:
   boto_s3_bucket.present:
-    - Bucket: {{ bucket_prefix }}-{{ bucket }}-{{ environment }}
+    - Bucket: {{ bucket_prefix }}-{{ bucket }}-{{ ENVIRONMENT }}
     - region: us-east-1
     - Versioning:
         Status: "Enabled"
     - Tagging:
-        OU: {{ business_unit }}
-        Department: {{ business_unit }}
-        Environment: {{ environment }}
+        OU: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
     {% if bucket.endswith('delivery') %}
     - CORSRules:
       - AllowedOrigin: ["*"]
