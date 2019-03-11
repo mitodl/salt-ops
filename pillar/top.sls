@@ -238,10 +238,16 @@ base:
   'G@roles:rabbitmq and P@environment:(mitx-production|production-apps)':
     - match: compound
     - datadog.rabbitmq-integration
-  'G@roles:ocw-cms and P@environment:ocw-production':
-    - match: compound
+  'roles:ocw-cms':
+    - match: grain
     - logrotate.ocw_cms
+    - fluentd.ocw_cms
+  'roles:ocw-db':
+    - match: grain
+    - logrotate.ocw_cms
+    - fluentd.ocw_db
   'roles:ocw-origin':
     - match: grain
     - letsencrypt.ocw_origin
     - nginx.ocw_origin
+    - fluentd.ocw_origin
