@@ -57,7 +57,7 @@ sync_external_modules_for_edx_nodes:
 load_pillar_data_on_edx_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'P@roles:analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:edx-residential-analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
         - salt: deploy_analytics_edx_cloud_map
@@ -65,7 +65,7 @@ load_pillar_data_on_edx_nodes:
 populate_mine_with_edx_node_data:
   salt.function:
     - name: mine.update
-    - tgt: 'P@roles:analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:edx-residential-analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
         - salt: load_pillar_data_on_edx_nodes
@@ -74,7 +74,7 @@ populate_mine_with_edx_node_data:
 reload_pillar_data_on_edx_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'P@roles:analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:edx-residential-analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
         - salt: populate_mine_with_edx_node_data
@@ -82,7 +82,7 @@ reload_pillar_data_on_edx_nodes:
 {# Deploy Consul agent first so that the edx deployment can use provided DNS endpoints #}
 deploy_consul_agent_to_analytics_nodes:
   salt.state:
-    - tgt: 'P@roles:analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:edx-residential-analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - sls:
         - consul
@@ -90,7 +90,7 @@ deploy_consul_agent_to_analytics_nodes:
 
 build_analytics_node:
   salt.state:
-    - tgt: 'P@roles:analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:edx-residential-analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - highstate: True
     - require:
@@ -117,7 +117,7 @@ create_user_account:
 {% set enc, key, comment = pubkey.split() %}
 add_{{ comment }}_public_key_to_user:
   salt.function:
-    - tgt: 'G@roles:analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:edx-residential-analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - name: ssh.set_auth_key
     - kwarg:
