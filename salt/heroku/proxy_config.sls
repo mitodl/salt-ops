@@ -1,5 +1,5 @@
 {% for env in ['ci', 'rc', 'prod'] %}
-{% for app in ['bootcamp-ecommerce', 'micromasters', 'odl-open-discussions'] %}
+{% for app in ['bootcamp-ecommerce', 'micromasters', 'odl-open-discussions', 'xpro'] %}
 configure_heroku_proxy_for_{{ app }}-{{ env }}:
   salt_proxy.configure_proxy:
     - proxyname: {{ app }}-{{ env }}
