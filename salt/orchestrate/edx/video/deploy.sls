@@ -42,10 +42,10 @@ create_{{ bucket_prefix }}-{{ bucket }}-{{ ENVIRONMENT }}:
         Environment: {{ ENVIRONMENT }}
     {% if bucket.endswith('delivery') %}
     - CORSRules:
-      - AllowedOrigin: ["*"]
-        AllowedMethod: ["GET"]
-        AllowedHeader: ["Authorization"]
-        MaxAgeSconds: 3000
+      - AllowedOrigins: ["*"]
+        AllowedMethods: ["GET"]
+        AllowedHeaders: ["Authorization"]
+        MaxAgeSeconds: 3000
     - NotificationConfiguration:
         TopicConfigurations:
           - TopicArn: {{ salt.boto_sns.get_arn(purpose_name ~ '_video_upload_notification') }}
