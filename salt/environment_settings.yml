@@ -180,6 +180,8 @@ environments:
           edx-video-worker:
             number: 2
             type: t3.large
+            security_groups:
+              - edx
       xpro-qa:
         app: edx
         business_unit: mitxpro

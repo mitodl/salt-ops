@@ -54,7 +54,8 @@ create_{{ bucket_prefix }}-{{ bucket }}-{{ ENVIRONMENT }}:
     {% endif %}
 {% endfor %}
 {% for app_name, app_settings in purpose_data.instances.items() %}
-{% do app_settings.security_groups.extend(['salt_master', 'consul-agent']) %}
+{% set security_groups = app_settings.get('security_groups', []) %}
+{% do security_groups.extend(['salt_master', 'consul-agent']) %}
 load_{{ app_name }}_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/{{ app_name }}.conf
@@ -75,7 +76,7 @@ generate_{{ app_name }}_cloud_map_file:
           - {{ app_name }}
           - edx-video
         securitygroupid:
-          {% for group_name in app_settings.security_groups %}
+          {% for group_name in security_groups %}
           - {{ salt.boto_secgroup.get_group_id(
             '{}-{}'.format(group_name, ENVIRONMENT), vpc_name=VPC_NAME) }}
           {% endfor %}
