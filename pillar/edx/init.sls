@@ -3,6 +3,7 @@
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set purpose_data = env_settings.environments[environment].purposes[purpose] %}
+{% set roles = salt.grains.get('roles') %}
 
 edx:
   config:
@@ -35,3 +36,10 @@ schedule:
       pillar:
         edx:
           ansible_flags: '--tags install:configuration'
+  {% if 'analytics' in roles %}
+  refresh_etl-{{ environment }}_configs:
+    days: 5
+    function: state.sls
+    args:
+      - etl.mitx
+  {% endif %}
