@@ -16,8 +16,9 @@ fluentd:
             - pos_file: /usr/local/Plone/zeocluster/var/zeoserver/zeoserver.log.pos
             - nested_directives:
               - directive: parse
-              - '@type': regexp
-              - expression: '^(?<time>\d{4}-\d{2}-\d{2}) (?<level_name>\[.*?\]) (?<message>.*)'
+                attrs:
+                  - '@type': regexp
+                  - expression: '^(?<time>\d{4}-\d{2}-\d{2}) (?<level_name>\[.*?\]) (?<message>.*)'
         - {{ record_tagging | yaml() }}
         - directive: match
           directive_arg: '**'
