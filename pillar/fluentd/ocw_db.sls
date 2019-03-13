@@ -8,7 +8,7 @@ fluentd:
       settings:
         - directive: source
           attrs:
-            - '@id: ocwdb_zeoserver_log'
+            - '@id': ocwdb_zeoserver_log
             - '@type': tail
             - enable_watch_timer: 'false'
             - tag: ocwdb.zope.log

@@ -8,7 +8,7 @@ fluentd:
       settings:
         - directive: source
           attrs:
-            - '@id: ocworigin_nginx_access_log'
+            - '@id': ocworigin_nginx_access_log
             - '@type': tail
             - enable_watch_timer: 'false'
             - tag: ocworigin.nginx.access
@@ -26,7 +26,7 @@ fluentd:
                   - types: time:time
         - directive: source
           attrs:
-            - '@id: ocworigin_nginx_error_log'
+            - '@id': ocworigin_nginx_error_log
             - '@type': tail
             - enable_watch_timer: 'false'
             - tag: ocworigin.nginx.error

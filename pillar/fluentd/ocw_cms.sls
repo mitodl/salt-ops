@@ -8,7 +8,7 @@ fluentd:
       settings:
         - directive: source
           attrs:
-            - '@id: ocwcms_apache_access_log'
+            - '@id': ocwcms_apache_access_log
             - '@type': tail
             - enable_watch_timer: 'false'
             - tag: ocwcms.apache.access
@@ -21,7 +21,7 @@ fluentd:
                   - keep_time_key: 'true'
         - directive: source
           attrs:
-            - '@id: ocwcms_apache_error_log'
+            - '@id': ocwcms_apache_error_log
             - '@type':  tail
             - enable_watch_timer: 'false'
             - tag: ocwcms.apache.error
@@ -33,7 +33,7 @@ fluentd:
                   - '@type': apache_error
         - directive: source
           attrs:
-            - '@id: ocwcms_zope_event_log'
+            - '@id': ocwcms_zope_event_log
             - '@type': tail
             - enable_watch_timer: 'false'
             - tag: ocwcms.zope.event
@@ -49,7 +49,7 @@ fluentd:
                   - format3: '(?<level_name>[A-Z]+) (?<message>.*)'
         - directive: source
           attrs:
-            - '@id: ocwcms_zope_access_log'
+            - '@id': ocwcms_zope_access_log
             - enable_watch_timer: 'false'
             - tag: ocwcms.zope.access
             - path: /usr/local/Plone/zeocluster/var/client*/Z2.log
