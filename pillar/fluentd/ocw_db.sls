@@ -18,7 +18,7 @@ fluentd:
               - directive: parse
                 attrs:
                   - '@type': regexp
-                  - expression: '^(?<time>\d{4}-\d{2}-\d{2}) (?<level_name>\[.*?\]) (?<message>.*)'
+                  - expression: '^(?<time>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}) \[(?<level_name>.*?)\] (?<message>.*)'
         - {{ record_tagging | yaml() }}
         - directive: match
           directive_arg: '**'
