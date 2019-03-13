@@ -85,6 +85,9 @@ base:
   'roles:edx-video-pipeline':
     - match: grain
     - edx.ansible_vars.video_pipeline
+  'roles:edx-video-worker':
+    - match: grain
+    - edx.ansible_vars.video_pipeline
   'G@environment:operations and G@roles:redash':
     - match: compound
     - nginx
