@@ -43,13 +43,14 @@ fluentd:
               - directive: parse
                 attrs:
                   - '@type': multiline
-                  - format_firstline: '^------'
-                  - format1: '------\n/'
-                  - format2: '(?<time>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}) '
-                  - format3: '(?<level_name>[A-Z]+) (?<message>.*)'
+                  - format_firstline: '/^------/'
+                  - format1: '/------\n/'
+                  - format2: '/(?<time>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}) /'
+                  - format3: '/(?<level_name>[A-Z]+) (?<message>.*)/'
         - directive: source
           attrs:
             - '@id': ocwcms_zope_access_log
+            - '@type': tail
             - enable_watch_timer: 'false'
             - tag: ocwcms.zope.access
             - path: /usr/local/Plone/zeocluster/var/client*/Z2.log
