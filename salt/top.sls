@@ -191,6 +191,21 @@ base:
     - nginx.ng.certificates
     - letsencrypt
     - apps.ocw.ocw-origin.install
+    - fluentd
+    - fluentd.plugins
+    - fluentd.config
+  'roles:ocw-cms':
+    - match: grain
+    - fluentd
+    - fluentd.plugins
+    - fluentd.config
+    - logrotate
+  'roles:ocw-db':
+    - match: grain
+    - fluentd
+    - fluentd.plugins
+    - fluentd.config
+    - logrotate
   'roles:sandbox':
     - match: grain
     - edx.prod

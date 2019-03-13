@@ -25,3 +25,11 @@ logrotate:
       - prerotate /usr/local/Plone/zeocluster/var/client1/bin stop && kill $(ps aux | grep python | awk '{print $2}')
       - postrotate /usr/local/Plone/zeocluster/var/client1/bin start && nohup python enginescheduler.py PRODUCTION > /prod/OCWEngines/logs/production_nohup.log && nohup python enginescheduler.py CETOOL > /prod/OCWEngines/logs/cetool_nohup.out && nohup python enginescheduler.py MIRRORUPDATE > /prod/OCWEngines/logs/mirror_nohup.out
   {% endif %}
+  zeoserver:
+    conf_file: /etc/logrotate.d/zeoserver
+    name: /usr/local/Plone/zeocluster/var/zeoserver/zeoserver.log
+    options:
+      - rotate 3
+      - monthly
+      - copytruncate
+      - notifempty
