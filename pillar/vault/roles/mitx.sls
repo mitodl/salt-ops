@@ -58,7 +58,7 @@ vault:
     {% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
     {% for purpose in env_data.purposes %}
     {% set purpose_suffix = purpose|replace('-', '_') %}
-    {% for role in env_settings.edxapp_secret_backends.mysql.role_prefixes %}
+    {% for role in env_data.secret_backends.mysql.role_prefixes %}
     {% set db_name = role|replace('-', '_') ~ '_' ~ purpose_suffix %}
     {{ role }}-mysql-{{ env }}-{{ purpose }}:
       backend: mysql-{{ env }}
@@ -68,14 +68,14 @@ vault:
         creation_statements: "CREATE USER {% raw %}'{{name}}'@'%'{% endraw %} IDENTIFIED BY {% raw %}'{{password}}'{% endraw %};GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, INDEX, DROP, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES ON {{ db_name }}.* TO {% raw %}'{{name}}'{% endraw %}@'%';"
         revocation_statements: {% raw %}"DROP USER '{{name}}';"{% endraw %}
     {% endfor %}{# role loop for mysql #}
-    {% for role in env_settings.edxapp_secret_backends.rabbitmq.role_prefixes %}
+    {% for role in env_data.secret_backends.rabbitmq.role_prefixes %}
     {{ role }}-rabbitmq-{{ env }}-{{ purpose }}:
       backend: rabbitmq-{{ env }}
       name: {{ role }}-{{ purpose }}
       options:
         vhosts: '{"/{{ role }}_{{ purpose_suffix }}": {"write": ".*", "read": ".*", "configure": ".*"}}'
     {% endfor %}{# role loop for RabbitMQ #}
-    {% for role in env_settings.edxapp_secret_backends.mongodb.role_prefixes %}
+    {% for role in env_data.secret_backends.mongodb.role_prefixes %}
     {% set role_json = '{"roles": [{"role": "readWrite"}], "db": "' ~ role ~ '_' ~ purpose_suffix ~ '"}' %}
     {{ role }}-mongodb-{{ purpose }}-{{ env }}:
       backend: mongodb-{{ env }}
