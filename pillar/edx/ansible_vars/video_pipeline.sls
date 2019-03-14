@@ -61,7 +61,6 @@ edx:
     VIDEO_PIPELINE_BASE_VEDA_S3_HOTSTORE_BUCKET: {{ bucket_prefix }}-veda-hotstore-{{ purpose }}-{{ environment }}
     VIDEO_PIPELINE_BASE_VEDA_DELIVERABLE_BUCKET: {{ bucket_prefix }}-veda-deliverable-{{ purpose }}-{{ environment }}
 
-    VIDEO_PIPELINE_BASE_VEDA_BASE_URL: "{{ VIDEO_PIPELINE_BASE_URL_ROOT }}"
     VIDEO_PIPELINE_BASE_VEDA_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/video-{{ purpose }}-read-write-delete>data>access_key
     VIDEO_PIPELINE_BASE_VEDA_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/video-{{ purpose }}-read-write-delete>data>secret_key
 
@@ -101,32 +100,9 @@ edx:
 
     VEDA_WEB_FRONTEND_SOCIAL_AUTH_REDIRECT_IS_HTTPS: true
 
-    VEDA_WEB_FRONTEND_DATA_DIR: "{{ COMMON_DATA_DIR }}/{{ veda_web_frontend_service_name }}"
-    VEDA_WEB_FRONTEND_MEDIA_ROOT: "{{ VEDA_WEB_FRONTEND_DATA_DIR }}/media"
     VEDA_WEB_FRONTEND_MEDIA_URL: "/media/"
 
     VEDA_WEB_FRONTEND_MEDIA_STORAGE_BACKEND:
       DEFAULT_FILE_STORAGE: "django.core.files.storage.FileSystemStorage"
-      MEDIA_ROOT: "{{ VEDA_WEB_FRONTEND_MEDIA_ROOT }}"
-      MEDIA_URL: "{{ VEDA_WEB_FRONTEND_MEDIA_URL }}"
-
-    VEDA_WEB_FRONTEND_ENVIRONMENT:
-      VIDEO_PIPELINE_CFG: "{{ COMMON_CFG_DIR }}/{{ veda_web_frontend_service_name }}.yml"
-      PYTHONPATH: "{{ veda_web_frontend_code_dir }}"
 
     VEDA_WEB_FRONTEND_STATICFILES_STORAGE: "django.contrib.staticfiles.storage.StaticFilesStorage"
-
-    VEDA_WEB_FRONTEND_SERVICE_CONFIG: !!null
-    VEDA_WEB_FRONTEND_SECRET_KEY: '{{ VIDEO_PIPELINE_BASE_SECRET_KEY }}'
-
-    VEDA_WEB_FRONTEND_GUNICORN_PORT: '{{ VIDEO_PIPELINE_BASE_GUNICORN_PORT }}'
-    VEDA_WEB_FRONTEND_NGINX_PORT: '{{ VIDEO_PIPELINE_BASE_NGINX_PORT }}'
-    VEDA_WEB_FRONTEND_SSL_NGINX_PORT: '{{ VIDEO_PIPELINE_BASE_SSL_NGINX_PORT }}'
-
-    VEDA_WEB_FRONTEND_DEFAULT_DB_NAME: '{{ VIDEO_PIPELINE_BASE_DEFAULT_DB_NAME }}'
-    VEDA_WEB_FRONTEND_MYSQL_HOST: '{{ VIDEO_PIPELINE_BASE_MYSQL_HOST }}'
-    VEDA_WEB_FRONTEND_MYSQL_USER: '{{ VIDEO_PIPELINE_BASE_MYSQL_USER }}'
-    VEDA_WEB_FRONTEND_MYSQL_PASSWORD: '{{ VIDEO_PIPELINE_BASE_MYSQL_PASSWORD }}'
-
-    VEDA_WEB_FRONTEND_OAUTH2_URL: '{{ VIDEO_PIPELINE_BASE_URL_ROOT }}/api/val/v0'
-    VEDA_WEB_FRONTEND_LOGOUT_URL: '{{ VIDEO_PIPELINE_BASE_URL_ROOT }}/logout/'
