@@ -7,5 +7,5 @@ post_notification_to_opsgenie:
     - kwarg:
         name: salt.reactor.notification
         api_key: {{ opsgenie_api_key }}
-        reason: {{ data }}
+        reason: {{ data|tojson }}
         action_type: Create
