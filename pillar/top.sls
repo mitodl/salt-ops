@@ -149,7 +149,7 @@ base:
   'G@roles:elasticsearch and G@environment:operations':
     - match: compound
     - elasticsearch.logging
-  'P@roles:(edx|edx-worker)':
+  'P@roles:(edx|edx-worker)$':
     - match: compound
     - edx
     - edx.ansible_vars
