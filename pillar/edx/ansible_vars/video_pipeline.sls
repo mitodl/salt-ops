@@ -44,15 +44,15 @@ edx:
     # video pipeline config overrides
 
     VIDEO_PIPELINE_BASE_EDX_S3_INGEST:
-      BUCKET: {{ bucket_prefix }}-edx-video-{{ environment }}
+      BUCKET: {{ bucket_prefix }}-edx-video-upload-{{ environment }}
       ROOT_PATH: "ingest/"
 
     VIDEO_PIPELINE_BASE_AWS_VIDEO_IMAGES:
-      BUCKET: {{ bucket_prefix }}-edx-video-{{ environment }}
+      BUCKET: {{ bucket_prefix }}-edx-video-upload-{{ environment }}
       ROOT_PATH: "video-images/"
 
     VIDEO_PIPELINE_BASE_AWS_VIDEO_TRANSCRIPTS:
-      BUCKET: {{ bucket_prefix }}-edx-video-{{ environment }}
+      BUCKET: {{ bucket_prefix }}-edx-video-upload-{{ environment }}
       ROOT_PATH: "video-transcripts/"
 
     VIDEO_PIPELINE_BASE_EDX_CLOUDFRONT_PREFIX: https://{{ cloudfront_domain }}
@@ -61,8 +61,8 @@ edx:
     VIDEO_PIPELINE_BASE_VEDA_S3_HOTSTORE_BUCKET: {{ bucket_prefix }}-veda-hotstore-{{ purpose }}-{{ environment }}
     VIDEO_PIPELINE_BASE_VEDA_DELIVERABLE_BUCKET: {{ bucket_prefix }}-veda-deliverable-{{ purpose }}-{{ environment }}
 
-    VIDEO_PIPELINE_BASE_VEDA_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/video-{{ purpose }}-read-write-delete>data>access_key
-    VIDEO_PIPELINE_BASE_VEDA_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/video-{{ purpose }}-read-write-delete>data>secret_key
+    VIDEO_PIPELINE_BASE_VEDA_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/{{ bucket_prefix }}-s3-xpro-qa-{{ environment }}>data>access_key
+    VIDEO_PIPELINE_BASE_VEDA_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/{{ bucket_prefix }}-s3-xpro-qa-{{ environment }}>data>access_key
 
     VIDEO_PIPELINE_BASE_ADMIN_EMAIL: mitx-support@mit.edu
     VIDEO_PIPELINE_BASE_VEDA_NOREPLY_EMAIL: "mitx-noreply@mit.edu"
