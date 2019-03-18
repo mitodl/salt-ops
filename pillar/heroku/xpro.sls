@@ -25,7 +25,7 @@ proxy:
   proxytype: heroku
 
 heroku:
-  {% for env_data in env_dict %}
+  {% for env, env_data in env_dict.items() %}
   app_name: {{ app_name }}-{{ env_data.env_name }}
   api_key: __vault__::secret-operations/global/heroku-api-key>data>value
   config_vars:
