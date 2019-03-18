@@ -37,6 +37,7 @@ heroku:
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_FROM_EMAIL: 'MIT xPRO <no-reply@xpro-{{ env_data.env_name }}-mail.odl.mit.edu>'
     MITXPRO_ADMIN_EMAIL: 'cuddle-bunnies@mit.edu'
+    MITXPRO_BASE_URL: 'xpro-{{ env_data.env_name}}.odl.mit.edu'
     MITXPRO_DB_CONN_MAX_AGE: 0
     MITXPRO_DB_DISABLE_SSL: True    # pgbouncer buildpack uses stunnel to handle encryption
     MITXPRO_EMAIL_HOST: __vault__::secret-operations/global/mit-smtp>data>relay_host
