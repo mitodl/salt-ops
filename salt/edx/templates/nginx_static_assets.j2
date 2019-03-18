@@ -1,6 +1,6 @@
     location ~ /static/((?P<dir>[^/]+)/(?P<file>.*)|(?P<rfile>[\w\d\-.]+)) {
         add_header Access-Control-Allow-Origin *;
-        root {{ edxapp_data_dir }};
+        root {% raw %} {{ edxapp_data_dir }} {% endraw %};
         try_files /staticfiles/$dir/$file /course_static/$dir/static/$file /staticfiles/$rfile =404;
 
         # return a 403 for static files that shouldn't be
