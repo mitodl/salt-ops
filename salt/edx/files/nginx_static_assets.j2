@@ -26,7 +26,7 @@
         expires epoch;
     }
 
-{% if salt.grains.get('business_unit') == 'mitxpro' %}
+{% if salt.grains.get('business_unit') == 'residential' %}
     # Redirect registration page to authentication page
     location /register {
         return 301 https://$host/login;
