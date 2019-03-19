@@ -1,5 +1,6 @@
 base:
-  '*':
+  '* and not proxy-*':
+    - match: compound
     - common
     - environment_settings
     - fluentd
