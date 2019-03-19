@@ -15,7 +15,7 @@ vault:
       options:
         vhosts: '{"/{{ app }}": {"write": ".*", "read": ".*", "configure": ".*"}}'
     {% endfor %}
-    {% for app in ['reddit', 'opendiscussions', 'odlvideo'] %}
+    {% for app in ['reddit', 'opendiscussions', 'odlvideo', 'xpro'] %}
     postgresql_{{ env }}_{{ app }}_admin:
       backend: postgres-{{ env }}-{{ app }}
       name: admin

@@ -28,7 +28,7 @@ proxy:
 
 heroku:
   app_name: xpro-{{ env_data.env_name }}
-  api_key: __vault__::secret-operations/global/heroku-api-key>data>value
+  api_key: __vault__::secret-operations/global/heroku/api_key>data>value
   config_vars:
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/xpro-{{ env_data.env_name }}>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/xpro-{{ env_data.env_name }}>data>secret_key
