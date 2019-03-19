@@ -97,6 +97,7 @@ edx:
     ########## END THEMING ########################################
     EDXAPP_GOOGLE_ANALYTICS_ACCOUNT: {{ edxapp_google_analytics_account }}
     EDXAPP_YOUTUBE_API_KEY: __vault__::secret-residential/global/edxapp-youtube-api-key>data>value
+    EDXAPP_SUPPORT_SITE_LINK: 'https://odl.zendesk.com/hc/en-us/requests/new'
 
     EDXAPP_LMS_AUTH_EXTRA:
       SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
