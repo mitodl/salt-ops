@@ -2,12 +2,12 @@
 {% for app in ['bootcamp-ecommerce', 'micromasters', 'odl-open-discussions', 'xpro'] %}
 configure_heroku_proxy_for_{{ app }}-{{ env }}:
   salt_proxy.configure_proxy:
-    - proxyname: {{ app }}-{{ env }}
+    - proxyname: proxy-{{ app }}-{{ env }}
     - start: True
 {% endfor %}
 {% endfor %}
 
 configure_heroku_proxy_for_odl-video-ci:
   salt_proxy.configure_proxy:
-    - proxyname: odl-video-ci
+    - proxyname: proxy-odl-video-ci
     - start: True
