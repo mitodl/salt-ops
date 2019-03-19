@@ -55,6 +55,8 @@ base:
     - shibboleth
     - shibboleth.odlvideo
     - fluentd.odlvideo
+  proxy-xpro-*:
+    - heroku.xpro
   'roles:mitx-cas':
     - match: grain
     - apps.mitx_cas
