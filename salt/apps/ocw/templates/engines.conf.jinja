@@ -29,9 +29,9 @@
 {% set staging_url = 'https://' ~ staging_host %}
 {% set staging_rootdirectory = '/usr/local/tomcat/webapps' %}
 
-{% set production_host = 'ocw-origin.odl.mit.edu' %}
+{% set production_host = 'ocw-' ~ environment ~ '-aka.odl.mit.edu' %}
 {% set production_url = 'https://' ~ production_host %}
-{% set production_rootdirectory = '/var/www/ocw' %}
+{% set production_rootdirectory = '/usr/local/tomcat/webapps' %}
 
 {% set mirror_host = 'ocw-rsync.mit.edu' %}
 {% set mirror_url = 'http://' ~ mirror_host ~ ':8080' %}
