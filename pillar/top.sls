@@ -193,7 +193,7 @@ base:
   'P@purpose:.*residential.* and not G@edx_codename:hawthorn':
     - match: compound
     - edx.ansible_vars.next_residential
-  'G@roles:sandbox and P@environment:mitx-qa':
+  'G@roles:sandbox and P@environment:mitx(pro)?-qa':
     - match: compound
     - edx
     - edx.sandbox

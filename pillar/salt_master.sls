@@ -111,7 +111,6 @@ salt_master:
         - https://github.com/mitodl/vault-formula
         - https://github.com/mitodl/mongodb-formula
         - https://github.com/mitodl/rabbitmq-formula
-        - https://github.com/mitodl/edx-sandbox-formula
         - https://github.com/mitodl/nginx-formula
         - https://github.com/mitodl/letsencrypt-formula
         - https://github.com/hubblestack/hubble-salt
