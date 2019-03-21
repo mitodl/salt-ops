@@ -102,6 +102,14 @@ sandbox_residential_versions: &sandbox_residential_versions
   codename: hawthorn
   ami_id: ami-80861296
 
+sandbox_mitxpro_versions: &sandbox_mitxpro_versions
+  edx_config_repo: https://github.com/edx/configuration.git
+  edx_config_version: oopen-release/ironwood.master
+  edx_platform_repo: 'https://github.com/edx/edx-platform'
+  edxapp: open-release/ironwood.master
+  codename: ironwood
+  ami_id: ami-80861296
+
 environments:
   mitxpro-qa:
     business_unit: mitxpro
@@ -197,6 +205,19 @@ environments:
           edx-worker:
             number: 1
             type: t2.large
+      sandbox:
+        app: edx
+        business_unit: mitxpro
+        domains:
+          cms: studio-xpro-qa-sandbox.mitx.mit.edu
+          lms: xpro-qa-sandbox.mitx.mit.edu
+          preview: preview-xpro-qa-sandbox.mitx.mit.edu
+        versions:
+          <<: *sandbox_mitxpro_versions
+        instances:
+          edx:
+            number: 1
+            type: t2.medium
   mitx-qa:
     business_unit: residential
     network_prefix: '10.5'
