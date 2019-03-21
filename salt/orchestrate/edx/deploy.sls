@@ -71,7 +71,7 @@ generate_edx_cloud_map_file:
         app_types:
           {% for purpose_name in PURPOSES %}
           {{ purpose_name }}:
-            instances: {{ defined_purposes[purpose_name].instances }}
+            instances: {{ defined_purposes[purpose_name].instances | tojson }}
           {% endfor %}
     - require:
         - file: load_edx_cloud_profile
