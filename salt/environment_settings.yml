@@ -12,7 +12,6 @@ edxapp_secret_backends: &edxapp_secret_backends
       - forum
   rabbitmq:
     role_prefixes:
-      - xqueue
       - celery
   aws:
     bucket_prefix: mitx
@@ -130,7 +129,7 @@ environments:
           - forum
       rabbitmq:
         role_prefixes:
-          - edxapp
+          - celery
           - video
       aws:
         bucket_prefix: xpro
