@@ -83,7 +83,7 @@ nginx:
                 - location /:
                     - try_files:
                         - $uri
-                        - @proxy_to_app
+                        - '@proxy_to_app'
                 - location @proxy_to_app:
                     - proxy_set_header:
                         - X-Forwarded-Proto
