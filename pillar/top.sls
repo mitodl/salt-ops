@@ -88,6 +88,7 @@ base:
   'roles:edx-video-pipeline':
     - match: grain
     - edx.ansible_vars.video_pipeline
+    - nginx.edx_veda
   'roles:edx-video-worker':
     - match: grain
     - edx.ansible_vars.video_pipeline

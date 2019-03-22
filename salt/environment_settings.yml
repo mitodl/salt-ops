@@ -136,8 +136,11 @@ environments:
         bucket_uses:
           - grades
           - storage
-          - video-upload
-          - video-delivery
+          - edx-video-upload
+          - edx-video-delivery
+          - veda-upload
+          - veda-delivery
+          - veda-hotstore
     backends:
       pki:
         - consul
@@ -177,6 +180,14 @@ environments:
         business_unit: mitxpro
         domains:
           - veda-xpro-qa.mitx.mit.edu
+        services:
+          s3:
+            buckets:
+              - edx-video-upload
+              - edx-video-delivery
+              - veda-upload
+              - veda-delivery
+              - veda-hotstore
         instances:
           edx-video-pipeline:
             number: 1
@@ -189,7 +200,7 @@ environments:
             security_groups:
               - edx
       xpro-qa:
-        app: edx
+        app: edx-platform
         business_unit: mitxpro
         domains:
           cms: studio-xpro-qa.mitx.mit.edu
@@ -285,7 +296,7 @@ environments:
           - name: 686
             num_instances: 1
       current-residential-live:
-        app: edx
+        app: edx-platform
         business_unit: residential
         domains:
           cms: studio-mitx-qa.mitx.mit.edu
@@ -302,7 +313,7 @@ environments:
             number: 1
             type: t2.large
       current-residential-draft:
-        app: edx
+        app: edx-platform
         business_unit: residential
         domains:
           cms: studio-mitx-qa-draft.mitx.mit.edu
@@ -319,7 +330,7 @@ environments:
             number: 1
             type: t2.large
       next-residential-live:
-        app: edx
+        app: edx-platform
         business_unit: residential
         domains:
           cms: studio-mitx-qa-next.mitx.mit.edu
@@ -336,7 +347,7 @@ environments:
             number: 1
             type: t2.large
       next-residential-draft:
-        app: edx
+        app: edx-platform
         business_unit: residential
         domains:
           cms: studio-mitx-qa-draft-next.mitx.mit.edu
@@ -353,7 +364,7 @@ environments:
             number: 1
             type: t2.large
       sandbox:
-        app: edx
+        app: edx-platform
         business_unit: residential
         domains:
           cms: studio-mitx-qa-sandbox.mitx.mit.edu
@@ -366,7 +377,7 @@ environments:
             number: 1
             type: t2.medium
       continuous-delivery:
-        app: edx
+        app: edx-platform
         business_unit: residential
         domains:
           cms: studio-mitx-qa-testing.mitx.mit.edu
@@ -383,7 +394,7 @@ environments:
             number: 1
             type: t2.large
       mitx-cas:
-        app: cas
+        app: mitx-cas
         business_unit: operations
         domains:
           - auth.mitx.mit.edu
@@ -438,7 +449,7 @@ environments:
           - name: 686
             num_instances: 1
       residential-draft:
-        app: edx
+        app: edx-platform
         business_unit: residential
         domains:
           lms: staging.mitx.mit.edu
@@ -456,7 +467,7 @@ environments:
             number: 2
             type: t2.large
       residential-live:
-        app: edx
+        app: edx-platform
         business_unit: residential
         domains:
           lms: lms.mitx.mit.edu
