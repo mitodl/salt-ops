@@ -39,7 +39,6 @@ nginx:
                 - listen:
                     - '[::]:443'
                     - ssl
-                - root: # TODO
                 - ssl_certificate: /etc/nginx/ssl/mitx_wildcard.crt
                 - ssl_certificate_key: /etc/nginx/ssl/mitx_wildcard.key
                 - ssl_stapling: 'on'
