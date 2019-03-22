@@ -6,9 +6,6 @@
 
 nginx:
   ng:
-    install_from_source: True
-    source_version: 1.15.1
-    source_hash: c7206858d7f832b8ef73a45c9b8f8e436bcb1ee88db2bc85b8e438ecec9d5460
     certificates:
       mitx_wildcard:
         public_cert: __vault__::secret-operations/global/mitx_wildcard_cert>data>value
