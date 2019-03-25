@@ -210,7 +210,7 @@ build_edx_base_nodes:
 
 compile_assets_for_edx_{{ PURPOSE }}:
   salt.function:
-    - tgt: 'P@roles:(edx-base|edx-base-worker) and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:edx-base and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - name: cmd.run
     - arg:
