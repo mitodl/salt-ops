@@ -6,19 +6,22 @@
       'env_name': 'ci',
       'ga_id': '',
       'release_branch': 'master',
-      'log_level': 'DEBUG'
+      'log_level': 'DEBUG',
+      'OPENEDX_API_BASE_URL': 'https://xpro-qa-sandbox.mitx.mit.edu'
       },
     'rc': {
       'env_name': 'rc',
       'ga_id': '',
       'release_branch': 'release-candidate',
-      'log_level': 'INFO'
+      'log_level': 'INFO',
+      'OPENEDX_API_BASE_URL': 'https://xpro-qa.mitx.mit.edu'
       },
     'production': {
       'env_name': 'production',
       'ga_id': '',
       'release_branch': 'release',
-      'log_level': 'WARN'
+      'log_level': 'WARN',
+      'OPENEDX_API_BASE_URL': 'https://xpro.mitx.mit.edu'
       }
 } %}
 {% set env_data = env_dict[ENVIRONMENT] %}
@@ -34,9 +37,9 @@ heroku:
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-xpro-app-{{ env_data.env_name }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'xpro-{{ env_data.env_name }}'
     GA_TRACKING_ID: {{ env_data.ga_id }}
-    MAILGUN_URL: 'https://api.mailgun.net/v3/xpro-{{ env_data.env_name }}-mail.odl.mit.edu'
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_FROM_EMAIL: 'MIT xPRO <no-reply@xpro-{{ env_data.env_name }}-mail.odl.mit.edu>'
+    MAILGUN_SENDER_DOMAIN: 'odl.mit.edu'
     MITXPRO_ADMIN_EMAIL: 'cuddle-bunnies@mit.edu'
     MITXPRO_BASE_URL: 'https://xpro-{{ env_data.env_name}}.odl.mit.edu'
     MITXPRO_DB_CONN_MAX_AGE: 0
@@ -53,6 +56,8 @@ heroku:
     MITXPRO_SUPPORT_EMAIL: 'xpro-{{ env_data.env_name }}-support@mit.edu'
     MITXPRO_USE_S3: True
     NODE_MODULES_CACHE: False
+    OPENEDX_OAUTH_APP_NAME: 'edx-oauth-app'
+    OPENEDX_API_BASE_URL: {{ env_data.OPENEDX_API_BASE_URL}}
     PGBOUNCER_DEFAULT_POOL_SIZE: 50
     PGBOUNCER_MIN_POOL_SIZE: 5
     SENTRY_DSN: __vault__::secret-operations/global/xpro/sentry-dsn>data>value
