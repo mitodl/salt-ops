@@ -30,6 +30,6 @@
         {{ tag_name }}: '{{ tag_value }}'
         {% endfor %}
       {% for profile_setting, profile_value in profile_overrides.items() %}
-      {{ profile_setting }}: {{ profile_value }}
+      {{ profile_setting }}: {{ profile_value|tojson }}
       {% endfor %}
   {% endfor %}
