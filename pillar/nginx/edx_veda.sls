@@ -59,10 +59,10 @@ nginx:
                     - root: /edx/var/veda
                     - if ($request_method = 'OPTIONS'):
                         - add_header: 'Access-Control-Allow-Origin $cors_origin'
-                        - add_header: 'Access-Control-Allow-Methods GET, POST, OPTIONS'
-                        - add_header: 'Access-Control-Allow-Headers Authorization, USE-JWT-COOKIE'
+                        - add_header: "'Access-Control-Allow-Methods' 'GET, POST, OPTIONS'"
+                        - add_header: "'Access-Control-Allow-Headers' 'Authorization, USE-JWT-COOKIE'"
                         - add_header: 'Access-Control-Max-Age 86400'
-                        - add_header: 'Content-Type text/plain; charset=utf-8'
+                        - add_header: "'Content-Type' 'text/plain; charset=utf-8'"
                         - add_header: 'Content-Length 0'
                         - return: 204
                     - add_header: "'Access-Control-Allow-Origin' $cors_origin always"
@@ -97,5 +97,5 @@ nginx:
                     - proxy_set_header:
                         - Host
                         - $http_host
-                    - proxy_redirect: off
+                    - proxy_redirect: 'off'
                     - proxy_pass: http://veda_app_server
