@@ -155,7 +155,7 @@ base:
     - datadog.nginx-integration
   'G@roles:elasticsearch and G@environment:operations':
     - match: compound
-    - elasticsearch.logging
+    - elastic_stack.elasticsearch.logging
   'P@roles:(edx|edx-worker)$':
     - match: compound
     - edx
