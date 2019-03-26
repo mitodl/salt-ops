@@ -46,7 +46,7 @@ generate_elasticsearch_cloud_map_file:
           ebs_optimized: False
           size: t2.medium
           block_device_mappings:
-            - DeviceName: /dev/xvda
+            - DeviceName: xvda
               Ebs.VolumeSize: 20
               Ebs.VolumeType: gp2
             - DeviceName: /dev/xvdb
