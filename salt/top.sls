@@ -45,8 +45,8 @@ base:
     - master_utils.dns
   'roles:elasticsearch':
     - match: grain
-    - elastic_stack.elasticsearch
-    - elastic_stack.elasticsearch.plugins
+    - elastic-stack.elasticsearch
+    - elastic-stack.elasticsearch.plugins
     - datadog.plugins
   'roles:rabbitmq':
     - match: grain
@@ -118,10 +118,10 @@ base:
     - etl.mit_open
   'G@roles:kibana and G@environment:operations':
     - match: compound
-    - elastic_stack.kibana
+    - elastic-stack.kibana
     - utils.mitca_pem
     - nginx.ng
-    - elastic_stack.elastalert
+    - elastic-stack.elastalert
     - datadog.plugins
     - monit
   'P@environment:(operations|mitx-production)':
