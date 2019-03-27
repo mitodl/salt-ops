@@ -1,14 +1,16 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
+{% set purpose_data = env_data.purposes.elasticsearch|default({}) %}
 {% set VPC_NAME = env_data.vpc_name %}
-{% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', 3) %}
+{% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', purpose_data.get(num_instances, 3) %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
 {% set launch_date = salt.status.time(format="%Y-%m-%d") %}
 {% set subnet_ids = salt.boto_vpc.describe_subnets(
     vpc_id=salt.boto_vpc.describe_vpcs(
         name=env_data.vpc_name).vpcs[0].id
     ).subnets|map(attribute='id')|list %}
+
 load_elasticsearch_cloud_profile:
   file.managed:
     - name: /etc/salt/cloud.profiles.d/elasticsearch.conf
@@ -43,14 +45,14 @@ generate_elasticsearch_cloud_map_file:
           Environment: {{ ENVIRONMENT }}
           launch-date: '{{ launch_date }}'
         profile_overrides:
-          ebs_optimized: False
-          size: t2.medium
+          ebs_optimized: {{ purpose_data.ebs_optimized|default(True) }}
+          size: {{ purpose_data.size|default('t2.medium') }}
           block_device_mappings:
             - DeviceName: xvda
               Ebs.VolumeSize: 20
               Ebs.VolumeType: gp2
             - DeviceName: /dev/xvdb
-              Ebs.VolumeSize: 100
+              Ebs.VolumeSize: {{ purpose_data.data_volume_size|default(100) }}
               Ebs.VolumeType: gp2
     - require:
         - file: load_elasticsearch_cloud_profile
