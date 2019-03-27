@@ -3,7 +3,7 @@
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set purpose_data = env_data.purposes.elasticsearch|default({}) %}
 {% set VPC_NAME = env_data.vpc_name %}
-{% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', purpose_data.get(num_instances, 3) %}
+{% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', purpose_data.get(num_instances, 3)) %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
 {% set launch_date = salt.status.time(format="%Y-%m-%d") %}
 {% set subnet_ids = salt.boto_vpc.describe_subnets(
