@@ -214,7 +214,7 @@ compile_assets_for_edx_{{ PURPOSE }}:
     - tgt_type: compound
     - name: cmd.run
     - arg:
-        - /edx/bin/edxapp-update-assets
+        - /usr/bin/nice -n 10 /edx/bin/edxapp-update-assets
     - kwarg:
         use_vt: True
         timeout: 900
