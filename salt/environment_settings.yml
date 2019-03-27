@@ -539,6 +539,10 @@ environments:
         business_unit: operations
         security_groups:
           - webapp-odl-vpn
+      elasticsearch:
+        num_instances: 5
+        size: r4.xlarge
+        data_volume_size: 1536
     backends:
       pki:
         - consul
