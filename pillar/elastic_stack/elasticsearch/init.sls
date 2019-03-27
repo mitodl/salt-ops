@@ -2,7 +2,7 @@
 
 elastic_stack:
   elasticsearch:
-    version: '6.x'
+    version: '6.6.x'
     configuration_settings:
       discovery:
         zen.hosts_provider: ec2
