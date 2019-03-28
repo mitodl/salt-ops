@@ -12,6 +12,7 @@ edx:
   playbooks:
     - 'edx-east/edxapp.yml'
     - 'edx-east/worker.yml'
+    - 'edx-east/forum.yml'
   ansible_vars:
     EDXAPP_MONGO_REPLICA_SET: rs0
     EDXAPP_CELERY_BROKER_HOSTNAME: nearest-rabbitmq.query.consul
