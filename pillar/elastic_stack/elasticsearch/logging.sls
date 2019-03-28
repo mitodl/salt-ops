@@ -8,19 +8,12 @@ elastic_stack:
       gateway.recover_after_nodes: 3
       gateway.expected_nodes: 5
       gateway.recover_after_time: 5m
-      repositories:
-        s3:
-          bucket: mitx-elasticsearch-backups
-          region: us-east-1
       discovery:
         zen.hosts_provider: ec2
       cloud.node.auto_attributes: true
       network.host: [_eth0_, _lo_]
     plugins:
       - name: discovery-ec2
-        config:
-          aws:
-            region: us-east-1
       - name: repository-s3
 
     # There seems to be a bug in
