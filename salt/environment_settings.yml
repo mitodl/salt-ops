@@ -106,6 +106,8 @@ sandbox_mitxpro_versions: &sandbox_mitxpro_versions
   edx_config_version: oopen-release/ironwood.master
   edx_platform_repo: 'https://github.com/edx/edx-platform'
   edxapp: open-release/ironwood.master
+  forum_source_repo: 'https://github.com/edx/cs_comments_service'
+  forum: open-release/ironwood.master
   codename: ironwood
   ami_id: ami-80861296
 
