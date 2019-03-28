@@ -1,9 +1,13 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
+{% set env_data = env_settings.environments[environment] %}
 {% set purpose_suffix = purpose.replace('-', '_') %}
+{% set purpose_data = env_data.purposes[purpose] %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set MYSQL_HOST = 'mysql.service.consul' %}
 {% set MYSQL_PORT = 3306 %}
+{% set MONGODB_HOST = 'mongodb-master.service.consul' %}
+{% set MONGODB_PORT = 27017 %}
 
 edx:
   config:
@@ -28,6 +32,24 @@ edx:
     EDXAPP_MYSQL_CSMH_USER: __vault__:cache:mysql-{{ environment }}/creds/edxapp-csmh-{{ purpose }}>data>username
     EDXAPP_MEMCACHE:
       - 'localhost:11211'
+    ################################################################################
+    #################### Forum Settings ############################################
+    ################################################################################
+    FORUM_API_KEY: __vault__:gen_if_missing:secret-residential/global/forum-api-key>data>value
+    FORUM_ELASTICSEARCH_HOST: "nearest-elasticsearch.query.consul"
+    FORUM_MONGO_USER: __vault__:cache:mongodb-{{ environment }}/creds/forum-{{ purpose }}>data>username
+    FORUM_MONGO_PASSWORD: __vault__:cache:mongodb-{{ environment }}/creds/forum-{{ purpose }}>data>password
+    FORUM_MONGO_HOSTS:
+      - {{ MONGODB_HOST }}
+    FORUM_MONGO_PORT: {{ MONGODB_PORT }}
+    {# multivariate #}
+    FORUM_MONGO_DATABASE: forum_{{ purpose_suffix }}
+    FORUM_RACK_ENV: "production"
+    FORUM_SINATRA_ENV: "production"
+    FORUM_USE_TCP: True
+    forum_source_repo: {{ purpose_data.versions.forum_source_repo }}
+    forum_version: {{ purpose_data.versions.forum }}
+    ########## END FORUM ########################################
     EDXAPP_LMS_ENV_EXTRA:
       FEATURES:
         ENABLE_COMBINED_LOGIN_REGISTRATION: false
