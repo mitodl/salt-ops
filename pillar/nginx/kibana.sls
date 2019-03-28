@@ -6,6 +6,9 @@
 
 nginx:
   ng:
+    install_from_source: True
+    source_version: 1.13.8
+    source_hash: 8410b6c31ff59a763abf7e5a5316e7629f5a5033c95a3a0ebde727f9ec8464c5
     certificates:
       odl.mit.edu:
         public_cert: __vault__::secret-operations/global/odl_wildcard_cert>data>value
