@@ -103,7 +103,7 @@ sandbox_residential_versions: &sandbox_residential_versions
 
 sandbox_mitxpro_versions: &sandbox_mitxpro_versions
   edx_config_repo: https://github.com/edx/configuration.git
-  edx_config_version: oopen-release/ironwood.master
+  edx_config_version: open-release/ironwood.master
   edx_platform_repo: 'https://github.com/edx/edx-platform'
   edxapp: open-release/ironwood.master
   forum_source_repo: 'https://github.com/edx/cs_comments_service'
