@@ -120,6 +120,7 @@ base:
     - match: compound
     - elastic-stack.kibana
     - utils.mitca_pem
+    - utils.configure_debian_source_repos
     - nginx.ng
     - elastic-stack.elastalert
     - datadog.plugins
