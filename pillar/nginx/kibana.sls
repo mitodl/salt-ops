@@ -37,7 +37,7 @@ nginx:
                 - listen:
                     - '[::]:443'
                     - ssl
-                - ssl_certificate: /etc/nginx/ssl/odl.mitl.edu.crt
+                - ssl_certificate: /etc/nginx/ssl/odl.mit.edu.crt
                 - ssl_certificate_key: /etc/nginx/ssl/odl.mit.edu.key
                 - ssl_stapling: 'on'
                 - ssl_stapling_verify: 'on'
