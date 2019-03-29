@@ -1,9 +1,9 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
+{% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set env_data = env_settings.environments[environment] %}
 {% set purpose_suffix = purpose.replace('-', '_') %}
 {% set purpose_data = env_data.purposes[purpose] %}
-{% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set business_unit = purpose_data.business_unit %}
 {% set MYSQL_HOST = 'mysql.service.consul' %}
 {% set MYSQL_PORT = 3306 %}
