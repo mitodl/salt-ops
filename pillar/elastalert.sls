@@ -4,7 +4,7 @@
 {% set slack_webhook_url = '__vault__::secret-operations/global/slack-odl/slack_webhook_url>data>value' %}
 {% set opsgenie_key = ' __vault__::secret-operations/global/opsgenie/opsgenie_ops_team_api>data>value' %}
 
-elasticsearch:
+elastic_stack:
   elastalert:
     settings:
       es_host: nearest-elasticsearch.query.consul
