@@ -8,7 +8,7 @@ nginx:
   ng:
     install_from_source: True
     source_version: 1.15.1
-    source_hash: 8410b6c31ff59a763abf7e5a5316e7629f5a5033c95a3a0ebde727f9ec8464c5
+    source_hash: c7206858d7f832b8ef73a45c9b8f8e436bcb1ee88db2bc85b8e438ecec9d5460
     with:
       - http_ssl_module
       - pcre
