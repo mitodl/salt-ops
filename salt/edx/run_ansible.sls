@@ -79,7 +79,7 @@ run_ansible:
         venv_path: {{ venv_path }}
         repo_path: {{ repo_path }}
         conf_file: {{ conf_file }}
-        playbooks: {{ playbooks }}
+        playbooks: {{ playbooks|tojson }}
         extra_flags: "{{ salt.pillar.get('edx:ansible_flags', ' ') }}"
     - require:
       - virtualenv: create_ansible_virtualenv
