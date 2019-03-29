@@ -6,9 +6,8 @@
 
 elasticsearch:
   elastalert:
-    overrides:
-      settings:
-        es_host: nearest-elasticsearch.query.consul
+    settings:
+      es_host: nearest-elasticsearch.query.consul
     rules:
     {% for app,slack_channel in mailgun_apps.items() %}
       - name: mailgun-{{ app }}
