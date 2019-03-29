@@ -4,6 +4,7 @@
 {% set purpose_suffix = purpose.replace('-', '_') %}
 {% set purpose_data = env_data.purposes[purpose] %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
+{% set business_unit = purpose_data.business_unit %}
 {% set MYSQL_HOST = 'mysql.service.consul' %}
 {% set MYSQL_PORT = 3306 %}
 {% set MONGODB_HOST = 'mongodb-master.service.consul' %}
@@ -35,7 +36,7 @@ edx:
     ################################################################################
     #################### Forum Settings ############################################
     ################################################################################
-    FORUM_API_KEY: __vault__:gen_if_missing:secret-mitxpro/global/forum-api-key>data>value
+    FORUM_API_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
     FORUM_ELASTICSEARCH_HOST: "nearest-elasticsearch.query.consul"
     FORUM_MONGO_USER: __vault__:cache:mongodb-{{ environment }}/creds/forum-{{ purpose }}>data>username
     FORUM_MONGO_PASSWORD: __vault__:cache:mongodb-{{ environment }}/creds/forum-{{ purpose }}>data>password
