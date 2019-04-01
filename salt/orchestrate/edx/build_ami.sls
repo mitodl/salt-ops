@@ -215,9 +215,6 @@ compile_assets_for_edx_{{ PURPOSE }}:
     - name: cmd.run
     - arg:
         - /edx/bin/edxapp-update-assets
-    - kwarg:
-        use_vt: True
-        timeout: 900
     - require:
         - salt: build_edx_base_nodes
 

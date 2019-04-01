@@ -170,9 +170,9 @@ base:
   'G@roles:edx and P@environment:mitx-(qa|production)':
     - match: compound
     - edx.gitreload
-    - edx.tests.test_gitreload
     - edx.edxapp_global_pre_commit
     - edx.etc_hosts
+    - edx.tests.test_gitreload
   'G@roles:edx and G@environment:mitx-production':
     - match: compound
     - monit
