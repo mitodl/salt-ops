@@ -1,6 +1,6 @@
 ensure_yarn_is_installed_for_odlvideo:
   npm.installed:
-    - name: 'yarn@1.2.1'
+    - name: 'yarn@1.13.0'
     - user: root
 
 install_node_dependencies:
