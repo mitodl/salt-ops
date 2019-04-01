@@ -162,6 +162,8 @@ salt_master:
             - salt://reactors/slack/post_event.sls
     misc:
       worker_threads: 25
+      {# this is to avoid timeouts waiting for edx asset compilation during AMI build (TMM 2019-04-01) #}
+      gather_job_timeout: 30
       master_job_cache: pgjsonb
       event_return: pgjsonb
       returner.pgjsonb.host: postgres-saltmaster.service.consul
