@@ -12,6 +12,7 @@ elastic_stack:
         zen.hosts_provider: ec2
       cloud.node.auto_attributes: true
       network.host: [_eth0_, _lo_]
+      data.path: /var/lib/elasticsearch/data
     plugins:
       - name: discovery-ec2
       - name: repository-s3
