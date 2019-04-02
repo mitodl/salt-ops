@@ -18,6 +18,6 @@ create_static_assets_subfolder:
 
 copy_select_static_assets_to_static_subfolder:
   file.copy:
-    - src: /edx/var/edxapp/staticfiles/paragon/static/
-    - dst: /edx/var/edxapp/staticfiles/paragon/static/static/
+    - source: /edx/var/edxapp/staticfiles/paragon/static/
+    - name: /edx/var/edxapp/staticfiles/paragon/static/static/
     - recurse: True
