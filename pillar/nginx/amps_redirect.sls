@@ -18,11 +18,13 @@ nginx:
                 - server_name: amps-web.amps.ms.mit.edu
                 - listen:
                     - 80
+                - listen:
                     - 443
                     - ssl
                     - default
                 - listen:
                     - '[::]:80'
+                - listen:
                     - '[::]:443'
                     - ssl
                 - ssl_certificate: /etc/nginx/ssl/odl_wildcard.crt
