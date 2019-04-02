@@ -9,3 +9,15 @@ ensure_system_feedback_template_is_in_expected_location:
     - name: /edx/var/edxapp/staticfiles/studio/common/templates/components/system-feedback.underscore.js
     - source: /edx/var/edxapp/staticfiles/studio/common/templates/components/system-feedback.underscore
     - preserve: True
+
+create_static_assets_subfolder:
+  file.directory:
+    - name: /edx/var/edxapp/staticfiles/paragon/static/static
+    - user: edxapp
+    - group: edxapp
+
+copy_select_static_assets_to_static_subfolder:
+  file.copy:
+    - src: /edx/var/edxapp/staticfiles/paragon/static/
+    - dst: /edx/var/edxapp/staticfiles/paragon/static/static/
+    - recurse: True
