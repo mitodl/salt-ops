@@ -252,6 +252,7 @@ base:
     - match: grain
     - logrotate.ocw_cms
     - fluentd.ocw_cms
+    - apps.ocw
   'roles:ocw-db':
     - match: grain
     - logrotate.ocw_cms
