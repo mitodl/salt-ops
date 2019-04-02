@@ -39,7 +39,7 @@ git_pull_ocw_engines_folder:
     - update_head: True
     - user: root
     - identity: /root/.ssh/ocw_ssh_key
-{ % endif %}
+{% endif %}
 
 git_pull_ocw_src_folder:
   git.latest:
