@@ -9,14 +9,14 @@ configure_ocw_src_git_sparsecheckout:
   module.run:
     - name: git.config_set
     - key: core.sparseCheckout
-    - value: True
+    - value: 'true'
     - cwd: /usr/local/Plone/zeocluster/src
 
 configure_ocw_publishing_git_sparsecheckout:
   module.run:
     - name: git.config_set
     - key: core.sparseCheckout
-    - value: True
+    - value: 'true'
     - cwd: /usr/local/Plone/zeocluster/publishing
 
 add_ocw_publishing_to_sparsecheckout:
