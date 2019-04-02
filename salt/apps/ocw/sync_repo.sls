@@ -6,14 +6,16 @@ add_private_github_ssh_key:
     - makedirs: True
 
 configure_ocw_src_git_sparsecheckout:
-  git.config_set:
-    - name: core.sparseCheckout
+  module.run:
+    - name: git.config_set
+    - key: core.sparseCheckout
     - value: True
     - cwd: /usr/local/Plone/zeocluster/src
 
 configure_ocw_publishing_git_sparsecheckout:
-  git.config_set:
-    - name: core.sparseCheckout
+  module.run:
+    - name: git.config_set
+    - key: core.sparseCheckout
     - value: True
     - cwd: /usr/local/Plone/zeocluster/publishing
 
