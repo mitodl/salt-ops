@@ -1,3 +1,20 @@
+
+# The ocwcms working copy is /var/lib/ocwcms
+# ... this has a sparse checkout of "plone/src" and "publishing".
+# ... such that there are "plone" and "publishing" directory under /var/lib/ocwcms
+# ... Plone wants to have /usr/local/Plone/zeocluster/src with subdirectories
+#     ocw.contentimport, ocwhs.theme, ocw.publishing, ocw.theme, and ocw.types.
+# ... so there is a symlink: /usr/local/Plone/zeocluster/src -> src_repo/plone/src
+# ... And on the job queue server, /var/lib/ocwcms/publishing gets rsynced to
+#     /mnt/ocwfileshare/OCWEngines.
+#
+# This state assumes that the working copy of the repo already exists in
+# /var/lib/ocwcms.
+
+ensure_that_rsync_is_installed:
+  pkg.installed:
+    - name: rsync
+
 add_private_github_ssh_key:
   file.managed:
     - name: /root/.ssh/ocw_ssh_key
@@ -5,52 +22,47 @@ add_private_github_ssh_key:
     - mode: 0600
     - makedirs: True
 
-configure_ocw_src_git_sparsecheckout:
-  module.run:
-    - name: git.config_set
-    - key: core.sparseCheckout
-    - value: 'true'
-    - cwd: /usr/local/Plone/zeocluster/src
+git_pull_ocwcms_working_copy:
+  git.latest:
+    - name: git@github.com:mitocw/ocwcms
+    - target: /var/lib/ocwcms
+    - force_checkout: True
+    - force_clone: True
+    - force_reset: True
+    - force_fetch: True
+    - update_head: True
+    - user: root
+    - identity: /root/.ssh/ocw_ssh_key
 
-configure_ocw_publishing_git_sparsecheckout:
-  module.run:
-    - name: git.config_set
-    - key: core.sparseCheckout
-    - value: 'true'
-    - cwd: /usr/local/Plone/zeocluster/publishing
-
-add_ocw_publishing_to_sparsecheckout:
-  file.managed:
-    - name: /usr/local/Plone/zeocluster/src/.git/info/sparse-checkout
-    - contents: 'plone/src'
+ensure_state_of_src_symlink:
+  file.symlink:
+    - name: /usr/local/Plone/zeocluster/src
+    - target: /var/lib/ocwcms/plone/src
+    - force: True
+    - backupname: src_old
 
 {% if salt['file.directory_exists']('/mnt/ocwfileshare/OCWEngines') %}
-add_ocw_src_to_sparsecheckout:
-  file.managed:
-    - name: /mnt/ocwfileshare/OCWEngines/.git/info/sparse-checkout
-    - contents: 'plone/publishing'
 
-git_pull_ocw_engines_folder:
-  git.latest:
-    - name: git@github.com:mitocw/ocwcms
-    - target: /mnt/ocwfileshare/OCWEngines
-    - force_checkout: True
-    - force_clone: True
-    - force_reset: True
-    - force_fetch: True
-    - update_head: True
-    - user: root
-    - identity: /root/.ssh/ocw_ssh_key
+sync_ocwcms_publishing_dir_to_shared_fs:
+
+  rsync.synchronized:
+    - name: /mnt/ocwfileshare/OCWEngines
+    - prepare: True
+    # The ending "/" is very important:
+    - src: /var/lib/ocwcms/publishing/
+    - delete: False
+    - update: True
+    - additional_opts:
+        - '-p'
+        - '-t'
+
+ensure_correct_ownership_of_OCWEngines_files:
+  file.directory:
+    - name: /mnt/ocwfileshare/OCWEngines
+    - user: ocwuser
+    - group: fsuser
+    - recurse:
+        - user
+        - group
+
 {% endif %}
-
-git_pull_ocw_src_folder:
-  git.latest:
-    - name: git@github.com:mitocw/ocwcms
-    - target: /usr/local/Plone/zeocluster/src
-    - force_checkout: True
-    - force_clone: True
-    - force_reset: True
-    - force_fetch: True
-    - update_head: True
-    - user: root
-    - identity: /root/.ssh/ocw_ssh_key
