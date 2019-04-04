@@ -29,7 +29,7 @@ edx:
           e: 'AQAB'
           kty: 'RSA'
           kid: '{{ business_unit }}-{{ environment }}_key'
-          d: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk>private_key
+          d: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk>data>private_key
           n: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk>data>modulus
           q: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk>data>second_prime
           p: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk>data>first_prime
