@@ -142,6 +142,8 @@ salt_master:
       reactor:
         - salt/beacon/*/inotify/*:
             - salt://reactors/edx/inotify_mitx.sls
+        - salt/beacon/master/memusage/*:
+            - salt://reactors/apps/restart_salt_master_service_low_memory.sls
         - salt/beacon/reddit-*/memusage/*:
             - salt://reactors/reddit/restart_reddit_service_low_memory.sls
             - salt://reactors/opsgenie/post_notification.sls

@@ -27,6 +27,7 @@ base:
     - match: grain
     - salt_master
     - micromasters
+    - beacons.low_memory
   'roles:fluentd':
     - match: grain
     - fluentd
