@@ -25,6 +25,7 @@
       }
 } %}
 {% set env_data = env_dict[ENVIRONMENT] %}
+{% set business_unit = 'mitxpro' %}
 
 proxy:
   proxytype: heroku
@@ -52,12 +53,15 @@ heroku:
     MITXPRO_ENVIRONMENT: {{ env_data.env_name }}
     MITXPRO_FROM_EMAIL: 'MIT xPro <xpro-{{ env_data.env_name }}-support@mit.edu>'
     MITXPRO_LOG_LEVEL: {{ env_data.log_level }}
+    MITXPRO_OAUTH_PROVIDER: 'mitxpro-oauth2'
     MITXPRO_SECURE_SSL_REDIRECT: True
     MITXPRO_SUPPORT_EMAIL: 'xpro-{{ env_data.env_name }}-support@mit.edu'
     MITXPRO_USE_S3: True
     NODE_MODULES_CACHE: False
-    OPENEDX_OAUTH_APP_NAME: 'edx-oauth-app'
     OPENEDX_API_BASE_URL: {{ env_data.OPENEDX_API_BASE_URL}}
+    OPENEDX_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/openedx-api-client>data>client-id
+    OPENEDX_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ environment }}/openedx-api-client>data>client-secret
+    OPENEDX_OAUTH_APP_NAME: 'edx-oauth-app'
     PGBOUNCER_DEFAULT_POOL_SIZE: 50
     PGBOUNCER_MIN_POOL_SIZE: 5
     SENTRY_DSN: __vault__::secret-operations/global/xpro/sentry-dsn>data>value
