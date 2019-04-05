@@ -23,7 +23,7 @@ edx:
       JWT_AUTH:
         JWT_ISSUER: 'OAUTH_OIDC_ISSUER'
         JWT_AUDIENCE: '{{ business_unit }}-{{ environment }}-key'
-        JWT_SECRET_KEY:
+        JWT_SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/jwt-secret-key>data>value
         JWT_SIGNING_ALGORITHM: 'RS512'
         JWT_PRIVATE_SIGNING_JWK:
           e: 'AQAB'

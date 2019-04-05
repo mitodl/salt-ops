@@ -65,4 +65,4 @@ heroku:
     PGBOUNCER_DEFAULT_POOL_SIZE: 50
     PGBOUNCER_MIN_POOL_SIZE: 5
     SENTRY_DSN: __vault__::secret-operations/global/xpro/sentry-dsn>data>value
-    STATUS_TOKEN: __vault__:gen_if_missing:secret-operations/global/xpro/django-status-token>data>value
+    STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
