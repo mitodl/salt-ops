@@ -28,7 +28,7 @@ edx:
         JWT_PRIVATE_SIGNING_JWK:
           e: 'AQAB'
           kty: 'RSA'
-          kid: '{{ business_unit }}-{{ environment }}_key'
+          kid: '{{ business_unit }}_{{ environment }}_key'
           d: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk>data>private_key
           n: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk>data>modulus
           q: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk>data>second_prime
@@ -37,7 +37,7 @@ edx:
           keys:
             - e: 'AQAB'
               kty: 'RSA'
-              kid: '{{ business_unit }}-{{ environment }}_key'
+              kid: '{{ business_unit }}_{{ environment }}_key'
               n: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk>data>modulus
       FEATURES:
         ENABLE_VIDEO_UPLOAD_PIPELINE: True
