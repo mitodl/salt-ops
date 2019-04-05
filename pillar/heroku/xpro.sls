@@ -40,7 +40,7 @@ heroku:
     GA_TRACKING_ID: {{ env_data.ga_id }}
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_FROM_EMAIL: 'MIT xPRO <no-reply@xpro-{{ env_data.env_name }}-mail.odl.mit.edu>'
-    MAILGUN_SENDER_DOMAIN: 'odl.mit.edu'
+    MAILGUN_SENDER_DOMAIN: 'xpro-{{ env_data.env_name }}-mail.odl.mit.edu'
     MITXPRO_ADMIN_EMAIL: 'cuddle-bunnies@mit.edu'
     MITXPRO_BASE_URL: 'https://xpro-{{ env_data.env_name}}.odl.mit.edu'
     MITXPRO_DB_CONN_MAX_AGE: 0

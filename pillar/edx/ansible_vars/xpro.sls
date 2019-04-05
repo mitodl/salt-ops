@@ -25,20 +25,8 @@ edx:
         JWT_AUDIENCE: '{{ business_unit }}-{{ environment }}-key'
         JWT_SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/jwt-secret-key>data>value
         JWT_SIGNING_ALGORITHM: 'RS512'
-        JWT_PRIVATE_SIGNING_JWK:
-          e: 'AQAB'
-          kty: 'RSA'
-          kid: '{{ business_unit }}_{{ environment }}_key'
-          d: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk>data>private_key
-          n: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk>data>modulus
-          q: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk>data>second_prime
-          p: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk>data>first_prime
-        JWT_PUBLIC_SIGNING_JWK_SET:
-          keys:
-            - e: 'AQAB'
-              kty: 'RSA'
-              kid: '{{ business_unit }}_{{ environment }}_key'
-              n: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk>data>modulus
+        JWT_PRIVATE_SIGNING_JWK: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/private-key>data>value
+        JWT_PUBLIC_SIGNING_JWK_SET: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/public-key>data>value
       FEATURES:
         ENABLE_VIDEO_UPLOAD_PIPELINE: True
         ENABLE_COMBINED_LOGIN_REGISTRATION: True
