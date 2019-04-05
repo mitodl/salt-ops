@@ -1,5 +1,5 @@
 {% set minion_id = salt.grains.get('id', '') %}
-{% set ENVIRONMENT = minion_id.split('-')[-1] %}
+{% set environment = minion_id.split('-')[-1] %}
 
 {% set env_dict = {
     'ci': {
@@ -24,7 +24,7 @@
       'OPENEDX_API_BASE_URL': 'https://xpro.mitx.mit.edu'
       }
 } %}
-{% set env_data = env_dict[ENVIRONMENT] %}
+{% set env_data = env_dict[environment] %}
 {% set business_unit = 'mitxpro' %}
 
 proxy:
