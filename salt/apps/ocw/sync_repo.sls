@@ -49,7 +49,7 @@ sync_ocwcms_publishing_dir_to_shared_fs:
     - name: /mnt/ocwfileshare/OCWEngines
     - prepare: True
     # The ending "/" is very important:
-    - src: /var/lib/ocwcms/publishing/
+    - source: /var/lib/ocwcms/publishing/
     - delete: False
     - update: True
     - additional_opts:
