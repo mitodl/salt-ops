@@ -32,6 +32,7 @@ edx:
         ENABLE_OAUTH2_PROVIDER: True
         ENABLE_THIRD_PARTY_AUTH: True
         ALLOW_PUBLIC_ACCOUNT_CREATION: True
+        SKIP_EMAIL_VALIDATION: True
     EDXAPP_LMS_AUTH_EXTRA:
       SOCIAL_AUTH_OAUTH_SECRETS:
         mitxpro-oauth2: __vault__::secret-{{ business_unit }}/{{ environment }}/xpro-app-oauth2-client-secret>data>value
