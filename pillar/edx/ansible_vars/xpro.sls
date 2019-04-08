@@ -11,7 +11,6 @@ edx:
     EDXAPP_SESSION_COOKIE_NAME: {{ environment }}-{{ purpose }}-session
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
     EDXAPP_COMMENTS_SERVICE_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
-    EDXAPP_ENABLE_OAUTH2_PROVIDER: True
     # Video Pipeline Settings
     EDXAPP_VIDEO_UPLOAD_PIPELINE:
       BUCKET: {{ bucket_prefix }}-edx-video-{{ environment }}
@@ -30,6 +29,7 @@ edx:
       FEATURES:
         ENABLE_VIDEO_UPLOAD_PIPELINE: True
         ENABLE_COMBINED_LOGIN_REGISTRATION: True
+        ENABLE_OAUTH2_PROVIDER: True
         ENABLE_THIRD_PARTY_AUTH: True
         ALLOW_PUBLIC_ACCOUNT_CREATION: True
     EDXAPP_LMS_AUTH_EXTRA:
