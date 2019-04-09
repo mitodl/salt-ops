@@ -28,7 +28,7 @@ git_pull_ocwcms_working_copy:
   git.latest:
     - name: git@github.com:mitocw/ocwcms
     - target: /var/lib/ocwcms
-    - ref: {{ ocwcms_branch }}
+    - rev: {{ ocwcms_branch }}
     - force_checkout: True
     - force_clone: True
     - force_reset: True
