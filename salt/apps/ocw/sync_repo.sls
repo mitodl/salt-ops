@@ -11,6 +11,8 @@
 # This state assumes that the working copy of the repo already exists in
 # /var/lib/ocwcms.
 
+{% set ocwcms_branch = salt.pillar.get('ocw:ocwcms_branch', 'master') %}
+
 ensure_that_rsync_is_installed:
   pkg.installed:
     - name: rsync
@@ -26,6 +28,7 @@ git_pull_ocwcms_working_copy:
   git.latest:
     - name: git@github.com:mitocw/ocwcms
     - target: /var/lib/ocwcms
+    - ref: {{ ocwcms_branch }}
     - force_checkout: True
     - force_clone: True
     - force_reset: True
