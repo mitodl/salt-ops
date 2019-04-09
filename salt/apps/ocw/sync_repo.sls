@@ -1,17 +1,14 @@
 
 # The ocwcms working copy is /var/lib/ocwcms
-# ... this has a sparse checkout of "plone/src" and "publishing".
-# ... such that there are "plone" and "publishing" directory under /var/lib/ocwcms
 # ... Plone wants to have /usr/local/Plone/zeocluster/src with subdirectories
 #     ocw.contentimport, ocwhs.theme, ocw.publishing, ocw.theme, and ocw.types.
 # ... so there is a symlink: /usr/local/Plone/zeocluster/src -> src_repo/plone/src
 # ... And on the job queue server, /var/lib/ocwcms/publishing gets rsynced to
 #     /mnt/ocwfileshare/OCWEngines.
 #
-# This state assumes that the working copy of the repo already exists in
-# /var/lib/ocwcms.
 
 {% set ocwcms_branch = salt.pillar.get('ocw:ocwcms_branch', 'master') %}
+{% set roles = salt.pillar.get('roles') %}
 
 ensure_that_rsync_is_installed:
   pkg.installed:
@@ -37,17 +34,34 @@ git_pull_ocwcms_working_copy:
     - user: root
     - identity: /root/.ssh/ocw_ssh_key
 
+{% if 'ocw-cms' in roles %}
 ensure_state_of_src_symlink:
   file.symlink:
     - name: /usr/local/Plone/zeocluster/src
     - target: /var/lib/ocwcms/plone/src
     - force: True
     - backupname: src_old
+{% endif %}
 
-{% if salt['file.directory_exists']('/mnt/ocwfileshare/OCWEngines') %}
+{% if 'ocw-origin' in roles %}
+sync_ocwcms_web_directory:
+  rsync.synchronized:
+    - name: /var/www/ocw
+    - prepare: True
+    - source: /var/lib/ocwcms/web/
+    - delete: False
+    - update: True
+    - additional_opts:
+        - '-p'
+        - '-t'
+        - '-c'
+        - '--delay-updates'
+{% endif %}
+
+
+{% if 'ocw-cms' in roles %}
 
 sync_ocwcms_publishing_dir_to_shared_fs:
-
   rsync.synchronized:
     - name: /mnt/ocwfileshare/OCWEngines
     - prepare: True
@@ -58,6 +72,7 @@ sync_ocwcms_publishing_dir_to_shared_fs:
     - additional_opts:
         - '-p'
         - '-t'
+        - '-c'
 
 # This would be nice to have, but it can take hours to run, so I am commenting
 # it out. -- Mark
