@@ -12,11 +12,24 @@ edx:
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
     EDXAPP_COMMENTS_SERVICE_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
     # Video Pipeline Settings
-    EDXAPP_VIDEO_UPLOAD_PIPELINE:
-      BUCKET: {{ bucket_prefix }}-edx-video-{{ environment }}
-      ROOT_PATH: 'ingest/'
-    EDXAPP_VIDEO_CDN_URLS:
-      EXAMPLE_COUNTRY_CODE: "http://example.com/edx/video?s3_url="
+    # EDXAPP_VIDEO_UPLOAD_PIPELINE:
+    #   BUCKET: {{ bucket_prefix }}-edx-video-{{ environment }}
+    #   ROOT_PATH: 'ingest/'
+    # EDXAPP_VIDEO_CDN_URLS:
+    #   EXAMPLE_COUNTRY_CODE: "http://example.com/edx/video?s3_url="
+    EDXAPP_PRIVATE_REQUIREMENTS:
+      - name: mitxpro-openedx-extensions==0.1.0
+    EDXAPP_REGISTRATION_EXTRA_FIELDS:
+      confirm_email: "hidden"
+      level_of_education: "optional"
+      gender: "optional"
+      year_of_birth: "optional"
+      mailing_address: "hidden"
+      goals: "optional"
+      honor_code: "required"
+      terms_of_service: "hidden"
+      city: "hidden"
+      country: "hidden"
     EDXAPP_LMS_ENV_EXTRA:
       THIRD_PARTY_AUTH_BACKENDS: ["social_auth_mitxpro.backends.MITxProOAuth2"]
       JWT_AUTH:
