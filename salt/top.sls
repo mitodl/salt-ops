@@ -195,16 +195,21 @@ base:
     - nginx.ng
     - nginx.ng.certificates
     - letsencrypt
-    - apps.ocw.ocw-origin.install
     - fluentd
     - fluentd.plugins
     - fluentd.config
+    - apps.ocw.ocw-origin.install
+    - apps.ocw.sync_repo
+    - apps.ocw.symlinks_origin
   'roles:ocw-cms':
     - match: grain
     - fluentd
     - fluentd.plugins
     - fluentd.config
     - logrotate
+    - apps.ocw.engines
+    - apps.ocw.sync_repo
+    - apps.ocw.symlinks_cms
   'roles:ocw-db':
     - match: grain
     - fluentd
