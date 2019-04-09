@@ -165,7 +165,7 @@ base:
     - fluentd.mitx
     - datadog.nginx-integration
     - datadog.supervisord-integration
-  'P@roles:(edx|edx-worker) and P@environment:mitxpro.*':
+  'P@roles:(edx|edx-worker|sandbox) and P@environment:mitxpro.*':
     - match: compound
     - edx.ansible_vars.xpro
   'P@roles:(edx|edx-worker) and G@environment:mitx-qa':
