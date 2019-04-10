@@ -1,6 +1,6 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set business_unit = salt.grains.get('business_unit', 'residential') %}
-{% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
+{% set purpose = salt.grains.get('purpose', 'xpro-qa') %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set env_data = env_settings.environments[environment] %}
 {% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
@@ -47,7 +47,7 @@ edx:
         ALLOW_PUBLIC_ACCOUNT_CREATION: True
     EDXAPP_LMS_AUTH_EXTRA:
       SOCIAL_AUTH_OAUTH_SECRETS:
-        mitxpro-oauth2: __vault__::secret-{{ business_unit }}/{{ environment }}/xpro-app-oauth2-client-secret>data>value
+        mitxpro-oauth2: __vault__::secret-{{ business_unit }}/{{ environment }}/xpro-app-oauth2-client-secret-{{ purpose }}>data>value
     EDXAPP_CMS_ENV_EXTRA:
       DISABLE_STUDIO_SSO_OVER_LMS: True
       FEATURES:
