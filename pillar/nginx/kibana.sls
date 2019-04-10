@@ -67,6 +67,7 @@ nginx:
                       - X-Forwarded-For__vault__::secret-operations/global/mitca_ssl_cert>data>value
                       - $remote_addr
                     - proxy_headers_hash_bucket_size: 128
+                    - proxy_read_timeout: 240s
                 - ssl_client_certificate: /etc/ssl/certs/mitca.pem
                 - ssl_verify_client: 'on'
                 - set $authorized: 'no'
