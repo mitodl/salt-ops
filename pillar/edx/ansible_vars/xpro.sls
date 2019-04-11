@@ -36,6 +36,7 @@ edx:
         name: "Audit"
         slug: "audit"
       ENTERPRISE_COURSE_ENROLLMENT_AUDIT_MODES: ['audit', 'honor']
+      MITXPRO_CORE_REDIRECT_ALLOW_RE_LIST: ["^/(admin|auth|login|logout|register|api|oauth2|user_api|heartbeat)"]
       THIRD_PARTY_AUTH_BACKENDS: ["social_auth_mitxpro.backends.MITxProOAuth2"]
       JWT_AUTH:
         JWT_ISSUER: 'OAUTH_OIDC_ISSUER'
