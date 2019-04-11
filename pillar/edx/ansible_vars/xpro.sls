@@ -19,6 +19,7 @@ edx:
     #   EXAMPLE_COUNTRY_CODE: "http://example.com/edx/video?s3_url="
     EDXAPP_PRIVATE_REQUIREMENTS:
       - name: mitxpro-openedx-extensions==0.1.0
+      - name: social-auth-mitxpro==0.2
     EDXAPP_REGISTRATION_EXTRA_FIELDS:
       confirm_email: "hidden"
       level_of_education: "optional"
