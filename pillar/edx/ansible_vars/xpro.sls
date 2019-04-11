@@ -32,6 +32,10 @@ edx:
       city: "hidden"
       country: "hidden"
     EDXAPP_LMS_ENV_EXTRA:
+      COURSE_MODE_DEFAULTS:
+        name: "Audit"
+        slug: "audit"
+      ENTERPRISE_COURSE_ENROLLMENT_AUDIT_MODES: ['audit', 'honor']
       THIRD_PARTY_AUTH_BACKENDS: ["social_auth_mitxpro.backends.MITxProOAuth2"]
       JWT_AUTH:
         JWT_ISSUER: 'OAUTH_OIDC_ISSUER'
