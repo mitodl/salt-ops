@@ -93,6 +93,19 @@ xpro_qa_versions: &xpro_qa_versions
   codename: ironwood
   ami_id: ami-80861296
 
+xpro_production_versions: &xpro_production_versions
+  edx_config_repo: https://github.com/edx/configuration
+  edx_config_version: open-release/ironwood.master
+  edx_platform_repo: 'https://github.com/edx/edx-platform'
+  edxapp: open-release/ironwood.master
+  forum_source_repo: 'https://github.com/edx/cs_comments_service'
+  forum: open-release/ironwood.master
+  xqueue_source_repo: 'https://github.com/edx/xqueue'
+  xqueue: open-release/ironwood.master
+  xqwatcher_courses: master
+  codename: ironwood
+  ami_id: ami-80861296
+
 sandbox_residential_versions: &sandbox_residential_versions
   edx_config_repo: https://github.com/edx/configuration.git
   edx_config_version: open-release/hawthorn.beta1
@@ -213,10 +226,10 @@ environments:
         instances:
           edx:
             number: 2
-            type: t2.large
+            type: t3.large
           edx-worker:
             number: 1
-            type: t2.large
+            type: t3.large
       sandbox:
         app: edx
         business_unit: mitxpro
@@ -229,7 +242,75 @@ environments:
         instances:
           edx:
             number: 1
-            type: t2.medium
+            type: t3.medium
+  mitxpro-production:
+    business_unit: mitxpro
+    network_prefix: '10.8'
+    vpc_name: MITxPro Production
+    secret_backends:
+      mysql:
+        role_prefixes:
+          - edxapp
+          - edxapp-csmh
+          - xqueue
+      mongodb:
+        role_prefixes:
+          - modulestore
+          - contentstore
+          - gitlog
+          - forum
+      rabbitmq:
+        role_prefixes:
+          - celery
+      aws:
+        bucket_prefix: xpro
+        bucket_uses:
+          - grades
+          - storage
+    backends:
+      pki:
+        - consul
+        - elasticsearch
+        - fluentd
+        - mongodb
+        - rabbitmq
+      rds:
+        - name: mitxproproduction
+          multi_az: True
+          engine: mariadb
+          vault_plugin: mysql-database-plugin
+          password_length: 40
+          db_instance_class: db.m5.large
+          allocated_storage: 250
+          public_access: False
+          engine_version: '10.3'
+          purpose: xpro-production
+          service_name: mysql
+          mount_point: mysql-mitxpro-production
+      elasticache:
+        - engine: memcached
+          engine_version: '1.4.34'
+          node_type: cache.r5.large
+          num_cache_nodes: 3
+          cluster_id: xpro-edxapp
+          purpose: xpro-production
+    purposes:
+      xpro-production:
+        app: edx-platform
+        business_unit: mitxpro
+        domains:
+          cms: studio-xpro.mitx.mit.edu
+          lms: xpro.mitx.mit.edu
+          preview: preview-xpro.mitx.mit.edu
+        versions:
+          <<: *xpro_production_versions
+        instances:
+          edx:
+            number: 6
+            type: r5.large
+          edx-worker:
+            number: 3
+            type: t3.large
   mitx-qa:
     business_unit: residential
     network_prefix: '10.5'
@@ -310,10 +391,10 @@ environments:
         instances:
           edx:
             number: 2
-            type: t2.large
+            type: t3.large
           edx-worker:
             number: 1
-            type: t2.large
+            type: t3.large
       current-residential-draft:
         app: edx-platform
         business_unit: residential
@@ -327,10 +408,10 @@ environments:
         instances:
           edx:
             number: 1
-            type: t2.large
+            type: t3.large
           edx-worker:
             number: 1
-            type: t2.large
+            type: t3.large
       next-residential-live:
         app: edx-platform
         business_unit: residential
@@ -344,10 +425,10 @@ environments:
         instances:
           edx:
             number: 2
-            type: t2.large
+            type: t3.large
           edx-worker:
             number: 1
-            type: t2.large
+            type: t3.large
       next-residential-draft:
         app: edx-platform
         business_unit: residential
@@ -361,10 +442,10 @@ environments:
         instances:
           edx:
             number: 1
-            type: t2.large
+            type: t3.large
           edx-worker:
             number: 1
-            type: t2.large
+            type: t3.large
       sandbox:
         app: edx-platform
         business_unit: residential
@@ -377,7 +458,7 @@ environments:
         instances:
           edx:
             number: 1
-            type: t2.medium
+            type: t3.medium
       continuous-delivery:
         app: edx-platform
         business_unit: residential
@@ -391,10 +472,10 @@ environments:
         instances:
           edx:
             number: 1
-            type: t2.large
+            type: t3.large
           edx-worker:
             number: 1
-            type: t2.large
+            type: t3.large
       mitx-cas:
         app: mitx-cas
         business_unit: operations
@@ -419,7 +500,7 @@ environments:
           multi_az: True
           engine: postgres
           vault_plugin: postgresql-database-plugin
-          db_instance_class: db.t2.small
+          db_instance_class: db.t3.small
           allocated_storage: 100
           public_access: False
           engine_version: '10.1'
@@ -433,7 +514,7 @@ environments:
           cluster_id: residential-live
         - engine: memcached
           engine_version: '1.4.34'
-          node_type: cache.t2.small
+          node_type: cache.t3.small
           num_cache_nodes: 2
           purpose: residential-draft
           cluster_id: residential-draft
@@ -464,10 +545,10 @@ environments:
         instances:
           edx:
             number: 3
-            type: r4.large
+            type: r5.large
           edx-worker:
             number: 2
-            type: t2.large
+            type: t3.large
       residential-live:
         app: edx-platform
         business_unit: residential
@@ -481,10 +562,10 @@ environments:
         instances:
           edx:
             number: 9
-            type: r4.large
+            type: r5.large
           edx-worker:
             number: 3
-            type: t2.xlarge
+            type: t3.xlarge
       mitx-cas:
         app: cas
         business_unit: operations
@@ -543,7 +624,7 @@ environments:
           - webapp-odl-vpn
       elasticsearch:
         num_instances: 5
-        size: r4.xlarge
+        size: r5.xlarge
         data_volume_size: 1536
     backends:
       pki:
