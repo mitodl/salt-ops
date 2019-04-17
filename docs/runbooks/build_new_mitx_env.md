@@ -27,6 +27,7 @@ In order to provision a new MITx environment the following steps are necessary:
   export ENVIRONMENT=my-vpc
   export BUSINESS_UNIT=residential
   export PURPOSE_PREFIX=residential
-  salt-run state.orchestrate orchestrate.edx
-  salt-run state.orchestrate orchestrate.edx
+  salt-run state.orchestrate orchestrate.edx.deploy
   ```
+- Deploy the AWS ELB
+  `VPC_NAME='My VPC' ENVIRONMENT=my-vpc BUSINESS_UNIT=residential salt-run state.orchestrate orchestrate.aws.mitx_elb`
