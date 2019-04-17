@@ -47,19 +47,6 @@ fluentd:
                   - format1: '/------\n/'
                   - format2: '/(?<time>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}) /'
                   - format3: '/(?<level_name>[A-Z]+) (?<message>.*)/'
-              # Zope stacktrace format. This regex allows the message to be
-              # picked up by fluentd if it is the last message in the logfile,
-              # because otherwise looking for '------' as the beginning of the
-              # next message will fail.
-              - directive: parse
-                attrs:
-                  - '@type': multiline
-                  - format_firstline: '/\A------'
-                  - format1: '/\A------\n/'
-                  - format2: '/(?<time>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}) /'
-                  - format3: '/(?<level_name>[A-Z]+) /'
-                  - format4: '/(?<message>.*?\nTraceback \(innermost last\):'
-                  - format5: '/(?:\n^\s+.*?$)+\n\S.*)\Z/'
         - directive: source
           attrs:
             - '@id': ocwcms_zope_access_log
