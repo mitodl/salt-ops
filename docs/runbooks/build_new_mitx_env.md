@@ -6,6 +6,7 @@ In order to provision a new MITx environment the following steps are necessary:
 - Accept the VPC peering connection via the AWS console
 - Update the route tables in the operations VPC to allow traffic from the new environment
 - Update the operations security groups for Consul and FluentD to allow traffic from the new environment
+- Associate the `private.odl.mit.edu` hosted zone with the newly created VPC
 - Deploy the Consul nodes
   `VPC_NAME='My VPC' ENVIRONMENT=my-vpc BUSINESS_UNIT=residential salt-run state.orchestrate orchestrate.edx.services.consul`
 
