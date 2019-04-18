@@ -19,7 +19,7 @@ create_edx_rds_store:
   boto_rds.present:
     - name: {{ ENVIRONMENT }}-rds-mysql
     - allocated_storage: 200
-    - db_instance_class: db.t2.medium
+    - db_instance_class: db.t3.medium
     - storage_type: gp2
     - engine: mariadb
     - multi_az: True

@@ -46,7 +46,7 @@ generate_elasticsearch_cloud_map_file:
           launch-date: '{{ launch_date }}'
         profile_overrides:
           ebs_optimized: {{ purpose_data.ebs_optimized|default(True) }}
-          size: {{ purpose_data.size|default('t2.medium') }}
+          size: {{ purpose_data.size|default('t3.medium') }}
           block_device_mappings:
             - DeviceName: xvda
               Ebs.VolumeSize: 20
