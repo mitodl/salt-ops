@@ -718,7 +718,7 @@ environments:
       rds:
         - name: mitxpro
           multi_az: True
-          engine: postgresql
+          engine: postgres
           vault_plugin: postgresql-database-plugin
           db_instance_class: db.m5.large
           allocated_storage: 100
