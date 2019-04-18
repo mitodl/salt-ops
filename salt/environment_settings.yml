@@ -722,7 +722,7 @@ environments:
           vault_plugin: postgresql-database-plugin
           db_instance_class: db.m5.large
           allocated_storage: 100
-          public_acces: True
+          public_access: True
         - name: reddit
           multi_az: True
           # This needs to be changed if/when we redeploy this host.
@@ -747,7 +747,7 @@ environments:
           vault_plugin: postgresql-database-plugin
           db_instance_class: db.t2.small
           allocated_storage: 100
-          public_acces: False
+          public_access: False
         - name: starcellbio
           multi_az: True
           engine: mariadb
@@ -844,7 +844,7 @@ environments:
           vault_plugin: postgresql-database-plugin
           db_instance_class: db.t2.micro
           allocated_storage: 100
-          public_acces: False
+          public_access: False
         - name: starcellbio
           multi_az: False
           engine: mariadb
