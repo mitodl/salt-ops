@@ -19,7 +19,7 @@ create_{{ ENVIRONMENT }}_rds_store:
   boto_rds.present:
     - name: {{ VPC_RESOURCE_SUFFIX }}-rds-postgresql
     - allocated_storage: 50
-    - db_instance_class: db.t2.micro
+    - db_instance_class: db.t3.micro
     - db_name: bootcamp_ecommerce
     - storage_type: gp2
     - engine: postgres
