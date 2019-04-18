@@ -66,3 +66,6 @@ nginx:
                         - index.htm
                         - index.html
                         - =404
+                    - error_page:
+                        - '404'
+                        - jsp/error.html
