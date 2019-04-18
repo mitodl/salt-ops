@@ -727,7 +727,7 @@ environments:
           multi_az: True
           # This needs to be changed if/when we redeploy this host.
           # It is only like this to fix Consul pillar rendering
-          engine: postgresql
+          engine: postgres
           vault_plugin: postgresql-database-plugin
           db_instance_class: db.t2.medium
           allocated_storage: 100
@@ -736,14 +736,14 @@ environments:
           multi_az: True
           # This needs to be changed if/when we redeploy this host.
           # It is only like this to fix Consul pillar rendering
-          engine: postgresql
+          engine: postgres
           vault_plugin: postgresql-database-plugin
           db_instance_class: db.t2.small
           allocated_storage: 100
           public_access: True
         - name: odlvideo
           multi_az: True
-          engine: postgresql
+          engine: postgres
           vault_plugin: postgresql-database-plugin
           db_instance_class: db.t2.small
           allocated_storage: 100
@@ -824,7 +824,7 @@ environments:
           multi_az: False
           # This needs to be changed if/when we redeploy this host.
           # It is only like this to fix Consul pillar rendering
-          engine: postgresql
+          engine: postgres
           vault_plugin: postgresql-database-plugin
           db_instance_class: db.t2.small
           allocated_storage: 100
@@ -833,14 +833,14 @@ environments:
           multi_az: False
           # This needs to be changed if/when we redeploy this host.
           # It is only like this to fix Consul pillar rendering
-          engine: postgresql
+          engine: postgres
           vault_plugin: postgresql-database-plugin
           db_instance_class: db.t2.micro
           allocated_storage: 100
           public_access: True
         - name: odlvideo
           multi_az: True
-          engine: postgresql
+          engine: postgres
           vault_plugin: postgresql-database-plugin
           db_instance_class: db.t2.micro
           allocated_storage: 100
