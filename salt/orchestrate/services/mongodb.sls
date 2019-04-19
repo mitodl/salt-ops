@@ -94,7 +94,7 @@ format_data_drive:
     - arg:
         - blockdev.formatted
     - kwarg:
-        name: /dev/xvdb
+        name: /dev/nvme1n1
         fs_type: ext4
     - require:
         - salt: deploy_mongodb_cloud_map
@@ -108,7 +108,7 @@ mount_data_drive:
         - mount.mounted
     - kwarg:
         name: /var/lib/mongodb
-        device: /dev/xvdb
+        device: /dev/nvme1n1
         fstype: ext4
         mkmnt: True
         opts: 'relatime,user'
