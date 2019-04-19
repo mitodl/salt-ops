@@ -879,8 +879,17 @@ environments:
         app: nginx
         business_unit: open-courseware
         domains:
-          - ocw-origin.odl.mit.edu
-        num_instances: 1
+          production:
+            production:
+              - ocw-origin.odl.mit.edu
+            staging:
+              - ocw-production-ocw2.odl.mit.edu
+          qa:
+            production:
+              - ocw-qa-origin.odl.mit.edu
+            staging:
+              - ocw-qa-ocw2.odl.mit.edu
+        num_instances: 4
         security_groups:
           - webapp
           - ssh
