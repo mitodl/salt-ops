@@ -10,6 +10,8 @@ In order to provision a new MITx environment the following steps are necessary:
 - Deploy the Consul nodes
   `VPC_NAME='My VPC' ENVIRONMENT=my-vpc BUSINESS_UNIT=residential salt-run state.orchestrate orchestrate.edx.services.consul`
 
+- Generate MongoDB cluster key
+    `salt master vault.write secret-{{ business_unit }}/{{ enviornment }}/mongodb-cluster-key value='salt master vault.write transit/random/750 --output json | jq '.master.data.random_bytes'`
 - Deploy the RabbitMQ, RDS, MongoDB, and Elasticsearch nodes
   ```
   export VPC_NAME='My VPC'
