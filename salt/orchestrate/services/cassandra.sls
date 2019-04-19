@@ -82,7 +82,6 @@ mount_data_drive:
         device: /dev/xvdb
         fstype: ext4
         mkmnt: True
-        opts: 'relatime,user'
     - require:
         - salt: format_data_drive
 

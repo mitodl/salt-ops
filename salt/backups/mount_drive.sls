@@ -9,7 +9,6 @@ mount_backup_drive:
     - device: /dev/xvdb
     - fstype: ext4
     - mkmnt: True
-    - opts: 'relatime,user'
 
 create_backup_directory:
   file.directory:
