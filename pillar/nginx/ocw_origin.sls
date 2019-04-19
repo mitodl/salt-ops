@@ -1,8 +1,21 @@
+# Example Grains:
+#   environment: ocw
+#   roles: ocw-origin
+#   ocw-environment: production
+#   ocw-deployment: staging
+#
+
 {% set app_name = 'ocw-origin' %}
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'ocw') %}
+#
+# FIXME: The ocw-environment and ocw-deployment grains are not created by Salt
+# Cloud configuration. They have to be added after instances are created.
+{% set OCW_ENVIRONMENT = salt.grains.get('ocw-environment') %}
+{% set OCW_DEPLOYMENT = salt.grains.get('ocw-deployment') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
-{% set server_domain_names = env_data.purposes[app_name].domains %}
+{% set server_domain_names = env_data.purposes[app_name].domains[OCW_ENVIRONMENT][OCW_DEPLOYMENT] %}
+
 
 nginx:
   ng:
