@@ -111,7 +111,6 @@ mount_data_drive:
         device: /dev/nvme1n1
         fstype: ext4
         mkmnt: True
-        opts: 'relatime,user'
     - require:
         - salt: format_data_drive
 

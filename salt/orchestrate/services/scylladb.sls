@@ -104,7 +104,6 @@ mount_data_drive:
         device: /dev/md0
         fstype: xfs
         mkmnt: True
-        opts: 'relatime,user'
     - require:
         - salt: format_data_drive
 
