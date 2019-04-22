@@ -12,15 +12,16 @@ In order to provision a new MITx environment the following steps are necessary:
 
 - Generate MongoDB cluster key
     `salt master vault.write secret-{{ business_unit }}/{{ enviornment }}/mongodb-cluster-key value='salt master vault.write transit/random/750 --output json | jq '.master.data.random_bytes'`
-- Deploy the RabbitMQ, RDS, MongoDB, and Elasticsearch nodes
+- Deploy the RabbitMQ, RDS, MongoDB, Elasticsearch, and Elasticache Memcached nodes
   ```
   export VPC_NAME='My VPC'
   export ENVIRONMENT=my-vpc
   export BUSINESS_UNIT=residential
-  salt-run state.orchestrate orchestrate.edx.services.rds
-  salt-run state.orchestrate orchestrate.edx.services.mongodb
-  salt-run state.orchestrate orchestrate.edx.services.elasticsearch
-  salt-run state.orchestrate orchestrate.edx.services.rabbitmq
+  salt-run state.orchestrate orchestrate.aws.rds
+  salt-run state.orchestrate orchestrate.services.mongodb
+  salt-run state.orchestrate orchestrate.services.elasticsearch
+  salt-run state.orchestrate orchestrate.services.rabbitmq
+  salt-run state.orchestrate orchestrate.aws.elasticache
   ```
 - Create the MySQL schemas
   `VPC_NAME='My VPC' ENVIRONMENT=my-vpc BUSINESS_UNIT=residential salt-run state.orchestrate orchestrate.edx.mysql_schemas`
