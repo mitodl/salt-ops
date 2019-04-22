@@ -125,7 +125,7 @@ base:
     - elastic-stack.elastalert
     - datadog.plugins
     - monit
-  'P@environment:(operations|mitx-production)':
+  'P@environment:(operations|mitx(pro)?-production)':
     - match: compound
     - datadog
     - datadog.plugins
@@ -146,7 +146,7 @@ base:
     - match: grain
     - mongodb
     - mongodb.consul_check
-  'G@roles:mongodb and G@environment:mitx-production':
+  'G@roles:mongodb and G@environment:mitx(pro)?-production':
     - match: compound
     - datadog.plugins
   'G@roles:consul_server and G@environment:operations':
@@ -155,7 +155,7 @@ base:
     - vault
     - vault.tests
     - utils.file_limits
-  'G@roles:rabbitmq and P@environment:mitx-(qa|production)':
+  'G@roles:rabbitmq and P@environment:mitx(xpro)?-(qa|production)':
     - match: compound
     - datadog.plugins
   'roles:edx':

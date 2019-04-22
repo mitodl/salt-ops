@@ -126,7 +126,7 @@ base:
     - match: compound
     - consul.bootcamps
     - vault
-  'G@roles:consul_server and G@environment:mitx-production':
+  'G@roles:consul_server and G@environment:mitx(pro)?-production':
     - match: compound
     - datadog.mysql-integration
   'P@roles:(vault_server|master)':
@@ -245,7 +245,7 @@ base:
     - rabbitmq
     - fluentd.rabbitmq
     - consul.rabbitmq
-  'G@roles:rabbitmq and P@environment:(mitx-production|production-apps)':
+  'G@roles:rabbitmq and P@environment:(mitx(pro)?-production|production-apps)':
     - match: compound
     - datadog.rabbitmq-integration
   'roles:ocw-cms':
