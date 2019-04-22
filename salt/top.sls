@@ -133,7 +133,7 @@ base:
     - match: grain
     - datadog
     - datadog.plugins
-  'G@roles:elasticsearch and P@environment:(micromasters|rc-apps|production-apps)':
+  'G@roles:elasticsearch and P@environment:(micromasters|rc-apps|production-apps|mitx(pro)?-(qa|production))':
     - match: compound
     - elasticsearch
     - elasticsearch.plugins
