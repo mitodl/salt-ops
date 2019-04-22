@@ -43,7 +43,7 @@ base:
     - match: compound
     - master.aws
     - master_utils.dns
-  'roles:elasticsearch and G@environment:operations':
+  'G@roles:elasticsearch and G@environment:operations':
     - match: compound
     - elastic-stack.elasticsearch
     - elastic-stack.elasticsearch.plugins
