@@ -10,7 +10,7 @@ etl_dependencies:
   - python3-pip
   - git
   - awscli
-  - libmysql-dev
+  - libmysqlclient-dev
 
 mitx_residential_etl:
   settings:
