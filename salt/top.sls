@@ -43,8 +43,8 @@ base:
     - match: compound
     - master.aws
     - master_utils.dns
-  'roles:elasticsearch':
-    - match: grain
+  'roles:elasticsearch and G@environment:operations':
+    - match: compound
     - elastic-stack.elasticsearch
     - elastic-stack.elasticsearch.plugins
     - datadog.plugins
