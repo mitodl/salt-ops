@@ -181,7 +181,7 @@ edx:
 
     EDXAPP_GOOGLE_ANALYTICS_ACCOUNT: {{ edxapp_google_analytics_account }}
     EDXAPP_BUGS_EMAIL: mitx-support@mit.edu
-    EDXAPP_COMMENTS_SERVICE_KEY: __vault__:gen_if_missing:secret-residential/global/forum-api-key>data>value
+    EDXAPP_COMMENTS_SERVICE_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
     EDXAPP_LMS_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
     EDXAPP_CONTACT_EMAIL: mitx-support@mit.edu
