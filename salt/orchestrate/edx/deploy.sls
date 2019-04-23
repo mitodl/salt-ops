@@ -12,7 +12,7 @@
 {% set ANSIBLE_FLAGS = salt.environ.get('ANSIBLE_FLAGS') %}
 {% set defined_purposes = env_data.purposes %}
 {% set launch_date = salt.status.time(format="%Y-%m-%d") %}
-{% set edx_tracking_bucket = 'odl-residential-tracking-backup' %}
+{% set edx_tracking_bucket = 'odl-{}-tracking-backup'.format(BUSINESS_UNIT) %}
 
 load_edx_cloud_profile:
   file.managed:
@@ -84,7 +84,7 @@ ensure_tracking_bucket_exists:
 
 ensure_instance_profile_exists_for_tracking:
   boto_iam_role.present:
-    - name: edx-instance-role
+    - name: edx-{{ ENVIRONMENT }}-instance-role
     - delete_policies: False
     - policies:
         edx-old-tracking-logs-policy:
