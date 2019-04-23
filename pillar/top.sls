@@ -265,6 +265,7 @@ base:
     - fluentd.ocw_db
   'roles:ocw-origin':
     - match: grain
+    - apps.ocw
     - letsencrypt.ocw_origin
     - nginx.ocw_origin
     - fluentd.ocw_origin
