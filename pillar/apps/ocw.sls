@@ -1,4 +1,4 @@
-{% set ENVIRONMENT = salt.grains.get('environment') %}
+{% set ENVIRONMENT = salt.grains.get('ocw-environment') %}
 {% set ROLES = salt.grains.get('roles') %}
 
 ocw:
