@@ -3,7 +3,7 @@
 
 vault:
   roles:
-    {% for env in ['mitx-qa', 'mitx-production', 'mitxpro-qa'] %}
+    {% for env in ['mitx-qa', 'mitx-production', 'mitxpro-qa', 'mitxpro-production'] %}
     admin-mysql-{{ env }}:
       backend: mysql-{{ env }}
       name: admin
