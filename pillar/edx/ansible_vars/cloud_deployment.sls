@@ -42,6 +42,8 @@
 {% set efs_id = 'fs-1f27ae56' %}
 {% elif environment == 'mitxpro-qa' %}
 {% set efs_id = 'fs-b3865653' %}
+{% elif environment == 'mitxpro-production' %}
+{% set efs_id = 'fs-68918b88' %}
 {% endif %}
 {% set edxapp_google_analytics_account = '' %}
 {% if 'live' in purpose %}
