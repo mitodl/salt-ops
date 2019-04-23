@@ -3,8 +3,10 @@
 {% set db_password = salt.pillar.get('ocw:db_password') %}
 {% set cms_username = salt.pillar.get('ocw:cms_username') %}
 {% set cms_password = salt.pillar.get('ocw:cms_password') %}
-{% set dspace_connection_user = salt.pillar.get('ocw:dspace_connection_user') %}
-{% set dspace_connection_password = salt.pillar.get('ocw:dspace_connection_password') %}
+{% set dspace_prod_connection_user = salt.pillar.get('ocw:dspace_prod_connection_user') %}
+{% set dspace_prod_connection_password = salt.pillar.get('ocw:dspace_prod_connection_password') %}
+{% set dspace_test_connection_user = salt.pillar.get('ocw:dspace_test_connection_user') %}
+{% set dspace_test_connection_password = salt.pillar.get('ocw:dspace_test_connection_password') %}
 {% set engines_conf = salt.pillar.get('ocw:engines_conf') %}
 
 [engine]
