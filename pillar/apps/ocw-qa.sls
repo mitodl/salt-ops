@@ -1,7 +1,7 @@
 
 {% set dbhost_ipaddr_data =
      salt.saltutil.runner('mine.get',
-                          tgt='G@roles:ocw-db and G@environment:ocw-qa',
+                          tgt='G@roles:ocw-db and G@ocw-environment:qa',
                           fun='network.ip_addrs',
                           tgt_type='compound')
 %}
