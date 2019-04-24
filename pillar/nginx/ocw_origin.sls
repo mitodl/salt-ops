@@ -81,4 +81,4 @@ nginx:
                         - =404
                     - error_page:
                         - '404'
-                        - jsp/error.html
+                        - /jsp/error.html
