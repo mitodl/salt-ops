@@ -8,7 +8,7 @@
 #
 
 {% set ocwcms_branch = salt.pillar.get('ocw:ocwcms_branch', 'master') %}
-{% set roles = salt.pillar.get('roles') %}
+{% set roles = salt.grains.get('roles') %}
 
 ensure_that_rsync_is_installed:
   pkg.installed:
