@@ -36,7 +36,7 @@ heroku:
   config_vars:
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-xpro-app-{{ env_data.env_name }}>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-xpro-app-{{ env_data.env_name }}>data>secret_key
-    AWS_STORAGE_BUCKET_NAME: 'xpro-{{ env_data.env_name }}'
+    AWS_STORAGE_BUCKET_NAME: 'xpro-app-{{ env_data.env_name }}'
     GA_TRACKING_ID: {{ env_data.ga_id }}
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_FROM_EMAIL: 'MIT xPRO <no-reply@xpro-{{ env_data.env_name }}-mail.odl.mit.edu>'
