@@ -2,7 +2,14 @@
 
 {% if salt['file.directory_exists'](engines_basedir) %}
 
-{% set mailto = salt.pillar.get('ocw:cron_mailto') %}
+{% set log_dir = '/var/log/engines-cron' %}
+
+ensure_state_of_cron_log_directory:
+  file.directory:
+    - name: {{ log_dir }}
+    - user: ocwuser
+    - group: ocwuser
+    - dir_mode: '0755'
 
 manage_engines_conf:
   file.managed:
@@ -11,31 +18,19 @@ manage_engines_conf:
     - source: salt://apps/ocw/templates/engines.conf.jinja
     - user: ocwuser
     - group: ocwuser
-    - mode: 0640
-
-ensure_state_of_mailto_env_var_ocwuser:
-  cron.env_present:
-    - user: ocwuser
-    - name: MAILTO
-    - value: {{ mailto }}
-
-ensure_state_of_mailto_env_var_root:
-  cron.env_present:
-    - user: root
-    - name: MAILTO
-    - value: {{ mailto }}
+    - mode: '0640'
 
 generate_ocw_news_feeds_cronjob:
   cron.present:
     - identifier: generate_ocw_news_feeds
-    - name: {{ engines_basedir }}/generate_ocw_news_feeds.sh
+    - name: {{ engines_basedir }}/generate_ocw_news_feeds.sh 2>&1 > {{ log_dir }}/generate_ocw_news_feeds.log
     - user: ocwuser
     - minute: 0
 
 youtube_csv_file_cronjob:
   cron.present:
     - identifier: generate_youtube_videos_csv
-    - name: {{ engines_basedir }}/generate_youtube_videos_tab.sh
+    - name: {{ engines_basedir }}/generate_youtube_videos_tab.sh 2>&1 > {{ log_dir }}/generate_youtube_videos_tab.log
     - user: ocwuser
     - minute: 1
     - hour: 6
@@ -47,7 +42,7 @@ youtube_csv_file_cronjob:
 run_generate_url_for_sitemap_cronjob:
   cron.present:
     - identifier: run_generate_url_for_sitemap
-    - name: {{ engines_basedir }}/runGenerateURLforSitemap.sh
+    - name: {{ engines_basedir }}/runGenerateURLforSitemap.sh 2>&1 > {{ log_dir }}/run_generate_url_for_sitemap.log
     - user: ocwuser
     - minute: 4
     - hour: 4
@@ -55,7 +50,7 @@ run_generate_url_for_sitemap_cronjob:
 run_aka_scripts_cronjob:
   cron.present:
     - identifier: run_aka_scripts
-    - name: {{ engines_basedir }}/run_aka_scripts.sh {{ salt.pillar.get('ocw:engines_conf:production_host') }}
+    - name: {{ engines_basedir }}/run_aka_scripts.sh {{ salt.pillar.get('ocw:engines_conf:production_host') }} 2>&1 > {{ log_dir }}/run_aka_scripts.log
     - user: ocwuser
     - minute: 4
     - hour: 5
@@ -63,14 +58,14 @@ run_aka_scripts_cronjob:
 transfer_edx_map_cronjob:
   cron.present:
     - identifier: transfer_edx_map_json
-    - name: {{ engines_basedir }}/transfer_edxmap_json.sh
+    - name: {{ engines_basedir }}/transfer_edxmap_json.sh 2>&1 > {{ log_dir }}/transfer_edxmap_json.log
     - user: root
     - minute: '*/5'
 
 daily_broken_links_update_cronjob:
   cron.present:
     - identifier: run_broken_links_updater
-    - name: {{ engines_basedir }}/run_broken_links_updater.sh
+    - name: {{ engines_basedir }}/run_broken_links_updater.sh 2>&1 > {{ log_dir }}/run_broken_links_updater.log
     - user: ocwuser
     - minute: 7
     - hour: 4
@@ -79,7 +74,7 @@ daily_broken_links_update_cronjob:
 copy_mitx_archived_courses_cronjob:
   cron.present:
     - identifier: copy_mitx_archived_courses
-    - name: {{ engines_basedir }}/copy_mitx_archived_courses_xml_from_CMS.sh
+    - name: {{ engines_basedir }}/copy_mitx_archived_courses_xml_from_CMS.sh 2>&1 > {{ log_dir }}/copy_mitx_archived_courses_xml_from_CMS.log
     - user: root
     - minute: 30
     - hour: 4
@@ -87,7 +82,7 @@ copy_mitx_archived_courses_cronjob:
 mitx_feeds_cronjob:
   cron.present:
     - identifier: generate_mitx_feeds
-    - name: {{ engines_basedir }}/generate_mitx_feeds.sh
+    - name: {{ engines_basedir }}/generate_mitx_feeds.sh 2>&1 > {{ log_dir }}/generate_mitx_feeds.log
     - user: ocwuser
     - minute: 40
     - hour: 4
@@ -95,7 +90,7 @@ mitx_feeds_cronjob:
 check_cache_size_cronjob:
   cron.present:
     - identifier: check_cache_size
-    - name: {{ engines_basedir }}/check_cache_size.sh
+    - name: {{ engines_basedir }}/check_cache_size.sh 2>&1 > {{ log_dir }}/check_cache_size.log
     - user: root
     - minute: 50
     - hour: 8
