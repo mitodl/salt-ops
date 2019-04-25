@@ -39,6 +39,9 @@ nginx:
                     - '[::]:80'
                 - location ~ /.well-known:
                     - allow: all
+                - location /courses/edx_courses.json:
+                    - root: /var/www/ocw
+                    - allow: all
                 - location /:
                     - return: 301 https://$host$request_uri
             - server:
