@@ -212,6 +212,7 @@ base:
     - fluentd.config
     - logrotate
     - apps.ocw.engines
+    - apps.ocw.cms_plone
     - apps.ocw.sync_repo
     - apps.ocw.symlinks_cms
   'roles:ocw-db':
