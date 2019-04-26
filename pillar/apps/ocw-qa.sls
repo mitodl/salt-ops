@@ -53,3 +53,6 @@ ocw:
       dspace_host_port: 80
       dspace_endpoint_prefix: http://dspace.mit.edu/sword/deposit/
       deposit_uri_lookup_file_name: DepositURILookup.xml
+  zope_conf:
+    base_site_url: https:///ocw-qa-origin.odl.mit.edu
+    base_staging_site_url: https://ocw-qa-ocw2.odl.mit.edu
