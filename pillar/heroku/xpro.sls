@@ -8,6 +8,7 @@
       'ga_id': '',
       'release_branch': 'master',
       'log_level': 'DEBUG',
+      'logout_redirect_url': 'https://xpro-ci.odl.mit.edu',
       'OPENEDX_API_BASE_URL': 'https://xpro-qa-sandbox.mitx.mit.edu',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay'
       },
@@ -16,6 +17,7 @@
       'ga_id': '',
       'release_branch': 'release-candidate',
       'log_level': 'INFO',
+      'logout_redirect_url': 'https://xpro-ci.odl.mit.edu',
       'OPENEDX_API_BASE_URL': 'https://xpro-qa.mitx.mit.edu',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay'
       },
@@ -24,12 +26,14 @@
       'ga_id': '',
       'release_branch': 'release',
       'log_level': 'WARN',
-      'OPENEDX_API_BASE_URL': 'https://xpro.mitx.mit.edu'
+      'logout_redirect_url': 'https://xpro.odl.mit.edu',
+      'OPENEDX_API_BASE_URL': 'https://xpro.mitx.mit.edu',
+      'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://secureacceptance.cybersource.com/pay'
       }
 } %}
 {% set env_data = env_dict[environment] %}
 {% set business_unit = 'mitxpro' %}
-{% set pg_creds = salt.vault.cached_read('postgres-{env}-odlvideo/creds/odlvideo'.format(env=ENVIRONMENT)) %}
+{% set pg_creds = salt.vault.cached_read('postgres-production-apps-mitxpro/creds/mitxpro', cache_prefix='heroku-mitxpro') %}
 {% set cybersource_creds = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.env_name ~ '/cybersource') %}
 
 proxy:
@@ -48,10 +52,10 @@ heroku:
     CYBERSOURCE_SECURE_ACCEPTANCE_URL: {{ env_data.CYBERSOURCE_SECURE_ACCEPTANCE_URL}}
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.data.security_key }}
     {% if 'production' in env_data %}
-    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}
+    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxproproduction
     {% endif %}
     GA_TRACKING_ID: {{ env_data.ga_id }}
-    LOGOUT_REDIRECT_URL: 'https://xpro-{{ env_data.env_name }}.odl.mit.edu'
+    LOGOUT_REDIRECT_URL: {{ env_data.logout_redirect_url }}
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_FROM_EMAIL: 'MIT xPRO <no-reply@xpro-{{ env_data.env_name }}-mail.odl.mit.edu>'
     MAILGUN_SENDER_DOMAIN: 'xpro-{{ env_data.env_name }}-mail.odl.mit.edu'
@@ -68,7 +72,7 @@ heroku:
     MITXPRO_FROM_EMAIL: 'MIT xPro <xpro-{{ env_data.env_name }}-support@mit.edu>'
     MITXPRO_LOG_LEVEL: {{ env_data.log_level }}
     MITXPRO_OAUTH_PROVIDER: 'mitxpro-oauth2'
-    MITXPRO_REGISTRATION_ACCESS_TOKEN:  __vault__::secret-{{ business_unit }}/{{ environment }}/xpro-registration-access-token>data>value
+    MITXPRO_REGISTRATION_ACCESS_TOKEN:  __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/xpro-registration-access-token>data>value
     MITXPRO_SECURE_SSL_REDIRECT: True
     MITXPRO_SUPPORT_EMAIL: 'xpro-{{ env_data.env_name }}-support@mit.edu'
     MITXPRO_USE_S3: True
