@@ -32,6 +32,7 @@ edx:
       terms_of_service: "hidden"
       city: "hidden"
       country: "hidden"
+    EDXAPP_SUPPORT_SITE_LINK: 'https://xpro.zendesk.com/hc/en-us/requests/new'
     EDXAPP_LMS_ENV_EXTRA:
       COURSE_MODE_DEFAULTS:
         name: "Audit"
