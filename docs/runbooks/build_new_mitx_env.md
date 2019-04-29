@@ -23,18 +23,28 @@ In order to provision a new MITx environment the following steps are necessary:
   ```
 - Add new environment name to pillar/vault/roles/mitx.sls
 - Update consul cluster config
-    `salt consul-{{ environment }}-*` state.sls consul.config
+    `salt consul-{{ environment }}-* state.sls consul.config`
 - Create the MySQL schemas
   `VPC_NAME='My VPC' ENVIRONMENT=my-vpc BUSINESS_UNIT=residential salt-run state.orchestrate orchestrate.edx.mysql_schemas`
+- Create EFS volume and add its efs_id to pillar/edx/ansible_vars/cloud_deployment.sls
+- Generate edxapp xqueue django auth credentials
+    `salt master vault.write secret-{{ business_unit }}/{{ environment }}/edxapp-xqueue-django-auth-{{ purpose }} username=edxapp password='salt master vault.write transit/random/42 --output json | jq .master.data.random_bytes'`
+- If production deployment, create a Cloudfront deployment
 - Build the edX app and worker AMI's
   ```
   export ENVIRONMENT=my-vpc
   export PURPOSE=residential
   salt-run state.orchestrate orchestrate.edx.build_ami
   ```
+- Run db migration
+    `salt edx*{{ environment }}*base state.highstate pillar="{'edx': {'ansible_flags': '-e migrate_db=yes'}}"`
 - Update SDB to point to the AMI and then destory instances
-    `salt-run state.orchestrate orchestrate.edx.update_edxapp_ami_sdb`
+    `export ENVIRONMENT=my-vpc salt-run state.orchestrate orchestrate.edx.update_edxapp_ami_sdb`
 - Build instances using new AMI's:
     `sudo -E ANSIBLE_FLAGS='--tags install:configuration' PURPOSES='my-purpose' ENVIRONMENT='my-env' salt-run -l debug state.orchestrate orchestrate.edx.deploy`
 - Deploy the AWS ELB
-  `VPC_NAME='My VPC' ENVIRONMENT=my-vpc BUSINESS_UNIT=residential salt-run state.orchestrate orchestrate.aws.mitx_elb`
+  ```
+  export ENVIRONMENT=my-vpc
+  export PURPOSE=residential
+  salt-run state.orchestrate orchestrate.aws.mitx_elb
+  ```
