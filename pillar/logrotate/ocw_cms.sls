@@ -21,8 +21,8 @@ logrotate:
   ocw_publishing_logs:
     name: /mnt/ocwfileshare/OCWEngines/logs/*.{log|out}
     options:
-      - rotate 3
-      - monthly
+      - rotate 7
+      - daily
       - copytruncate
       - notifempty
       - compress
