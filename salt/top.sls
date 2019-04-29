@@ -210,7 +210,7 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
-    - logrotate
+    - utils.logrotate
     - apps.ocw.engines
     - apps.ocw.cms_plone
     - apps.ocw.sync_repo
@@ -220,7 +220,7 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
-    - logrotate
+    - utils.logrotate
   'roles:sandbox':
     - match: grain
     - edx.prod
