@@ -19,7 +19,7 @@ logrotate:
       - delaycompress
   {% if salt.grains.get('ocw-cms-role') == 'engine' %}
   ocw_publishing_logs:
-    name: /mnt/ocwfileshare/OCWEngines/logs/*.{log|out}
+    name: /mnt/ocwfileshare/OCWEngines/logs/*.log
     options:
       - rotate 7
       - daily
