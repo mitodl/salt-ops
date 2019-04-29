@@ -17,7 +17,7 @@ logrotate:
       - notifempty
       - compress
       - delaycompress
-  {% if salt['file.directory_exists']('/mnt/ocwfileshare/OCWEngines') %}
+  {% if salt.grains.get('ocw-cms-role') == 'engine' %}
   ocw_publishing_logs:
     name: /mnt/ocwfileshare/OCWEngines/logs/*.{log|out}
     options:
