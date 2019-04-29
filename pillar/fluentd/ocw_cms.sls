@@ -60,6 +60,23 @@ fluentd:
                 attrs:
                   - '@type': apache2
                   - keep_time_key: 'true'
+{% if salt.grains.get('ocw-cms-role') == 'engine' %}
+        - directive: source
+          attrs:
+            - '@id': ocwcms_publishing_log
+            - '@type': tail
+            - enable_watch_timer: 'false'
+            - tag: ocwcms.engine
+            - path: /mnt/ocwfileshare/OCWEngines/logs/publishing_logs.log
+            - pos_file: /mnt/ocwfileshare/OCWEngines/logs/publishing_logs.pos
+            - nested_directives:
+              - directive: parse
+                attrs:
+                  - '@type': multiline
+                  - format_firstline: '/^\d{4}-\d{2}-\d{2}/'
+                  - format1: '/(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3})/'
+                  - format2: '/ - \w+ - (?<log_level>[A-Z]+) - (?<message>.*)/'
+{% endif %}
         - {{ record_tagging | yaml() }}
         - directive: match
           directive_arg: '**'
