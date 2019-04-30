@@ -18,7 +18,6 @@ create_db_app_role_{{ dbconfig.name }}:
     - name: {{ dbconfig.name }}
     - createdb: False
     - createroles: False
-    - createuser: False
     - login: False
     - superuser: False
     - inherit: False
