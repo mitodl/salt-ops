@@ -824,7 +824,7 @@ environments:
           multi_az: False
           # This needs to be changed if/when we redeploy this host.
           # It is only like this to fix Consul pillar rendering
-          engine: postgres
+          engine: postgresql
           vault_plugin: postgresql-database-plugin
           db_instance_class: db.t2.small
           allocated_storage: 100
@@ -833,7 +833,7 @@ environments:
           multi_az: False
           # This needs to be changed if/when we redeploy this host.
           # It is only like this to fix Consul pillar rendering
-          engine: postgres
+          engine: postgressql
           vault_plugin: postgresql-database-plugin
           db_instance_class: db.t2.micro
           allocated_storage: 100
