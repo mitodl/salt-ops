@@ -143,6 +143,32 @@ elastic_stack:
                       environment.raw: mitx-production
                   - term:
                       fluentd_tag.raw: edx.lms
+      - name: edx_session_save_failure
+        settings:
+          name: MITx or MITxPro could not save its session
+          description: >-
+            The call to request.session.save() failed in
+            django.contrib.sessions.middleware.py, usually as the result of
+            not being able to write to the Memcache layer.
+          opsgenie_key: {{ opsgenie_key }}
+          opsgenie_priority: P2
+          type: frequency
+          index: logstash-*
+          num_events: 1
+          timeframe:
+            minutes: 5
+          alert:
+            - opsgenie
+          alert_text: "MITx or MITxPro could not save its session (Memcache failure)"
+          filter:
+            - bool:
+                must:
+                  - match:
+                      message: session was deleted before the request completed
+                  - term:
+                      environment.raw: mitx*
+                  - term:
+                      fluentd_tag.raw: edx.lms
       - name: rapid_response_xblock_status
         settings:
           name: Rapid Response XBlock status changed
