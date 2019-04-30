@@ -9,7 +9,8 @@
 {% if dbconfig.engine == 'postgres' %}
 {% set postgresql_host = 'postgres-{}.service.{}.consul'.format(dbconfig.name, ENVIRONMENT) %}
 {% set postgresql_port = 5432 %}
-{% set vault_master_pass_path = 'secret-' ~ BUSINESS_UNIT ~ '/' ~ ENVIRONMENT ~ '/' ~ dbconfig.engine ~ '-' ~ dbconfig.purpose ~ '-master-password' %}
+{% set dbpurpose = dbconfig.pop('purpose', 'shared') %}
+{% set vault_master_pass_path = 'secret-' ~ BUSINESS_UNIT ~ '/' ~ ENVIRONMENT ~ '/' ~ dbconfig.engine ~ '-' ~ dbpurpose ~ '-master-password' %}
 {% set master_pass = salt.vault.read(vault_master_pass_path).data.value %}
 
 create_db_app_role_{{ dbconfig.name }}:
