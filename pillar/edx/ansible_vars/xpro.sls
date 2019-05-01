@@ -1,9 +1,15 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
-{% set business_unit = salt.grains.get('business_unit', 'residential') %}
+{% set business_unit = salt.grains.get('business_unit', 'mitxpro') %}
 {% set purpose = salt.grains.get('purpose', 'xpro-qa') %}
-{% set environment = salt.grains.get('environment', 'mitx-qa') %}
+{% set environment = salt.grains.get('environment', 'mitxpro-qa') %}
 {% set env_data = env_settings.environments[environment] %}
 {% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
+{% set env_mapping_dict = {
+    'sandbox': 'ci',
+    'xpro-qa': 'rc',
+    'xpro-production': ''
+  } %}
+{% set heroku_env = env_mapping_dict[purpose] %}
 
 edx:
   ansible_vars:
@@ -17,6 +23,11 @@ edx:
     #   ROOT_PATH: 'ingest/'
     # EDXAPP_VIDEO_CDN_URLS:
     #   EXAMPLE_COUNTRY_CODE: "http://example.com/edx/video?s3_url="
+    {% if 'sandbox' or 'qa' in purpose %}
+    EDXAPP_IDA_LOGOUT_URI_LIST: ['https://xpro-{{ heroku_env }}.odl.mit.edu/logout']
+    {% elif 'production' in purpose %}
+    EDXAPP_IDA_LOGOUT_URI_LIST: ['https://xpro.odl.mit.edu/logout']
+    {% endif %}
     EDXAPP_PRIVATE_REQUIREMENTS:
       - name: mitxpro-openedx-extensions==0.1.0
       - name: social-auth-mitxpro==0.2
