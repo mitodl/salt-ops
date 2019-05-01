@@ -1,5 +1,9 @@
 {% set ENVIRONMENT = salt.grains.get('environment', 'dev') %}
 {% set mm_es = salt.vault.read('secret-micromasters/production/elasticsearch-auth-key').data.value.split(':') %}
+{% set heroku_api_key = salt.vault.read('secret-operations/global/heroku/api_key').data.value %}
+{% set xpro_rc_pg = salt.heroku.list_app_config_vars('xpro-rc', api_key=heroku_api_key)['DATABASE_URL'] %}
+{% set xpro_rc_db_user, xpro_rc_db_pass = xpro_rc_pg.split('/')[-1].split('@')[0].split(':') %}
+{% set xpro_rc_db_host, xpro_rc_db_port = xpro_rc_pg.split('/')[-1].split('@')[1].split(':') %}
 
 redash:
   data_sources:
@@ -49,3 +53,19 @@ redash:
         basic_auth_user: {{ mm_es[0] }}
         basic_auth_password: {{ mm_es[1] }}
         server: https://micromasters-elasticsearch.odl.mit.edu/micromasters_private_enrollment_default
+    - name: MITxPro RC
+      type: pg
+      options:
+        dbname: {{ xpro_rc_pg.split('/')[-1] }}
+        host: {{ xpro_rc_db_host }}
+        port: {{ xpro_rc_db_port }}
+        user: {{ xpro_rc_db_user }}
+        password: {{ xpro_rc_db_pass }}
+    - name: MITxPro Production
+      type: pg
+      options:
+        dbname: mitxproproduction
+        host: postgres-mitxpro.service.production-apps.consul
+        port: 5432
+        user: __vault__:cache:postgresql-production-apps-mitxpropro/creds/readonly>data>username
+        password: __vault__:cache:postgresql-production-apps-mitxpro/creds/readonly>data>password
