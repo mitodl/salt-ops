@@ -5,8 +5,8 @@
 {% set env_data = env_settings.environments[environment] %}
 {% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
 {% set heroku_xpro_env_logout_mapping = {
-    'sandbox': 'https://xpro-ci.odl.mit.edu/logout'
-    'xpro-qa': 'https://xpro-rc.odl.mit.edu/logout'
+    'sandbox': 'https://xpro-ci.odl.mit.edu/logout',
+    'xpro-qa': 'https://xpro-rc.odl.mit.edu/logout',
     'xpro-production': 'https://xpro.odl.mit.edu/logout'
   } %}
 {% set heroku_env = env_mapping_dict[purpose] %}
