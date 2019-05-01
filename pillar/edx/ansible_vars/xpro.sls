@@ -4,10 +4,10 @@
 {% set environment = salt.grains.get('environment', 'mitxpro-qa') %}
 {% set env_data = env_settings.environments[environment] %}
 {% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
-{% set env_mapping_dict = {
-    'sandbox': 'ci',
-    'xpro-qa': 'rc',
-    'xpro-production': ''
+{% set heroku_xpro_env_logout_mapping = {
+    'sandbox': 'https://xpro-ci.odl.mit.edu/logout'
+    'xpro-qa': 'https://xpro-rc.odl.mit.edu/logout'
+    'xpro-production': 'https://xpro.odl.mit.edu/logout'
   } %}
 {% set heroku_env = env_mapping_dict[purpose] %}
 
@@ -23,11 +23,7 @@ edx:
     #   ROOT_PATH: 'ingest/'
     # EDXAPP_VIDEO_CDN_URLS:
     #   EXAMPLE_COUNTRY_CODE: "http://example.com/edx/video?s3_url="
-    {% if 'sandbox' or 'qa' in purpose %}
-    EDXAPP_IDA_LOGOUT_URI_LIST: ['https://xpro-{{ heroku_env }}.odl.mit.edu/logout']
-    {% elif 'production' in purpose %}
-    EDXAPP_IDA_LOGOUT_URI_LIST: ['https://xpro.odl.mit.edu/logout']
-    {% endif %}
+    EDXAPP_IDA_LOGOUT_URI_LIST: [{{ heroku_xpro_env_logout_mapping[purpose] }}]
     EDXAPP_PRIVATE_REQUIREMENTS:
       - name: mitxpro-openedx-extensions==0.1.0
       - name: social-auth-mitxpro==0.2
