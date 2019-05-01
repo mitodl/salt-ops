@@ -9,7 +9,7 @@
     'xpro-qa': 'https://xpro-rc.odl.mit.edu/logout',
     'xpro-production': 'https://xpro.odl.mit.edu/logout'
   } %}
-{% set heroku_env = env_mapping_dict[purpose] %}
+{% set heroku_env = heroku_xpro_env_logout_mapping[purpose] %}
 
 edx:
   ansible_vars:
