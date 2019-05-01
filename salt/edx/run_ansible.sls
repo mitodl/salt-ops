@@ -32,6 +32,14 @@ replace_nginx_static_asset_template_fragment:
     - require:
         - git: clone_edx_configuration
 
+manage_extra_locations_lms_config:
+  file.managed:
+    - name: {{ repo_path }}/playbooks/roles/nginx/templates/edx/app/nginx/sites-available/extra_locations_lms.j2
+    - template: jinja
+    - source: salt://edx/templates/extra_locations_lms.j2
+    - require:
+        - git: clone_edx_configuration
+
 add_mitx_devstack_playbook:
   file.managed:
     - name: {{ repo_path }}/playbooks/mitx_devstack.yml

@@ -167,6 +167,7 @@ base:
     - datadog.supervisord-integration
   'P@roles:(edx|edx-worker|sandbox) and P@environment:mitxpro.*':
     - match: compound
+    - edx.mitxpro
     - edx.ansible_vars.xpro
   'P@roles:(edx|edx-worker) and G@environment:mitx-qa':
     - match: compound
