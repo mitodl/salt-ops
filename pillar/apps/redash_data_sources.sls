@@ -67,5 +67,5 @@ redash:
         dbname: mitxproproduction
         host: postgres-mitxpro.service.production-apps.consul
         port: 5432
-        user: __vault__:cache:postgresql-production-apps-mitxpropro/creds/readonly>data>username
-        password: __vault__:cache:postgresql-production-apps-mitxpro/creds/readonly>data>password
+        user: __vault__:cache:postgres-production-apps-mitxpro/creds/readonly>data>username
+        password: __vault__:cache:postgres-production-apps-mitxpro/creds/readonly>data>password
