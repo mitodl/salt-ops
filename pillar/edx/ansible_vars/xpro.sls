@@ -23,7 +23,7 @@ edx:
     #   ROOT_PATH: 'ingest/'
     # EDXAPP_VIDEO_CDN_URLS:
     #   EXAMPLE_COUNTRY_CODE: "http://example.com/edx/video?s3_url="
-    EDXAPP_IDA_LOGOUT_URI_LIST: [{{ heroku_xpro_env_logout_mapping[purpose] }}]
+    EDXAPP_IDA_LOGOUT_URI_LIST: ['{{ heroku_xpro_env_logout_mapping[purpose] }}']
     EDXAPP_PRIVATE_REQUIREMENTS:
       - name: mitxpro-openedx-extensions==0.1.0
       - name: social-auth-mitxpro==0.2
