@@ -2,8 +2,8 @@
 {% set mm_es = salt.vault.read('secret-micromasters/production/elasticsearch-auth-key').data.value.split(':') %}
 {% set heroku_api_key = salt.vault.read('secret-operations/global/heroku/api_key').data.value %}
 {% set xpro_rc_pg = salt.heroku.list_app_config_vars('xpro-rc', api_key=heroku_api_key)['DATABASE_URL'] %}
-{% set xpro_rc_db_user, xpro_rc_db_pass = xpro_rc_pg.split('/')[-1].split('@')[0].split(':') %}
-{% set xpro_rc_db_host, xpro_rc_db_port = xpro_rc_pg.split('/')[-1].split('@')[1].split(':') %}
+{% set xpro_rc_db_user, xpro_rc_db_pass = xpro_rc_pg.split('/')[-2].split('@')[0].split(':') %}
+{% set xpro_rc_db_host, xpro_rc_db_port = xpro_rc_pg.split('/')[-2].split('@')[1].split(':') %}
 
 redash:
   data_sources:
