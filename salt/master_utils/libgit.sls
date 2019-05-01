@@ -1,7 +1,7 @@
 {% set libgit = salt.grains.filter_by({
     'default': {
-        'tag': 'v0.25.1',
-        'hash': 'sha256=7ae8e699ff7ff9a1fa702249140ee31ea6fd556bf7968e84e38165870667bcb1',
+        'release': '0.27.3',
+        'hash': 'sha256=50a57bd91f57aa310fb7d5e2a340b3779dc17e67b4e7e66111feac5c2432f1a550a57bd91f57aa310fb7d5e2a340b3779dc17e67b4e7e66111feac5c2432f1a5',
     },
     'Debian': {
         'pkgs': [
@@ -36,14 +36,14 @@ install_libgit_build_tools:
 download_libgit_source:
   archive.extracted:
     - name: /tmp/libgit2
-    - source: https://github.com/libgit2/libgit2/archive/{{ libgit.tag }}.tar.gz
+    - source: https://github.com/libgit2/libgit2/archive/v{{ libgit.release }}.tar.gz
     - source_hash: {{ libgit.hash }}
     - archive_format: tar
     - tar_options: xv
 
 compile_libgit:
   cmd.run:
-    - cwd: /tmp/libgit2/libgit2-{{ libgit.tag.strip('v') }}
+    - cwd: /tmp/libgit2/libgit2-{{ libgit.release }}
     - name: cmake . && make install && ldconfig
     - creates: /usr/local/lib/libgit2.so
     - require:
@@ -52,6 +52,6 @@ compile_libgit:
 
 install_pygit:
   pip.installed:
-    - name: pygit2
+    - name: pygit2=={{ libgit.release }}
     - require:
         - cmd: compile_libgit

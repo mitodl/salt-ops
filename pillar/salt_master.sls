@@ -52,7 +52,11 @@ schedule:
     function: state.sls
     args:
       - edx.maintenance_tasks
+
 salt_master:
+  libgit:
+    release: '0.27.3'
+    hash: 50a57bd91f57aa310fb7d5e2a340b3779dc17e67b4e7e66111feac5c2432f1a5
   overrides:
     pkgs:
       - build-essential
