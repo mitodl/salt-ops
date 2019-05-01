@@ -8,7 +8,7 @@
       'ga_id': '',
       'release_branch': 'master',
       'log_level': 'DEBUG',
-      'logout_redirect_url': 'https://xpro-ci.odl.mit.edu',
+      'logout_redirect_url': 'https://xpro-qa-sandbox.mitx.mit.edu/logout',
       'OPENEDX_API_BASE_URL': 'https://xpro-qa-sandbox.mitx.mit.edu',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay'
       },
@@ -17,7 +17,7 @@
       'ga_id': '',
       'release_branch': 'release-candidate',
       'log_level': 'INFO',
-      'logout_redirect_url': 'https://xpro-ci.odl.mit.edu',
+      'logout_redirect_url': 'https://xpro-qa.mitx.mit.edu/logout',
       'OPENEDX_API_BASE_URL': 'https://xpro-qa.mitx.mit.edu',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay'
       },
@@ -26,7 +26,7 @@
       'ga_id': '',
       'release_branch': 'release',
       'log_level': 'WARN',
-      'logout_redirect_url': 'https://xpro.odl.mit.edu',
+      'logout_redirect_url': 'https://xpro.mitx.mit.edu/logout',
       'OPENEDX_API_BASE_URL': 'https://xpro.mitx.mit.edu',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://secureacceptance.cybersource.com/pay'
       }
