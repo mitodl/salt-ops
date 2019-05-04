@@ -7,7 +7,8 @@
       'env_name': 'ci',
       'ga_id': '',
       'release_branch': 'master',
-      'log_level': 'DEBUG',
+      'app_log_level': 'INFO',
+      'sentry_log_level': 'WARN',
       'logout_redirect_url': 'https://xpro-qa-sandbox.mitx.mit.edu/logout',
       'OPENEDX_API_BASE_URL': 'https://xpro-qa-sandbox.mitx.mit.edu',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay'
@@ -16,7 +17,8 @@
       'env_name': 'rc',
       'ga_id': '',
       'release_branch': 'release-candidate',
-      'log_level': 'INFO',
+      'app_log_level': 'INFO',
+      'sentry_log_level': 'WARN',
       'logout_redirect_url': 'https://xpro-qa.mitx.mit.edu/logout',
       'OPENEDX_API_BASE_URL': 'https://xpro-qa.mitx.mit.edu',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay'
@@ -25,7 +27,8 @@
       'env_name': 'production',
       'ga_id': '',
       'release_branch': 'release',
-      'log_level': 'WARN',
+      'app_log_level': 'INFO',
+      'sentry_log_level': 'WARN',
       'logout_redirect_url': 'https://xpro.mitx.mit.edu/logout',
       'OPENEDX_API_BASE_URL': 'https://xpro.mitx.mit.edu',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://secureacceptance.cybersource.com/pay'
@@ -70,7 +73,7 @@ heroku:
     MITXPRO_EMAIL_USER: __vault__::secret-operations/global/mit-smtp>data>relay_username
     MITXPRO_ENVIRONMENT: {{ env_data.env_name }}
     MITXPRO_FROM_EMAIL: 'MIT xPro <xpro-{{ env_data.env_name }}-support@mit.edu>'
-    MITXPRO_LOG_LEVEL: {{ env_data.log_level }}
+    MITXPRO_LOG_LEVEL: {{ env_data.app_log_level }}
     MITXPRO_OAUTH_PROVIDER: 'mitxpro-oauth2'
     MITXPRO_REGISTRATION_ACCESS_TOKEN:  __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/xpro-registration-access-token>data>value
     MITXPRO_SECURE_SSL_REDIRECT: True
@@ -85,5 +88,5 @@ heroku:
     PGBOUNCER_MIN_POOL_SIZE: 5
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-secret-key>data>value
     SENTRY_DSN: __vault__::secret-operations/global/xpro/sentry-dsn>data>value
-    SENTRY_LOG_LEVEL: {{ env_data.log_level }}
+    SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
