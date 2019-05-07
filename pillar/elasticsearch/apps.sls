@@ -33,6 +33,82 @@ elasticsearch:
               - localhost
               - 127.0.0.1
               - {{ env_data.network_prefix }}.0.0/16
+          - name: Access for micromasters production index with HTTP Auth
+            type: allow
+            indices:
+              - micromasters
+              - 'micromasters_*'
+            accept_x-forwarded-for_header: 'true'
+            actions:
+              - 'indices:*'
+            auth_key: __vault__::secret-micromasters/production/elasticsearch-auth-key>data>value
+          - name: Access for micromasters RC index with HTTP Auth
+            type: allow
+            indices:
+              - 'micromasters-rc*'
+            accept_x-forwarded-for_header: 'true'
+            actions:
+              - 'indices:*'
+            auth_key: __vault__::secret-micromasters/rc/elasticsearch-auth-key>data>value
+          - name: Access for micromasters CI index with HTTP Auth
+            type: allow
+            indices:
+              - 'micromasters-ci*'
+            accept_x-forwarded-for_header: 'true'
+            actions:
+              - 'indices:*'
+            auth_key: __vault__::secret-micromasters/ci/elasticsearch-auth-key>data>value
+          - name: View existence of Micromasters indices with RC Auth
+            type: allow
+            accept_x-forwarded-for_header: 'true'
+            methods:
+              - GET
+              - HEAD
+              - OPTIONS
+              - POST
+            indices:
+              - '_all'
+              - 'micromasters*'
+            actions:
+              - 'indices:admin/get'
+              - 'indices:admin/exists'
+              - 'indices:admin/refresh[s]'
+              - 'indices:data/read/scroll'
+            auth_key: __vault__::secret-micromasters/rc/elasticsearch-auth-key>data>value
+          - name: View existence of Micromasters indices with CI Auth
+            type: allow
+            accept_x-forwarded-for_header: 'true'
+            methods:
+              - GET
+              - HEAD
+              - OPTIONS
+              - POST
+            indices:
+              - '_all'
+              - 'micromasters*'
+            actions:
+              - 'indices:admin/get'
+              - 'indices:admin/exists'
+              - 'indices:admin/refresh[s]'
+              - 'indices:data/read/scroll'
+            auth_key: __vault__::secret-micromasters/ci/elasticsearch-auth-key>data>value
+          - name: View existence of Micromasters indices with Production Auth
+            type: allow
+            accept_x-forwarded-for_header: 'true'
+            methods:
+              - GET
+              - HEAD
+              - OPTIONS
+              - POST
+            indices:
+              - '_all'
+              - 'micromasters*'
+            actions:
+              - 'indices:admin/get'
+              - 'indices:admin/exists'
+              - 'indices:admin/refresh[s]'
+              - 'indices:data/read/scroll'
+            auth_key: __vault__::secret-micromasters/production/elasticsearch-auth-key>data>value
           - name: Access for discussions production index with HTTP Auth
             type: allow
             indices:
