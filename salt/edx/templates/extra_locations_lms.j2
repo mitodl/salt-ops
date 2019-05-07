@@ -19,6 +19,6 @@
         if ($http_x_access_token != "{{ token }}") {
             return 403;
         }
-        try_files @proxy_to_lms_app;
+        try_files $uri @proxy_to_lms_app;
     }
 {% endif %}
