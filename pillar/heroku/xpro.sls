@@ -11,7 +11,10 @@
       'sentry_log_level': 'WARN',
       'logout_redirect_url': 'https://xpro-qa-sandbox.mitx.mit.edu/logout',
       'OPENEDX_API_BASE_URL': 'https://xpro-qa-sandbox.mitx.mit.edu',
-      'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay'
+      'openedx_environment': 'mitxpro-sandbox',
+      'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
+      'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-ci-mail.odl.mit.edu>',
+      'MAILGUN_SENDER_DOMAIN': 'xpro-ci-mail.odl.mit.edu'
       },
     'rc': {
       'env_name': 'rc',
@@ -21,7 +24,10 @@
       'sentry_log_level': 'WARN',
       'logout_redirect_url': 'https://xpro-qa.mitx.mit.edu/logout',
       'OPENEDX_API_BASE_URL': 'https://xpro-qa.mitx.mit.edu',
-      'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay'
+      'openedx_environment': 'mitxpro-qa',
+      'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
+      'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-rc-mail.odl.mit.edu>',
+      'MAILGUN_SENDER_DOMAIN': 'xpro-rc-mail.odl.mit.edu'
       },
     'production': {
       'env_name': 'production',
@@ -31,7 +37,10 @@
       'sentry_log_level': 'WARN',
       'logout_redirect_url': 'https://xpro.mitx.mit.edu/logout',
       'OPENEDX_API_BASE_URL': 'https://xpro.mitx.mit.edu',
-      'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://secureacceptance.cybersource.com/pay'
+      'openedx_environment': 'mitxpro-production',
+      'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://secureacceptance.cybersource.com/pay',
+      'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-mail.odl.mit.edu>',
+      'MAILGUN_SENDER_DOMAIN': 'xpro-mail.odl.mit.edu'
       }
 } %}
 {% set env_data = env_dict[environment] %}
@@ -60,8 +69,8 @@ heroku:
     GA_TRACKING_ID: {{ env_data.ga_id }}
     LOGOUT_REDIRECT_URL: {{ env_data.logout_redirect_url }}
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
-    MAILGUN_FROM_EMAIL: 'MIT xPRO <no-reply@xpro-{{ env_data.env_name }}-mail.odl.mit.edu>'
-    MAILGUN_SENDER_DOMAIN: 'xpro-{{ env_data.env_name }}-mail.odl.mit.edu'
+    MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
+    MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
     MITXPRO_ADMIN_EMAIL: 'cuddle-bunnies@mit.edu'
     MITXPRO_BASE_URL: 'https://xpro-{{ env_data.env_name}}.odl.mit.edu'
     MITXPRO_DB_CONN_MAX_AGE: 0
@@ -75,7 +84,7 @@ heroku:
     MITXPRO_FROM_EMAIL: 'MIT xPro <xpro-{{ env_data.env_name }}-support@mit.edu>'
     MITXPRO_LOG_LEVEL: {{ env_data.app_log_level }}
     MITXPRO_OAUTH_PROVIDER: 'mitxpro-oauth2'
-    MITXPRO_REGISTRATION_ACCESS_TOKEN:  __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/xpro-registration-access-token>data>value
+    MITXPRO_REGISTRATION_ACCESS_TOKEN:  __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.openedx_environment }}/xpro-registration-access-token>data>value
     MITXPRO_SECURE_SSL_REDIRECT: True
     MITXPRO_SUPPORT_EMAIL: 'xpro-{{ env_data.env_name }}-support@mit.edu'
     MITXPRO_USE_S3: True
