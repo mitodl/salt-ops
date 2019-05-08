@@ -14,8 +14,11 @@
 
 {% set environment = salt.grains.get('environment') %}
 {% if environment.startswith('mitxpro') %}
-	{% set token = salt.pillar.get('edx:mitxpro:registration_access_token') %}
+    {% set token = salt.pillar.get('edx:mitxpro:registration_access_token') %}
     location /register {
+        return 301 /login;
+    }
+    location /user_api/v1/account/registration {
         if ($http_x_access_token != "{{ token }}") {
             return 403;
         }
