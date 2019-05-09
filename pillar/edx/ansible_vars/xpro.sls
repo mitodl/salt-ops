@@ -7,7 +7,7 @@
 {% set heroku_xpro_env_logout_mapping = {
     'sandbox': 'https://xpro-ci.odl.mit.edu/logout',
     'xpro-qa': 'https://xpro-rc.odl.mit.edu/logout',
-    'xpro-production': 'https://xpro.odl.mit.edu/logout'
+    'xpro-production': 'https://xpro.mit.edu/logout'
   } %}
 {% set heroku_env = heroku_xpro_env_logout_mapping[purpose] %}
 
