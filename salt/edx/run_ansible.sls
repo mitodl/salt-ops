@@ -28,7 +28,7 @@ replace_nginx_static_asset_template_fragment:
   file.managed:
     - name: {{ repo_path }}/playbooks/roles/nginx/templates/edx/app/nginx/sites-available/static-files.j2
     - template: jinja
-    - source: salt://edx/files/nginx_static_assets.j2
+    - source: salt://edx/templates/nginx_static_assets.j2
     - require:
         - git: clone_edx_configuration
 
