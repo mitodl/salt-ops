@@ -14,7 +14,8 @@
       'openedx_environment': 'mitxpro-sandbox',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-ci-mail.odl.mit.edu>',
-      'MAILGUN_SENDER_DOMAIN': 'xpro-ci-mail.odl.mit.edu'
+      'MAILGUN_SENDER_DOMAIN': 'xpro-ci-mail.odl.mit.edu',
+      'MITXPRO_BASE_URL': 'https://xpro-{{ env_data.env_name}}.odl.mit.edu'
       },
     'rc': {
       'env_name': 'rc',
@@ -27,7 +28,8 @@
       'openedx_environment': 'mitxpro-qa',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-rc-mail.odl.mit.edu>',
-      'MAILGUN_SENDER_DOMAIN': 'xpro-rc-mail.odl.mit.edu'
+      'MAILGUN_SENDER_DOMAIN': 'xpro-rc-mail.odl.mit.edu',
+      'MITXPRO_BASE_URL': 'https://xpro-{{ env_data.env_name}}.odl.mit.edu'
       },
     'production': {
       'env_name': 'production',
@@ -40,7 +42,8 @@
       'openedx_environment': 'mitxpro-production',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://secureacceptance.cybersource.com/pay',
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-mail.odl.mit.edu>',
-      'MAILGUN_SENDER_DOMAIN': 'xpro-mail.odl.mit.edu'
+      'MAILGUN_SENDER_DOMAIN': 'xpro-mail.odl.mit.edu',
+      'MITXPRO_BASE_URL': 'https://xpro.mit.edu'
       }
 } %}
 {% set env_data = env_dict[environment] %}
@@ -72,7 +75,7 @@ heroku:
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
     MITXPRO_ADMIN_EMAIL: 'cuddle-bunnies@mit.edu'
-    MITXPRO_BASE_URL: 'https://xpro-{{ env_data.env_name}}.odl.mit.edu'
+    MITXPRO_BASE_URL: {{ env_data.MITXPRO_BASE_URL }}
     MITXPRO_DB_CONN_MAX_AGE: 0
     MITXPRO_DB_DISABLE_SSL: True    # pgbouncer buildpack uses stunnel to handle encryption
     MITXPRO_EMAIL_HOST: __vault__::secret-operations/global/mit-smtp>data>relay_host
