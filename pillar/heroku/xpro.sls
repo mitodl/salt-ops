@@ -64,7 +64,7 @@ heroku:
     CYBERSOURCE_SECURE_ACCEPTANCE_URL: {{ env_data.CYBERSOURCE_SECURE_ACCEPTANCE_URL}}
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.data.security_key }}
     {% if env_data.env_name == 'production' %}
-    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxproproduction
+    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxpro
     {% endif %}
     GA_TRACKING_ID: {{ env_data.ga_id }}
     LOGOUT_REDIRECT_URL: {{ env_data.logout_redirect_url }}
