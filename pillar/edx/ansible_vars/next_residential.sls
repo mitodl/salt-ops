@@ -9,22 +9,3 @@ edx:
     EDXAPP_SESSION_COOKIE_NAME: {{ environment }}-{{ purpose }}-session
     EDXAPP_CMS_AUTH_EXTRA:
       SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
-    EDXAPP_REGISTRATION_EXTRA_FIELDS:
-      confirm_email: "hidden"
-      level_of_education: "optional"
-      gender: "optional"
-      year_of_birth: "optional"
-      mailing_address: "hidden"
-      goals: "optional"
-      honor_code: "required"
-      terms_of_service: "hidden"
-      city: "hidden"
-      country: "hidden"
-    EDXAPP_LMS_ENV_EXTRA:
-      FEATURES:
-        AUTH_USE_CAS: false
-        ALLOW_PUBLIC_ACCOUNT_CREATION: True
-        SKIP_EMAIL_VALIDATION: True
-    EDXAPP_CMS_ENV_EXTRA:
-      FEATURES:
-        AUTH_USE_CAS: false
