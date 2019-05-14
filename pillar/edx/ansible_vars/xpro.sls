@@ -10,6 +10,7 @@
     'xpro-production': 'https://xpro.mit.edu/logout'
   } %}
 {% set heroku_env = heroku_xpro_env_logout_mapping[purpose] %}
+{% set support_email = 'mitxpro-support@mit.edu' %}
 
 edx:
   ansible_vars:
@@ -41,6 +42,7 @@ edx:
       country: "hidden"
     EDXAPP_SUPPORT_SITE_LINK: 'https://xpro.zendesk.com/hc/en-us/requests/new'
     EDXAPP_LMS_ENV_EXTRA:
+      BULK_EMAIL_DEFAULT_FROM_EMAIL: {{ support_email }}
       COURSE_MODE_DEFAULTS:
         name: "Audit"
         slug: "audit"
@@ -55,6 +57,7 @@ edx:
         JWT_PRIVATE_SIGNING_JWK: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/private-key>data>value
         JWT_PUBLIC_SIGNING_JWK_SET: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/public-key>data>value
       FEATURES:
+        REROUTE_ACTIVATION_EMAIL: {{ support_email }}
         ENABLE_VIDEO_UPLOAD_PIPELINE: True
         ENABLE_COMBINED_LOGIN_REGISTRATION: True
         ENABLE_OAUTH2_PROVIDER: True
@@ -67,6 +70,13 @@ edx:
     EDXAPP_CMS_ENV_EXTRA:
       DISABLE_STUDIO_SSO_OVER_LMS: True
       FEATURES:
+        STAFF_EMAIL: {{ support_email }}
+        REROUTE_ACTIVATION_EMAIL: {{ support_email }}
         ENABLE_VIDEO_UPLOAD_PIPELINE: True
     EDXAPP_PLATFORM_NAME: MITxPro
     EDXAPP_PLATFORM_DESCRIPTION: MITxPro Online Course Portal
+    EDXAPP_DEFAULT_FEEDBACK_EMAIL: {{ support_email }}
+    EDXAPP_DEFAULT_FROM_EMAIL: {{ support_email }}
+    EDXAPP_BUGS_EMAIL: {{ support_email }}
+    EDXAPP_CONTACT_EMAIL: {{ support_email }}
+    EDXAPP_TECH_SUPPORT_EMAIL: {{ support_email }}
