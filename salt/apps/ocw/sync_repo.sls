@@ -2,7 +2,8 @@
 # The ocwcms working copy is /var/lib/ocwcms
 # ... Plone wants to have /usr/local/Plone/zeocluster/src with subdirectories
 #     ocw.contentimport, ocwhs.theme, ocw.publishing, ocw.theme, and ocw.types.
-# ... so there is a symlink: /usr/local/Plone/zeocluster/src -> src_repo/plone/src
+# ... so there is a symlink:
+#     /usr/local/Plone/zeocluster/src -> /var/lib/ocwcms/plone/src
 # ... And on the job queue server, /var/lib/ocwcms/publishing gets rsynced to
 #     /mnt/ocwfileshare/OCWEngines.
 #
