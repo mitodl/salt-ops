@@ -12,6 +12,7 @@ mine_functions:
   network.ip_addrs: [eth0]
 
 ocw:
+  ocwcms_branch: plone-src-changes-from-curr-prod
   engines_conf:
     # database is the MySQL database, not Zope database.
     database:
