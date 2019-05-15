@@ -78,9 +78,8 @@ nginx:
                 - location /:
                     - try_files:
                         - $uri
-                        - $uri/
-                        - index.htm
-                        - index.html
+                        - /index.htm
+                        - /index.html
                         - =404
                     - error_page:
                         - '404'
