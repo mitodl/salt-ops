@@ -4,6 +4,15 @@
 
 {% set log_dir = '/var/log/engines-cron' %}
 
+ensure_ownership_of_engines_base_directory:
+  file.directory:
+    - name: {{ engines_basedir }}
+    - user: ocwuser
+    - group: ocwuser
+    - recurse:
+        - user
+        - group
+
 ensure_state_of_cron_log_directory:
   file.directory:
     - name: {{ log_dir }}
