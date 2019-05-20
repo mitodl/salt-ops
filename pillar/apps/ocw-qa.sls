@@ -19,7 +19,7 @@ ocw:
       host: "{{ dbhost_ipaddr }}"
     cms:
       url: https://ocw-qa.odl.mit.edu
-      host: ocw-qa-cms1.odl.mit.edu
+      host: ocw-qa-cms-1.odl.mit.edu
       engine_host: ocw-qa-cms2
     staging:
       url: https://ocw-qa-ocw2.odl.mit.edu
