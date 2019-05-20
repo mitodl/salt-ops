@@ -15,7 +15,8 @@
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-ci-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-ci-mail.odl.mit.edu',
-      'MITXPRO_BASE_URL': 'https://xpro-{{ env_data.env_name}}.odl.mit.edu'
+      'MITXPRO_BASE_URL': 'https://xpro-{{ env_data.env_name}}.odl.mit.edu',
+      'vault_env_path': 'rc-apps'
       },
     'rc': {
       'env_name': 'rc',
@@ -29,7 +30,8 @@
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-rc-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-rc-mail.odl.mit.edu',
-      'MITXPRO_BASE_URL': 'https://xpro-{{ env_data.env_name}}.odl.mit.edu'
+      'MITXPRO_BASE_URL': 'https://xpro-{{ env_data.env_name}}.odl.mit.edu',
+      'vault_env_path': 'rc-apps'
       },
     'production': {
       'env_name': 'production',
@@ -43,7 +45,8 @@
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://secureacceptance.cybersource.com/pay',
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-mail.odl.mit.edu',
-      'MITXPRO_BASE_URL': 'https://xpro.mit.edu'
+      'MITXPRO_BASE_URL': 'https://xpro.mit.edu',
+      'vault_env_path': 'production-apps'
       }
 } %}
 {% set env_data = env_dict[environment] %}
@@ -66,6 +69,7 @@ heroku:
     CYBERSOURCE_REFERENCE_PREFIX: xpro-{{ env_data.env_name }}
     CYBERSOURCE_SECURE_ACCEPTANCE_URL: {{ env_data.CYBERSOURCE_SECURE_ACCEPTANCE_URL}}
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.data.security_key }}
+    CYBERSOURCE_INQUIRY_LOG_NACL_ENCRYPTION_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/cybersource-inquiry-encryption-key>data>value
     {% if env_data.env_name == 'production' %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxpro
     {% endif %}
@@ -98,6 +102,8 @@ heroku:
     OPENEDX_OAUTH_APP_NAME: 'edx-oauth-app'
     PGBOUNCER_DEFAULT_POOL_SIZE: 50
     PGBOUNCER_MIN_POOL_SIZE: 5
+    RECAPTCHA_SITE_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>site_key
+    RECAPTCHA_SECRET_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/recaptcha-keys>secret_key
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-secret-key>data>value
     SENTRY_DSN: __vault__::secret-operations/global/xpro/sentry-dsn>data>value
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
