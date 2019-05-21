@@ -12,7 +12,7 @@ mine_functions:
   network.ip_addrs: [eth0]
 
 ocw:
-  ocwcms_branch: master
+  ocwcms_branch: spring_2019_campaign
   engines_conf:
     # database is the MySQL database, not Zope database.
     database:
