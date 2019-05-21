@@ -30,9 +30,8 @@ ocw:
       url: https://ocw-origin.odl.mit.edu
       host: ocw-origin-ocw-0
     mirror:
-      url: not provisioned
-      host: not provisioned
-      user: none
+      url: http://ocw-rsync.odl.mit.edu/
+      host: ocw-production-rsync
     netstorage:
       host: ocw-production-netstorage.odl.mit.edu
       user: sshacs
