@@ -221,6 +221,9 @@ base:
     - fluentd.plugins
     - fluentd.config
     - utils.logrotate
+  'roles:ocw-mirror':
+    - match: grain
+    - apps.ocw.mirror
   'roles:sandbox':
     - match: grain
     - edx.prod

@@ -30,9 +30,8 @@ ocw:
       url: https://ocw-qa-origin.odl.mit.edu
       host: ocw-qa-origin
     mirror:
-      url: not provisioned
-      host: not provisioned
-      user: none
+      url: http://ocw-qa-cms2.odl.mit.edu/
+      host: ocw-qa-cms2
     netstorage:
       host: ocw-qa-netstorage.odl.mit.edu
       user: sshacs

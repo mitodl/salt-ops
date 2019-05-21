@@ -254,10 +254,13 @@ base:
     - logrotate.ocw_cms
     - fluentd.ocw_cms
     - apps.ocw
-  'G@roles:ocw-cms and G@ocw-environment:production':
+  'roles:ocw-mirror':
+    - match: grain
+    - apps.ocw
+  'P@roles:ocw-(cms|mirror) and G@ocw-environment:production':
     - match: compound
     - apps.ocw-production
-  'G@roles:ocw-cms and G@ocw-environment:qa':
+  'P@roles:ocw-(cms|mirror) and G@ocw-environment:qa':
     - match: compound
     - apps.ocw-qa
   'roles:ocw-db':

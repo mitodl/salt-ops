@@ -8,6 +8,7 @@
 {% set dspace_test_connection_user = salt.pillar.get('ocw:dspace_test_connection_user') %}
 {% set dspace_test_connection_password = salt.pillar.get('ocw:dspace_test_connection_password') %}
 {% set engines_conf = salt.pillar.get('ocw:engines_conf') %}
+{% set mirror = salt.pillar.get('ocw:mirror') %}
 
 [engine]
 working_root_dir: /mnt/ocwfileshare/OCWEngines/working
@@ -45,8 +46,8 @@ rootdirectory: /var/www/ocw
 [Mirror]
 url: {{ engines_conf.mirror.url }}
 host: {{ engines_conf.mirror.host }}
-user: ocwuser
-rootdirectory: FIXME not configured
+user: {{ mirror.fs_owner }}
+rootdirectory: {{ mirror.rootdirectory }}
 mirror_create_snapshot_script: "/var/lib/ocwcms/mirror/scripts/ocw6 Mirror Scripts/create_new_snapshot.sh"
 mirror_update_snapshot_script: "/var/lib/ocwcms/mirror/scripts/ocw6 Mirror Scripts/update_snapshot.sh"
 
