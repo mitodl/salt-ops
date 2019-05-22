@@ -195,7 +195,7 @@ base:
   'P@purpose:.*-live and P@environment:mitx-(qa|production)':
     - match: compound
     - consul.mitx-live
-  'P@purpose:.*residential.* and not G@edx_codename:ironwood':
+  'P@purpose:.*residential.* and G@edx_codename:ironwood':
     - match: compound
     - edx.ansible_vars.next_residential
   'G@roles:sandbox and P@environment:mitx(pro)?-qa':
