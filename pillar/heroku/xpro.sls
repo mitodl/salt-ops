@@ -5,7 +5,7 @@
 {% set env_dict = {
     'ci': {
       'env_name': 'ci',
-      'ga_id': '',
+      'GOOGLE_TRACKING_ID': 'GTM-KG4FR7J',
       'release_branch': 'master',
       'app_log_level': 'INFO',
       'sentry_log_level': 'WARN',
@@ -13,6 +13,7 @@
       'OPENEDX_API_BASE_URL': 'https://xpro-qa-sandbox.mitx.mit.edu',
       'openedx_environment': 'mitxpro-sandbox',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
+      'CYBERSOURCE_WSDL_URL': 'https://ics2wstest.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-ci-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-ci-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro-{{ env_data.env_name}}.odl.mit.edu',
@@ -20,7 +21,7 @@
       },
     'rc': {
       'env_name': 'rc',
-      'ga_id': '',
+      'GOOGLE_TRACKING_ID': 'GTM-KG4FR7J',
       'release_branch': 'release-candidate',
       'app_log_level': 'INFO',
       'sentry_log_level': 'WARN',
@@ -28,6 +29,7 @@
       'OPENEDX_API_BASE_URL': 'https://xpro-qa.mitx.mit.edu',
       'openedx_environment': 'mitxpro-qa',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
+      'CYBERSOURCE_WSDL_URL': 'https://ics2wstest.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-rc-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-rc-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro-{{ env_data.env_name}}.odl.mit.edu',
@@ -35,7 +37,7 @@
       },
     'production': {
       'env_name': 'production',
-      'ga_id': '',
+      'GOOGLE_TRACKING_ID': 'GTM-KG4FR7J',
       'release_branch': 'release',
       'app_log_level': 'INFO',
       'sentry_log_level': 'WARN',
@@ -43,6 +45,7 @@
       'OPENEDX_API_BASE_URL': 'https://xpro.mitx.mit.edu',
       'openedx_environment': 'mitxpro-production',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://secureacceptance.cybersource.com/pay',
+      'CYBERSOURCE_WSDL_URL':'https://ics2wsa.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro.mit.edu',
@@ -65,15 +68,18 @@ heroku:
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-xpro-app-{{ env_data.env_name }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'xpro-app-{{ env_data.env_name }}'
     CYBERSOURCE_ACCESS_KEY: {{ cybersource_creds.data.access_key }}
+    CYBERSOURCE_MERCHANT_ID: 'mit_odl_xpro'
     CYBERSOURCE_PROFILE_ID: {{ cybersource_creds.data.profile_id }}
     CYBERSOURCE_REFERENCE_PREFIX: xpro-{{ env_data.env_name }}
     CYBERSOURCE_SECURE_ACCEPTANCE_URL: {{ env_data.CYBERSOURCE_SECURE_ACCEPTANCE_URL}}
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.data.security_key }}
+    CYBERSOURCE_TRANSACTION_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/cybersource-transction-key>data>value
+    CYBERSOURCE_WSDL_URL: {{ env_data.CYBERSOURCE_WSDL_URL }}
     CYBERSOURCE_INQUIRY_LOG_NACL_ENCRYPTION_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/cybersource-inquiry-encryption-key>data>value
     {% if env_data.env_name == 'production' %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxpro
     {% endif %}
-    GA_TRACKING_ID: {{ env_data.ga_id }}
+    GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
     LOGOUT_REDIRECT_URL: {{ env_data.logout_redirect_url }}
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
