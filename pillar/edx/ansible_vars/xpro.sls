@@ -10,7 +10,7 @@
     'xpro-production': 'https://xpro.mit.edu/logout'
   } %}
 {% set heroku_env = heroku_xpro_env_logout_mapping[purpose] %}
-{% set support_email = 'mitxpro-support@mit.edu' %}
+{% set support_email = 'xpro@mit.edu' %}
 
 edx:
   ansible_vars:
