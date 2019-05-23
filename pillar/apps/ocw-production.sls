@@ -45,13 +45,13 @@ ocw:
     # test_dspace_conf is for Test_Dspace_conf in engines.conf.jinja
     test_dspace_conf:
       dspace_host_id: dome-test.mit.edu
-      dspace_host_port: 80
+      dspace_host_port: 443
       dspace_endpoint_prefix: https://dome-test.mit.edu/sword/deposit/
       deposit_uri_lookup_file_name: UAT_DepositURILookup.xml
     # production_dspace_conf is for Production_Dspace_conf in engines.conf.jinja
     production_dspace_conf:
       dspace_host_id: dspace.mit.edu
-      dspace_host_port: 80
+      dspace_host_port: 443
       dspace_endpoint_prefix: https://dspace.mit.edu/sword/deposit/
       deposit_uri_lookup_file_name: DepositURILookup.xml
   zope_conf:
