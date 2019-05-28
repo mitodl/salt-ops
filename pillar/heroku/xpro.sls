@@ -80,6 +80,7 @@ heroku:
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxpro
     {% endif %}
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
+    HUBSPOT_API_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/hubspot-api-key>data>value
     LOGOUT_REDIRECT_URL: {{ env_data.logout_redirect_url }}
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
