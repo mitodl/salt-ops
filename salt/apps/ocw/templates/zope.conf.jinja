@@ -61,7 +61,7 @@ BASE_STAGING_SITE_URL {{ salt.pillar.get('ocw:zope_conf:base_staging_site_url') 
     <zeoclient>
       blob-dir /mnt/ocwfileshare/blobstorage-cms1
       shared-blob-dir off
-      server 10.100.0.12:8100
+      server {{ salt.pillar.get('ocw:zope_conf:zodb_ipaddr') }}:8100
       storage 1
       name zeostorage
       var /usr/local/Plone/zeocluster/parts/client1/var
@@ -87,7 +87,7 @@ mount-point /Plone/portal_catalog
 container-class Products.CMFPlone.CatalogTool.CatalogTool
 cache-size 2000000
 <zeoclient>
-server 10.100.0.12:8100
+server {{ salt.pillar.get('ocw:zope_conf:zodb_ipaddr') }}:8100
 storage 2
 name catalogstorage
 var /usr/local/Plone/zeocluster/parts/client1/var

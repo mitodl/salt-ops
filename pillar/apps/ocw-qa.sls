@@ -6,7 +6,8 @@
                           tgt_type='compound')
 %}
 {# The "db2" database host is always the MySQL one, per our naming convention. #}
-{% set dbhost_ipaddr = dbhost_ipaddr_data['ocw-qa-cms-db2'][0] %}
+{% set mysql_db_ipaddr = dbhost_ipaddr_data['ocw-qa-cms-db2'][0] %}
+{% set zodb_ipaddr = dbhost_ipaddr_data['ocw-qa-cms-db1'][0] %}
 
 mine_functions:
   network.ip_addrs: [eth0]
@@ -16,7 +17,7 @@ ocw:
   engines_conf:
     # database is the MySQL database, not Zope database.
     database:
-      host: "{{ dbhost_ipaddr }}"
+      host: "{{ mysql_db_ipaddr }}"
     cms:
       url: https://ocw-qa.odl.mit.edu
       host: ocw-qa-cms-1.odl.mit.edu
@@ -55,5 +56,6 @@ ocw:
       dspace_endpoint_prefix: https://dspace.mit.edu/sword/deposit/
       deposit_uri_lookup_file_name: DepositURILookup.xml
   zope_conf:
-    base_site_url: https:///ocw-qa-origin.odl.mit.edu
+    base_site_url: https://ocw-qa-origin.odl.mit.edu
     base_staging_site_url: https://ocw-qa-ocw2.odl.mit.edu
+    zodb_ipaddr: "{{ zodb_ipaddr }}"
