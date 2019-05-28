@@ -75,14 +75,13 @@ sync_ocwcms_publishing_dir_to_shared_fs:
         - '-t'
         - '-c'
 
+ensure_correct_ownership_of_OCWEngines:
+  file.directory:
+    - name: /mnt/ocwfileshare/OCWEngines
+    - user: ocwuser
+    - group: fsuser
 # This would be nice to have, but it can take hours to run, so I am commenting
 # it out. -- Mark
-#
-# ensure_correct_ownership_of_OCWEngines_files:
-#   file.directory:
-#     - name: /mnt/ocwfileshare/OCWEngines
-#     - user: ocwuser
-#     - group: fsuser
 #     - recurse:
 #         - user
 #         - group
