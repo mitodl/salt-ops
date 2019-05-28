@@ -87,4 +87,16 @@ sync_ocwcms_publishing_dir_to_shared_fs:
 #         - user
 #         - group
 
+ensure_correct_ownership_of_engines_working_dir:
+  file.directory:
+    - name: /mnt/ocwfileshare/OCWEngines/working
+    - user: ocwuser
+    - group: fsuser
+
+ensure_correct_ownership_of_json_for_mobile_working_dir:
+  file.directory:
+    - name: /mnt/ocwfileshare/OCWEngines/working/json_for_mobile
+    - user: plone
+    - group: plone
+
 {% endif %}
