@@ -55,6 +55,6 @@ ocw:
       dspace_endpoint_prefix: https://dspace.mit.edu/sword/deposit/
       deposit_uri_lookup_file_name: DepositURILookup.xml
   zope_conf:
-    base_site_url: https:///ocw-origin.odl.mit.edu
+    base_site_url: https://ocw-origin.odl.mit.edu
     base_staging_site_url: https://ocw-production-ocw2.odl.mit.edu
     zodb_ipaddr: "{{ zodb_ipaddr }}"
