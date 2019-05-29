@@ -20,8 +20,8 @@ ocw:
       host: "{{ mysql_db_ipaddr }}"
     cms:
       url: https://ocw-production-cms-1.odl.mit.edu
-      host: ocw-production-cms1
-      engine_host: ocw-production-cms2
+      host: ocw-production-cms-1
+      engine_host: ocw-production-cms-2
     staging:
       url: https://ocw-production-ocw2.odl.mit.edu
       host: ocw-production-ocw2.odl.mit.edu
