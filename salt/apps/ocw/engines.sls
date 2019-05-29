@@ -1,6 +1,6 @@
 {% set engines_basedir = salt.pillar.get('ocw:engines_basedir', '/mnt/ocwfileshare/OCWEngines') %}
 
-{% if salt.grains.get('ocw-cms-role') == 'engine' %}
+{% if 'engine' in salt.grains.get('ocw-cms-role', []) %}
 
 {% set cron_log_dir = '/var/log/engines-cron' %}
 
