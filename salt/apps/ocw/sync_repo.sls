@@ -59,6 +59,9 @@ sync_ocwcms_web_directory:
         - '--delay-updates'
 {% endif %}
 
+# TODO: get rid of edxmapcopy.py in `ocwcms' (and transfer_edxmap_json.sh) and
+# just let the state above handle it.
+
 
 {% if 'ocw-cms' in roles %}
 
