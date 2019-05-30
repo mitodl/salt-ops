@@ -6,6 +6,7 @@ ensure_state_of_legacy_tomcat_dir:
     - user: root
     - group: root
     - dir_mode: '0755'
+    - makedirs: True
 
 ensure_state_of_tomcat_webapps_symlink:
   file.symlink:
