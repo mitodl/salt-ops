@@ -67,7 +67,7 @@ run_generate_url_for_sitemap_cronjob:
 run_aka_scripts_cronjob:
   cron.present:
     - identifier: run_aka_scripts
-    - name: {{ engines_basedir }}/run_aka_scripts.sh {{ salt.pillar.get('ocw:engines_conf:production_host') }} > {{ cron_log_dir }}/run_aka_scripts.log  2>&1
+    - name: {{ engines_basedir }}/run_aka_scripts.sh {{ salt.pillar.get('ocw:engines_conf:production:host') }} > {{ cron_log_dir }}/run_aka_scripts.log  2>&1
     - user: ocwuser
     - minute: 4
     - hour: 5
