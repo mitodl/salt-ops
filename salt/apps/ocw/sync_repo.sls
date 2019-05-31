@@ -45,6 +45,7 @@ ensure_state_of_src_symlink:
 {% endif %}
 
 {% if 'ocw-origin' in roles %}
+
 sync_ocwcms_web_directory:
   rsync.synchronized:
     - name: /var/www/ocw
@@ -57,6 +58,13 @@ sync_ocwcms_web_directory:
         - '-t'
         - '-c'
         - '--delay-updates'
+
+ensure_that_courses_dir_is_writable_by_fsuser:
+  file.directory:
+    - name: /var/www/ocw/courses
+    - user: fsuser
+    - group: fsuser
+
 {% endif %}
 
 # TODO: get rid of edxmapcopy.py in `ocwcms' (and transfer_edxmap_json.sh) and
