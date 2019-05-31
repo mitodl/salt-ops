@@ -72,13 +72,6 @@ run_aka_scripts_cronjob:
     - minute: 4
     - hour: 5
 
-transfer_edx_map_cronjob:
-  cron.present:
-    - identifier: transfer_edx_map_json
-    - name: {{ engines_basedir }}/transfer_edxmap_json.sh > {{ cron_log_dir }}/transfer_edxmap_json.log 2>&1
-    - user: root
-    - minute: '*/5'
-
 daily_broken_links_update_cronjob:
   cron.present:
     - identifier: run_broken_links_updater
