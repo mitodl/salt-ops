@@ -1,15 +1,5 @@
 {% set engines_basedir = salt.pillar.get('ocw:engines_basedir', '/mnt/ocwfileshare/OCWEngines') %}
 
-{# See copy_mitx_archived_courses_cronjob below and
-   copy_mitx_archived_courses_xml_from_CMS.sh in `ocwcms'.
-   This directory exists on cms-1 and cms-2. #}
-ensure_state_of_mitx_archived_xml_directory:
-  file.directory:
-    - name: /usr/local/mitx_archived_xml
-    - user: ocwuser
-    - group: ocwuser
-    - dir_mode: '0755'
-
 {% if 'engine' in salt.grains.get('ocw-cms-role', []) %}
 
 {% set cron_log_dir = '/var/log/engines-cron' %}
