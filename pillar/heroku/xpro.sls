@@ -75,7 +75,7 @@ heroku:
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.data.security_key }}
     CYBERSOURCE_TRANSACTION_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/cybersource-transction-key>data>value
     CYBERSOURCE_WSDL_URL: {{ env_data.CYBERSOURCE_WSDL_URL }}
-    CYBERSOURCE_INQUIRY_LOG_NACL_ENCRYPTION_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/cybersource-inquiry-encryption-key>data>value
+    CYBERSOURCE_INQUIRY_LOG_NACL_ENCRYPTION_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/cybersource-inquiry-encryption-key>data>public_key
     {% if env_data.env_name == 'production' %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxpro
     {% endif %}
