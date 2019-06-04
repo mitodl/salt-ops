@@ -377,7 +377,7 @@ environments:
           - name: 600x
             num_instances: 2
           - name: 686
-            num_instances: 1
+            num_instances: 4
       current-residential-live:
         app: edx-platform
         business_unit: residential
