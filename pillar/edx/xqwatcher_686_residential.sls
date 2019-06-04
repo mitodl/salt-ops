@@ -51,9 +51,9 @@ edx:
                 name: mit-686x-mooc
                 user: mit-686x-mooc
                 lang: python3
-                bin_path: '{% raw %}{{ xqwatcher_venv_base }}{% endraw %}/mit-686x/bin/python'
+                bin_path: '{% raw %}{{ xqwatcher_venv_base }}{% endraw %}/mit-686x-mooc/bin/python'
               KWARGS:
-                grader_root: ../data/mit-686x/graders/
+                grader_root: ../data/mit-686x-mooc/graders/
               AUTH:
                 - __vault__::secret-residential/global/course-686x-grader-xqueue-credentials>data>username
                 - __vault__::secret-residential/global/course-686x-grader-xqueue-credentials>data>password
