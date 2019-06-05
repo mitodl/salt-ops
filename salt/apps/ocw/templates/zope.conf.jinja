@@ -59,7 +59,7 @@ BASE_STAGING_SITE_URL {{ salt.pillar.get('ocw:zope_conf:base_staging_site_url') 
 
 # Blob-enabled ZEOStorage database
     <zeoclient>
-      blob-dir /mnt/ocwfileshare/blobstorage-cms1
+      blob-dir /zeo/blobstorage
       shared-blob-dir off
       server {{ salt.pillar.get('ocw:zope_conf:zodb_ipaddr') }}:8100
       storage 1
