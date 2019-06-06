@@ -58,7 +58,7 @@ edx:
         JWT_PUBLIC_SIGNING_JWK_SET: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/public-key>data>value
       FEATURES:
         REROUTE_ACTIVATION_EMAIL: {{ support_email }}
-        ENABLE_VIDEO_UPLOAD_PIPELINE: True
+        ENABLE_VIDEO_UPLOAD_PIPELINE: False
         ENABLE_COMBINED_LOGIN_REGISTRATION: True
         ENABLE_OAUTH2_PROVIDER: True
         ENABLE_THIRD_PARTY_AUTH: True
