@@ -44,6 +44,14 @@ generate_ocw_news_feeds_cronjob:
     - user: ocwuser
     - minute: 0
 
+generate_json_for_mobile_cronjob:
+  cron.present:
+    - identifier: generate_json_for_mobile
+    - name: {{ engines_basedir }}/generate_json_for_mobile.sh > {{ cron_log_dir }}/generate_json_for_mobile.log 2>&1
+    - user: ocwuser
+    - minute: 1
+    - hour: 5
+
 youtube_csv_file_cronjob:
   cron.present:
     - identifier: generate_youtube_videos_csv
