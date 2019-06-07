@@ -115,3 +115,22 @@ heroku:
     SENTRY_DSN: __vault__::secret-operations/global/xpro/sentry-dsn>data>value
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
+    VOUCHER_COMPANY_ID: 1
+    VOUCHER_DOMESTIC_AMOUNT_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>amount_key
+    VOUCHER_DOMESTIC_COURSE_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>course_key
+    VOUCHER_DOMESTIC_CREDITS_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>credits_key
+    VOUCHER_DOMESTIC_DATE_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>date_key
+    VOUCHER_DOMESTIC_DATES_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>dates_key
+    VOUCHER_DOMESTIC_EMPLOYEE_ID_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>employee_id_key
+    VOUCHER_DOMESTIC_EMPLOYEE_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>employee_key
+    VOUCHER_DOMESTIC_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>key
+    VOUCHER_INTERNATIONAL_AMOUNT_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>amount_key
+    VOUCHER_INTERNATIONAL_COURSE_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>course_key
+    VOUCHER_INTERNATIONAL_COURSE_NAME_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>course_name_key
+    VOUCHER_INTERNATIONAL_COURSE_NUMBER_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>course_number_key
+    VOUCHER_INTERNATIONAL_DATES_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>dates_key
+    VOUCHER_INTERNATIONAL_EMPLOYEE_ID_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>employee_id_key
+    VOUCHER_INTERNATIONAL_EMPLOYEE_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>employee_key
+    VOUCHER_INTERNATIONAL_PROGRAM_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>program_key
+    VOUCHER_INTERNATIONAL_SCHOOL_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>school_key
+
