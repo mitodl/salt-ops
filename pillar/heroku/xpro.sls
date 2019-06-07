@@ -55,7 +55,7 @@
 {% set env_data = env_dict[environment] %}
 {% set business_unit = 'mitxpro' %}
 {% set pg_creds = salt.vault.cached_read('postgres-production-apps-mitxpro/creds/mitxpro', cache_prefix='heroku-mitxpro') %}
-{% set cybersource_creds = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.env_name.vault_env_path ~ '/cybersource') %}
+{% set cybersource_creds = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/cybersource') %}
 
 proxy:
   proxytype: heroku
