@@ -164,6 +164,8 @@ salt_master:
             - salt://reactors/opsgenie/post_notification.sls
         - backup/*/*/completed:
             - salt://reactors/slack/post_event.sls
+         - salt/engine/sqs/autoscaling:
+            - salt://reactors/mitxpro/edxapp_ec2_autoscale.sls
     misc:
       worker_threads: 25
       {# this is to avoid timeouts waiting for edx asset compilation during AMI build (TMM 2019-04-01) #}
