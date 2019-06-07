@@ -8,7 +8,7 @@
       'GOOGLE_TRACKING_ID': 'GTM-KG4FR7J',
       'release_branch': 'master',
       'app_log_level': 'INFO',
-      'sentry_log_level': 'WARN',
+      'sentry_log_level': 'ERROR',
       'logout_redirect_url': 'https://xpro-qa-sandbox.mitx.mit.edu/logout',
       'OPENEDX_API_BASE_URL': 'https://xpro-qa-sandbox.mitx.mit.edu',
       'openedx_environment': 'mitxpro-sandbox',
