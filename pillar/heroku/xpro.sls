@@ -73,14 +73,14 @@ heroku:
     CYBERSOURCE_REFERENCE_PREFIX: xpro-{{ env_data.env_name }}
     CYBERSOURCE_SECURE_ACCEPTANCE_URL: {{ env_data.CYBERSOURCE_SECURE_ACCEPTANCE_URL}}
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.data.security_key }}
-    CYBERSOURCE_TRANSACTION_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/cybersource-transction-key>data>value
+    CYBERSOURCE_TRANSACTION_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/cybersource-transction-key>data>value
     CYBERSOURCE_WSDL_URL: {{ env_data.CYBERSOURCE_WSDL_URL }}
-    CYBERSOURCE_INQUIRY_LOG_NACL_ENCRYPTION_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/cybersource-inquiry-encryption-key>data>public_key
+    CYBERSOURCE_INQUIRY_LOG_NACL_ENCRYPTION_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/cybersource-inquiry-encryption-key>data>public_key
     {% if env_data.env_name == 'production' %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxpro
     {% endif %}
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
-    HUBSPOT_API_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/hubspot-api-key>data>value
+    HUBSPOT_API_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/hubspot-api-key>data>value
     LOGOUT_REDIRECT_URL: {{ env_data.logout_redirect_url }}
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
@@ -109,28 +109,28 @@ heroku:
     OPENEDX_OAUTH_APP_NAME: 'edx-oauth-app'
     PGBOUNCER_DEFAULT_POOL_SIZE: 50
     PGBOUNCER_MIN_POOL_SIZE: 5
-    RECAPTCHA_SITE_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>site_key
-    RECAPTCHA_SECRET_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/recaptcha-keys>secret_key
+    RECAPTCHA_SITE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>site_key
+    RECAPTCHA_SECRET_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>secret_key
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-secret-key>data>value
     SENTRY_DSN: __vault__::secret-operations/global/xpro/sentry-dsn>data>value
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
     VOUCHER_COMPANY_ID: 1
-    VOUCHER_DOMESTIC_AMOUNT_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>amount_key
-    VOUCHER_DOMESTIC_COURSE_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>course_key
-    VOUCHER_DOMESTIC_CREDITS_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>credits_key
-    VOUCHER_DOMESTIC_DATE_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>date_key
-    VOUCHER_DOMESTIC_DATES_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>dates_key
-    VOUCHER_DOMESTIC_EMPLOYEE_ID_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>employee_id_key
-    VOUCHER_DOMESTIC_EMPLOYEE_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>employee_key
-    VOUCHER_DOMESTIC_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>key
-    VOUCHER_INTERNATIONAL_AMOUNT_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>amount_key
-    VOUCHER_INTERNATIONAL_COURSE_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>course_key
-    VOUCHER_INTERNATIONAL_COURSE_NAME_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>course_name_key
-    VOUCHER_INTERNATIONAL_COURSE_NUMBER_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>course_number_key
-    VOUCHER_INTERNATIONAL_DATES_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>dates_key
-    VOUCHER_INTERNATIONAL_EMPLOYEE_ID_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>employee_id_key
-    VOUCHER_INTERNATIONAL_EMPLOYEE_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>employee_key
-    VOUCHER_INTERNATIONAL_PROGRAM_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>program_key
-    VOUCHER_INTERNATIONAL_SCHOOL_KEY: __vault__::secret-operations/{{ env_data.env_name.vault_env_path }}/{{ business_unit }}/voucher-international>data>school_key
+    VOUCHER_DOMESTIC_AMOUNT_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>amount_key
+    VOUCHER_DOMESTIC_COURSE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>course_key
+    VOUCHER_DOMESTIC_CREDITS_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>credits_key
+    VOUCHER_DOMESTIC_DATE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>date_key
+    VOUCHER_DOMESTIC_DATES_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>dates_key
+    VOUCHER_DOMESTIC_EMPLOYEE_ID_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>employee_id_key
+    VOUCHER_DOMESTIC_EMPLOYEE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>employee_key
+    VOUCHER_DOMESTIC_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>key
+    VOUCHER_INTERNATIONAL_AMOUNT_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>amount_key
+    VOUCHER_INTERNATIONAL_COURSE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>course_key
+    VOUCHER_INTERNATIONAL_COURSE_NAME_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>course_name_key
+    VOUCHER_INTERNATIONAL_COURSE_NUMBER_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>course_number_key
+    VOUCHER_INTERNATIONAL_DATES_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>dates_key
+    VOUCHER_INTERNATIONAL_EMPLOYEE_ID_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>employee_id_key
+    VOUCHER_INTERNATIONAL_EMPLOYEE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>employee_key
+    VOUCHER_INTERNATIONAL_PROGRAM_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>program_key
+    VOUCHER_INTERNATIONAL_SCHOOL_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>school_key
 
