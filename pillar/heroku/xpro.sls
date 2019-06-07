@@ -16,7 +16,7 @@
       'CYBERSOURCE_WSDL_URL': 'https://ics2wstest.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-ci-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-ci-mail.odl.mit.edu',
-      'MITXPRO_BASE_URL': 'https://xpro-{{ env_data.env_name}}.odl.mit.edu',
+      'MITXPRO_BASE_URL': 'https://xpro-ci.odl.mit.edu',
       'vault_env_path': 'rc-apps'
       },
     'rc': {
@@ -32,7 +32,7 @@
       'CYBERSOURCE_WSDL_URL': 'https://ics2wstest.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-rc-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-rc-mail.odl.mit.edu',
-      'MITXPRO_BASE_URL': 'https://xpro-{{ env_data.env_name}}.odl.mit.edu',
+      'MITXPRO_BASE_URL': 'https://xpro-rc.odl.mit.edu',
       'vault_env_path': 'rc-apps'
       },
     'production': {
