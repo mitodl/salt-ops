@@ -441,8 +441,8 @@ environments:
           <<: *next_residential_versions
         instances:
           edx:
-            number: 2
-            type: t3.large
+            number: 1
+            type: r5.large
           edx-worker:
             number: 1
             type: t3.large
