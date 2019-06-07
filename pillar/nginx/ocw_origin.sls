@@ -76,6 +76,7 @@ nginx:
                 - location /:
                     - try_files:
                         - $uri
+                        - $uri/index.htm
                         - /index.htm
                         - /index.html
                         - =404

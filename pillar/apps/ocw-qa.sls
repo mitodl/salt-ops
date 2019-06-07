@@ -33,7 +33,7 @@ ocw:
       url: http://ocw-qa-cms-2.odl.mit.edu/
       host: ocw-qa-cms-2
     netstorage:
-      host: ocw-qa-netstorage.odl.mit.edu
+      host: ocw-production-netstorage.odl.mit.edu
       user: sshacs
       rootdirectory: /15436/ZipForEndUsers
       zipurlprefix: /ans15436/ZipForEndUsers
