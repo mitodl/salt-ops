@@ -59,11 +59,17 @@ sync_ocwcms_web_directory:
         - '-c'
         - '--delay-updates'
 
+ensure_that_webroot_is_writable_by_fsuser:
+  file.directory:
+    - name: /var/www/ocw
+    - user: fsuser
+    - group: www-data
+
 ensure_that_courses_dir_is_writable_by_fsuser:
   file.directory:
     - name: /var/www/ocw/courses
     - user: fsuser
-    - group: fsuser
+    - group: www-data
 
 {% endif %}
 
