@@ -164,7 +164,7 @@ salt_master:
             - salt://reactors/opsgenie/post_notification.sls
         - backup/*/*/completed:
             - salt://reactors/slack/post_event.sls
-         - salt/engine/sqs/autoscaling:
+        - salt/engine/sqs/mitxpro-production-autoscaling:
             - salt://reactors/mitxpro/edxapp_ec2_autoscale.sls
     misc:
       worker_threads: 25
