@@ -1,8 +1,8 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitxpro-production') %}
-{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
 {% set purpose = salt.grains.get('purpose', 'xpro-production') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
+{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
 {% set purpose_data = env_data.purposes[purpose] %}
 {% set sqs_queue = ENVIRONMENT ~ env_data.provider_services.sqs.queue %}
 {% set sns_topic = ENVIRONMENT ~ env_data.provider_services.sns.topic %}
@@ -17,7 +17,15 @@ create_{{ sqs_queue }}-sqs-queue:
     - name: {{ sqs_queue }}
     - region: {{ region }}
     - attributes:
-        Policy: {"Version":"2012-10-17","Id":"arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}/SQSDefaultPolicy","Statement":[{"Effect":"Allow","Principal":{"AWS":["arn:aws:iam::{{ AWS_ACCOUNT_ID }}:role/mitx-salt-master-role"]},"Action":"SQS:*","Resource":"arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}}]}
+        Policy:
+          Version: "2012-10-17"
+          Id: "arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}/SQSDefaultPolicy"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                AWS: ["arn:aws:iam::{{ AWS_ACCOUNT_ID }}:role/mitx-salt-master-role"]
+              Action: "SQS:*"
+              Resource: "arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}"
 
 create_{{ sns_topic }}-sns-topic:
   boto_sns.present:
@@ -31,7 +39,6 @@ create_autoscaling_group:
   boto_asg.present:
     - name: edx-{{ ENVIRONMENT }}-autoscaling-group
     - launch_config:
-      - ebs_optimized: false
       - instance_profile_name: edx-instance-role
       - image_name: {{ ami_id }}
       - key_name: salt-master-prod
@@ -58,7 +65,7 @@ create_autoscaling_group:
           adjustment_type: ChangeInCapacity
           as_name: edx-{{ ENVIRONMENT }}-autoscaling-group
           cooldown: 1800
-          scaling_adjustment: 1
+          scaling_adjustment: 2
         - name: ScaleDown
           adjustment_type: ChangeInCapacity
           as_name: edx-{{ ENVIRONMENT }}-autoscaling-group
