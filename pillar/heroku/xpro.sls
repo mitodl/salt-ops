@@ -99,12 +99,12 @@ heroku:
     MITXPRO_EMAIL_TLS: True
     MITXPRO_EMAIL_USER: __vault__::secret-operations/global/mit-smtp>data>relay_username
     MITXPRO_ENVIRONMENT: {{ env_data.env_name }}
-    MITXPRO_FROM_EMAIL: 'MIT xPro <xpro-{{ env_data.env_name }}-support@mit.edu>'
+    MITXPRO_FROM_EMAIL: 'MIT xPRO <xpro@mit.edu>'
     MITXPRO_LOG_LEVEL: {{ env_data.app_log_level }}
     MITXPRO_OAUTH_PROVIDER: 'mitxpro-oauth2'
     MITXPRO_REGISTRATION_ACCESS_TOKEN:  __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.openedx_environment }}/xpro-registration-access-token>data>value
     MITXPRO_SECURE_SSL_REDIRECT: True
-    MITXPRO_SUPPORT_EMAIL: 'xpro-{{ env_data.env_name }}-support@mit.edu'
+    MITXPRO_SUPPORT_EMAIL: 'xpro@mit.edu'
     MITXPRO_USE_S3: True
     NODE_MODULES_CACHE: False
     OPENEDX_API_BASE_URL: {{ env_data.OPENEDX_API_BASE_URL}}
