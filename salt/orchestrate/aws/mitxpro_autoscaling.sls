@@ -6,7 +6,7 @@
 {% set purpose_data = env_data.purposes[purpose] %}
 {% set sqs_queue = ENVIRONMENT ~ env_data.provider_services.sqs.queue %}
 {% set sns_topic = ENVIRONMENT ~ env_data.provider_services.sns.topic %}
-{% set edx_codename = purposes[PURPOSE].versions.codename %}
+{% set edx_codename = purpose_data.versions.codename %}
 
 {% set region = 'us-east-1' %}
 {% set AWS_ACCOUNT_ID = salt.vault.read('secret-operations/global/aws-account-id') %}
