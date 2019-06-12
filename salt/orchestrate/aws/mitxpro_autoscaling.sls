@@ -46,9 +46,9 @@ create_autoscaling_group:
       - key_name: salt-master-prod
       - instance_type: {{ purpose_data.instances.edx.type }}
       - security_groups:
-        - salt_master
-        - consul-agent
-        - edx
+        - salt_master-{{ ENVIRONMENT }}
+        - consul-agent-{{ ENVIRONMENT }}
+        - edx-{{ ENVIRONMENT }}
     - min_size: {{ purpose_data.instances.edx.min_number }}
     - max_size: {{ purpose_data.instances.edx.max_number }}
     - desired_capacity: {{ purpose_data.instances.edx.min_number }}
