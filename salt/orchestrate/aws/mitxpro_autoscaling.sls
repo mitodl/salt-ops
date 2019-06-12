@@ -4,8 +4,8 @@
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
 {% set purpose_data = env_data.purposes[purpose] %}
-{% set sqs_queue = env_data.provider_services.sqs.queue ~ '-' ~ ENVIRONMENT ~ 'autoscaling' %}
-{% set sns_topic = env_data.provider_services.sns.topic ~ '-' ~ ENVIRONMENT ~ 'autoscaling' %}
+{% set sqs_queue = env_data.provider_services.sqs.queue ~ '-' ~ ENVIRONMENT ~ '-autoscaling' %}
+{% set sns_topic = env_data.provider_services.sns.topic ~ '-' ~ ENVIRONMENT ~ '-autoscaling' %}
 {% set edx_codename = purpose_data.versions.codename %}
 
 {% set region = 'us-east-1' %}
