@@ -38,6 +38,7 @@ create_{{ sns_topic }}-sns-topic:
 create_autoscaling_group:
   boto_asg.present:
     - name: edx-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-group
+    - launch_config_name: edx-{{ purpose }}-{{ ENVIRONMENT }}-launch-config
     - launch_config:
       - instance_profile_name: edx-instance-role
       - image_name: {{ ami_id }}
