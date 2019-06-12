@@ -101,6 +101,8 @@ restart_edx_worker_service:
     - name: all
     - restart: True
     - bin_env: '/edx/bin/supervisorctl'
-    - onchanges_in:
-      - file: {{ conf_file }}
+    - onchanges:
+      - salt: place_ansible_environment_configuration
+    - require:
+      - cmd: run_ansible
 {% endif %}
