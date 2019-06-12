@@ -94,3 +94,5 @@ create_autoscaling_group:
     - notification_types:
         - autoscaling:EC2_INSTANCE_LAUNCH
         - autoscaling:EC2_INSTANCE_TERMINATE
+    - require:
+        - salt: create_{{ sns_topic }}-sns-topic
