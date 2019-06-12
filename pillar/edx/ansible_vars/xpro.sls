@@ -44,9 +44,8 @@ edx:
     EDXAPP_LMS_ENV_EXTRA:
       BULK_EMAIL_DEFAULT_FROM_EMAIL: {{ support_email }}
       COURSE_MODE_DEFAULTS:
-        name: "Audit"
-        slug: "audit"
-      ENTERPRISE_COURSE_ENROLLMENT_AUDIT_MODES: ['audit', 'honor']
+        name: "NO_ID_PROFESSIONAL_MODE"
+        slug: "NO_ID_PROFESSIONAL_MODE"
       MITXPRO_CORE_REDIRECT_ALLOW_RE_LIST: ["^/(admin|auth|login|logout|register|api|oauth2|user_api|heartbeat)"]
       THIRD_PARTY_AUTH_BACKENDS: ["social_auth_mitxpro.backends.MITxProOAuth2"]
       JWT_AUTH:
