@@ -298,3 +298,27 @@ elastic_stack:
                       fluentd_tag: '*.nginx.*'
                   - term:
                       status: 502
+      - name: mitxpro_openedx_oauth2error
+        settings:
+          name: MIT xPRO openedx account provisioning failed
+          description: >-
+            MIT xPRO openedx account provisioning failed.
+            Might need to check configs and verify that
+            there no mismatches
+          opsgenie_key: {{ opsgenie_key }}
+          opsgenie_priority: P3
+          type: frequency
+          index: logstash-*
+          num_events: 1
+          timeframe:
+            minutes: 5
+          alert:
+            - opsgenie
+          alert_text: "MIT xPRO openedx account provisioning failed"
+          filter:
+            - bool:
+                must:
+                  - match:
+                      message: courseware.exceptions.OpenEdXOAuth2Error
+                  - term:
+                      fluentd_tag.raw: heroku.xpro
