@@ -249,9 +249,9 @@ environments:
     vpc_name: MITxPro Production
     provider_services:
       sns:
-        topic: edxapp-xpro-production-autoscaling
+        topic: edxapp-xpro-production
       sqs:
-        queue: edxapp-xpro-production-autoscaling
+        queue: edxapp-xpro-production
     secret_backends:
       mysql:
         role_prefixes:
