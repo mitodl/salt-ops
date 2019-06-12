@@ -24,9 +24,7 @@ create_{{ sns_topic }}-sns-topic:
   boto_sns.present:
     - name: {{ sns_topic }}
     - region: {{ region }}
-    - subscriptions:
-        - protocol: sqs
-        - endpoint: 'arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}'
+    - subscriptions: ['protocol': 'sqs', 'endpoint': 'arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}']
     - require:
         - boto_sqs: create_{{ sqs_queue }}-sqs-queue
 
