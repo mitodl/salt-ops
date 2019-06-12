@@ -117,7 +117,6 @@ salt_master:
         - https://github.com/mitodl/rabbitmq-formula
         - https://github.com/mitodl/nginx-formula
         - https://github.com/mitodl/letsencrypt-formula
-        - https://github.com/hubblestack/hubble-salt
         - https://github.com/mitodl/reddit-formula
         - https://github.com/mitodl/nginx-shibboleth-formula
         - https://github.com/mitodl/uwsgi-formula
