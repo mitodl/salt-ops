@@ -87,7 +87,7 @@ create_autoscaling_group:
             description: 'edx-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-groups-alarm'
             alarm_actions: [ 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:launch' ]
             ok_actions: [ 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:ok' ]
-    - notfication_arn: 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sns_topic }}'
+    - notification_arn: 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sns_topic }}'
     - notification_types:
         - autoscaling:EC2_INSTANCE_LAUNCH
         - autoscaling:EC2_INSTANCE_TERMINATE
