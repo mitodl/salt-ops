@@ -28,7 +28,7 @@ create_{{ sns_topic }}-sns-topic:
         - protocol: sqs
         - endpoint: 'arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}'
     - require:
-        - salt: create_{{ sqs_queue }}-sqs-queue
+        - boto_sqs: create_{{ sqs_queue }}-sqs-queue
 
 create_autoscaling_group:
   boto_asg.present:
@@ -87,4 +87,4 @@ create_autoscaling_group:
         - autoscaling:EC2_INSTANCE_LAUNCH
         - autoscaling:EC2_INSTANCE_TERMINATE
     - require:
-        - salt: create_{{ sns_topic }}-sns-topic
+        - boto_sns: create_{{ sns_topic }}-sns-topic
