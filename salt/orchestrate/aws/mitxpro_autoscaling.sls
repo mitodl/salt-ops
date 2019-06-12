@@ -37,7 +37,7 @@ create_{{ sns_topic }}-sns-topic:
 
 create_autoscaling_group:
   boto_asg.present:
-    - name: edx-{{ ENVIRONMENT }}-autoscaling-group
+    - name: edx-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-group
     - launch_config:
       - instance_profile_name: edx-instance-role
       - image_name: {{ ami_id }}
@@ -63,17 +63,17 @@ create_autoscaling_group:
     - scaling_policies:
         - name: ScaleUp
           adjustment_type: ChangeInCapacity
-          as_name: edx-{{ ENVIRONMENT }}-autoscaling-group
+          as_name: edx-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-group
           cooldown: 1800
           scaling_adjustment: 2
         - name: ScaleDown
           adjustment_type: ChangeInCapacity
-          as_name: edx-{{ ENVIRONMENT }}-autoscaling-group
+          as_name: edx-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-group
           cooldown: 1800
           scaling_adjustment: -1
     - alarms:
         CPU:
-          name: edx-{{ ENVIRONMENT }}-autoscaling-group-alarm
+          name: edx-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-group-alarm
           attributes:
             metric: CPUUtilization
             namespace: AWS/EC2
@@ -83,7 +83,7 @@ create_autoscaling_group:
             period: 60
             evaluation_periods: 3
             unit: null
-            description: 'edx-{{ ENVIRONMENT }}-autoscaling-groups-alarm'
+            description: 'edx-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-groups-alarm'
             alarm_actions: [ 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:launch' ]
             ok_actions: [ 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:ok' ]
     - notfication_arn: 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sns_topic }}'
