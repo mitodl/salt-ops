@@ -10,7 +10,8 @@
 
 {% set region = 'us-east-1' %}
 {% set AWS_ACCOUNT_ID = salt.vault.read('secret-operations/global/aws-account-id') %}
-{% set ami_id = salt.sdb.get('sdb://consul/edx_{}_{}_ami_id'.format(ENVIRONMENT, edx_codename)) %}
+{% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-{}-release-version'.format(ENVIRONMENT, edx_codename))|int %}
+{% set ami_name = edxapp_{{ ENVIRONMENT }}_{{ edx_codename }}_base_release_{{ release_number }} %}
 
 create_{{ sqs_queue }}-sqs-queue:
   boto_sqs.present:
@@ -41,7 +42,7 @@ create_autoscaling_group:
     - launch_config_name: edx-{{ purpose }}-{{ ENVIRONMENT }}-launch-config
     - launch_config:
       - instance_profile_name: edx-instance-role
-      - image_name: {{ ami_id }}
+      - image_name: {{ ami_name }}
       - key_name: salt-master-prod
       - instance_type: {{ purpose_data.instances.edx.type }}
       - security_groups:
