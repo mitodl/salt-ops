@@ -94,3 +94,13 @@ run_ansible:
     - unless: {{ salt.pillar.get('edx:skip_ansible', False) }}
     - env:
         HOME: /root
+
+{% if 'edx-worker' in salt.grains.get('roles') %}
+restart_edx_worker_service:
+  supervisord.running:
+    - name: all
+    - restart: True
+    - bin_env: '/edx/bin/supervisorctl'
+    - onchanges_in:
+      - file: {{ conf_file }}
+{% endif %}
