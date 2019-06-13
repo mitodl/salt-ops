@@ -15,6 +15,7 @@
 {% set AWS_ACCOUNT_ID = salt.vault.read('secret-operations/global/aws-account-id').data.value %}
 {% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-{}-release-version'.format(ENVIRONMENT, edx_codename))|int %}
 {% set ami_name = 'edxapp_' ~ ENVIRONMENT  ~ '_' ~ edx_codename ~ '_base_release_' ~ release_number %}
+{% set elb_name = 'edx-{purpose}-{env}'.format(purpose=purpose, env=ENVIRONMENT)[:32].strip('-') %}
 
 create_{{ sqs_queue }}-sqs-queue:
   boto_sqs.present:
@@ -53,7 +54,7 @@ create_autoscaling_group:
       - us-east-1c
       - us-east-1d
     - load_balancers:
-      - edx-{{ purpose }}-{{ ENVIRONMENT }}
+      - {{ elb_name }}
     - suspended_processes:
         - AddToLoadBalancer
         - AlarmNotification
