@@ -9,7 +9,7 @@
 {% set edx_codename = purpose_data.versions.codename %}
 
 {% set region = 'us-east-1' %}
-{% set AWS_ACCOUNT_ID = salt.vault.read('secret-operations/global/aws-account-id') %}
+{% set AWS_ACCOUNT_ID = salt.vault.read('secret-operations/global/aws-account-id').data.value %}
 {% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-{}-release-version'.format(ENVIRONMENT, edx_codename))|int %}
 {% set ami_name = 'edxapp_' ~ ENVIRONMENT  ~ '_' ~ edx_codename ~ '_base_release_' ~ release_number %}
 
