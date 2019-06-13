@@ -71,6 +71,12 @@ ensure_that_courses_dir_is_writable_by_fsuser:
     - user: fsuser
     - group: www-data
 
+ensure_that_highschool_dir_is_writable_by_fsuser:
+  file.directory:
+    - name: /var/www/ocw/high-school
+    - user: fsuser
+    - group: www-data
+
 {% endif %}
 
 # TODO: get rid of edxmapcopy.py in `ocwcms' (and transfer_edxmap_json.sh) and
