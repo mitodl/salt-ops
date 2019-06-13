@@ -10,6 +10,7 @@
 {% set edx_codename = purpose_data.versions.codename %}
 {% set security_groups = purpose_data.get('security_groups', []) %}
 {% do security_groups.extend(['salt_master', 'consul-agent']) %}
+{% set subnet_ids = salt.boto_vpc.describe_subnets(vpc_id=salt.boto_vpc.describe_vpcs(name=VPC_NAME).vpcs[0].id).subnets|map(attribute='id')|list %}
 
 {% set region = 'us-east-1' %}
 {% set AWS_ACCOUNT_ID = salt.vault.read('secret-operations/global/aws-account-id').data.value %}
@@ -53,6 +54,7 @@ create_autoscaling_group:
       - us-east-1b
       - us-east-1c
       - us-east-1d
+    - vpc_zone_identifier: {{ subnet_ids|tojson }}
     - load_balancers:
       - {{ elb_name }}
     - suspended_processes:
