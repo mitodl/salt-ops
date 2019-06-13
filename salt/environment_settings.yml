@@ -317,6 +317,8 @@ environments:
           edx-worker:
             number: 3
             type: t3.large
+        security_groups:
+          - edx
   mitx-qa:
     business_unit: residential
     network_prefix: '10.5'
