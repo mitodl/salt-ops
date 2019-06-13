@@ -2,11 +2,14 @@
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitxpro-production') %}
 {% set purpose = salt.grains.get('purpose', 'xpro-production') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
+{% set VPC_NAME = env_data.vpc_name %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
 {% set purpose_data = env_data.purposes[purpose] %}
 {% set sqs_queue = env_data.provider_services.sqs.queue ~ '-' ~ ENVIRONMENT ~ '-autoscaling' %}
 {% set sns_topic = env_data.provider_services.sns.topic ~ '-' ~ ENVIRONMENT ~ '-autoscaling' %}
 {% set edx_codename = purpose_data.versions.codename %}
+{% set security_groups = purpose_data.get('security_groups', []) %}
+{% do security_groups.extend(['salt_master', 'consul-agent']) %}
 
 {% set region = 'us-east-1' %}
 {% set AWS_ACCOUNT_ID = salt.vault.read('secret-operations/global/aws-account-id').data.value %}
@@ -37,9 +40,10 @@ create_autoscaling_group:
       - key_name: salt-master-prod
       - instance_type: {{ purpose_data.instances.edx.type }}
       - security_groups:
-        - salt_master-{{ ENVIRONMENT }}
-        - consul-agent-{{ ENVIRONMENT }}
-        - edx-{{ ENVIRONMENT }}
+        {% for group_name in security_groups %}
+          - {{ salt.boto_secgroup.get_group_id(
+            '{}-{}'.format(group_name, ENVIRONMENT), vpc_name=VPC_NAME) }}
+          {% endfor %}
     - min_size: {{ purpose_data.instances.edx.min_number }}
     - max_size: {{ purpose_data.instances.edx.max_number }}
     - desired_capacity: {{ purpose_data.instances.edx.min_number }}
