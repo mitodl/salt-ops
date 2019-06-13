@@ -67,8 +67,8 @@ heroku:
   app_name: xpro-{{ env_data.env_name }}
   api_key: __vault__::secret-operations/global/heroku/api_key>data>value
   config_vars:
-    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-xpro-app-{{ env_data.env_name }}>data>access_key
-    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-xpro-app-{{ env_data.env_name }}>data>secret_key
+    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>access_key
+    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'xpro-app-{{ env_data.env_name }}'
     CYBERSOURCE_ACCESS_KEY: {{ cybersource_creds.data.access_key }}
     CYBERSOURCE_MERCHANT_ID: 'mit_odl_xpro'
