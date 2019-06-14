@@ -1,4 +1,5 @@
 {% set ONE_WEEK = 604800 %}
+{% set sqs_mitxpro_production_queue = 'edxapp-xpro-production-mitxpro-production-autoscaling' %}
 
 slack_api_token: __vault__::secret-operations/global/slack/slack_api_token>data>value
 slack:
@@ -165,6 +166,17 @@ salt_master:
             - salt://reactors/slack/post_event.sls
         - salt/engine/sqs/mitxpro-production-autoscaling:
             - salt://reactors/mitxpro/edxapp_ec2_autoscale.sls
+    engines:
+      sqs:
+        region: us-east-1
+        message_format: json
+        id: use-instance-role-credentials
+        key: use-instance-role-credentials
+      engines:
+        - sqs_events:
+          queue: {{ sqs_mitxpro_production_queue }}
+          profile: sqs
+          tag: salt/engine/sqs/mitxpro-production-autoscaling
     misc:
       worker_threads: 25
       {# this is to avoid timeouts waiting for edx asset compilation during AMI build (TMM 2019-04-01) #}
