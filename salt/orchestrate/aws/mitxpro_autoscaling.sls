@@ -41,6 +41,7 @@ create_autoscaling_group:
       - image_name: {{ ami_name }}
       - key_name: salt-master-prod
       - instance_type: {{ purpose_data.instances.edx.type }}
+      - associate_public_ip_address: True
       - security_groups:
         {% for group_name in security_groups %}
           - {{ salt.boto_secgroup.get_group_id(
@@ -83,7 +84,7 @@ create_autoscaling_group:
             period: 60
             evaluation_periods: 3
             unit: null
-            description: 'edx-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-groups-alarm'
+            description: 'edx-{{ purpose }}-{{ ENVIRONMENT }} ASG alarm'
             alarm_actions: [ 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:launch' ]
             ok_actions: [ 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:ok' ]
     - notification_arn: 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sns_topic }}'
