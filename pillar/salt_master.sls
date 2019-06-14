@@ -166,7 +166,7 @@ salt_master:
             - salt://reactors/slack/post_event.sls
         - salt/engine/sqs/mitxpro-production-autoscaling:
             - salt://reactors/mitxpro/edxapp_ec2_autoscale.sls
-    engine:
+    engines:
       sqs:
         region: us-east-1
         message_format: json
