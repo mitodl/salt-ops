@@ -50,7 +50,13 @@ create_autoscaling_group:
     - min_size: {{ purpose_data.instances.edx.min_number }}
     - max_size: {{ purpose_data.instances.edx.max_number }}
     - desired_capacity: {{ purpose_data.instances.edx.min_number }}
+    - health_check_type: EC2
     - region: {{ region }}
+    - tags:
+        - key: 'Environment'
+          value: {{ ENVIRONMENT }}
+        - key: 'purpose'
+          value: {{ purpose }}
     - availability_zones:
       - us-east-1b
       - us-east-1c
