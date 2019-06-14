@@ -22,32 +22,33 @@ edxapp_secret_backends: &edxapp_secret_backends
 
 current_residential_versions_qa: &current_residential_versions_qa
   edx_config_repo: https://github.com/mitodl/configuration
-  edx_config_version: open-release/hawthorn.master
+  edx_config_version: open-release/ironwood.master
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
-  edxapp: mitx/hawthorn-release
+  edxapp: mitx/ironwood
   forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
-  forum: open-release/hawthorn.master
+  forum: open-release/ironwood.master
   xqueue_source_repo: 'https://github.com/mitodl/xqueue'
-  xqueue: open-release/hawthorn.master
+  xqueue: open-release/ironwood.master
   xqwatcher_courses: production
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
-  theme: master
-  codename: hawthorn-release
+  theme: ironwood
+  codename: ironwood
   ami_id: ami-80861296
 
 current_residential_versions_rp: &current_residential_versions_rp
   edx_config_repo: https://github.com/mitodl/configuration
-  edx_config_version: open-release/hawthorn.master
+  edx_config_version: open-release/ironwood.master
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
-  edxapp: mitx/hawthorn-release
+  edxapp: mitx/ironwood
   forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
-  forum: open-release/hawthorn.master
+  forum: open-release/ironwood.master
   xqueue_source_repo: 'https://github.com/mitodl/xqueue'
-  xqueue: open-release/hawthorn.master
+  xqueue: open-release/ironwood.master
   xqwatcher_courses: production
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
-  theme: master
-  codename: hawthorn-release
+  theme: ironwood
+  codename: ironwood
+  ami_id: ami-80861296
   ami_id: ami-80861296
 
 next_residential_versions: &next_residential_versions
@@ -61,7 +62,7 @@ next_residential_versions: &next_residential_versions
   xqueue: open-release/ironwood.master
   xqwatcher_courses: master
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
-  theme: master
+  theme: ironwood
   codename: ironwood
   ami_id: ami-80861296
 
