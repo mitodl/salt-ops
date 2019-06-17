@@ -61,6 +61,8 @@ configure_logging_for_xqwatcher:
     - name: /edx/app/xqwatcher/logging.json
     - contents: |
         {{ salt.pillar.get('edx:xqwatcher:logconfig', {})|json(indent=2)|indent(8) }}
+
+set_directory_permissions_for_xqwatcher_logs:
   file.directory:
     - name: /edx/var/log/xqwatcher
     - user: www-data
