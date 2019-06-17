@@ -1,6 +1,7 @@
 {% set edx_tracking_local_folder = '/edx/var/log/tracking' %}
 {% set instance_id = salt.grains.get('id') %}
 {% set edx_tracking_bucket = 'odl-residential-tracking-backup' %}
+{% set aws_creds = salt.pillar.get('edx:tracking_backups:aws_creds') %}
 
 tar_tracking_data:
   cmd.run:
@@ -14,3 +15,5 @@ upload_tar_to_s3:
     - bucket: {{ edx_tracking_bucket }}
     - path: {{ instance_id }}.tgz
     - local_file: {{ edx_tracking_local_folder }}/edx_tracking_{{ instance_id }}.tgz
+    - key: {{ aws_creds.secret_key }}
+    - keyid: {{ aws_creds.access_key}}
