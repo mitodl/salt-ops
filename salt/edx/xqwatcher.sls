@@ -61,6 +61,13 @@ configure_logging_for_xqwatcher:
     - name: /edx/app/xqwatcher/logging.json
     - contents: |
         {{ salt.pillar.get('edx:xqwatcher:logconfig', {})|json(indent=2)|indent(8) }}
+  file.directory:
+    - name: /edx/var/log/xqwatcher
+    - user: www-data
+    - group: xqwatcher
+    - recurse:
+        - user
+        - group
 
 {% for course in salt.pillar.get('edx:ansible_vars:XQWATCHER_COURSES', []) %}
 ensure_codejail_requirements_are_installed_for_{{  course.COURSE }}:

@@ -12,22 +12,23 @@ edx:
       disable_existing_loggers: False
       formatters:
         default:
-          format: '%(asctime)s - %(filename)s:%(lineno)d -- %(funcName)s [%(levelname)s]: %(message)s'
+          format: '[service_variant=xqwatcher] %(asctime)s - %(filename)s:%(lineno)d -- %(funcName)s [%(levelname)s]: %(message)s'
       handlers:
         console:
           class: logging.StreamHandler
           formatter: default
           level: DEBUG
-        syslog:
-          class: logging.handlers.SysLogHandler
+        rotatingfile:
+          class: logging.handlers.RotatingFileHandler
           formatter: default
           level: INFO
-          address: /dev/log
+          filename: /edx/var/log/xqwatcher/xqwatcher.log
+          maxBytes: 10485760
       loggers:
         "":
           level: INFO
           handlers:
-            - syslog
+            - rotatingfile
             - console
   config:
     repo: {{ purpose_data.versions.edx_config_repo }}
