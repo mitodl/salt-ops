@@ -14,7 +14,7 @@ ec2_autoscale_launch:
     - instances: edx-{{ ENVIRONMENT }}-xpro-production-{{ payload['EC2InstanceId'].strip('i-') }}
     - instance_id: {{ payload['EC2InstanceId'] }}
     - image: {{ ami_id }}
-{% elif 'TERMINATE' in payload['Event'] %}
+{% elif 'TERMINATE' in payload %}
 remove_key:
   wheel.key.delete:
     - match: edx-{{ ENVIRONMENT }}-xpro-production-{{ payload['EC2InstanceId'].strip('i-') }}
