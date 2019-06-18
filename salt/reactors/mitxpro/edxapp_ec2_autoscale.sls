@@ -1,4 +1,5 @@
 {% set payload = data['message']|load_json %}
+{% set instanceid = payload['Message']|load_json %}
 {% set ENVIRONMENT = 'mitxpro-production' %}
 {% set PURPOSE = 'xpro-production' %}
 {% set env_dict = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
@@ -12,12 +13,12 @@
 ec2_autoscale_launch:
   runner.cloud.create:
     - provider: mitx
-    - instances: edx-{{ ENVIRONMENT }}-xpro-production-{{ payload['EC2InstanceId'].strip('i-') }}
-    - instance_id: {{ payload['EC2InstanceId'] }}
+    - instances: edx-{{ ENVIRONMENT }}-xpro-production-{{ instanceid['EC2InstanceId'].strip('i-') }}
+    - instance_id: {{ instanceid['EC2InstanceId'] }}
     - image: {{ ami_id }}
 {% elif 'TERMINATE' in payload['Message'] %}
 remove_key:
   wheel.key.delete:
-    - match: edx-{{ ENVIRONMENT }}-xpro-production-{{ payload['EC2InstanceId'].strip('i-') }}
+    - match: edx-{{ ENVIRONMENT }}-xpro-production-{{ instanceid['EC2InstanceId'].strip('i-') }}
 {% endif %}
 {% endif %}
