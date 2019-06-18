@@ -17,6 +17,7 @@ ec2_autoscale_launch:
     - instance_id: {{ instanceid['EC2InstanceId'] }}
     - image: {{ ami_id }}
     - ssh_interface: private_ips
+    - ssh_username: ubuntu
 {% elif 'TERMINATE' in payload['Message'] %}
 remove_key:
   wheel.key.delete:
