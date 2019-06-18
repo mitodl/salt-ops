@@ -7,7 +7,8 @@
 {% set edx_codename = purposes[PURPOSE].versions.codename %}
 {% set ami_id = salt.sdb.get('sdb://consul/edx_{}_{}_ami_id'.format(ENVIRONMENT, edx_codename)) %}
 
-{% if 'LAUNCH' in payload %}
+{% if 'Event' in payload %}
+{% if 'LAUNCH' in payload['Event'] %}
 ec2_autoscale_launch:
   runner.cloud.create:
     - provider: mitx
@@ -18,4 +19,5 @@ ec2_autoscale_launch:
 remove_key:
   wheel.key.delete:
     - match: edx-{{ ENVIRONMENT }}-xpro-production-{{ payload['EC2InstanceId'].strip('i-') }}
+{% endif %}
 {% endif %}
