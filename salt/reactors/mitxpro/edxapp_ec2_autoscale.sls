@@ -16,6 +16,7 @@ ec2_autoscale_launch:
     - instances: edx-{{ ENVIRONMENT }}-xpro-production-{{ instanceid['EC2InstanceId'].strip('i-') }}
     - instance_id: {{ instanceid['EC2InstanceId'] }}
     - image: {{ ami_id }}
+    - ssh_interface: private_ips
 {% elif 'TERMINATE' in payload['Message'] %}
 remove_key:
   wheel.key.delete:
