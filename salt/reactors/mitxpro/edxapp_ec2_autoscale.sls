@@ -7,15 +7,15 @@
 {% set edx_codename = purposes[PURPOSE].versions.codename %}
 {% set ami_id = salt.sdb.get('sdb://consul/edx_{}_{}_ami_id'.format(ENVIRONMENT, edx_codename)) %}
 
-{% if 'Event' in payload %}
-{% if 'LAUNCH' in payload['Event'] %}
+{% if 'Event' in payload['Message'] %}
+{% if 'LAUNCH' in payload['Message'] %}
 ec2_autoscale_launch:
   runner.cloud.create:
     - provider: mitx
     - instances: edx-{{ ENVIRONMENT }}-xpro-production-{{ payload['EC2InstanceId'].strip('i-') }}
     - instance_id: {{ payload['EC2InstanceId'] }}
     - image: {{ ami_id }}
-{% elif 'TERMINATE' in payload %}
+{% elif 'TERMINATE' in payload['Message'] %}
 remove_key:
   wheel.key.delete:
     - match: edx-{{ ENVIRONMENT }}-xpro-production-{{ payload['EC2InstanceId'].strip('i-') }}
