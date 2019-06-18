@@ -12,7 +12,7 @@ edx:
       disable_existing_loggers: False
       formatters:
         default:
-          format: '[service_variant=xqwatcher] %(asctime)s - %(filename)s:%(lineno)d -- %(funcName)s [%(levelname)s]: %(message)s'
+          format: '%(asctime)s - %(filename)s:%(lineno)d -- %(funcName)s [%(levelname)s]: %(message)s'
       handlers:
         console:
           class: logging.StreamHandler
