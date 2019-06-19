@@ -257,19 +257,19 @@ base:
   'roles:ocw-mirror':
     - match: grain
     - apps.ocw
-  'P@roles:ocw-(cms|mirror) and G@ocw-environment:production':
-    - match: compound
-    - apps.ocw-production
-  'P@roles:ocw-(cms|mirror) and G@ocw-environment:qa':
-    - match: compound
-    - apps.ocw-qa
-  'roles:ocw-db':
-    - match: grain
-    - logrotate.ocw_cms
-    - fluentd.ocw_db
   'roles:ocw-origin':
     - match: grain
     - apps.ocw
     - letsencrypt.ocw_origin
     - nginx.ocw_origin
     - fluentd.ocw_origin
+  'P@roles:ocw-(cms|mirror|origin) and G@ocw-environment:production':
+    - match: compound
+    - apps.ocw-production
+  'P@roles:ocw-(cms|mirror|origin) and G@ocw-environment:qa':
+    - match: compound
+    - apps.ocw-qa
+  'roles:ocw-db':
+    - match: grain
+    - logrotate.ocw_cms
+    - fluentd.ocw_db
