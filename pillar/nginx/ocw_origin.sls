@@ -77,8 +77,6 @@ nginx:
                     - try_files:
                         - $uri
                         - $uri/index.htm
-                        - /index.htm
-                        - /index.html
                         - =404
                     - error_page:
                         - '404'
