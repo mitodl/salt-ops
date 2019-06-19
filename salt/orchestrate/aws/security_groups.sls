@@ -15,8 +15,8 @@
 {% set VPC_CIDR = '{}.0.0/16'.format(network_prefix) %}
 {% set ODL_WIRED_CIDR = '18.124.0.0/16' %}
 {% set ODL_WIRELESS_CIDR = '18.40.64.0/19' %}
-{% set MIT_VPN_0_CIDR = '18.100.0.0/16' %}
-{% set MIT_VPN_1_CIDR = '18.101.0.0/16' %}
+{% set MIT_VPN_0_CIDR = '18.28.0.0/16' %}
+{% set MIT_VPN_1_CIDR = '18.30.0.0/16' %}
 
 create_salt_master_security_group:
   boto_secgroup.present:
