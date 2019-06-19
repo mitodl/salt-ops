@@ -18,6 +18,8 @@ ec2_autoscale_launch:
     - image: {{ ami_id }}
     - ssh_interface: private_ips
     - ssh_username: ubuntu
+    - wait_for_ip_interval: 60
+    - wait_for_passwd_maxtries: 30
 {% elif 'TERMINATE' in payload['Message'] %}
 remove_key:
   wheel.key.delete:
