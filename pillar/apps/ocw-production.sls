@@ -13,7 +13,7 @@ mine_functions:
   network.ip_addrs: [eth0]
 
 ocw:
-  ocwcms_branch: add-missing-course-find-bys
+  ocwcms_branch: master
   engines_conf:
     # database is the MySQL database, not Zope database.
     database:
