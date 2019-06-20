@@ -13,7 +13,7 @@ mine_functions:
   network.ip_addrs: [eth0]
 
 ocw:
-  ocwcms_branch: ag/add_residentail_digital_innovations
+  ocwcms_branch: master
   engines_conf:
     # database is the MySQL database, not Zope database.
     database:
