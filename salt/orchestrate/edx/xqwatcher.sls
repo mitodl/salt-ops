@@ -39,6 +39,7 @@ generate_xqwatcher_{{ course.name }}_cloud_map_file:
           Department: {{ BUSINESS_UNIT }}
           OU: {{ BUSINESS_UNIT }}
           Environment: {{ ENVIRONMENT }}
+          course: {{ course.name }}
         roles:
           - xqwatcher
         securitygroupid:
