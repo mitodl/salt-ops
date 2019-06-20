@@ -11,7 +11,7 @@ fluentd:
           attrs:
             - '@type': tail
             - enable_watch_timer: 'false'
-            - tag: edx.xqwatcher
+            - tag: edx.xqwatcher.{{ salt.grains.get('course', 'none') }}
             - path: /edx/var/log/xqwatcher/xqwatcher.log
             - pos_file: /edx/var/log/xqwatcher/xqwatcher.log.pos
             - format: multiline
