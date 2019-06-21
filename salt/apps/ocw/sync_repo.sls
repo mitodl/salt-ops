@@ -65,11 +65,24 @@ ensure_that_webroot_is_writable_by_fsuser:
     - user: fsuser
     - group: www-data
 
-ensure_that_courses_dir_is_writable_by_fsuser:
+# Ensure that the following course-related directories are owned by fsuser.
+# These have static files that are maintained in the `ocwcms' Git repository,
+# in addition to files that are copied over by the publishing process.
+# Other directories in `courses' should be safe because they don't have
+# files managed in Git, and aren't rsynced over from the working copy in
+# `/var/lib/ocwcms'.
+{% set course_dirs = [
+     'courses', 'courses/find-by-department', 'courses/find-by-educator-tags',
+     'courses/find-by-number', 'courses/find-by-topic'
+   ]
+%}
+{% for dir in course_dirs %}
+ensure_that_{{ dir }}_is_writable_by_fsuser:
   file.directory:
-    - name: /var/www/ocw/courses
+    - name: /var/www/ocw/{{ dir }}
     - user: fsuser
     - group: www-data
+{% endfor %}
 
 ensure_that_highschool_dir_is_writable_by_fsuser:
   file.directory:
