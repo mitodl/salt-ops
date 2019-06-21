@@ -40,7 +40,8 @@ edx:
     XQWATCHER_GIT_IDENTITY: __vault__::secret-residential/global/xqueue_watcher_git_ssh>data>value
     XQWATCHER_CONFIG:
       POLL_TIME: 10
-      REQUESTS_TIMEOUT: 1.5
+      REQUESTS_TIMEOUT: 10
+      POLL_INTERVAL: 10
     XQWATCHER_REPOS:
       - PROTOCOL: "https"
         DOMAIN: "github.com"
