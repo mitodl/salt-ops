@@ -21,12 +21,12 @@ edx:
         rotatingfile:
           class: logging.handlers.RotatingFileHandler
           formatter: default
-          level: INFO
+          level: DEBUG
           filename: /edx/var/log/xqwatcher/xqwatcher.log
           maxBytes: 10485760
       loggers:
         "":
-          level: INFO
+          level: DEBUG
           handlers:
             - rotatingfile
             - console
