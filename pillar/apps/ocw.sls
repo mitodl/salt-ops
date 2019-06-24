@@ -20,29 +20,29 @@ ocw:
     # are put for being rsynced.
     rootdirectory: /data2/prod
     # data_dirs are directories that are hardcoded in
-    # https://github.com/mitocw/ocwcms/blob/25f31dd2a15b6b658b0fa59d0cd8ebb8ebe0f7c7/mirror/scripts/ocw6%20Mirror%20Scripts/create_new_snapshot.sh
+    # https://github.com/mitocw/ocwcms/blob/d98a4919813cd97103dce3ee1a7a41ae359eac15/mirror/scripts/create_new_snapshot.sh
     data_dirs:
       - /ans15436
-      - /data/InternetArchive
-      - /data/prod/about
-      - /data/prod/courses
-      - /data/prod/give
-      - /data/prod/educator
-      - /data/prod/faculty
-      - /data/prod/help
-      - /data/prod/high-school
-      - /data/prod/resources
-      - /data/prod/support
-      - /data/prod/terms
-      - /data/prod/images
-      - /data/prod/jsp
-      - /data/prod/jw-player-free
-      - /data/prod/mathjax
-      - /data/prod/OcWeb
-      - /data/prod/scripts
-      - /data/prod/styles
-      - /data/prod/webfonts
-      - /data/prod/subscribe
+      - /data2/InternetArchive
+      - /data2/prod/about
+      - /data2/prod/courses
+      - /data2/prod/give
+      - /data2/prod/educator
+      - /data2/prod/faculty
+      - /data2/prod/help
+      - /data2/prod/high-school
+      - /data2/prod/resources
+      - /data2/prod/support
+      - /data2/prod/terms
+      - /data2/prod/images
+      - /data2/prod/jsp
+      - /data2/prod/jw-player-free
+      - /data2/prod/mathjax
+      - /data2/prod/OcWeb
+      - /data2/prod/scripts
+      - /data2/prod/styles
+      - /data2/prod/webfonts
+      - /data2/prod/subscribe
 
 {% if 'ocw-origin' in ROLES %}
 schedule:
