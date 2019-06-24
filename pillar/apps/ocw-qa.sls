@@ -58,3 +58,8 @@ ocw:
     base_site_url: https://ocw-qa-origin.odl.mit.edu
     base_staging_site_url: https://ocw-qa-ocw2.odl.mit.edu
     zodb_ipaddr: "{{ zodb_ipaddr }}"
+  mirror:
+    host_aliases:
+      - ['ocw.mit.edu': '10.100.0.29']
+      - ['ocwcms.mit.edu': '10.100.0.25']
+      - ['ocwpcms2.mit.edu': '10.100.0.22']
