@@ -43,6 +43,9 @@ edx:
         PYTHON_EXECUTABLE: /usr/bin/python3
         QUEUE_NAME: mitx-686xgrader
         QUEUE_CONFIG:
+          AUTH:
+            - __vault__::secret-residential/global/course-686x-grader-xqueue-credentials>data>username
+            - __vault__::secret-residential/global/course-686x-grader-xqueue-credentials>data>password
           SERVER: https://xqueue.edx.org
           CONNECTIONS: 5
           HANDLERS:
@@ -54,9 +57,6 @@ edx:
                 bin_path: '{% raw %}{{ xqwatcher_venv_base }}{% endraw %}/mit-686x-mooc/bin/python'
               KWARGS:
                 grader_root: ../data/mit-686x-mooc/graders/
-              AUTH:
-                - __vault__::secret-residential/global/course-686x-grader-xqueue-credentials>data>username
-                - __vault__::secret-residential/global/course-686x-grader-xqueue-credentials>data>password
       {% for purpose, purpose_data in env_data.purposes.items() %}
       {% if 'residential' in purpose %}
       - COURSE: mit-686x-{{ purpose }}
@@ -96,6 +96,9 @@ edx:
         PYTHON_EXECUTABLE: /usr/bin/python3
         QUEUE_NAME: mitx-686xgrader
         QUEUE_CONFIG:
+          AUTH:
+            - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>username
+            - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>password
           SERVER: 'http://xqueue-{{ purpose }}.service.consul:18040'
           CONNECTIONS: 5
           HANDLERS:
@@ -107,9 +110,6 @@ edx:
                 bin_path: '{% raw %}{{ xqwatcher_venv_base }}{% endraw %}/mit-686x/bin/python'
               KWARGS:
                 grader_root: ../data/mit-686x-{{ purpose }}/graders/
-              AUTH:
-                - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>username
-                - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>password
       {% endif %}
       {% endfor %}
 

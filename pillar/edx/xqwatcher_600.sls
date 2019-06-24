@@ -22,6 +22,9 @@ edx:
       PYTHON_EXECUTABLE: /usr/bin/python3
       QUEUE_NAME: {{ queue_name }}
       QUEUE_CONFIG:
+        AUTH:
+          - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>username
+          - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>password
         SERVER: http://xqueue-{{ purpose }}.service.consul:18040
         CONNECTIONS: 5
         HANDLERS:
@@ -33,9 +36,6 @@ edx:
               bin_path: '{% raw %}{{ xqwatcher_venv_base }}{% endraw %}/mit-600x/bin/python'
             KWARGS:
               grader_root: ../data/mit-600x-{{ purpose }}-{{ queue_name }}/graders/python3graders/
-        AUTH:
-          - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>username
-          - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>password
     {% endfor %}
     {% endif %}
     {% endfor %}
