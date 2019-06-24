@@ -64,7 +64,7 @@ redash:
     - name: MITxPro Production
       type: pg
       options:
-        dbname: mitxproproduction
+        dbname: mitxpro
         host: postgres-mitxpro.service.production-apps.consul
         port: 5432
         user: __vault__:cache:postgres-production-apps-mitxpro/creds/readonly>data>username
