@@ -135,3 +135,13 @@ ensure_correct_ownership_of_json_for_mobile_working_dir:
     - group: plone
 
 {% endif %}
+
+
+{% if 'ocw-mirror' in roles %}
+ensure_state_of_scripts_symlink:
+  file.symlink:
+    - name: /data2/scripts
+    - target: /var/lib/ocwcms/mirror/scripts
+    - force: True
+    - backupname: scripts_old
+{% endif %}

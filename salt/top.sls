@@ -224,6 +224,7 @@ base:
   'roles:ocw-mirror':
     - match: grain
     - apps.ocw.mirror
+    - apps.ocw.sync_repo
   'roles:sandbox':
     - match: grain
     - edx.prod
