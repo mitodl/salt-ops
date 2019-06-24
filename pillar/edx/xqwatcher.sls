@@ -42,6 +42,7 @@ edx:
       POLL_TIME: 10
       REQUESTS_TIMEOUT: 10
       POLL_INTERVAL: 10
+      FOLLOW_CLIENT_REDIRECTS: True
     XQWATCHER_REPOS:
       - PROTOCOL: "https"
         DOMAIN: "github.com"
