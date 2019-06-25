@@ -43,6 +43,8 @@ edx:
     EDXAPP_SUPPORT_SITE_LINK: 'https://xpro.zendesk.com/hc/en-us/requests/new'
     EDXAPP_LMS_ENV_EXTRA:
       BULK_EMAIL_DEFAULT_FROM_EMAIL: {{ support_email }}
+      COURSE_ABOUT_VISIBILITY_PERMISSION: staff
+      COURSE_CATALOG_VISIBILITY_PERMISSION: staff
       COURSE_MODE_DEFAULTS:
         name: "Audit"
         slug: "audit"
