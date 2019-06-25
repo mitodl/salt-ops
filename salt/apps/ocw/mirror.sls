@@ -25,9 +25,9 @@ ensure_state_of_mirror_rootdirectory:
 # We need these /etc/hosts aliases because there are hardcoded hostnames in the
 # shell scripts that run on the mirror server.
 {% for alias in host_aliases %}
-alias_{{ alias }}_for_mirror_script:
+alias_{{ alias[0] }}_for_mirror_script:
   module.run:
     - name: hosts.set_host
-    - alias: alias[0]
-    - ip: alias[1]
+    - alias: {{ alias[0] }}
+    - ip: {{ alias[1] }}
 {% endfor %}

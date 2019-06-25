@@ -60,6 +60,6 @@ ocw:
     zodb_ipaddr: "{{ zodb_ipaddr }}"
   mirror:
     host_aliases:
-      - ['ocw.mit.edu': '10.100.0.29']
-      - ['ocwcms.mit.edu': '10.100.0.25']
-      - ['ocwpcms2.mit.edu': '10.100.0.22']
+      - ['ocw.mit.edu', '10.100.0.29']
+      - ['ocwcms.mit.edu', '10.100.0.25']
+      - ['ocwpcms2.mit.edu', '10.100.0.22']
