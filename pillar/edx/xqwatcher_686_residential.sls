@@ -130,6 +130,6 @@ schedule:
     function: git.pull
     minutes: 5
     args:
-      - /edx/app/xqwatcher/data/mit-686x
+      - /edx/app/xqwatcher/data/mit-686x-mooc
     kwargs:
       identity: /edx/app/xqwatcher/.ssh/xqwatcher-courses
