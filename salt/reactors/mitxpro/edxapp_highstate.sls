@@ -1,6 +1,6 @@
 edxapp_highstate:
   local.state.sls:
-    - tgt: {{ data['id'] }}
+    - tgt: {{ data['name'] }}
     - queue: True
     - arg:
         - edx.prod
