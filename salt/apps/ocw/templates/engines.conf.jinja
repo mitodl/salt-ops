@@ -64,7 +64,7 @@ current_environment: {{ engines_conf.dspace.current_environment }}
 
 [Test_Dspace_conf]
 dspace_host_id: {{ engines_conf.test_dspace_conf.dspace_host_id }}
-dspace_host_port: 80
+dspace_host_port: {{ engines_conf.test_dspace_conf.dspace_host_port }}
 dspace_connection_user: {{ dspace_test_connection_user }}
 dspace_connection_password: {{ dspace_test_connection_password }}
 dspace_endpoint_prefix: {{ engines_conf.test_dspace_conf.dspace_endpoint_prefix }}
@@ -72,7 +72,7 @@ deposit_uri_lookup_file_name: UAT_DepositURILookup.xml
 
 [Production_Dspace_conf]
 dspace_host_id: {{ engines_conf.production_dspace_conf.dspace_host_id }}
-dspace_host_port: 80
+dspace_host_port: {{ engines_conf.production_dspace_conf.dspace_host_port }}
 dspace_connection_user: {{ dspace_prod_connection_user }}
 dspace_connection_password: {{ dspace_prod_connection_password }}
 dspace_endpoint_prefix: {{ engines_conf.production_dspace_conf.dspace_endpoint_prefix }}
