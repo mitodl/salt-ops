@@ -1,10 +1,6 @@
-{% set payload = data['message']|load_json %}
-{% set instanceid = payload['Message']|load_json %}
-{% set ENVIRONMENT = 'mitxpro-production' %}
-
 edxapp_highstate:
   local.state.sls:
-    - tgt: 'edx-{{ ENVIRONMENT }}-xpro-production-{{ instanceid['EC2InstanceId'].strip('i-') }}'
+    - tgt: {{ data['id'] }}
     - queue: True
     - arg:
         - edx.prod
