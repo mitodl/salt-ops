@@ -1,9 +1,7 @@
 edxapp_highstate:
-  local.state.sls:
+  local.state.apply:
     - tgt: {{ data['name'] }}
     - queue: True
-    - arg:
-        - edx.prod
     - kwargs:
         pillar:
           edx:
