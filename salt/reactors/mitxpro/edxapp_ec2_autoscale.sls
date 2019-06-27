@@ -7,6 +7,7 @@
 {% set purposes = env_settings.purposes %}
 {% set edx_codename = purposes[PURPOSE].versions.codename %}
 {% set ami_id = salt.sdb.get('sdb://consul/edx_{}_{}_ami_id'.format(ENVIRONMENT, edx_codename)) %}
+{% set business_unit = 'mitxpro' %}
 
 {% if 'Event' in payload['Message'] %}
 {% if 'LAUNCH' in payload['Message'] %}
@@ -19,7 +20,13 @@ ec2_autoscale_launch:
     - ssh_interface: private_ips
     - ssh_username: ubuntu
     - wait_for_ip_interval: 60
-    - wait_for_passwd_maxtries: 60 
+    - wait_for_passwd_maxtries: 60
+    - grains:
+        roles:
+          - edx
+        environemnt: {{ ENVIRONMENT }}
+        business_unit: {{ business_unit }}
+
 {% elif 'TERMINATE' in payload['Message'] %}
 remove_key:
   wheel.key.delete:

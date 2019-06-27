@@ -166,6 +166,8 @@ salt_master:
             - salt://reactors/slack/post_event.sls
         - salt/engine/sqs/mitxpro-production-autoscaling:
             - salt://reactors/mitxpro/edxapp_ec2_autoscale.sls
+        - salt/cloud/edx-*mitxpro-production-xpro-production-*/created:
+            - salt://reactors/mitxpro/edxapp_highstate.sls
     engines:
       sqs:
         region: us-east-1
