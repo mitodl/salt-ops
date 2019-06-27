@@ -203,30 +203,6 @@ environments:
           cluster_id: xpro-video
           purpose: xpro-video-qa
     purposes:
-      xpro-video-qa:
-        app: edx-video-pipeline
-        business_unit: mitxpro
-        domains:
-          - veda-xpro-qa.mitx.mit.edu
-        services:
-          s3:
-            buckets:
-              - edx-video-upload
-              - edx-video-delivery
-              - veda-upload
-              - veda-delivery
-              - veda-hotstore
-        instances:
-          edx-video-pipeline:
-            number: 1
-            type: t3.medium
-            security_groups:
-              - edx
-          edx-video-worker:
-            number: 2
-            type: t3.large
-            security_groups:
-              - edx
       xpro-qa:
         app: edx-platform
         business_unit: mitxpro
@@ -317,9 +293,9 @@ environments:
         app: edx-platform
         business_unit: mitxpro
         domains:
-          cms: studio-xpro.mitx.mit.edu
-          lms: xpro.mitx.mit.edu
-          preview: preview-xpro.mitx.mit.edu
+          cms: studio.xpro.mit.edu
+          lms: courses.xpro.mit.edu
+          preview: preview.xpro.mit.edu
         versions:
           <<: *xpro_production_versions
         instances:
