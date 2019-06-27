@@ -24,7 +24,8 @@ ec2_autoscale_launch:
     - grains:
         roles:
           - edx
-        environemnt: {{ ENVIRONMENT }}
+        environment: {{ ENVIRONMENT }}
+        purpose: {{ PURPOSE }}
         business_unit: {{ business_unit }}
 
 {% elif 'TERMINATE' in payload['Message'] %}
