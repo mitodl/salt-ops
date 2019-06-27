@@ -11,7 +11,7 @@
       'sentry_log_level': 'ERROR',
       'logout_redirect_url': 'https://xpro-qa-sandbox.mitx.mit.edu/logout',
       'OPENEDX_API_BASE_URL': 'https://xpro-qa-sandbox.mitx.mit.edu',
-      'openedx_environment': 'mitxpro-sandbox',
+      'openedx_environment': 'mitxpro-qa',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
       'CYBERSOURCE_WSDL_URL': 'https://ics2wstest.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
       'HUBSPOT_ID_PREFIX': 'xpro-ci',
