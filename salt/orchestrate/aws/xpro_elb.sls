@@ -17,14 +17,24 @@
 {% set codename = defined_purposes[purpose_name].versions.codename %}
 {% set release_version = salt.sdb.get('sdb://consul/edxapp-{}-{}-release-version'.format(ENVIRONMENT, codename)) %}
 {% set purpose = defined_purposes[purpose_name] %}
-{% set domains = purpose.domains %}
-{% if ENVIRONMENT.endswith('production') %}
-{% set domains = {
+{% set domain_map = {
+'xpro-production':{
           'cms': 'studio-xpro.mitx.mit.edu',
           'lms': 'xpro.mitx.mit.edu',
           'preview': 'preview-xpro.mitx.mit.edu'
+          },
+'xpro-qa': {
+          'cms': 'studio-xpro-qa.mitx.mit.edu',
+          'lms': 'xpro-qa.mitx.mit.edu',
+          'preview': 'preview-xpro-qa.mitx.mit.edu'
+  },
+'sandbox': {
+          'cms': 'studio-xpro-qa-sandbox.mitx.mit.edu',
+          'lms': 'xpro-qa-sandbox.mitx.mit.edu',
+          'preview': 'preview-xpro-qa-sandbox.mitx.mit.edu'
+  }
 } %}
-{% endif %}
+{% set domains = domain_map[purpose] %}
 {% set elb_name = 'edx-{purpose}-{env}'.format(
    purpose=purpose_name, env=ENVIRONMENT)[:32].strip('-') %}
 create_elb_for_edx_{{ purpose_name }}:
@@ -35,11 +45,7 @@ create_elb_for_edx_{{ purpose_name }}:
           instance_port: 443
           elb_protocol: HTTPS
           instance_protocol: HTTPS
-          {% if env.endswith('production') %}
           certificate:  arn:aws:acm:us-east-1:610119931565:certificate/133082a7-f4a2-483b-a013-e94d9d531364
-          {% else %}
-          certificate: arn:aws:acm:us-east-1:610119931565:certificate/31cbdb62-7553-472b-979a-3063c3e1fddc
-          {% endif %}
         - elb_port: 80
           instance_port: 80
           elb_protocol: HTTP
@@ -52,7 +58,7 @@ create_elb_for_edx_{{ purpose_name }}:
           timeout: 300
     - cnames:
         {% for domain_key, domain in purpose.domains.items()  %}
-        {% if not ('live' in purpose_name and domain_key == 'cms') %}
+        {% if domain_key != 'cms' %}
         - name: {{ domain }}.
           zone: mitx.mit.edu.
           ttl: 60
@@ -93,11 +99,7 @@ create_elb_for_edx_{{ purpose_name }}_studio:
           instance_port: 443
           elb_protocol: HTTPS
           instance_protocol: HTTPS
-          {% if env.endswith('production') %}
           certificate:  arn:aws:acm:us-east-1:610119931565:certificate/133082a7-f4a2-483b-a013-e94d9d531364
-          {% else %}
-          certificate: arn:aws:acm:us-east-1:610119931565:certificate/31cbdb62-7553-472b-979a-3063c3e1fddc
-          {% endif %}
           policies:
             - {{ elb_name }}-sticky-cookie-policy
         - elb_port: 80

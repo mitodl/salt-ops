@@ -207,9 +207,9 @@ environments:
         app: edx-platform
         business_unit: mitxpro
         domains:
-          cms: studio-xpro-qa.mitx.mit.edu
-          lms: xpro-qa.mitx.mit.edu
-          preview: preview-xpro-qa.mitx.mit.edu
+          cms: studio-rc.xpro.mit.edu
+          lms: courses-rc.xpro.mit.edu
+          preview: preview-rc.xpro.mit.edu
         versions:
           <<: *xpro_qa_versions
         instances:
@@ -223,9 +223,9 @@ environments:
         app: edx
         business_unit: mitxpro
         domains:
-          cms: studio-xpro-qa-sandbox.mitx.mit.edu
-          lms: xpro-qa-sandbox.mitx.mit.edu
-          preview: preview-xpro-qa-sandbox.mitx.mit.edu
+          cms: studio-ci.xpro.mit.edu
+          lms: courses-ci.xpro.mit.edu
+          preview: preview-ci.xpro.mit.edu
         versions:
           <<: *sandbox_mitxpro_versions
         instances:
