@@ -5,4 +5,4 @@ edxapp_highstate:
     - kwargs:
         pillar:
           edx:
-            ansible_flags: '--tags install:configuration -e COMMON_ENABLE_DATADOG=true'
+            ansible_flags: '--tags install:configuration'
