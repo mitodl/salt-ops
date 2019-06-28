@@ -4,6 +4,10 @@
 {% set fs_group = salt.pillar.get('ocw:mirror:fs_group') %}
 {% set host_aliases = salt.pillar.get('ocw:mirror:host_aliases') %}
 
+install_python_lxml:
+  pkg.installed:
+    - name: python-lxml
+
 {% for dir in data_dirs %}
 ensure_state_of_mirror_{{ dir }}_directory:
   file.directory:
