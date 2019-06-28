@@ -14,7 +14,6 @@
 
 edx:
   ansible_vars:
-    COMMON_ENABLE_DATADOG: True
     EDXAPP_SESSION_COOKIE_DOMAIN: .mitx.mit.edu
     EDXAPP_SESSION_COOKIE_NAME: {{ environment }}-{{ purpose }}-session
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"

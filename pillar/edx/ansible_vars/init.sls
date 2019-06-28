@@ -34,6 +34,7 @@
 edx:
   ansible_vars:
     ### COMMON VARS ###
+    COMMON_ENABLE_DATADOG: True
     COMMON_MYSQL_ADMIN_USER: __vault__:cache:mysql-{{ environment }}/creds/admin>data>username
     COMMON_MYSQL_ADMIN_PASS: __vault__:cache:mysql-{{ environment }}/creds/admin>data>password
     COMMON_MYSQL_MIGRATE_USER: __vault__:cache:mysql-{{ environment }}/creds/admin>data>username
