@@ -103,6 +103,7 @@ heroku:
     MITXPRO_LOG_LEVEL: {{ env_data.app_log_level }}
     MITXPRO_OAUTH_PROVIDER: 'mitxpro-oauth2'
     MITXPRO_REGISTRATION_ACCESS_TOKEN:  __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.openedx_environment }}/xpro-registration-access-token>data>value
+    MITXPRO_REPLY_TO_ADDRESS: 'MIT xPRO <xpro@mit.edu>'
     MITXPRO_SECURE_SSL_REDIRECT: True
     MITXPRO_SUPPORT_EMAIL: 'xpro@mit.edu'
     MITXPRO_USE_S3: True
