@@ -169,6 +169,8 @@ salt_master:
             - salt://reactors/slack/post_event.sls
         - salt/cloud/edx-*mitxpro-production-xpro-production-*/created:
             - salt://reactors/mitxpro/edxapp_highstate.sls
+        - salt/cloud/*/destroying:
+            - salt://reactors/vault/cache_cleanup_on_terminate.sls
     engines:
       sqs:
         region: us-east-1
