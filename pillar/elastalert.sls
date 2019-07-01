@@ -322,3 +322,27 @@ elastic_stack:
                       message: courseware.exceptions.OpenEdXOAuth2Error
                   - term:
                       fluentd_tag.raw: heroku.xpro
+      - name: ocw_invalid_literal_for_int
+        settings:
+          name: OCW CMS needs restart for invalid literal for int() error
+          description: >-
+            The OCW CMS needs to be restarted to get rid of server errors saying
+            "invalid literal for int()," which we believe are due to resource
+            overconsumption -- memory or disk cache.
+          opsgenie_key: {{ opsgenie_key }}
+          opsgenie_priority: P3
+          type: frequency
+          index: logstash-ocw-*
+          num_events: 1
+          timeframe:
+            minutes: 5
+          alert:
+            - opsgenie
+          alert_text: "OCW CMS needs restart for invalid literal for int() error"
+          filter:
+            - bool:
+                must:
+                  - match:
+                      message: invalid literal for int
+                  - term:
+                      fluentd_tag.raw: ocwcms.zope.event
