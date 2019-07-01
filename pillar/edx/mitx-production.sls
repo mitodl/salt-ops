@@ -3,8 +3,8 @@
 edx:
   tracking_backups:
     aws_creds:
-      access_key: __vault__::aws-mitx/creds/read-write-odl-residential-tracking-backup>data>access_key
-      secret_key: __vault__::aws-mitx/creds/read-write-odl-residential-tracking-backup>data>secret_key
+      access_key: __vault__:cache:aws-mitx/creds/read-write-odl-residential-tracking-backup>data>access_key
+      secret_key: __vault__:cache:aws-mitx/creds/read-write-odl-residential-tracking-backup>data>secret_key
   gitreload:
     basic_auth:
       username: mitx
