@@ -82,7 +82,7 @@ edx:
     ECOMMERCE_PAYPAL_ERROR_URL: '/checkout/error/'
 
     # Theming
-    ECOMMERCE_PLATFORM_NAME: 'MITxPro'
+    ECOMMERCE_PLATFORM_NAME: 'MIT xPRO'
     ECOMMERCE_THEME_SCSS: 'sass/themes/default.scss'
     ECOMMERCE_COMPREHENSIVE_THEME_DIRS:
       - '{{ THEMES_CODE_DIR }}/{{ ecommerce_service_name }}'
