@@ -9,12 +9,14 @@
       'ELASTICSEARCH_INDEX': 'discussions-ci',
       'ELASTICSEARCH_URL': 'https://elasticsearch-rc-apps.odl.mit.edu',
       'env_name': 'ci',
+      'FEATURE_COURSE_UI': True,
       'GA_TRACKING_ID': 'UA-5145472-29',
       'INDEXING_API_USERNAME': 'od_mm_ci_api',
       'NEW_RELIC_APP_NAME': 'discussions-ci',
       'MAILGUN_SENDER_DOMAIN': 'discussions-mail.odl.mit.edu',
       'MICROMASTERS_BASE_URL': 'micromasters-ci.odl.mit.edu',
       'OCW_LEARNING_COURSE_BUCKET_NAME': 'open-learning-course-data-ci',
+      'OCW_UPLOAD_IMAGE_ONLY': True,
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'discussionsci',
       'OPEN_DISCUSSIONS_COOKIE_DOMAIN': 'odl.mit.edu',
       'OPEN_DISCUSSIONS_SUPPORT_EMAIL': 'odl-discussions-ci-support@mit.edu',
@@ -29,12 +31,14 @@
       'ELASTICSEARCH_INDEX': 'discussions-rc',
       'ELASTICSEARCH_URL': 'https://elasticsearch-rc-apps.odl.mit.edu',
       'env_name': 'rc',
+      'FEATURE_COURSE_UI': True,
       'GA_TRACKING_ID': 'UA-5145472-29',
       'INDEXING_API_USERNAME': 'od_mm_rc_api',
       'NEW_RELIC_APP_NAME': 'discussions-rc',
       'MAILGUN_SENDER_DOMAIN': 'discussions-mail.odl.mit.edu',
       'MICROMASTERS_BASE_URL': 'micromasters-rc.odl.mit.edu',
       'OCW_LEARNING_COURSE_BUCKET_NAME': 'open-learning-course-data-rc',
+      'OCW_UPLOAD_IMAGE_ONLY': True,
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'discussionsrc',
       'OPEN_DISCUSSIONS_COOKIE_DOMAIN': 'odl.mit.edu',
       'OPEN_DISCUSSIONS_SUPPORT_EMAIL': 'odl-discussions-rc-support@mit.edu',
@@ -47,6 +51,7 @@
       'CLOUDFRONT_DIST': 'd2mcnjhkvrfuy2',
       'DEBUG': False,
       'env_name': 'production',
+      'FEATURE_COURSE_UI': False,
       'ELASTICSEARCH_INDEX': 'discussions',
       'ELASTICSEARCH_URL': 'https://elasticsearch-production-apps.odl.mit.edu',
       'GA_TRACKING_ID': 'UA-5145472-30',
@@ -55,6 +60,7 @@
       'MAILGUN_SENDER_DOMAIN': 'mail.open.mit.edu',
       'MICROMASTERS_BASE_URL': 'micromasters.mit.edu',
       'OCW_LEARNING_COURSE_BUCKET_NAME': 'open-learning-course-data',
+      'OCW_UPLOAD_IMAGE_ONLY': False,
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'discussionsprod',
       'OPEN_DISCUSSIONS_BASE_URL': 'https://open.mit.edu',
       'OPEN_DISCUSSIONS_COOKIE_DOMAIN': 'mit.edu',
@@ -82,27 +88,25 @@ heroku:
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'odl-discussions-{{ env_data.env_name }}'
-    CELERYD_CONCURRENCY: # ONLY IN RC
-    CKEDITOR_ENVIRONMENT_ID:  __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/ckeditor>data>environment_id
-    CKEDITOR_SECRET_KEY:  __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/ckeditor>data>secret_key
-    CKEDITOR_UPLOAD_URL:  __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/ckeditor>data>upload_url
+    CKEDITOR_ENVIRONMENT_ID:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>environment_id
+    CKEDITOR_SECRET_KEY:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>secret_key
+    CKEDITOR_UPLOAD_URL:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>upload_url
     CLOUDFRONT_DIST: {{ env_data.CLOUDFRONT_DIST }}
     {% if env_data.env_name != 'ci' %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/opendiscussions
     {% endif %}
     DEBUG: {{ env_data.DEBUG }}
-    EDX_API_CLIENT_ID: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/edx-api-client>data>id
-    EDX_API_CLIENT_SECRET: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/edx-api-client>data>secret
+    EDX_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/edx-api-client>data>id
+    EDX_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/edx-api-client>data>secret
     EDX_API_URL: https://api.edx.org/catalog/v1/catalogs/10/courses
     ELASTICSEARCH_HTTP_AUTH: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/elasticsearch>data>http_auth
     ELASTICSEARCH_INDEX: {{ env_data.ELASTICSEARCH_INDEX}}
     ELASTICSEARCH_URL: {{ env_data.ELASTICSEARCH_URL}}
     EMBEDLY_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/embedly_key>data>value
-    ENABLE_STUNNEL_AMAZON_RDS_FIX: True
     FEATURE_ANONYMOUS_ACCESS: True
     FEATURE_ARTICLE_UI: True
     FEATURE_COMMENT_NOTIFICATIONS: True
-    *FEATURE_COURSE_UI: True # NOT IN PROD
+    FEATURE_COURSE_UI: {{ env_data.FEATURE_COURSE_UI }}
     FEATURE_INDEX_UPDATES: True
     FEATURE_PROFILE_UI: True
     FEATURE_SAML_AUTH: True
@@ -118,8 +122,6 @@ heroku:
     MICROMASTERS_BASE_URL: https://{{ env_data.MICROMASTERS_BASE_URL }}
     MICROMASTERS_COURSE_URL: https://{{ env_data.MICROMASTERS_BASE_URL }}/api/v0/courseruns/
     MICROMASTERS_EXTERNAL_LOGIN_URL: https://{{ env_data.MICROMASTERS_BASE_URL}}/discussions
-    NEW_RELIC_APP_NAME: {{ env_data.NEW_RELIC_APP_NAME }}
-    NEW_RELIC_LICENSE_KEY: __vault__::secret-operations/{{ env_data.env_name }}/{{ business_unit }}/new-relic-license-key>data>value
     NEW_RELIC_LOG: stdout
     NODE_MODULES_CACHE: False
     OCW_CONTENT_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>access_key
@@ -128,7 +130,7 @@ heroku:
     OCW_LEARNING_COURSE_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>access_key
     OCW_LEARNING_COURSE_BUCKET_NAME: {{ env_data.OCW_LEARNING_COURSE_BUCKET_NAME }}
     OCW_LEARNING_COURSE_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>secret_key
-    *OCW_UPLOAD_IMAGE_ONLY: True # NOT IN PROD
+    OCW_UPLOAD_IMAGE_ONLY: {{ env_data.OCW_UPLOAD_IMAGE_ONLY }}
     OPEN_DISCUSSIONS_ADMIN_EMAIL: cuddle-bunnies@mit.edu
     OPEN_DISCUSSIONS_BASE_URL: {{ env_data.OPEN_DISCUSSIONS_BASE_URL }}
     OPEN_DISCUSSIONS_COOKIE_DOMAIN: {{ env_data.OPEN_DISCUSSIONS_COOKIE_DOMAIN }}
@@ -146,9 +148,9 @@ heroku:
     OPEN_DISCUSSIONS_FROM_EMAIL: MIT ODL Discussions <odl-discussions-support@mit.edu>
     OPEN_DISCUSSIONS_JWT_SECRET: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.env_name }}/jwt_secret>data>value
     OPEN_DISCUSSIONS_LOG_LEVEL: {{ env_data.app_log_level }}
-    OPEN_DISCUSSIONS_REDDIT_CLIENT_ID: __vault__::secret-operations/{{ env_data.env_name }}/{{ business_unit }}/open-discussions-reddit>data>reddit_client_id
-    OPEN_DISCUSSIONS_REDDIT_SECRET: __vault__::secret-operations/{{ env_data.env_name }}/{{ business_unit }}/open-discussions-reddit>data>reddit_secret
-    OPEN_DISCUSSIONS_REDDIT_URL: __vault__::secret-operations/{{ env_data.env_name }}/{{ business_unit }}/open-discussions-reddit>data>reddit_url
+    OPEN_DISCUSSIONS_REDDIT_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/open-discussions-reddit>data>reddit_client_id
+    OPEN_DISCUSSIONS_REDDIT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/open-discussions-reddit>data>reddit_secret
+    OPEN_DISCUSSIONS_REDDIT_URL: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/open-discussions-reddit>data>reddit_url
     OPEN_DISCUSSIONS_REDDIT_VALIDATE_SSL: True
     OPEN_DISCUSSIONS_STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.env_name }}/open-discussions-status-token>data>value
     OPEN_DISCUSSIONS_SUPPORT_EMAIL: {{ env_data.OPEN_DISCUSSIONS_SUPPORT_EMAIL }}
