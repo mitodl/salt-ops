@@ -4,10 +4,10 @@
 {% set environment = salt.grains.get('environment', 'mitxpro-qa') %}
 {% set env_data = env_settings.environments[environment] %}
 {% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
-{% set heroku_xpro_env_logout_mapping = {
-    'sandbox': 'https://xpro-ci.odl.mit.edu/logout',
-    'xpro-qa': 'https://xpro-rc.odl.mit.edu/logout',
-    'xpro-production': 'https://xpro.mit.edu/logout'
+{% set heroku_xpro_env_url_mapping = {
+    'sandbox': 'https://xpro-ci.odl.mit.edu',
+    'xpro-qa': 'https://xpro-rc.odl.mit.edu',
+    'xpro-production': 'https://xpro.mit.edu'
   } %}
 {% set heroku_env = heroku_xpro_env_logout_mapping[purpose] %}
 {% set support_email = 'xpro@mit.edu' %}
@@ -18,13 +18,7 @@ edx:
     EDXAPP_SESSION_COOKIE_NAME: {{ environment }}-{{ purpose }}-session
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
     EDXAPP_COMMENTS_SERVICE_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
-    # Video Pipeline Settings
-    # EDXAPP_VIDEO_UPLOAD_PIPELINE:
-    #   BUCKET: {{ bucket_prefix }}-edx-video-{{ environment }}
-    #   ROOT_PATH: 'ingest/'
-    # EDXAPP_VIDEO_CDN_URLS:
-    #   EXAMPLE_COUNTRY_CODE: "http://example.com/edx/video?s3_url="
-    EDXAPP_IDA_LOGOUT_URI_LIST: ['{{ heroku_xpro_env_logout_mapping[purpose] }}']
+    EDXAPP_IDA_LOGOUT_URI_LIST: ['{{ heroku_xpro_env_url_mapping[purpose] }}/logout']
     EDXAPP_PRIVATE_REQUIREMENTS:
       - name: mitxpro-openedx-extensions==0.1.0
       - name: social-auth-mitxpro==0.2
@@ -65,6 +59,7 @@ edx:
         ENABLE_THIRD_PARTY_AUTH: True
         ALLOW_PUBLIC_ACCOUNT_CREATION: True
         SKIP_EMAIL_VALIDATION: True
+      XPRO_BASE_URL: {{ heroku_xpro_env_url_mapping[purpose] }}
     EDXAPP_LMS_AUTH_EXTRA:
       SOCIAL_AUTH_OAUTH_SECRETS:
         mitxpro-oauth2: __vault__::secret-{{ business_unit }}/{{ environment }}/xpro-app-oauth2-client-secret-{{ purpose }}>data>value
