@@ -18,7 +18,7 @@ edx:
     EDXAPP_SESSION_COOKIE_NAME: {{ environment }}-{{ purpose }}-session
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
     EDXAPP_COMMENTS_SERVICE_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
-    EDXAPP_IDA_LOGOUT_URI_LIST: ['{{ heroku_xpro_env_url_mapping[purpose] }}/logout']
+    EDXAPP_IDA_LOGOUT_URI_LIST: ['{{ heroku_env }}/logout']
     EDXAPP_PRIVATE_REQUIREMENTS:
       - name: mitxpro-openedx-extensions==0.1.0
       - name: social-auth-mitxpro==0.2
@@ -59,7 +59,7 @@ edx:
         ENABLE_THIRD_PARTY_AUTH: True
         ALLOW_PUBLIC_ACCOUNT_CREATION: True
         SKIP_EMAIL_VALIDATION: True
-      XPRO_BASE_URL: {{ heroku_xpro_env_url_mapping[purpose] }}
+      XPRO_BASE_URL: {{ heroku_env }}
     EDXAPP_LMS_AUTH_EXTRA:
       SOCIAL_AUTH_OAUTH_SECRETS:
         mitxpro-oauth2: __vault__::secret-{{ business_unit }}/{{ environment }}/xpro-app-oauth2-client-secret-{{ purpose }}>data>value
