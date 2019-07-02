@@ -88,13 +88,6 @@ base:
     - nginx.reddit
     - reddit
     - fluentd.reddit
-  'roles:edx-video-pipeline':
-    - match: grain
-    - edx.ansible_vars.video_pipeline
-    - nginx.edx_veda
-  'roles:edx-video-worker':
-    - match: grain
-    - edx.ansible_vars.video_pipeline
   'G@environment:operations and G@roles:redash':
     - match: compound
     - nginx
@@ -165,6 +158,11 @@ base:
     - fluentd.mitx
     - datadog.nginx-integration
     - datadog.supervisord-integration
+  'G@roles:sandbox and P@environment:mitx(pro)?-qa':
+    - match: compound
+    - edx
+    - edx.sandbox
+    - edx.ansible_vars
   'P@roles:(edx|edx-worker|sandbox) and P@environment:mitxpro.*':
     - match: compound
     - edx.mitxpro
@@ -198,11 +196,6 @@ base:
   'P@purpose:.*residential.* and G@edx_codename:ironwood':
     - match: compound
     - edx.ansible_vars.next_residential
-  'G@roles:sandbox and P@environment:mitx(pro)?-qa':
-    - match: compound
-    - edx
-    - edx.sandbox
-    - edx.ansible_vars
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
