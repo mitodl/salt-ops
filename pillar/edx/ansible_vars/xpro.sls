@@ -9,7 +9,7 @@
     'xpro-qa': 'https://xpro-rc.odl.mit.edu',
     'xpro-production': 'https://xpro.mit.edu'
   } %}
-{% set heroku_env = {}[purpose].format(heroku_xpro_env_url_mapping) %}
+{% set heroku_env = heroku_xpro_env_url_mapping[purpose] %}
 {% set support_email = 'xpro@mit.edu' %}
 
 edx:
