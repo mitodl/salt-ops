@@ -140,3 +140,9 @@ heroku:
     VOUCHER_INTERNATIONAL_PROGRAM_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>program_key
     VOUCHER_INTERNATIONAL_SCHOOL_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>school_key
 
+schedule:
+  refresh_{{ app_name }}_configs:
+    days: 5
+    function: state.sls
+    args:
+      - heroku.update_heroku_config

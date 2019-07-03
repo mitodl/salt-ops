@@ -233,3 +233,11 @@ salt_master:
           script_args: -U -P
           sync_after_install: all
           delete_ssh_keys: True
+  proxy_configs:
+    apps:
+      - xpro-ci
+      - xpro-rc
+      - xpro-production
+      - odl-open-discussions-ci
+      - odl-open-discussions-rc
+      - odl-open-discussions-production
