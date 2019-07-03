@@ -24,6 +24,14 @@ symlink_files_ocwfileshare:
     - owner: root
     - group: root
 
+symlink_files_qaengines:
+  file.symlink:
+    - name: /files/QAEngines
+    - target: /mnt/ocwfileshare/OCWEngines
+    - force: True
+    - owner: root
+    - group: root
+
 symlink_ocwuser_ocwengines:
   file.symlink:
     - name: /home/ocwuser/OCWEngines
