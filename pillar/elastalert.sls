@@ -331,6 +331,7 @@ elastic_stack:
             overconsumption -- memory or disk cache.
           opsgenie_key: {{ opsgenie_key }}
           opsgenie_priority: P3
+          opsgenie_alias: ocw_invalid_literal_for_int
           type: frequency
           index: logstash-ocw-*
           num_events: 1
@@ -342,7 +343,9 @@ elastic_stack:
           filter:
             - bool:
                 must:
-                  - match:
-                      message: invalid literal for int
-                  - term:
-                      fluentd_tag.raw: ocwcms.zope.event
+                  - query_string:
+                      default_field: message
+                      query: error AND invalid AND literal AND int
+                filter:
+                  term:
+                    fluentd_tag: ocwcms.zope.event
