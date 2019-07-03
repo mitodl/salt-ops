@@ -177,3 +177,10 @@ heroku:
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
     USE_X_FORWARDED_HOST: True
     USE_X_FORWARDED_PORT: True
+
+schedule:
+  refresh_{{ app_name }}_configs:
+    days: 5
+    function: state.sls
+    args:
+      - heroku.update_heroku_config

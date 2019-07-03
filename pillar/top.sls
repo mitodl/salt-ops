@@ -61,6 +61,8 @@ base:
     - fluentd.odlvideo
   proxy-xpro-*:
     - heroku.xpro
+  proxy-discussions-*:
+    - heroku.discussions
   'roles:mitx-cas':
     - match: grain
     - apps.mitx_cas
