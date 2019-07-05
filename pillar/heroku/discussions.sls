@@ -99,7 +99,7 @@ heroku:
     EDX_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/edx-api-client>data>id
     EDX_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/edx-api-client>data>secret
     EDX_API_URL: https://api.edx.org/catalog/v1/catalogs/10/courses
-    ELASTICSEARCH_HTTP_AUTH: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/elasticsearch>data>http_auth
+    ELASTICSEARCH_HTTP_AUTH: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/elasticsearch>data>http_auth
     ELASTICSEARCH_INDEX: {{ env_data.ELASTICSEARCH_INDEX}}
     ELASTICSEARCH_URL: {{ env_data.ELASTICSEARCH_URL}}
     EMBEDLY_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/embedly_key>data>value
@@ -152,7 +152,6 @@ heroku:
     OPEN_DISCUSSIONS_REDDIT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/open-discussions-reddit>data>reddit_secret
     OPEN_DISCUSSIONS_REDDIT_URL: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/open-discussions-reddit>data>reddit_url
     OPEN_DISCUSSIONS_REDDIT_VALIDATE_SSL: True
-    OPEN_DISCUSSIONS_STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.env_name }}/open-discussions-status-token>data>value
     OPEN_DISCUSSIONS_SUPPORT_EMAIL: {{ env_data.OPEN_DISCUSSIONS_SUPPORT_EMAIL }}
     OPEN_DISCUSSIONS_USE_S3: True
     PGBOUNCER_DEFAULT_POOL_SIZE: 50
