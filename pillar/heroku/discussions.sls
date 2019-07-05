@@ -4,6 +4,7 @@
 {% set env_dict = {
     'ci': {
       'app_log_level': 'INFO',
+      'app_name': 'odl-open-discussions-ci',
       'CLOUDFRONT_DIST': 'd28ic9ywb63ioi',
       'DEBUG': False,
       'ELASTICSEARCH_INDEX': 'discussions-ci',
@@ -26,6 +27,7 @@
       },
     'rc': {
       'app_log_level': 'INFO',
+      'app_name': 'odl-open-discussions-rc',
       'CLOUDFRONT_DIST': 'd1d3xcwjqmwwj2',
       'DEBUG': False,
       'ELASTICSEARCH_INDEX': 'discussions-rc',
@@ -48,6 +50,7 @@
       },
     'production': {
       'app_log_level': 'INFO',
+      'app_name': 'odl-open-discussions',
       'CLOUDFRONT_DIST': 'd2mcnjhkvrfuy2',
       'DEBUG': False,
       'env_name': 'production',
@@ -79,7 +82,7 @@ proxy:
   proxytype: heroku
 
 heroku:
-  app_name: odl-open-discussions-{{ env_data.env_name }}
+  app_name: {{ env_data.app_name }}
   api_key: __vault__::secret-operations/global/heroku/api_key>data>value
   config_vars:
     ALGOLIA_API_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/algolia>data>api_key
