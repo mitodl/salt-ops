@@ -85,8 +85,8 @@ heroku:
     ALGOLIA_API_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/algolia>data>api_key
     ALGOLIA_APP_ID: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/algolia>data>app_id
     ALLOWED_HOSTS: '[*]'
-    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>access_key
-    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>secret_key
+    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-odl-discussions-{{ env_data.env_name }}>data>access_key
+    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-odl-discussions-{{ env_data.env_name }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'odl-discussions-{{ env_data.env_name }}'
     CKEDITOR_ENVIRONMENT_ID:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>environment_id
     CKEDITOR_SECRET_KEY:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>secret_key
@@ -124,12 +124,12 @@ heroku:
     MICROMASTERS_EXTERNAL_LOGIN_URL: https://{{ env_data.MICROMASTERS_BASE_URL}}/discussions
     NEW_RELIC_LOG: stdout
     NODE_MODULES_CACHE: False
-    OCW_CONTENT_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>access_key
+    OCW_CONTENT_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-only-ocw-content-storage>data>access_key
     OCW_CONTENT_BUCKET_NAME: ocw-content-storage
-    OCW_CONTENT_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>secret_key
-    OCW_LEARNING_COURSE_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>access_key
+    OCW_CONTENT_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-only-ocw-content-storage>data>secret_key
+    OCW_LEARNING_COURSE_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-{{ env_data.OCW_LEARNING_COURSE_BUCKET_NAME }}>data>access_key
     OCW_LEARNING_COURSE_BUCKET_NAME: {{ env_data.OCW_LEARNING_COURSE_BUCKET_NAME }}
-    OCW_LEARNING_COURSE_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>secret_key
+    OCW_LEARNING_COURSE_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-{{ env_data.OCW_LEARNING_COURSE_BUCKET_NAME }}>data>secret_key
     OCW_UPLOAD_IMAGE_ONLY: {{ env_data.OCW_UPLOAD_IMAGE_ONLY }}
     OPEN_DISCUSSIONS_ADMIN_EMAIL: cuddle-bunnies@mit.edu
     OPEN_DISCUSSIONS_BASE_URL: {{ env_data.OPEN_DISCUSSIONS_BASE_URL }}
