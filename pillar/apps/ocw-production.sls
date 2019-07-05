@@ -22,6 +22,7 @@ ocw:
       url: https://ocw-production-cms-1.odl.mit.edu
       host: ocw-production-cms-1
       engine_host: ocw-production-cms-2
+      engine_url: https://ocw-production-cms-2.odl.mit.edu
     staging:
       url: https://ocw-production-ocw2.odl.mit.edu
       host: ocw-production-ocw2.odl.mit.edu
