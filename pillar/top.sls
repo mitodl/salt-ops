@@ -59,9 +59,9 @@ base:
     - shibboleth
     - shibboleth.odlvideo
     - fluentd.odlvideo
-  proxy-xpro-*:
+  proxy-mitxpro-*:
     - heroku.xpro
-  proxy-discussions-*:
+  proxy-mit-open-discussions-*:
     - heroku.discussions
   'roles:mitx-cas':
     - match: grain

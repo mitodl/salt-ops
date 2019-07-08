@@ -235,5 +235,5 @@ salt_master:
           delete_ssh_keys: True
   proxy_configs:
     apps:
-      - xpro-ci
-      - odl-open-discussions-ci
+      - proxy-mitxpro-ci
+      - proxy-mit-open-discussions-ci
