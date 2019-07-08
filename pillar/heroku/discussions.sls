@@ -75,7 +75,7 @@
 } %}
 {% set env_data = env_dict[environment] %}
 {% set business_unit = 'mit-open' %}
-{% set pg_creds = salt.vault.cached_read('postgres-{}-opendiscussions/creds/opendiscussions'.format(env_data.vault_env_path), cache_prefix='heroku-opendiscussions') %}
+{% set pg_creds = salt.vault.cached_read('postgresql-{}-opendiscussions/creds/opendiscussions'.format(env_data.vault_env_path), cache_prefix='heroku-opendiscussions') %}
 {% set rds_endpoint = salt.boto_rds.get_endpoint('{env}-rds-postgres-opendiscussions'.format(env=env_data.vault_env_path)) %}
 
 proxy:
