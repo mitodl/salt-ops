@@ -181,7 +181,7 @@ heroku:
     USE_X_FORWARDED_PORT: True
 
 schedule:
-  refresh_{{ app_name }}_configs:
+  refresh_{{ env_data.app_name }}_configs:
     days: 5
     function: state.sls
     args:

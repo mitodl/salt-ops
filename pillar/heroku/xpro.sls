@@ -4,6 +4,7 @@
 
 {% set env_dict = {
     'ci': {
+      'app_name': 'xpro-ci',
       'env_name': 'ci',
       'GOOGLE_TRACKING_ID': 'GTM-KG4FR7J',
       'release_branch': 'master',
@@ -21,6 +22,7 @@
       'vault_env_path': 'rc-apps'
       },
     'rc': {
+      'app_name': 'xpro-rc',
       'env_name': 'rc',
       'GOOGLE_TRACKING_ID': 'GTM-KG4FR7J',
       'release_branch': 'release-candidate',
@@ -38,6 +40,7 @@
       'vault_env_path': 'rc-apps'
       },
     'production': {
+      'app_name': 'xpro-production',
       'env_name': 'production',
       'GOOGLE_TRACKING_ID': 'GTM-KG4FR7J',
       'release_branch': 'release',
@@ -64,7 +67,7 @@ proxy:
   proxytype: heroku
 
 heroku:
-  app_name: xpro-{{ env_data.env_name }}
+  app_name: {{ env_data.app_name }}
   api_key: __vault__::secret-operations/global/heroku/api_key>data>value
   config_vars:
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>access_key
@@ -141,7 +144,7 @@ heroku:
     VOUCHER_INTERNATIONAL_SCHOOL_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>school_key
 
 schedule:
-  refresh_{{ app_name }}_configs:
+  refresh_{{ env_data.app_name }}_configs:
     days: 5
     function: state.sls
     args:
