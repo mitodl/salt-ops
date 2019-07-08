@@ -1,3 +1,6 @@
+{% set engines_basedir = salt.pillar.get('ocw:engines:basedir') %}
+{% set cron_log_dir = salt.pillar.get('ocw:engines:cron_log_dir') %}
+
 logrotate:
   zeoclient_event:
     name: /usr/local/Plone/zeocluster/var/client1/event.log
@@ -19,10 +22,19 @@ logrotate:
       - delaycompress
   {% if salt.grains.get('ocw-cms-role') == 'engine' %}
   ocw_publishing_logs:
-    name: /mnt/ocwfileshare/OCWEngines/logs/*.log
+    name: {{ engines_basedir }}/logs/*.log
     options:
       - rotate 7
       - daily
+      - copytruncate
+      - notifempty
+      - compress
+      - delaycompress
+  ocw_export_courses_json_log:
+    name: {{ cron_log_dir }}/export_courses_json.log
+    options:
+      - rotate 4
+      - weekly
       - copytruncate
       - notifempty
       - compress

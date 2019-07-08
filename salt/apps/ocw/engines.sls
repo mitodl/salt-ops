@@ -1,8 +1,8 @@
-{% set engines_basedir = salt.pillar.get('ocw:engines_basedir', '/mnt/ocwfileshare/OCWEngines') %}
+{% set engines_basedir = salt.pillar.get('ocw:engines:basedir') %}
 
 {% if 'engine' in salt.grains.get('ocw-cms-role', []) %}
 
-{% set cron_log_dir = '/var/log/engines-cron' %}
+{% set cron_log_dir = salt.pillar.get('ocw:engines:cron_log_dir') %}
 
 # This would be nice, but takes hours to run ...
 # ensure_ownership_of_engines_base_directory:
@@ -114,5 +114,15 @@ check_cache_size_cronjob:
     - user: root
     - minute: 50
     - hour: 8
+
+{% if salt.grains.get('ocw-environment', '') == 'production' %}
+export_courses_json_cronjob:
+  cron.present:
+    - identifier: export_courses_json
+    - name: {{ engines_basedir }}/export_courses_json.sh >> {{ cron_log_dir }}/export_courses_json.log 2>&1
+    - user: ocwuser
+    - minute: 0
+    - hour: 9
+{% endif %}
 
 {% endif %}

@@ -43,6 +43,9 @@ ocw:
       - /data2/prod/styles
       - /data2/prod/webfonts
       - /data2/prod/subscribe
+  engines:
+    basedir: /mnt/ocwfileshare/OCWEngines
+    cron_log_dir: /var/log/engines-cron
 
 {% if 'ocw-origin' in ROLES %}
 schedule:
