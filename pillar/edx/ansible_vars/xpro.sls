@@ -11,9 +11,28 @@
   } %}
 {% set heroku_env = heroku_xpro_env_url_mapping['{}'.format(purpose)] %}
 {% set support_email = 'xpro@mit.edu' %}
+{% set THEME_NAME = 'mitxpro-theme' %}
 
 edx:
+  edxapp:
+    THEME_NAME: '{{ THEME_NAME }}'
+    custom_theme:
+      repo: {{ purpose_data.versions.theme_source_repo }}
+      branch: {{ purpose_data.versions.theme }}
   ansible_vars:
+    ########## START THEMING ########################################
+    EDXAPP_ENABLE_COMPREHENSIVE_THEMING: true
+    EDXAPP_COMPREHENSIVE_THEME_SOURCE_REPO: '{{ purpose_data.versions.theme_source_repo }}'
+    EDXAPP_COMPREHENSIVE_THEME_VERSION: {{ purpose_data.versions.theme }}
+    edxapp_theme_source_repo: '{{ purpose_data.versions.theme_source_repo }}'
+    edxapp_theme_version: {{ purpose_data.versions.theme }}
+    EDXAPP_COMPREHENSIVE_THEME_DIRS:
+      - /edx/app/edxapp/themes/
+    {# multivariate #}
+    edxapp_theme_name: {{ THEME_NAME }}
+    {# multivariate #}
+    EDXAPP_DEFAULT_SITE_THEME: {{ THEME_NAME }}
+    ########## END THEMING ########################################
     EDXAPP_SESSION_COOKIE_DOMAIN: .mitx.mit.edu
     EDXAPP_SESSION_COOKIE_NAME: {{ environment }}-{{ purpose }}-session
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
