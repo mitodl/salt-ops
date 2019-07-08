@@ -236,8 +236,4 @@ salt_master:
   proxy_configs:
     apps:
       - xpro-ci
-      - xpro-rc
-      - xpro-production
       - odl-open-discussions-ci
-      - odl-open-discussions-rc
-      - odl-open-discussions-production
