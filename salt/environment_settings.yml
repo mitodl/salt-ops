@@ -90,6 +90,8 @@ xpro_qa_versions: &xpro_qa_versions
   xqueue_source_repo: 'https://github.com/edx/xqueue'
   xqueue: open-release/ironwood.master
   xqwatcher_courses: master
+  theme_source_repo: 'https://github.com/mitodl/mitxpro-theme'
+  theme: master
   codename: ironwood
   ami_id: ami-80861296
 
@@ -103,6 +105,8 @@ xpro_production_versions: &xpro_production_versions
   xqueue_source_repo: 'https://github.com/edx/xqueue'
   xqueue: open-release/ironwood.master
   xqwatcher_courses: master
+  theme_source_repo: 'https://github.com/mitodl/mitxpro-theme'
+  theme: master
   codename: ironwood
   ami_id: ami-80861296
 
@@ -121,6 +125,8 @@ sandbox_mitxpro_versions: &sandbox_mitxpro_versions
   edxapp: open-release/ironwood.master
   forum_source_repo: 'https://github.com/edx/cs_comments_service'
   forum: open-release/ironwood.master
+  theme_source_repo: 'https://github.com/mitodl/mitxpro-theme'
+  theme: master
   codename: ironwood
   ami_id: ami-80861296
 
