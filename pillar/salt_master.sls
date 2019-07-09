@@ -107,6 +107,8 @@ salt_master:
         - rc:
             - ref: rc
         - production:
+            - ref: production
+        - base:
             - ref: master
       gitfs_remotes:
         - https://github.com/mitodl/salt-ops:
