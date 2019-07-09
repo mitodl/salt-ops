@@ -44,6 +44,15 @@ edx:
       {% for profile_setting, profile_value in profile_overrides.items() %}
       {{ profile_setting }}: {{ profile_value }}
       {% endfor %}
+      minion:
+        {% if 'production' in environment_name %}
+        saltenv: production
+        lock_saltenv: True
+        pillarenv: production
+        {% else %}
+        saltenv: rc
+        pillarenv_from_saltenv: True
+        {% endif %}
 {% endfor %}
 {% endfor %}
 
@@ -87,5 +96,14 @@ edx-worker:
       {% for profile_setting, profile_value in profile_overrides.items() %}
       {{ profile_setting }}: {{ profile_value }}
       {% endfor %}
+      minion:
+        {% if 'production' in environment_name %}
+        saltenv: production
+        lock_saltenv: True
+        pillarenv: production
+        {% else %}
+        saltenv: rc
+        pillarenv_from_saltenv: True
+        {% endif %}
 {% endfor %}
 {% endfor %}

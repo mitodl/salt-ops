@@ -103,6 +103,11 @@ salt_master:
       fileserver_backend:
         - git
         - roots
+      gitfs_saltenv:
+        - rc:
+            - ref: rc
+        - production:
+            - ref: master
       gitfs_remotes:
         - https://github.com/mitodl/salt-ops:
             - root: salt
@@ -134,6 +139,10 @@ salt_master:
         - git:
             - master https://github.com/mitodl/salt-ops:
                 - root: pillar
+                - env: production
+            - rc https://github.com/mitodl/salt-ops:
+                - root: pillar
+                - env: rc
         - vault: {}
     logging:
       log_granular_levels:

@@ -1,3 +1,5 @@
+{% set environment = salt.grains.get('environment') %}
+
 mine_functions:
   network.ip_addrs: [eth0]
   network.get_hostname: []
@@ -16,3 +18,12 @@ salt_minion:
       log_granular_levels:
         salt: warning
         salt.loader: warning
+    environment:
+      {% if 'production' in environment %}
+      saltenv: production
+      lock_saltenv: True
+      pillarenv: production
+      {% else %}
+      saltenv: rc
+      pillarenv_from_saltenv: True
+      {% endif %}
