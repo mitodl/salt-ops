@@ -1,4 +1,5 @@
-base:
+{% for env in ['base', 'rc', 'production'] %}
+{{ env }}:
   '* and not proxy-*':
     - match: compound
     - common

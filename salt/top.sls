@@ -1,4 +1,5 @@
-base:
+{% for env in ['base', 'rc', 'production'] %}
+{{ env }}:
   '*':
     - utils.install_libs
   'not G@roles:devstack':
@@ -251,3 +252,4 @@ base:
     - edx.prod
     - rabbitmq.configure
     - edx.django_user
+{% endfor %}
