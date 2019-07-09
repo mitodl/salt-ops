@@ -21,7 +21,7 @@ logrotate:
       - notifempty
       - compress
       - delaycompress
-  {% if if 'engine' in ocw_cms_role %}
+  {% if 'engine' in ocw_cms_role %}
   ocw_publishing_logs:
     name: {{ engines_basedir }}/logs/*.log
     options:
