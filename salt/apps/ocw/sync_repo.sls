@@ -8,7 +8,7 @@
 #     /mnt/ocwfileshare/OCWEngines.
 #
 
-{% set ocwcms_branch = salt.pillar.get('ocw:ocwcms_branch', 'master') %}
+{% set ocwcms_git_ref = salt.pillar.get('ocw:ocwcms_git_ref') %}
 {% set roles = salt.grains.get('roles') %}
 
 ensure_that_rsync_is_installed:
@@ -26,7 +26,7 @@ git_pull_ocwcms_working_copy:
   git.latest:
     - name: git@github.com:mitocw/ocwcms
     - target: /var/lib/ocwcms
-    - rev: {{ ocwcms_branch }}
+    - rev: {{ ocwcms_git_ref }}
     - force_checkout: True
     - force_clone: True
     - force_reset: True
