@@ -4,12 +4,6 @@
 {% set environment = salt.grains.get('environment', 'mitxpro-qa') %}
 {% set env_data = env_settings.environments[environment] %}
 {% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
-{% set heroku_xpro_env_url_mapping = {
-    'sandbox': 'https://xpro-ci.odl.mit.edu',
-    'xpro-qa': 'https://xpro-rc.odl.mit.edu',
-    'xpro-production': 'https://xpro.mit.edu'
-  } %}
-{% set heroku_env = heroku_xpro_env_url_mapping['{}'.format(purpose)] %}
 {% set support_email = 'xpro@mit.edu' %}
 
 edx:
@@ -59,7 +53,6 @@ edx:
         ENABLE_THIRD_PARTY_AUTH: True
         ALLOW_PUBLIC_ACCOUNT_CREATION: True
         SKIP_EMAIL_VALIDATION: True
-      XPRO_BASE_URL: {{ heroku_env }}
     EDXAPP_LMS_AUTH_EXTRA:
       SOCIAL_AUTH_OAUTH_SECRETS:
         mitxpro-oauth2: __vault__::secret-{{ business_unit }}/{{ environment }}/xpro-app-oauth2-client-secret-{{ purpose }}>data>value

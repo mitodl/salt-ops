@@ -1,3 +1,11 @@
+{% set purpose = salt.grains.get('purpose', 'xpro-qa') %}
+{% set heroku_xpro_env_url_mapping = {
+    'sandbox': 'https://xpro-ci.odl.mit.edu',
+    'xpro-qa': 'https://xpro-rc.odl.mit.edu',
+    'xpro-production': 'https://xpro.mit.edu'
+  } %}
+{% set heroku_env = heroku_xpro_env_url_mapping['{}'.format(purpose)] %}
+
 ensure_license_selector_template_is_in_expected_location:
   file.copy:
     - name: /edx/var/edxapp/staticfiles/studio/templates/license-selector.underscore.js
@@ -30,4 +38,9 @@ add_social_auth_https_redirect_to_lms_production_file:
   file.append:
     - name: /edx/app/edxapp/edx-platform/lms/envs/production.py
     - text: SOCIAL_AUTH_REDIRECT_IS_HTTPS = ENV_TOKENS.get('SOCIAL_AUTH_REDIRECT_IS_HTTPS', True)
+
+add_xpro_base_url_to_lms_production_file:
+  file.append:
+    - name: /edx/app/edxapp/edx-platform/lms/envs/production.py
+    - text: XPRO_BASE_URL = '{{ heroku_env }}'
 {% endif %}
