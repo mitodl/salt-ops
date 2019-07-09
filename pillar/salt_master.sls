@@ -159,7 +159,10 @@ salt_master:
         - git:
             - master https://github.com/mitodl/salt-ops:
                 - root: pillar
-                - env: master
+                - env: base
+            - production https://github.com/mitodl/salt-ops:
+                - root: pillar
+                - env: production
             - rc https://github.com/mitodl/salt-ops:
                 - root: pillar
                 - env: rc
