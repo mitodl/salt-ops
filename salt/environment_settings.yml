@@ -31,6 +31,7 @@ current_residential_versions_qa: &current_residential_versions_qa
   xqueue: open-release/ironwood.master
   xqwatcher_courses: production
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
+  theme_name: 'mitx-theme'
   theme: ironwood
   codename: ironwood
   ami_id: ami-80861296
@@ -46,6 +47,7 @@ current_residential_versions_rp: &current_residential_versions_rp
   xqueue: open-release/ironwood.master
   xqwatcher_courses: production
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
+  theme_name: 'mitx-theme'
   theme: ironwood
   codename: ironwood
   ami_id: ami-80861296
@@ -61,6 +63,7 @@ next_residential_versions: &next_residential_versions
   xqueue: open-release/ironwood.master
   xqwatcher_courses: master
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
+  theme_name: 'mitx-theme'
   theme: ironwood
   codename: ironwood
   ami_id: ami-80861296
@@ -76,6 +79,7 @@ edxapp_continuous_delivery_versions: &continuous_delivery_versions
   xqueue: master
   xqwatcher_courses: master
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
+  theme_name: 'mitx-theme'
   theme: master
   codename: tumbleweed
   ami_id: ami-80861296
@@ -91,6 +95,7 @@ xpro_qa_versions: &xpro_qa_versions
   xqueue: open-release/ironwood.master
   xqwatcher_courses: master
   theme_source_repo: 'https://github.com/mitodl/mitxpro-theme'
+  theme_name: 'mitxpro-theme'
   theme: master
   codename: ironwood
   ami_id: ami-80861296
@@ -106,6 +111,7 @@ xpro_production_versions: &xpro_production_versions
   xqueue: open-release/ironwood.master
   xqwatcher_courses: master
   theme_source_repo: 'https://github.com/mitodl/mitxpro-theme'
+  theme_name: 'mitxpro-theme'
   theme: master
   codename: ironwood
   ami_id: ami-80861296
@@ -126,6 +132,7 @@ sandbox_mitxpro_versions: &sandbox_mitxpro_versions
   forum_source_repo: 'https://github.com/edx/cs_comments_service'
   forum: open-release/ironwood.master
   theme_source_repo: 'https://github.com/mitodl/mitxpro-theme'
+  theme_name: 'mitxpro-theme'
   theme: master
   codename: ironwood
   ami_id: ami-80861296

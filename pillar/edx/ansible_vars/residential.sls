@@ -32,15 +32,8 @@
 {% else %}
 {% set edxapp_google_analytics_account = '' %}
 {% endif %}
-{% set THEME_NAME = 'mitx-theme' %}
 
 edx:
-  edxapp:
-    THEME_NAME: 'mitx-theme'
-    custom_theme:
-      repo: {{ purpose_data.versions.theme_source_repo }}
-      branch: {{ purpose_data.versions.theme }}
-
   gitreload:
     gr_dir: /edx/app/gitreload
     gr_repo: github.com/mitodl/gitreload.git
@@ -82,19 +75,6 @@ edx:
         'test-pull': !!null
         'certificates': !!null
         'mitx-686xgrader': !!null
-    ########## START THEMING ########################################
-    EDXAPP_ENABLE_COMPREHENSIVE_THEMING: true
-    EDXAPP_COMPREHENSIVE_THEME_SOURCE_REPO: '{{ purpose_data.versions.theme_source_repo }}'
-    EDXAPP_COMPREHENSIVE_THEME_VERSION: {{ purpose_data.versions.theme }}
-    edxapp_theme_source_repo: '{{ purpose_data.versions.theme_source_repo }}'
-    edxapp_theme_version: {{ purpose_data.versions.theme }}
-    EDXAPP_COMPREHENSIVE_THEME_DIRS:
-      - /edx/app/edxapp/themes/
-    {# multivariate #}
-    edxapp_theme_name: {{ THEME_NAME }}
-    {# multivariate #}
-    EDXAPP_DEFAULT_SITE_THEME: {{ THEME_NAME }}
-    ########## END THEMING ########################################
     EDXAPP_GOOGLE_ANALYTICS_ACCOUNT: {{ edxapp_google_analytics_account }}
     EDXAPP_YOUTUBE_API_KEY: __vault__::secret-residential/global/edxapp-youtube-api-key>data>value
     EDXAPP_SUPPORT_SITE_LINK: 'https://odl.zendesk.com/hc/en-us/requests/new'
