@@ -1,4 +1,5 @@
-base:
+{% for env in ['base', 'rc', 'production'] %}
+{{ env }}:
   '* and not proxy-*':
     - match: compound
     - common
@@ -269,3 +270,4 @@ base:
     - match: grain
     - logrotate.ocw_cms
     - fluentd.ocw_db
+{% endfor %}
