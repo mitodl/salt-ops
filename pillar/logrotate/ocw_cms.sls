@@ -1,5 +1,6 @@
 {% set engines_basedir = salt.pillar.get('ocw:engines:basedir') %}
 {% set cron_log_dir = salt.pillar.get('ocw:engines:cron_log_dir') %}
+{% set ocw_cms_role = salt.grains.get('ocw-cms-role') %}
 
 logrotate:
   zeoclient_event:
@@ -20,7 +21,7 @@ logrotate:
       - notifempty
       - compress
       - delaycompress
-  {% if salt.grains.get('ocw-cms-role') == 'engine' %}
+  {% if 'engine' in ocw_cms_role %}
   ocw_publishing_logs:
     name: {{ engines_basedir }}/logs/*.log
     options:
