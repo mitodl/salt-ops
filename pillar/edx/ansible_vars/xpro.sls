@@ -5,6 +5,12 @@
 {% set env_data = env_settings.environments[environment] %}
 {% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
 {% set support_email = 'xpro@mit.edu' %}
+{% set heroku_xpro_env_url_mapping = {
+    'sandbox': 'https://xpro-ci.odl.mit.edu',
+    'xpro-qa': 'https://xpro-rc.odl.mit.edu',
+    'xpro-production': 'https://xpro.mit.edu'
+  } %}
+{% set heroku_env = heroku_xpro_env_url_mapping['{}'.format(purpose)] %}
 
 edx:
   ansible_vars:
