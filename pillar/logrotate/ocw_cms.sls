@@ -1,5 +1,3 @@
-{% set engines_basedir = salt.pillar.get('ocw:engines:basedir') %}
-{% set cron_log_dir = salt.pillar.get('ocw:engines:cron_log_dir') %}
 {% set ocw_cms_role = salt.grains.get('ocw-cms-role') %}
 
 logrotate:
@@ -23,7 +21,7 @@ logrotate:
       - delaycompress
   {% if 'engine' in ocw_cms_role %}
   ocw_publishing_logs:
-    name: {{ engines_basedir }}/logs/*.log
+    name: /mnt/ocwfileshare/OCWEngines/logs/*.log
     options:
       - rotate 7
       - daily
@@ -32,7 +30,7 @@ logrotate:
       - compress
       - delaycompress
   ocw_export_courses_json_log:
-    name: {{ cron_log_dir }}/export_courses_json.log
+    name: /var/log/engines-cron/export_courses_json.log
     options:
       - rotate 4
       - weekly
