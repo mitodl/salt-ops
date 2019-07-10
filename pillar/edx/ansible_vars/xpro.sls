@@ -62,8 +62,8 @@ edx:
         STAFF_EMAIL: {{ support_email }}
         REROUTE_ACTIVATION_EMAIL: {{ support_email }}
         ENABLE_VIDEO_UPLOAD_PIPELINE: True
-    EDXAPP_PLATFORM_NAME: MITxPro
-    EDXAPP_PLATFORM_DESCRIPTION: MITxPro Online Course Portal
+    EDXAPP_PLATFORM_NAME: MIT xPRO
+    EDXAPP_PLATFORM_DESCRIPTION: MIT xPRO Online Course Portal
     EDXAPP_DEFAULT_FEEDBACK_EMAIL: {{ support_email }}
     EDXAPP_DEFAULT_FROM_EMAIL: {{ support_email }}
     EDXAPP_BUGS_EMAIL: {{ support_email }}
