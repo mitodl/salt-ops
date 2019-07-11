@@ -18,7 +18,7 @@ salt_minion:
       log_granular_levels:
         salt: warning
         salt.loader: warning
-    environment:
+    saltenvs:
       {% if 'production' in environment %}
       saltenv: production
       lock_saltenv: True
@@ -27,3 +27,4 @@ salt_minion:
       saltenv: rc
       pillarenv_from_saltenv: True
       {% endif %}
+      state_top_saltenv: base
