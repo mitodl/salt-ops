@@ -12,7 +12,7 @@ etl_dependencies:
   - awscli
   - libmysqlclient-dev
 
-mitx_residential_etl:
+mitx_etl:
   settings:
     AWS:
       AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/read-write-mitx-etl-{{ purpose }}-{{ env }}>data>access_key
@@ -26,15 +26,15 @@ mitx_residential_etl:
       host: mysql.service.consul
       db: edxapp_{{ purpose_suffix }}
     Slack:
-      bot_username: mitx_residential_etl_bot
+      bot_username: mitx_etl_{{ purpose }}_bot
       bot_emoji: ":gear:"
       webhook_url: __vault__::secret-operations/global/slack/slack_webhook_url>data>value
     Logs:
-      logfile: /edx/var/log/mitx_residential_etl.log
+      logfile: /edx/var/log/mitx_etl_{{ purpose }}.log
       max_size: 1048576
       backup_count: 12
       level: 4
     S3Bucket:
       bucket: mitx-etl-{{ purpose }}-{{ env }}
     Healthchecks:
-      url: __vault__::secret-operations/global/healthchecks/mitx-etl-nightly>data>value
+      url: __vault__::secret-operations/global/healthchecks/mitx-etl-{{ purpose }}-nightly>data>value
