@@ -1,8 +1,15 @@
-{% from "orchestrate/aws_env_macro.jinja" import VPC_NAME, VPC_RESOURCE_SUFFIX,
- ENVIRONMENT, BUSINESS_UNIT, PURPOSE_PREFIX, subnet_ids with context %}
-
-{% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
-{% set purposes = env_settings.purposes %}
+{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-qa') %}
+{% set env_data = env_settings.environments[ENVIRONMENT] %}
+{% set PURPOSE = salt.environ.get('PURPOSE', 'current-residential-draft') %}
+{% set VPC_NAME = env_data.vpc_name %}
+{% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
+{% set launch_date = salt.status.time(format="%Y-%m-%d") %}
+{% set subnet_ids = salt.boto_vpc.describe_subnets(
+    vpc_id=salt.boto_vpc.describe_vpcs(
+        name=env_data.vpc_name).vpcs[0].id
+    ).subnets|map(attribute='id')|list|sort(reverse=True) %}
+{% set ANSIBLE_FLAGS = salt.environ.get('ANSIBLE_FLAGS') %}
 
 load_edx_cloud_profile:
   file.managed:
@@ -12,14 +19,13 @@ load_edx_cloud_profile:
 
 generate_analytics_edx_cloud_map_file:
   file.managed:
-    - name: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_analytics_edx_map.yml
+    - name: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_analytics_edx_map.yml
     - source: salt://orchestrate/aws/map_templates/analytics_edx.yml
     - template: jinja
     - makedirs: True
     - context:
         business_unit: {{ BUSINESS_UNIT }}
         environment_name: {{ ENVIRONMENT }}
-        purpose: {{ PURPOSE_PREFIX + '-live' }}
         securitygroupids:
           edxapp: {{ salt.boto_secgroup.get_group_id(
               'edx-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
@@ -33,7 +39,12 @@ generate_analytics_edx_cloud_map_file:
             'public-ssh-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           consul-agent: {{ salt.boto_secgroup.get_group_id(
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-        subnetids: {{ subnet_ids }}
+        subnetids: {{ subnet_ids|tojson }}
+        tags:
+          launch-date: '{{ launch_date }}'
+          Department: {{ BUSINESS_UNIT }}
+          OU: {{ BUSINESS_UNIT }}
+          Environment: {{ ENVIRONMENT }}
     - require:
         - file: load_edx_cloud_profile
 
@@ -42,22 +53,27 @@ ensure_instance_profile_exists_for_edx:
     - name: edx-instance-role
 
 deploy_analytics_edx_cloud_map:
-  salt.runner:
-    - name: cloud.map_run
-    - path: /etc/salt/cloud.maps.d/{{ VPC_RESOURCE_SUFFIX }}_analytics_edx_map.yml
+  salt.function:
+    - tgt: 'roles:master'
+    - tgt_type: grain
+    - name: saltutil.runner
+    - arg:
+        - cloud.map_run
+    - kwarg:
+        path: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_analytics_edx_map.yml
     - require:
         - file: generate_analytics_edx_cloud_map_file
 
 sync_external_modules_for_edx_nodes:
   salt.function:
     - name: saltutil.sync_all
-    - tgt: 'P@roles:analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:edx-analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
 
 load_pillar_data_on_edx_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'P@roles:edx-residential-analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:edx-analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
         - salt: deploy_analytics_edx_cloud_map
@@ -65,7 +81,7 @@ load_pillar_data_on_edx_nodes:
 populate_mine_with_edx_node_data:
   salt.function:
     - name: mine.update
-    - tgt: 'P@roles:edx-residential-analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:edx-analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
         - salt: load_pillar_data_on_edx_nodes
@@ -74,7 +90,7 @@ populate_mine_with_edx_node_data:
 reload_pillar_data_on_edx_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'P@roles:edx-residential-analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:edx-analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - require:
         - salt: populate_mine_with_edx_node_data
@@ -82,7 +98,7 @@ reload_pillar_data_on_edx_nodes:
 {# Deploy Consul agent first so that the edx deployment can use provided DNS endpoints #}
 deploy_consul_agent_to_analytics_nodes:
   salt.state:
-    - tgt: 'P@roles:edx-residential-analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:edx-analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - sls:
         - consul
@@ -90,7 +106,7 @@ deploy_consul_agent_to_analytics_nodes:
 
 build_analytics_node:
   salt.state:
-    - tgt: 'P@roles:edx-residential-analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'P@roles:edx-analytics and G@environment:{{ ENVIRONMENT }}'
     - tgt_type: compound
     - highstate: True
     - require:
@@ -98,7 +114,7 @@ build_analytics_node:
 
 create_user_account:
   salt.function:
-    - tgt: 'G@roles:analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:edx-analytics and G@environment:mitx-production'
     - tgt_type: compound
     - name: user.add
     - kwarg:
@@ -117,7 +133,7 @@ create_user_account:
 {% set enc, key, comment = pubkey.split() %}
 add_{{ comment }}_public_key_to_user:
   salt.function:
-    - tgt: 'G@roles:edx-residential-analytics and G@environment:{{ ENVIRONMENT }}'
+    - tgt: 'G@roles:edx-analytics and G@environment:mitx-production'
     - tgt_type: compound
     - name: ssh.set_auth_key
     - kwarg:
