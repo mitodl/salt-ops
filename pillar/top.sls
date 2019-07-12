@@ -257,6 +257,7 @@ base:
     - match: grain
     - apps.ocw
     - letsencrypt.ocw_origin
+    - nginx
     - nginx.ocw_origin
     - fluentd.ocw_origin
   'P@roles:ocw-(cms|mirror|origin) and G@ocw-environment:production':
