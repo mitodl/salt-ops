@@ -17,13 +17,8 @@ fluentd:
             - nested_directives:
               - directive: parse
                 attrs:
-                  - '@type': ltsv
-                  - null_value_pattern: '-'
+                  - '@type': apache2
                   - keep_time_key: 'true'
-                  - label_delimiter: '='
-                  - delimiter_pattern: '/\s+(?=(?:[^"]*"[^"]*")*[^"]*$)/'
-                  - time_key: time
-                  - types: time:time
         - directive: source
           attrs:
             - '@id': ocworigin_nginx_error_log
