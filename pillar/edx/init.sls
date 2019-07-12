@@ -36,7 +36,7 @@ schedule:
       pillar:
         edx:
           ansible_flags: '--tags install:configuration'
-  {% if 'edx-residential-analytics' in roles %}
+  {% if 'edx-analytics' in roles %}
   refresh_etl-{{ environment }}_configs:
     days: 5
     function: state.sls

@@ -11,7 +11,6 @@
     ).subnets|map(attribute='id')|list|sort(reverse=True) %}
 {% set ANSIBLE_FLAGS = salt.environ.get('ANSIBLE_FLAGS') %}
 {% set defined_purposes = env_data.purposes %}
-{% set launch_date = salt.status.time(format="%Y-%m-%d") %}
 {% set edx_tracking_bucket = 'odl-{}-tracking-backup'.format(BUSINESS_UNIT) %}
 
 load_edx_cloud_profile:

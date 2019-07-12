@@ -1,8 +1,13 @@
-{% set ISO8601 = '%Y-%m-%dT%H:%M:%S' %}
+{% set tags = tags|default({}) %}
+{% set env_settings = salt.pillar.get('environments:{}'.format(environment_name)) %}
+{% set purposes = env_settings.purposes[PURPOSE] %}
+{% set num_subnets = subnetids|length %}
+{% set codename = purposes.versions.codename %}
+{% set eip = purposes.instances.analytics.eip %}
 
 edx:
   - analytics-{{ environment_name }}-{{ purpose }}:
-      image: {{ salt.sdb.get('sdb://consul/edx_hawthorn_ami_id')|default('ami-973d0681', True) }}
+      image: {{ salt.sdb.get('sdb://consul/edx_{}_{}_ami_id'.format(environment_name, codename)) }}
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
@@ -12,18 +17,24 @@ edx:
             - {{ securitygroupids.default }}
             - {{ securitygroupids['salt-master'] }}
             - {{ securitygroupids['consul-agent'] }}
-          associate_eip: eipalloc-838972e6
+          associate_eip: {{ eip }}
       tag:
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
         purpose: {{ purpose }}
-        created_at: "{{ salt.status.time(format=ISO8601) }}"
+        edx_codename: {{ codename }}
+        {% for tag_name, tag_value in tags.items() %}
+        {{ tag_name }}: '{{ tag_value }}'
+        {% endfor %}
       grains:
-        created_at: "{{ salt.status.time(format=ISO8601) }}"
+        edx_codename: {{ codename }}
+        release-version: '{{ release_number }}'
         business_unit: {{ business_unit }}
         environment: {{ environment_name }}
+        {% for tag_name, tag_value in tags.items() %}
+        {{ tag_name }}: '{{ tag_value }}'
+        {% endfor %}
         purpose: {{ purpose }}
         roles:
           - edx
-          - edx-draft
-          - edx-residential-analytics
+          - edx-analytics

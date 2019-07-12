@@ -330,6 +330,9 @@ environments:
           edx-worker:
             number: 3
             type: t3.large
+          analytics:
+            number: 1
+            eip: eipalloc-0b5eaa0b85c89d093
         security_groups:
           - edx
   mitx-qa:
@@ -587,6 +590,9 @@ environments:
           edx-worker:
             number: 3
             type: t3.xlarge
+          analytics:
+            number: 1
+            eip: eipalloc-838972e6
       mitx-cas:
         app: cas
         business_unit: operations
