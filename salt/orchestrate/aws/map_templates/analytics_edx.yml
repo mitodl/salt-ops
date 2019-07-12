@@ -1,6 +1,6 @@
 {% set tags = tags|default({}) %}
 {% set env_settings = salt.pillar.get('environments:{}'.format(environment_name)) %}
-{% set purposes = env_settings.purposes[PURPOSE] %}
+{% set purposes = env_settings.purposes[purpose] %}
 {% set num_subnets = subnetids|length %}
 {% set codename = purposes.versions.codename %}
 {% set eip = purposes.instances.analytics.eip %}

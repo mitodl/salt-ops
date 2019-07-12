@@ -26,6 +26,7 @@ generate_analytics_edx_cloud_map_file:
     - context:
         business_unit: {{ BUSINESS_UNIT }}
         environment_name: {{ ENVIRONMENT }}
+        purpose: {{ PURPOSE }}
         securitygroupids:
           edxapp: {{ salt.boto_secgroup.get_group_id(
               'edx-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
