@@ -4,6 +4,7 @@
 {% set num_subnets = subnetids|length %}
 {% set codename = purposes.versions.codename %}
 {% set eip = purposes.instances.analytics.eip %}
+{% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-{}-release-version'.format(environment_name, codename)) %}
 
 edx:
   - analytics-{{ environment_name }}-{{ purpose }}:
