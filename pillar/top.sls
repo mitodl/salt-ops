@@ -114,14 +114,14 @@ base:
     - match: compound
     - rabbitmq.apps
     - consul.apps
-  'G@roles:edx-analytics and G@environment:mitx(pro)?-production':
+  'G@roles:edx-analytics and P@environment:mitx(pro)?-production':
     - match: compound
     - data.mitx_etl
   'G@roles:consul_server and G@environment:operations':
     - match: compound
     - consul.bootcamps
     - vault
-  'G@roles:consul_server and G@environment:mitx(pro)?-production':
+  'G@roles:consul_server and P@environment:mitx(pro)?-production':
     - match: compound
     - datadog.mysql-integration
   'P@roles:(vault_server|master)':
