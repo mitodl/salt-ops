@@ -150,7 +150,7 @@ base:
     - match: grain
     - mongodb
     - mongodb.consul_check
-  'G@roles:mongodb and G@environment:mitx(pro)?-production':
+  'G@roles:mongodb and P@environment:mitx(pro)?-production':
     - match: compound
     - datadog.plugins
   'G@roles:consul_server and G@environment:operations':
@@ -232,7 +232,7 @@ base:
     - edx.patch_nginx
     - edx.tests
     - edx.django_user
-  'G@roles:devstack and P@environment:dev':
+  'G@roles:devstack and G@environment:dev':
     - match: compound
     - consul
     - consul.dns_proxy
