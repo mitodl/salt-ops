@@ -34,7 +34,7 @@ edx:
       terms_of_service: "hidden"
       city: "hidden"
       country: "hidden"
-    EDXAPP_SUPPORT_SITE_LINK: 'https://xpro.zendesk.com/hc/en-us/requests/new'
+    EDXAPP_SUPPORT_SITE_LINK: 'https://xpro.zendesk.com/hc'
     EDXAPP_LMS_ENV_EXTRA:
       BULK_EMAIL_DEFAULT_FROM_EMAIL: {{ support_email }}
       COURSE_ABOUT_VISIBILITY_PERMISSION: staff
