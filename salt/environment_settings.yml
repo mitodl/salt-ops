@@ -283,6 +283,7 @@ environments:
       aws:
         bucket_prefix: xpro
         bucket_uses:
+          - etl
           - grades
           - storage
     backends:
