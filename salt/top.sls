@@ -189,7 +189,7 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
-  'G@roles:edx-analytics and G@environment:mitx(pro)?-production':
+  'G@roles:edx-analytics and P@environment:mitx(pro)?-production':
     - match: compound
     - etl
     - etl.mitx
