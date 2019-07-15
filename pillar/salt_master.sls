@@ -236,4 +236,5 @@ salt_master:
   proxy_configs:
     apps:
       - proxy-mitxpro-ci
+      - proxy-mitxpro-rc
       - proxy-mit-open-discussions-ci
