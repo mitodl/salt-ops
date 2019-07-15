@@ -18,7 +18,7 @@ fluentd:
               - directive: parse
                 attrs:
                   - '@type': ltsv
-                  - null_value_pattern: '-'
+                  - null_value_pattern: '/^-$/'
                   - keep_time_key: 'true'
                   - label_delimiter: '='
                   - delimiter_pattern: '/\s+(?=(?:[^"]*"[^"]*")*[^"]*$)/'
