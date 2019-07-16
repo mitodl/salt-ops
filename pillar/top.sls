@@ -270,3 +270,5 @@ base:
     - match: grain
     - logrotate.ocw_cms
     - fluentd.ocw_db
+  'P@roles:ocw-(cms|db) and G@ocw-environment:production':
+    - datadog
