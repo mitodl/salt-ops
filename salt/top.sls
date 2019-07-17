@@ -225,7 +225,7 @@ base:
     - match: grain
     - apps.ocw.mirror
     - apps.ocw.sync_repo
-  'P@roles:ocw-(cms|db) and G@ocw-environment:production':
+  'P@roles:ocw-(cms|db|origin) and G@ocw-environment:production':
     - datadog
   'roles:sandbox':
     - match: grain
