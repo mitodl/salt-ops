@@ -44,4 +44,5 @@ add_xpro_base_url_to_{{ app }}_production_file:
   file.append:
     - name: /edx/app/edxapp/edx-platform/{{ app }}/envs/production.py
     - text: XPRO_BASE_URL = '{{ heroku_env }}'
+{% endfor %}
 {% endif %}
