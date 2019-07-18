@@ -39,8 +39,9 @@ add_social_auth_https_redirect_to_lms_production_file:
     - name: /edx/app/edxapp/edx-platform/lms/envs/production.py
     - text: SOCIAL_AUTH_REDIRECT_IS_HTTPS = ENV_TOKENS.get('SOCIAL_AUTH_REDIRECT_IS_HTTPS', True)
 
-add_xpro_base_url_to_lms_production_file:
+{% for app in ['lms', 'cms'] %}
+add_xpro_base_url_to_{{ app }}_production_file:
   file.append:
-    - name: /edx/app/edxapp/edx-platform/lms/envs/production.py
+    - name: /edx/app/edxapp/edx-platform/{{ app }}/envs/production.py
     - text: XPRO_BASE_URL = '{{ heroku_env }}'
 {% endif %}
