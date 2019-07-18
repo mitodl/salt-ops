@@ -78,3 +78,7 @@ nginx:
                     - error_page:
                         - '404'
                         - /jsp/error.html
+                    - rewrite:
+                        - ^(/[^\.\?]+[^/])$
+                        - $1/
+                        - permanent
