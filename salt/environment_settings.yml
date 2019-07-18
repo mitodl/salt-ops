@@ -898,7 +898,7 @@ environments:
           parameter_group_name: default.redis3.2
           failover_enabled: False
           business_unit: odl-video
-  ocw:
+  ocw: &ocw
     business_unit: open-courseware
     network_prefix: '10.100'
     vpc_name: OCW
@@ -921,6 +921,10 @@ environments:
         security_groups:
           - webapp
           - ssh
+  ocw-production:
+    <<: *ocw
+  ocw-qa:
+    <<: *ocw
 
 business_units:
   - bootcamps
