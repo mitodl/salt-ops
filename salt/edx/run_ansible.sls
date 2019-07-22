@@ -7,6 +7,13 @@
                                                      'edx-east/xqueue.yml',
                                                      'edx-east/forum.yml']) -%}
 
+{% set heroku_xpro_env_url_mapping = {
+    'sandbox': 'https://xpro-ci.odl.mit.edu',
+    'xpro-qa': 'https://xpro-rc.odl.mit.edu',
+    'xpro-production': 'https://xpro.mit.edu'
+  } %}
+{% set heroku_env = heroku_xpro_env_url_mapping['{}'.format(purpose)] %}
+
 clone_edx_configuration:
   file.directory:
     - name: {{ repo_path }}
@@ -106,3 +113,18 @@ restart_edx_worker_service:
     - require:
       - cmd: run_ansible
 {% endif %}
+
+{% if 'mitxpro' in salt.grains.get('environment') %}
+add_social_auth_https_redirect_to_lms_production_file:
+  file.append:
+    - name: /edx/app/edxapp/edx-platform/lms/envs/production.py
+    - text: SOCIAL_AUTH_REDIRECT_IS_HTTPS = ENV_TOKENS.get('SOCIAL_AUTH_REDIRECT_IS_HTTPS', True)
+
+{% for app in ['lms', 'cms'] %}
+add_xpro_base_url_to_{{ app }}_production_file:
+  file.append:
+    - name: /edx/app/edxapp/edx-platform/{{ app }}/envs/production.py
+    - text: XPRO_BASE_URL = '{{ heroku_env }}'
+{% endfor %}
+{% endif %}
+
