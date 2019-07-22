@@ -109,7 +109,7 @@ restart_edx_worker_service:
 
 {% if 'edx-analytics' in salt.grains.get('roles') %}
 stop_edxapp_services:
-  supervisord.stop:
+  supervisord.dead:
     - name: all
     - bin_env: '/edx/bin/supervisorctl'
     - require:
