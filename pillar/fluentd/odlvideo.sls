@@ -37,7 +37,7 @@ fluentd:
                 - directive: parse
                   attrs:
                     - '@type': regexp
-                    - expression: '^(?<time>\d+\/\d+\/\d+\s\d+:\d+:\d+)\s(?<level_name>\[.*])\s(?<message>.*)client:\s(?<client_ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}),\sserver:\s(?<server>.*),\srequest:\s"(?<method>.*)",\supstream:\s"(?<upstream>.*)",\shost:\s"(?<host>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})"$'
+                    - expression: '^(?<time>\d+\/\d+\/\d+\s\d+:\d+:\d+)\s(?<level_name>\[.*])\s(?<message>.*)'
         - {{ record_tagging |yaml() }}
         - directive: match
           directive_arg: '**'
