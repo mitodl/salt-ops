@@ -106,3 +106,17 @@ restart_edx_worker_service:
     - require:
       - cmd: run_ansible
 {% endif %}
+
+{% if 'edx-analytics' in salt.grains.get('roles') %}
+stop_edxapp_services:
+  supervisord.dead:
+    - name: all
+    - bin_env: '/edx/bin/supervisorctl'
+    - require:
+      - cmd: run_ansible
+
+stop_nginx_service:
+  service.dead:
+    - name: nginx
+    - enable: False
+{% endif %}
