@@ -24,6 +24,7 @@
       'OPEN_DISCUSSIONS_SUPPORT_EMAIL': 'odl-discussions-ci-support@mit.edu',
       'release_branch': 'master',
       'SOCIAL_AUTH_MICROMASTERS_LOGIN_URL': 'https://micromasters-ci.odl.mit.edu/discussions/',
+      'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions-ci.odl.mit.edu/saml/metadata',
       'vault_env_path': 'rc-apps'
       },
     'rc': {
@@ -48,6 +49,7 @@
       'OPEN_DISCUSSIONS_SUPPORT_EMAIL': 'odl-discussions-rc-support@mit.edu',
       'release_branch': 'release-candidate',
       'SOCIAL_AUTH_MICROMASTERS_LOGIN_URL': 'https://micromasters-rc.odl.mit.edu/login/edxorg/?next=/discussions/',
+      'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions-rc.odl.mit.edu/saml/metadata',
       'vault_env_path': 'rc-apps'
       },
     'production': {
@@ -72,6 +74,7 @@
       'OPEN_DISCUSSIONS_SUPPORT_EMAIL': 'odl-discussions-support@mit.edu',
       'release_branch': 'release',
       'SOCIAL_AUTH_MICROMASTERS_LOGIN_URL': 'https://micromasters.mit.edu/login/edxorg/?next=/discussions/',
+      'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions.odl.mit.edu/saml/metadata',
       'vault_env_path': 'production-apps'
       }
 } %}
@@ -163,7 +166,7 @@ heroku:
     PGBOUNCER_MIN_POOL_SIZE: 5
     RECAPTCHA_SECRET_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>secret_key
     RECAPTCHA_SITE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>site_key
-    SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.env_name }}/django-secret-key>data>value
+    SECRET_KEY: __vault__:gen_if_missing[64]:secret-{{ business_unit }}/{{ env_data.env_name }}/django-secret-key>data>value
     SENTRY_DSN: __vault__::secret-operations/global/{{ business_unit }}/sentry-dsn>data>value
     SOCIAL_AUTH_MICROMASTERS_LOGIN_URL: {{ env_data.SOCIAL_AUTH_MICROMASTERS_LOGIN_URL }}
     SOCIAL_AUTH_SAML_CONTACT_NAME: ODL Support
@@ -175,10 +178,10 @@ heroku:
     SOCIAL_AUTH_SAML_IDP_X509: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>idp_x509
     SOCIAL_AUTH_SAML_ORG_DISPLAYNAME: MIT Office of Digital Learning
     SOCIAL_AUTH_SAML_SECURITY_ENCRYPTED: True
-    SOCIAL_AUTH_SAML_SP_ENTITY_ID: 'https://idp.mit.edu/shibboleth'
+    SOCIAL_AUTH_SAML_SP_ENTITY_ID: {{ env_data.SOCIAL_AUTH_SAML_SP_ENTITY_ID }}
     SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>private_key
     SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>public_cert
-    STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
+    STATUS_TOKEN: __vault__:gen_if_missing[64]:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
     USE_X_FORWARDED_HOST: True
     USE_X_FORWARDED_PORT: True
 
