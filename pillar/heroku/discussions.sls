@@ -92,7 +92,7 @@ heroku:
   config_vars:
     ALGOLIA_API_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/algolia>data>api_key
     ALGOLIA_APP_ID: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/algolia>data>app_id
-    ALLOWED_HOSTS: '[*]'
+    ALLOWED_HOSTS: '["*"]'
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-odl-discussions-{{ env_data.env_name }}>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-odl-discussions-{{ env_data.env_name }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'odl-discussions-{{ env_data.env_name }}'
