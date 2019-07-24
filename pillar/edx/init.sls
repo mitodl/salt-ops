@@ -26,6 +26,7 @@ edx:
     TLS_KEY_NAME: 'edx-ssl-cert'
     max_upload_size: 20
 
+{% if 'mitxpro' not in environment %}
 schedule:
   refresh_mitx-{{ environment }}_configs:
     days: 5
@@ -36,6 +37,7 @@ schedule:
       pillar:
         edx:
           ansible_flags: '--tags install:configuration'
+  {% endif %}
   {% if 'edx-analytics' in roles %}
   refresh_etl-{{ environment }}_configs:
     days: 5
