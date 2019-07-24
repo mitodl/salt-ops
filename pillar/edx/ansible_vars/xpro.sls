@@ -14,7 +14,7 @@
 
 edx:
   ansible_vars:
-    EDXAPP_SESSION_COOKIE_DOMAIN: .mitx.mit.edu
+    EDXAPP_SESSION_COOKIE_DOMAIN: .xpro.mit.edu
     EDXAPP_SESSION_COOKIE_NAME: {{ environment }}-{{ purpose }}-session
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
     EDXAPP_COMMENTS_SERVICE_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
