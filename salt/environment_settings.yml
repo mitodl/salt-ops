@@ -87,8 +87,8 @@ edxapp_continuous_delivery_versions: &continuous_delivery_versions
 xpro_qa_versions: &xpro_qa_versions
   edx_config_repo: https://github.com/edx/configuration
   edx_config_version: open-release/ironwood.master
-  edx_platform_repo: 'https://github.com/edx/edx-platform'
-  edxapp: open-release/ironwood.master
+  edx_platform_repo: 'https://github.com/mitodl/edx-platform'
+  edxapp: xpro/ironwood
   forum_source_repo: 'https://github.com/edx/cs_comments_service'
   forum: open-release/ironwood.master
   xqueue_source_repo: 'https://github.com/edx/xqueue'
@@ -103,8 +103,8 @@ xpro_qa_versions: &xpro_qa_versions
 xpro_production_versions: &xpro_production_versions
   edx_config_repo: https://github.com/edx/configuration
   edx_config_version: open-release/ironwood.master
-  edx_platform_repo: 'https://github.com/edx/edx-platform'
-  edxapp: open-release/ironwood.master
+  edx_platform_repo: 'https://github.com/mitodl/edx-platform'
+  edxapp: xpro/ironwood
   forum_source_repo: 'https://github.com/edx/cs_comments_service'
   forum: open-release/ironwood.master
   xqueue_source_repo: 'https://github.com/edx/xqueue'
@@ -127,8 +127,8 @@ sandbox_residential_versions: &sandbox_residential_versions
 sandbox_mitxpro_versions: &sandbox_mitxpro_versions
   edx_config_repo: https://github.com/edx/configuration.git
   edx_config_version: open-release/ironwood.master
-  edx_platform_repo: 'https://github.com/edx/edx-platform'
-  edxapp: open-release/ironwood.master
+  edx_platform_repo: 'https://github.com/mitodl/edx-platform'
+  edxapp: xpro/ironwood
   forum_source_repo: 'https://github.com/edx/cs_comments_service'
   forum: open-release/ironwood.master
   theme_source_repo: 'https://github.com/mitodl/mitxpro-theme'
