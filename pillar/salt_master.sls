@@ -239,3 +239,4 @@ salt_master:
       - proxy-mitxpro-rc
       - proxy-mit-open-discussions-ci
       - proxy-mit-open-discussions-rc
+      - proxy-mit-open-discussions-production
