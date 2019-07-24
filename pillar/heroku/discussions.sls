@@ -78,7 +78,7 @@
 {% set env_data = env_dict[environment] %}
 {% set business_unit = 'mit-open' %}
 {% set pg_creds = salt.vault.cached_read('postgresql-{}-opendiscussions/creds/opendiscussions'.format(env_data.vault_env_path), cache_prefix='heroku-opendiscussions') %}
-{% set rds_endpoint = salt.boto_rds.get_endpoint('{env}-rds-postgres-opendiscussions'.format(env=env_data.vault_env_path)) %}
+{% set rds_endpoint = salt.boto_rds.get_endpoint('{env}-rds-postgresql-opendiscussions'.format(env=env_data.vault_env_path)) %}
 
 proxy:
   proxytype: heroku
@@ -89,7 +89,7 @@ heroku:
   config_vars:
     ALGOLIA_API_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/algolia>data>api_key
     ALGOLIA_APP_ID: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/algolia>data>app_id
-    ALLOWED_HOSTS: '[*]'
+    ALLOWED_HOSTS: [*]
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-odl-discussions-{{ env_data.env_name }}>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-odl-discussions-{{ env_data.env_name }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'odl-discussions-{{ env_data.env_name }}'
