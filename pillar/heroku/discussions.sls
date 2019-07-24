@@ -166,7 +166,7 @@ heroku:
     PGBOUNCER_MIN_POOL_SIZE: 5
     RECAPTCHA_SECRET_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>secret_key
     RECAPTCHA_SITE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>site_key
-    SECRET_KEY: __vault__:gen_if_missing[64]:secret-{{ business_unit }}/{{ env_data.env_name }}/django-secret-key>data>value
+    SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.env_name }}/django-secret-key>data>value
     SENTRY_DSN: __vault__::secret-operations/global/{{ business_unit }}/sentry-dsn>data>value
     SOCIAL_AUTH_MICROMASTERS_LOGIN_URL: {{ env_data.SOCIAL_AUTH_MICROMASTERS_LOGIN_URL }}
     SOCIAL_AUTH_SAML_CONTACT_NAME: ODL Support
@@ -181,7 +181,7 @@ heroku:
     SOCIAL_AUTH_SAML_SP_ENTITY_ID: {{ env_data.SOCIAL_AUTH_SAML_SP_ENTITY_ID }}
     SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>private_key
     SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>public_cert
-    STATUS_TOKEN: __vault__:gen_if_missing[64]:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
+    STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
     USE_X_FORWARDED_HOST: True
     USE_X_FORWARDED_PORT: True
 
