@@ -237,6 +237,7 @@ salt_master:
     apps:
       - proxy-mitxpro-ci
       - proxy-mitxpro-rc
+      - proxy-mitxpro-production
       - proxy-mit-open-discussions-ci
       - proxy-mit-open-discussions-rc
       - proxy-mit-open-discussions-production
