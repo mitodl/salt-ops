@@ -45,6 +45,7 @@ base:
     - master_utils.dns
   'G@roles:elasticsearch and G@environment:operations':
     - match: compound
+    - utils.file_limits
     - elastic-stack.elasticsearch
     - elastic-stack.elasticsearch.plugins
     - datadog.plugins
