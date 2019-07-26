@@ -10,4 +10,4 @@ datadog:
     log_to_syslog: 'no'
     apm_config:
       enabled: True
-    hostname: {{ id }}
+    hostname: {{ salt.grains.get('id') }}
