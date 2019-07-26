@@ -45,7 +45,7 @@ edx:
       COURSE_MODE_DEFAULTS:
         name: "Audit"
         slug: "audit"
-      MARKETING_SITE_ROOT: {{ heroku_xpro_env_url_mapping.purpose }}
+      MARKETING_SITE_ROOT: {{ heroku_env }}
       MITXPRO_CORE_REDIRECT_ALLOW_RE_LIST: ["^/(admin|auth|login|logout|register|api|oauth2|user_api|heartbeat)"]
       THIRD_PARTY_AUTH_BACKENDS: ["social_auth_mitxpro.backends.MITxProOAuth2"]
       JWT_AUTH:
