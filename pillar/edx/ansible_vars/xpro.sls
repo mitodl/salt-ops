@@ -34,6 +34,9 @@ edx:
       terms_of_service: "hidden"
       city: "hidden"
       country: "hidden"
+    EDXAPP_MKTG_URLS:
+      ABOUT: "/about-us"
+      CONTACT: "https://xpro.zendesk.com/hc/en-us/requests/new"
     EDXAPP_SUPPORT_SITE_LINK: 'https://xpro.zendesk.com/hc'
     EDXAPP_LMS_ENV_EXTRA:
       BULK_EMAIL_DEFAULT_FROM_EMAIL: {{ support_email }}
@@ -42,6 +45,7 @@ edx:
       COURSE_MODE_DEFAULTS:
         name: "Audit"
         slug: "audit"
+      MARKETING_SITE_ROOT: {{ heroku_xpro_env_url_mapping.purpose }}
       MITXPRO_CORE_REDIRECT_ALLOW_RE_LIST: ["^/(admin|auth|login|logout|register|api|oauth2|user_api|heartbeat)"]
       THIRD_PARTY_AUTH_BACKENDS: ["social_auth_mitxpro.backends.MITxProOAuth2"]
       JWT_AUTH:
@@ -55,6 +59,7 @@ edx:
         REROUTE_ACTIVATION_EMAIL: {{ support_email }}
         ENABLE_VIDEO_UPLOAD_PIPELINE: False
         ENABLE_COMBINED_LOGIN_REGISTRATION: True
+        ENABLE_MKTG_SITE: True
         ENABLE_OAUTH2_PROVIDER: True
         ENABLE_THIRD_PARTY_AUTH: True
         ALLOW_PUBLIC_ACCOUNT_CREATION: True
