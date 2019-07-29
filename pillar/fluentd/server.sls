@@ -265,7 +265,7 @@ fluentd:
           attrs:
             - nested_directives:
                 - directive: match
-                  directive_arg: 'edx.xqwatcher.686'
+                  directive_arg: 'edx.xqwatcher.686.**'
                   attrs:
                     - '@type': logzio_buffered
                     - endpoint_url: __vault__::secret-residential/mitx-production/logzio-686-url>data>value
