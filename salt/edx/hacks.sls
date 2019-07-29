@@ -6,18 +6,23 @@
   } %}
 {% set heroku_env = heroku_xpro_env_url_mapping['{}'.format(purpose)] %}
 
+{% if salt.file.directory_exists('/edx/var/edxapp/staticfiles/studio/templates') %}
 ensure_license_selector_template_is_in_expected_location:
   file.copy:
     - name: /edx/var/edxapp/staticfiles/studio/templates/license-selector.underscore.js
     - source: /edx/var/edxapp/staticfiles/studio/templates/license-selector.underscore
     - preserve: True
+{% endif %}
 
+{% if salt.file.directory_exists('/edx/var/edxapp/staticfiles/studio/common/templates/components') %}
 ensure_system_feedback_template_is_in_expected_location:
   file.copy:
     - name: /edx/var/edxapp/staticfiles/studio/common/templates/components/system-feedback.underscore.js
     - source: /edx/var/edxapp/staticfiles/studio/common/templates/components/system-feedback.underscore
     - preserve: True
+{% endif %}
 
+{% if salt.file.directory_exists('/edx/var/edxapp/staticfiles/paragon/static') %}
 create_static_assets_subfolder:
   file.directory:
     - name: /edx/var/edxapp/staticfiles/paragon/static/static
@@ -32,6 +37,7 @@ copy_select_static_assets_to_static_subfolder:
     - recurse: True
     - remove_existing: True
     - preserve: True
+{% endif %}
 
 {% if 'mitxpro' in salt.grains.get('environment') %}
 add_social_auth_https_redirect_to_lms_production_file:
