@@ -161,7 +161,7 @@ fluentd:
                   - '@type': relabel
                   - '@label': '@es_logging'
         - directive: match
-          directive_arg: edx.xqwatcher.686
+          directive_arg: 'edx.xqwatcher.686.**'
           attrs:
             - '@type': copy
             - nested_directives:

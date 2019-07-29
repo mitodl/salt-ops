@@ -19,6 +19,26 @@ fluentd:
             - format1: '/^(?<time>^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d+) - (?<file_name>.*?):(?<line_number>\d+) -- (?<function_name>\w+) \[(?<log_level>\w+)\]: (?<message>.*)/'
             - time_format: '%Y-%m-%d %H:%M:%S,%L'
             - multiline_flush_interval: '5s'
+        - directive: source
+          attrs:
+            - '@type': tail
+            - enable_watch_timer: 'false'
+            - tag: edx.xqwatcher.{{ salt.grains.get('course', 'none') }}.stderr
+            - path: /edx/var/log/supervisor/xqwatcher-stderr.log
+            - pos_file: /edx/var/log/supervisor/xqwatcher-stderr.log.pos
+            - format: multiline
+            - format_firstline: '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d+ /'
+            - format1: '/^(?<time>^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d+) - (?<file_name>.*?):(?<line_number>\d+) -- (?<function_name>\w+) \[(?<log_level>\w+)\]: (?<message>.*)/'
+            - time_format: '%Y-%m-%d %H:%M:%S,%L'
+            - multiline_flush_interval: '5s'
+        - directive: source
+          attrs:
+            - '@type': tail
+            - enable_watch_timer: 'false'
+            - tag: edx.xqwatcher.{{ salt.grains.get('course', 'none') }}.stdout
+            - path: /edx/var/log/supervisor/xqwatcher-stdout.log
+            - pos_file: /edx/var/log/supervisor/xqwatcher-stdout.log.pos
+            - format: 'none'
         - {{ record_tagging |yaml() }}
         - directive: match
           directive_arg: '**'
