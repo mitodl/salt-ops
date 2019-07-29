@@ -13,7 +13,7 @@ schedule:
       - fluentd.config
 
 fluentd:
-  persistent_directories: {{ fluentd_directories }}
+  persistent_directories: {{ fluentd_directories|tojson }}
   overrides:
     nginx_config:
       server_name: log-input.odl.mit.edu
