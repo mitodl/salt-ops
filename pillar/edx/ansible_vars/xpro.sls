@@ -35,6 +35,7 @@ edx:
       city: "hidden"
       country: "hidden"
     EDXAPP_MKTG_URLS:
+      ROOT: "{{ heroku_env }}"
       ABOUT: "/about-us"
       CONTACT: "https://xpro.zendesk.com/hc/en-us/requests/new"
     EDXAPP_SUPPORT_SITE_LINK: 'https://xpro.zendesk.com/hc'
