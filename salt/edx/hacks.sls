@@ -71,6 +71,5 @@ add_jwt_auth_to_production_file:
 
         'JWT_PRIVATE_SIGNING_JWK': (
             '{{ JWT_PRIVATE_SIGNING_JWK_SET }}'
-        ),
-    })
+        ), })
 {% endif %}
