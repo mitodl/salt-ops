@@ -61,8 +61,7 @@ add_jwt_auth_to_production_file:
   file.append:
     - name: /edx/app/edxapp/edx-platform/lms/envs/production.py
     - text: |
-        JWT_AUTH.update({
-        'JWT_SECRET_KEY': '{{ JWT_SECRET_KEY }}',
+        JWT_AUTH.update({'JWT_SECRET_KEY': '{{ JWT_SECRET_KEY }}',
         'JWT_ISSUER': '{{ JWT_ISSUER }}',
         'JWT_AUDIENCE': '{{ JWT_AUDIENCE }}',
         'JWT_PUBLIC_SIGNING_JWK_SET': (
