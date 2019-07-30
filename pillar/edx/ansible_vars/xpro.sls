@@ -19,6 +19,12 @@ edx:
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
     EDXAPP_COMMENTS_SERVICE_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
     EDXAPP_IDA_LOGOUT_URI_LIST: ['{{ heroku_env }}/logout']
+    EDXAPP_JWT_ISSUER: 'OAUTH_OIDC_ISSUER'
+    EDXAPP_JWT_AUDIENCE: '{{ business_unit }}-{{ environment }}-key'
+    EDXAPP_JWT_SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/jwt-secret-key>data>value
+    EDXAPP_JWT_SIGNING_ALGORITHM: 'RS512'
+    EDXAPP_JWT_PRIVATE_SIGNING_JWK: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/private-key>data>value
+    EDXAPP_JWT_PUBLIC_SIGNING_JWK_SET: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/public-key>data>value
     EDXAPP_PRIVATE_REQUIREMENTS:
       - name: mitxpro-openedx-extensions==0.1.0
       - name: social-auth-mitxpro==0.2
@@ -49,13 +55,6 @@ edx:
       MARKETING_SITE_ROOT: {{ heroku_env }}
       MITXPRO_CORE_REDIRECT_ALLOW_RE_LIST: ["^/(admin|auth|login|logout|register|api|oauth2|user_api|heartbeat)"]
       THIRD_PARTY_AUTH_BACKENDS: ["social_auth_mitxpro.backends.MITxProOAuth2"]
-      JWT_AUTH:
-        JWT_ISSUER: 'OAUTH_OIDC_ISSUER'
-        JWT_AUDIENCE: '{{ business_unit }}-{{ environment }}-key'
-        JWT_SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/jwt-secret-key>data>value
-        JWT_SIGNING_ALGORITHM: 'RS512'
-        JWT_PRIVATE_SIGNING_JWK: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/private-key>data>value
-        JWT_PUBLIC_SIGNING_JWK_SET: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/public-key>data>value
       FEATURES:
         REROUTE_ACTIVATION_EMAIL: {{ support_email }}
         ENABLE_VIDEO_UPLOAD_PIPELINE: False
