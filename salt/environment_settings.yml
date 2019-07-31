@@ -301,6 +301,7 @@ environments:
           <<: *xpro_production_versions
         instances:
           edx:
+            number: 6
             min_number: 6
             max_number: 10
             type: r5.large
