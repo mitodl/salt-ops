@@ -48,7 +48,7 @@ create_autoscaling_group:
           - {{ salt.boto_secgroup.get_group_id(
             '{}-{}'.format(group_name, ENVIRONMENT), vpc_name=VPC_NAME) }}
         {% else %}
-          - {{ salt.boto_secgroup_get_group_id('{}'.format(group_name), vpc_name=VPC_NAME) }}
+          - {{ salt.boto_secgroup.get_group_id('{}'.format(group_name), vpc_name=VPC_NAME) }}
         {% endif %}
         {% endfor %}
     - min_size: {{ purpose_data.instances.edx.min_number }}
