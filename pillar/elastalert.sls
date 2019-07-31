@@ -67,12 +67,12 @@ elastic_stack:
                 must_not:
                   - match:
                       message: ichuang
-      - name: mitx_operational_failure
+      - name: edx_operational_failure
         settings:
-          name: Operational Failure on mitx instances
+          name: Operational Failure on MITx or xPRO instances
           description: >-
             Send a message anytime an 'Operational Failure' message is
-            encountered in the mitx production logs.
+            encountered in the MITx or xPRO production logs.
           opsgenie_key: {{ opsgenie_key }}
           opsgenie_priority: P1
           type: frequency
@@ -82,14 +82,14 @@ elastic_stack:
             minutes: 5
           alert:
             - opsgenie
-          alert_text: "Operational Failure on mitx-production detected"
+          alert_text: "Operational Failure on mitx or xpro production detected"
           filter:
             - bool:
                 must:
                   - match:
                       message: OperationFailure
                   - term:
-                      environment.raw: mitx-production
+                      environment.raw: mitx(pro)?-production
       - name: mitx_gitreload_alert
         settings:
           name: git reload error on mitx instances - opsgenie
@@ -118,12 +118,12 @@ elastic_stack:
                       log_level: ERROR
                   - term:
                       environment.raw: mitx-production
-      - name: mitx_multiple_forum_roles
+      - name: edx_multiple_forum_roles
         settings:
-          name: Multiple Forum roles on mitx instances
+          name: Multiple Forum roles on MITx or xPRO instances
           description: >-
             Send a message anytime a 'Multiple Forum roles' message is
-            encountered in the mitx production logs.
+            encountered in the MITx or xPRO production logs.
           opsgenie_key: {{ opsgenie_key }}
           opsgenie_priority: P3
           type: frequency
@@ -133,19 +133,19 @@ elastic_stack:
             minutes: 5
           alert:
             - opsgenie
-          alert_text: "Multiple Forum roles on mitx-production detected"
+          alert_text: "Multiple Forum roles on mitx or xpro production detected"
           filter:
             - bool:
                 must:
                   - match:
                       message.raw: returned more than one Role
                   - term:
-                      environment.raw: mitx-production
+                      environment.raw: mitx(pro)?-production
                   - term:
                       fluentd_tag.raw: edx.lms
       - name: edx_session_save_failure
         settings:
-          name: MITx or MITxPro could not save its session
+          name: MITx or xPRO could not save its session
           description: >-
             The call to request.session.save() failed in
             django.contrib.sessions.middleware.py, usually as the result of
@@ -159,7 +159,7 @@ elastic_stack:
             minutes: 5
           alert:
             - opsgenie
-          alert_text: "MITx or MITxPro could not save its session (Memcache failure)"
+          alert_text: "MITx or xPRO could not save its session (Memcache failure)"
           filter:
             - bool:
                 must:
@@ -298,11 +298,11 @@ elastic_stack:
                       fluentd_tag: '*.nginx.*'
                   - term:
                       status: 502
-      - name: mitxpro_openedx_oauth2error
+      - name: xpro_openedx_oauth2error
         settings:
-          name: MIT xPRO openedx account provisioning failed
+          name: xPRO openedx account provisioning failed
           description: >-
-            MIT xPRO openedx account provisioning failed.
+            xPRO openedx account provisioning failed.
             Might need to check configs and verify that
             there no mismatches
           opsgenie_key: {{ opsgenie_key }}
@@ -314,7 +314,7 @@ elastic_stack:
             minutes: 5
           alert:
             - opsgenie
-          alert_text: "MIT xPRO openedx account provisioning failed"
+          alert_text: "xPRO openedx account provisioning failed"
           filter:
             - bool:
                 must:
@@ -322,6 +322,31 @@ elastic_stack:
                       message: courseware.exceptions.OpenEdXOAuth2Error
                   - term:
                       fluentd_tag.raw: heroku.xpro
+      - name: xpro_jwt_error
+        settings:
+          name: xPRO potential misconfigured JWT
+          description: >-
+            xPRO openedx instances appear to have
+            misconfigured JWT keys under lms.env.json
+          opsgenie_key: {{ opsgenie_key }}
+          opsgenie_priority: P2
+          type: frequency
+          index: logstash-*
+          num_events: 1
+          timeframe:
+            minutes: 5
+          alert:
+            - opsgenie
+          alert_text: "xPRO openedx instances might have misconfigured JWT keys"
+          filter:
+            - bool:
+                must:
+                  - match:
+                      message: "ValueError: No JSON object could be decoded"
+                   - term:
+                      environment.raw: mitxpro-production
+                  - term:
+                      fluentd_tag.raw: edx.lms
       - name: ocw_invalid_literal_for_int
         settings:
           name: OCW CMS needs restart for invalid literal for int() error
