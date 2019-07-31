@@ -44,7 +44,7 @@ create_autoscaling_group:
       - associate_public_ip_address: True
       - security_groups:
         {% for group_name in security_groups %}
-        {% if 'default' not in security_groups %}
+        {% if 'default' not in group_name %}
           - {{ salt.boto_secgroup.get_group_id(
             '{}-{}'.format(group_name, ENVIRONMENT), vpc_name=VPC_NAME) }}
         {% else %}
