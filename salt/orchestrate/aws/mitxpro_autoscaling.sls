@@ -9,7 +9,7 @@
 {% set sns_topic = env_data.provider_services.sns.topic ~ '-' ~ ENVIRONMENT ~ '-autoscaling' %}
 {% set edx_codename = purpose_data.versions.codename %}
 {% set security_groups = purpose_data.get('security_groups', []) %}
-{% do security_groups.extend(['salt_master', 'consul-agent']) %}
+{% do security_groups.extend(['salt_master', 'consul-agent', 'default']) %}
 {% set subnet_ids = salt.boto_vpc.describe_subnets(vpc_id=salt.boto_vpc.describe_vpcs(name=VPC_NAME).vpcs[0].id).subnets|map(attribute='id')|list %}
 
 {% set region = 'us-east-1' %}
@@ -65,7 +65,6 @@ create_autoscaling_group:
     - load_balancers:
       - {{ elb_name }}
     - suspended_processes:
-        - AddToLoadBalancer
         - AlarmNotification
     - scaling_policies:
         - name: ScaleUp
