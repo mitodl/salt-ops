@@ -22,7 +22,25 @@ create_{{ sqs_queue }}-sqs-queue:
   boto_sqs.present:
     - name: {{ sqs_queue }}
     - region: {{ region }}
-    - attributes: {"Policy": {"Version":"2012-10-17","Id":"arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}/SQSDefaultPolicy","Statement":[{"Effect":"Allow","Principal":{"AWS":["arn:aws:iam::{{ AWS_ACCOUNT_ID }}:role/mitx-salt-master-role"]},"Action":"SQS:*","Resource":"arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}", {"Effect":"Allow","Principal":"*","Action":"SQS:SendMessage","Resource":"arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }},"Condition":{"ArnEquals":{"aws:SourceArn":"arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}"}}}]}}
+    - attributes:
+        Policy:
+          Id: arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}/SQSDefaultPolicy
+          Statement:
+            - Action: SQS:*
+              Effect: Allow
+              Principal:
+                AWS:
+                - arn:aws:iam::{{ AWS_ACCOUNT_ID }}:role/mitx-salt-master-role
+              Resource: arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}
+            - Action: SQS:SendMessage
+              Condition:
+                ArnEquals:
+                  aws:SourceArn: arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue
+                    }}
+              Effect: Allow
+              Principal: '*'
+              Resource: arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}
+          Version: '2012-10-17'
 
 create_{{ sns_topic }}-sns-topic:
   boto_sns.present:
