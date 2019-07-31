@@ -331,7 +331,7 @@ elastic_stack:
           opsgenie_key: {{ opsgenie_key }}
           opsgenie_priority: P2
           type: frequency
-          index: logstash-*
+          index: logstash-mitxpro-*
           num_events: 1
           timeframe:
             minutes: 5
