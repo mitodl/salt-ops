@@ -22,7 +22,8 @@
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-ci-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-ci-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro-ci.odl.mit.edu',
-      'vault_env_path': 'rc-apps'
+      'vault_env_path': 'rc-apps',
+      'VOUCHER_COMPANY_ID': 1
       },
     'rc': {
       'app_name': 'xpro-rc',
@@ -43,7 +44,8 @@
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-rc-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-rc-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro-rc.odl.mit.edu',
-      'vault_env_path': 'rc-apps'
+      'vault_env_path': 'rc-apps',
+      'VOUCHER_COMPANY_ID': 1
       },
     'production': {
       'app_name': 'xpro-production',
@@ -64,7 +66,8 @@
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro.mit.edu',
-      'vault_env_path': 'production-apps'
+      'vault_env_path': 'production-apps',
+      'VOUCHER_COMPANY_ID': 4
       }
 } %}
 {% set env_data = env_dict[environment] %}
@@ -136,7 +139,7 @@ heroku:
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
     SITE_NAME: "MIT xPRO"
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
-    VOUCHER_COMPANY_ID: 1
+    VOUCHER_COMPANY_ID: {{ env_data.VOUCHER_COMPANY_ID }}
     VOUCHER_DOMESTIC_AMOUNT_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>amount_key
     VOUCHER_DOMESTIC_COURSE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>course_key
     VOUCHER_DOMESTIC_CREDITS_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>credits_key
