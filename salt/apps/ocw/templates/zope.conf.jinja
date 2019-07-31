@@ -1,71 +1,76 @@
+# See /usr/local/Plone/Zope-2.10.11-final-py2.4/skel/etc/zope.conf.in for the
+# default zope.conf file that comes with Zope 2.10.
+#
+# Another reference: https://zope.readthedocs.io/en/latest/operation.html#zope-configuration-reference
+# (For Zope 4, not Zope 2, so use with discretion, but may still be helpful.
+# It is more detailed about some directives than the comments in zope.conf.in)
+
+
 %define INSTANCEHOME /usr/local/Plone/zeocluster/parts/client1
 instancehome $INSTANCEHOME
 %define CLIENTHOME /usr/local/Plone/zeocluster/var/client1
 clienthome $CLIENTHOME
-
 products /usr/local/Plone/zeocluster/products
 products /usr/local/Plone/zeocluster/parts/productdistros
 debug-mode off
 security-policy-implementation C
 verbose-security off
 default-zpublisher-encoding utf-8
-
 effective-user plone
-
 zeo-client-name client1
+pid-filename /usr/local/Plone/zeocluster/var/client1/client1.pid
+lock-filename /usr/local/Plone/zeocluster/var/client1/client1.lock
+
 
 <environment>
-PYTHON_EGG_CACHE /usr/local/Plone/zeocluster/var/.python-eggs
-DISABLE_PTS 1
-TEMP /usr/local/Plone/zeocluster/tmp
-BASE_SITE_URL {{ salt.pillar.get('ocw:zope_conf:base_site_url') }}
-BASE_STAGING_SITE_URL {{ salt.pillar.get('ocw:zope_conf:base_staging_site_url') }}
+    PYTHON_EGG_CACHE /usr/local/Plone/zeocluster/var/.python-eggs
+    DISABLE_PTS 1
+    TEMP /usr/local/Plone/zeocluster/tmp
+    BASE_SITE_URL {{ salt.pillar.get('ocw:zope_conf:base_site_url') }}
+    BASE_STAGING_SITE_URL {{ salt.pillar.get('ocw:zope_conf:base_staging_site_url') }}
 </environment>
 
 <warnfilter>
-  action ignore
-  category exceptions.DeprecationWarning
+    action ignore
+    category exceptions.DeprecationWarning
 </warnfilter>
 
 <eventlog>
-  level INFO
-  <logfile>
-    path /usr/local/Plone/zeocluster/var/client1/event.log
     level INFO
-  </logfile>
+    <logfile>
+      path /usr/local/Plone/zeocluster/var/client1/event.log
+      level INFO
+    </logfile>
 </eventlog>
 
 <logger access>
-  level WARN
-  <logfile>
-    path /usr/local/Plone/zeocluster/var/client1/Z2.log
-    format %(message)s
-  </logfile>
+    level WARN
+    <logfile>
+        path /usr/local/Plone/zeocluster/var/client1/Z2.log
+        format %(message)s
+    </logfile>
 </logger>
 
 <http-server>
-  # valid keys are "address" and "force-connection-close"
-  address 8080
-  # force-connection-close on
-  # You can also use the WSGI interface between ZServer and ZPublisher:
-  # use-wsgi on
-
+    # valid keys are "address" and "force-connection-close"
+    address 8080
+    # force-connection-close on
+    # You can also use the WSGI interface between ZServer and ZPublisher:
+    # use-wsgi on
 </http-server>
 
 
 <zodb_db main>
-    # Main database
     cache-size 2000000
-
-# Blob-enabled ZEOStorage database
     <zeoclient>
-      blob-dir /zeo/blobstorage
-      shared-blob-dir off
-      server {{ salt.pillar.get('ocw:zope_conf:zodb_ipaddr') }}:8100
-      storage 1
-      name zeostorage
-      var /usr/local/Plone/zeocluster/parts/client1/var
-      cache-size 15000MB
+        # `blob-dir' is the path to the blob cache directory.
+        blob-dir /zeo/blobstorage
+        shared-blob-dir off
+        server {{ salt.pillar.get('ocw:zope_conf:zodb_ipaddr') }}:8100
+        storage 1
+        name zeostorage
+        var /usr/local/Plone/zeocluster/parts/client1/var
+        cache-size 15000MB
     </zeoclient>
     mount-point /
 </zodb_db>
@@ -73,24 +78,21 @@ BASE_STAGING_SITE_URL {{ salt.pillar.get('ocw:zope_conf:base_staging_site_url') 
 <zodb_db temporary>
     # Temporary storage database (for sessions)
     <temporarystorage>
-      name temporary storage for sessioning
+        name temporary storage for sessioning
     </temporarystorage>
-    mount-point /temp_folder
     container-class Products.TemporaryFolder.TemporaryContainer
+    mount-point /temp_folder
 </zodb_db>
 
-pid-filename /usr/local/Plone/zeocluster/var/client1/client1.pid
-lock-filename /usr/local/Plone/zeocluster/var/client1/client1.lock
-
 <zodb_db catalog>
-mount-point /Plone/portal_catalog
-container-class Products.CMFPlone.CatalogTool.CatalogTool
-cache-size 2000000
-<zeoclient>
-server {{ salt.pillar.get('ocw:zope_conf:zodb_ipaddr') }}:8100
-storage 2
-name catalogstorage
-var /usr/local/Plone/zeocluster/parts/client1/var
-cache-size 4000MB
-</zeoclient>
+    cache-size 2000000
+    <zeoclient>
+        server {{ salt.pillar.get('ocw:zope_conf:zodb_ipaddr') }}:8100
+        storage 2
+        name catalogstorage
+        var /usr/local/Plone/zeocluster/parts/client1/var
+        cache-size 4000MB
+    </zeoclient>
+    container-class Products.CMFPlone.CatalogTool.CatalogTool
+    mount-point /Plone/portal_catalog
 </zodb_db>
