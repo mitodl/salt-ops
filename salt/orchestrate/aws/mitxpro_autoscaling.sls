@@ -22,7 +22,7 @@ create_{{ sqs_queue }}-sqs-queue:
   boto_sqs.present:
     - name: {{ sqs_queue }}
     - region: {{ region }}
-    - attributes: {"Policy": {"Version":"2012-10-17","Id":"arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}/SQSDefaultPolicy","Statement":[{"Effect":"Allow","Principal":{"AWS":["arn:aws:iam::{{ AWS_ACCOUNT_ID }}:role/mitx-salt-master-role"]},"Action":"SQS:*","Resource":"arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}"}]}}
+    - attributes: {"Policy": {"Version":"2012-10-17","Id":"arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}/SQSDefaultPolicy","Statement":[{"Effect":"Allow","Principal":{"AWS":["arn:aws:iam::{{ AWS_ACCOUNT_ID }}:role/mitx-salt-master-role"]},"Action":"SQS:*","Resource":"arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}", {"Effect":"Allow","Principal":"*","Action":"SQS:SendMessage","Resource":"arn:aws:sqs:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }},"Condition":{"ArnEquals":{"aws:SourceArn":"arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sqs_queue }}"}}}]}}
 
 create_{{ sns_topic }}-sns-topic:
   boto_sns.present:
@@ -44,8 +44,11 @@ create_autoscaling_group:
       - associate_public_ip_address: True
       - security_groups:
         {% for group_name in security_groups %}
+        {% if 'default' not in security_groups %}
           - {{ salt.boto_secgroup.get_group_id(
             '{}-{}'.format(group_name, ENVIRONMENT), vpc_name=VPC_NAME) }}
+          - {{ salt.boto_secgroup_get_group_id('{}'.format(group_name), vpc_name=VPC_NAME) }}
+          {% endif %}
           {% endfor %}
     - min_size: {{ purpose_data.instances.edx.min_number }}
     - max_size: {{ purpose_data.instances.edx.max_number }}
