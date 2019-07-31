@@ -47,9 +47,10 @@ create_autoscaling_group:
         {% if 'default' not in security_groups %}
           - {{ salt.boto_secgroup.get_group_id(
             '{}-{}'.format(group_name, ENVIRONMENT), vpc_name=VPC_NAME) }}
+        {% else %}
           - {{ salt.boto_secgroup_get_group_id('{}'.format(group_name), vpc_name=VPC_NAME) }}
-          {% endif %}
-          {% endfor %}
+        {% endif %}
+        {% endfor %}
     - min_size: {{ purpose_data.instances.edx.min_number }}
     - max_size: {{ purpose_data.instances.edx.max_number }}
     - desired_capacity: {{ purpose_data.instances.edx.min_number }}
