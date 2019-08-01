@@ -42,7 +42,7 @@ edx:
       country: "hidden"
     EDXAPP_MKTG_URLS:
       ROOT: "{{ env_data.purposes[purpose].domains.lms }}"
-      ABOUT: "/about-us"
+      ABOUT: "{{ heroku_env }}/about-us"
       CONTACT: "https://xpro.zendesk.com/hc/en-us/requests/new"
     EDXAPP_SUPPORT_SITE_LINK: 'https://xpro.zendesk.com/hc'
     EDXAPP_LMS_ENV_EXTRA:
