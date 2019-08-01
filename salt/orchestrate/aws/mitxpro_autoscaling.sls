@@ -1,3 +1,4 @@
+{% for app_name in ['edxapp', 'edx-worker'] %}
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitxpro-production') %}
 {% set purpose = salt.grains.get('purpose', 'xpro-production') %}
@@ -5,8 +6,8 @@
 {% set VPC_NAME = env_data.vpc_name %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
 {% set purpose_data = env_data.purposes[purpose] %}
-{% set sqs_queue = env_data.provider_services.sqs.queue ~ '-' ~ ENVIRONMENT ~ '-autoscaling' %}
-{% set sns_topic = env_data.provider_services.sns.topic ~ '-' ~ ENVIRONMENT ~ '-autoscaling' %}
+{% set sqs_queue = env_data.provider_services.app_name.sqs.queue ~ '-' ~ ENVIRONMENT ~ '-autoscaling' %}
+{% set sns_topic = env_data.provider_services.app_name.sns.topic ~ '-' ~ ENVIRONMENT ~ '-autoscaling' %}
 {% set edx_codename = purpose_data.versions.codename %}
 {% set security_groups = purpose_data.get('security_groups', []) %}
 {% do security_groups.extend(['salt_master', 'consul-agent', 'default']) %}
@@ -14,8 +15,8 @@
 
 {% set region = 'us-east-1' %}
 {% set AWS_ACCOUNT_ID = salt.vault.read('secret-operations/global/aws-account-id').data.value %}
-{% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-{}-release-version'.format(ENVIRONMENT, edx_codename))|int %}
-{% set ami_name = 'edxapp_' ~ ENVIRONMENT  ~ '_' ~ edx_codename ~ '_base_release_' ~ release_number %}
+{% set release_number = salt.sdb.get('sdb://consul/{}-{}-{}-release-version'.format(app_name, ENVIRONMENT, edx_codename))|int %}
+{% set ami_name = app_name ~ '_' ~ ENVIRONMENT  ~ '_' ~ edx_codename ~ '_base_release_' ~ release_number %}
 {% set elb_name = 'edx-{purpose}-{env}'.format(purpose=purpose, env=ENVIRONMENT)[:32].strip('-') %}
 
 create_{{ sqs_queue }}-sqs-queue:
@@ -50,15 +51,15 @@ create_{{ sns_topic }}-sns-topic:
     - require:
         - boto_sqs: create_{{ sqs_queue }}-sqs-queue
 
-create_autoscaling_group:
+create_autoscaling_group_for_{{ app_name }}:
   boto_asg.present:
-    - name: edx-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-group
-    - launch_config_name: edx-{{ purpose }}-{{ ENVIRONMENT }}-launch-config
+    - name: {{ app_name }}-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-group
+    - launch_config_name: {{ app_name }}-{{ purpose }}-{{ ENVIRONMENT }}-launch-config
     - launch_config:
       - instance_profile_name: edx-instance-role
       - image_name: {{ ami_name }}
       - key_name: salt-master-prod
-      - instance_type: {{ purpose_data.instances.edx.type }}
+      - instance_type: {{ purpose_data.instances.app_name.type }}
       - associate_public_ip_address: True
       - security_groups:
         {% for group_name in security_groups %}
@@ -69,7 +70,7 @@ create_autoscaling_group:
           - {{ salt.boto_secgroup.get_group_id('{}'.format(group_name), vpc_name=VPC_NAME) }}
         {% endif %}
         {% endfor %}
-    - min_size: {{ purpose_data.instances.edx.min_number }}
+    - min_size: {{ purpose_data.instances.app_name.min_number }}
     - max_size: {{ purpose_data.instances.edx.max_number }}
     - desired_capacity: {{ purpose_data.instances.edx.min_number }}
     - health_check_type: EC2
@@ -84,24 +85,26 @@ create_autoscaling_group:
       - us-east-1c
       - us-east-1d
     - vpc_zone_identifier: {{ subnet_ids|tojson }}
+    {% if 'edxapp' in app_name %}
     - load_balancers:
       - {{ elb_name }}
+    {% endif %}
     - suspended_processes:
         - AlarmNotification
     - scaling_policies:
         - name: ScaleUp
           adjustment_type: ChangeInCapacity
-          as_name: edx-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-group
+          as_name: {{ app_name }}-{{ ENVIRONMENT }}-autoscaling-group
           cooldown: 1800
           scaling_adjustment: 2
         - name: ScaleDown
           adjustment_type: ChangeInCapacity
-          as_name: edx-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-group
+          as_name: {{ app_name }}-{{ purpose }-{{ ENVIRONMENT }}-autoscaling-group
           cooldown: 1800
           scaling_adjustment: -1
     - alarms:
         CPU:
-          name: edx-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-group-alarm
+          name: {{ app_name }}-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-group-alarm
           attributes:
             metric: CPUUtilization
             namespace: AWS/EC2
@@ -111,7 +114,7 @@ create_autoscaling_group:
             period: 60
             evaluation_periods: 3
             unit: null
-            description: 'edx-{{ purpose }}-{{ ENVIRONMENT }} ASG alarm'
+            description: '{{ app_name }}-{{ purpose }}-{{ ENVIRONMENT }} ASG alarm'
             alarm_actions: [ 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:launch' ]
             ok_actions: [ 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:ok' ]
     - notification_arn: 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sns_topic }}'
@@ -120,3 +123,4 @@ create_autoscaling_group:
         - autoscaling:EC2_INSTANCE_TERMINATE
     - require:
         - boto_sns: create_{{ sns_topic }}-sns-topic
+{% endfor %}
