@@ -80,7 +80,3 @@ edx:
     EDXAPP_BUGS_EMAIL: {{ support_email }}
     EDXAPP_CONTACT_EMAIL: {{ support_email }}
     EDXAPP_TECH_SUPPORT_EMAIL: {{ support_email }}
-    EDXAPP_MKTG_URL_LINK_MAP:
-      TOS: {{ heroku_env }}/terms-of-service
-      HONOR: {{ heroku_env }}/honor-code
-      PRIVACY: {{ heroku_env }}/privacy-policy
