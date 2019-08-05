@@ -34,7 +34,7 @@ ocw:
       url: http://ocw-rsync.odl.mit.edu/
       host: ocw-production-rsync
     netstorage:
-      host: ocw-production-netstorage.odl.mit.edu
+      host: ocwzip.upload.akamai.com
       user: sshacs
       rootdirectory: /15436/ZipForEndUsers
       zipurlprefix: /ans15436/ZipForEndUsers
