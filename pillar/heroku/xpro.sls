@@ -54,7 +54,7 @@
       'release_branch': 'release',
       'app_log_level': 'INFO',
       'sentry_log_level': 'WARN',
-      'logout_redirect_url': 'https://courses.xpro.edu/logout',
+      'logout_redirect_url': 'https://courses.xpro.mit.edu/logout',
       'OPENEDX_API_BASE_URL': 'https://courses.xpro.mit.edu',
       'openedx_environment': 'mitxpro-production',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://secureacceptance.cybersource.com/pay',
