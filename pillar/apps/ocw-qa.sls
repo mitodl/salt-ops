@@ -19,8 +19,8 @@ ocw:
     database:
       host: "{{ mysql_db_ipaddr }}"
     cms:
-      url: https://ocw-qa.odl.mit.edu
-      host: ocw-qa-cms-1.odl.mit.edu
+      url: https://ocw-qa-cms-2.odl.mit.edu
+      host: ocw-qa-cms-2.odl.mit.edu
       engine_host: ocw-qa-cms-2
       engine_url: https://ocw-qa-cms-2.odl.mit.edu
     staging:
