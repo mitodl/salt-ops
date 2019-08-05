@@ -67,7 +67,7 @@
       'MAILGUN_SENDER_DOMAIN': 'xpro-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro.mit.edu',
       'vault_env_path': 'production-apps',
-      'VOUCHER_COMPANY_ID': 4
+      'VOUCHER_COMPANY_ID': 0
       }
 } %}
 {% set env_data = env_dict[environment] %}
