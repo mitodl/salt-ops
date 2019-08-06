@@ -61,7 +61,7 @@ lock-filename /usr/local/Plone/zeocluster/var/client1/client1.lock
 
 
 <zodb_db main>
-    cache-size 2000000
+    cache-size {{ salt.grains.get('zodb_main_cache_size', '500') }}
     <zeoclient>
         # `blob-dir' is the path to the blob cache directory.
         blob-dir /zeo/blobstorage
@@ -70,7 +70,7 @@ lock-filename /usr/local/Plone/zeocluster/var/client1/client1.lock
         storage 1
         name zeostorage
         var /usr/local/Plone/zeocluster/parts/client1/var
-        cache-size 15000MB
+        cache-size {{ salt.grains.get('zodb_main_zeoclient_cache_size', '20MB') }}
     </zeoclient>
     mount-point /
 </zodb_db>
@@ -85,13 +85,13 @@ lock-filename /usr/local/Plone/zeocluster/var/client1/client1.lock
 </zodb_db>
 
 <zodb_db catalog>
-    cache-size 2000000
+    cache-size {{ salt.grains.get('zodb_catalog_cache_size', '500') }}
     <zeoclient>
         server {{ salt.pillar.get('ocw:zope_conf:zodb_ipaddr') }}:8100
         storage 2
         name catalogstorage
         var /usr/local/Plone/zeocluster/parts/client1/var
-        cache-size 4000MB
+        cache-size {{ salt.grains.get('zodb_catalog_zeoclient_cache_size', '20MB') }}
     </zeoclient>
     container-class Products.CMFPlone.CatalogTool.CatalogTool
     mount-point /Plone/portal_catalog
