@@ -89,17 +89,6 @@ daily_broken_links_update_cronjob:
     - minute: 7
     - hour: 4
 
-# Copy mitx_archived_courses.xml from CMS just before running generate_mitx_feeds.sh
-# I'm commenting this out because we're using an EFS volume for this file, and
-# scp-ing it is unnecessary. -- Mark
-# copy_mitx_archived_courses_cronjob:
-#   cron.present:
-#     - identifier: copy_mitx_archived_courses
-#     - name: {{ engines_basedir }}/copy_mitx_archived_courses_xml_from_CMS.sh {{ salt.pillar.get('ocw:engines_conf:cms:host') }} > {{ cron_log_dir }}/copy_mitx_archived_courses_xml_from_CMS.log 2>&1
-#     - user: root
-#     - minute: 30
-#     - hour: 4
-
 mitx_feeds_cronjob:
   cron.present:
     - identifier: generate_mitx_feeds
@@ -107,14 +96,6 @@ mitx_feeds_cronjob:
     - user: ocwuser
     - minute: 40
     - hour: 4
-
-check_cache_size_cronjob:
-  cron.present:
-    - identifier: check_cache_size
-    - name: {{ engines_basedir }}/check_cache_size.sh > {{ cron_log_dir }}/check_cache_size.log 2>&1
-    - user: root
-    - minute: 50
-    - hour: 8
 
 {% if salt.grains.get('ocw-environment', '') == 'production' %}
 export_courses_json_cronjob:
