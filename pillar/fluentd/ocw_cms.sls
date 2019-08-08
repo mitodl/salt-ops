@@ -58,7 +58,7 @@ fluentd:
               - directive: parse
                 attrs:
                   - '@type': apache2
-{% if salt.grains.get('ocw-cms-role') == 'engine' %}
+{% if 'engine' in salt.grains.get('ocw-cms-role') %}
         - directive: source
           attrs:
             - '@id': ocwcms_publishing_log
