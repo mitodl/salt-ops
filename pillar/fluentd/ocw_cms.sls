@@ -18,7 +18,6 @@ fluentd:
               - directive: parse
                 attrs:
                   - '@type': apache2
-                  - keep_time_key: 'true'
         - directive: source
           attrs:
             - '@id': ocwcms_apache_error_log
@@ -59,7 +58,6 @@ fluentd:
               - directive: parse
                 attrs:
                   - '@type': apache2
-                  - keep_time_key: 'true'
 {% if salt.grains.get('ocw-cms-role') == 'engine' %}
         - directive: source
           attrs:
