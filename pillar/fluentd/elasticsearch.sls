@@ -12,8 +12,8 @@ fluentd:
             - '@type': tail
             - tag: elasticsearch.server
             - enable_watch_timer: 'false'
-            - path: /var/log/elasticsearch/*.log
-            - pos_file: /var/log/elasticsearch/elasticsearch_fluentd.log.pos
+            - path: /usr/share/elasticsearch/logs/*.log
+            - pos_file: /usr/share/elasticsearch/logs/elasticsearch_fluentd.log.pos
             - format: multiline
             - format_firstline: '/^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}\]/'
             - format1: '/^\[(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3})\]\[(?<log_level>\w+)\]\[(?<module_name>.*?)\] (?<message>.*)$/'
