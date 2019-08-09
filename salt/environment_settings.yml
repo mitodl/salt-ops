@@ -165,10 +165,6 @@ environments:
           - grades
           - storage
           - edx-video-upload
-          - edx-video-delivery
-          - veda-upload
-          - veda-delivery
-          - veda-hotstore
     backends:
       pki:
         - consul
