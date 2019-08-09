@@ -97,7 +97,7 @@ heroku:
     {% if env_data.env_name == 'production' %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxpro
     {% endif %}
-    EDX_API_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ openedx_environment }}/edx-api-key>data>value
+    EDX_API_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.openedx_environment }}/edx-api-key>data>value
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
     HUBSPOT_API_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/hubspot-api-key>data>value
     HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
