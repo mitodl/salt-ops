@@ -15,7 +15,7 @@ video_uploads_bucket_{{ purpose }}_{{ env }}:
         Department: mitxpro
         Environment: {{ env }}
     - ACL:
-        - GrantRead: "uri=http://acs.amazonaws.com/groups/global/AllUsers"
+        GrantRead: "uri=http://acs.amazonaws.com/groups/global/AllUsers"
 {% endfor %}
 {% endfor %}
 
