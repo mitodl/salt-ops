@@ -53,6 +53,7 @@ edx:
       COURSE_MODE_DEFAULTS:
         name: "Audit"
         slug: "audit"
+      EMAIL_USE_DEFAULT_FROM_FOR_BULK: True
       MARKETING_SITE_ROOT: {{ heroku_env }}
       MITXPRO_CORE_REDIRECT_ALLOW_RE_LIST: ["^/(admin|auth|login|logout|register|api|oauth2|user_api|heartbeat)"]
       THIRD_PARTY_AUTH_BACKENDS: ["social_auth_mitxpro.backends.MITxProOAuth2"]
@@ -81,4 +82,3 @@ edx:
     EDXAPP_BUGS_EMAIL: {{ support_email }}
     EDXAPP_CONTACT_EMAIL: {{ support_email }}
     EDXAPP_TECH_SUPPORT_EMAIL: {{ support_email }}
-    EDXAPP_EMAIL_USE_DEFAULT_FROM_FOR_BULK: True
