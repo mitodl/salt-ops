@@ -16,6 +16,14 @@ video_uploads_bucket_{{ purpose }}_{{ env }}:
         Environment: {{ env }}
     - ACL:
         GrantRead: "uri=http://acs.amazonaws.com/groups/global/AllUsers"
+    - Policy:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: "PublicRead"
+            Effect: "Allow"
+            Principal: "*"
+            Action: "s3:GetObject"
+            Resource: "arn:aws:s3:::{{ bucket_prefix }}-edx-video-upload-{{ purpose }}-{{ env }}/*"
 {% endfor %}
 {% endfor %}
 
