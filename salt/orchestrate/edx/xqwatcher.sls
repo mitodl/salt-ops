@@ -34,6 +34,7 @@ generate_xqwatcher_{{ course.name }}_cloud_map_file:
         service_name: xqwatcher-{{ course.name }}
         environment_name: {{ ENVIRONMENT }}
         num_instances: {{ INSTANCE_COUNT }}
+        release_id: {{ salt.sdb.get('sdb://consul/{{ app_name }}/{{ ENVIRONMENT }}/release-id')|default('v1') }}
         tags:
           business_unit: {{ BUSINESS_UNIT }}
           Department: {{ BUSINESS_UNIT }}

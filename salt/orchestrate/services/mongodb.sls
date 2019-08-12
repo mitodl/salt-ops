@@ -25,6 +25,8 @@ set_mongo_admin_password_in_vault:
 {% set mongo_admin_password = mongo_admin_password.data.value %}
 {% endif %}
 {% set SIX_MONTHS = '4368h' %}
+{% set release_id = salt.sdb.get('sdb://consul/' ~ app_name ~ '/' ~ ENVIRONMENT ~ '/release-id')|default('v1') %}
+{% set target_string = app_name ~ '-' ~ ENVIRONMENT ~ '-*-' ~ release_id %}
 
 load_mongodb_cloud_profile:
   file.managed:
@@ -42,6 +44,7 @@ generate_mongodb_cloud_map_file:
         service_name: mongodb
         environment_name: {{ ENVIRONMENT }}
         num_instances: {{ INSTANCE_COUNT }}
+        release_id: {{ release_id }}
         tags:
           business_unit: {{ BUSINESS_UNIT }}
           Department: {{ BUSINESS_UNIT }}
@@ -83,13 +86,11 @@ deploy_mongodb_cloud_map:
 sync_external_modules_for_mongodb_nodes:
   salt.function:
     - name: saltutil.sync_all
-    - tgt: 'G@roles:mongodb and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
 
 format_data_drive:
   salt.function:
-    - tgt: 'G@roles:mongodb and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - name: state.single
     - arg:
         - blockdev.formatted
@@ -101,8 +102,7 @@ format_data_drive:
 
 mount_data_drive:
   salt.function:
-    - tgt: 'G@roles:mongodb and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - name: state.single
     - arg:
         - mount.mounted
@@ -117,20 +117,18 @@ mount_data_drive:
 load_pillar_data_on_{{ ENVIRONMENT }}_mongodb_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'G@roles:mongodb and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
 
 populate_mine_with_mongodb_node_data:
   salt.function:
     - name: mine.update
-    - tgt: 'G@roles:mongodb and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - require:
         - salt: load_pillar_data_on_{{ ENVIRONMENT }}_mongodb_nodes
 
 set_node_primary_node:
   salt.function:
-    - tgt: 'mongodb-{{ ENVIRONMENT }}-0'
+    - tgt: 'mongodb-{{ ENVIRONMENT }}-0-{{ release_id }}'
     - name: grains.append
     - arg:
         - roles
@@ -140,16 +138,14 @@ set_node_primary_node:
 
 build_mongodb_nodes:
   salt.state:
-    - tgt: 'G@roles:mongodb and G@environment:{{ ENVIRONMENT }} and not G@roles:mongodb_primary'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - highstate: True
     - require:
         - salt: populate_mine_with_mongodb_node_data
 
 build_mongodb_master_node:
   salt.state:
-    - tgt: 'G@roles:mongodb_primary and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - highstate: True
     - require:
         - salt: populate_mine_with_mongodb_node_data
@@ -160,7 +156,7 @@ build_mongodb_master_node:
 
 unset_primary_node_grain:
   salt.function:
-    - tgt: 'mongodb-{{ ENVIRONMENT }}-0'
+    - tgt: 'mongodb-{{ ENVIRONMENT }}-0-{{ release_id }}'
     - name: grains.remove
     - arg:
         - roles

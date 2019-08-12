@@ -6,7 +6,7 @@
 {{ profile_name }}:
   {% set instance_count = num_instances|default(3) %}
   {% for id_num in range(instance_count) %}
-  - {{ service_name }}-{{ environment_name }}-{{ id_num }}:
+  - {{ service_name }}-{{ environment_name }}-{{ id_num }}-{{ release_id }}:
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
