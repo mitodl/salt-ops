@@ -1,6 +1,6 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 {% for env in ['mitxpro-qa', 'mitxpro-production'] %}
-{% set env_data = env_settings[env] %}
+{% set env_data = env_settings.environments[env] %}
 {% for purpose in env_data.purposes %}
 {% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
 video_uploads_bucket_{{ purpose }}_{{ env }}:
