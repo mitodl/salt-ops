@@ -81,3 +81,4 @@ edx:
     EDXAPP_BUGS_EMAIL: {{ support_email }}
     EDXAPP_CONTACT_EMAIL: {{ support_email }}
     EDXAPP_TECH_SUPPORT_EMAIL: {{ support_email }}
+    EDXAPP_EMAIL_USE_DEFAULT_FROM_FOR_BULK: True
