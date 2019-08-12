@@ -19,6 +19,7 @@ edxapp_secret_backends: &edxapp_secret_backends
       - etl
       - grades
       - storage
+      - edx-video-upload
 
 current_residential_versions_qa: &current_residential_versions_qa
   edx_config_repo: https://github.com/mitodl/configuration
@@ -258,6 +259,7 @@ environments:
           - etl
           - grades
           - storage
+          - edx-video-upload
     backends:
       pki:
         - consul

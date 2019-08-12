@@ -213,7 +213,7 @@ edx:
       VIDEO_IMAGE_MIN_BYTES : 2048
       STORAGE_CLASS: 'storages.backends.s3boto.S3BotoStorage'
       STORAGE_KWARGS:
-        bucket: {{ bucket_prefix }}-storage-{{ purpose }}-{{ environment }}
+        bucket: {{ bucket_prefix }}-edx-video-upload-{{ purpose }}-{{ environment }}
       DIRECTORY_PREFIX: 'video-images/'
     EDXAPP_VIDEO_TRANSCRIPTS_SETTINGS:
       VIDEO_TRANSCRIPTS_MAX_BYTES : 3145728
