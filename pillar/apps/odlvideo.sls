@@ -15,7 +15,8 @@
       'transcode_pipeline_id': '1506027488410-93oya5',
       'youtube_project_id': 'ovs-youtube-qa',
       'release_branch': 'master',
-      'cloudfront_subdomain': 'd2jnipcnro4zno'
+      'cloudfront_subdomain': 'd2jnipcnro4zno',
+      'EDX_BASE_URL': 'https://courses-ci.xpro.mit.edu'
       },
     'rc-apps': {
       'env_name': 'rc',
@@ -28,7 +29,8 @@
       'transcode_pipeline_id': '1506081628031-bepkel',
       'youtube_project_id': 'ovs-youtube-qa',
       'release_branch': 'release-candidate',
-      'cloudfront_subdomain': 'du3yhovcx8dht'
+      'cloudfront_subdomain': 'du3yhovcx8dht',
+      'EDX_BASE_URL': 'https://courses-rc.xpro.mit.edu'
       },
     'production-apps': {
       'env_name': 'production',
@@ -41,7 +43,8 @@
       'transcode_pipeline_id': '1497541042228-8mpenl',
       'youtube_project_id': 'ovs-youtube-production',
       'release_branch': 'release',
-      'cloudfront_subdomain': 'd3tsb3m56iwvoq'
+      'cloudfront_subdomain': 'd3tsb3m56iwvoq',
+      'EDX_BASE_URL': 'https://courses.xpro.mit.edu'
       }
 } %}
 {% set env_data = env_dict[ENVIRONMENT] %}
@@ -91,6 +94,8 @@ django:
     DROPBOX_FOLDER: /Captions
     DROPBOX_KEY: __vault__::secret-odl-video/{{ ENVIRONMENT }}/dropbox_app>data>key
     DROPBOX_TOKEN: __vault__::secret-odl-video/{{ ENVIRONMENT }}/dropbox_app>data>token
+    EDX_BASE_URL: {{ env_data.EDX_BASE_URL }}
+    EDX_ACCESS_TOKEN: __vault__::secret-odl-video/{{ ENVIRONMENT }}/edx-access-token>data>value
     ENABLE_VIDEO_PERMISSIONS: False
     ET_PIPELINE_ID: {{ env_data.transcode_pipeline_id }}
     ET_PRESET_IDS: 1504127981769-6cnqhq,1504127981819-v44xlx,1504127981867-06dkm6,1504127981921-c2jlwt
