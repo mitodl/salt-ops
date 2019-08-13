@@ -234,10 +234,16 @@ environments:
     network_prefix: '10.8'
     vpc_name: MITxPro Production
     provider_services:
-      sns:
-        topic: edxapp-xpro-production
-      sqs:
-        queue: edxapp-xpro-production
+      edxapp:
+        sns:
+          topic: edxapp-xpro-production
+        sqs:
+          queue: edxapp-xpro-production
+      edx-worker:
+        sns:
+          topic: edx-worker-xpro-production
+        sqs:
+          queue: edx-worker-xpro-production
     secret_backends:
       mysql:
         role_prefixes:
@@ -299,12 +305,12 @@ environments:
           <<: *xpro_production_versions
         instances:
           edx:
-            number: 6
             min_number: 6
             max_number: 10
             type: r5.large
           edx-worker:
-            number: 3
+            min_number: 3
+            max_number: 7
             type: t3.large
           analytics:
             number: 1
