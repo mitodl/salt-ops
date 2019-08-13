@@ -88,8 +88,11 @@ elastic_stack:
                 must:
                   - match:
                       message: OperationFailure
+                should:
                   - term:
-                      environment.raw: mitx(pro)?-production
+                      environment.raw: mitx-production
+                  - term:
+                      environment.raw: mitxpro-production
       - name: mitx_gitreload_alert
         settings:
           name: git reload error on mitx instances - opsgenie
@@ -140,9 +143,12 @@ elastic_stack:
                   - match:
                       message.raw: returned more than one Role
                   - term:
-                      environment.raw: mitx(pro)?-production
-                  - term:
                       fluentd_tag.raw: edx.lms
+                should:
+                  - term:
+                      environment.raw: mitx-production
+                  - term:
+                      environment.raw: mitxpro-production
       - name: edx_session_save_failure
         settings:
           name: MITx or xPRO could not save its session
