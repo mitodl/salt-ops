@@ -349,7 +349,7 @@ elastic_stack:
                 must:
                   - match:
                       message: "ValueError: No JSON object could be decoded"
-                   - term:
+                  - term:
                       environment.raw: mitxpro-production
                   - term:
                       fluentd_tag.raw: edx.lms
@@ -374,10 +374,9 @@ elastic_stack:
           filter:
             - bool:
                 must:
-                  - query:
-                      query_string:
-                        default_field: message
-                        query: error AND invalid AND literal AND int
+                  - query_string:
+                      default_field: message
+                      query: error AND invalid AND literal AND int
                 filter:
                   - term:
                       fluentd_tag: ocwcms.zope.event
