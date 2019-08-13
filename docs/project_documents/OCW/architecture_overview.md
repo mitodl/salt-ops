@@ -16,10 +16,10 @@ The diagrams below illustrate (without getting into any implementation details) 
 
 ## Versions
 
-Zope version: 2.10
-Plone version: 3.3.5
-Python version for Zope: 2.4.6
-Python version for engines and scripts: 2.7.13
+* Zope version: 2.10
+* Plone version: 3.3.5
+* Python version for Zope: 2.4.6
+* Python version for engines and scripts: 2.7.13
 
 
 ## Inventory
