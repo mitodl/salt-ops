@@ -348,7 +348,7 @@ elastic_stack:
             - bool:
                 must:
                   - match:
-                      message: "ValueError: No JSON object could be decoded"
+                      message: No JSON object could be decoded
                   - term:
                       environment.raw: mitxpro-production
                   - term:
