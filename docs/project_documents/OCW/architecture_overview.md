@@ -14,6 +14,14 @@ There is a **QA environment** and a **Production environment**, composed of main
 
 The diagrams below illustrate (without getting into any implementation details) which servers exist, and the directions in which network connections are formed; which determines which ones have dependencies on the others. For instance, scripts on the **CMS 2** server (the "engine" server) make HTTP and SSH requests to the **CMS 1** and origin servers, but those servers never have scripts or applications that connect to CMS 2. The CMS servers connect to the Zope database but the Zope database doesn't have any dependency on the CMS servers.
 
+## Versions
+
+Zope version: 2.10
+Plone version: 3.3.5
+Python version for Zope: 2.4.6
+Python version for engines and scripts: 2.7.13
+
+
 ## Inventory
 
 See <https://github.mit.edu/odl-engineering/project-status/wiki/App-Links> for the current hostnames and URLs.
