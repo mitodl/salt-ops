@@ -379,5 +379,5 @@ elastic_stack:
                         default_field: message
                         query: error AND invalid AND literal AND int
                 filter:
-                  term:
-                    fluentd_tag: ocwcms.zope.event
+                  - term:
+                      fluentd_tag: ocwcms.zope.event
