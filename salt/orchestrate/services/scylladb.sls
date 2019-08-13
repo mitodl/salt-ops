@@ -9,6 +9,8 @@
     vpc_id=salt.boto_vpc.describe_vpcs(
         name=env_data.vpc_name).vpcs[0].id
     ).subnets|map(attribute='id')|list %}
+{% set release_id = salt.sdb.get('sdb://consul/' ~ app_name ~ '/' ~ ENVIRONMENT ~ '/release-id')|default('v1') %}
+{% set target_string = app_name ~ '-' ~ ENVIRONMENT ~ '-*-' ~ release_id %}
 
 load_scylladb_cloud_profile:
   file.managed:
@@ -37,6 +39,7 @@ generate_cloud_map_file:
     - context:
         num_instances: {{ INSTANCE_COUNT }}
         service_name: scylladb
+        release_id: {{ release_id }}
         tags:
           business_unit: {{ BUSINESS_UNIT }}
           Department: {{ BUSINESS_UNIT }}
@@ -67,8 +70,7 @@ deploy_scylladb_nodes:
 
 create_dummy_raid_device:
   salt.function:
-    - tgt: 'G@roles:scylladb and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - name: state.single
     - arg:
         - raid.present
@@ -81,8 +83,7 @@ create_dummy_raid_device:
 
 format_data_drive:
   salt.function:
-    - tgt: 'G@roles:scylladb and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - name: state.single
     - arg:
         - blockdev.formatted
@@ -94,8 +95,7 @@ format_data_drive:
 
 mount_data_drive:
   salt.function:
-    - tgt: 'G@roles:scylladb and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - name: state.single
     - arg:
         - mount.mounted
@@ -110,22 +110,19 @@ mount_data_drive:
 sync_external_modules_for_scylladb_nodes:
   salt.function:
     - name: saltutil.sync_all
-    - tgt: 'G@roles:scylladb and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
 
 load_pillar_data_on_{{ ENVIRONMENT }}_scylladb_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'G@roles:scylladb and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - require:
         - salt: deploy_scylladb_nodes
 
 populate_mine_with_{{ ENVIRONMENT }}_scylladb_data:
   salt.function:
     - name: mine.update
-    - tgt: 'G@roles:scylladb and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - require:
         - salt: load_pillar_data_on_{{ ENVIRONMENT }}_scylladb_nodes
 
@@ -133,15 +130,13 @@ populate_mine_with_{{ ENVIRONMENT }}_scylladb_data:
 reload_pillar_data_on_{{ ENVIRONMENT }}_scylladb_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'G@roles:scylladb and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - require:
         - salt: populate_mine_with_{{ ENVIRONMENT }}_scylladb_data
 
 build_{{ ENVIRONMENT }}_scylladb_nodes:
   salt.state:
-    - tgt: 'G@roles:scylladb and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - highstate: True
     - require:
         - salt: reload_pillar_data_on_{{ ENVIRONMENT }}_scylladb_nodes

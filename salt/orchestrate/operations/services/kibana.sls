@@ -27,6 +27,7 @@ generate_{{ app_name }}_cloud_map_file:
         environment_name: {{ ENVIRONMENT }}
         num_instances: {{ INSTANCE_COUNT }}
         service_name: {{ app_name }}
+        release_id: {{ salt.sdb.get('sdb://consul/{{ app_name }}/{{ ENVIRONMENT }}/release-id')|default('v1') }}
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
             'webapp-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}

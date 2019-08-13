@@ -25,6 +25,8 @@ set_rabbitmq_admin_password_in_vault:
 {% set rabbitmq_admin_password = rabbitmq_admin_password.data.value %}
 {% endif %}
 {% set SIX_MONTHS = '4368h' %}
+{% set release_id = salt.sdb.get('sdb://consul/' ~ app_name ~ '/' ~ ENVIRONMENT ~ '/release-id')|default('v1') %}
+{% set target_string = app_name ~ '-' ~ ENVIRONMENT ~ '-*-' ~ release_id %}
 
 load_rabbitmq_cloud_profile:
   file.managed:
@@ -42,6 +44,7 @@ generate_rabbitmq_cloud_map_file:
         service_name: rabbitmq
         environment_name: {{ ENVIRONMENT }}
         num_instances: {{ INSTANCE_COUNT }}
+        release_id: {{ release_id }}
         tags:
           business_unit: {{ BUSINESS_UNIT }}
           Department: {{ BUSINESS_UNIT }}
@@ -77,28 +80,25 @@ deploy_rabbitmq_cloud_map:
 sync_external_modules_for_rabbitmq_nodes:
   salt.function:
     - name: saltutil.sync_all
-    - tgt: 'G@roles:rabbitmq and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
 
 load_pillar_data_on_rabbitmq_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'G@roles:rabbitmq and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - require:
         - salt: deploy_rabbitmq_cloud_map
 
 populate_mine_with_rabbitmq_node_data:
   salt.function:
     - name: mine.update
-    - tgt: 'G@roles:rabbitmq and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - require:
         - salt: load_pillar_data_on_rabbitmq_nodes
 
 build_rabbitmq_nodes:
   salt.state:
-    - tgt: 'G@roles:rabbitmq and G@environment:{{ ENVIRONMENT }} and G@launch-date:{{ launch_date }}'
+    - tgt: '{{ target_string }} and G@launch-date:{{ launch_date }}'
     - tgt_type: compound
     - highstate: True
     - batch: 1

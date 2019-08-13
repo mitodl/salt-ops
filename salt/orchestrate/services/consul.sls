@@ -9,6 +9,8 @@
     vpc_id=salt.boto_vpc.describe_vpcs(
         name=env_data.vpc_name).vpcs[0].id
     ).subnets|map(attribute='id')|list %}
+{% set release_id = salt.sdb.get('sdb://consul/' ~ app_name ~ '/' ~ ENVIRONMENT ~ '/release-id')|default('v1') %}
+{% set target_string = app_name ~ '-' ~ ENVIRONMENT ~ '-*-' ~ release_id %}
 
 load_consul_cloud_profile:
   file.managed:
@@ -25,6 +27,7 @@ generate_cloud_map_file:
     - context:
         num_instances: {{ INSTANCE_COUNT }}
         service_name: consul
+        release_id: {{ release_id }}
         tags:
           business_unit: {{ BUSINESS_UNIT }}
           Department: {{ BUSINESS_UNIT }}
@@ -57,22 +60,19 @@ deploy_consul_nodes:
 sync_external_modules_for_consul_nodes:
   salt.function:
     - name: saltutil.sync_all
-    - tgt: 'G@roles:consul_server and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
 
 load_pillar_data_on_{{ ENVIRONMENT }}_consul_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'G@roles:consul_server and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - require:
         - salt: deploy_consul_nodes
 
 populate_mine_with_{{ ENVIRONMENT }}_consul_data:
   salt.function:
     - name: mine.update
-    - tgt: 'G@roles:consul_server and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - require:
         - salt: load_pillar_data_on_{{ ENVIRONMENT }}_consul_nodes
 
@@ -80,22 +80,19 @@ populate_mine_with_{{ ENVIRONMENT }}_consul_data:
 reload_pillar_data_on_{{ ENVIRONMENT }}_consul_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'G@roles:consul_server and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - require:
         - salt: populate_mine_with_{{ ENVIRONMENT }}_consul_data
 
 build_{{ ENVIRONMENT }}_consul_nodes:
   salt.state:
-    - tgt: 'G@roles:consul_server and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - highstate: True
     - require:
         - salt: reload_pillar_data_on_{{ ENVIRONMENT }}_consul_nodes
 
 ensure_query_templates_are_present:
   salt.state:
-    - tgt: 'G@roles:consul_server and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - sls: consul.query_template
     - subset: 1

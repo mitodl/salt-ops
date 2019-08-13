@@ -9,6 +9,8 @@
     vpc_id=salt.boto_vpc.describe_vpcs(
         name=env_data.vpc_name).vpcs[0].id
     ).subnets|map(attribute='id')|list %}
+{% set release_id = salt.sdb.get('sdb://consul/' ~ app_name ~ '/' ~ ENVIRONMENT ~ '/release-id')|default('v1') %}
+{% set target_string = app_name ~ '-' ~ ENVIRONMENT ~ '-*-' ~ release_id %}
 
 load_cassandra_cloud_profile:
   file.managed:
@@ -29,6 +31,7 @@ generate_cloud_map_file:
     - context:
         num_instances: {{ INSTANCE_COUNT }}
         service_name: cassandra
+        release_id: {{ release_id }}
         tags:
           business_unit: {{ BUSINESS_UNIT }}
           Department: {{ BUSINESS_UNIT }}
@@ -59,8 +62,7 @@ deploy_cassandra_nodes:
 
 format_data_drive:
   salt.function:
-    - tgt: 'G@roles:cassandra and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - name: state.single
     - arg:
         - blockdev.formatted
@@ -72,8 +74,7 @@ format_data_drive:
 
 mount_data_drive:
   salt.function:
-    - tgt: 'G@roles:cassandra and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - name: state.single
     - arg:
         - mount.mounted
@@ -88,22 +89,19 @@ mount_data_drive:
 sync_external_modules_for_cassandra_nodes:
   salt.function:
     - name: saltutil.sync_all
-    - tgt: 'G@roles:cassandra and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
 
 load_pillar_data_on_{{ ENVIRONMENT }}_cassandra_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'G@roles:cassandra and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - require:
         - salt: deploy_cassandra_nodes
 
 populate_mine_with_{{ ENVIRONMENT }}_cassandra_data:
   salt.function:
     - name: mine.update
-    - tgt: 'G@roles:cassandra and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - require:
         - salt: load_pillar_data_on_{{ ENVIRONMENT }}_cassandra_nodes
 
@@ -111,15 +109,13 @@ populate_mine_with_{{ ENVIRONMENT }}_cassandra_data:
 reload_pillar_data_on_{{ ENVIRONMENT }}_cassandra_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'G@roles:cassandra and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - require:
         - salt: populate_mine_with_{{ ENVIRONMENT }}_cassandra_data
 
 build_{{ ENVIRONMENT }}_cassandra_nodes:
   salt.state:
-    - tgt: 'G@roles:cassandra and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - highstate: True
     - require:
         - salt: reload_pillar_data_on_{{ ENVIRONMENT }}_cassandra_nodes
@@ -127,8 +123,7 @@ build_{{ ENVIRONMENT }}_cassandra_nodes:
 # set_authentication_data_replication_factor:
 #   salt.function:
 #     - name: cassandra_cql.cql_query_with_prepare
-#     - tgt: 'G@roles:cassandra and G@environment:{{ ENVIRONMENT }}'
-#     - tgt_type: compound
+#     - tgt: {{ target_string }}
 #     - subset: 1
 #     - kwarg:
 #         statement_name: password_replication
@@ -142,8 +137,7 @@ build_{{ ENVIRONMENT }}_cassandra_nodes:
 # create_cassandra_admin_user:
 #   salt.function:
 #     - name: cassandra_cql.cql_query_with_prepare
-#     - tgt: 'G@roles:cassandra and G@environment:{{ ENVIRONMENT }}'
-#     - tgt_type: compound
+#     - tgt: {{ target_string }}
 #     - subset: 1
 #     - kwarg:
 #         statement_name: password_replication

@@ -11,6 +11,8 @@
     ).subnets|map(attribute='id')|list %}
 {% set security_groups = env_data.purposes[app_name].get('security_groups', []) %}
 {% do security_groups.extend(['salt_master', 'consul-agent']) %}
+{% set release_id = salt.sdb.get('sdb://consul/' ~ app_name ~ '/' ~ ENVIRONMENT ~ '/release-id')|default('v1') %}
+{% set target_string = app_name ~ '-' ~ ENVIRONMENT ~ '-*-' ~ release_id %}
 
 load_{{ app_name }}_cloud_profile:
   file.managed:
@@ -28,6 +30,7 @@ generate_{{ app_name }}_cloud_map_file:
         environment_name: {{ ENVIRONMENT }}
         num_instances: {{ INSTANCE_COUNT }}
         service_name: {{ app_name }}
+        release_id: {{ release_id }}
         roles:
           - {{ app_name }}
           - app-server
@@ -62,31 +65,27 @@ deploy_{{ app_name }}_cloud_map:
 load_pillar_data_on_{{ app_name }}_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
-    - tgt: 'P@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - require:
         - salt: deploy_{{ app_name }}_cloud_map
 
 populate_mine_with_{{ app_name }}_node_data:
   salt.function:
     - name: mine.update
-    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - require:
         - salt: load_pillar_data_on_{{ app_name }}_nodes
 
 deploy_consul_agent_to_{{ app_name }}_nodes:
   salt.state:
-    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - sls:
         - consul
         - consul.dns_proxy
 
 build_{{ app_name }}_nodes:
   salt.state:
-    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
-    - tgt_type: compound
+    - tgt: {{ target_string }}
     - highstate: True
     - require:
         - salt: deploy_consul_agent_to_{{ app_name }}_nodes
