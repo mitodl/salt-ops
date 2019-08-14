@@ -336,6 +336,7 @@ elastic_stack:
             misconfigured JWT keys under lms.env.json
           opsgenie_key: {{ opsgenie_key }}
           opsgenie_priority: P2
+          opsgenie_alias: xpro_misconfigured_jwt_keys
           type: frequency
           index: logstash-mitxpro-*
           num_events: 1
@@ -345,14 +346,12 @@ elastic_stack:
             - opsgenie
           alert_text: "xPRO openedx instances might have misconfigured JWT keys"
           filter:
-            - bool:
-                must:
-                  - match:
-                      message: No JSON object could be decoded
-                  - term:
-                      environment.raw: mitxpro-production
-                  - term:
-                      fluentd_tag.raw: edx.lms
+            - query:
+                query_string:
+                  query: "environment.raw: mitxpro-production AND fluentd_tag.raw: edx.lms"
+            - query:
+                query_string:
+                  query: "message: ValueError AND JSON AND decoded"
       - name: ocw_invalid_literal_for_int
         settings:
           name: OCW CMS needs restart for invalid literal for int() error
