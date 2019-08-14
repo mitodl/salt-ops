@@ -8,7 +8,7 @@
 {% set subnet_ids = salt.boto_vpc.describe_subnets(
     vpc_id=salt.boto_vpc.describe_vpcs(
         name=env_data.vpc_name).vpcs[0].id
-    ).subnets|rejectattr('availability_zone', '==', 'us-east-1e')|map(attribute='id')||list %}
+    ).subnets|rejectattr('availability_zone', '==', 'us-east-1e')|map(attribute='id')|list %}
 {% set security_groups = env_data.purposes[app_name].get('security_groups', []) %}
 {% do security_groups.extend(['salt_master', 'consul-agent']) %}
 {% set release_id = (salt.sdb.get('sdb://consul/' ~ app_name ~ '/' ~ ENVIRONMENT ~ '/release-id') or 'v1') %}
