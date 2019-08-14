@@ -2,5 +2,5 @@
 
 nginx-shibboleth:
   secrets:
-    key: __vault__::secret-odl-video/{{ ENVIRONMENT }}/shibboleth/sp-key>data>value
-    cert: __vault__::secret-odl-video/{{ ENVIRONMENT }}/shibboleth/sp-cert>data>value
+    key: __vault__::secret-operations/{{ ENVIRONMENT }}/redash/shibboleth>data>sp_key
+    cert: __vault__::secret-operations/{{ ENVIRONMENT }}/redash/shibboleth>data>sp_cert
