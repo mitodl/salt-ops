@@ -23,7 +23,7 @@ nginx:
           enabled: True
           config:
             - server:
-                - server_name: {{ server_domain_names }}
+                - server_name: {{ server_domain_names|tojson }}
                 - listen:
                     - 80
                 - listen:
