@@ -37,16 +37,17 @@ django:
   app_name: {{ app_name }}
   app_source:
     type: archive # Options are: git, hg, archive
-    repository_url: 'https://s3.amazonaws.com/redash-releases/redash.5.0.2.b5485.tar.gz'
+    repository_url: https://s3.amazonaws.com/redash-releases/redash.6.0.0.b8536.tar.gz
     state_params:
       - overwrite: True
-      - source_hash: a26d33ef158e4577a96f1bb2b07b022573cd223daff267cd39faa47628c58ff1
+      - source_hash: 5e6a06fbbc8f82090bd7076841b32f698a3a36d991d127f7a8035f58bc897e45
       - enforce_toplevel: False
   environment:
     # REDASH_GOOGLE_CLIENT_ID: {# google_creds.client_id #}
     # REDASH_GOOGLE_CLIENT_SECRET: {# google_creds.client_secret #}
     REDASH_ADDITIONAL_QUERY_RUNNERS: redash.query_runner.google_analytics,redash.query_runner.python
-    REDASH_COOKIE_SECRET: __vault__::secret-operations/operations/redash/cookie-secret>data>value
+    REDASH_COOKIE_SECRET: __vault__:gen_if_missing:secret-operations/operations/redash/cookie-secret>data>value
+    REDASH_SECRET_KEY: __vault__:gen_if_missing:secret-operations/operations/redash/secret-key>data>value
     REDASH_DATABASE_URL: postgresql://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@postgres-redash.service.consul:5432/redash
     REDASH_DATE_FORMAT: YYYY-MM-DD
     REDASH_ENFORCE_HTTPS: 'true'
