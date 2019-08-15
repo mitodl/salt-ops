@@ -61,6 +61,7 @@ django:
     REDASH_MAIL_SERVER: __vault__::secret-{{ purpose_data.business_unit }}/{{ ENVIRONMENT }}/{{ app_name }}/sendgrid-credentials>data>server
     REDASH_MAIL_USERNAME: __vault__::secret-{{ purpose_data.business_unit }}/{{ ENVIRONMENT }}/{{ app_name }}/sendgrid-credentials>data>username
     REDASH_MAIL_USE_TLS: 'true'
+    REDASH_MAIL_DEFAULT_SENDER: 'Open Learning BI <odl-devops@mit.edu>'
     REDASH_MULTI_ORG: 'false'
     REDASH_NAME: MIT Open Learning Business Intelligence
     REDASH_PASSWORD_LOGIN_ENABLED: 'false'
