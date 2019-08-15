@@ -37,10 +37,10 @@ django:
   app_name: {{ app_name }}
   app_source:
     type: archive # Options are: git, hg, archive
-    repository_url: https://s3.amazonaws.com/redash-releases/redash.6.0.0.b8536.tar.gz
+    repository_url: https://s3.amazonaws.com/redash-releases/redash.7.0.0.b17535.tar.gz
     state_params:
       - overwrite: True
-      - source_hash: 5e6a06fbbc8f82090bd7076841b32f698a3a36d991d127f7a8035f58bc897e45
+      - source_hash: e2d3a12e3b0a49db68322c696a234c85852a56cadfc5ffd5a7c89feeecca1a1d
       - enforce_toplevel: False
   environment:
     # REDASH_GOOGLE_CLIENT_ID: {# google_creds.client_id #}
