@@ -1,5 +1,4 @@
-{% for env in ['base', 'rc', 'production'] %}
-{{ env }}:
+{{ saltenv }}:
   '* and not proxy-*':
     - match: compound
     - common

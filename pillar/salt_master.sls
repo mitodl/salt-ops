@@ -104,9 +104,9 @@ salt_master:
         - git
         - roots
       gitfs_saltenv:
-        - rc:
-            - ref: rc
         - production:
+            - ref: production
+        - base:
             - ref: master
       gitfs_remotes:
         - https://github.com/mitodl/salt-ops:
@@ -159,10 +159,10 @@ salt_master:
         - git:
             - master https://github.com/mitodl/salt-ops:
                 - root: pillar
-                - env: production
-            - rc https://github.com/mitodl/salt-ops:
+                - env: base
+            - production https://github.com/mitodl/salt-ops:
                 - root: pillar
-                - env: rc
+                - env: production
         - vault: {}
     logging:
       log_granular_levels:
