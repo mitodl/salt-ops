@@ -224,8 +224,12 @@ base:
     - utils.logrotate
   'roles:ocw-mirror':
     - match: grain
+    - fluentd
+    - fluentd.plugins
+    - fluentd.config
     - apps.ocw.mirror
     - apps.ocw.sync_repo
+    - utils.logrotate
   'P@roles:ocw-(cms|db|origin) and G@ocw-environment:production':
     - datadog
   'roles:sandbox':
