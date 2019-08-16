@@ -24,7 +24,7 @@ salt_minion:
       lock_saltenv: True
       pillarenv: production
       {% else %}
-      saltenv: rc
+      saltenv: base
       pillarenv_from_saltenv: True
       {% endif %}
       state_top_saltenv: base
