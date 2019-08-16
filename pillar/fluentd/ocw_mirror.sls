@@ -37,8 +37,8 @@ fluentd:
                   - format2: '/\s+(?<url>.*?)\s+(?<message.*)/'
         - directive: source
           attrs:
-            '@id': ocwmirror_akamai_log
-            '@type': tail
+            - '@id': ocwmirror_akamai_log
+            - '@type': tail
             - enable_watch_timer: 'false'
             - tag: ocwmirror.akamaidownload
             - path: /data2/akamai_content_download.log
