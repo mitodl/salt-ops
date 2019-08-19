@@ -1,5 +1,4 @@
 {% from "fluentd/record_tagging.jinja" import record_tagging with context %}
-{% set pos_filename = '/data2/ocwmirror_logs.pos' %}
 
 fluentd:
   plugins:
@@ -14,7 +13,7 @@ fluentd:
             - enable_watch_timer: 'false'
             - tag: ocwmirror.update
             - path: /data2/mirror_update.log
-            - pos_file: {{ pos_filename }}
+            - pos_file: /data2/mirror_update_log.pos
             - nested_directives:
               - directive: parse
                 attrs:
@@ -22,27 +21,12 @@ fluentd:
                   - expression: '^(<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) (?<message>.*)'
         - directive: source
           attrs:
-            - '@id': ocwmirror_ia_log
+            - '@id': ocwmirror_download_logs
             - '@type': tail
             - enable_watch_timer: 'false'
-            - tag: ocwmirror.iadownload
-            - path: /data2/internet_archive_content_download.log
-            - pos_file: {{ pos_filename }}
-            - nested_directives:
-              - directive: parse
-                attrs:
-                  - '@type': multiline
-                  - format_firstline: '/^--\d{4}-\d{2}-\d{2}/'
-                  - format1: '/^--(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})--/'
-                  - format2: '/\s+(?<url>.*?)\s+(?<message>.*)/'
-        - directive: source
-          attrs:
-            - '@id': ocwmirror_akamai_log
-            - '@type': tail
-            - enable_watch_timer: 'false'
-            - tag: ocwmirror.akamaidownload
-            - path: /data2/akamai_content_download.log
-            - pos_file: {{ pos_filename }}
+            - tag: ocwmirror.download
+            - path: /data2/*_content_download.log
+            - pos_file: /data2/content_download_logs.pos
             - nested_directives:
               - directive: parse
                 attrs:
