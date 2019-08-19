@@ -34,7 +34,7 @@ fluentd:
                   - '@type': multiline
                   - format_firstline: '/^--\d{4}-\d{2}-\d{2}/'
                   - format1: '/^--(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})--/'
-                  - format2: '/\s+(?<url>.*?)\s+(?<message.*)/'
+                  - format2: '/\s+(?<url>.*?)\s+(?<message>.*)/'
         - directive: source
           attrs:
             - '@id': ocwmirror_akamai_log
@@ -49,7 +49,7 @@ fluentd:
                   - '@type': multiline
                   - format_firstline: '/^--\d{4}-\d{2}-\d{2}/'
                   - format1: '/^--(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})--/'
-                  - format2: '/\s+(?<url>.*?)\s+(?<message.*)/'
+                  - format2: '/\s+(?<url>.*?)\s+(?<message>.*)/'
         - {{ record_tagging | yaml() }}
         - directive: match
           directive_arg: '**'
