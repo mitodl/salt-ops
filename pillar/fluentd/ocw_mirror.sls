@@ -18,7 +18,7 @@ fluentd:
               - directive: parse
                 attrs:
                   - '@type': regexp
-                  - expression: '^(<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) (?<message>.*)'
+                  - expression: '^(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) (?<message>.*)'
         - directive: source
           attrs:
             - '@id': ocwmirror_download_logs
