@@ -130,6 +130,7 @@ heroku:
     OPENEDX_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/openedx-api-client>data>client-id
     OPENEDX_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ environment }}/openedx-api-client>data>client-secret
     OPENEDX_API_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.openedx_environment }}/edx-api-key>data>value
+    OPENEDX_GRADES_API_TOKEN:  __vault__::secret-{{ business_unit }}/{{ environment }}/openedx-grades-api-token>data>value
     OPENEDX_OAUTH_APP_NAME: 'edx-oauth-app'
     PGBOUNCER_DEFAULT_POOL_SIZE: 50
     PGBOUNCER_MIN_POOL_SIZE: 5
