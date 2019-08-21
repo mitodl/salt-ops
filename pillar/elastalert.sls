@@ -379,3 +379,30 @@ elastic_stack:
                 filter:
                   - term:
                       fluentd_tag: ocwcms.zope.event
+      - name: mitx_git_export_failure
+        settings:
+          name: Automated git export failure
+          description: >-
+            An exception was encountered from the edX application when exporting
+            a course to git.
+          type: frequency
+          index: logstash-mitx*-production*
+          num_events: 1
+          timeframe:
+            minutes: 5
+          alert:
+            - slack
+          alert_text: "Automated git export failure"
+          slack_webhook_url: {{ slack_webhook_url }}
+          slack_channel_override: '#mitx-tech-notifs'
+          slack_username_override: Elastalert
+          slack_msg_color: "warning"
+          filter:
+            - bool:
+                must:
+                  - query_string:
+                      default_field: message
+                      query: error AND export_git
+                filter:
+                  - term:
+                      fluentd_tag: edx.cms
