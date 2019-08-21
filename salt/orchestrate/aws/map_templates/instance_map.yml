@@ -32,13 +32,4 @@
       {% for profile_setting, profile_value in profile_overrides.items() %}
       {{ profile_setting }}: {{ profile_value|tojson }}
       {% endfor %}
-      minion:
-        {% if 'production' in environment_name %}
-        saltenv: production
-        lock_saltenv: True
-        pillarenv: production
-        {% else %}
-        saltenv: base
-        pillarenv_from_saltenv: True
-        {% endif %}
   {% endfor %}
