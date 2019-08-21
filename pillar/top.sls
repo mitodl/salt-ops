@@ -1,4 +1,4 @@
-base:
+{{ saltenv }}:
   '* and not proxy-*':
     - match: compound
     - common

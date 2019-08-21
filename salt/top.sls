@@ -1,4 +1,4 @@
-base:
+{{ saltenv }}:
   '*':
     - utils.install_libs
   'not G@roles:devstack':
