@@ -1,6 +1,6 @@
 # -*- mode: yaml -*-
 {% set app_name = 'odl-video-service' %}
-{% set python_version = '3.6.4' %}
+{% set python_version = '3.6.8' %}
 {% set python_bin_dir = '/usr/local/pyenv/versions/{0}/bin'.format(python_version) %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'dev') %}
 {% set env_dict = {
