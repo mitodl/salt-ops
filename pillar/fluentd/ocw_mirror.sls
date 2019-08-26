@@ -25,7 +25,7 @@ fluentd:
             - '@type': tail
             - enable_watch_timer: 'false'
             - tag: ocwmirror.download
-            - path: /data2/*_content_download.log
+            - path: /data2/*_download.log
             - pos_file: /data2/content_download_logs.pos
             - nested_directives:
               - directive: parse
