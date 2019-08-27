@@ -230,6 +230,8 @@ base:
     - apps.ocw.mirror
     - apps.ocw.sync_repo
     - utils.logrotate
+    - nginx.ng
+    - nginx.ng.certificates
   'P@roles:ocw-(cms|db|origin|mirror) and G@ocw-environment:production':
     - datadog
   'roles:sandbox':

@@ -256,6 +256,8 @@ base:
     - fluentd.ocw_mirror
     - apps.ocw
     - logrotate.ocw_mirror
+    - nginx
+    - nginx.ocw_mirror
   'roles:ocw-origin':
     - match: grain
     - apps.ocw

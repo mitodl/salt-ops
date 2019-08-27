@@ -902,6 +902,12 @@ environments:
         security_groups:
           - webapp
           - ssh
+      ocw-mirror:
+        app: nginx
+        business_unit: open-courseware
+        domains:
+          production:
+            - ocw-rsync.odl.mit.edu
 
 business_units:
   - bootcamps
