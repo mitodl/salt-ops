@@ -230,7 +230,7 @@ base:
     - apps.ocw.mirror
     - apps.ocw.sync_repo
     - utils.logrotate
-  'P@roles:ocw-(cms|db|origin) and G@ocw-environment:production':
+  'P@roles:ocw-(cms|db|origin|mirror) and G@ocw-environment:production':
     - datadog
   'roles:sandbox':
     - match: grain
