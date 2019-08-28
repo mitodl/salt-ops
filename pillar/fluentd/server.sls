@@ -1,7 +1,7 @@
 {% set app_name = "fluentd-aggregators" %}
 {% set micromasters_ir_bucket = 'odl-micromasters-ir-data' %}
 {% set residential_tracking_bucket = 'odl-residential-tracking-data' %}
-{% set xpro_tracking_bucket = 'odl-xpro-xpro-tracking-data' %}
+{% set xpro_tracking_bucket = 'odl-xpro-edx-tracking-data' %}
 {% set data_lake_bucket = 'mitodl-data-lake' %}
 {% import_yaml 'fluentd/fluentd_directories.yml' as fluentd_directories %}
 
@@ -223,7 +223,7 @@ fluentd:
                     - '@type': s3
                     - aws_key_id: __vault__:cache:aws-mitx/creds/read-write-{{ residential_tracking_bucket }}>data>access_key
                     - aws_sec_key: __vault__:cache:aws-mitx/creds/read-write-{{ residential_tracking_bucket }}>data>secret_key
-                    - s3_bucket: {{ edx_tracking_bucket }}
+                    - s3_bucket: {{ residential_tracking_bucket }}
                     - s3_region: us-east-1
                     - path: logs/
                     - buffer_path: {{ fluentd_directories.residential_tracking_logs }}
@@ -245,7 +245,7 @@ fluentd:
                     - '@type': s3
                     - aws_key_id: __vault__:cache:aws-mitx/creds/read-write-{{ xpro_tracking_bucket }}>data>access_key
                     - aws_sec_key: __vault__:cache:aws-mitx/creds/read-write-{{ xpro_tracking_bucket }}>data>secret_key
-                    - s3_bucket: {{ edx_tracking_bucket }}
+                    - s3_bucket: {{ xpro_tracking_bucket }}
                     - s3_region: us-east-1
                     - path: logs/
                     - buffer_path: {{ fluentd_directories.xpro_tracking_logs }}
