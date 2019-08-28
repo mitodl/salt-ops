@@ -133,8 +133,8 @@ edx:
     forum_version: {{ purpose_data.versions.forum }}
     ########## END FORUM ########################################
     {% if environment == 'mitx-production' or environment == 'mitxpro-production' %}
-    COMMON_ENABLE_NEWRELIC: {{ environment }}
-    COMMON_ENABLE_NEWRELIC_APP: {{ environment }}
+    COMMON_ENABLE_NEWRELIC: True
+    COMMON_ENABLE_NEWRELIC_APP: True
     NEWRELIC_LICENSE_KEY: __vault__::secret-operations/global/newrelic-license-key>data>value
     {% endif %}
 
