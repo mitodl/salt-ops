@@ -26,7 +26,7 @@
         expires epoch;
     }
 
-{% if salt.grains.get('business_unit') == 'residential' and salt.grains.get('edx_codename') != 'ironwood' %}
+{% if salt.grains.get('business_unit') == 'residential' and salt.grains.get('edx_codename') == 'ironwood' %}
     # Redirect registration page to authentication page
     location /register {
         return 301 https://$host/login;
