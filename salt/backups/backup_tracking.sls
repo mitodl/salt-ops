@@ -1,6 +1,7 @@
 {% set edx_tracking_local_folder = '/edx/var/log/tracking' %}
 {% set instance_id = salt.grains.get('id') %}
-{% set edx_tracking_bucket = 'odl-residential-tracking-backup' %}
+{% set business_unit = salt.grains.get('business_unit', 'residential') %}
+{% set edx_tracking_bucket = 'odl-{}-tracking-backup'.format(business_unit) %}
 {% set aws_creds = salt.pillar.get('edx:tracking_backups:aws_creds') %}
 
 tar_tracking_data:
