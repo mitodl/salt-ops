@@ -218,8 +218,7 @@ base:
     - match: grain
     - nginx
     - nginx.amps_redirect
-    - beacons.http_status_odl_video_service
-    - beacons.http_status_lmodproxy
+    - beacons.http_status
   'G@roles:backups and P@environment:mitx-(qa|production)':
     - match: compound
     - backups.mitx
