@@ -1,6 +1,7 @@
 {% set app_name = "fluentd-aggregators" %}
 {% set micromasters_ir_bucket = 'odl-micromasters-ir-data' %}
-{% set edx_tracking_bucket = 'odl-residential-tracking-data' %}
+{% set residential_tracking_bucket = 'odl-residential-tracking-data' %}
+{% set xpro_tracking_bucket = 'odl-xpro-xpro-tracking-data' %}
 {% set data_lake_bucket = 'mitodl-data-lake' %}
 {% import_yaml 'fluentd/fluentd_directories.yml' as fluentd_directories %}
 
@@ -142,7 +143,11 @@ fluentd:
               - directive: store
                 attrs:
                   - '@type': relabel
-                  - '@label': '@prod_edx_tracking_events'
+                  - '@label': '@prod_residential_tracking_events'
+              - directive: store
+                attrs:
+                  - '@type': relabel
+                  - '@label': '@prod_xpro_tracking_events'
               - directive: store
                 attrs:
                   - '@type': relabel
@@ -204,7 +209,7 @@ fluentd:
                   - flatten_hashes_separator: __
 
         - directive: label
-          directive_arg: '@prod_edx_tracking_events'
+          directive_arg: '@prod_residential_tracking_events'
           attrs:
             - nested_directives:
                 - directive: filter
@@ -216,12 +221,34 @@ fluentd:
                   directive_arg: edx.tracking
                   attrs:
                     - '@type': s3
-                    - aws_key_id: __vault__:cache:aws-mitx/creds/read-write-{{ edx_tracking_bucket }}>data>access_key
-                    - aws_sec_key: __vault__:cache:aws-mitx/creds/read-write-{{ edx_tracking_bucket }}>data>secret_key
+                    - aws_key_id: __vault__:cache:aws-mitx/creds/read-write-{{ residential_tracking_bucket }}>data>access_key
+                    - aws_sec_key: __vault__:cache:aws-mitx/creds/read-write-{{ residential_tracking_bucket }}>data>secret_key
                     - s3_bucket: {{ edx_tracking_bucket }}
                     - s3_region: us-east-1
                     - path: logs/
                     - buffer_path: {{ fluentd_directories.residential_tracking_logs }}
+                    - format: json
+                    - include_time_key: 'true'
+                    - time_slice_format: '%Y-%m-%d-%H'
+        - directive: label
+          directive_arg: '@prod_xpro_tracking_events'
+          attrs:
+            - nested_directives:
+                - directive: filter
+                  directive_arg: 'edx.tracking'
+                  attrs:
+                    - '@type': grep
+                    - regexp1: environment mitxpro-production
+                - directive: match
+                  directive_arg: edx.tracking
+                  attrs:
+                    - '@type': s3
+                    - aws_key_id: __vault__:cache:aws-mitx/creds/read-write-{{ xpro_tracking_bucket }}>data>access_key
+                    - aws_sec_key: __vault__:cache:aws-mitx/creds/read-write-{{ xpro_tracking_bucket }}>data>secret_key
+                    - s3_bucket: {{ edx_tracking_bucket }}
+                    - s3_region: us-east-1
+                    - path: logs/
+                    - buffer_path: {{ fluentd_directories.xpro_tracking_logs }}
                     - format: json
                     - include_time_key: 'true'
                     - time_slice_format: '%Y-%m-%d-%H'

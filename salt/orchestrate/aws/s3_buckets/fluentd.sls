@@ -22,6 +22,18 @@ odl-residential-tracking-data:
         Department: residential
         Environment: mitx-production
 
+odl-xpro-tracking-data:
+  boto_s3_bucket.present:
+    - Bucket: odl-xpro-edx-tracking-data
+    - Versioning:
+        Status: Enabled
+    - region: us-east-1
+    - Tagging:
+        OU: mitxpro
+        business_unit: mitxpro
+        Department: mitxpro
+        Environment: mitxpro-production
+
 odl-micromasters-ir-data:
   boto_s3_bucket.present:
     - Bucket: odl-residential-tracking-data
