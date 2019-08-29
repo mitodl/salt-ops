@@ -11,7 +11,11 @@ edx:
     branch: {{ purpose_data.versions.edx_config_version }}
   mongodb:
     replset_name: rs0
+  {% if 'mitx-' in environment %}
   ssh_key: __vault__::secret-residential/global/mitx-ssh-key>data>value
+  {% elif 'mitxpro-' in environment %}
+  ssh_key: __vault__::secret-mitxpro/global/xpro-ssh-key>data>value
+  {% endif %}
   ssh_hosts:
     - name: github.com
       fingerprint: '9d:38:5b:83:a9:17:52:92:56:1a:5e:c4:d4:81:8e:0a:ca:51:a2:64:f1:74:20:11:2e:f8:8a:c3:a1:39:49:8f'
