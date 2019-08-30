@@ -1,0 +1,33 @@
+# -*- mode: yaml; coding: utf-8; -*-
+fileserver_backend:
+  - git
+  - roots
+
+file_roots:
+  - salt/
+
+pillar_roots:
+  - bootstrap/srv/pillar
+  - pillar/
+
+gitfs_provider: pygit2
+
+gitfs_remotes:
+  - https://github.com/mitodl/salt-ops:
+      - root: salt
+  - https://github.com/mitodl/master-formula
+  - https://github.com/mitodl/salt-extensions:
+      - root: extensions
+  - https://github.com/mitodl/consul-formula
+  - https://github.com/mitodl/vault-formula
+
+git_pillar_provider: pygit2
+ext_pillar:
+  - git:
+      - master https://github.com/mitodl/salt-ops:
+          - root: pillar
+          - env: base
+
+root_dir: /home/tmacey/code/personal/podcastinit-salt/
+pki_dir: /etc/salt/pki/master
+log_file: /home/tmacey/code/personal/podcastinit-salt/var/log/salt/master.log

@@ -25,8 +25,10 @@ base:
     - monit.lms_503
   'roles:master':
     - match: grain
-    - salt_master
-    - micromasters
+    - master
+    - master.schedule
+    - master.config
+    - master.extra_config
   'roles:fluentd':
     - match: grain
     - fluentd

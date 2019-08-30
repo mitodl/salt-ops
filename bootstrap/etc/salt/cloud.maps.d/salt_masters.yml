@@ -1,0 +1,12 @@
+# -*- mode: yaml; coding: utf-8; -*-
+salt_master:
+  - master-operations-production:
+      grains:
+        roles:
+          - master
+          - master-production
+  - master-operations-qa:
+      grains:
+        roles:
+          - master
+          - master-qa
