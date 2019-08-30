@@ -42,13 +42,10 @@
 {% set efs_id = 'fs-1f27ae56' %}
 {% elif environment == 'mitxpro-qa' %}
 {% set efs_id = 'fs-b3865653' %}
+{% set edxapp_google_analytics_account = 'UA-5145472-40' %}
 {% elif environment == 'mitxpro-production' %}
 {% set efs_id = 'fs-68918b88' %}
-{% endif %}
-{% if environment == 'mitxpro-qa' %}
-  {% set edxapp_google_analytics_account = 'UA-5145472-40' %}
-  {% elif environment = 'mitxpro-production' %}
-  {% set edxapp_google_analytics_account = 'UA-5145472-38' %}
+{% set edxapp_google_analytics_account = 'UA-5145472-38' %}
 {% endif %}
 {% if 'live' in purpose %}
   {% set edxapp_git_repo_dir = '/mnt/data/prod_repos' %}
