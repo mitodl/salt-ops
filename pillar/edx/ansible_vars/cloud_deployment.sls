@@ -46,6 +46,8 @@
 {% elif environment == 'mitxpro-production' %}
 {% set efs_id = 'fs-68918b88' %}
 {% set edxapp_google_analytics_account = 'UA-5145472-38' %}
+{% else %}
+{% set edxapp_google_analytics_account = '' %}
 {% endif %}
 {% if 'live' in purpose %}
   {% set edxapp_git_repo_dir = '/mnt/data/prod_repos' %}
