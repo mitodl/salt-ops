@@ -30,6 +30,7 @@ edx:
       - name: mitxpro-openedx-extensions==0.1.0
       - name: social-auth-mitxpro==0.2
       - name: ubcpi-xblock==0.6.4
+      - name: git+https://github.com/mitodl/edx-git-auto-export.git@v0.1#egg=edx-git-auto-export
     EDXAPP_REGISTRATION_EXTRA_FIELDS:
       confirm_email: "hidden"
       level_of_education: "optional"
@@ -70,10 +71,14 @@ edx:
       SOCIAL_AUTH_OAUTH_SECRETS:
         mitxpro-oauth2: __vault__::secret-{{ business_unit }}/{{ environment }}/xpro-app-oauth2-client-secret-{{ purpose }}>data>value
     EDXAPP_CMS_ENV_EXTRA:
+      ADDL_INSTALLED_APPS:
+        - git_auto_export
       DISABLE_STUDIO_SSO_OVER_LMS: True
       FEATURES:
         STAFF_EMAIL: {{ support_email }}
         REROUTE_ACTIVATION_EMAIL: {{ support_email }}
+        ENABLE_GIT_AUTO_EXPORT: true
+        ENABLE_EXPORT_GIT: true
         ENABLE_VIDEO_UPLOAD_PIPELINE: True
     EDXAPP_PLATFORM_NAME: MIT xPRO
     EDXAPP_PLATFORM_DESCRIPTION: MIT xPRO Online Course Portal
