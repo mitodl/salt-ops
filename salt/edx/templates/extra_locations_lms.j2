@@ -24,7 +24,4 @@
         }
         try_files $uri @proxy_to_lms_app;
     }
-    location ~ ^/courses/.*/xblock/.*/handler_noauth/outcome_service_handler {
-        try_files $uri @proxy_to_lms_app;
-    }
 {% endif %}

@@ -56,7 +56,7 @@ edx:
         slug: "audit"
       EMAIL_USE_DEFAULT_FROM_FOR_BULK: True
       MARKETING_SITE_ROOT: {{ heroku_env }}
-      MITXPRO_CORE_REDIRECT_ALLOW_RE_LIST: ["^/(admin|auth|login|logout|register|api|oauth2|user_api|heartbeat)"]
+      MITXPRO_CORE_REDIRECT_ALLOW_RE_LIST: ["^/(admin|auth|login|logout|register|api|oauth2|user_api|heartbeat)", "^/courses/.*/xblock/.*/handler_noauth/outcome_service_handler"]
       THIRD_PARTY_AUTH_BACKENDS: ["social_auth_mitxpro.backends.MITxProOAuth2"]
       FEATURES:
         REROUTE_ACTIVATION_EMAIL: {{ support_email }}
