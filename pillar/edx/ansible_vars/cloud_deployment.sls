@@ -38,8 +38,10 @@
         purpose=purpose)) %}
 {% if environment == 'mitx-qa' %}
 {% set efs_id = 'fs-6f55af26' %}
+{% set edxapp_google_analytics_account = '' %}
 {% elif environment == 'mitx-production' %}
 {% set efs_id = 'fs-1f27ae56' %}
+{% set edxapp_google_analytics_account = '' %}
 {% elif environment == 'mitxpro-qa' %}
 {% set efs_id = 'fs-b3865653' %}
 {% set edxapp_google_analytics_account = 'UA-5145472-40' %}
