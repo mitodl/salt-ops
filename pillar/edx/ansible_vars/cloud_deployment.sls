@@ -197,7 +197,6 @@ edx:
     EDXAPP_EMAIL_HOST_USER: __vault__::secret-operations/global/mit-smtp>data>relay_username
     EDXAPP_EMAIL_HOST_PASSWORD: __vault__::secret-operations/global/mit-smtp>data>relay_password
     EDXAPP_EMAIL_USE_TLS: True
-    EDXAPP_EMAIL_USE_DEFAULT_FROM_FOR_BULK: True
     EDXAPP_GRADE_BUCKET: {{ bucket_prefix }}-grades-{{ purpose }}-{{ environment }}
     EDXAPP_GRADE_ROOT_PATH: {{ edxapp_aws_grades_root_path }}
     EDXAPP_GRADE_STORAGE_TYPE: S3

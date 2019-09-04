@@ -118,6 +118,7 @@ edx:
           extra_args: -e
 
     EDXAPP_LMS_ENV_EXTRA:
+      EMAIL_USE_DEFAULT_FROM_FOR_BULK: True
       FEATURES:
         AUTH_USE_CAS: true
         DISABLE_HONOR_CERTIFICATES: true
