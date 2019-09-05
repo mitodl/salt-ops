@@ -1,5 +1,6 @@
 {% set ONE_WEEK = 604800 %}
-{% set sqs_mitxpro_production_queue = 'edxapp-xpro-production-mitxpro-production-autoscaling' %}
+{% set sqs_edxapp_mitxpro_production_queue = 'edxapp-xpro-production-mitxpro-production-autoscaling' %}
+{% set sqs_edx_worker_mitxpro_production_queue = 'edx-worker-xpro-production-mitxpro-production-autoscaling' %}
 
 slack_api_token: __vault__::secret-operations/global/slack/slack_api_token>data>value
 slack:
@@ -179,7 +180,11 @@ salt_master:
         key: use-instance-role-credentials
       engines:
         - sqs_events:
-            queue: {{ sqs_mitxpro_production_queue }}
+            queue: {{ sqs_edxapp_mitxpro_production_queue }}
+            profile: sqs
+            tag: salt/engine/sqs/mitxpro-production-autoscaling
+        - sqs_events:
+            queue: {{ sqs_edx_worker_mitxpro_production_queue }}
             profile: sqs
             tag: salt/engine/sqs/mitxpro-production-autoscaling
     misc:
