@@ -4,6 +4,27 @@
 {% for purpose in env_data.purposes %}
 {% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
 
+{% for use in bucket_uses %}
+create_edx_s3_bucket_{{ use }}_{{ purpose }}_{{ ENVIRONMENT }}:
+  boto_s3_bucket.present:
+    - Bucket: {{ bucket_prefix }}-{{ use }}-{{ purpose }}-{{ ENVIRONMENT }}
+    - region: us-east-1
+    - Versioning:
+       Status: "Enabled"
+    {% if use == 'storage' %}
+    - CORSRules:
+        - AllowedHeaders:
+            - "*"
+          AllowedMethods:
+            - GET
+            - POST
+            - PUT
+          AllowedOrigins:
+            - "*"
+          MaxAgeSeconds: 3000
+    {% endif %}
+{% endfor %}
+
 video_uploads_bucket_{{ purpose }}_{{ env }}:
   boto_s3_bucket.present:
     - Bucket: {{ bucket_prefix }}-edx-video-upload-{{ purpose }}-{{ env }}
@@ -25,26 +46,5 @@ video_uploads_bucket_{{ purpose }}_{{ env }}:
             Principal: "*"
             Action: "s3:GetObject"
             Resource: "arn:aws:s3:::{{ bucket_prefix }}-edx-video-upload-{{ purpose }}-{{ env }}/*"
-
-{% for use in bucket_uses %}
-create_edx_s3_bucket_{{ use }}_{{ purpose }}_{{ ENVIRONMENT }}:
-  boto_s3_bucket.present:
-    - Bucket: {{ bucket_prefix }}-{{ use }}-{{ purpose }}-{{ ENVIRONMENT }}
-    - region: us-east-1
-    - Versioning:
-       Status: "Enabled"
-    {% if use == 'storage' %}
-    - CORSRules:
-        - AllowedHeaders:
-            - "*"
-          AllowedMethods:
-            - GET
-            - POST
-            - PUT
-          AllowedOrigins:
-            - "*"
-          MaxAgeSeconds: 3000
-    {% endif %}
-{% endfor %}
 {% endfor %}
 {% endfor %}
