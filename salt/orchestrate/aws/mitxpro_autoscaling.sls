@@ -18,6 +18,8 @@
 {% set release_number = salt.sdb.get('sdb://consul/{}-{}-{}-release-version'.format(app_name, ENVIRONMENT, edx_codename))|int %}
 {% set ami_name = app_name ~ '_' ~ ENVIRONMENT  ~ '_' ~ edx_codename ~ '_base_release_' ~ release_number %}
 {% set elb_name = 'edx-{purpose}-{env}'.format(purpose=purpose, env=ENVIRONMENT)[:32].strip('-') %}
+{% set min_size = purpose_data.instances.app_name.min_number %}
+{% set max_size = purpose_data.instances.app_name.max_number %}
 
 create_{{ sqs_queue }}-sqs-queue:
   boto_sqs.present:
@@ -70,9 +72,9 @@ create_autoscaling_group_for_{{ app_name }}:
           - {{ salt.boto_secgroup.get_group_id('{}'.format(group_name), vpc_name=VPC_NAME) }}
         {% endif %}
         {% endfor %}
-    - min_size: {{ purpose_data.instances.app_name.min_number }}
-    - max_size: {{ purpose_data.instances.edx.max_number }}
-    - desired_capacity: {{ purpose_data.instances.edx.min_number }}
+    - min_size: {{ min_size }}
+    - max_size: {{ max_size }}
+    - desired_capacity: {{ min_size }}
     - health_check_type: EC2
     - region: {{ region }}
     - tags:
