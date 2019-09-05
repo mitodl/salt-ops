@@ -10,9 +10,9 @@
 {% set sns_topic = env_data.provider_services[app_name].sns.topic ~ '-' ~ ENVIRONMENT ~ '-autoscaling' %}
 {% set edx_codename = purpose_data.versions.codename %}
 {% if app_name == 'edxapp' %}
-{% set security_groups = 'edx' %}
+{% set security_groups = ['edx'] %}
 {% else %}
-{% set security_groups = 'edx-worker' %}
+{% set security_groups = ['edx-worker'] %}
 {% endif %}
 {% do security_groups.extend(['salt_master', 'consul-agent', 'default']) %}
 {% set subnet_ids = salt.boto_vpc.describe_subnets(vpc_id=salt.boto_vpc.describe_vpcs(name=VPC_NAME).vpcs[0].id).subnets|map(attribute='id')|list %}
