@@ -15,8 +15,8 @@
 
 {% set region = 'us-east-1' %}
 {% set AWS_ACCOUNT_ID = salt.vault.read('secret-operations/global/aws-account-id').data.value %}
-{% set release_number = salt.sdb.get('sdb://consul/{}-{}-{}-release-version'.format(app_name, ENVIRONMENT, edx_codename))|int %}
-{% set ami_name = app_name ~ '_' ~ ENVIRONMENT  ~ '_' ~ edx_codename ~ '_base_release_' ~ release_number %}
+{% set release_number = salt.sdb.get('sdb://consul/edxapp-{}-{}-release-version'.format(ENVIRONMENT, edx_codename))|int %}
+{% set ami_name = app_name.replace('-', '_') ~ '_' ~ ENVIRONMENT  ~ '_' ~ edx_codename ~ '_base_release_' ~ release_number %}
 {% set elb_name = 'edx-{purpose}-{env}'.format(purpose=purpose, env=ENVIRONMENT)[:32].strip('-') %}
 {% set min_size = purpose_data.instances[app_name].min_number %}
 {% set max_size = purpose_data.instances[app_name].max_number %}
