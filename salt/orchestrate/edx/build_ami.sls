@@ -27,8 +27,6 @@
 {% set app_image = salt.sdb.get('sdb://consul/xenial_ami_id') %}
 {% set worker_image = salt.sdb.get('sdb://consul/xenial_ami_id') %}
 {% endif %}
-{% set bucket_prefix = env_settings.secret_backends.aws.bucket_prefix %}
-{% set bucket_uses = env_settings.secret_backends.aws.bucket_uses %}
 
 update_edxapp_codename_value:
   salt.function:
