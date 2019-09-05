@@ -27,8 +27,6 @@
 {% set app_image = salt.sdb.get('sdb://consul/xenial_ami_id') %}
 {% set worker_image = salt.sdb.get('sdb://consul/xenial_ami_id') %}
 {% endif %}
-{% set bucket_prefix = env_settings.secret_backends.aws.bucket_prefix %}
-{% set bucket_uses = env_settings.secret_backends.aws.bucket_uses %}
 
 update_edxapp_codename_value:
   salt.function:
@@ -116,29 +114,6 @@ create_edx_worker_baseline_instance_in_{{ ENVIRONMENT }}:
 ensure_instance_profile_exists_for_edx:
   boto_iam_role.present:
     - name: edx-instance-role
-
-{% for use in bucket_uses %}
-{% for purpose in purposes %}
-create_edx_s3_bucket_{{ use }}_{{ purpose }}_{{ ENVIRONMENT }}:
-  boto_s3_bucket.present:
-    - Bucket: {{ bucket_prefix }}-{{ use }}-{{ purpose }}-{{ ENVIRONMENT }}
-    - region: us-east-1
-    - Versioning:
-       Status: "Enabled"
-    {% if use == 'storage' %}
-    - CORSRules:
-        - AllowedHeaders:
-            - "*"
-          AllowedMethods:
-            - GET
-            - POST
-            - PUT
-          AllowedOrigins:
-            - "*"
-          MaxAgeSeconds: 3000
-    {% endif %}
-{% endfor %}
-{% endfor %}
 
 load_pillar_data_on_edx_base_nodes:
   salt.function:
