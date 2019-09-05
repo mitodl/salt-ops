@@ -14,19 +14,29 @@
 ec2_autoscale_launch:
   runner.cloud.create:
     - provider: mitx
-    - instances: edx-{{ ENVIRONMENT }}-xpro-production-{{ instanceid['EC2InstanceId'].strip('i-') }}
     - instance_id: {{ instanceid['EC2InstanceId'] }}
     - image: {{ ami_id }}
     - ssh_interface: private_ips
     - ssh_username: ubuntu
     - wait_for_ip_interval: 60
     - wait_for_passwd_maxtries: 60
+    {% if 'edx-worker' in payload['Message'] %}
+    - instances: edx-worker-{{ ENVIRONMENT }}-xpro-production-{{ instanceid['EC2InstanceId'].strip('i-') }}
+    - grains:
+        roles:
+          - edx-worker
+        environment: {{ ENVIRONMENT }}
+        purpose: {{ PURPOSE }}
+        business_unit: {{ business_unit }}
+    {% else %}
+    - instances: edx-{{ ENVIRONMENT }}-xpro-production-{{ instanceid['EC2InstanceId'].strip('i-') }}
     - grains:
         roles:
           - edx
         environment: {{ ENVIRONMENT }}
         purpose: {{ PURPOSE }}
         business_unit: {{ business_unit }}
+    {% endif %}
 
 {% elif 'TERMINATE' in payload['Message'] %}
 remove_key:
