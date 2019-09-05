@@ -18,9 +18,9 @@
 {% set release_number = salt.sdb.get('sdb://consul/{}-{}-{}-release-version'.format(app_name, ENVIRONMENT, edx_codename))|int %}
 {% set ami_name = app_name ~ '_' ~ ENVIRONMENT  ~ '_' ~ edx_codename ~ '_base_release_' ~ release_number %}
 {% set elb_name = 'edx-{purpose}-{env}'.format(purpose=purpose, env=ENVIRONMENT)[:32].strip('-') %}
-{% set min_size = purpose_data.instances.app_name.min_number %}
-{% set max_size = purpose_data.instances.app_name.max_number %}
-{% set instance_type = purpose_data.instances.app_name.type %}
+{% set min_size = purpose_data.instances[app_name].min_number %}
+{% set max_size = purpose_data.instances[app_name].max_number %}
+{% set instance_type = purpose_data.instances[app_name].type %}
 
 create_{{ sqs_queue }}-sqs-queue:
   boto_sqs.present:
