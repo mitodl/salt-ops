@@ -20,6 +20,7 @@
 {% set elb_name = 'edx-{purpose}-{env}'.format(purpose=purpose, env=ENVIRONMENT)[:32].strip('-') %}
 {% set min_size = purpose_data.instances.app_name.min_number %}
 {% set max_size = purpose_data.instances.app_name.max_number %}
+{% set instance_type = purpose_data.instances.app_name.type %}
 
 create_{{ sqs_queue }}-sqs-queue:
   boto_sqs.present:
@@ -61,7 +62,7 @@ create_autoscaling_group_for_{{ app_name }}:
       - instance_profile_name: edx-instance-role
       - image_name: {{ ami_name }}
       - key_name: salt-master-prod
-      - instance_type: {{ purpose_data.instances.app_name.type }}
+      - instance_type: {{ instance_type }}
       - associate_public_ip_address: True
       - security_groups:
         {% for group_name in security_groups %}
