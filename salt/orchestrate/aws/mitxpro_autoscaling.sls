@@ -6,8 +6,8 @@
 {% set VPC_NAME = env_data.vpc_name %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
 {% set purpose_data = env_data.purposes[purpose] %}
-{% set sqs_queue = env_data.provider_services.[app_name].sqs.queue ~ '-' ~ ENVIRONMENT ~ '-autoscaling' %}
-{% set sns_topic = env_data.provider_services.[app_name].sns.topic ~ '-' ~ ENVIRONMENT ~ '-autoscaling' %}
+{% set sqs_queue = env_data.provider_services[app_name].sqs.queue ~ '-' ~ ENVIRONMENT ~ '-autoscaling' %}
+{% set sns_topic = env_data.provider_services[app_name].sns.topic ~ '-' ~ ENVIRONMENT ~ '-autoscaling' %}
 {% set edx_codename = purpose_data.versions.codename %}
 {% set security_groups = purpose_data.get('security_groups', []) %}
 {% do security_groups.extend(['salt_master', 'consul-agent', 'default']) %}
