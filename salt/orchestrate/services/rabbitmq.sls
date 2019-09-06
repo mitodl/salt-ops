@@ -25,6 +25,7 @@ set_rabbitmq_admin_password_in_vault:
 {% set rabbitmq_admin_password = rabbitmq_admin_password.data.value %}
 {% endif %}
 {% set SIX_MONTHS = '4368h' %}
+{% set app_name = 'rabbitmq' %}
 {% set release_id = salt.sdb.get('sdb://consul/' ~ app_name ~ '/' ~ ENVIRONMENT ~ '/release-id')|default('v1') %}
 {% set target_string = app_name ~ '-' ~ ENVIRONMENT ~ '-*-' ~ release_id %}
 
