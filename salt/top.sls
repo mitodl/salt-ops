@@ -187,6 +187,7 @@ base:
     - match: compound
     - edx.prod
     - edx.run_ansible
+    - edx.hacks
     - fluentd
     - fluentd.plugins
     - fluentd.config
