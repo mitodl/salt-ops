@@ -128,6 +128,7 @@ heroku:
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
     MAILGUN_URL: https://api.mailgun.net/v3/{{ env_data.MAILGUN_SENDER_DOMAIN }}
     MICROMASTERS_BASE_URL: https://{{ env_data.MICROMASTERS_BASE_URL }}
+    MICROMASTERS_CATALOG_API_URL: https://{{ env_data.MICROMASTERS_BASE_URL }}/api/v0/catalog/
     MICROMASTERS_COURSE_URL: https://{{ env_data.MICROMASTERS_BASE_URL }}/api/v0/courseruns/
     MICROMASTERS_EXTERNAL_LOGIN_URL: https://{{ env_data.MICROMASTERS_BASE_URL}}/discussions
     NEW_RELIC_LOG: stdout
