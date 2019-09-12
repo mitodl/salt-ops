@@ -1,2 +1,5 @@
 *~
 .vagrant/*
+**/salt/pki/*
+**/salt/master/jobs/*
+**/var/cache/salt/*

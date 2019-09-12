@@ -5,8 +5,38 @@ salt_master:
         roles:
           - master
           - master-production
+      network_interfaces:
+        - DeviceIndex: 0
+          AssociatePublicIpAddress: True
+          SubnetId: {{ subnetids[id_num % num_subnets] }}
+          SecurityGroupId:
+            {% for secgroup in securitygroupid %}
+            {% if secgroup and not secgroup.lower() == "none" %}
+            - {{ secgroup }}
+            {% endif %}
+            {% endfor %}
+      tag:
+        environment: operations
+        role: master-production
+        OU: operations
+        Environment: operations
   - master-operations-qa:
       grains:
         roles:
           - master
           - master-qa
+      network_interfaces:
+        - DeviceIndex: 0
+          AssociatePublicIpAddress: True
+          SubnetId: {{ subnetids[id_num % num_subnets] }}
+          SecurityGroupId:
+            {% for secgroup in securitygroupid %}
+            {% if secgroup and not secgroup.lower() == "none" %}
+            - {{ secgroup }}
+            {% endif %}
+            {% endfor %}
+      tag:
+        environment: operations
+        role: master-qa
+        OU: operations
+        Environment: operations
