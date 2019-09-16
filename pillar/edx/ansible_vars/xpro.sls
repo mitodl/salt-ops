@@ -46,6 +46,9 @@ edx:
       ROOT: "{{ env_data.purposes[purpose].domains.lms }}"
       ABOUT: "{{ heroku_env }}/about-us"
       CONTACT: "https://xpro.zendesk.com/hc/en-us/requests/new"
+      HONOR: "honor-code"
+      PRIVACY: "privacy-policy"
+      TOS: "terms-of-service"
     EDXAPP_SUPPORT_SITE_LINK: 'https://xpro.zendesk.com/hc'
     EDXAPP_LMS_ENV_EXTRA:
       BULK_EMAIL_DEFAULT_FROM_EMAIL: {{ support_email }}
