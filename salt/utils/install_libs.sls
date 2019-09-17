@@ -9,7 +9,7 @@
     'RedHat': {
       'pkgs': ['python', 'python-devel', 'curl', 'bind-utils'],
     },
-}, grain='os_family', merge=salt.pillar.get('python_dependencies'), base='default') %}
+}, grain='os_family', merge=salt.pillar.get('python_dependencies'), default='Debian', base='default') %}
 
 prepare_installation_of_pip_executable:
   pkg.installed:

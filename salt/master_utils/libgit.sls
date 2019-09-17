@@ -26,7 +26,7 @@
             'python-devel'
         ]
     }
-}, grain='os_family', merge=salt.pillar.get('salt_master:libgit'), base='default') %}
+}, grain='os_family', merge=salt.pillar.get('salt_master:libgit'), default='Debian', base='default') %}
 
 install_libgit_build_tools:
   pkg.installed:
