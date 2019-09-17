@@ -2,6 +2,7 @@
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set env_data = env_settings.environments[environment] %}
 {% set xqwatcher_venv_base = '/edx/app/xqwatcher/venvs' %}
+{% set python3_version = '3.7' %}
 
 edx:
   ansible_vars:
@@ -40,7 +41,7 @@ edx:
             version: 1.11.0
           - name: https://download.pytorch.org/whl/cpu/torch-1.0.1.post2-cp35-cp35m-linux_x86_64.whl#egg=pytorch
             version: 1.0.1
-        PYTHON_EXECUTABLE: /usr/bin/python3
+        PYTHON_EXECUTABLE: /usr/bin/{{ python3_version }}
         QUEUE_NAME: mitx-686xgrader
         QUEUE_CONFIG:
           AUTH:
@@ -53,7 +54,7 @@ edx:
               CODEJAIL:
                 name: mit-686x-mooc
                 user: mit-686x-mooc
-                lang: python3
+                lang: {{ python3_version }}
                 bin_path: '{% raw %}{{ xqwatcher_venv_base }}{% endraw %}/mit-686x-mooc/bin/python'
               KWARGS:
                 grader_root: ../data/mit-686x-mooc/graders/
@@ -93,7 +94,7 @@ edx:
             version: 1.11.0
           - name: https://download.pytorch.org/whl/cpu/torch-1.0.1.post2-cp35-cp35m-linux_x86_64.whl#egg=pytorch
             version: 1.0.1
-        PYTHON_EXECUTABLE: /usr/bin/python3
+        PYTHON_EXECUTABLE: /usr/bin/{{ python3_version }}
         QUEUE_NAME: mitx-686xgrader
         QUEUE_CONFIG:
           AUTH:
@@ -106,7 +107,7 @@ edx:
               CODEJAIL:
                 name: mit-686x
                 user: mit-686x
-                lang: python3
+                lang: {{ python3_version }}
                 bin_path: '{% raw %}{{ xqwatcher_venv_base }}{% endraw %}/mit-686x/bin/python'
               KWARGS:
                 grader_root: ../data/mit-686x-{{ purpose }}/graders/
