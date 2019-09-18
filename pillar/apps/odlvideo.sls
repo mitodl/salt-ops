@@ -126,7 +126,7 @@ django:
     VIDEO_S3_TRANSCODE_BUCKET: odl-video-service-transcoded{{ '-{}'.format(env_data.bucket_suffix).rstrip('-') }}
     VIDEO_S3_WATCH_BUCKET: odl-video-service-uploaded{{ '-{}'.format(env_data.bucket_suffix).rstrip('-') }}
     VIDEO_STATUS_UPDATE_FREQUENCY: 60
-    VIDEO_WATCH_BUCKET_FREQUENCY: 30
+    VIDEO_WATCH_BUCKET_FREQUENCY: 600
     YT_ACCESS_TOKEN: __vault__::secret-odl-video/{{ ENVIRONMENT }}/youtube-credentials>data>access_token
     YT_CLIENT_ID: __vault__::secret-odl-video/{{ ENVIRONMENT }}/youtube-credentials>data>client_id
     YT_CLIENT_SECRET: __vault__::secret-odl-video/{{ ENVIRONMENT }}/youtube-credentials>data>client_secret
