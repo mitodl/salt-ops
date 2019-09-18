@@ -1,9 +1,9 @@
 mitx:
-  id: sdb://osenv/AWS_ACCESS_KEY
+  id: sdb://osenv/AWS_ACCESS_KEY_ID
   key: sdb://osenv/AWS_SECRET_ACCESS_KEY
   keyname: salt-master-prod
   private_key: bootstrap/etc/salt/keys/aws/salt-master-prod.pem
   driver: ec2
-  script_args: -U -F -A salt.private.odl.mit.edu
   sync_after_install: all
   delete_ssh_keys: True
+  update_cachedir: True

@@ -8,13 +8,8 @@ salt_master:
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
-          SubnetId: {{ subnetids[id_num % num_subnets] }}
-          SecurityGroupId:
-            {% for secgroup in securitygroupid %}
-            {% if secgroup and not secgroup.lower() == "none" %}
-            - {{ secgroup }}
-            {% endif %}
-            {% endfor %}
+          SubnetId: sdb://osenv/PROD_SUBNET
+          SecurityGroupId: sdb://osenv/SECURITY_GROUPS
       tag:
         environment: operations
         role: master-production
@@ -28,13 +23,8 @@ salt_master:
       network_interfaces:
         - DeviceIndex: 0
           AssociatePublicIpAddress: True
-          SubnetId: {{ subnetids[id_num % num_subnets] }}
-          SecurityGroupId:
-            {% for secgroup in securitygroupid %}
-            {% if secgroup and not secgroup.lower() == "none" %}
-            - {{ secgroup }}
-            {% endif %}
-            {% endfor %}
+          SubnetId: sdb://osenv/QA_SUBNET
+          SecurityGroupId: sdb://osenv/SECURITY_GROUPS
       tag:
         environment: operations
         role: master-qa

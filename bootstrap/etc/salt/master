@@ -1,33 +1,26 @@
 # -*- mode: yaml; coding: utf-8; -*-
 fileserver_backend:
-  - git
   - roots
+  - git
 
 file_roots:
-  - srv/salt/
-  - salt/
+  base:
+    - bootstrap/srv/salt/
+    - salt/
 
 pillar_roots:
-  - srv/pillar
-  - pillar/
+  base:
+    - bootstrap/srv/pillar/
+    - pillar/
 
 gitfs_provider: gitpython
 
 gitfs_remotes:
-  - https://github.com/mitodl/salt-ops:
-      - root: salt
   - https://github.com/mitodl/master-formula
   - https://github.com/mitodl/salt-extensions:
       - root: extensions
   - https://github.com/mitodl/consul-formula
   - https://github.com/mitodl/vault-formula
-
-git_pillar_provider: gitpython
-ext_pillar:
-  - git:
-      - master https://github.com/mitodl/salt-ops:
-          - root: pillar
-          - env: base
 
 root_dir: bootstrap/
 pki_dir: etc/salt/pki/master
@@ -35,3 +28,6 @@ log_file: var/log/salt/master.log
 
 osenv:
   driver: env
+
+vpc.keyid: sdb://osenv/AWS_ACCESS_KEY_ID
+vpc.key: sdb://osenv/AWS_SECRET_ACCESS_KEY
