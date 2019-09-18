@@ -116,6 +116,8 @@ edx:
           extra_args: -e
         - name: git+https://github.com/Stanford-Online/xblock-in-video-quiz@release/v0.1.7#egg=xblock-in-video-quiz
           extra_args: -e
+        # Python client for Sentry
+        - name: raven
 
     EDXAPP_LMS_ENV_EXTRA:
       EMAIL_USE_DEFAULT_FROM_FOR_BULK: True

@@ -31,6 +31,8 @@ edx:
       - name: social-auth-mitxpro==0.2
       - name: ubcpi-xblock==0.6.4
       - name: git+https://github.com/mitodl/edx-git-auto-export.git@v0.1#egg=edx-git-auto-export
+      # Python client for Sentry
+      - name: raven
     EDXAPP_REGISTRATION_EXTRA_FIELDS:
       confirm_email: "hidden"
       level_of_education: "optional"
