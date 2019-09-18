@@ -2,6 +2,7 @@
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set env_data = env_settings.environments[environment] %}
 {% set xqwatcher_venv_base = '/edx/app/xqwatcher/venvs' %}
+{% set python3_version = 'python3.7' %}
 
 edx:
   ansible_vars:
@@ -19,7 +20,7 @@ edx:
           version: 0.19.1
         - name: scipy
           version: 1.0.0
-      PYTHON_EXECUTABLE: /usr/bin/python3
+      PYTHON_EXECUTABLE: /usr/bin/{{ python3_version }}
       QUEUE_NAME: {{ queue_name }}
       QUEUE_CONFIG:
         AUTH:

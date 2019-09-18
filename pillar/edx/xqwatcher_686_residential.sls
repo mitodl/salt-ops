@@ -2,6 +2,7 @@
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set env_data = env_settings.environments[environment] %}
 {% set xqwatcher_venv_base = '/edx/app/xqwatcher/venvs' %}
+{% set python3_version = 'python3.7' %}
 
 edx:
   ansible_vars:
@@ -40,7 +41,7 @@ edx:
             version: 1.11.0
           - name: https://download.pytorch.org/whl/cpu/torch-1.0.1.post2-cp35-cp35m-linux_x86_64.whl#egg=pytorch
             version: 1.0.1
-        PYTHON_EXECUTABLE: /usr/bin/python3
+        PYTHON_EXECUTABLE: /usr/bin/{{ python3_version }}
         QUEUE_NAME: mitx-686xgrader
         QUEUE_CONFIG:
           AUTH:
@@ -93,7 +94,7 @@ edx:
             version: 1.11.0
           - name: https://download.pytorch.org/whl/cpu/torch-1.0.1.post2-cp35-cp35m-linux_x86_64.whl#egg=pytorch
             version: 1.0.1
-        PYTHON_EXECUTABLE: /usr/bin/python3
+        PYTHON_EXECUTABLE: /usr/bin/{{ python3_version }}
         QUEUE_NAME: mitx-686xgrader
         QUEUE_CONFIG:
           AUTH:

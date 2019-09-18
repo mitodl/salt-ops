@@ -3,6 +3,7 @@
 {% set repo_path = '/tmp/edx_config/configuration' -%}
 {% set conf_file = '/tmp/edx_config/edx-xqwatcher.conf' -%}
 {% set playbooks = salt.pillar.get('xqueue:playbooks', ['edx-east/xqwatcher.yml']) %}
+{% set python3_version = 'python3.7' %}
 
 include:
   - .run_ansible
@@ -19,12 +20,12 @@ install_os_packages_for_xqwatcher:
         - git
         - python
         - python-dev
-        - python3
-        - python3-dev
+        - {{ python3_version }}
+        - {{ python3_version}}-dev
         - python-pip
-        - python3-pip
+        - {{ python3_version}}-pip
         - python-virtualenv
-        - python3-virtualenv
+        - {{ python3_version }}-virtualenv
         - libmysqlclient-dev
         - libssl-dev
     - refresh: True
