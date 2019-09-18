@@ -3,7 +3,7 @@
 {% set repo_path = '/tmp/edx_config/configuration' -%}
 {% set conf_file = '/tmp/edx_config/edx-xqwatcher.conf' -%}
 {% set playbooks = salt.pillar.get('xqueue:playbooks', ['edx-east/xqwatcher.yml']) %}
-{% set python3_version = '3.7' %}
+{% set python3_version = 'python3.7' %}
 
 include:
   - .run_ansible

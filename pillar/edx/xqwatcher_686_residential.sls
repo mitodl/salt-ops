@@ -2,7 +2,7 @@
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set env_data = env_settings.environments[environment] %}
 {% set xqwatcher_venv_base = '/edx/app/xqwatcher/venvs' %}
-{% set python3_version = '3.7' %}
+{% set python3_version = 'python3.7' %}
 
 edx:
   ansible_vars:
@@ -54,7 +54,7 @@ edx:
               CODEJAIL:
                 name: mit-686x-mooc
                 user: mit-686x-mooc
-                lang: {{ python3_version }}
+                lang: python3
                 bin_path: '{% raw %}{{ xqwatcher_venv_base }}{% endraw %}/mit-686x-mooc/bin/python'
               KWARGS:
                 grader_root: ../data/mit-686x-mooc/graders/
@@ -107,7 +107,7 @@ edx:
               CODEJAIL:
                 name: mit-686x
                 user: mit-686x
-                lang: {{ python3_version }}
+                lang: python3
                 bin_path: '{% raw %}{{ xqwatcher_venv_base }}{% endraw %}/mit-686x/bin/python'
               KWARGS:
                 grader_root: ../data/mit-686x-{{ purpose }}/graders/
