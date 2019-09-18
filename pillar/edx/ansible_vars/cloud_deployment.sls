@@ -9,6 +9,7 @@
 {% set purpose_data = env_data.purposes[purpose] %}
 {% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
 {% set bucket_uses = env_data.secret_backends.aws.bucket_uses %}
+{% set sentry_dsn = salt.vault.read('secret-operations/global/{business_unit}/sentry-dsn'.format(business_unit=business_unit)) %}
 
 {% set DEFAULT_FEEDBACK_EMAIL = 'mitx-support@mit.edu' %}
 {% set DEFAULT_FROM_EMAIL = 'mitx-support@mit.edu' %}
@@ -239,12 +240,15 @@ edx:
     common_env_config: &common_env_config
       ADDL_INSTALLED_APPS:
         - ubcpi
+        - raven.contrib.django.raven_compat
       ADMINS:
       - ['MITx Stacktrace Recipients', 'cuddle-bunnies@mit.edu']
       BOOK_URL: ""
       DATA_DIR: {{ edxapp_git_repo_dir }}
       SERVER_EMAIL: mitxmail@mit.edu
       TIME_ZONE_DISPLAYED_FOR_DEADLINES: "{{ TIME_ZONE }}"
+      RAVEN_CONFIG:
+        dsn: {{ sentry_dsn }}
 
     EDXAPP_CODE_JAIL_LIMITS:
       REALTIME: 3

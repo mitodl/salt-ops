@@ -50,6 +50,13 @@ set_from_bulk_email_address_in_lms_production_file:
     - name: /edx/app/edxapp/edx-platform/lms/envs/production.py
     - text: EMAIL_USE_DEFAULT_FROM_FOR_BULK = ENV_TOKENS.get('EMAIL_USE_DEFAULT_FROM_FOR_BULK', False)
 
+{% for app in ['lms', 'cms'] %}
+add_sentry_integration_to_{{ app }}_production_file:
+file.append:
+    - name: /edx/app/edxapp/edx-platform/{{ app }}/envs/production.py
+    - text: RAVEN_CONFIG = ENV_TOKENS.get('RAVEN_CONFIG', {})
+{% endfor %}
+
 {% if 'mitxpro' in salt.grains.get('environment') %}
 add_social_auth_https_redirect_to_lms_production_file:
   file.append:

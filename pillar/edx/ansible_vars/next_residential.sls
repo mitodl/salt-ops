@@ -39,3 +39,5 @@ edx:
         - name: git+https://github.com/Stanford-Online/xblock-in-video-quiz@release/v0.1.7#egg=xblock-in-video-quiz
           extra_args: -e
         - name: xblock-image-modal==0.4.2
+        # Python client for Sentry
+        - name: raven
