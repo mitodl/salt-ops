@@ -1,6 +1,5 @@
 {% from "fluentd/record_tagging.jinja" import record_tagging with context %}
 {% from "fluentd/auth_log.jinja" import auth_log_source, auth_log_filter with context %}
-{% set gitreload_exists = salt.file.directory_exists('/edx/var/log/gr') %}
 
 fluentd:
   overrides:
@@ -69,7 +68,7 @@ fluentd:
             - format1: '/^(?<time>\w{3}\s+\d{1,2}\s+\d{1,2}:\d{2}:\d{2}) (?<hostname>[^ ]+?) \[service_variant=(?<service_variant>\w+?)\]\[(?<namespace>[a-zA-Z._-]+?)\]\[env:(?<logging_env>[a-zA-Z-_.]+)\]\ (?<log_level>\w+) \[[^ ]+\s+\d+\] \[(?<filename>[a-zA-Z0-9-_.]+):(?<line_number>\d+)\] - (?<message>.*)$/'
             - time_format: '%b %d %H:%M:%S'
             - multiline_flush_interval: '5s'
-        {% if gitreload_exists %}
+        {% if salt['file.directory_exists']('/edx/var/log/gr') %}
         - directive: source
           attrs:
             - '@id': edx_gitreload_log
