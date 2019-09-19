@@ -52,7 +52,7 @@ set_from_bulk_email_address_in_lms_production_file:
 
 {% for app in ['lms', 'cms'] %}
 add_sentry_integration_to_{{ app }}_production_file:
-file.append:
+  file.append:
     - name: /edx/app/edxapp/edx-platform/{{ app }}/envs/production.py
     - text: RAVEN_CONFIG = ENV_TOKENS.get('RAVEN_CONFIG', {})
 {% endfor %}
