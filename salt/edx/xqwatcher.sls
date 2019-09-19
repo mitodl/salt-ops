@@ -23,9 +23,9 @@ install_os_packages_for_xqwatcher:
         - {{ python3_version }}
         - {{ python3_version}}-dev
         - python-pip
-        - {{ python3_version}}-pip
+        - python3-pip
         - python-virtualenv
-        - {{ python3_version }}-virtualenv
+        - python3-virtualenv
         - libmysqlclient-dev
         - libssl-dev
     - refresh: True
