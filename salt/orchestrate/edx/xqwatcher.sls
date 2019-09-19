@@ -4,6 +4,7 @@
 {% set app_name = 'xqwatcher' %}
 {% set VPC_NAME = env_data.vpc_name %}
 {% set BUSINESS_UNIT = env_data.purposes[app_name].business_unit %}
+{% set release_id = salt.sdb.get('sdb://consul/' ~ app_name ~ '/' ~ ENVIRONMENT ~ '/release-id')|default('v1') %}
 {% set subnet_ids = salt.boto_vpc.describe_subnets(
     vpc_id=salt.boto_vpc.describe_vpcs(
         name=env_data.vpc_name).vpcs[0].id
@@ -34,7 +35,7 @@ generate_xqwatcher_{{ course.name }}_cloud_map_file:
         service_name: xqwatcher-{{ course.name }}
         environment_name: {{ ENVIRONMENT }}
         num_instances: {{ INSTANCE_COUNT }}
-        release_id: {{ salt.sdb.get('sdb://consul/{{ app_name }}/{{ ENVIRONMENT }}/release-id')|default('v1') }}
+        release_id: {{ release_id }}
         tags:
           business_unit: {{ BUSINESS_UNIT }}
           Department: {{ BUSINESS_UNIT }}
