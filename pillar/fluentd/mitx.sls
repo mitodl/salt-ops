@@ -78,7 +78,7 @@ fluentd:
             - path: /edx/var/log/gr/gitreload.log
             - pos_file: /edx/var/log/gr/gitreload.log.pos
             - format: multiline
-            - format_firstline: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{0,3}?/
+            - format_firstline: '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{0,3}?/'
             - format1: '/^(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{0,3}? (?<log_level>\w+?) (?<process_id>\d+) (?<logger_name>\[[\w._\d]+\]) (?<filename>[a-zA-Z0-9-_.]+):(?<line_number>\d+) - (?<hostname>[^ ]+?)- (?<message>.*)/'
             - multiline_flush_interval: '5s'
         {% endif %}
