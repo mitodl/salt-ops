@@ -4,7 +4,6 @@
 {% set purpose = salt.grains.get('purpose', 'xqwatcher') %}
 {% set purpose_data = env_settings.environments[environment].purposes[purpose] %}
 {% set xqwatcher_venv_base = '/edx/app/xqwatcher/venvs' %}
-{% set xqueue_watcher_git_ssh = salt.vault.read('secret-residential/global/xqueue_watcher_git_ssh').data.value|json %}
 
 edx:
   xqwatcher:
@@ -38,7 +37,7 @@ edx:
     - 'edx-east/xqwatcher.yml'
   ansible_vars:
     XQWATCHER_VERSION: {{ purpose_data.versions.xqwatcher }}
-    XQWATCHER_GIT_IDENTITY: "{{ xqueue_watcher_git_ssh }}"
+    XQWATCHER_GIT_IDENTITY: "__vault__::secret-residential/global/xqueue_watcher_git_ssh>data>value"
     XQWATCHER_CONFIG:
       POLL_TIME: 10
       REQUESTS_TIMEOUT: 10
@@ -51,4 +50,4 @@ edx:
         REPO: "xqueue-watcher.git"
         VERSION: "{{ purpose_data.versions.xqwatcher }}"
         DESTINATION: "/edx/app/xqwatcher/src"
-        SSH_KEY: "{{ xqueue_watcher_git_ssh }}"
+        SSH_KEY: "__vault__::secret-residential/global/xqueue_watcher_git_ssh>data>value"
