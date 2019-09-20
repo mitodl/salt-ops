@@ -15,7 +15,7 @@ configure_git_ppa_for_edx:
         - pkg: install_os_packages_for_xqwatcher
         
 configure_python_ppa:
-pkgrepo.managed:
+  pkgrepo.managed:
     - ppa: deadsnakes/ppa
     - require_in:
         - pkg: install_os_packages_for_xqwatcher
