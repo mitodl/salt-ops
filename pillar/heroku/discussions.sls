@@ -123,7 +123,7 @@ heroku:
     FEATURE_WIDGETS_UI: True
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
     INDEXING_API_USERNAME: {{ env_data.INDEXING_API_USERNAME }}
-    MAILGUN_FROM_EMAIL: 'MIT Open Learning <no-reply@{{ env_data.MAILGUN_SENDER_DOMAIN }}'
+    MAILGUN_FROM_EMAIL: 'MIT Open <no-reply@{{ env_data.MAILGUN_SENDER_DOMAIN }}'
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
     MAILGUN_URL: https://api.mailgun.net/v3/{{ env_data.MAILGUN_SENDER_DOMAIN }}
