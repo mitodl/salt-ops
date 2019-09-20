@@ -34,7 +34,7 @@ edx:
               name: mit-600x
               user: mit-600x
               lang: python3
-              bin_path: '{% raw %}"{{ xqwatcher_venv_base }}"{% endraw %}/mit-600x/bin/python'
+              bin_path: '"{{ xqwatcher_venv_base }}"/mit-600x/bin/python'
             KWARGS:
               grader_root: ../data/mit-600x-{{ purpose }}-{{ queue_name }}/graders/python3graders/
     {% endfor %}
