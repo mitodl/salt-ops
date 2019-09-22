@@ -39,7 +39,7 @@ edx:
             version: 0.5.2
           - name: six
             version: 1.11.0
-          - name: https://download.pytorch.org/whl/cpu/torch-1.0.1.post2-cp35-cp35m-linux_x86_64.whl#egg=pytorch
+          - name: https://download.pytorch.org/whl/cpu/torch-1.0.1.post2-cp37-cp37m-linux_x86_64.whl#egg=pytorch
             version: 1.0.1
         PYTHON_EXECUTABLE: /usr/bin/{{ python3_version }}
         QUEUE_NAME: mitx-686xgrader
