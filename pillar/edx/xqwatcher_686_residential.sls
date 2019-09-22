@@ -12,31 +12,31 @@ edx:
         GIT_REF: master
         PYTHON_REQUIREMENTS:
           - name: numpy
-            version: 1.14.0
+            version: 1.17.2
           - name: pandas
-            version: 0.22.0
+            version: 0.25.1
           - name: scikit-image
-            version: 0.13.1
+            version: 0.15.0
           - name: scikit-learn
-            version: 0.19.1
+            version: 0.21.3
           - name: scipy
-            version: 1.0.0
+            version: 1.3.1
           - name: matplotlib
-            version: 2.1.2
+            version: 3.1.1
           - name: pytz
-            version: 2018.4
+            version: 2019.2
           - name: networkx
-            version: 2.1
+            version: 2.3
           - name: cycler
             version: 0.10.0
           - name: decorator
-            version: 4.3.0
+            version: 4.4.0
           - name: Pillow
-            version: 5.1.0
+            version: 6.1.0
           - name: pyparsing
-            version: 2.2.0
+            version: 2.4.2
           - name: PyWavelets
-            version: 0.5.2
+            version: 1.0.3
           - name: six
             version: 1.11.0
           - name: https://download.pytorch.org/whl/cpu/torch-1.0.1.post2-cp37-cp37m-linux_x86_64.whl#egg=pytorch
@@ -65,34 +65,34 @@ edx:
         GIT_REF: master
         PYTHON_REQUIREMENTS:
           - name: numpy
-            version: 1.14.0
+            version: 1.17.2
           - name: pandas
-            version: 0.22.0
+            version: 0.25.1
           - name: scikit-image
-            version: 0.13.1
+            version: 0.15.0
           - name: scikit-learn
-            version: 0.19.1
+            version: 0.21.3
           - name: scipy
-            version: 1.0.0
+            version: 1.3.1
           - name: matplotlib
-            version: 2.1.2
+            version: 3.1.1
           - name: pytz
-            version: 2018.4
+            version: 2019.2
           - name: networkx
-            version: 2.1
+            version: 2.3
           - name: cycler
             version: 0.10.0
           - name: decorator
-            version: 4.3.0
+            version: 4.4.0
           - name: Pillow
-            version: 5.1.0
+            version: 6.1.0
           - name: pyparsing
-            version: 2.2.0
+            version: 2.4.2
           - name: PyWavelets
-            version: 0.5.2
+            version: 1.0.3
           - name: six
             version: 1.11.0
-          - name: https://download.pytorch.org/whl/cpu/torch-1.0.1.post2-cp35-cp35m-linux_x86_64.whl#egg=pytorch
+          - name: https://download.pytorch.org/whl/cpu/torch-1.0.1.post2-cp37-cp37m-linux_x86_64.whl#egg=pytorch
             version: 1.0.1
         PYTHON_EXECUTABLE: /usr/bin/{{ python3_version }}
         QUEUE_NAME: mitx-686xgrader
