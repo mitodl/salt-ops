@@ -15,11 +15,11 @@ edx:
       GIT_REF: {{ purpose_data.versions.xqwatcher_courses }}
       PYTHON_REQUIREMENTS:
         - name: numpy
-          version: 1.12.1
+          version: 1.17.2
         - name: scikit-learn
-          version: 0.19.1
+          version: 0.21.3
         - name: scipy
-          version: 1.0.0
+          version: 1.3.1
       PYTHON_EXECUTABLE: /usr/bin/{{ python3_version }}
       QUEUE_NAME: {{ queue_name }}
       QUEUE_CONFIG:
