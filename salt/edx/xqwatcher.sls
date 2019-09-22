@@ -4,6 +4,7 @@
 {% set conf_file = '/tmp/edx_config/edx-xqwatcher.conf' -%}
 {% set playbooks = salt.pillar.get('xqueue:playbooks', ['edx-east/xqwatcher.yml']) %}
 {% set python3_version = 'python3.7' %}
+{% set pip_version = 'pip3.7' %}
 
 include:
   - .run_ansible
@@ -82,7 +83,7 @@ set_directory_permissions_for_xqwatcher_logs:
 ensure_codejail_requirements_are_installed_for_{{  course.COURSE }}:
   pip.installed:
     - requirements: /edx/app/xqwatcher/data/{{ course.QUEUE_CONFIG.HANDLERS[0].CODEJAIL.name }}-requirements.txt
-    - bin_env: /edx/app/xqwatcher/venvs/{{ course.QUEUE_CONFIG.HANDLERS[0].CODEJAIL.name }}/bin/pip
+    - bin_env: /edx/app/xqwatcher/venvs/{{ course.QUEUE_CONFIG.HANDLERS[0].CODEJAIL.name }}/bin/{{ pip_version }}
     - env_vars:
         HOME: /tmp
         USER: {{ course.QUEUE_CONFIG.HANDLERS[0].CODEJAIL.user }}
