@@ -16,6 +16,7 @@
       'NEW_RELIC_APP_NAME': 'discussions-ci',
       'MAILGUN_SENDER_DOMAIN': 'discussions-mail.odl.mit.edu',
       'MICROMASTERS_BASE_URL': 'micromasters-ci.odl.mit.edu',
+      'MITXPRO_BASE_URL': 'xpro-ci.odl.mit.edu',
       'OCW_LEARNING_COURSE_BUCKET_NAME': 'open-learning-course-data-ci',
       'OCW_UPLOAD_IMAGE_ONLY': True,
       'OPEN_DISCUSSIONS_BASE_URL': 'https://discussions-ci.odl.mit.edu',
@@ -41,6 +42,7 @@
       'NEW_RELIC_APP_NAME': 'discussions-rc',
       'MAILGUN_SENDER_DOMAIN': 'discussions-mail.odl.mit.edu',
       'MICROMASTERS_BASE_URL': 'micromasters-rc.odl.mit.edu',
+      'MITXPRO_BASE_URL': 'xpro-rc.odl.mit.edu',
       'OCW_LEARNING_COURSE_BUCKET_NAME': 'open-learning-course-data-rc',
       'OCW_UPLOAD_IMAGE_ONLY': True,
       'OPEN_DISCUSSIONS_BASE_URL': 'https://discussions-rc.odl.mit.edu',
@@ -66,6 +68,7 @@
       'NEW_RELIC_APP_NAME': 'discussions-production',
       'MAILGUN_SENDER_DOMAIN': 'mail.open.mit.edu',
       'MICROMASTERS_BASE_URL': 'micromasters.mit.edu',
+      'MITXPRO_BASE_URL': 'xpro.mit.edu',
       'OCW_LEARNING_COURSE_BUCKET_NAME': 'open-learning-course-data',
       'OCW_UPLOAD_IMAGE_ONLY': False,
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'discussionsprod',
@@ -185,6 +188,7 @@ heroku:
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
     USE_X_FORWARDED_HOST: True
     USE_X_FORWARDED_PORT: True
+    XPRO_CATALOG_API_URL: https://{{ env_data.MITXPRO_BASE_URL }}/api/programs/
 
 schedule:
   refresh_{{ env_data.app_name }}_configs:
