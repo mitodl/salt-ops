@@ -164,7 +164,8 @@ heroku:
     OPEN_DISCUSSIONS_SUPPORT_EMAIL: {{ env_data.OPEN_DISCUSSIONS_SUPPORT_EMAIL }}
     OPEN_DISCUSSIONS_USE_S3: True
     PGBOUNCER_DEFAULT_POOL_SIZE: 50
-    PGBOUNCER_MIN_POOL_SIZE: 5
+    PGBOUNCER_MAX_CLIENT_CONN: 500
+    PGBOUNCER_MIN_POOL_SIZE: 20
     RECAPTCHA_SECRET_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>secret_key
     RECAPTCHA_SITE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>site_key
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.env_name }}/django-secret-key>data>value
