@@ -9,7 +9,7 @@
 {% set purpose_data = env_data.purposes[purpose] %}
 {% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
 {% set bucket_uses = env_data.secret_backends.aws.bucket_uses %}
-{% set sentry_dsn = salt.vault.read('secret-operations/global/{business_unit}/sentry-dsn'.format(business_unit=business_unit)) %}
+{% set sentry_dsn = salt.vault.read('secret-operations/global/' ~ business_unit ~ '/sentry-dsn').data.value %}
 
 {% set DEFAULT_FEEDBACK_EMAIL = 'mitx-support@mit.edu' %}
 {% set DEFAULT_FROM_EMAIL = 'mitx-support@mit.edu' %}
