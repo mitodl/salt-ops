@@ -2,7 +2,7 @@
 {% set purpose_suffix = purpose.replace('-', '_') %}
 {% set env = salt.grains.get('environment', 'mitx-qa') %}
 
-etl_config:
+etl:
   task_name: mitx
 
 etl_dependencies:

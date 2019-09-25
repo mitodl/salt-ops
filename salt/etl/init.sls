@@ -1,4 +1,4 @@
-{% set task_name = salt.pillar.get('etl_config:task_name') %}
+{% set task_name = salt.pillar.get('etl:task_name') %}
 
 install_etl_os_dependencies:
   pkg.installed:
