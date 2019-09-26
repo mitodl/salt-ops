@@ -116,7 +116,7 @@ base:
     - apps.redash.datasources
     - uwsgi
     - etl
-    - etl.mit_open
+    - etl.email_mapping
   'G@roles:kibana and G@environment:operations':
     - match: compound
     - elastic-stack.kibana

@@ -99,7 +99,7 @@ base:
     - shibboleth.redash
     - apps.redash
     - apps.redash_data_sources
-    - data.mit_open_etl
+    - data.email_mapping_etl
   'P@environment:(mitx-qa|mitx-production|mitxpro-qa|mitxpro-production|operations|rc-apps|production-apps|micromasters)':
     - match: compound
     - datadog
