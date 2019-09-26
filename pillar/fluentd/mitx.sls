@@ -1,5 +1,6 @@
 {% from "fluentd/record_tagging.jinja" import record_tagging with context %}
 {% from "fluentd/auth_log.jinja" import auth_log_source, auth_log_filter with context %}
+{% set stdio_pos_filename = '/edx/var/log/supervisor/stdio.pos' %}
 
 fluentd:
   overrides:
@@ -44,6 +45,22 @@ fluentd:
             - multiline_flush_interval: '5s'
         - directive: source
           attrs:
+            - '@id': edx_cms_stderr_log
+            - '@type': tail
+            - enable_watch_timer: 'false'
+            - tag: edx.cms.stderr
+            - path: /edx/var/log/supervisor/cms*-stderr.log
+            - pos_file: {{ stdio_pos_filename }}
+            - format: multiline
+            - format_firstline: '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d+ /'
+            - format1: '/^(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d+) /'
+            - format2: '/(?<log_level>[A-Z]+) (?<process_id>\d+) /'
+            - format3: '/\[(?<namespace>[a-zA-Z._-]+?)\] /'
+            - format4: '(?<filename>[a-zA-Z0-9-_.]+):(?<line_number>\d+) '
+            - format5: '- (?<message>.*)'
+            - multiline_flush_interval: '5s'
+        - directive: source
+          attrs:
             - '@id': edx_lms_log
             - '@type': tail
             - enable_watch_timer: 'false'
@@ -54,6 +71,20 @@ fluentd:
             - format_firstline: '/^\w{3}\s+\d{1,2} \d{2}:\d{2}:\d{2}/'
             - format1: '/^(?<time>\w{3}\s+\d{1,2} \d{2}:\d{2}:\d{2}) (?<hostname>[^ ]+?) \[service_variant=(?<service_variant>\w+?)\]\[(?<namespace>[a-zA-Z._-]+?)\]\[env:(?<logging_env>[a-zA-Z-_.]+)\]\ (?<log_level>\w+) \[[^ ]+\s+\d+\] \[(?<filename>[a-zA-Z0-9-_.]+):(?<line_number>\d+)\] - (?<message>.*)$/'
             - time_format: '%b %d %H:%M:%S'
+            - multiline_flush_interval: '5s'
+        - directive: source
+          attrs:
+            - '@id': edx_lms_stderr_log
+            - '@type': tail
+            - enable_watch_timer: 'false'
+            - tag: edx.lms.stderr
+            - path: /edx/var/log/supervisor/lms*-stderr.log
+            - pos_file: {{ stdio_pos_filename }}
+            - format: multiline
+            - format_firstline: '/^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/'
+            - format1: '/^\[(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [+\-]\d{4})\]/ '
+            - format2: '/\[(?<process_id>\d{4})\] \[(?<log_level>\w+?)\] /'
+            - format3: '/(?<message>.*)/'
             - multiline_flush_interval: '5s'
         - directive: source
           attrs:
