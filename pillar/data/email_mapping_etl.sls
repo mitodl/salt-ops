@@ -18,9 +18,11 @@ etl:
       hash_salt: __vault__::secret-operations/global/anonymizer-hash-salt>data>value
       aws_access_key_id: __vault__:cache:aws-mitx/creds/read-write-mitodl-data-lake>data>access_key
       aws_secret_access_key: __vault__:cache:aws-mitx/creds/read-write-mitodl-data-lake>data>secret_key
+      user_table: users_user
     mit_open:
       db_url: postgresql://{{ open_db_creds.data.username }}:{{ open_db_creds.data.password }}@postgresql-opendiscussions.service.production-apps.consul:5432/opendiscussions
       s3_bucket: mitodl-data-lake/mailgun
       hash_salt: __vault__::secret-operations/global/anonymizer-hash-salt>data>value
       aws_access_key_id: __vault__:cache:aws-mitx/creds/read-write-mitodl-data-lake>data>access_key
       aws_secret_access_key: __vault__:cache:aws-mitx/creds/read-write-mitodl-data-lake>data>secret_key
+      user_table: auth_user
