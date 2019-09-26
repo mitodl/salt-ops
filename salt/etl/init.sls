@@ -1,5 +1,3 @@
-{% set task_name = salt.pillar.get('etl:task_name') %}
-
 install_etl_os_dependencies:
   pkg.installed:
     - pkgs: {{ salt.pillar.get('etl_dependencies', ['python3', 'python3-pip', 'git'])|tojson }}
@@ -19,7 +17,8 @@ clone_odl_etl_repo:
       - pkg: install_etl_os_dependencies
       - file: create_etl_directory
 
-install_etl_requirements:
+{% for task_name in ['email_mapping', 'mitx'] %}
+install_{{ task_name }}_etl_requirements:
   virtualenv.managed:
     - name: /odl-etl/{{ task_name }}
     - system_site_packages: False
@@ -30,3 +29,4 @@ install_etl_requirements:
     - require:
       - git: clone_odl_etl_repo
       - pkg: install_etl_os_dependencies
+{% endfor %}
