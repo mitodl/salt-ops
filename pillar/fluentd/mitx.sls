@@ -1,6 +1,5 @@
 {% from "fluentd/record_tagging.jinja" import record_tagging with context %}
 {% from "fluentd/auth_log.jinja" import auth_log_source, auth_log_filter with context %}
-{% set stdio_pos_filename = '/edx/var/log/supervisor/stdio.pos' %}
 
 fluentd:
   overrides:
@@ -50,7 +49,7 @@ fluentd:
             - enable_watch_timer: 'false'
             - tag: edx.cms.stderr
             - path: /edx/var/log/supervisor/cms*-stderr.log
-            - pos_file: {{ stdio_pos_filename }}
+            - pos_file: /edx/var/log/supervisor/cms-stderr.pos
             - format: multiline
             - format_firstline: '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d+ /'
             - format1: '/^(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d+) /'
@@ -79,7 +78,7 @@ fluentd:
             - enable_watch_timer: 'false'
             - tag: edx.lms.stderr
             - path: /edx/var/log/supervisor/lms*-stderr.log
-            - pos_file: {{ stdio_pos_filename }}
+            - pos_file: /edx/var/log/supervisor/lms-stderr.pos
             - format: multiline
             - format_firstline: '/^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/'
             - format1: '/^\[(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [+\-]\d{4})\]/ '
