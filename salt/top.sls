@@ -43,8 +43,9 @@ base:
     - match: compound
     - master.aws
     - master_utils.dns
-  'G@roles:elasticsearch and G@environment:operations':
-    - match: compound
+    - master_utils.nodegroups
+  logging_cluster:
+    - match: nodegroup
     - utils.file_limits
     - elastic-stack.elasticsearch
     - elastic-stack.elasticsearch.plugins
@@ -117,8 +118,8 @@ base:
     - uwsgi
     - etl
     - etl.email_mapping
-  'G@roles:kibana and G@environment:operations':
-    - match: compound
+  kibana:
+    - match: nodegroup
     - elastic-stack.kibana
     - utils.mitca_pem
     - utils.configure_debian_source_repos
@@ -154,8 +155,8 @@ base:
   'G@roles:mongodb and P@environment:mitx(pro)?-production':
     - match: compound
     - datadog.plugins
-  'G@roles:consul_server and G@environment:operations':
-    - match: compound
+  consul_operations:
+    - match: nodegroup
     - datadog.plugins
     - vault
     - vault.tests
