@@ -1,5 +1,5 @@
 {% set etl_configs = salt.pillar.get('etl:configs', {}) %}
-{% set task_name = salt.pillar.get('etl:task_name') %}
+{% set task_name = 'email_mapping' %}
 {% for app_name, settings in etl_configs.items() %}
 {{ app_name }}_{{ task_name }}_etl_config:
   file.managed:
