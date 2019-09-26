@@ -205,6 +205,92 @@ salt_master:
     vault:
       vault.url: https://active.vault.service.consul:8200
       vault.verify: False
+    nodegroups:
+      nodegroups:
+        logging_cluster:
+          - 'G@roles:elasticsearch'
+          - 'and'
+          - 'G@environment:operations'
+        kibana:
+          - 'G@roles:kibana'
+          - 'and'
+          - 'G@environment:operations'
+        consul_operations:
+          - 'G@roles:consul_server'
+          - 'and'
+          - 'G@environment:operations'
+        consul_mitxpro_prod:
+          - 'G@roles:consul_server'
+          - 'and'
+          - 'G@environment:mitxpro-production'
+        consul_mitxpro_qa:
+          - 'G@roles:consul_server'
+          - 'and'
+          - 'G@environment:mitxpro-qa'
+        consul_mitx_prod:
+          - 'G@roles:consul_server'
+          - 'and'
+          - 'G@environment:mitx-production'
+        consul_mitx_qa:
+          - 'G@roles:consul_server'
+          - 'and'
+          - 'P@environment:mitx-qa'
+        consul_apps_prod:
+          - 'G@roles:consul_server'
+          - 'and'
+          - 'G@environment:production-apps'
+        consul_apps_rc:
+          - 'G@roles:consul_server'
+          - 'and'
+          - 'P@environment:rc-apps'
+        ocw_prod:
+          - 'P@roles:ocw'
+          - 'and'
+          - 'G@ocw-environment:production'
+        ocw_qa:
+          - 'P@roles:ocw'
+          - 'and'
+          - 'G@ocw-environment:qa'
+        ocw_cms_prod:
+          - 'G@roles:ocw-cms'
+          - 'and'
+          - 'G@ocw-environment:production'
+        ocw_cms_qa:
+          - 'G@roles:ocw-cms'
+          - 'and'
+          - 'G@ocw-environment:qa'
+        rabbitmq_mitx_prod:
+          - 'G@roles:rabbitmq'
+          - 'and'
+          - 'G@environment:mitx-production'
+        rabbitmq_mitx_qa:
+          - 'G@roles:rabbitmq'
+          - 'and'
+          - 'G@environment:mitx-qa'
+        rabbitmq_mitxpro_prod:
+          - 'G@roles:rabbitmq'
+          - 'and'
+          - 'G@environment:mitxpro-production'
+        rabbitmq_mitxpro_qa:
+          - 'G@roles:rabbitmq'
+          - 'and'
+          - 'G@environment:mitxpro-qa'
+        rabbitmq_apps_prod:
+          - 'G@roles:rabbitmq'
+          - 'and'
+          - 'G@environment:production-apps'
+        rabbitmq_apps_rc:
+          - 'G@roles:rabbitmq'
+          - 'and'
+          - 'G@environment:rc-apps'
+        ovs_rc:
+          - 'G@roles:odl-video-service'
+          - 'and'
+          - 'G@environment:rc-apps'
+        ovs_production:
+          - 'G@roles:odl-video-service'
+          - 'and'
+          - 'G@environment:production-apps'
   minion_configs:
     vault:
       vault.url: https://active.vault.service.consul:8200
