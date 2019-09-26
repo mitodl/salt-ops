@@ -11,7 +11,6 @@ etl_dependencies:
   - libpqxx-dev
 
 etl:
-  task_name: email_mapping
   configs:
     - mitxpro:
         db_url: postgresql://{{ xpro_db_creds.data.username }}:{{ xpro_db_creds.data.password }}@postgresql-mitxpro.service.production-apps.consul:5432/mitxpro
