@@ -13,7 +13,7 @@ etl_dependencies:
 etl:
   configs:
     mitxpro:
-      db_url: postgresql://{{ xpro_db_creds.data.username }}:{{ xpro_db_creds.data.password }}@postgresql-mitxpro.service.production-apps.consul:5432/mitxpro
+      db_url: postgresql://{{ xpro_db_creds.data.username }}:{{ xpro_db_creds.data.password }}@postgres-mitxpro.service.production-apps.consul:5432/mitxpro
       s3_bucket: mitodl-data-lake/mailgun
       hash_salt: __vault__::secret-operations/global/anonymizer-hash-salt>data>value
       aws_access_key_id: __vault__:cache:aws-mitx/creds/read-write-mitodl-data-lake>data>access_key
