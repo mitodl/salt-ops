@@ -56,8 +56,8 @@ fluentd:
             - format1: '/^(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d+) /'
             - format2: '/(?<log_level>[A-Z]+) (?<process_id>\d+) /'
             - format3: '/\[(?<namespace>[a-zA-Z._-]+?)\] /'
-            - format4: '(?<filename>[a-zA-Z0-9-_.]+):(?<line_number>\d+) '
-            - format5: '- (?<message>.*)'
+            - format4: '/(?<filename>[a-zA-Z0-9-_.]+):(?<line_number>\d+) /'
+            - format5: '/- (?<message>.*)/'
             - multiline_flush_interval: '5s'
         - directive: source
           attrs:
