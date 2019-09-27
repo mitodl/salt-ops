@@ -225,7 +225,7 @@ salt_master:
         keyname: salt-master-prod
         private_key_path: /etc/salt/keys/aws/salt-master-prod.pem
         extra_params:
-          script_args: -U -x -F -A salt.private.odl.mit.edu
+          script_args: -U -x python3 -F -A salt.private.odl.mit.edu
           sync_after_install: all
           delete_ssh_keys: True
       - name: mitx-stage
