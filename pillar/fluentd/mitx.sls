@@ -39,7 +39,7 @@ fluentd:
             - pos_file: /edx/var/log/cms/edx.log.pos
             - format: multiline
             - format_firstline: '/^\w{3}\s+\d{1,2} \d{2}:\d{2}:\d{2}/'
-            - format1: '/^(?<time>\w{3}\s+\d{1,2} \d{2}:\d{2}:\d{2}) (?<hostname>[^ ]+?) \[service_variant=(?<service_variant>\w+?)\]\[(?<namespace>[a-zA-Z._-]+?)\]\[env:(?<logging_env>[a-zA-Z-_.]+)\]\ (?<log_level>\w+) \[[^ ]+\s+\d+\] \[(?<filename>[a-zA-Z0-9-_.]+):(?<line_number>\d+)\] - (?<message>.*)$/'
+            - format1: '/^(?<time>\w{3}\s+\d{1,2} \d{2}:\d{2}:\d{2}) (?<hostname>[^ ]+?) \[service_variant=(?<service_variant>\w+?)\]\[(?<namespace>[a-zA-Z._\-]+?)\]\[env:(?<logging_env>[a-zA-Z\-_.]+)\]\ (?<log_level>\w+) \[[^ ]+\s+\d+\] \[(?<filename>[a-zA-Z0-9\-_.]+):(?<line_number>\d+)\] - (?<message>.*)$/'
             - time_format: '%b %d %H:%M:%S'
             - multiline_flush_interval: '5s'
         - directive: source
@@ -54,8 +54,8 @@ fluentd:
             - format_firstline: '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d+ /'
             - format1: '/^(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d+) /'
             - format2: '/(?<log_level>[A-Z]+) (?<process_id>\d+) /'
-            - format3: '/\[(?<namespace>[a-zA-Z._-]+?)\] /'
-            - format4: '/(?<filename>[a-zA-Z0-9-_.]+):(?<line_number>\d+) /'
+            - format3: '/\[(?<namespace>[a-zA-Z._\-]+?)\] /'
+            - format4: '/(?<filename>[a-zA-Z0-9\-_.]+):(?<line_number>\d+) /'
             - format5: '/- (?<message>.*)/'
             - multiline_flush_interval: '5s'
         - directive: source
@@ -68,7 +68,7 @@ fluentd:
             - pos_file: /edx/var/log/lms/edx.log.pos
             - format: multiline
             - format_firstline: '/^\w{3}\s+\d{1,2} \d{2}:\d{2}:\d{2}/'
-            - format1: '/^(?<time>\w{3}\s+\d{1,2} \d{2}:\d{2}:\d{2}) (?<hostname>[^ ]+?) \[service_variant=(?<service_variant>\w+?)\]\[(?<namespace>[a-zA-Z._-]+?)\]\[env:(?<logging_env>[a-zA-Z-_.]+)\]\ (?<log_level>\w+) \[[^ ]+\s+\d+\] \[(?<filename>[a-zA-Z0-9-_.]+):(?<line_number>\d+)\] - (?<message>.*)$/'
+            - format1: '/^(?<time>\w{3}\s+\d{1,2} \d{2}:\d{2}:\d{2}) (?<hostname>[^ ]+?) \[service_variant=(?<service_variant>\w+?)\]\[(?<namespace>[a-zA-Z._\-]+?)\]\[env:(?<logging_env>[a-zA-Z\-_.]+)\]\ (?<log_level>\w+) \[[^ ]+\s+\d+\] \[(?<filename>[a-zA-Z0-9\-_.]+):(?<line_number>\d+)\] - (?<message>.*)$/'
             - time_format: '%b %d %H:%M:%S'
             - multiline_flush_interval: '5s'
         - directive: source
@@ -95,7 +95,7 @@ fluentd:
             - pos_file: /edx/var/log/xqueue/edx.log.pos
             - format: multiline
             - format_firstline: '/^\w{3}\s+\d{1,2}\s+\d{1,2}:\d{2}:\d{2}/'
-            - format1: '/^(?<time>\w{3}\s+\d{1,2}\s+\d{1,2}:\d{2}:\d{2}) (?<hostname>[^ ]+?) \[service_variant=(?<service_variant>\w+?)\]\[(?<namespace>[a-zA-Z._-]+?)\]\[env:(?<logging_env>[a-zA-Z-_.]+)\]\ (?<log_level>\w+) \[[^ ]+\s+\d+\] \[(?<filename>[a-zA-Z0-9-_.]+):(?<line_number>\d+)\] - (?<message>.*)$/'
+            - format1: '/^(?<time>\w{3}\s+\d{1,2}\s+\d{1,2}:\d{2}:\d{2}) (?<hostname>[^ ]+?) \[service_variant=(?<service_variant>\w+?)\]\[(?<namespace>[a-zA-Z._\-]+?)\]\[env:(?<logging_env>[a-zA-Z\-_.]+)\]\ (?<log_level>\w+) \[[^ ]+\s+\d+\] \[(?<filename>[a-zA-Z0-9\-_.]+):(?<line_number>\d+)\] - (?<message>.*)$/'
             - time_format: '%b %d %H:%M:%S'
             - multiline_flush_interval: '5s'
         {% if 'mitx-' in salt.grains.get('environment') %}
@@ -109,7 +109,7 @@ fluentd:
             - pos_file: /edx/var/log/gr/gitreload.log.pos
             - format: multiline
             - format_firstline: '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{0,3}?/'
-            - format1: '/^(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{0,3}? (?<log_level>\w+?) (?<process_id>\d+) (?<logger_name>\[[\w._\d]+\]) (?<filename>[a-zA-Z0-9-_.]+):(?<line_number>\d+) - (?<hostname>[^ ]+?)- (?<message>.*)/'
+            - format1: '/^(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{0,3}? (?<log_level>\w+?) (?<process_id>\d+) (?<logger_name>\[[\w._\d]+\]) (?<filename>[a-zA-Z0-9\-_.]+):(?<line_number>\d+) - (?<hostname>[^ ]+?)- (?<message>.*)/'
             - multiline_flush_interval: '5s'
         {% endif %}
         - directive: source
