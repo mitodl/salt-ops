@@ -189,8 +189,6 @@ base:
     - monit
     - monit.nginx_cert_expiration
     - monit.latex2edx
-    - monit.mysql_connection
-    - monit.mongodb_connection
   'P@purpose:.*-draft and P@environment:mitx-(qa|production)':
     - match: compound
     - consul.mitx-draft
