@@ -81,7 +81,7 @@ fluentd:
             - pos_file: /edx/var/log/supervisor/lms-stderr.pos
             - format: multiline
             - format_firstline: '/^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/'
-            - format1: '/^\[(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [+\-]\d{4})\]/ '
+            - format1: '/^\[(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [+\-]\d{4})\] /'
             - format2: '/\[(?<process_id>\d{4})\] \[(?<log_level>\w+?)\] /'
             - format3: '/(?<message>.*)/'
             - multiline_flush_interval: '5s'
