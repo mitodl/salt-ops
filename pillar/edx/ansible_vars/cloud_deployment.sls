@@ -10,7 +10,7 @@
 {% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
 {% set bucket_uses = env_data.secret_backends.aws.bucket_uses %}
 {% set sentry_dsn = salt.vault.read('secret-operations/global/' ~ business_unit ~ '/sentry-dsn').data.value %}
-{% set smtp_config = salt.vault.read('secret-' ~ business_unit ~ '/' ~ environment ~ '/smtp') %}
+{% set smtp_config = salt.vault.read('secret-' ~ business_unit ~ '/' ~ environment ~ '/smtp_config') %}
 
 {% set LMS_DOMAIN = purpose_data.domains.lms %}
 {% set CMS_DOMAIN = purpose_data.domains.cms %}
