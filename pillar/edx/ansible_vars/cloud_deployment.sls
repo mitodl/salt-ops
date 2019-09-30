@@ -10,9 +10,8 @@
 {% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
 {% set bucket_uses = env_data.secret_backends.aws.bucket_uses %}
 {% set sentry_dsn = salt.vault.read('secret-operations/global/' ~ business_unit ~ '/sentry-dsn').data.value %}
+{% set smtp_config = salt.vault.read('secret-' ~ business_unit ~ '/' ~ environment ~ '/smtp') %}
 
-{% set DEFAULT_FEEDBACK_EMAIL = 'mitx-support@mit.edu' %}
-{% set DEFAULT_FROM_EMAIL = 'mitx-support@mit.edu' %}
 {% set LMS_DOMAIN = purpose_data.domains.lms %}
 {% set CMS_DOMAIN = purpose_data.domains.cms %}
 {% set EDXAPP_LMS_ISSUER = "https://{}/oauth2".format(LMS_DOMAIN) %}
@@ -188,17 +187,17 @@ edx:
         max_tasks_per_child: 1
 
     EDXAPP_GOOGLE_ANALYTICS_ACCOUNT: {{ edxapp_google_analytics_account }}
-    EDXAPP_BUGS_EMAIL: mitx-support@mit.edu
+    EDXAPP_BUGS_EMAIL: {{ smtp_config.data.support_email }}
     EDXAPP_COMMENTS_SERVICE_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
     EDXAPP_LMS_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
-    EDXAPP_CONTACT_EMAIL: mitx-support@mit.edu
-    EDXAPP_DEFAULT_FEEDBACK_EMAIL: "{{ DEFAULT_FEEDBACK_EMAIL }}"
-    EDXAPP_DEFAULT_FROM_EMAIL: "{{ DEFAULT_FROM_EMAIL }}"
-    EDXAPP_EMAIL_HOST: __vault__::secret-operations/global/mit-smtp>data>relay_host
-    EDXAPP_EMAIL_PORT: __vault__::secret-operations/global/mit-smtp>data>relay_port
-    EDXAPP_EMAIL_HOST_USER: __vault__::secret-operations/global/mit-smtp>data>relay_username
-    EDXAPP_EMAIL_HOST_PASSWORD: __vault__::secret-operations/global/mit-smtp>data>relay_password
+    EDXAPP_CONTACT_EMAIL: {{ smtp_config.data.support_email }}
+    EDXAPP_DEFAULT_FEEDBACK_EMAIL: "{{ smtp_config.data.support_email }}"
+    EDXAPP_DEFAULT_FROM_EMAIL: "{{ smtp_config.data.support_email }}"
+    EDXAPP_EMAIL_HOST: {{ smtp_config.data.relay_host }}
+    EDXAPP_EMAIL_PORT: {{ smtp_config.data.relay_port }}
+    EDXAPP_EMAIL_HOST_USER: {{ smtp_config.data.relay_username }}
+    EDXAPP_EMAIL_HOST_PASSWORD: {{ smtp_config.data.relay_password }}
     EDXAPP_EMAIL_USE_TLS: True
     EDXAPP_GRADE_BUCKET: {{ bucket_prefix }}-grades-{{ purpose }}-{{ environment }}
     EDXAPP_GRADE_ROOT_PATH: {{ edxapp_aws_grades_root_path }}
@@ -213,7 +212,7 @@ edx:
     {% else %}
     EDXAPP_STATIC_URL_BASE: /static/
     {% endif %}
-    EDXAPP_TECH_SUPPORT_EMAIL: mitx-support@mit.edu
+    EDXAPP_TECH_SUPPORT_EMAIL: {{ smtp_config.data.support_email }}
     EDXAPP_CMS_ISSUER: "{{ EDXAPP_CMS_ISSUER }}"
     EDXAPP_VIDEO_IMAGE_SETTINGS:
       VIDEO_IMAGE_MAX_BYTES : 2097152
@@ -231,7 +230,7 @@ edx:
 
     common_feature_flags: &common_feature_flags
       COURSE_DEFAULT_INVITE_ONLY: {{ edxapp_course_default_invite_only }}
-      REROUTE_ACTIVATION_EMAIL: mitx-support@mit.edu
+      REROUTE_ACTIVATION_EMAIL: {{ smtp_config.data.support_email }}
       ENABLE_INSTRUCTOR_ANALYTICS: true
       ENABLE_INSTRUCTOR_LEGACY_DASHBOARD: true
       ENABLE_CSMH_EXTENDED: True
@@ -245,7 +244,7 @@ edx:
       - ['MITx Stacktrace Recipients', 'cuddle-bunnies@mit.edu']
       BOOK_URL: ""
       DATA_DIR: {{ edxapp_git_repo_dir }}
-      SERVER_EMAIL: mitxmail@mit.edu
+      SERVER_EMAIL: {{ smtp_config.data.server_email }}
       TIME_ZONE_DISPLAYED_FOR_DEADLINES: "{{ TIME_ZONE }}"
       RAVEN_CONFIG:
         dsn: {{ sentry_dsn }}
@@ -259,7 +258,7 @@ edx:
 
     EDXAPP_LMS_ENV_EXTRA:
       <<: *common_env_config
-      BULK_EMAIL_DEFAULT_FROM_EMAIL: mitx-support@mit.edu
+      BULK_EMAIL_DEFAULT_FROM_EMAIL: {{ smtp_config.data.support_email }}
       COURSE_ABOUT_VISIBILITY_PERMISSION: "{{ edxapp_course_about_visibility_permission }}"
       COURSE_CATALOG_VISIBILITY_PERMISSION: "{{ edxapp_course_catalog_visibility_permission }}"
       ALLOW_ALL_ADVANCED_COMPONENTS: True
@@ -278,7 +277,7 @@ edx:
       <<: *common_env_config
       FEATURES:
         <<: *common_feature_flags
-        STAFF_EMAIL: mitx-support@mit.edu
+        STAFF_EMAIL: {{ smtp_config.data.support_email }}
     EDXAPP_ENABLE_MOBILE_REST_API: True
     EDXAPP_ENABLE_SYSADMIN_DASHBOARD: True
     EDXAPP_FILE_UPLOAD_STORAGE_BUCKET_NAME: {{ bucket_prefix }}-storage-{{ purpose }}-{{ environment }}
