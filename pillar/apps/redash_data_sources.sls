@@ -69,3 +69,11 @@ redash:
         port: 5432
         user: __vault__:cache:postgres-production-apps-mitxpro/creds/readonly>data>username
         password: __vault__:cache:postgres-production-apps-mitxpro/creds/readonly>data>password
+    - name: Redash Metadata
+      type: pg
+      options:
+        dbname: redash
+        host: postgres-redash.service.consul
+        port: 5432
+        user: __vault__:cache:postgres-operations-redash/creds/readonly>data>username
+        password: __vault__:cache:postgres-operations-redash/creds/readonly>data>password
