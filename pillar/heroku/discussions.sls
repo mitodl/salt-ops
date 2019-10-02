@@ -23,6 +23,9 @@
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'discussionsci',
       'OPEN_DISCUSSIONS_COOKIE_DOMAIN': 'odl.mit.edu',
       'OPEN_DISCUSSIONS_SUPPORT_EMAIL': 'odl-discussions-ci-support@mit.edu',
+      'PGBOUNCER_DEFAULT_POOL_SIZE': 5,
+      'PGBOUNCER_MAX_CLIENT_CONN': 20,
+      'PGBOUNCER_MIN_POOL_SIZE': 5,
       'release_branch': 'master',
       'SOCIAL_AUTH_MICROMASTERS_LOGIN_URL': 'https://micromasters-ci.odl.mit.edu/discussions/',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions-ci.odl.mit.edu/saml/metadata',
@@ -49,6 +52,9 @@
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'discussionsrc',
       'OPEN_DISCUSSIONS_COOKIE_DOMAIN': 'odl.mit.edu',
       'OPEN_DISCUSSIONS_SUPPORT_EMAIL': 'odl-discussions-rc-support@mit.edu',
+      'PGBOUNCER_DEFAULT_POOL_SIZE': 50,
+      'PGBOUNCER_MAX_CLIENT_CONN': 500,
+      'PGBOUNCER_MIN_POOL_SIZE': 20,
       'release_branch': 'release-candidate',
       'SOCIAL_AUTH_MICROMASTERS_LOGIN_URL': 'https://micromasters-rc.odl.mit.edu/login/edxorg/?next=/discussions/',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions-rc.odl.mit.edu/saml/metadata',
@@ -75,6 +81,9 @@
       'OPEN_DISCUSSIONS_BASE_URL': 'https://open.mit.edu',
       'OPEN_DISCUSSIONS_COOKIE_DOMAIN': 'mit.edu',
       'OPEN_DISCUSSIONS_SUPPORT_EMAIL': 'odl-discussions-support@mit.edu',
+      'PGBOUNCER_DEFAULT_POOL_SIZE': 50,
+      'PGBOUNCER_MAX_CLIENT_CONN': 500,
+      'PGBOUNCER_MIN_POOL_SIZE': 20,
       'release_branch': 'release',
       'SOCIAL_AUTH_MICROMASTERS_LOGIN_URL': 'https://micromasters.mit.edu/login/edxorg/?next=/discussions/',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions.odl.mit.edu/saml/metadata',
@@ -166,9 +175,9 @@ heroku:
     OPEN_DISCUSSIONS_REDDIT_VALIDATE_SSL: True
     OPEN_DISCUSSIONS_SUPPORT_EMAIL: {{ env_data.OPEN_DISCUSSIONS_SUPPORT_EMAIL }}
     OPEN_DISCUSSIONS_USE_S3: True
-    PGBOUNCER_DEFAULT_POOL_SIZE: 50
-    PGBOUNCER_MAX_CLIENT_CONN: 500
-    PGBOUNCER_MIN_POOL_SIZE: 20
+    PGBOUNCER_DEFAULT_POOL_SIZE: {{ env_data.PGBOUNCER_DEFAULT_POOL_SIZE}}
+    PGBOUNCER_MAX_CLIENT_CONN: {{ env_data.PGBOUNCER_MAX_CLIENT_CONN }}
+    PGBOUNCER_MIN_POOL_SIZE: {{ env_data.PGBOUNCER_MIN_POOL_SIZE }}
     RECAPTCHA_SECRET_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>secret_key
     RECAPTCHA_SITE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>site_key
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.env_name }}/django-secret-key>data>value
