@@ -3,6 +3,7 @@
 {% set env_settings = env_data.environments[ENVIRONMENT] %}
 {% set VPC_NAME = salt.environ.get('VPC_NAME', env_settings.vpc_name) %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_settings.business_unit) %}
+{% set release_id = (salt.sdb.get('sdb://consul/elasticache/' ~ ENVIRONMENT ~ '/release-id') or 'v1') %}
 
 {% set network_prefix = env_settings.network_prefix %}
 {% set SUBNETS_CIDR = '{}.0.0/22'.format(network_prefix) %}
@@ -61,7 +62,7 @@ create_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_replication_group
 {% else %}
 create_{{ ENVIRONMENT }}_elasticache_{{ cache_config.engine }}_cluster_{{ cache_purpose }}:
   boto3_elasticache.cache_cluster_present:
-    - CacheClusterId: {{ cache_config.cluster_id[:20].strip('-') }}
+    - CacheClusterId: {{ cache_config.cluster_id }}-{{ release_id }}
     - NumCacheNodes: {{ cache_config.get('num_cache_nodes', 2) }}
     - AZMode: {{ 'cross-az' if cache_config.get('num_cache_nodes', 2) > 1 else 'single-az' }}
 {% endif %}
