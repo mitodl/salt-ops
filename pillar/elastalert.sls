@@ -45,6 +45,7 @@ elastic_stack:
             of the mitx instances so that it can be further investigated.
           opsgenie_key: {{ opsgenie_key }}
           opsgenie_priority: P2
+          opsgenie_alias: ssh_mitx
           type: frequency
           index: logstash-*
           num_events: 1
@@ -75,6 +76,7 @@ elastic_stack:
             encountered in the MITx or xPRO production logs.
           opsgenie_key: {{ opsgenie_key }}
           opsgenie_priority: P1
+          opsgenie_alias: edx_operational_failure
           type: frequency
           index: logstash-*
           num_events: 1
@@ -101,6 +103,7 @@ elastic_stack:
             git_export_utils.py is encountered in the mitx production logs.
           opsgenie_key: {{ opsgenie_key }}
           opsgenie_priority: P3
+          opsgenie_alias: mitx_gitreload_alert
           type: frequency
           index: logstash-*
           num_events: 5
@@ -129,6 +132,7 @@ elastic_stack:
             encountered in the MITx or xPRO production logs.
           opsgenie_key: {{ opsgenie_key }}
           opsgenie_priority: P3
+          opsgenie_alias: edx_multiple_forum_roles
           type: frequency
           index: logstash-*
           num_events: 1
@@ -158,6 +162,7 @@ elastic_stack:
             not being able to write to the Memcache layer.
           opsgenie_key: {{ opsgenie_key }}
           opsgenie_priority: P2
+          opsgenie_alias: edx_session_save_failure
           type: frequency
           index: logstash-*
           num_events: 1
@@ -211,6 +216,7 @@ elastic_stack:
             encountered in the rabbitmq.server logs due to expired vault credentials.
           opsgenie_key: {{ opsgenie_key }}
           opsgenie_priority: P2
+          opsgenie_alias: rabbitmq_creds_expired
           type: frequency
           index: logstash-*
           num_events: 1
@@ -235,6 +241,7 @@ elastic_stack:
             Notify when the IAM credentials for FluentD are expired
           opsgenie_key: {{ opsgenie_key }}
           opsgenie_priority: P2
+          opsgenie_alias: fluent_s3_error
           type: frequency
           index: logstash-*
           num_events: 1
@@ -286,6 +293,7 @@ elastic_stack:
             process
           opsgenie_key: {{ opsgenie_key }}
           opsgenie_priority: P1
+          opsgenie_alias: nginx_bad_gateway
           type: frequency
           index: logstash-*
           num_events: 5
@@ -313,6 +321,7 @@ elastic_stack:
             there no mismatches
           opsgenie_key: {{ opsgenie_key }}
           opsgenie_priority: P3
+          opsgenie_alias: xpro_openedx_oauth2error
           type: frequency
           index: logstash-*
           num_events: 1
@@ -336,7 +345,7 @@ elastic_stack:
             misconfigured JWT keys under lms.env.json
           opsgenie_key: {{ opsgenie_key }}
           opsgenie_priority: P2
-          opsgenie_alias: xpro_misconfigured_jwt_keys
+          opsgenie_alias: xpro_jwt_error
           type: frequency
           index: logstash-mitxpro-*
           num_events: 1
