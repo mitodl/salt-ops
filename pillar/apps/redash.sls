@@ -117,7 +117,7 @@ uwsgi:
         - env: '%(_)'
         - endfor: ''
         - attach-daemon2: >-
-            cmd=/usr/local/pyenv/versions/{{ python_version }}/bin/celery worker -A redash.worker -B -c2 -Qscheduled_queries\,queries\,celery --pidfile /opt/{{ app_name }}/celery.pid -Ofair --maxtasksperchild=10 -linfo,
+            cmd=/usr/local/pyenv/versions/{{ python_version }}/bin/celery worker -A redash.worker -B -c8 -Qscheduled_queries\,queries\,celery --pidfile /opt/{{ app_name }}/celery.pid -Ofair --maxtasksperchild=50 -linfo,
             pidfile=/opt/{{ app_name }}/celery.pid,
             daemonize=true,
             touch=/opt/{{ app_name}}/deploy_complete.txt
