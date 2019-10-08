@@ -8,6 +8,7 @@
 {% set minion_id = salt.grains.get('id', '') %}
 {% set pg_creds = salt.vault.cached_read('postgres-' ~ ENVIRONMENT ~ '-redash/creds/redash', cache_prefix=minion_id) %}
 {% set redash_fluentd_webhook_token = salt.vault.read('secret-operations/global/redash_webhook_token').data.value %}
+{% set process_count = 4 * salt.grains.get('num_cpus', 2) %}
 
 schedule:
   refresh_{{ app_name }}_credentials:
@@ -117,7 +118,7 @@ uwsgi:
         - env: '%(_)'
         - endfor: ''
         - attach-daemon2: >-
-            cmd=/usr/local/pyenv/versions/{{ python_version }}/bin/celery worker -A redash.worker -B -c8 -Qscheduled_queries\,queries\,celery --pidfile /opt/{{ app_name }}/celery.pid -Ofair --maxtasksperchild=50 -linfo,
+            cmd=/usr/local/pyenv/versions/{{ python_version }}/bin/celery worker -A redash.worker -B -c{{ process_count }} -Qscheduled_queries\,queries\,celery --pidfile /opt/{{ app_name }}/celery.pid -Ofair --maxtasksperchild=50 -linfo,
             pidfile=/opt/{{ app_name }}/celery.pid,
             daemonize=true,
             touch=/opt/{{ app_name}}/deploy_complete.txt

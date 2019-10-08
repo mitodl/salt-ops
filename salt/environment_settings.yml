@@ -609,7 +609,7 @@ environments:
     purposes:
       redash:
         app: redash
-        num_instances: 2
+        num_instances: 3
         domains:
           - bi.odl.mit.edu
         business_unit: operations
