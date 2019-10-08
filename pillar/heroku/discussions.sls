@@ -153,6 +153,12 @@ heroku:
     OCW_LEARNING_COURSE_BUCKET_NAME: {{ env_data.OCW_LEARNING_COURSE_BUCKET_NAME }}
     OCW_LEARNING_COURSE_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-{{ env_data.OCW_LEARNING_COURSE_BUCKET_NAME }}>data>secret_key
     OCW_UPLOAD_IMAGE_ONLY: {{ env_data.OCW_UPLOAD_IMAGE_ONLY }}
+    OLL_ALT_URL: https://openlearninglibrary.mit.edu/courses/
+    OLL_API_ACCESS_TOKEN_URL: https://openlearninglibrary.mit.edu/oauth2/access_token/
+    OLL_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/open-learning-library-client>data>client-id
+    OLL_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/open-learning-library-client>data>client-secret
+    OLL_API_URL: https://discovery.openlearninglibrary.mit.edu/api/v1/catalogs/1/courses/
+    OLL_BASE_URL: https://openlearninglibrary.mit.edu/course/
     OPEN_DISCUSSIONS_ADMIN_EMAIL: cuddle-bunnies@mit.edu
     OPEN_DISCUSSIONS_BASE_URL: {{ env_data.OPEN_DISCUSSIONS_BASE_URL }}
     OPEN_DISCUSSIONS_COOKIE_DOMAIN: {{ env_data.OPEN_DISCUSSIONS_COOKIE_DOMAIN }}
