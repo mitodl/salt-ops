@@ -206,6 +206,7 @@ heroku:
     USE_X_FORWARDED_HOST: True
     USE_X_FORWARDED_PORT: True
     XPRO_CATALOG_API_URL: https://{{ env_data.MITXPRO_BASE_URL }}/api/programs/
+    XPRO_COURSES_API_URL: https://{{ env_data.MITXPRO_BASE_URL }}/api/courses/
 
 schedule:
   refresh_{{ env_data.app_name }}_configs:
