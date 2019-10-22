@@ -21,7 +21,7 @@ mitx_etl:
       csv_folder: /mnt/data/mitx_etl/csv_query_folder
       courses: /mnt/data/mitx_etl/courses
     Mongodb:
-      host: mongodb.service.consul
+      host: mongodb-master.service.consul
       port: 27017
       user: __vault__:cache:mongodb-{{ env }}/creds/admin>data>username
       password: __vault__:cache:mongodb-{{ env }}/creds/admin>data>password
