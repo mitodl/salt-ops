@@ -144,4 +144,16 @@ ensure_state_of_scripts_symlink:
     - target: /var/lib/ocwcms/mirror/scripts
     - force: True
     - backupname: scripts_old
+
+sync_ocw_mirror_web_directory:
+  rsync.synchronized:
+    - name: /data2/rsync
+    - source: /var/lib/ocwcms/web/
+    - delete: False
+    - update: True
+    - additional_opts:
+        - '-p'
+        - '-t'
+        - '-c'
+        - '--delay-updates'
 {% endif %}
