@@ -20,6 +20,12 @@ mitx_etl:
     Paths:
       csv_folder: /mnt/data/mitx_etl/csv_query_folder
       courses: /mnt/data/mitx_etl/courses
+    Mongodb:
+      host: mongodb.service.consul
+      port: 27017
+      user: __vault__:cache:mongodb-{{ env }}/creds/admin>data>username
+      password: __vault__:cache:mongodb-{{ env }}/creds/admin>data>password
+      forum_db: forum_{{ purpose_suffix }}
     MySQL:
       user: __vault__:cache:mysql-{{ env }}/creds/admin>data>username
       pass: __vault__:cache:mysql-{{ env }}/creds/admin>data>password
