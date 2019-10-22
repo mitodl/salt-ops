@@ -25,7 +25,7 @@ install_{{ task_name }}_etl_requirements:
     - requirements: /odl-etl/{{ task_name }}/requirements.txt
     - python: /usr/bin/python3
     - env_vars:
-        PATH_VAR: '/usr/local/bin/pip3'
+        PATH_VAR: '/usr/bin/pip3'
     - require:
       - git: clone_odl_etl_repo
       - pkg: install_etl_os_dependencies
