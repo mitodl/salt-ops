@@ -20,7 +20,7 @@ add_task_to_cron:
 
 install_mongodb_client_for_dumping_data:
   pkg.installed:
-    - name: mongodb-clients
+    - name: mongodb-org-tools
     - refresh: True
     - require:
       - pkgrepo: add_mongodb_package_repository
