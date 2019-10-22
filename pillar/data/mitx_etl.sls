@@ -20,6 +20,7 @@ mitx_etl:
     Paths:
       csv_folder: /mnt/data/mitx_etl/csv_query_folder
       courses: /mnt/data/mitx_etl/courses
+      forum_data: /mnt/data/mitx_etl/forum_data
     Mongodb:
       host: mongodb-master.service.consul
       port: 27017
