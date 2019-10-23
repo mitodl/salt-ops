@@ -28,6 +28,7 @@ deploy_salt_masters_cloud_map:
                   roles:
                     - master
                     - master-production
+                  purpose: salt-production
                 network_interfaces:
                   - DeviceIndex: 0
                     AssociatePublicIpAddress: True
@@ -43,6 +44,7 @@ deploy_salt_masters_cloud_map:
                   roles:
                     - master
                     - master-qa
+                  purpose: salt-qa
                 network_interfaces:
                   - DeviceIndex: 0
                     AssociatePublicIpAddress: True

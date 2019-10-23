@@ -7,6 +7,5 @@ base:
     - consul.tests.test_dns_setup
     - master
     - master.api
-    - master_utils.dns
     - master_utils.libgit
     - master.aws

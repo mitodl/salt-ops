@@ -1,6 +1,3 @@
-include:
-  - master_utils.contrib
-
 create_dns_entry_for_salt_master:
   boto_route53.present:
     - name: {{ salt.pillar.get('salt_master:dns', 'salt.odl.mit.edu') }}
@@ -16,5 +13,3 @@ create_dns_private_entry_for_salt_master:
     - value: {{ grains.get('fqdn') }}
     - record_type: CNAME
     - zone: private.odl.mit.edu.
-    - require:
-        - module: load_contrib_modules

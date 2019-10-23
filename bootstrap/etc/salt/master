@@ -21,6 +21,8 @@ gitfs_remotes:
       - root: extensions
   - https://github.com/mitodl/consul-formula
   - https://github.com/mitodl/vault-formula
+  - https://github.com/mitodl/fluentd-formula
+  - https://github.com/mitodl/datadog-formula
 
 root_dir: bootstrap/
 pki_dir: etc/salt/pki/master

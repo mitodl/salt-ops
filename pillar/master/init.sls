@@ -1,23 +1,21 @@
+{% set purpose = salt.grains.get('purpose') %}
+
 salt_master:
+  dns: {{ purpose }}.odl.mit.edu
   libgit:
-    release: '0.27.3'
-    hash: 50a57bd91f57aa310fb7d5e2a340b3779dc17e67b4e7e66111feac5c2432f1a5
+    release: '0.28.3'
+    hash: ee5344730fe11ce7c86646e19c2d257757be293f5a567548d398fb3af8b8e53b
   overrides:
     pkgs:
       - build-essential
       - curl
-      - emacs
       - git
       - libffi-dev
       - libssh2-1-dev
       - libssl-dev
       - mosh
-      - python-dev
-      - python-pip
-      - reclass
-      - salt-api
-      - salt-cloud
-      - salt-doc
+      - python3-dev
+      - python3-pip
       - tmux
       - vim
     pip_deps:
@@ -35,21 +33,21 @@ salt_master:
     cert_path: /etc/salt/ssl/certs/salt.odl.mit.com.crt
     key_path: /etc/salt/ssl/certs/salt.odl.mit.com.key
     cert_params:
-      emailAddress: mitx-devops@mit.edu
+      emailAddress: odl-devops@mit.edu
       bits: 4096
-      CN: salt.odl.mit.edu
+      CN: {{ purpose }}.odl.mit.edu
       ST: MA
-      L: Boston
+      L: Cambridge
       O: MIT
-      OU: Office of Digital Learning
+      OU: Open Learning
   aws:
     providers:
       - name: mitx
         id: use-instance-role-credentials
         key: use-instance-role-credentials
-        keyname: salt-master-prod
-        private_key_path: /etc/salt/keys/aws/salt-master-prod.pem
+        keyname: {{ purpose }}
+        private_key_path: /etc/salt/keys/aws/{{ purpose }}.pem
         extra_params:
-          script_args: -U -F
+          script_args: -U -F -x python3 -A {{ purpose }}.private.odl.mit.edu
           sync_after_install: all
           delete_ssh_keys: True
