@@ -24,19 +24,19 @@ vault:
         ttl: {{ ttl }}
         max_ttl: {{ ttl }}
         allowed_domains:
-          {{ app }}.service.consul
-          nearest-{{ app }}.query.consul
-          {{ app }}-master.service.consul
+          - {{ app }}.service.consul
+          - nearest-{{ app }}.query.consul
+          - {{ app }}-master.service.consul
           {% if app in ['consul', 'fluentd'] %}
-          {{ app }}.service.operations.consul
+          - {{ app }}.service.operations.consul
           {% endif %}
         allow_bare_domains: true
         key_type: rsa
         key_bits: 4096
         key_usage:
-          DigitalSignature
-          KeyAgreement
-          KeyEncipherment
+          - DigitalSignature
+          - KeyAgreement
+          - KeyEncipherment
         ou: {{ ou }}
         organization: {{ org }}
         country: {{ country }}
