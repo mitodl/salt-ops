@@ -4,10 +4,10 @@
       'pkgs': ['gcc', 'make']
     },
     'Debian': {
-      'pkgs': ['python-dev', 'python', 'curl', 'dnsutils'],
+      'pkgs': ['python3-dev', 'python3', 'curl', 'dnsutils'],
     },
     'RedHat': {
-      'pkgs': ['python', 'python-devel', 'curl', 'bind-utils'],
+      'pkgs': ['python3', 'python3-devel', 'curl', 'bind-utils'],
     },
 }, grain='os_family', merge=salt.pillar.get('python_dependencies'), default='Debian', base='default') %}
 
@@ -20,10 +20,10 @@ install_global_pip_executable:
   cmd.run:
     - name: |
         curl -L "https://bootstrap.pypa.io/get-pip.py" > get_pip.py
-        sudo python get_pip.py 'pip<18.1'
+        {{ salt.grains.get('pythonexecutable') }} get_pip.py
         rm get_pip.py
     - reload_modules: True
-    - unless: which pip
+    - unless: {{ salt.grains.get('pythonexecutable') }} -m pip --version
     - reload_modules: True
 
 install_python_libraries:
