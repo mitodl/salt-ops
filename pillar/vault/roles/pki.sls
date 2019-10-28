@@ -26,7 +26,7 @@ vault:
         ],
         "ttl": "{{ ttl }}",
         "max_ttl": "{{ ttl }}",
-        "key_type": rsa,
+        "key_type": "rsa",
         "key_bits": 4096,
         "key_usage": [
           "DigitalSignature",
@@ -51,7 +51,7 @@ vault:
         "allow_glob_domains": true,
         "ttl": "{{ ttl }}",
         "max_ttl": "{{ ttl }}",
-        "key_type": rsa,
+        "key_type": "rsa",
         "key_bits": 4096,
         "key_usage": [
           "DigitalSignature",
