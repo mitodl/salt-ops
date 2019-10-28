@@ -41,6 +41,7 @@ vault:
         "postal_code": "{{ postal_code }}",
         "require_cn": true
       }
+      {% endload %}
       {% load_json as client_options %}
       {
         "client_flag": true,
