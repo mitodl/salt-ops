@@ -7,40 +7,70 @@
 {% set street_address = '77 Massachusetts Ave' %}
 {% set postal_code = '02139' %}
 
-{% set key_usage_list = "{'key_usage': '["DigitalSignature", "KeyAgreement", "KeyEncipherment"]'}"|load_json %}
-
 vault:
   roles:
     {% for env_name, env_data in env_settings.environments.items() %}
     {% for app in env_data.get('backends', {}).get('pki', []) %}
-    {% set server_allowed_domains = "{'allowed_domains': '["{}.service.consul", "nearest-{}.query.consul", "{}-master.service.consul", "{}.service.operations.consul"]'.format(app)}"|load_json %}
-    {% set client_allowed_domains = "{'allowed_domains': '["{}.*.{}"]'.format(app, env_name)}"|load_json %}
     {% for type in ['client', 'server'] %}
     {{ app }}-{{ env_name }}-{{ type }}-pki:
       backend: pki-intermediate-{{ env_name }}
       name: {{ app }}-{{ type }}
-      options:
-        {% if type == 'server' %}
-        server_flag: true
-        allowed_domains: {{ server_allowed_domains.allowed_domains }}
-        {% else %}
-        client_flag: true
-        allowed_domains: {{ client_allowed_domains.allowed_domains }}
-        allow_glob_domains: true
-        {% endif %}
-        ttl: {{ ttl }}
-        max_ttl: {{ ttl }}
-        allow_bare_domains: true
-        key_type: rsa
-        key_bits: 4096
-        key_usage: {{ key_usage_list.key_usage }}
-        ou: {{ ou }}
-        organization: {{ org }}
-        country: {{ country }}
-        locality: {{ locality }}
-        street_address: {{ street_address }}
-        postal_code: {{ postal_code }}
-        require_cn: true
+      {% load_json as server_options %}
+      {
+        "server_flag": true,
+        "allowed_domains": [
+          "{{ app }}.service.consul",
+          "nearest-{{ app }}.query.consul",
+          "{{ app }}-master.service.consul",
+          "{{ app }}.service.operations.consul"
+        ],
+        "ttl": "{{ ttl }}",
+        "max_ttl": "{{ ttl }}",
+        "key_type": rsa,
+        "key_bits": 4096,
+        "key_usage": [
+          "DigitalSignature",
+          "KeyAgreement",
+          "KeyEncipherment"
+        ],
+        "ou": "{{ ou }}",
+        "organization": "{{ org }}",
+        "country": "{{ country }}",
+        "locality": "{{ locality }}",
+        "street_address": "{{ street_address }}",
+        "postal_code": "{{ postal_code }}",
+        "require_cn": true
+      }
+      {% load_json as client_options %}
+      {
+        "client_flag": true,
+        "allowed_domains": [
+          "{{ app }}.*.{{ env_name }}"
+        ],
+        "allow_glob_domains": true,
+        "ttl": "{{ ttl }}",
+        "max_ttl": "{{ ttl }}",
+        "key_type": rsa,
+        "key_bits": 4096,
+        "key_usage": [
+          "DigitalSignature",
+          "KeyAgreement",
+          "KeyEncipherment"
+        ],
+        "ou": "{{ ou }}",
+        "organization": "{{ org }}",
+        "country": "{{ country }}",
+        "locality": "{{ locality }}",
+        "street_address": "{{ street_address }}",
+        "postal_code": "{{ postal_code }}",
+        "require_cn": true
+      }
+      {% endload %}
+      {% if type == 'server' %}
+      options: '{{ server_options|json }}'
+      {% else %}
+      options: '{{ client_options|json }}'
+      {% endif %}
     {% endfor %}
     {% endfor %}
     {% endfor %}
