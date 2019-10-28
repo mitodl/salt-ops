@@ -156,4 +156,13 @@ sync_ocw_mirror_web_directory:
         - '-t'
         - '-c'
         - '--delay-updates'
+
+ensure_correct_rsync_dir_ownership:
+  file.directory:
+    - name: /data2/rsync
+    - user: ocwuser
+    - group: ocwuser
+    - recurse:
+        - user
+        - group
 {% endif %}
