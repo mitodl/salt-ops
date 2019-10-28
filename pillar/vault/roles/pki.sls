@@ -16,29 +16,29 @@ vault:
       backend: pki-intermediate-{{ env_name }}
       name: {{ app }}-{{ type }}
       {% load_json as server_allowed_domains %}
-      ["{{ app }}.service.consul", "nearest-{{ app }}.query.consul", "{{ app }}-master.service.consul", "{{ app }}.service.operations.consul"]
+        allowed_domains: ["{{ app }}.service.consul", "nearest-{{ app }}.query.consul", "{{ app }}-master.service.consul", "{{ app }}.service.operations.consul"]
       {% endload %}
       {% load_json as client_allowed_domains %}
-      ["{{ app }}.*.{{ env_name }}"]
+        allowed_domains: ["{{ app }}.*.{{ env_name }}"]
       {% endload %}
       {% load_json as key_usage %}
-      ["DigitalSignature", "KeyAgreement", "KeyEncipherment"]
+        key_usage: ["DigitalSignature", "KeyAgreement", "KeyEncipherment"]
       {% endload %}
       options:
         server_flag: True
         {% if type == 'server' %}
         server_flag: True
-        allowed_domains: '{{ server_allowed_domains }}'
+        allowed_domains: '{{ server_allowed_domains.allowed_domains }}'
         {% else %}
         client_flag: True
-        allowed_domains: '{{ client_allowed_domains }}'
+        allowed_domains: '{{ client_allowed_domains.allowed_domains }}'
         allow_glob_domains: True
         {% endif %}
         ttl: {{ ttl }}
         max_ttl: {{ ttl }}
         key_type: rsa
         key_bits: 4096
-        key_usage: '{{ key_usage }}'
+        key_usage: '{{ key_usage.key_usage }}'
         ou: {{ ou }}
         organization: {{ org }}
         country: {{ country }}
