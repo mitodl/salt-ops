@@ -17,7 +17,7 @@ vault:
       name: {{ app }}-{{ type }}
       {% load_json as server_allowed_domains %}
       ["{{ app }}.service.consul", "nearest-{{ app }}.query.consul", "{{ app }}-master.service.consul", "{{ app }}.service.operations.consul"]
-      {% endload %
+      {% endload %}
       {% load_json as client_options %}
       ["{{ app }}.*.{{ env_name }}"]
       {% endload %}
