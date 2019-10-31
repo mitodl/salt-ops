@@ -71,6 +71,7 @@ django:
     REDASH_REMOTE_USER_LOGIN_ENABLED: 'true'
     REDASH_SENTRY_DSN: __vault__::secret-operations/operations/redash/sentry-dsn>data>value
     REDASH_STATIC_ASSETS_PATH: /opt/{{ app_name }}/client/dist/
+    REDASH_FLASK_TEMPLATE_PATH: /opt/{{ app_name }}/redash/templates/
   pkgs:
     - libffi-dev
     - libssl-dev

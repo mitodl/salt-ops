@@ -17,6 +17,7 @@ nginx:
     server:
       extra_config:
         shib_params:
+          source_path: salt://nginx/ng/files/nginx.conf
           shib_request_set:
             - $shib_remote_user $upstream_http_variable_remote_user
             - $shib_eppn $upstream_http_variable_eppn
@@ -41,7 +42,7 @@ nginx:
                 - location /:
                     - return: 301 https://$host$request_uri
             - server:
-                - server_name: {{ server_domain_names }}
+                - server_name: {{ server_domain_names|tojson }}
                 - listen:
                     - 443
                     - ssl
