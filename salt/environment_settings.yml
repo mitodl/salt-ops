@@ -138,6 +138,7 @@ sandbox_mitxpro_versions: &sandbox_mitxpro_versions
   codename: ironwood
   ami_id: ami-80861296
 
+
 environments:
   mitxpro-qa:
     business_unit: mitxpro
@@ -603,6 +604,20 @@ environments:
       - aws
     purposes:
       - micromasters
+    backends:
+      rds:
+        - name: micromasters
+          multi_az: True
+          engine: postgres
+          vault_plugin: postgresql-database-plugin
+          db_instance_class: db.m4.large
+          allocated_storage: 100
+          public_access: True
+          engine_version: '9.6.11'
+          purpose: micromasters
+          mount_point: postgresql-micromasters
+          replica:
+            db_instance_class: db.t2.medium
   bootcamps:
     business_unit: bootcamps
     network_prefix: '10.11'
@@ -614,6 +629,20 @@ environments:
       - aws
     purposes:
       - bootcamps
+    backends:
+      rds:
+        - name: bootcamps
+          multi_az: True
+          engine: postgres
+          vault_plugin: postgresql-database-plugin
+          db_instance_class: db.t2.micro
+          allocated_storage: 50
+          public_access: True
+          engine_version: '9.6.11'
+          purpose: bootcamps
+          mount_point: postgresql-bootcamps
+          replica:
+            db_instance_class: db.t2.micro
   operations:
     business_unit: operations
     network_prefix: '10.0'
@@ -688,11 +717,14 @@ environments:
           multi_az: True
           engine: postgres
           vault_plugin: postgresql-database-plugin
+          mount_point: postgres-operations-redash
           db_instance_class: db.t2.small
           allocated_storage: 100
           public_access: False
-          engine_version: '10.1'
+          engine_version: '10.6'
           purpose: redash
+          replica:
+            db_instance_class: db.t2.small
         - name: techtvcopy
           multi_az: False
           engine: mariadb
@@ -809,34 +841,49 @@ environments:
           multi_az: True
           engine: postgres
           vault_plugin: postgresql-database-plugin
+          mount_point: postgres-production-apps-mitxpro
           db_instance_class: db.m5.large
+          engine_version: '10.6'
           allocated_storage: 100
           public_access: True
+          replica:
+            db_instance_class: db.t2.medium
         - name: reddit
           multi_az: True
-          # This needs to be changed if/when we redeploy this host.
-          # It is only like this to fix Consul pillar rendering
-          engine: postgresql
+          engine: postgres
           vault_plugin: postgresql-database-plugin
-          db_instance_class: db.t2.medium
+          mount_point: postgresql-production-apps-reddit
+          db_instance_class: db.m4.large
           allocated_storage: 100
           public_access: False
+          engine_version: '9.6.11'
+          purpose: reddit
+          replica:
+            db_instance_class: db.t2.medium
         - name: opendiscussions
           multi_az: True
-          # This needs to be changed if/when we redeploy this host.
-          # It is only like this to fix Consul pillar rendering
-          engine: postgresql
+          engine: postgres
           vault_plugin: postgresql-database-plugin
-          db_instance_class: db.t2.small
+          mount_point: postgresql-production-apps-opendiscussions
+          db_instance_class: db.m4.large
           allocated_storage: 100
           public_access: True
+          engine_version: '9.6.11'
+          purpose: opendiscussions
+          replica:
+            db_instance_class: db.t2.medium
         - name: odlvideo
           multi_az: True
           engine: postgres
           vault_plugin: postgresql-database-plugin
+          mount_point: postgresql-production-apps-odlvideo
           db_instance_class: db.t2.small
           allocated_storage: 100
           public_access: False
+          engine_version: '9.6.11'
+          purpose: odl-video-service
+          replica:
+            db_instance_class: db.t2.small
         - name: starcellbio
           multi_az: True
           engine: mariadb

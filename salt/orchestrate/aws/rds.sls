@@ -29,8 +29,10 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
         Environment: {{ ENVIRONMENT }}
 
 {% for dbconfig in db_configs %}
+
 {% set name = dbconfig.pop('name') %}
 {% set engine = dbconfig.pop('engine') %}
+{% set db_identifier = ENVIRONMENT ~ '-rds-' ~ engine ~ '-' ~ name %}
 {% set public_access = dbconfig.pop('public_access', False) %}
 {% set dbpurpose = dbconfig.pop('purpose', 'shared') %}
 {% set vault_plugin = dbconfig.pop('vault_plugin') %}
@@ -39,6 +41,8 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
                                    engine ~ '-' ~ name) %}
 {% set mount_point = dbconfig.pop('mount_point',
                                   '{}-{}-{}'.format(engine, ENVIRONMENT, name)) %}
+{% set replica = dbconfig.pop('replica', {})}
+{% set custom_parameters = dbconfig.pop('parameters', {})}
 
 {% set vault_master_pass_path = 'secret-' ~ BUSINESS_UNIT ~ '/' ~ ENVIRONMENT ~ '/' ~ engine ~ '-' ~ dbpurpose ~ '-master-password' %}
 {% set master_pass = salt.vault.read(vault_master_pass_path ) %}
@@ -57,14 +61,57 @@ set_{{ name }}_master_password_in_vault:
 {% set master_pass = master_pass.data.value %}
 {% endif %}
 
+{# If engine is postgres and version is 10, then use major version only for
+   parameter group family. All others use major.minor. #}
+{% if engine == 'postgres' and int(engine_version.partition('.')[0]) > 9 %}
+{% set fam_version = engine_version.partition('.')[0] %}
+{% else %}
+{% set fam_version = engine_version.rpartition('.')[0] %}
+{% endif %}
+{% set db_parameter_group_family = engine ~ fam_version %}
+{% set db_parameter_group_name = ENVIRONMENT ~ '_' ~ engine ~ '_' ~ db_parameter_group_family ~ '_parameters' %}
+{% set default_postgres_parameters = {
+    'client_encoding': 'UTF-8',
+    'server_encoding': 'UTF-8',
+    'log_timezone': 'UTC',
+    'timezone': 'UTC',
+    'rds.force_ssl': 1
+} %}
+{% set default_mysql_parameters = {
+    'character_set_client': 'utf8',
+    'character_set_connection': 'utf8',
+    'character_set_database': 'utf8',
+    'character_set_filesystem': 'utf8',
+    'character_set_results': 'utf8',
+    'character_set_server': 'utf8',
+    'time_zone': 'UTC'
+
+} %}
+{% set default_parameters = {
+    'postgres9.6': default_postgres_parameters,
+    'postgres10': default_postgres_parameters,
+    'mysql5.5': default_mysql_parameters,
+    'mysql5.6': default_mysql_parameters,
+    'mysql5.7': default_mysql_parameters,
+    'mariadb10.2': default_mysql_parameters,
+    'mariadb10.3': default_mysql_parameters
+} %}
+
+create_{{ ENVIRONMENT }}_{{ name }}_parameter_group:
+  boto_rds.parameter_present:
+    - name: {{ db_parameter_group_name }}
+    - db_parameter_group_family: {{ db_parameter_group_family }}
+    - parameters: {{ default_parameters[db_parameter_group_family].update(custom_parameters) }}
+
 create_{{ ENVIRONMENT }}_{{ name }}_rds_store:
   boto_rds.present:
-    - name: {{ ENVIRONMENT }}-rds-{{ engine }}-{{ name }}
+    - name: {{ db_identifier }}
     - allocated_storage: {{ dbconfig.pop('allocated_storage') }}
     - auto_minor_version_upgrade: True
     - copy_tags_to_snapshot: True
     - db_instance_class: {{ dbconfig.pop('db_instance_class') }}
     - db_name: {{ name }}
+    - db_parameter_group_name: {{ db_parameter_group_name }}
     - db_subnet_group_name: db-subnet-group-{{ ENVIRONMENT }}
     - engine: {{ engine }}
     - master_user_password: {{ master_pass }}
@@ -86,7 +133,7 @@ create_{{ ENVIRONMENT }}_{{ name }}_rds_store:
         - {{ salt.boto_secgroup.get_group_id(
              'vault-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
     - tags:
-        Name: {{ ENVIRONMENT }}-rds-{{ engine }}-{{ name }}
+        Name: {{ db_identifier }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
@@ -94,6 +141,23 @@ create_{{ ENVIRONMENT }}_{{ name }}_rds_store:
         Purpose: {{ dbpurpose }}
     - require:
         - boto_rds: create_{{ ENVIRONMENT }}_rds_db_subnet_group
+
+{% if replica %}
+{% set replica_name = db_identifier ~ '-replica ' %}
+create_{{ ENVIRONMENT }}_{{ name }}_rds_replica:
+  boto_rds.replica_present:
+    - name: {{ replica_name }}
+    - source: {{ db_identifier }}
+    - db_instance_class: {{ replica.db_instance_class }}
+    - publicly_accessible: False
+    - tags:
+        - Name: {{ replica_name }}
+        - business_unit: {{ BUSINESS_UNIT }}
+        - Department: {{ BUSINESS_UNIT }}
+        - OU: {{ BUSINESS_UNIT }}
+        - Environment: {{ ENVIRONMENT }}
+        - Purpose: {{ dbpurpose }}
+{% endif %}
 
 configure_vault_{{ engine }}_{{ name }}_backend:
   vault.secret_backend_enabled:
