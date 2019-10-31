@@ -52,7 +52,7 @@ redash:
       type: elasticsearch
       options:
         basic_auth_user: {{ discussions_es[0] }}
-        basic_auth_password: {{ discussiosn_es[1] }}
+        basic_auth_password: {{ discussions_es[1] }}
         server: https://elasticsearch-production-apps.odl.mit.edu/discussions_course_default
     - name: MicroMasters ElasticSearch
       type: elasticsearch
