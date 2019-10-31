@@ -150,6 +150,7 @@ django:
       - apps.odlvideo.configure
     post_install:
       - apps.odlvideo.post_deploy
+      - apps.odlvideo.deploy_signal
 
 uwsgi:
   overrides:

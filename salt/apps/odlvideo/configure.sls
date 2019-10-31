@@ -1,5 +1,6 @@
 include:
     - uwsgi.service
+    - apps.odlvideo.deploy_signal
 
 create_env_file_for_odlvideo:
   file.managed:
@@ -10,3 +11,4 @@ create_env_file_for_odlvideo:
         {%- endfor %}
     - onchanges_in:
         - service: uwsgi_service_running
+        - file: signal_odlvideo_deploy_complete

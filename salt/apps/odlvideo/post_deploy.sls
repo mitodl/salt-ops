@@ -13,8 +13,3 @@ generate_deploy_hash_for_odlvideo:
     - name: 'git log --pretty=format:%H -n 1 > static/hash.txt'
     - cwd: {{ app_dir }}
     - user: deploy
-
-signal_odlvideo_deploy_complete:
-  file.touch:
-    - name: {{ app_dir }}/deploy_complete.txt
-    - order: last
