@@ -1,6 +1,8 @@
 fluentd:
   overrides:
     version: "1.1.1"
+    user: root
+    group: root
   plugins:
     - fluent-plugin-secure-forward
 
