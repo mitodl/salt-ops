@@ -28,7 +28,7 @@ vault:
         max_ttl: {{ ttl }}
         key_type: rsa
         key_bits: 4096
-        key_usage: '[\"DigitalSignature\", \"KeyAgreement\", \"KeyEncipherment\"]'
+        key_usage: "DigitalSignature, KeyAgreement, KeyEncipherment"
         ou: {{ ou }}
         organization: {{ org }}
         country: {{ country }}
