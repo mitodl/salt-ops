@@ -8,6 +8,7 @@
 {% set postal_code = '02139' %}
 
 vault:
+  force_roles: True
   roles:
     {% for env_name, env_data in env_settings.environments.items() %}
     {% for app in env_data.get('backends', {}).get('pki', []) %}
