@@ -98,7 +98,7 @@ django:
     EDX_ACCESS_TOKEN: __vault__::secret-odl-video/{{ ENVIRONMENT }}/edx-access-token>data>value
     ENABLE_VIDEO_PERMISSIONS: False
     ET_PIPELINE_ID: {{ env_data.transcode_pipeline_id }}
-    ET_PRESET_IDS: 1504127981769-6cnqhq,1504127981819-v44xlx,1504127981867-06dkm6,1504127981921-c2jlwt
+    ET_PRESET_IDS: 1504127981769-6cnqhq,1504127981819-v44xlx,1504127981867-06dkm6,1504127981921-c2jlwt,1351620000001-200040,1351620000001-200050,1351620000001-200060
     GA_DIMENSION_CAMERA: dimension1
     GA_KEYFILE_JSON: '{{ ga_json }}'
     GA_VIEW_ID: {{ env_data.ga_view_id }}
