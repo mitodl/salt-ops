@@ -126,13 +126,13 @@ base:
     - datadog.mysql-integration
   'P@roles:(vault_server|master)':
     - match: compound
-    - vault
-    - vault.roles.apps
-    - vault.roles.aws
-    - vault.roles.bootcamps
-    - vault.roles.micromasters
-    - vault.roles.mitx
-    - vault.roles.operations
+    #- vault
+    #- vault.roles.apps
+    #- vault.roles.aws
+    #- vault.roles.bootcamps
+    #- vault.roles.micromasters
+    #- vault.roles.mitx
+    #- vault.roles.operations
     - vault.roles.pki
   'G@roles:elasticsearch and P@environment:(rc|production)-apps':
     - match: compound
