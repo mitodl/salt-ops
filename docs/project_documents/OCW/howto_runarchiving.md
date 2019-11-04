@@ -4,7 +4,7 @@
 
 ## How to Run the Archiving Engine
 
-The [engine server](engines.md)'s engines.py script must be run manally to perform the archiving process, as follows:
+The [engine server](engines.md)'s engines.py script must be run manally as the `ocwuser` user to perform the archiving process, as follows:
 
 ```
 python engines.py 3
