@@ -18,10 +18,10 @@ vault:
       options:
         {% if type == 'server' %}
         server_flag: True
-        allowed_domains: '[\"{{ app }}.service.consul\", \"nearest-{{ app }}.query.consul\", \"{{ app }}-master.service.consul\", \"{{ app }}.service.operations.consul\"]'
+        allowed_domains: "{{ app }}.service.consul, nearest-{{ app }}.query.consul, {{ app }}-master.service.consul, {{ app }}.service.operations.consul"
         {% else %}
         client_flag: True
-        allowed_domains: '[\"{{ app }}.*.{{ env_name }}\"]'
+        allowed_domains: "{{ app }}.*.{{ env_name }}"
         allow_glob_domains: True
         {% endif %}
         ttl: {{ ttl }}
