@@ -6,7 +6,7 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-salt = "==2019.2.0"
+salt = "*"
 boto = "*"
 boto3 = "*"
 gitpython = "*"
