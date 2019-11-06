@@ -1,5 +1,11 @@
 {% set sqs_edxapp_mitxpro_production_queue = 'edxapp-xpro-production-mitxpro-production-autoscaling' %}
 {% set sqs_edx_worker_mitxpro_production_queue = 'edx-worker-xpro-production-mitxpro-production-autoscaling' %}
+{% set purpose = salt.grains.get('purpose') %}
+{% if 'qa' in purpose %}
+{% set git_ref = 'master' %}
+{% else %}
+{% set git_ref = 'production' %}
+{% endif %}
 
 slack_api_token: __vault__::secret-operations/global/slack/slack_api_token>data>value
 slack:
@@ -12,6 +18,7 @@ salt_master:
       fileserver_backend:
         - git
         - roots
+      gitfs_base: {{ git_ref }}
       gitfs_remotes:
         - https://github.com/mitodl/salt-ops:
             - root: salt
@@ -41,7 +48,7 @@ salt_master:
       git_pillar_provider: pygit2
       ext_pillar:
         - git:
-            - master https://github.com/mitodl/salt-ops:
+            - {{ git_ref }} https://github.com/mitodl/salt-ops:
                 - root: pillar
         - vault: {}
     logging:
