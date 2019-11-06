@@ -143,6 +143,8 @@ environments:
     business_unit: mitxpro
     network_prefix: '10.6'
     vpc_name: MITxPro QA
+    vpc_peers:
+      - operations-qa
     secret_backends:
       mysql:
         role_prefixes:
@@ -233,6 +235,8 @@ environments:
     business_unit: mitxpro
     network_prefix: '10.8'
     vpc_name: MITxPro Production
+    vpc_peers:
+      - mitodl-operations-services
     provider_services:
       edxapp:
         sns:
@@ -321,6 +325,8 @@ environments:
     business_unit: residential
     network_prefix: '10.5'
     vpc_name: MITx QA
+    vpc_peers:
+      - operations-qa
     secret_backends:
       <<: *edxapp_secret_backends
     backends:
@@ -492,6 +498,8 @@ environments:
     business_unit: residential
     network_prefix: '10.7'
     vpc_name: MITx Production
+    vpc_peers:
+      - mitodl-operations-services
     secret_backends:
       <<: *edxapp_secret_backends
     backends:
@@ -588,6 +596,8 @@ environments:
     business_unit: micromasters
     network_prefix: '10.10'
     vpc_name: micromasters
+    vpc_peers:
+      - mitodl-operations-services
     secret_backends:
       - postgresql
       - aws
@@ -597,6 +607,8 @@ environments:
     business_unit: bootcamps
     network_prefix: '10.11'
     vpc_name: bootcamps
+    vpc_peers:
+      - mitodl-operations-services
     secret_backends:
       - postgresql
       - aws
@@ -730,6 +742,8 @@ environments:
     business_unit: operations
     network_prefix: '10.13'
     vpc_name: Production Apps
+    vpc_peers:
+      - mitodl-operations-services
     purposes:
       odl-video-service:
         app: odl-video-service
@@ -835,6 +849,8 @@ environments:
     business_unit: operations
     network_prefix: '10.12'
     vpc_name: RC Apps
+    vpc_peers:
+      - operations-qa
     purposes:
       odl-video-service:
         app: odl-video-service
@@ -932,6 +948,8 @@ environments:
     business_unit: open-courseware
     network_prefix: '10.100'
     vpc_name: OCW
+    vpc_peers:
+      - mitodl-operations-services
     purposes:
       ocw-origin:
         app: nginx

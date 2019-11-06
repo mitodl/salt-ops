@@ -29,7 +29,7 @@ create_{{ ENVIRONMENT }}_public_subnet_1:
   boto_vpc.subnet_present:
     - name: public1-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
-    - cidr_block: 10.0.1.0/24
+    - cidr_block: {{ network_prefix }}.1.0/24
     - availability_zone: us-east-1d
     - tags:
         Name: public1-{{ ENVIRONMENT }}
@@ -39,7 +39,7 @@ create_{{ ENVIRONMENT }}_public_subnet_2:
   boto_vpc.subnet_present:
     - name: public2-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
-    - cidr_block: 10.0.2.0/24
+    - cidr_block: {{ network_prefix }}.2.0/24
     - availability_zone: us-east-1b
     - tags:
         Name: public2-{{ ENVIRONMENT }}
@@ -49,7 +49,7 @@ create_{{ ENVIRONMENT }}_public_subnet_3:
   boto_vpc.subnet_present:
     - name: public3-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
-    - cidr_block: 10.0.3.0/24
+    - cidr_block: {{ network_prefix }}.3.0/24
     - availability_zone: us-east-1c
     - tags:
         Name: public3-{{ ENVIRONMENT }}
