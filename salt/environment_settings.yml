@@ -677,6 +677,55 @@ environments:
           allocated_storage: 25
           public_access: False
           purpose: techtv
+  operations-qa:
+    business_unit: operations
+    network_prefix: '10.1'
+    vpc_name: operations-qa
+    purposes:
+      kibana:
+        app: kibana
+        num_instances: 1
+        domains:
+          - logs.odl.mit.edu
+        business_unit: operations
+        security_groups:
+          - webapp-odl-vpn
+      elasticsearch:
+        num_instances: 5
+        size: r5.xlarge
+        data_volume_size: 1536
+      fluentd:
+        app: fluentd
+        num_instances: 2
+        size: t3.medium
+        business_unit: operations
+        security_groups:
+          - logging
+      consul:
+        apps:
+          - consul
+          - vault
+        num_instances: 3
+        size: t3.medium
+        business_unit: operations
+        security_groups:
+          - vault
+          - consul
+    backends:
+      pki:
+        - consul
+        - elasticsearch
+        - fluentd
+      rds:
+        - name: saltmaster
+          multi_az: True
+          engine: postgres
+          vault_plugin: postgresql-database-plugin
+          db_instance_class: db.t2.small
+          allocated_storage: 100
+          public_access: False
+          engine_version: '10.1'
+          purpose: saltmaster
   production-apps:
     business_unit: operations
     network_prefix: '10.13'

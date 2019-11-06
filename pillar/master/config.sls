@@ -103,6 +103,8 @@ salt_master:
       consul:
         driver: consul
         host: consul.service.operations.consul
+      osenv:
+        driver: env
     vault:
       vault.url: https://active.vault.service.consul:8200
       vault.verify: False
