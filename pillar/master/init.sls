@@ -30,8 +30,8 @@ salt_master:
       - pyyaml
       - requests
   ssl:
-    cert_path: /etc/salt/ssl/certs/salt.odl.mit.com.crt
-    key_path: /etc/salt/ssl/certs/salt.odl.mit.com.key
+    cert_path: /etc/salt/ssl/certs/salt.odl.mit.edu.crt
+    key_path: /etc/salt/ssl/certs/salt.odl.mit.edu.key
     cert_params:
       emailAddress: odl-devops@mit.edu
       bits: 4096

@@ -26,7 +26,7 @@ salt_master:
           SubnetId: sdb://osenv/QA_SUBNET
           SecurityGroupId: sdb://osenv/SECURITY_GROUPS
       tag:
-        environment: operations
+        environment: operations-qa
         role: master-qa
         OU: operations
-        Environment: operations
+        Environment: operations-qa
