@@ -215,9 +215,12 @@ salt_master:
         host: consul.service.operations.consul
   proxy_configs:
     apps:
+      {% if 'qa' in purpose %}
       - proxy-mitxpro-ci
       - proxy-mitxpro-rc
-      - proxy-mitxpro-production
       - proxy-mit-open-discussions-ci
       - proxy-mit-open-discussions-rc
+      {% else %}
+      - proxy-mitxpro-production
       - proxy-mit-open-discussions-production
+      {% endif %}
