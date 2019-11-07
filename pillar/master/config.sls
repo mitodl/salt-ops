@@ -93,6 +93,7 @@ salt_master:
         message_format: json
         id: use-instance-role-credentials
         key: use-instance-role-credentials
+      {% if 'production' in purpose %}
       engines:
         - sqs_events:
             queue: {{ sqs_edxapp_mitxpro_production_queue }}
@@ -102,6 +103,7 @@ salt_master:
             queue: {{ sqs_edx_worker_mitxpro_production_queue }}
             profile: sqs
             tag: salt/engine/sqs/mitxpro-production-autoscaling
+      {% endif %}
     misc:
       worker_threads: 25
       {# this is to avoid timeouts waiting for edx asset compilation during AMI build (TMM 2019-04-01) #}
