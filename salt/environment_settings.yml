@@ -647,6 +647,18 @@ environments:
         num_instances: 5
         size: r5.xlarge
         data_volume_size: 1536
+        security_groups:
+          - elasticsearch
+      fluentd:
+        app: fluentd
+        num_instances: 2
+        domains:
+          - log-input.odl.mit.edu
+        business_unit: operations
+        security_groups:
+          - logging
+          - fluentd
+          - webapp
     backends:
       pki:
         - consul
@@ -698,21 +710,26 @@ environments:
         app: kibana
         num_instances: 1
         domains:
-          - logs.odl.mit.edu
+          - logs-qa.odl.mit.edu
         business_unit: operations
         security_groups:
           - webapp-odl-vpn
       elasticsearch:
-        num_instances: 5
-        size: r5.xlarge
-        data_volume_size: 1536
+        num_instances: 3
+        size: r5.large
+        data_volume_size: 750
+        security_groups:
+          - elasticsearch
       fluentd:
         app: fluentd
         num_instances: 2
         size: t3.medium
         business_unit: operations
         security_groups:
-          - logging
+          - fluentd
+          - webapp
+        domains:
+          - log-input-qa.odl.mit.edu
       consul:
         apps:
           - consul

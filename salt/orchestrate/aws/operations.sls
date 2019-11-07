@@ -174,6 +174,19 @@ create_vault_security_group:
         Name: vault-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
 
+create_fluentd_security_group:
+  boto_secgroup.present:
+    - name: fluentd-{{ environment }}
+    - description: ACL for fluentd log aggregators
+    - vpc_name: {{ VPC_NAME }}
+    - rules:
+        - ip_protocol: tcp
+          from_port: 5001
+          to_port: 5001
+          cidr_ip:
+            - 0.0.0.0/0
+            - '::/0'
+
 create_webapp_security_group:
   boto_secgroup.present:
     - name: webapp-{{ ENVIRONMENT }}
