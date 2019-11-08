@@ -13,6 +13,8 @@ pillar_roots:
     - bootstrap/srv/pillar/
     - pillar/
 
+roster_file: bootstrap/etc/salt/roster
+
 gitfs_provider: gitpython
 
 gitfs_remotes:

@@ -3,8 +3,8 @@
 salt_master:
   dns: {{ purpose }}.odl.mit.edu
   libgit:
-    release: '0.28.3'
-    hash: ee5344730fe11ce7c86646e19c2d257757be293f5a567548d398fb3af8b8e53b
+    release: '0.28.2'
+    hash: 42b5f1e9b9159d66d86fff0394215c5733b6ef8f9b9d054cdd8c73ad47177fc3
   overrides:
     pkgs:
       - build-essential

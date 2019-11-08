@@ -25,6 +25,19 @@ create_{{ ENVIRONMENT }}_vpc:
         Name: {{ VPC_NAME }}
         business_unit: {{ BUSINESS_UNIT }}
 
+create_{{ ENVIRONMENT }}_internet_gateway:
+  boto_vpc.internet_gateway_present:
+    - name: {{ ENVIRONMENT }}-igw
+    - vpc_name: {{ VPC_NAME }}
+    - require:
+        - boto_vpc: create_{{ ENVIRONMENT }}_vpc
+    - tags:
+        Name: {{ ENVIRONMENT }}-igw
+        business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
+
 create_{{ ENVIRONMENT }}_public_subnet_1:
   boto_vpc.subnet_present:
     - name: public1-{{ ENVIRONMENT }}
@@ -69,6 +82,23 @@ manage_{{ ENVIRONMENT }}_routing_table:
     - tags:
         Name: {{ ENVIRONMENT }}-route_table
         business_unit: {{ BUSINESS_UNIT }}
+
+create_{{ ENVIRONMENT }}_salt_master_security_group:
+  boto_secgroup.present:
+    - name: salt-master-{{ ENVIRONMENT }}
+    - description: Allow SSH and 0MQ port access for salt master
+    - vpc_name: {{ VPC_NAME }}
+    - rules:
+        - ip_protocol: tcp
+          from_port: 4505
+          to_port: 4506
+          cidr_ip: {{ env_nets }}
+        - ip_protocol: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip:
+            - 0.0.0.0/0
+            - '::/0'
 
 create_{{ ENVIRONMENT }}_consul_security_group:
   boto_secgroup.present:
@@ -130,7 +160,6 @@ create_elasticsearch_security_group:
         Name: elasticsearch-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
 
-
 create_{{ ENVIRONMENT }}_consul_agent_security_group:
   boto_secgroup.present:
     - name: consul-agent-{{ ENVIRONMENT }}
@@ -176,7 +205,7 @@ create_vault_security_group:
 
 create_fluentd_security_group:
   boto_secgroup.present:
-    - name: fluentd-{{ environment }}
+    - name: fluentd-{{ ENVIRONMENT }}
     - description: ACL for fluentd log aggregators
     - vpc_name: {{ VPC_NAME }}
     - rules:
