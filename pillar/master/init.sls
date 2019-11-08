@@ -2,6 +2,7 @@
 
 salt_master:
   dns: {{ purpose }}.odl.mit.edu
+  private_dns: {{ purpose }}.private.odl.mit.edu
   libgit:
     release: '0.28.2'
     hash: 42b5f1e9b9159d66d86fff0394215c5733b6ef8f9b9d054cdd8c73ad47177fc3
