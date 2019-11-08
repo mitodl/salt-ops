@@ -1,6 +1,6 @@
 {% set aws_access_key = salt.sdb.get('sdb://osenv/AWS_ACCESS_KEY_ID') %}
 {% set aws_secret_access_key = salt.sdb.get('sdb://osenv/AWS_SECRET_ACCESS_KEY') %}
-{% set ENVIRONMENT = 'operations' %}
+{% set ENVIRONMENT = salt.sdb.get('sdb://osenv/ENVIRONMENT') %}
 
 {% set prod_master = salt.cloud.get_instance('master-operations-production') %}
 {% set qa_master = salt.cloud.get_instance('master-operations-qa') %}
