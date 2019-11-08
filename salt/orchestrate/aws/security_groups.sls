@@ -2,9 +2,6 @@
 {% if not ENVIRONMENT == 'operations' %}
 {% set env_settings = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set VPC_NAME = salt.environ.get('VPC_NAME', env_settings.vpc_name) %}
-{% set VPC_RESOURCE_SUFFIX = salt.environ.get(
-    'VPC_RESOURCE_SUFFIX',
-    VPC_NAME.lower().replace(' ', '-')) %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_settings.business_unit) %}
 
 {% set network_prefix = env_settings.network_prefix %}
@@ -27,7 +24,9 @@ create_salt_master_security_group:
         - ip_protocol: tcp
           from_port: 22
           to_port: 22
-          cidr_ip: 10.0.0.0/16
+          cidr_ip:
+            - 10.0.0.0/22
+            - 10.1.0.0/22
     - tags:
         Name: salt-master-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
@@ -55,18 +54,21 @@ create_vault_backend_security_group:
           to_port: 15672
           cidr_ip:
             - 10.0.0.0/22
+            - 10.1.0.0/22
         {# PostGreSQL #}
         - ip_protocol: tcp
           from_port: 5432
           to_port: 5432
           cidr_ip:
             - 10.0.0.0/22
+            - 10.1.0.0/22
         {# MySQL/MariaDB #}
         - ip_protocol: tcp
           from_port: 3306
           to_port: 3306
           cidr_ip:
             - 10.0.0.0/22
+            - 10.1.0.0/22
 
 create_{{ ENVIRONMENT }}_consul_security_group:
   boto_secgroup.present:
@@ -115,6 +117,7 @@ create_{{ ENVIRONMENT }}_consul_security_group:
           to_port: 8302
           cidr_ip:
             - 10.0.0.0/22
+            - 10.1.0.0/22
             - {{ VPC_CIDR }}
           {# WAN cluster interface #}
     - tags:
@@ -252,26 +255,6 @@ create_public_mysql_rds_security_group:
             - 0.0.0.0/0
     - tags:
         Name: mariadb-rds-public-{{ ENVIRONMENT }}
-        business_unit: {{ BUSINESS_UNIT }}
-        Department: {{ BUSINESS_UNIT }}
-        OU: {{ BUSINESS_UNIT }}
-        Environment: {{ ENVIRONMENT }}
-
-create_scylladb_rds_security_group:
-  boto_secgroup.present:
-    - name: scylladb-{{ ENVIRONMENT }}
-    - vpc_name: {{ VPC_NAME }}
-    - description: ACL for Scylladb servers
-    - rules:
-        {% for portnum in [7000, 7001, 7199, 9042, 9100, 9160, 9180, 10000] %}
-        - ip_protocol: tcp
-          from_port: {{ portnum }}
-          to_port: {{ portnum }}
-          cidr_ip:
-            - {{ VPC_CIDR }}
-        {% endfor %}
-    - tags:
-        Name: scylladb-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}

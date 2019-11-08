@@ -1,0 +1,3 @@
+root_dir: bootstrap/
+log_file: var/log/salt/minion.log
+master: 127.0.0.1

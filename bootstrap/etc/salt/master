@@ -1,0 +1,35 @@
+# -*- mode: yaml; coding: utf-8; -*-
+fileserver_backend:
+  - roots
+  - git
+
+file_roots:
+  base:
+    - bootstrap/srv/salt/
+    - salt/
+
+pillar_roots:
+  base:
+    - bootstrap/srv/pillar/
+    - pillar/
+
+gitfs_provider: gitpython
+
+gitfs_remotes:
+  - https://github.com/mitodl/master-formula
+  - https://github.com/mitodl/salt-extensions:
+      - root: extensions
+  - https://github.com/mitodl/consul-formula
+  - https://github.com/mitodl/vault-formula
+  - https://github.com/mitodl/fluentd-formula
+  - https://github.com/mitodl/datadog-formula
+
+root_dir: bootstrap/
+pki_dir: etc/salt/pki/master
+log_file: var/log/salt/master.log
+
+osenv:
+  driver: env
+
+vpc.keyid: sdb://osenv/AWS_ACCESS_KEY_ID
+vpc.key: sdb://osenv/AWS_SECRET_ACCESS_KEY

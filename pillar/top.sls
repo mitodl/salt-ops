@@ -4,7 +4,6 @@ base:
     - common
     - environment_settings
     - fluentd
-    - elastic_stack.beats
   'roles:auth_server':
     - match: grain
     - fluentd.cas
@@ -25,8 +24,10 @@ base:
     - monit.lms_503
   'roles:master':
     - match: grain
-    - salt_master
-    - micromasters
+    - master
+    - master.schedule
+    - master.config
+    - master.extra_config
   'roles:fluentd':
     - match: grain
     - fluentd
