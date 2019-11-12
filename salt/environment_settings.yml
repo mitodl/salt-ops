@@ -960,18 +960,13 @@ environments:
       rds:
         - name: reddit
           multi_az: False
+          # This needs to be changed if/when we redeploy this host.
+          # It is only like this to fix Consul pillar rendering
           engine: postgresql
           vault_plugin: postgresql-database-plugin
-          mount_point: postgresql-rc-apps-reddit
           db_instance_class: db.t2.small
           allocated_storage: 100
           public_access: False
-          engine_version: '9.6.11'
-          purpose: reddit
-          replica:
-            db_instance_class: db.t2.small
-          parameters:
-            max_connections: 1501
         - name: opendiscussions
           multi_az: False
           # This needs to be changed if/when we redeploy this host.
