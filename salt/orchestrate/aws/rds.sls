@@ -41,8 +41,8 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
                                    engine ~ '-' ~ name) %}
 {% set mount_point = dbconfig.pop('mount_point',
                                   '{}-{}-{}'.format(engine, ENVIRONMENT, name)) %}
-{% set replica = dbconfig.pop('replica', {})}
-{% set custom_parameters = dbconfig.pop('parameters', {})}
+{% set replica = dbconfig.pop('replica', {}) %}
+{% set custom_parameters = dbconfig.pop('parameters', {}) %}
 
 {% set vault_master_pass_path = 'secret-' ~ BUSINESS_UNIT ~ '/' ~ ENVIRONMENT ~ '/' ~ engine ~ '-' ~ dbpurpose ~ '-master-password' %}
 {% set master_pass = salt.vault.read(vault_master_pass_path ) %}
