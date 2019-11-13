@@ -185,10 +185,14 @@ environments:
           db_instance_class: db.t2.medium
           allocated_storage: 100
           public_access: False
-          engine_version: '10.3'
+          engine_version: '10.3.8'
           purpose: xpro-qa
           service_name: mysql
           mount_point: mysql-mitxpro-qa
+          replica:
+            db_instance_class: db.t2.small
+          parameters:
+            binlog_cache_size: 32767
       elasticache:
         - engine: memcached
           engine_version: '1.5.16'
