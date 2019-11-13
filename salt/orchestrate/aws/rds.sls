@@ -41,6 +41,7 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
                                    engine ~ '-' ~ name) %}
 {% set mount_point = dbconfig.pop('mount_point',
                                   '{}-{}-{}'.format(engine, ENVIRONMENT, name)) %}
+{% set engine_version = dbconfig.pop('engine_version') %}
 {% set replica = dbconfig.pop('replica', {}) %}
 {% set custom_parameters = dbconfig.pop('parameters', {}) %}
 
@@ -119,6 +120,7 @@ create_{{ ENVIRONMENT }}_{{ name }}_rds_store:
     - multi_az: {{ dbconfig.pop('multi_az', True) }}
     - publicly_accessible: {{ public_access }}
     - storage_type: gp2
+    - engine_version: {{ engine_version }}
     {% for attr, value in dbconfig.items() %}
     - {{ attr }}: {{ value }}
     {% endfor %}
