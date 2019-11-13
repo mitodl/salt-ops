@@ -14,7 +14,7 @@
 {% else %}
 {% set security_groups = ['edx-worker'] %}
 {% endif %}
-{% do security_groups.extend(['salt_master', 'consul-agent', 'default']) %}
+{% do security_groups.extend(['master-ssh', 'consul-agent', 'default']) %}
 {% set subnet_ids = salt.boto_vpc.describe_subnets(vpc_id=salt.boto_vpc.describe_vpcs(name=VPC_NAME).vpcs[0].id).subnets|map(attribute='id')|list %}
 
 {% set region = 'us-east-1' %}

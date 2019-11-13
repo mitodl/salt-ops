@@ -59,7 +59,7 @@ deploy_restore_instance_to_{{ ENVIRONMENT }}:
               SubnetId: {{ subnet_ids[0] }}
               SecurityGroupId:
                 - {{ salt.boto_secgroup.get_group_id(
-                     'salt_master-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
+                     'master-ssh-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
                 - {{ salt.boto_secgroup.get_group_id(
                      'edx-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
                 - {{ salt.boto_secgroup.get_group_id(

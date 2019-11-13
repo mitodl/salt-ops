@@ -10,7 +10,7 @@
         name=env_data.vpc_name).vpcs[0].id
     ).subnets|rejectattr('availability_zone', '==', 'us-east-1e')|map(attribute='id')|list %}
 {% set security_groups = env_data.purposes[app_name].get('security_groups', []) %}
-{% do security_groups.extend(['salt_master', 'consul-agent']) %}
+{% do security_groups.extend(['master-ssh', 'consul-agent']) %}
 {% set release_id = (salt.sdb.get('sdb://consul/' ~ app_name ~ '/' ~ ENVIRONMENT ~ '/release-id') or 'v1') %}
 {% set target_string = app_name ~ '-' ~ ENVIRONMENT ~ '-*-' ~ release_id %}
 

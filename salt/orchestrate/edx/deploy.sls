@@ -56,7 +56,7 @@ generate_edx_cloud_map_file:
           default: {{ salt.boto_secgroup.get_group_id(
               'default', vpc_name=VPC_NAME) }}
           salt-master: {{ salt.boto_secgroup.get_group_id(
-            'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+            'master-ssh-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           consul-agent: {{ salt.boto_secgroup.get_group_id(
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids|tojson }}

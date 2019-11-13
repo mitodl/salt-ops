@@ -23,7 +23,7 @@ ensure_instance_profile_exists_for_xqwatcher:
 {% for course in env_data.purposes[app_name].courses %}
 {% set INSTANCE_COUNT = course.num_instances %}
 {% set security_groups = course.get('security_groups', []) %}
-{% do security_groups.extend(['salt_master', 'consul-agent']) %}
+{% do security_groups.extend(['master-ssh', 'consul-agent']) %}
 generate_xqwatcher_{{ course.name }}_cloud_map_file:
   file.managed:
     - name: /etc/salt/cloud.maps.d/{{ ENVIRONMENT }}_xqwatcher_map.yml

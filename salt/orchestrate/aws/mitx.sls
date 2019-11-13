@@ -361,13 +361,13 @@ create_postgres_rds_security_group:
         OU: {{ BUSINESS_UNIT }}
         Environment: {{ ENVIRONMENT }}
 
-create_salt_master_security_group:
+create_master_ssh_security_group:
   boto_secgroup.present:
-    - name: salt_master-{{ ENVIRONMENT }}
+    - name: master-ssh-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
     - description: ACL for allowing access to hosts from Salt Master
     - tags:
-        Name: salt_master-{{ ENVIRONMENT }}
+        Name: master-ssh-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
     - rules:
         - ip_protocol: tcp

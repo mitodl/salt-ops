@@ -70,7 +70,7 @@ create_edx_baseline_instance_in_{{ ENVIRONMENT }}:
               - {{ salt.boto_secgroup.get_group_id(
               'default', vpc_name=VPC_NAME) }}
               - {{ salt.boto_secgroup.get_group_id(
-              'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+              'master-ssh-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
               - {{ salt.boto_secgroup.get_group_id(
               'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
             SubnetId: {{ subnet_ids[0] }}
@@ -104,7 +104,7 @@ create_edx_worker_baseline_instance_in_{{ ENVIRONMENT }}:
               - {{ salt.boto_secgroup.get_group_id(
               'default', vpc_name=VPC_NAME) }}
               - {{ salt.boto_secgroup.get_group_id(
-              'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+              'master-ssh-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
               - {{ salt.boto_secgroup.get_group_id(
               'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
             SubnetId: {{ subnet_ids[0] }}
