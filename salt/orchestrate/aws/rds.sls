@@ -103,7 +103,7 @@ create_{{ ENVIRONMENT }}_{{ name }}_parameter_group:
     - name: {{ db_parameter_group_name }}
     - description: Parameters for {{ db_identifier }}
     - db_parameter_group_family: {{ db_parameter_group_family }}
-    - parameters: {{ default_parameters[db_parameter_group_family].update(custom_parameters) }}
+    - parameters: {{ default_parameters[db_parameter_group_family].update(custom_parameters) | json }}
 
 create_{{ ENVIRONMENT }}_{{ name }}_rds_store:
   boto_rds.present:
