@@ -97,13 +97,15 @@ set_{{ name }}_master_password_in_vault:
     'mariadb10.2': default_mysql_parameters,
     'mariadb10.3': default_mysql_parameters
 } %}
+{% set parameter_group_parameters = default_parameters[db_parameter_group_family] %}
+{% do parameter_group_parameters.update(custom_parameters) %}
 
 create_{{ ENVIRONMENT }}_{{ name }}_parameter_group:
   boto_rds.parameter_present:
     - name: {{ db_parameter_group_name }}
     - description: Parameters for {{ db_identifier }}
     - db_parameter_group_family: {{ db_parameter_group_family }}
-    - parameters: {{ default_parameters[db_parameter_group_family].update(custom_parameters) | json }}
+    - parameters: {{ parameter_group_parameters | json }}
 
 create_{{ ENVIRONMENT }}_{{ name }}_rds_store:
   boto_rds.present:
