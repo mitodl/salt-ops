@@ -105,7 +105,10 @@ create_{{ ENVIRONMENT }}_{{ name }}_parameter_group:
     - name: {{ db_parameter_group_name }}
     - description: Parameters for {{ db_identifier }}
     - db_parameter_group_family: {{ db_parameter_group_family }}
-    - parameters: {{ parameter_group_parameters | tojson }}
+    - parameters:
+    {% for attr, value in parameter_group_parameters.items() %}
+      - {{ attr }}: {{ value }}
+    {% endfor %}
 
 create_{{ ENVIRONMENT }}_{{ name }}_rds_store:
   boto_rds.present:
