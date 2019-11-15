@@ -154,12 +154,12 @@ create_{{ ENVIRONMENT }}_{{ name }}_rds_replica:
     - db_instance_class: {{ replica.db_instance_class }}
     - publicly_accessible: False
     - tags:
-        - Name: {{ replica_name }}
-        - business_unit: {{ BUSINESS_UNIT }}
-        - Department: {{ BUSINESS_UNIT }}
-        - OU: {{ BUSINESS_UNIT }}
-        - Environment: {{ ENVIRONMENT }}
-        - Purpose: {{ dbpurpose }}
+        Name: {{ replica_name }}
+        business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
+        Purpose: {{ dbpurpose }}
 {% endif %}
 
 configure_vault_{{ engine }}_{{ name }}_backend:
