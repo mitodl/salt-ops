@@ -4,6 +4,34 @@
 vault:
   roles:
     {% for env in ['mitx-qa', 'mitx-production', 'mitxpro-qa', 'mitxpro-production'] %}
+    # This will need to be removed once we start using the database backend
+    {% if env in ['mitx-qa', 'mitx-production'] %}
+    admin-mysql-{{ env }}:
+      backend: mysql-{{ env }}
+      name: admin
+      options:
+        sql: {% raw %}"CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';
+        GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON `%`.* TO '{{name}}' WITH GRANT OPTION;"{% endraw %}
+        revocation_sql: {% raw %}"DROP USER '{{name}}';"{% endraw %}
+    readonly-mysql-{{ env }}:
+      backend: mysql-{{ env }}
+      name: readonly
+      options:
+        sql: {% raw %}"CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT, SHOW VIEW ON `%`.* TO '{{name}}'@'%';"{% endraw %}
+        revocation_sql: {% raw %}"DROP USER '{{name}}';"{% endraw %}
+    datadog-mysql-{{ env }}:
+      backend: mysql-{{ env }}
+      name: datadog
+      options:
+        sql: >-
+          {% raw -%}
+          CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';
+          GRANT REPLICATION CLIENT ON *.* TO '{{name}}'@'%';
+          GRANT PROCESS ON *.* TO '{{name}}'@'%';
+          GRANT SELECT ON `performance_schema`.* TO '{{name}}'@'%';
+          {%- endraw %}
+        revocation_sql: {% raw %}"DROP USER '{{name}}';"{% endraw %}
+    {% else %}
     admin-mysql-{{ env }}:
       backend: mysql-{{ env }}
       name: admin
@@ -32,6 +60,7 @@ vault:
           GRANT SELECT ON `performance_schema`.* TO '{{name}}'@'%';
           {%- endraw %}
         revocation_statements: {% raw %}"DROP USER '{{name}}';"{% endraw %}
+    {% endif %}
     datadog-rabbitmq-{{ env }}:
       backend: rabbitmq-{{ env }}
       name: datadog
@@ -60,6 +89,15 @@ vault:
     {% set purpose_suffix = purpose|replace('-', '_') %}
     {% for role in env_data.secret_backends.mysql.role_prefixes %}
     {% set db_name = role|replace('-', '_') ~ '_' ~ purpose_suffix %}
+    # This will need to be removed once we start using the database backend
+    {% if env in ['mitx-qa', 'mitx-production'] %}
+    {{ role }}-mysql-{{ env }}-{{ purpose }}:
+      backend: mysql-{{ env }}
+      name: {{ role }}-{{ purpose }}
+      options:
+        sql: "CREATE USER {% raw %}'{{name}}'@'%'{% endraw %} IDENTIFIED BY {% raw %}'{{password}}'{% endraw %};GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, INDEX, DROP, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES ON {{ db_name }}.* TO {% raw %}'{{name}}'{% endraw %}@'%';"
+        revocation_sql: {% raw %}"DROP USER '{{name}}';"{% endraw %}
+    {% else %}
     {{ role }}-mysql-{{ env }}-{{ purpose }}:
       backend: mysql-{{ env }}
       name: {{ role }}-{{ purpose }}
@@ -67,6 +105,7 @@ vault:
         db_name: {{ env|replace('-', '') }}
         creation_statements: "CREATE USER {% raw %}'{{name}}'@'%'{% endraw %} IDENTIFIED BY {% raw %}'{{password}}'{% endraw %};GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, INDEX, DROP, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES ON {{ db_name }}.* TO {% raw %}'{{name}}'{% endraw %}@'%';"
         revocation_statements: {% raw %}"DROP USER '{{name}}';"{% endraw %}
+    {% endif %}
     {% endfor %}{# role loop for mysql #}
     {% for role in env_data.secret_backends.rabbitmq.role_prefixes %}
     {{ role }}-rabbitmq-{{ env }}-{{ purpose }}:
