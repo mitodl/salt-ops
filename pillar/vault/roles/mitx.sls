@@ -10,8 +10,7 @@ vault:
       backend: mysql-{{ env }}
       name: admin
       options:
-        sql: {% raw %}"CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';
-        GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON `%`.* TO '{{name}}' WITH GRANT OPTION;"{% endraw %}
+        sql: {% raw %}"CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON `%`.* TO '{{name}}' WITH GRANT OPTION;"{% endraw %}
         revocation_sql: {% raw %}"DROP USER '{{name}}';"{% endraw %}
     readonly-mysql-{{ env }}:
       backend: mysql-{{ env }}
