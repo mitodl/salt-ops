@@ -47,7 +47,7 @@ consul:
             interval: 10s
         {% endif %}
         {% endfor %}
-        {% for cache_config in env_data.backends.elasticache %}
+        {% for cache_config in env_data.get('backends', {}).get('elasticache', []) %}
         {% if cache_config.engine == 'memcached' %}
         {% set cache_data = salt.boto3_elasticache.describe_cache_clusters(cache_config.cluster_id) %}
         {% else %}
