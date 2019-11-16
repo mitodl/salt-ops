@@ -108,9 +108,10 @@ base:
   'P@environment:mitx(pro)?-(qa|production)':
     - match: compound
     - consul.mitx
-  'environment:operations':
-    - match: grain
+  'P@environment:operations(-qa)':
+    - match: compound
     - consul.operations
+    - vault
   'P@environment:(rc|production)-apps':
     - match: compound
     - rabbitmq.apps

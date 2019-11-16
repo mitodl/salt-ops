@@ -7,7 +7,7 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
-  'P@environment:(operations|mitx-qa|mitx-production|mitxpro-qa|mitxpro-production|rc-apps|production-apps)':
+  'P@environment:(operations|operations-qa|mitx-qa|mitx-production|mitxpro-qa|mitxpro-production|rc-apps|production-apps)':
     - match: compound
     - consul
     - consul.dns_proxy
@@ -39,7 +39,7 @@ base:
     - master_utils.dns
     - master_utils.libgit
     - heroku.proxy_config
-  'G@roles:master and G@environment:operations':
+  'G@roles:master and P@environment:operations(-qa)?':
     - match: compound
     - master.aws
     - master_utils.dns

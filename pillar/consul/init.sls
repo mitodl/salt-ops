@@ -11,7 +11,7 @@
 
 consul:
   overrides:
-    version: 1.4.4
+    version: 1.6.2
   extra_configs:
     defaults:
       server: {{ 'consul_server' in grains.get('roles') }}
