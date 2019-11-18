@@ -108,7 +108,7 @@ base:
   'P@environment:mitx(pro)?-(qa|production)':
     - match: compound
     - consul.mitx
-  'P@environment:operations(-qa)':
+  'P@environment:operations(-qa)?':
     - match: compound
     - consul.operations
     - vault
