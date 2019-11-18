@@ -55,7 +55,7 @@ salt_master:
       log_granular_levels:
         'py.warnings': 'quiet'
       logstash_udp_handler:
-        host: fluentd.service.operations.consul
+        host: fluentd.service.consul
         port: 9999
         version: 1
     reactors:
@@ -111,7 +111,7 @@ salt_master:
     sdb:
       consul:
         driver: consul
-        host: consul.service.operations.consul
+        host: consul.service.consul
       osenv:
         driver: env
     vault:
@@ -214,7 +214,7 @@ salt_master:
     sdb:
       consul:
         driver: consul
-        host: consul.service.operations.consul
+        host: consul.service.consul
   proxy_configs:
     apps:
       {% if 'qa' in purpose %}

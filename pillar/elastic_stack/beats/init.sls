@@ -17,7 +17,7 @@ elastic_stack:
           - add_host_metadata: ~
         output.elasticsearch:
           hosts:
-            - http://elasticsearch.service.operations.consul:9200
+            - http://operations-elasticsearch.query.consul:9200
           compression_level: 3
       modules:
         system:
