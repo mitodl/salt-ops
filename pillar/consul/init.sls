@@ -1,4 +1,3 @@
-{% set encrypt_key = salt.sdb.get('sdb://osenv/CONSUL_ENCRYPT_KEY') %}
 {% set ENVIRONMENT = salt.grains.get('environment') %}
 {% set lan_nodes = [] %}
 {% for host, addr in salt.saltutil.runner(
@@ -22,10 +21,6 @@ consul:
         node_ttl: 30s
         service_ttl:
           "*": 30s
-      {% if encrypt_key %}
-      encrypt: {{ encrypt_key }}
-      {% else %}
       encrypt: __vault__::secret-operations/global/consul-shared-secret>data>value
-      {% endif %}
       retry_join: {{ lan_nodes|tojson }}
       datacenter: {{ ENVIRONMENT }}
