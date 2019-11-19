@@ -27,7 +27,7 @@ base:
     - master
     - master.schedule
     - master.config
-    - master.extra_config
+    # - master.extra_config
   'roles:fluentd':
     - match: grain
     - fluentd
