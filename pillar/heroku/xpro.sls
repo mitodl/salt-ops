@@ -24,6 +24,7 @@
       'MAILGUN_SENDER_DOMAIN': 'xpro-ci-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro-ci.odl.mit.edu',
       'vault_env_path': 'rc-apps',
+      'USE_X_FORWARDED_HOST': False,
       'VOUCHER_COMPANY_ID': 1
       },
     'rc': {
@@ -47,6 +48,7 @@
       'MAILGUN_SENDER_DOMAIN': 'xpro-rc-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro-rc.odl.mit.edu',
       'vault_env_path': 'rc-apps',
+      'USE_X_FORWARDED_HOST': False,
       'VOUCHER_COMPANY_ID': 1
       },
     'production': {
@@ -70,6 +72,7 @@
       'MAILGUN_SENDER_DOMAIN': 'xpro-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro.mit.edu',
       'vault_env_path': 'production-apps',
+      'USE_X_FORWARDED_HOST': True,
       'VOUCHER_COMPANY_ID': 4
       }
 } %}
@@ -145,6 +148,7 @@ heroku:
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
     SITE_NAME: "MIT xPRO"
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
+    USE_X_FORWARDED_HOST: {{ env_data.USE_X_FORWARDED_HOST }}
     VOUCHER_COMPANY_ID: {{ env_data.VOUCHER_COMPANY_ID }}
     VOUCHER_DOMESTIC_AMOUNT_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>amount_key
     VOUCHER_DOMESTIC_COURSE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>course_key
