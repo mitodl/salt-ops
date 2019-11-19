@@ -100,66 +100,6 @@ create_{{ ENVIRONMENT }}_salt_master_security_group:
             - 0.0.0.0/0
             - '::/0'
 
-create_{{ ENVIRONMENT }}_consul_security_group:
-  boto_secgroup.present:
-    - name: consul-{{ ENVIRONMENT }}
-    - description: Access rules for Consul cluster in operations VPC
-    - vpc_name: {{ VPC_NAME }}
-    - rules:
-        - ip_protocol: tcp
-          from_port: 8500
-          to_port: 8500
-          source_group_name: default
-          {# HTTP access #}
-        - ip_protocol: udp
-          from_port: 8500
-          to_port: 8500
-          source_group_name: default
-          {# HTTP access #}
-        - ip_protocol: tcp
-          from_port: 8600
-          to_port: 8600
-          source_group_name: default
-          {# DNS access #}
-        - ip_protocol: udp
-          from_port: 8600
-          to_port: 8600
-          source_group_name: default
-          {# DNS access #}
-        - ip_protocol: tcp
-          from_port: 8301
-          to_port: 8301
-          source_group_name: default
-          {# LAN gossip protocol #}
-        - ip_protocol: udp
-          from_port: 8301
-          to_port: 8301
-          source_group_name: default
-          {# LAN gossip protocol #}
-        - ip_protocol: tcp
-          from_port: 8300
-          to_port: 8302
-          cidr_ip: {{ env_nets }}
-          {# WAN cluster interface #}
-
-create_elasticsearch_security_group:
-  boto_secgroup.present:
-    - name: elasticsearch-{{ ENVIRONMENT }}
-    - vpc_name: {{ VPC_NAME }}
-    - description: ACL for elasticsearch servers
-    - rules:
-        - ip_protocol: tcp
-          from_port: 9200
-          to_port: 9200
-          cidr_ip: {{ env_nets }}
-        - ip_protocol: tcp
-          from_port: 9300
-          to_port: 9400
-          source_group_name: elasticsearch-{{ ENVIRONMENT }}
-    - tags:
-        Name: elasticsearch-{{ ENVIRONMENT }}
-        business_unit: {{ BUSINESS_UNIT }}
-
 create_{{ ENVIRONMENT }}_consul_agent_security_group:
   boto_secgroup.present:
     - name: consul-agent-{{ ENVIRONMENT }}
@@ -189,6 +129,66 @@ create_{{ ENVIRONMENT }}_consul_agent_security_group:
         Name: consul-agent-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
 
+create_{{ ENVIRONMENT }}_consul_security_group:
+  boto_secgroup.present:
+    - name: consul-{{ ENVIRONMENT }}
+    - description: Access rules for Consul cluster in operations VPC
+    - vpc_name: {{ VPC_NAME }}
+    - rules:
+        - ip_protocol: tcp
+          from_port: 8500
+          to_port: 8500
+          source_group_name: consul-agent-{{ ENVIRONMENT }}
+          {# HTTP access #}
+        - ip_protocol: udp
+          from_port: 8500
+          to_port: 8500
+          source_group_name: consul-agent-{{ ENVIRONMENT }}
+          {# HTTP access #}
+        - ip_protocol: tcp
+          from_port: 8600
+          to_port: 8600
+          source_group_name: consul-agent-{{ ENVIRONMENT }}
+          {# DNS access #}
+        - ip_protocol: udp
+          from_port: 8600
+          to_port: 8600
+          source_group_name: consul-agent-{{ ENVIRONMENT }}
+          {# DNS access #}
+        - ip_protocol: tcp
+          from_port: 8301
+          to_port: 8301
+          source_group_name: consul-agent-{{ ENVIRONMENT }}
+          {# LAN gossip protocol #}
+        - ip_protocol: udp
+          from_port: 8301
+          to_port: 8301
+          source_group_name: consul-agent-{{ ENVIRONMENT }}
+          {# LAN gossip protocol #}
+        - ip_protocol: tcp
+          from_port: 8300
+          to_port: 8302
+          cidr_ip: {{ env_nets }}
+          {# WAN cluster interface #}
+
+create_elasticsearch_security_group:
+  boto_secgroup.present:
+    - name: elasticsearch-{{ ENVIRONMENT }}
+    - vpc_name: {{ VPC_NAME }}
+    - description: ACL for elasticsearch servers
+    - rules:
+        - ip_protocol: tcp
+          from_port: 9200
+          to_port: 9200
+          cidr_ip: {{ env_nets }}
+        - ip_protocol: tcp
+          from_port: 9300
+          to_port: 9400
+          source_group_name: elasticsearch-{{ ENVIRONMENT }}
+    - tags:
+        Name: elasticsearch-{{ ENVIRONMENT }}
+        business_unit: {{ BUSINESS_UNIT }}
+
 create_vault_security_group:
   boto_secgroup.present:
     - name: vault-{{ ENVIRONMENT }}
@@ -198,7 +198,7 @@ create_vault_security_group:
         - ip_protocol: tcp
           from_port: 8200
           to_port: 8200
-          source_group_name: default
+          source_group_name: salt-master-{{ ENVIRONMENT }}
     - tags:
         Name: vault-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}

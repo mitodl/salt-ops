@@ -648,6 +648,16 @@ environments:
     network_prefix: '10.0'
     vpc_name: mitodl-operations-services
     purposes:
+      consul:
+        apps:
+          - consul
+          - vault
+        num_instances: 3
+        size: t3.medium
+        business_unit: operations
+        security_groups:
+          - vault
+          - consul
       redash:
         app: redash
         num_instances: 3
