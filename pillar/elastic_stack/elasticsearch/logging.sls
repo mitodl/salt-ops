@@ -1,10 +1,10 @@
-#!jinja|yaml|gpg
+{% set ENVIRONMENT = salt.grains.get('environment') %}
 elastic_stack:
   elasticsearch:
     configuration_settings:
-      cluster.name: mitodl_ops_cluster
+      cluster.name: {{ ENVIRONMENT }}
       discovery.zen.minimum_master_nodes: 3
-      discovery.ec2.tag.escluster: operations
+      discovery.ec2.tag.escluster: {{ ENVIRONMENT }}
       gateway.recover_after_nodes: 3
       gateway.expected_nodes: 5
       gateway.recover_after_time: 5m
