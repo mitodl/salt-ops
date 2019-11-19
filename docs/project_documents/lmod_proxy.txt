@@ -1,0 +1,5 @@
+lmod_proxy Deployment
+---------------------
+
+Please see the `openshift-deployment-lmodproxy.txt' document in our
+`mitodl.devops' team folder in Keybase.
