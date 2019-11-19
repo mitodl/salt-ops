@@ -81,5 +81,5 @@ fluentd:
             - nested_directives:
                 - directive: server
                   attrs:
-                    - host: fluentd.service.operations.consul
+                    - host: operations-fluentd.query.consul
                     - port: 5001

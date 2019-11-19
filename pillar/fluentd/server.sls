@@ -199,7 +199,7 @@ fluentd:
                   - '@type': elasticsearch_dynamic
                   - logstash_format: 'true'
                   - flush_interval: '10s'
-                  - hosts: elasticsearch.service.operations.consul
+                  - hosts: operations-elasticsearch.query.consul
                   - logstash_prefix: 'logstash-${record.fetch("environment", "blank") != "blank" ? record.fetch("environment") : tag_parts[0]}'
                   - include_tag_key: 'true'
                   - tag_key: fluentd_tag
