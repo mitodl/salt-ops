@@ -15,9 +15,9 @@
 {% set MIT_VPN_0_CIDR = '18.28.0.0/16' %}
 {% set MIT_VPN_1_CIDR = '18.30.0.0/16' %}
 
-create_salt_master_security_group:
+create_master_ssh_security_group:
   boto_secgroup.present:
-    - name: salt_master-{{ ENVIRONMENT }}
+    - name: master-ssh-{{ ENVIRONMENT }}
     - vpc_name: {{ VPC_NAME }}
     - description: ACL to allow Salt master to SSH to instances
     - rules:
@@ -28,7 +28,7 @@ create_salt_master_security_group:
             - 10.0.0.0/22
             - 10.1.0.0/22
     - tags:
-        Name: salt-master-{{ ENVIRONMENT }}
+        Name: master-ssh-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}

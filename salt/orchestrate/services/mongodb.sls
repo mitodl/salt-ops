@@ -57,7 +57,7 @@ generate_mongodb_cloud_map_file:
           - {{ salt.boto_secgroup.get_group_id(
             'mongodb-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
-            'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+            'master-ssh-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
