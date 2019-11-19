@@ -6,7 +6,8 @@
     'ci': {
       'app_name': 'xpro-ci',
       'env_name': 'ci',
-      'GOOGLE_TRACKING_ID': 'GTM-KG4FR7J',
+      'GOOGLE_TRACKING_ID': 'UA-5145472-40',
+      'GOOGLE_TAG_MANAGER_ID': 'GTM-KJHRV6K',
       'release_branch': 'master',
       'app_log_level': 'INFO',
       'sentry_log_level': 'ERROR',
@@ -28,7 +29,8 @@
     'rc': {
       'app_name': 'xpro-rc',
       'env_name': 'rc',
-      'GOOGLE_TRACKING_ID': 'GTM-KG4FR7J',
+      'GOOGLE_TRACKING_ID': 'UA-5145472-40',
+      'GOOGLE_TAG_MANAGER_ID': 'GTM-KJHRV6K',
       'release_branch': 'release-candidate',
       'app_log_level': 'INFO',
       'sentry_log_level': 'WARN',
@@ -50,7 +52,8 @@
     'production': {
       'app_name': 'xpro-production',
       'env_name': 'production',
-      'GOOGLE_TRACKING_ID': 'GTM-KG4FR7J',
+      'GOOGLE_TRACKING_ID': 'UA-5145472-38',
+      'GOOGLE_TAG_MANAGER_ID': 'GTM-KG4FR7J',
       'release_branch': 'release',
       'app_log_level': 'INFO',
       'sentry_log_level': 'WARN',
@@ -98,6 +101,7 @@ heroku:
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxpro
     {% endif %}
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
+    GTM_TRACKING_ID: {{ env_data.GOOGLE_TAG_MANAGER_ID }}
     HUBSPOT_API_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/hubspot-api-key>data>value
     HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
     HUBSPOT_ID_PREFIX: {{ env_data.HUBSPOT_ID_PREFIX }}
