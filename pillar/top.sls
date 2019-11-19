@@ -119,8 +119,8 @@ base:
   'G@roles:edx-analytics and P@environment:mitx(pro)?-production':
     - match: compound
     - data.mitx_etl
-  consul_operations:
-    - match: nodegroup
+  'G@roles:consul_server and G@environment:operations(-qa)?':
+    - match: compound
     - consul.bootcamps
     - vault
   'G@roles:consul_server and P@environment:mitx(pro)?-production':
@@ -150,8 +150,8 @@ base:
     - elasticsearch.micromasters
     - nginx.micromasters_es
     - datadog.nginx-integration
-  logging_cluster:
-    - match: nodegroup
+  'G@roles:elasticsearch and P@environment:operations(-qa)?':
+    - match: compound
     - elastic_stack.elasticsearch.logging
   'P@roles:(edx|edx-worker)$':
     - match: compound
