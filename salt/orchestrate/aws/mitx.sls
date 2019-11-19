@@ -27,6 +27,9 @@ create_{{ ENVIRONMENT }}_vpc:
     - tags:
         Name: {{ VPC_NAME }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_{{ ENVIRONMENT }}_internet_gateway:
   boto_vpc.internet_gateway_present:
@@ -37,6 +40,9 @@ create_{{ ENVIRONMENT }}_internet_gateway:
     - tags:
         Name: {{ ENVIRONMENT }}-igw
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_{{ ENVIRONMENT }}_public_subnet_1:
   boto_vpc.subnet_present:
@@ -49,6 +55,9 @@ create_{{ ENVIRONMENT }}_public_subnet_1:
     - tags:
         Name: public1-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_{{ ENVIRONMENT }}_public_subnet_2:
   boto_vpc.subnet_present:
@@ -61,6 +70,9 @@ create_{{ ENVIRONMENT }}_public_subnet_2:
     - tags:
         Name: public2-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_{{ ENVIRONMENT }}_public_subnet_3:
   boto_vpc.subnet_present:
@@ -73,6 +85,9 @@ create_{{ ENVIRONMENT }}_public_subnet_3:
     - tags:
         Name: public3-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_{{ ENVIRONMENT }}_vpc_peering_connection_with_operations:
   boto_vpc.vpc_peering_connection_present:
@@ -106,6 +121,9 @@ create_{{ ENVIRONMENT }}_routing_table:
     - tags:
         Name: {{ ENVIRONMENT }}-route_table
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_edx_security_group:
   boto_secgroup.present:
@@ -136,6 +154,9 @@ create_edx_security_group:
     - tags:
         Name: edx-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_edx_worker_security_group:
   boto_secgroup.present:
@@ -155,6 +176,9 @@ create_edx_worker_security_group:
     - tags:
         Name: edx-worker-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_mongodb_security_group:
   boto_secgroup.present:
@@ -175,6 +199,9 @@ create_mongodb_security_group:
     - tags:
         Name: mongodb-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_mitx_consul_security_group:
   boto_secgroup.present:
@@ -230,6 +257,9 @@ create_mitx_consul_security_group:
     - tags:
         Name: consul-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_mitx_consul_agent_security_group:
   boto_secgroup.present:
@@ -259,6 +289,9 @@ create_mitx_consul_agent_security_group:
     - tags:
         Name: consul-agent-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_rabbitmq_security_group:
   boto_secgroup.present:
@@ -292,6 +325,9 @@ create_rabbitmq_security_group:
     - tags:
         Name: rabbitmq-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_elasticsearch_security_group:
   boto_secgroup.present:
@@ -317,6 +353,9 @@ create_elasticsearch_security_group:
     - tags:
         Name: elasticsearch-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_mysql_rds_security_group:
   boto_secgroup.present:
@@ -342,6 +381,9 @@ create_mysql_rds_security_group:
     - tags:
         Name: mariadb-rds-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
 
 create_postgres_rds_security_group:
   boto_secgroup.present:
@@ -369,6 +411,9 @@ create_master_ssh_security_group:
     - tags:
         Name: master-ssh-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
     - rules:
         - ip_protocol: tcp
           from_port: 22
@@ -386,6 +431,9 @@ create_public_ssh_security_group:
     - tags:
         Name: publich-ssh-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
     - rules:
         - ip_protocol: tcp
           from_port: 22
@@ -405,6 +453,9 @@ create_vault_backend_security_group:
     - tags:
         Name: vault-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
+        Department: {{ BUSINESS_UNIT }}
+        OU: {{ BUSINESS_UNIT }}
+        Environment: {{ ENVIRONMENT }}
     - rules:
         {# MongoDB #}
         - ip_protocol: tcp
