@@ -207,6 +207,7 @@ heroku:
     USE_X_FORWARDED_PORT: True
     XPRO_CATALOG_API_URL: https://{{ env_data.MITXPRO_BASE_URL }}/api/programs/
     XPRO_COURSES_API_URL: https://{{ env_data.MITXPRO_BASE_URL }}/api/courses/
+    YOUTUBE_DEVELOPER_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/youtube-developer-key>data>value
 
 schedule:
   refresh_{{ env_data.app_name }}_configs:
