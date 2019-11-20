@@ -68,7 +68,7 @@ set_{{ name }}_master_password_in_vault:
 
 {# If engine is postgres and version is 10, then use major version only for
    parameter group family. All others use major.minor. #}
-{% if engine == 'postgres' and int(engine_version.partition('.')[0]) > 9 %}
+{% if engine == 'postgres' and engine_version.partition('.')[0]|int > 9 %}
 {% set fam_version = engine_version.partition('.')[0] %}
 {% else %}
 {% set fam_version = engine_version.rpartition('.')[0] %}
