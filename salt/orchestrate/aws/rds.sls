@@ -33,7 +33,7 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
 
 {% set name = dbconfig.pop('name') %}
 
-{% if FILTER_RDS_CONFIGS and name in FILTER_RDS_CONFIGS.split(',') %}
+{% if (not FILTER_RDS_CONFIGS) or (name in FILTER_RDS_CONFIGS.split(',')) %}
 
 {% set engine = dbconfig.pop('engine') %}
 {% set db_identifier = ENVIRONMENT ~ '-rds-' ~ engine ~ '-' ~ name %}
