@@ -3,7 +3,7 @@
 {% set env_settings = env_dict.environments[ENVIRONMENT] %}
 {% set VPC_NAME = salt.environ.get('VPC_NAME', env_settings.vpc_name) %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_settings.business_unit) %}
-{% set FILTER_CONFIGS = salt.environ.get('FILTER_CONFIGS') %}
+{% set FILTER_RDS_CONFIGS = salt.environ.get('FILTER_RDS_CONFIGS') %}
 
 {% set subnet_ids = [] %}
 {% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
@@ -33,7 +33,7 @@ create_{{ ENVIRONMENT }}_rds_db_subnet_group:
 
 {% set name = dbconfig.pop('name') %}
 
-{% if FILTER_CONFIGS and name in FILTER_CONFIGS.split(',') %}
+{% if FILTER_RDS_CONFIGS and name in FILTER_RDS_CONFIGS.split(',') %}
 
 {% set engine = dbconfig.pop('engine') %}
 {% set db_identifier = ENVIRONMENT ~ '-rds-' ~ engine ~ '-' ~ name %}
