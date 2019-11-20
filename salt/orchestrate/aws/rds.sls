@@ -98,6 +98,7 @@ set_{{ name }}_master_password_in_vault:
     'mysql5.5': default_mysql_parameters,
     'mysql5.6': default_mysql_parameters,
     'mysql5.7': default_mysql_parameters,
+    'mariadb10.0': default_mysql_parameters,
     'mariadb10.2': default_mysql_parameters,
     'mariadb10.3': default_mysql_parameters
 } %}
