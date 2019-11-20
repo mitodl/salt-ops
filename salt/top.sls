@@ -118,7 +118,7 @@ base:
     - uwsgi
     - etl
     - etl.email_mapping
-  'G@roles:kibana and G@environment:operations':
+  'G@roles:kibana and P@environment:operations(-qa)?':
     - match: compound
     - elastic-stack.kibana
     - utils.mitca_pem
