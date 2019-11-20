@@ -17,7 +17,7 @@ edx:
         ENABLE_VIDEO_UPLOAD_PIPELINE: False
     EDXAPP_CMS_ENV_EXTRA:
       FEATURES:
-        AUTH_USE_CAS: True
+        AUTH_USE_CAS: False
       ADDL_INSTALLED_APPS:
         - ubcpi
         - git_auto_export
