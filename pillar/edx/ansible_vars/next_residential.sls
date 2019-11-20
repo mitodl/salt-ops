@@ -11,7 +11,7 @@ edx:
       SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
     EDXAPP_LMS_ENV_EXTRA:
       FEATURES:
-        AUTH_USE_CAS: True
+        AUTH_USE_CAS: False
         ALLOW_PUBLIC_ACCOUNT_CREATION: False
         SKIP_EMAIL_VALIDATION: True
         ENABLE_VIDEO_UPLOAD_PIPELINE: False
