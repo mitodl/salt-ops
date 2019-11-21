@@ -5,7 +5,7 @@
 {% for host, grains in salt.saltutil.runner(
     'mine.get',
     tgt=instance_id, fun='grains.item').items() %}
-{% do ipaddrs.append(grains['external_ip']) %}
+{% do ipaddrs.append(grains['ec2:public_ipv4']) %}
 {% endfor %}
 
 create_dns_entry_for_{{ instance_id }}:
