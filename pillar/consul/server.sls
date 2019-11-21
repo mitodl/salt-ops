@@ -31,8 +31,9 @@ consul:
         dns: 0.0.0.0
         http: 0.0.0.0
       retry_join_wan: {{ wan_nodes|tojson }}
-      acl_datacenter: {{ ENVIRONMENT }}
-      acl_master_token: __vault__::secret-operations/{{ ENVIRONMENT }}/consul-acl-master-token>data>value
+      primary_datacenter: {{ ENVIRONMENT }}
+      tokens:
+        master: __vault__::secret-operations/{{ ENVIRONMENT }}/consul-acl-master-token>data>value
     aws_services:
       services:
         {% for dbconfig in env_data.backends.get('rds', []) %}
