@@ -182,7 +182,7 @@ uwsgi:
         - touch-reload: /opt/{{ app_name }}/deploy_complete.txt
         - uid: deploy
         - attach-daemon2: >-
-            cmd=/usr/local/pyenv/versions/{{ python_version }}/bin/celery worker -A odl_video -B --pidfile /opt/{{ app_name }}/celery.pid,
+            cmd=/usr/local/pyenv/versions/{{ python_version }}/bin/celery worker -A odl_video -B --pidfile /opt/{{ app_name }}/celery.pid -l {{ env_data.log_level }},
             pidfile=/opt/{{ app_name }}/celery.pid,
             daemonize=true,
             touch=/opt/{{ app_name}}/deploy_complete.txt
