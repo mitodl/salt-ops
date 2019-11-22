@@ -285,7 +285,7 @@ fluentd:
                       - directive: buffer
                         attrs:
                           - '@type': file
-                          - path: {{ fluentd_directories.residential_tracking_logs }}
+                          - path: {{ fluentd_directories.xpro_tracking_logs }}
                           - timekey: 3600
                           - timekey_wait: '10m'
                           - timekey_use_utc: 'true'
