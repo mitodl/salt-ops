@@ -8,7 +8,7 @@
         vpc_name=VPC_NAME,
         keyid=aws_access_key,
         key=aws_secret_access_key).vpc.id
-    ).subnets|rejectattr('availability_zone', '==', 'us-east-1e')|map(attribute='id')|list %}
+    ).subnets|rejectattr('availability_zone', 'equalto', 'us-east-1e')|map(attribute='id')|list %}
 {% set security_groups = ['consul-agent-' ~ ENVIRONMENT, 'salt-master-' ~ ENVIRONMENT, 'default'] %}
 {% set secgroupids = [] %}
 {% for group_name in security_groups %}
