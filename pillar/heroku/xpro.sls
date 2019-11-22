@@ -157,7 +157,7 @@ heroku:
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-secret-key>data>value
     SENTRY_DSN: __vault__::secret-operations/global/xpro/sentry-dsn>data>value
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
-    SHEETS_ADMIN_EMAILS: sdb://consul/xpro/{{ environment }}/sheets-admin-emails
+    SHEETS_ADMIN_EMAILS: {{ salt.sdb.get('sdb://consul/xpro/' ~ environment ~'/sheets-admin-emails') }}
     SHEETS_DATE_TIMEZONE: America/New_York
     SHEETS_MONITORING_FREQUENCY: 300
     SITE_NAME: "MIT xPRO"
