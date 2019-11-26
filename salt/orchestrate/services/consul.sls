@@ -10,7 +10,7 @@
         name=env_data.vpc_name).vpcs[0].id
     ).subnets|rejectattr('availability_zone', 'equalto', 'us-east-1e')|map(attribute='id')|list %}
 {% set app_name = 'consul' %}
-{% set release_id = salt.sdb.get('sdb://osenv/RELEASE_ID') %}
+{% set release_id = salt.sdb.get('sdb://consul/osenv/release-id') %}
 {% if not release_id %}
 {% set release_id = salt.sdb.get('sdb://consul/' ~ app_name ~ '/' ~ ENVIRONMENT ~ '/release-id')|default('v1') %}
 {% endif %}
