@@ -95,6 +95,9 @@
 {% set pg_creds = salt.vault.cached_read('postgresql-{}-opendiscussions/creds/opendiscussions'.format(env_data.vault_env_path), cache_prefix='heroku-opendiscussions') %}
 {% set rds_endpoint = salt.boto_rds.get_endpoint('{env}-rds-postgresql-opendiscussions'.format(env=env_data.vault_env_path)) %}
 
+{% set etl_micromasters_host = salt.sdb.get('sdb://consul/open-{}-etl-micromasters-host'.format(environment)) %}
+{% set etl_xpro_host = salt.sdb.get('sdb://consul/open-{}-etl-xpro-host'.format(environment)) %}
+
 proxy:
   proxytype: heroku
 
@@ -141,8 +144,8 @@ heroku:
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
     MAILGUN_URL: https://api.mailgun.net/v3/{{ env_data.MAILGUN_SENDER_DOMAIN }}
     MICROMASTERS_BASE_URL: https://{{ env_data.MICROMASTERS_BASE_URL }}
-    MICROMASTERS_CATALOG_API_URL: https://{{ env_data.MICROMASTERS_BASE_URL }}/api/v0/catalog/
-    MICROMASTERS_COURSE_URL: https://{{ env_data.MICROMASTERS_BASE_URL }}/api/v0/courseruns/
+    MICROMASTERS_CATALOG_API_URL: https://{{ etl_micromasters_host }}/api/v0/catalog/
+    MICROMASTERS_COURSE_URL: https://{{ etl_micromasters_host }}/api/v0/courseruns/
     MICROMASTERS_EXTERNAL_LOGIN_URL: https://{{ env_data.MICROMASTERS_BASE_URL}}/discussions
     NEW_RELIC_LOG: stdout
     NODE_MODULES_CACHE: False
@@ -205,8 +208,8 @@ heroku:
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
     USE_X_FORWARDED_HOST: True
     USE_X_FORWARDED_PORT: True
-    XPRO_CATALOG_API_URL: https://{{ env_data.MITXPRO_BASE_URL }}/api/programs/
-    XPRO_COURSES_API_URL: https://{{ env_data.MITXPRO_BASE_URL }}/api/courses/
+    XPRO_CATALOG_API_URL: https://{{ etl_xpro_host }}/api/programs/
+    XPRO_COURSES_API_URL: https://{{ etl_xpro_host }}/api/courses/
     YOUTUBE_DEVELOPER_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/youtube-developer-key>data>value
 
 schedule:
