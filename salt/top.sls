@@ -43,7 +43,6 @@ base:
     - match: compound
     - master.aws
     - master_utils.dns
-    - master_utils.nodegroups
   'G@roles:elasticsearch and P@environment:operations(-qa)?':
     - match: compound
     - utils.file_limits
