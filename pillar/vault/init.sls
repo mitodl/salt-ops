@@ -1,4 +1,3 @@
-{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
 vault:
   overrides:
     version: 1.2.3
@@ -18,6 +17,10 @@ vault:
           address: 0.0.0.0:8200
           tls_cert_file: /etc/salt/ssl/certs/vault.odl.mit.edu.crt
           tls_key_file: /etc/salt/ssl/certs/vault.odl.mit.edu.key
+      log_level: WARN
+      log_format: json
+      telemetry:
+        dogstatsd_addr: 127.0.0.1:8125
   ssl:
     cert_params:
       CN: vault.odl.mit.edu
