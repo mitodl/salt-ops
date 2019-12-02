@@ -49,7 +49,7 @@
       'MAILGUN_SENDER_DOMAIN': 'xpro-rc-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro-rc.odl.mit.edu',
       'vault_env_path': 'rc-apps',
-      'COUPON_SHEETS_FEATURE_ENABLED': False,
+      'COUPON_SHEETS_FEATURE_ENABLED': True,
       'USE_X_FORWARDED_HOST': False,
       'VOUCHER_COMPANY_ID': 1
       },
