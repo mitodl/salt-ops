@@ -74,7 +74,7 @@ set_{{ name }}_master_password_in_vault:
 {% set fam_version = engine_version.rpartition('.')[0] %}
 {% endif %}
 {% set db_parameter_group_family = engine ~ fam_version %}
-{% set db_parameter_group_name = ENVIRONMENT ~ '-' ~ engine ~ '-' ~ db_parameter_group_family  | replace('.', '-') ~ '-parameters' %}
+{% set db_parameter_group_name = ENVIRONMENT ~ '-' ~ name ~ '-' ~ db_parameter_group_family  | replace('.', '-') ~ '-parameters' %}
 {% set default_postgres_parameters = {
     'client_encoding': 'UTF-8',
     'server_encoding': 'UTF-8',
