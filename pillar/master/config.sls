@@ -16,9 +16,10 @@ salt_master:
   extra_configs:
     extfs:
       fileserver_backend:
-        - git
+        - gitfs
         - roots
       gitfs_base: {{ git_ref }}
+      gitfs_provider: pygit2
       gitfs_remotes:
         - https://github.com/mitodl/salt-ops:
             - root: salt

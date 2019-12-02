@@ -19,6 +19,8 @@ salt_master:
       - python3-pip
       - tmux
       - vim
+      - mariadb-client
+      - postgresl
     pip_deps:
       - PyOpenssl
       - apache-libcloud
