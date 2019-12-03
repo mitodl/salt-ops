@@ -41,7 +41,7 @@ current_residential_versions_rp: &current_residential_versions_rp
   edx_config_repo: https://github.com/mitodl/configuration
   edx_config_version: open-release/ironwood.master
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
-  edxapp: mitx/ironwood
+  edxapp: mitx/ironwood-stable
   forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
   forum: open-release/ironwood.master
   xqueue_source_repo: 'https://github.com/mitodl/xqueue'
