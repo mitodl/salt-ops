@@ -85,13 +85,13 @@ fluentd:
             - port: 9999
             - keep_time_key: 'true'
         - directive: source
-           attrs:
-             - '@type': secure_forward
-             - port: 5001
-             - secure: 'false'
-             - cert_auto_generate: 'yes'
-             - self_hostname: {{ salt.grains.get('external_ip') }}
-             - shared_key: {{ fluentd_shared_key }}
+          attrs:
+            - '@type': secure_forward
+            - port: 5001
+            - secure: 'false'
+            - cert_auto_generate: 'yes'
+            - self_hostname: {{ salt.grains.get('external_ip') }}
+            - shared_key: {{ fluentd_shared_key }}
         - directive: filter
           directive_arg: 'mailgun.**'
           attrs:
