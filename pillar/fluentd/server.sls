@@ -22,20 +22,18 @@ schedule:
 
 fluentd:
   persistent_directories: {{ fluentd_directories|tojson }}
-  overrides:
-    nginx_config:
-      server_name: log-input.odl.mit.edu
-      cert_file: log-input.crt
-      key_file: log-input.key
-      cert_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>value
-      key_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>key
   plugins:
+    - fluent-plugin-secure-forward
+    - fluent-plugin-heroku-syslog
     - fluent-plugin-s3
     - fluent-plugin-avro
     - fluent-plugin-anonymizer
     - fluent-plugin-logzio
     - fluent-plugin-elasticsearch
   proxied_plugins:
+    - route: heroku-http
+      port: 9000
+      token: __vault__::secret-operations/global/heroku_http_token>data>value
     - route: mailgun-webhooks
       port: 9001
       token: __vault__::secret-operations/global/mailgun_webhooks_token>data>value
@@ -86,6 +84,14 @@ fluentd:
             - format: json
             - port: 9999
             - keep_time_key: 'true'
+        - directive: source
+           attrs:
+             - '@type': secure_forward
+             - port: 5001
+             - secure: 'false'
+             - cert_auto_generate: 'yes'
+             - self_hostname: {{ salt.grains.get('external_ip') }}
+             - shared_key: {{ fluentd_shared_key }}
         - directive: filter
           directive_arg: 'mailgun.**'
           attrs:
@@ -108,18 +114,6 @@ fluentd:
                     - keys: $["event-data"]["ip"]
                     - ipv4_mask_bits: 24
                     - ipv6_mask_bits: 104
-        - directive: source
-          attrs:
-            - '@id': secure_input
-            - '@type': forward
-            - port: 5001
-            - nested_directives:
-              - directive: transport
-                directive_arg: tls
-                attrs:
-                  - cert_path: '/etc/ssl/certs/log-input.crt'
-                  - private_key_path: '/etc/ssl/certs/log-input.key'
-                  - private_key_passphrase: ''
         {# The purpose of this block is to stream data from the
         micromasters application to S3 for analysis by the
         institutional research team. If they ever need to change
