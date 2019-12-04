@@ -1,7 +1,7 @@
 {% set app_name = "fluentd-aggregators" %}
-{% set fluentd_shared_key = salt.vault.read('secret-operations/global/fluentd_shared_key').data.value %}
-{% set heroku_http_token = salt.vault.read('secret-operations/qa/heroku_http_token').data.value %}
-{% set mailgun_webhooks_token = salt.vault.read('secret-operations/qa/mailgun_webhooks_token').data.value %}
+{% set fluentd_shared_key = salt.vault.read('secret-operations/operations-qa/fluentd_shared_key').data.value %}
+{% set heroku_http_token = salt.vault.read('secret-operations/operations-qa/heroku_http_token').data.value %}
+{% set mailgun_webhooks_token = salt.vault.read('secret-operations/operations-qa/mailgun_webhooks_token').data.value %}
 {% set odl_wildcard_cert = salt.vault.read('secret-operations/global/odl_wildcard_cert') %}
 {% import_yaml 'fluentd/fluentd_directories.yml' as fluentd_directories %}
 
