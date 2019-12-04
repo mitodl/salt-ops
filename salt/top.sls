@@ -67,6 +67,8 @@ base:
   'roles:log-aggregator':
     - match: grain
     - fluentd.reverse_proxy
+  'G@roles:log-aggregator and P@environment:operations':
+    - match: compound
     - datadog.plugins
   'roles:scylladb':
     - match: grain
