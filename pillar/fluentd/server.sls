@@ -55,8 +55,8 @@ fluentd:
             - '@id': heroku_logs_inbound
             - '@type': syslog
             - tag: heroku_logs
-            - bind: 127.0.0.1
-            - port: 5140
+            - bind: 9000
+            - port: ::1
             - protocol_type: tcp
             - nested_directives:
                 - directive: parse
