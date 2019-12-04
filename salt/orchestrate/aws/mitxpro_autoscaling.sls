@@ -65,7 +65,7 @@ create_autoscaling_group_for_{{ app_name }}:
     - launch_config:
       - instance_profile_name: edx-instance-role
       - image_name: {{ ami_name }}
-      - key_name: salt-master-prod
+      - key_name: salt-production
       - instance_type: {{ instance_type }}
       - associate_public_ip_address: True
       - security_groups:
