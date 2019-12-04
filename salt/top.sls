@@ -122,6 +122,7 @@ base:
     - elastic-stack.kibana
     - utils.mitca_pem
     - utils.configure_debian_source_repos
+    - utils.logrotate
     - nginx.ng
     - elastic-stack.elastalert
     - datadog.plugins

@@ -22,6 +22,7 @@ base:
     - elastalert
     - monit
     - monit.lms_503
+    - logrotate.kibana
   'roles:master':
     - match: grain
     - master
