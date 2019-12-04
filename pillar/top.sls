@@ -31,11 +31,15 @@ base:
   'roles:fluentd':
     - match: grain
     - fluentd
-  'roles:fluentd-server':
-    - match: grain
+  'G@roles:fluentd-server and P@environment:operations-qa':
+    - match: compound
+    - consul.fluentd
+    - fluent.server_operations_qa
+  'G@roles:fluentd-server and P@environment:operations':
+    - match: compound
+    - consul.fluentd
     - fluentd.server
     - datadog.fluentd-integration
-    - consul.fluentd
   'roles:consul_server':
     - match: grain
     - consul
