@@ -34,7 +34,7 @@ base:
   'G@roles:fluentd-server and P@environment:operations-qa':
     - match: compound
     - consul.fluentd
-    - fluent.server_operations_qa
+    - fluentd.server_operations_qa
   'G@roles:fluentd-server and P@environment:operations':
     - match: compound
     - consul.fluentd
