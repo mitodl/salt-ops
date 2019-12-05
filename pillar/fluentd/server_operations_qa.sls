@@ -23,7 +23,7 @@ fluentd:
       cert_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>value
       key_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>key
   plugins:
-    - fluent-plugin-heroku-syslog
+    - fluent-plugin-heroku-syslog-http
     - fluent-plugin-s3
     - fluent-plugin-elasticsearch
   proxied_plugins:
@@ -46,7 +46,7 @@ fluentd:
         - directive: source
           attrs:
             - '@id': heroku_logs_inbound
-            - '@type': syslog
+            - '@type': heroku_syslog_http
             - tag: heroku_logs
             - bind: ::1
             - port: 9000
