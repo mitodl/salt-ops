@@ -47,6 +47,7 @@ salt_master:
         - https://github.com/mitodl/elastic-stack-formula
     ext_pillar:
       git_pillar_provider: pygit2
+      git_pillar_base: {{ git_ref }}
       ext_pillar:
         - git:
             - {{ git_ref }} https://github.com/mitodl/salt-ops:
