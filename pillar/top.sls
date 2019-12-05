@@ -32,11 +32,11 @@ base:
   'roles:fluentd':
     - match: grain
     - fluentd
-  'G@roles:fluentd-server and P@environment:operations-qa':
+  'G@roles:fluentd-server and G@environment:operations-qa':
     - match: compound
     - consul.fluentd
     - fluentd.server_operations_qa
-  'G@roles:fluentd-server and P@environment:operations':
+  'G@roles:fluentd-server and G@environment:operations':
     - match: compound
     - consul.fluentd
     - fluentd.server
