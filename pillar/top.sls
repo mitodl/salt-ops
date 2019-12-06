@@ -164,6 +164,12 @@ base:
   'G@roles:elasticsearch and P@environment:operations(-qa)?':
     - match: compound
     - elastic_stack.elasticsearch.logging
+  'G@roles:elasticsearch and G@environment:operations':
+    - match: compound
+    - elastic_stack.version_production
+  'G@roles:elasticsearch and G@environment:operations-qa':
+    - match: compound
+    - elastic_stack.version_qa
   'P@roles:(edx|edx-worker)$':
     - match: compound
     - edx
