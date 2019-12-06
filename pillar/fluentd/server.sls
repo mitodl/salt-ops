@@ -133,7 +133,7 @@ fluentd:
                     - s3_region: us-east-1
                     - path: logs/
                     - s3_object_key_format: '%{path}%{time_slice}_%{index}.%{file_extension}'
-                    - time_slice_format: '%Y-%m-%d'
+                    - time_slice_format: '%Y-%m-%d-%H'
                     - nested_directives:
                       - directive: buffer
                         attrs:
@@ -242,7 +242,7 @@ fluentd:
                     - s3_region: us-east-1
                     - path: logs/
                     - s3_object_key_format: '%{path}%{time_slice}_%{index}.%{file_extension}'
-                    - time_slice_format: '%Y-%m-%d'
+                    - time_slice_format: '%Y-%m-%d-%H'
                     - nested_directives:
                       - directive: buffer
                         attrs:
@@ -263,7 +263,11 @@ fluentd:
                   directive_arg: 'edx.tracking'
                   attrs:
                     - '@type': grep
-                    - regexp1: environment mitxpro-production
+                    - nested_directives:
+                      - directive: regexp
+                        attrs:
+                          - key: environment
+                          - pattern: mitxpro-production
                 - directive: match
                   directive_arg: edx.tracking
                   attrs:

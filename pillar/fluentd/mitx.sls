@@ -115,7 +115,7 @@ fluentd:
             - path: /edx/var/log/tracking/tracking.log
             - pos_file: /edx/var/log/tracking/tracking.log.pos
             - format: json
-            - time_format: '%Y-%m-%dT%H:%M:%S.%N+%z'
+            - time_format: '%Y-%m-%dT%H:%M:%S.%N+%:z'
         - {{ auth_log_source('syslog.auth', '/var/log/auth.log') }}
         - {{ auth_log_filter('grep', 'ident', 'python') }}
         - {{ record_tagging |yaml() }}
