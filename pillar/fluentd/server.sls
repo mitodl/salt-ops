@@ -133,7 +133,7 @@ fluentd:
                     - s3_region: us-east-1
                     - path: logs/
                     - s3_object_key_format: '%{path}%{time_slice}_%{index}.%{file_extension}'
-                    - time_slice_format: '%Y-%m-%d'
+                    - time_slice_format: '%Y-%m-%d-%H'
                     - nested_directives:
                       - directive: buffer
                         attrs:
@@ -278,7 +278,7 @@ fluentd:
                     - s3_region: us-east-1
                     - path: logs/
                     - s3_object_key_format: '%{path}%{time_slice}_%{index}.%{file_extension}'
-                    - time_slice_format: '%Y-%m-%d-%H'
+                    - time_slice_format: '%Y-%m-%d'
                     - nested_directives:
                       - directive: buffer
                         attrs:
