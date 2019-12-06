@@ -129,12 +129,6 @@ add_private_ssh_key_to_www-data_for_git_export:
     - group: www-data
 {% endif %}
 
-add_nginx_log_format:
-  file.managed:
-    - name: /edx/app/nginx/conf.d/logging.conf
-    - source: salt://edx/files/nginx_logging.j2
-    - makedirs: True
-
 {% if theme_name %}
 install_edxapp_theme:
   file.directory:
