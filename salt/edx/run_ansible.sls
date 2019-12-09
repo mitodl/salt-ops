@@ -95,7 +95,7 @@ run_ansible:
     - env:
         HOME: /root
 
-{% if 'edx-worker' in salt.grains.get('roles') %}
+{% if 'edx-worker' in salt.grains.get('roles') and not 'qa' in salt.grains.get('environment') %}
 restart_edx_worker_service:
   supervisord.running:
     - name: all
