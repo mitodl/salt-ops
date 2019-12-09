@@ -126,6 +126,19 @@ fluentd:
         - {{ auth_log_filter('grep', 'ident', 'python') }}
         - {{ record_tagging |yaml() }}
         - directive: match
+          directive_arg: 'edx.tracking'
+          attrs:
+            - '@type': secure_forward
+            - self_hostname: {{ salt.grains.get('ipv4')[0] }}
+            - secure: 'false'
+            - flush_interval: '10s'
+            - shared_key: __vault__::secret-operations/global/fluentd_shared_key>data>value
+            - nested_directives:
+                - directive: server
+                  attrs:
+                    - host: '10.0.0.84'
+                    - port: 5001
+        - directive: match
           directive_arg: '**'
           attrs:
             - '@type': secure_forward
