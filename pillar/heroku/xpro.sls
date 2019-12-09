@@ -16,6 +16,7 @@
       'openedx_environment': 'mitxpro-qa',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
       'CYBERSOURCE_WSDL_URL': 'https://ics2wstest.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
+      'HUBSPOT_CREATE_USER_FORM_ID': '9c823b8c-5db8-42b9-8a93-c411ceb55aaf',
       'HUBSPOT_FOOTER_FORM_GUID': 'ff810010-c33c-4e99-9285-32d283fbc816',
       'HUBSPOT_ID_PREFIX': 'xpro-ci',
       'HUBSPOT_NEW_COURSES_FORM_GUID': 'b9220dc1-4e48-4097-8539-9f2907f18b1e',
@@ -41,6 +42,7 @@
       'openedx_environment': 'mitxpro-qa',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
       'CYBERSOURCE_WSDL_URL': 'https://ics2wstest.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
+      'HUBSPOT_CREATE_USER_FORM_ID': '9c823b8c-5db8-42b9-8a93-c411ceb55aaf',
       'HUBSPOT_FOOTER_FORM_GUID': 'ff810010-c33c-4e99-9285-32d283fbc816',
       'HUBSPOT_ID_PREFIX': 'xpro-rc',
       'HUBSPOT_NEW_COURSES_FORM_GUID': 'b9220dc1-4e48-4097-8539-9f2907f18b1e',
@@ -66,6 +68,7 @@
       'openedx_environment': 'mitxpro-production',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://secureacceptance.cybersource.com/pay',
       'CYBERSOURCE_WSDL_URL': 'https://ics2wsa.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
+      'HUBSPOT_CREATE_USER_FORM_ID': '9ada5d38-33ee-415c-8cb2-9d72e735b1d5',
       'HUBSPOT_FOOTER_FORM_GUID': '6f7e46ec-f757-43a4-b109-597210df0f75',
       'HUBSPOT_ID_PREFIX': 'xpro',
       'HUBSPOT_NEW_COURSES_FORM_GUID': 'ad5d54e5-5ca9-4255-9c17-fa222e0a9b82',
@@ -112,6 +115,7 @@ heroku:
     DRIVE_SHARED_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>drive_shared_id
     FEATURE_COUPON_SHEETS: {{ env_data.COUPON_SHEETS_FEATURE_ENABLED }}
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
+    HUBSPOT_CREATE_USER_FORM_ID: {{ env_data.HUBSPOT_CREATE_USER_FORM_ID }}
     GTM_TRACKING_ID: {{ env_data.GOOGLE_TAG_MANAGER_ID }}
     HUBSPOT_API_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/hubspot-api-key>data>value
     HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
