@@ -31,3 +31,4 @@ edx:
         # Python client for Sentry
         - name: raven
         - name: git+https://github.com/IONISx/xblock-pdf.git@8d63047c53bc8fdd84fa7b0ec577bb0a729c215f#egg=xblock-pdf
+          extra_args: -e
