@@ -12,6 +12,7 @@
       'env_name': 'ci',
       'FEATURE_COURSE_UI': True,
       'GA_TRACKING_ID': 'UA-5145472-29',
+      'HUBSPOT_CREATE_USER_FORM_ID': '9c823b8c-5db8-42b9-8a93-c411ceb55aaf',
       'INDEXING_API_USERNAME': 'od_mm_ci_api',
       'NEW_RELIC_APP_NAME': 'discussions-ci',
       'MAILGUN_SENDER_DOMAIN': 'discussions-mail.odl.mit.edu',
@@ -41,6 +42,7 @@
       'env_name': 'rc',
       'FEATURE_COURSE_UI': True,
       'GA_TRACKING_ID': 'UA-5145472-29',
+      'HUBSPOT_CREATE_USER_FORM_ID': '9c823b8c-5db8-42b9-8a93-c411ceb55aaf',
       'INDEXING_API_USERNAME': 'od_mm_rc_api',
       'NEW_RELIC_APP_NAME': 'discussions-rc',
       'MAILGUN_SENDER_DOMAIN': 'discussions-mail.odl.mit.edu',
@@ -70,6 +72,7 @@
       'ELASTICSEARCH_INDEX': 'discussions',
       'ELASTICSEARCH_URL': 'https://elasticsearch-production-apps.odl.mit.edu',
       'GA_TRACKING_ID': 'UA-5145472-30',
+      'HUBSPOT_CREATE_USER_FORM_ID': '9ada5d38-33ee-415c-8cb2-9d72e735b1d5',
       'INDEXING_API_USERNAME': 'od_mm_prod_api',
       'NEW_RELIC_APP_NAME': 'discussions-production',
       'MAILGUN_SENDER_DOMAIN': 'mail.open.mit.edu',
@@ -138,6 +141,7 @@ heroku:
     FEATURE_USE_NEW_BRANDING: True
     FEATURE_WIDGETS_UI: True
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
+    HUBSPOT_CREATE_USER_FORM_ID: {{ env_data.HUBSPOT_CREATE_USER_FORM_ID }}
     INDEXING_API_USERNAME: {{ env_data.INDEXING_API_USERNAME }}
     MAILGUN_FROM_EMAIL: 'MIT Open <no-reply@{{ env_data.MAILGUN_SENDER_DOMAIN }}'
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
