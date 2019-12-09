@@ -5,23 +5,12 @@
 edx:
   ansible_vars:
     EDXAPP_EXTRA_MIDDLEWARE_CLASSES: [] # Worth keeping track of in case we need to take advantage of it
-    EDXAPP_SESSION_COOKIE_DOMAIN: .mitx.mit.edu
-    EDXAPP_SESSION_COOKIE_NAME: {{ environment }}-{{ purpose }}-session
-    EDXAPP_CMS_AUTH_EXTRA:
-      SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
     EDXAPP_LMS_ENV_EXTRA:
       FEATURES:
-        AUTH_USE_CAS: True
-        ALLOW_PUBLIC_ACCOUNT_CREATION: False
-        SKIP_EMAIL_VALIDATION: True
-        ENABLE_VIDEO_UPLOAD_PIPELINE: False
+        AUTH_USE_CAS: False
     EDXAPP_CMS_ENV_EXTRA:
       FEATURES:
-        AUTH_USE_CAS: True
-      ADDL_INSTALLED_APPS:
-        - ubcpi
-        - git_auto_export
-        - imagemodal
+        AUTH_USE_CAS: False
     EDXAPP_PRIVATE_REQUIREMENTS:
         # For Harvard courses:
         # Peer instruction XBlock
@@ -41,3 +30,4 @@ edx:
         - name: xblock-image-modal==0.4.2
         # Python client for Sentry
         - name: raven
+        - name: git+https://github.com/IONISx/xblock-pdf.git@8d63047c53bc8fdd84fa7b0ec577bb0a729c215f#egg=xblock-pdf

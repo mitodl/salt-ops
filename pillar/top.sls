@@ -216,7 +216,7 @@ base:
   'P@purpose:.*-live and P@environment:mitx-(qa|production)':
     - match: compound
     - consul.mitx-live
-  'P@purpose:.*residential.* and G@edx_codename:ironwood':
+  'P@purpose:.*next-residential.*':
     - match: compound
     - edx.ansible_vars.next_residential
   'roles:xqwatcher':
