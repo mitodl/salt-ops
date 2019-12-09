@@ -30,5 +30,5 @@ edx:
         - name: xblock-image-modal==0.4.2
         # Python client for Sentry
         - name: raven
-        - name: git+https://github.com/IONISx/xblock-pdf.git@8d63047c53bc8fdd84fa7b0ec577bb0a729c215f#egg=xblock-pdf
+        - name: git+https://github.com/raccoongang/xblock-pdf.git@8d63047c53bc8fdd84fa7b0ec577bb0a729c215f#egg=xblock-pdf
           extra_args: -e
