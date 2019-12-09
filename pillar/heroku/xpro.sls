@@ -84,7 +84,6 @@
 } %}
 {% set env_data = env_dict[environment] %}
 {% set business_unit = 'mitxpro' %}
-{% set pg_creds = salt.vault.cached_read('postgres-production-apps-mitxpro/creds/mitxpro', cache_prefix='heroku-mitxpro') %}
 {% set cybersource_creds = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/cybersource') %}
 
 proxy:
@@ -108,6 +107,7 @@ heroku:
     CYBERSOURCE_WSDL_URL: {{ env_data.CYBERSOURCE_WSDL_URL }}
     CYBERSOURCE_INQUIRY_LOG_NACL_ENCRYPTION_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/cybersource-inquiry-encryption-key>data>public_key
     {% if env_data.env_name == 'production' %}
+    {% set pg_creds = salt.vault.cached_read('postgres-production-apps-mitxpro/creds/mitxpro', cache_prefix='heroku-mitxpro') %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxpro
     {% endif %}
     DRIVE_OUTPUT_FOLDER_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>folder_id
