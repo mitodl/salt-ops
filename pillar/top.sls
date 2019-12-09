@@ -24,10 +24,10 @@ base:
     - monit.lms_503
     - logrotate.kibana
   'G@roles:kibana and G@environment:operations-qa':
-    - match: grain
+    - match: compound
     - elastic_stack.version_qa
   'G@roles:kibana and G@environment:operations':
-    - match: grain
+    - match: compound
     - elastic_stack.version_production
   'roles:master':
     - match: grain
