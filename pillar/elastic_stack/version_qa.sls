@@ -1,2 +1,2 @@
 elastic_stack:
-  version: 6.8.5
+  version: 7.0.0
