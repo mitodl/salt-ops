@@ -82,6 +82,8 @@ edx:
     EDXAPP_SUPPORT_SITE_LINK: 'https://odl.zendesk.com/hc/en-us/requests/new'
     EDXAPP_CACHE_OPTIONS:
       'server_max_value_length': {{ memcached_server_max_value_length }}
+    EDXAPP_SESSION_COOKIE_DOMAIN: .mitx.mit.edu
+    EDXAPP_SESSION_COOKIE_NAME: {{ environment }}-{{ purpose }}-session
 
     EDXAPP_LMS_AUTH_EXTRA:
       SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
@@ -89,7 +91,7 @@ edx:
       REMOTE_GRADEBOOK_PASSWORD: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>password
 
     EDXAPP_CMS_AUTH_EXTRA:
-      SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-cms-django-secret-key>data>value
+      SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
 
     {# multivariate, only needed for current deployment. will be removed in favor of SAML (tmacey 2017/03/20) #}
     EDXAPP_CAS_ATTRIBUTE_PACKAGE: 'git+https://github.com/mitodl/mitx_cas_mapper#egg=mitx_cas_mapper'
@@ -120,6 +122,7 @@ edx:
           extra_args: -e
         - name: git+https://github.com/Stanford-Online/xblock-in-video-quiz@release/v0.1.7#egg=xblock-in-video-quiz
           extra_args: -e
+        - name: xblock-image-modal==0.4.2
         # Python client for Sentry
         - name: raven
 
@@ -128,6 +131,8 @@ edx:
       FEATURES:
         AUTH_USE_CAS: true
         DISABLE_HONOR_CERTIFICATES: true
+        SKIP_EMAIL_VALIDATION: True
+        ENABLE_VIDEO_UPLOAD_PIPELINE: False
       REMOTE_GRADEBOOK:
         URL: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>url
         DEFAULT_NAME: !!null
@@ -136,6 +141,7 @@ edx:
       ADDL_INSTALLED_APPS:
         - ubcpi
         - git_auto_export
+        - imagemodal
       FEATURES:
         AUTH_USE_CAS: true
         ENABLE_GIT_AUTO_EXPORT: true
