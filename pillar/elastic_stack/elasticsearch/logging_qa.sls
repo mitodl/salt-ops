@@ -1,24 +1,21 @@
 {% set ENVIRONMENT = salt.grains.get('environment') %}
-{% set pkg_version = salt.pkg.version('elasticsearch').split('.')[0] %}
 
 elastic_stack:
   elasticsearch:
     configuration_settings:
       cluster.name: {{ ENVIRONMENT }}
-      discovery.zen.minimum_master_nodes: 3
+      discovery.zen.minimum_master_nodes: 2
       discovery.ec2.tag.escluster: {{ ENVIRONMENT }}
-      gateway.recover_after_nodes: 3
-      gateway.expected_nodes: 5
+      gateway.recover_after_nodes: 2
+      gateway.expected_nodes: 3
       gateway.recover_after_time: 5m
       discovery:
         zen.hosts_provider: ec2
       cloud.node.auto_attributes: true
       network.host: [_eth0_, _lo_]
       path.data: /var/lib/elasticsearch/data
-      {% if pkg_version and pkg_version|int > 6 %}
       cluster.initial_master_nodes:
         - elasticsearch.service.consul
-      {% endif %}
     plugins:
       - name: discovery-ec2
       - name: repository-s3
