@@ -1,5 +1,5 @@
 {% set ENVIRONMENT = salt.grains.get('environment', 'rc-apps') %}
-{% set pkg_version = salt.pkg.version('elasticsearch') | default('') %}
+{% set pkg_version = salt.pkg.version('elasticsearch').split('.')[0] %}
 
 elastic_stack:
   elasticsearch:
@@ -9,7 +9,7 @@ elastic_stack:
       cluster.name: {{ ENVIRONMENT }}
       discovery.ec2.tag.escluster: {{ ENVIRONMENT }}
       network.host: ['_eth0:ipv4_', '_lo:ipv4_']
-      {% if version and version.split('.')[0]|int > 6 %}
+      {% if pkg_version and pkg_version|int > 6 %}
       cluster.initial_master_nodes:
         - elasticsearch.service.consul
       {% endif %}
