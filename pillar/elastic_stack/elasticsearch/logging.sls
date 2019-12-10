@@ -1,4 +1,6 @@
 {% set ENVIRONMENT = salt.grains.get('environment') %}
+{% set pkg_version = salt.pkg.version('elasticsearch').split('.')[0] %}
+
 elastic_stack:
   elasticsearch:
     configuration_settings:
@@ -13,6 +15,10 @@ elastic_stack:
       cloud.node.auto_attributes: true
       network.host: [_eth0_, _lo_]
       path.data: /var/lib/elasticsearch/data
+      {% if pkg_version and pkg_version|int > 6 %}
+      cluster.initial_master_nodes:
+        - elasticsearch.service.consul
+      {% endif %}
     plugins:
       - name: discovery-ec2
       - name: repository-s3
