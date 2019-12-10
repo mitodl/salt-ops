@@ -166,7 +166,7 @@ base:
     - datadog.nginx-integration
   'G@roles:elasticsearch and P@environment:operations':
     - match: compound
-    - elastic_stack.elasticsearch.logging
+    - elastic_stack.elasticsearch.logging_production
   'G@roles:elasticsearch and G@environment:operations-qa':
     - match: compound
     - elastic_stack.elasticsearch.logging_qa
