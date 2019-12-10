@@ -32,9 +32,12 @@ base:
   'roles:master':
     - match: grain
     - master
-    - master.schedule
     - master.config
+  master-operations-production:
+    - master.production_schedule
     # - master.extra_config
+  master-operations-qa:
+    - master.qa_schedule
   'roles:fluentd':
     - match: grain
     - fluentd
