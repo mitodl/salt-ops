@@ -17,14 +17,6 @@ schedule:
     function: state.sls
     args:
       - master.config
-  backup_edx_rp_data:
-    maxrunning: 1
-    when: 1:00am
-    function: saltutil.runner
-    args:
-      - state.orchestrate
-    kwargs:
-      mods: orchestrate.edx.backup
   restore_edx_qa_data:
     maxrunning: 1
     when: Monday 1:00pm
@@ -33,17 +25,3 @@ schedule:
       - state.orchestrate
     kwargs:
       mods: orchestrate.edx.restore
-  backup_operations_data:
-    maxrunning: 1
-    when: 1:00am
-    function: saltutil.runner
-    args:
-      - state.orchestrate
-    kwargs:
-      mods: orchestrate.operations.backups
-  delete_edx_logs_older_than_30_days:
-    maxrunning: 1
-    when: Sunday 5:00am
-    function: state.sls
-    args:
-      - edx.maintenance_tasks
