@@ -7,13 +7,15 @@ elastic_stack:
       discovery.zen.minimum_master_nodes: 3
       discovery.ec2.tag.escluster: {{ ENVIRONMENT }}
       gateway.recover_after_nodes: 3
-      gateway.expected_nodes: 5
+      gateway.expected_nodes: 3
       gateway.recover_after_time: 5m
       discovery:
         zen.hosts_provider: ec2
       cloud.node.auto_attributes: true
       network.host: [_eth0_, _lo_]
       path.data: /var/lib/elasticsearch/data
+      cluster.initial_master_nodes:
+        - elasticsearch.service.consul
     plugins:
       - name: discovery-ec2
       - name: repository-s3

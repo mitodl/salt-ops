@@ -164,9 +164,12 @@ base:
     - elasticsearch.micromasters
     - nginx.micromasters_es
     - datadog.nginx-integration
-  'G@roles:elasticsearch and P@environment:operations(-qa)?':
+  'G@roles:elasticsearch and P@environment:operations':
     - match: compound
     - elastic_stack.elasticsearch.logging
+  'G@roles:elasticsearch and G@environment:operations-qa':
+    - match: compound
+    - elastic_stack.elasticsearch.logging_qa
   'G@roles:elasticsearch and G@environment:operations':
     - match: compound
     - elastic_stack.version_production
