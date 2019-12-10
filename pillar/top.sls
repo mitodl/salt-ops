@@ -166,16 +166,12 @@ base:
     - datadog.nginx-integration
   'G@roles:elasticsearch and P@environment:operations':
     - match: compound
+    - elastic_stack.version_production
     - elastic_stack.elasticsearch.logging_production
   'G@roles:elasticsearch and G@environment:operations-qa':
     - match: compound
-    - elastic_stack.elasticsearch.logging_qa
-  'G@roles:elasticsearch and G@environment:operations':
-    - match: compound
-    - elastic_stack.version_production
-  'G@roles:elasticsearch and G@environment:operations-qa':
-    - match: compound
     - elastic_stack.version_qa
+    - elastic_stack.elasticsearch.logging_qa
   'P@roles:(edx|edx-worker)$':
     - match: compound
     - edx
