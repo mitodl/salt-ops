@@ -4,9 +4,9 @@ elastic_stack:
   elasticsearch:
     configuration_settings:
       cluster.name: {{ ENVIRONMENT }}
-      discovery.zen.minimum_master_nodes: 3
+      discovery.zen.minimum_master_nodes: 2
       discovery.ec2.tag.escluster: {{ ENVIRONMENT }}
-      gateway.recover_after_nodes: 3
+      gateway.recover_after_nodes: 2
       gateway.expected_nodes: 3
       gateway.recover_after_time: 5m
       discovery:
