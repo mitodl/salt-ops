@@ -14,8 +14,7 @@ elastic_stack:
       path.data: /var/lib/elasticsearch/data
       cluster.initial_master_nodes:
         - elasticsearch.service.consul
-      discovery.seed_hosts:
-        - elasticsearch.service.consul
+      discovery.seed_providers: ec2
     plugins:
       - name: discovery-ec2
       - name: repository-s3
