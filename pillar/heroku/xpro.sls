@@ -113,6 +113,7 @@ heroku:
     DRIVE_OUTPUT_FOLDER_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>folder_id
     DRIVE_SERVICE_ACCOUNT_CREDS: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>service_account_creds
     DRIVE_SHARED_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>drive_shared_id
+    ENABLE_ORDER_RECEIPTS: True
     FEATURE_COUPON_SHEETS: {{ env_data.COUPON_SHEETS_FEATURE_ENABLED }}
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
     HUBSPOT_CREATE_USER_FORM_ID: {{ env_data.HUBSPOT_CREATE_USER_FORM_ID }}
