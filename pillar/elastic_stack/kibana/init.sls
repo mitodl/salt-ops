@@ -1,7 +1,8 @@
 elastic_stack:
   kibana:
     config:
-      elasticsearch.url: http://nearest-elasticsearch.query.consul:9200
+      elasticsearch.hosts:
+        - http://nearest-elasticsearch.query.consul:9200
       elasticsearch.requestTimeout: 120000
       logging.dest: /var/log/kibana.log
 
