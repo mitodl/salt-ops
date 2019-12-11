@@ -7,8 +7,8 @@ base:
   'roles:auth_server':
     - match: grain
     - fluentd.cas
-  'roles:elasticsearch':
-    - match: grain
+  'G@roles:elasticsearch and not P@environment:operations*':
+    - match: compound
     - elasticsearch
     - fluentd.elasticsearch
     - consul.elasticsearch
