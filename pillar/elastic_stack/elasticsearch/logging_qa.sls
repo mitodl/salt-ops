@@ -11,8 +11,6 @@ elastic_stack:
       cloud.node.auto_attributes: true
       network.host: [_eth0_, _lo_]
       path.data: /var/lib/elasticsearch/data
-      cluster.initial_master_nodes:
-        - elasticsearch.service.consul
       discovery.seed_providers: ec2
     plugins:
       - name: discovery-ec2
