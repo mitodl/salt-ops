@@ -8,6 +8,7 @@ edx:
     EDXAPP_LMS_ENV_EXTRA:
       FEATURES:
         AUTH_USE_CAS: False
+        ALLOW_PUBLIC_ACCOUNT_CREATION: True
     EDXAPP_CMS_ENV_EXTRA:
       FEATURES:
         AUTH_USE_CAS: False
