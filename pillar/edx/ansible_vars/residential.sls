@@ -106,6 +106,18 @@ edx:
       provider: touchstone
       appname: MITx
 
+    EDXAPP_REGISTRATION_EXTRA_FIELDS:
+      confirm_email: "hidden"
+      level_of_education: "optional"
+      gender: "optional"
+      year_of_birth: "optional"
+      mailing_address: "hidden"
+      goals: "optional"
+      honor_code: "required"
+      terms_of_service: "hidden"
+      city: "hidden"
+      country: "hidden"
+
     EDXAPP_PRIVATE_REQUIREMENTS:
         # For Harvard courses:
         # Peer instruction XBlock
@@ -133,9 +145,13 @@ edx:
         DISABLE_HONOR_CERTIFICATES: true
         SKIP_EMAIL_VALIDATION: True
         ENABLE_VIDEO_UPLOAD_PIPELINE: False
+        ENABLE_COMBINED_LOGIN_REGISTRATION: true
+        ENABLE_THIRD_PARTY_AUTH: true
       REMOTE_GRADEBOOK:
         URL: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>url
         DEFAULT_NAME: !!null
+      SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-residential/{{ environment }}/{{ purpose_prefix }}/saml-sp-cert>data>value
+      SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-residential/{{ environment }}/{{ purpose_prefix }}/saml-sp-cert>data>key
 
     EDXAPP_CMS_ENV_EXTRA:
       ADDL_INSTALLED_APPS:
