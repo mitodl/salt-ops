@@ -24,7 +24,7 @@
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-ci-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-ci-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro-ci.odl.mit.edu',
-      'COUPON_SHEETS_FEATURE_ENABLED': True,
+      'ENABLE_ORDER_RECEIPTS': True,
       'vault_env_path': 'rc-apps',
       'USE_X_FORWARDED_HOST': False,
       'VOUCHER_COMPANY_ID': 1
@@ -51,7 +51,7 @@
       'MAILGUN_SENDER_DOMAIN': 'xpro-rc-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro-rc.odl.mit.edu',
       'vault_env_path': 'rc-apps',
-      'COUPON_SHEETS_FEATURE_ENABLED': True,
+      'ENABLE_ORDER_RECEIPTS': True,
       'USE_X_FORWARDED_HOST': False,
       'VOUCHER_COMPANY_ID': 1
       },
@@ -76,7 +76,7 @@
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro.mit.edu',
-      'COUPON_SHEETS_FEATURE_ENABLED': False,
+      'ENABLE_ORDER_RECEIPTS': False,
       'vault_env_path': 'production-apps',
       'USE_X_FORWARDED_HOST': True,
       'VOUCHER_COMPANY_ID': 4
@@ -113,8 +113,8 @@ heroku:
     DRIVE_OUTPUT_FOLDER_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>folder_id
     DRIVE_SERVICE_ACCOUNT_CREDS: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>service_account_creds
     DRIVE_SHARED_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>drive_shared_id
-    ENABLE_ORDER_RECEIPTS: True
-    FEATURE_COUPON_SHEETS: {{ env_data.COUPON_SHEETS_FEATURE_ENABLED }}
+    ENABLE_ORDER_RECEIPTS: {{ env_data.ENABLE_ORDER_RECEIPTS }}
+    FEATURE_COUPON_SHEETS: True
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
     HUBSPOT_CREATE_USER_FORM_ID: {{ env_data.HUBSPOT_CREATE_USER_FORM_ID }}
     GTM_TRACKING_ID: {{ env_data.GOOGLE_TAG_MANAGER_ID }}
