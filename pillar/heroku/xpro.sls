@@ -164,7 +164,8 @@ heroku:
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
     SHEETS_ADMIN_EMAILS: {{ salt.sdb.get('sdb://consul/xpro/' ~ environment ~'/sheets-admin-emails') }}
     SHEETS_DATE_TIMEZONE: America/New_York
-    SHEETS_MONITORING_FREQUENCY: 300
+    SHEETS_MONITORING_FREQUENCY: 3600
+    SHEETS_TASK_OFFSET: 120
     SITE_NAME: "MIT xPRO"
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
     USE_X_FORWARDED_HOST: {{ env_data.USE_X_FORWARDED_HOST }}
