@@ -17,10 +17,11 @@ nginx:
               - server_name: amps-web.amps.ms.mit.edu
               - listen:
                   - 80
+                  - default_server
               - listen:
                   - 443
                   - ssl
-                  - default
+                  - default_server
               - listen:
                   - '[::]:80'
               - listen:
@@ -89,4 +90,3 @@ nginx:
                   - return: 301 https://video.odl.mit.edu/videos/7a11f55dd99d49349f377d2d87f0aef2/?start=341
               - location /:
                   - return: 301 https://docs.google.com/forms/d/e/1FAIpQLSdvkI2cPG1iMM4gN_KyKem4fNLh4irWzrmjX-JhcFXa51su5g/viewform?fbzx=2658557852628862500
-
