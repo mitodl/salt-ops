@@ -150,8 +150,8 @@ edx:
       REMOTE_GRADEBOOK:
         URL: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>url
         DEFAULT_NAME: !!null
-      SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-residential/{{ environment }}/{{ purpose_prefix }}/saml-sp-cert>data>value
-      SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-residential/{{ environment }}/{{ purpose_prefix }}/saml-sp-cert>data>key
+      SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>value
+      SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>key
 
     EDXAPP_CMS_ENV_EXTRA:
       ADDL_INSTALLED_APPS:
