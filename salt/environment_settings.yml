@@ -33,7 +33,7 @@ current_residential_versions_qa: &current_residential_versions_qa
   xqwatcher_courses: production
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
   theme_name: 'mitx-theme'
-  theme: ironwood
+  theme: ironwood-stable
   codename: ironwood
   ami_id: ami-80861296
 
@@ -49,7 +49,7 @@ current_residential_versions_rp: &current_residential_versions_rp
   xqwatcher_courses: production
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
   theme_name: 'mitx-theme'
-  theme: ironwood
+  theme: ironwood-stable
   codename: ironwood
   ami_id: ami-80861296
 
