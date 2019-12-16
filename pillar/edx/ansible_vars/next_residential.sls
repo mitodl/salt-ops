@@ -5,23 +5,10 @@
 edx:
   ansible_vars:
     EDXAPP_EXTRA_MIDDLEWARE_CLASSES: [] # Worth keeping track of in case we need to take advantage of it
-    EDXAPP_REGISTRATION_EXTRA_FIELDS:
-      confirm_email: "hidden"
-      level_of_education: "optional"
-      gender: "optional"
-      year_of_birth: "optional"
-      mailing_address: "hidden"
-      goals: "optional"
-      honor_code: "required"
-      terms_of_service: "hidden"
-      city: "hidden"
-      country: "hidden"
     EDXAPP_LMS_ENV_EXTRA:
       FEATURES:
         AUTH_USE_CAS: False
         ALLOW_PUBLIC_ACCOUNT_CREATION: True
-        ENABLE_COMBINED_LOGIN_REGISTRATION: True
-        SKIP_EMAIL_VALIDATION: True
     EDXAPP_CMS_ENV_EXTRA:
       FEATURES:
         AUTH_USE_CAS: False
