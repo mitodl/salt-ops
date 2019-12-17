@@ -70,7 +70,7 @@ deploy_backup_instance_to_{{ ENVIRONMENT }}:
               Ebs.VolumeSize: 8
               Ebs.VolumeType: gp2
             - DeviceName: /dev/xvdb
-              Ebs.VolumeSize: 400
+              Ebs.VolumeSize: 600
               Ebs.VolumeType: gp2
           enable_term_protect: True
     - require:
