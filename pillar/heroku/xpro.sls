@@ -24,6 +24,7 @@
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-ci-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-ci-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro-ci.odl.mit.edu',
+      'MITXPRO_SECURE_SSL_HOST': 'xpro-ci.odl.mit.edu',
       'ENABLE_ORDER_RECEIPTS': True,
       'vault_env_path': 'rc-apps',
       'USE_X_FORWARDED_HOST': False,
@@ -50,6 +51,7 @@
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-rc-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-rc-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro-rc.odl.mit.edu',
+      'MITXPRO_SECURE_SSL_HOST': 'xpro-rc.odl.mit.edu',
       'vault_env_path': 'rc-apps',
       'ENABLE_ORDER_RECEIPTS': True,
       'USE_X_FORWARDED_HOST': False,
@@ -76,6 +78,7 @@
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro.mit.edu',
+      'MITXPRO_SECURE_SSL_HOST': 'xpro.mit.edu',
       'ENABLE_ORDER_RECEIPTS': False,
       'vault_env_path': 'production-apps',
       'USE_X_FORWARDED_HOST': True,
@@ -143,6 +146,7 @@ heroku:
     MITXPRO_REGISTRATION_ACCESS_TOKEN:  __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.openedx_environment }}/xpro-registration-access-token>data>value
     MITXPRO_REPLY_TO_ADDRESS: 'MIT xPRO <xpro@mit.edu>'
     MITXPRO_SECURE_SSL_REDIRECT: True
+    MITXPRO_SECURE_SSL_HOST: {{ env_data.MITXPRO_SECURE_SSL_HOST }}
     MITXPRO_SUPPORT_EMAIL: 'xpro@mit.edu'
     MITXPRO_USE_S3: True
     NODE_MODULES_CACHE: False
