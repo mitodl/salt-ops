@@ -2,6 +2,9 @@
 {% set mailgun_webhooks_token = salt.vault.read('secret-operations/{}/mailgun_webhooks_token'.format(ENVIRONMENT)).data.value %}
 {% set es_hosts = 'operations-elasticsearch.query.consul' %}
 {% set cert = salt.vault.cached_write('pki-intermediate-operations/issue/fluentd-server', common_name='{}'.format(es_hosts)) %}
+{% set fluentd_cert_path = '/etc/fluent/fluentd.crt' %}
+{% set fluentd_key_path = '/etc/fluent/fluentd.key' %}
+{% set ca_cert_path = '/etc/fluent/ca.crt' %}
 
 fluentd:
   overrides:
@@ -12,9 +15,15 @@ fluentd:
       cert_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>value
       key_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>key
   cert:
-    - fluentd_cert: {{ cert.data.certificate }}
-    - fluentd_key: {{ cert.data.private_key }}
-    - ca_cert: {{ cert.data.issuing_ca }}
+    fluentd_cert:
+      content: {{ cert.data.certificate }}
+      path: {{ fluentd_cert_path }}
+    fluentd_key:
+      content: {{ cert.data.private_key }}
+      path: {{ fluentd_key_path }}
+    ca_cert:
+      content: {{ cert.data.issuing_ca }}
+      path: {{ ca_cert_path }}
   plugins:
     - fluent-plugin-heroku-syslog-http
     - fluent-plugin-elasticsearch
@@ -72,9 +81,9 @@ fluentd:
                 - directive: transport
                   directive_arg: tls
                   attrs:
-                    - cert_path: /etc/fluent/fluentd.crt
-                    - private_key_path: /etc/fluent/fluentd.key
-                    - ca_path: /etc/fluent/ca.crt
+                    - cert_path: {{ fluentd_cert_path }}
+                    - private_key_path: {{ fluentd_key_path }}
+                    - ca_path: {{ ca_cert_path }}
                     - client_cert_auth: 'true'
         - directive: match
           directive_arg: '**'
@@ -89,8 +98,7 @@ fluentd:
                 directive_arg: '**'
                 attrs:
                   - '@id': es_outbound
-                  - '@type': elasticsearch
-                  - scheme: https
+                  - '@type': elasticsearch_dynamic
                   - logstash_format: 'true'
                   - flush_interval: '10s'
                   - hosts: {{ es_hosts }}
