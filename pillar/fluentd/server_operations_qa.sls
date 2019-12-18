@@ -1,20 +1,9 @@
-{% set app_name = "fluentd-aggregators" %}
-{% set fluentd_shared_key = salt.vault.read('secret-operations/operations-qa/fluentd_shared_key').data.value %}
-{% set heroku_http_token = salt.vault.read('secret-operations/operations-qa/heroku_http_token').data.value %}
-{% set mailgun_webhooks_token = salt.vault.read('secret-operations/operations-qa/mailgun_webhooks_token').data.value %}
-{% set odl_wildcard_cert = salt.vault.read('secret-operations/global/odl_wildcard_cert') %}
-{% import_yaml 'fluentd/fluentd_directories.yml' as fluentd_directories %}
-
-schedule:
-  refresh_{{ app_name }}_configs:
-    # Needed to ensure that S3 credentials remain valid
-    days: 5
-    function: state.sls
-    args:
-      - fluentd.config
+{% set ENVIRONMENT = salt.grains.get('environment') %}
+{% set mailgun_webhooks_token = salt.vault.read('secret-operations/{}/mailgun_webhooks_token'.format(ENVIRONMENT)).data.value %}
+{% set es_hosts = 'operations-elasticsearch.query.consul' %}
+{% set cert = salt.vault.cached_write('pki-intermediate-operations/issue/fluentd-server', common_name='{}'.format(es_hosts)) %}
 
 fluentd:
-  persistent_directories: {{ fluentd_directories|tojson }}
   overrides:
     nginx_config:
       server_name: logs-qa.odl.mit.edu
@@ -22,17 +11,20 @@ fluentd:
       key_file: log-input.key
       cert_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>value
       key_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>key
+  cert:
+    - fluentd_cert: {{ cert.data.certificate }}
+    - fluentd_key: {{ cert.data.private_key }}
+    - ca_cert: {{ cert.data.issuing_ca }}
   plugins:
     - fluent-plugin-heroku-syslog-http
-    - fluent-plugin-s3
     - fluent-plugin-elasticsearch
   proxied_plugins:
     - route: heroku-http
       port: 9000
-      token: {{ heroku_http_token }}
+      token: __vault__::secret-operations/{{ ENVIRONMENT }}/heroku_http_token>data>value
     - route: mailgun-webhooks
       port: 9001
-      token: {{ mailgun_webhooks_token }}
+      token: __vault__::secret-operations/{{ ENVIRONMENT }}/mailgun_webhooks_token>data>value
   configs:
     - name: monitor_agent
       settings:
@@ -48,20 +40,14 @@ fluentd:
             - '@id': heroku_logs_inbound
             - '@type': heroku_syslog_http
             - tag: heroku_logs
-            - bind: ::1
             - port: 9000
-            - protocol_type: tcp
-            - nested_directives:
-                - directive: parse
-                  attrs:
-                    - message_format: rfc5424
+            - bind: ::1
         - directive: source
           attrs:
             - '@id': mailgun-events
             - '@type': http
             - port: 9001
             - bind: ::1
-            - format: json
         - directive: source
           attrs:
             - '@id': salt_logs_inbound
@@ -69,19 +55,27 @@ fluentd:
             - tag: saltmaster
             - format: json
             - port: 9999
-            - keep_time_key: 'true'
+            - bind: ::1
+            - nested_directives:
+                - directive: parse
+                  attrs:
+                    - keep_time_key: 'true'
         - directive: source
           attrs:
-            - '@id': secure_input
             - '@type': forward
             - port: 5001
+            - bind: ::1
             - nested_directives:
-              - directive: transport
-                directive_arg: tls
-                attrs:
-                  - cert_path: '/etc/ssl/certs/log-input.crt'
-                  - private_key_path: '/etc/ssl/certs/log-input.key'
-                  - private_key_passphrase: ''
+                - directive: security
+                  attrs:
+                    - self_hostname: {{ salt.grains.get('external_ip') }}
+                - directive: transport
+                  directive_arg: tls
+                  attrs:
+                    - cert_path: /etc/fluent/fluentd.crt
+                    - private_key_path: /etc/fluent/fluentd.key
+                    - ca_path: /etc/fluent/ca.crt
+                    - client_cert_auth: 'true'
         - directive: match
           directive_arg: '**'
           attrs:
@@ -95,10 +89,11 @@ fluentd:
                 directive_arg: '**'
                 attrs:
                   - '@id': es_outbound
-                  - '@type': elasticsearch_dynamic
+                  - '@type': elasticsearch
+                  - scheme: https
                   - logstash_format: 'true'
                   - flush_interval: '10s'
-                  - hosts: operations-elasticsearch.query.consul
+                  - hosts: {{ es_hosts }}
                   - logstash_prefix: 'logstash-${record.fetch("environment", "blank") != "blank" ? record.fetch("environment") : tag_parts[0]}'
                   - include_tag_key: 'true'
                   - tag_key: fluentd_tag

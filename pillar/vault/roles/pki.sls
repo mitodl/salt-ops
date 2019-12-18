@@ -6,6 +6,7 @@
 {% set locality = 'Cambridge' %}
 {% set street_address = '77 Massachusetts Ave' %}
 {% set postal_code = '02139' %}
+{% set fluentd_aggregators = 'operations-fluentd.query.consul' %}
 
 vault:
   roles:
@@ -18,7 +19,7 @@ vault:
       options:
         {% if type == 'server' %}
         server_flag: True
-        allowed_domains: "{{ app }}.service.consul, nearest-{{ app }}.query.consul, {{ app }}-master.service.consul, {{ app }}.service.operations.consul"
+        allowed_domains: "{{ app }}.service.consul, nearest-{{ app }}.query.consul, {{ fluentd_aggregators }}, {{ app }}-master.service.consul, {{ app }}.service.operations.consul"
         {% else %}
         client_flag: True
         allowed_domains: "{{ app }}.*.{{ env_name }}"
