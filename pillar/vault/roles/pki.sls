@@ -30,6 +30,7 @@ vault:
         key_type: rsa
         key_bits: 4096
         key_usage: "DigitalSignature, KeyAgreement, KeyEncipherment"
+        generate_lease: true
         ou: {{ ou }}
         organization: {{ org }}
         country: {{ country }}
