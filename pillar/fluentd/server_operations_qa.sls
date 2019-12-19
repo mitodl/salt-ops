@@ -16,13 +16,16 @@ fluentd:
       key_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>key
   cert:
     fluentd_cert:
-      content: {{ cert.data.certificate }}
+      content: |
+        {{ cert.data.certificate|indent(8)}}
       path: {{ fluentd_cert_path }}
     fluentd_key:
-      content: {{ cert.data.private_key }}
+      content: |
+        {{ cert.data.private_key|indent(8) }}
       path: {{ fluentd_key_path }}
     ca_cert:
-      content: {{ cert.data.issuing_ca }}
+      content: |
+        {{ cert.data.issuing_ca|indent(8) }}
       path: {{ ca_cert_path }}
   plugins:
     - fluent-plugin-heroku-syslog-http
