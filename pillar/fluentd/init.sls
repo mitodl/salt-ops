@@ -1,10 +1,8 @@
 fluentd:
   overrides:
-    version: "1.7.4"
+    version: "1.8.0"
     user: root
     group: root
-  plugins:
-    - fluent-plugin-secure-forward
 
 beacons:
   service:
