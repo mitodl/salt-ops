@@ -211,7 +211,9 @@ heroku:
     XPRO_CATALOG_API_URL: https://{{ etl_xpro_host }}/api/programs/
     XPRO_COURSES_API_URL: https://{{ etl_xpro_host }}/api/courses/
     YOUTUBE_DEVELOPER_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/youtube-developer-key>data>value
-
+    YOUTUBE_FETCH_TRANSCRIPT_SCHEDULE_SECONDS: 21600
+    YOUTUBE_FETCH_TRANSCRIPT_SLEEP_SECONDS: 20
+    
 schedule:
   refresh_{{ env_data.app_name }}_configs:
     days: 5
