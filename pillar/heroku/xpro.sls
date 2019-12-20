@@ -26,7 +26,6 @@
       'MITXPRO_BASE_URL': 'https://xpro-ci.odl.mit.edu',
       'MITXPRO_SECURE_SSL_HOST': 'xpro-ci.odl.mit.edu',
       'ENABLE_ORDER_RECEIPTS': True,
-      'SHOW_UNREDEEMED_COUPON_ON_DASHBOARD': True,
       'vault_env_path': 'rc-apps',
       'USE_X_FORWARDED_HOST': False,
       'VOUCHER_COMPANY_ID': 1
@@ -55,7 +54,6 @@
       'MITXPRO_SECURE_SSL_HOST': 'xpro-rc.odl.mit.edu',
       'vault_env_path': 'rc-apps',
       'ENABLE_ORDER_RECEIPTS': True,
-      'SHOW_UNREDEEMED_COUPON_ON_DASHBOARD': True,
       'USE_X_FORWARDED_HOST': False,
       'VOUCHER_COMPANY_ID': 1
       },
@@ -82,7 +80,6 @@
       'MITXPRO_BASE_URL': 'https://xpro.mit.edu',
       'MITXPRO_SECURE_SSL_HOST': 'xpro.mit.edu',
       'ENABLE_ORDER_RECEIPTS': True,
-      'SHOW_UNREDEEMED_COUPON_ON_DASHBOARD': True,
       'vault_env_path': 'production-apps',
       'USE_X_FORWARDED_HOST': True,
       'VOUCHER_COMPANY_ID': 4
@@ -174,7 +171,7 @@ heroku:
     SHEETS_DATE_TIMEZONE: America/New_York
     SHEETS_MONITORING_FREQUENCY: 3600
     SHEETS_TASK_OFFSET: 120
-    SHOW_UNREDEEMED_COUPON_ON_DASHBOARD: {{ env_data.SHOW_UNREDEEMED_COUPON_ON_DASHBOARD }}
+    SHOW_UNREDEEMED_COUPON_ON_DASHBOARD: True
     SITE_NAME: "MIT xPRO"
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
     USE_X_FORWARDED_HOST: {{ env_data.USE_X_FORWARDED_HOST }}
