@@ -79,7 +79,7 @@
       'MAILGUN_SENDER_DOMAIN': 'xpro-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro.mit.edu',
       'MITXPRO_SECURE_SSL_HOST': 'xpro.mit.edu',
-      'ENABLE_ORDER_RECEIPTS': False,
+      'ENABLE_ORDER_RECEIPTS': True,
       'vault_env_path': 'production-apps',
       'USE_X_FORWARDED_HOST': True,
       'VOUCHER_COMPANY_ID': 4
