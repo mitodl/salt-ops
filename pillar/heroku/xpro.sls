@@ -171,6 +171,7 @@ heroku:
     SHEETS_DATE_TIMEZONE: America/New_York
     SHEETS_MONITORING_FREQUENCY: 3600
     SHEETS_TASK_OFFSET: 120
+    SHOW_UNREDEEMED_COUPON_ON_DASHBOARD: True
     SITE_NAME: "MIT xPRO"
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
     USE_X_FORWARDED_HOST: {{ env_data.USE_X_FORWARDED_HOST }}
