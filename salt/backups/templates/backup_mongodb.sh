@@ -6,6 +6,12 @@ set -e
 mkdir -p {{ backupdir }}
 mkdir -p {{ cachedir }}
 
+PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
+          remove-all-but-n-full 5 --archive-dir {{ cachedir }} \
+          --asynchronous-upload --s3-use-multiprocessing \
+          --tempdir /backups/tmp/ \
+          s3+http://odl-operations-backups/{{ settings.get('directory', 'mongodb') }}/
+
 /usr/bin/mongodump --host {{ settings.host }} \
                    --port {{ settings.get('port', 27017) }} \
                    --password={{ settings.password }} --username {{ settings.username }} \
