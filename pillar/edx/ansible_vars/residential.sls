@@ -139,16 +139,19 @@ edx:
         - name: xblock-image-modal==0.4.2
         # Python client for Sentry
         - name: raven
+        - name: git+https://github.com/raccoongang/xblock-pdf.git@8d63047c53bc8fdd84fa7b0ec577bb0a729c215f#egg=xblock-pdf
+          extra_args: -e
 
     EDXAPP_LMS_ENV_EXTRA:
       EMAIL_USE_DEFAULT_FROM_FOR_BULK: True
       FEATURES:
-        AUTH_USE_CAS: true
-        DISABLE_HONOR_CERTIFICATES: true
+        AUTH_USE_CAS: False
+        ALLOW_PUBLIC_ACCOUNT_CREATION: True
+        DISABLE_HONOR_CERTIFICATES: True
         SKIP_EMAIL_VALIDATION: True
         ENABLE_VIDEO_UPLOAD_PIPELINE: False
-        ENABLE_COMBINED_LOGIN_REGISTRATION: true
-        ENABLE_THIRD_PARTY_AUTH: true
+        ENABLE_COMBINED_LOGIN_REGISTRATION: True
+        ENABLE_THIRD_PARTY_AUTH: True
       REMOTE_GRADEBOOK:
         URL: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>url
         DEFAULT_NAME: !!null
@@ -159,6 +162,6 @@ edx:
         - git_auto_export
         - imagemodal
       FEATURES:
-        AUTH_USE_CAS: true
-        ENABLE_GIT_AUTO_EXPORT: true
-        ENABLE_EXPORT_GIT: true
+        AUTH_USE_CAS: False
+        ENABLE_GIT_AUTO_EXPORT: True
+        ENABLE_EXPORT_GIT: True
