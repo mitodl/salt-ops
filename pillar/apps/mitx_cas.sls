@@ -109,12 +109,6 @@ mitx_cas:
         HOST: postgres-mitxcas.service.consul
     SECRET_KEY: __vault__:gen_if_missing:secret-residential/{{ ENVIRONMENT }}/mitx-cas/django-secret-key>data>value
     CAS_ALLOWED_SERVICES:
-      - host: ^[\w\d-]+.d.mitx.mit.edu$
-        provider: touchstone
-      - host: ^analytics.odl.mit.edu$
-        provider: touchstone
-      - host: ^lms.mitx.mit.edu$
-        provider: touchstone
       - host: ^lore-ci.herokuapp.com$
         provider: touchstone
       - host: ^lore-demo.herokuapp.com$
@@ -124,54 +118,6 @@ mitx_cas:
       - host: ^lore-release.herokuapp.com$
         provider: touchstone
       - host: ^lore.odl.mit.edu$
-        provider: touchstone
-      - host: ^mitx-analytics.odl.mit.edu$
-        provider: touchstone
-      - host: ^mitx-qa-draft-next.mitx.mit.edu$
-        provider: touchstone
-      - host: ^mitx-qa-draft-testing.mitx.mit.edu$
-        provider: touchstone
-      - host: ^mitx-qa-draft.mitx.mit.edu$
-        provider: touchstone
-      - host: ^mitx-qa-next.mitx.mit.edu$
-        provider: touchstone
-      - host: ^mitx-qa-testing.mitx.mit.edu$
-        provider: touchstone
-      - host: ^mitx-qa.mitx.mit.edu$
-        provider: touchstone
-      - host: ^mitx.mit.edu$
-        provider: touchstone
-      - host: ^preview-mitx-qa-draft-next.mitx.mit.edu$
-        provider: touchstone
-      - host: ^preview-mitx-qa-draft.mitx.mit.edu$
-        provider: touchstone
-      - host: ^preview-mitx-qa-next.mitx.mit.edu$
-        provider: touchstone
-      - host: ^preview-mitx-qa-testing.mitx.mit.edu$
-        provider: touchstone
-      - host: ^preview-mitx-qa.mitx.mit.edu$
-        provider: touchstone
-      - host: ^preview-staging.mitx.mit.edu$
-        provider: touchstone
-      - host: ^preview.mitx.mit.edu$
-        provider: touchstone
-      - host: ^staging.mitx.mit.edu$
-        provider: touchstone
-      - host: ^studio-mitx-qa-draft.mitx.mit.edu$
-        provider: touchstone
-      - host: ^studio-mitx-qa-draft-next.mitx.mit.edu$
-        provider: touchstone
-      - host: ^studio-mitx-qa-next.mitx.mit.edu$
-        provider: touchstone
-      - host: ^studio-mitx-qa-draft-testing.mitx.mit.edu$
-        provider: touchstone
-      - host: ^studio-mitx-qa-testing.mitx.mit.edu$
-        provider: touchstone
-      - host: ^studio-mitx-qa.mitx.mit.edu$
-        provider: touchstone
-      - host: ^studio-staging.mitx.mit.edu$
-        provider: touchstone
-      - host: ^studio.mitx.mit.edu$
         provider: touchstone
       - host: ^www.lore.odl.mit.edu$
         provider: touchstone
