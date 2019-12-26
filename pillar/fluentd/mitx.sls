@@ -7,9 +7,8 @@ fluentd:
       - ruby2.3
       - ruby2.3-dev
       - build-essential
-  plugins:
-    - fluent-plugin-secure-forward
   configs:
+    - '@include': 'fluentd_log'
     - name: edx
       settings:
         - directive: source
@@ -29,6 +28,14 @@ fluentd:
                     - delimiter_pattern: '/\s+(?=(?:[^"]*"[^"]*")*[^"]*$)/'
                     - time_key: time
                     - types: time:time
+                - directive: filter
+                  attrs:
+                    - '@type': grep
+                    - nested_directives:
+                      - directive: exclude
+                        attrs:
+                          - key: user_agent
+                          - pattern: '/^ELB-HealthChecker$/'
         - directive: source
           attrs:
             - '@id': edx_cms_log
@@ -125,29 +132,4 @@ fluentd:
         - {{ auth_log_source('syslog.auth', '/var/log/auth.log') }}
         - {{ auth_log_filter('grep', 'ident', 'python') }}
         - {{ record_tagging |yaml() }}
-        - directive: match
-          directive_arg: 'edx.tracking'
-          attrs:
-            - '@type': secure_forward
-            - self_hostname: {{ salt.grains.get('ipv4')[0] }}
-            - secure: 'false'
-            - flush_interval: '10s'
-            - shared_key: __vault__::secret-operations/global/fluentd_shared_key>data>value
-            - nested_directives:
-                - directive: server
-                  attrs:
-                    - host: '10.0.0.84'
-                    - port: 5001
-        - directive: match
-          directive_arg: '**'
-          attrs:
-            - '@type': secure_forward
-            - self_hostname: {{ salt.grains.get('ipv4')[0] }}
-            - secure: 'false'
-            - flush_interval: '10s'
-            - shared_key: __vault__::secret-operations/global/fluentd_shared_key>data>value
-            - nested_directives:
-                - directive: server
-                  attrs:
-                    - host: operations-fluentd.query.consul
-                    - port: 5001
+        - '@include': 'match_all_tls.conf'

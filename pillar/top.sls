@@ -179,6 +179,8 @@ base:
     - edx.ansible_vars.cloud_deployment
     - edx.ansible_vars.theme
     - edx.scheduled_jobs
+    - fluentd.fluentd_log
+    - fluentd.match_all_tls
     - fluentd.mitx
     - datadog.nginx-integration
     - datadog.supervisord-integration
