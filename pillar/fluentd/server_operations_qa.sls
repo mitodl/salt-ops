@@ -84,6 +84,7 @@ fluentd:
             - '@id': heroku_logs_inbound
             - '@type': heroku_syslog_http
             - '@label': '@es_logging'
+            - tag: heroku_logs
             - port: 9000
             - bind: ::1
         - directive: source
