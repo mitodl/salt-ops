@@ -24,8 +24,8 @@ base:
     - edx.xqwatcher
   'roles:amps-redirect':
     - match: grain
-    - nginx.ng
-    - nginx.ng.certificates
+    - nginx
+    - nginx.certificates
   'roles:backups':
     - match: grain
     - backups.backup
@@ -79,8 +79,8 @@ base:
     - utils.file_limits
     - pgbouncer
     - reddit
-    - nginx.ng
-    - nginx.ng.certificates
+    - nginx
+    - nginx.certificates
   'roles:cassandra':
     - match: grain
     - cassandra
@@ -90,7 +90,7 @@ base:
     - node
     - django
     - uwsgi
-    - nginx.ng
+    - nginx
   'roles:edx-video-pipeline':
     - match: grain
     - edx.run_ansible
@@ -125,7 +125,7 @@ base:
     - utils.mitca_pem
     - utils.configure_debian_source_repos
     - utils.logrotate
-    - nginx.ng
+    - nginx
     - elastic-stack.elastalert
     - datadog.plugins
     - monit
@@ -141,7 +141,7 @@ base:
     - match: compound
     - elasticsearch
     - elasticsearch.plugins
-    - nginx.ng
+    - nginx
   'G@roles:elasticsearch and P@environment:mitx(pro)?-(qa|production)':
     - match: compound
     - elasticsearch
@@ -201,8 +201,8 @@ base:
   'roles:ocw-origin':
     - match: grain
     - utils.configure_debian_source_repos
-    - nginx.ng
-    - nginx.ng.certificates
+    - nginx
+    - nginx.certificates
     - letsencrypt
     - fluentd
     - fluentd.plugins
@@ -234,8 +234,8 @@ base:
     - apps.ocw.mirror
     - apps.ocw.sync_repo
     - utils.logrotate
-    - nginx.ng
-    - nginx.ng.certificates
+    - nginx
+    - nginx.certificates
   'P@roles:ocw-(cms|db|origin|mirror) and G@ocw-environment:production':
     - datadog
   'roles:sandbox':
