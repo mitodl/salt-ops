@@ -7,9 +7,20 @@ fluentd:
       - ruby2.3
       - ruby2.3-dev
       - build-essential
-  plugins:
-    - fluent-plugin-secure-forward
   configs:
+    - name: fluentd_log
+      settings:
+        - directive: label
+          directive_arg: '@FLUENT_LOG'
+          attrs:
+            - nested_directives:
+              - directive: filter
+                attrs:
+                  - '@type': record_transformer
+                  - nested_directives:
+                    - directive: record
+                      attrs:
+                        - host: "#{Socket.gethostname}"
     - name: edx
       settings:
         - directive: source
@@ -29,6 +40,14 @@ fluentd:
                     - delimiter_pattern: '/\s+(?=(?:[^"]*"[^"]*")*[^"]*$)/'
                     - time_key: time
                     - types: time:time
+                - directive: filter
+                  attrs:
+                    - '@type': grep
+                    - nested_directives:
+                      - directive: exclude
+                        attrs:
+                          - key: user_agent
+                          - pattern: '/^ELB-HealthChecker$/'
         - directive: source
           attrs:
             - '@id': edx_cms_log
@@ -126,26 +145,16 @@ fluentd:
         - {{ auth_log_filter('grep', 'ident', 'python') }}
         - {{ record_tagging |yaml() }}
         - directive: match
-          directive_arg: 'edx.tracking'
-          attrs:
-            - '@type': secure_forward
-            - self_hostname: {{ salt.grains.get('ipv4')[0] }}
-            - secure: 'false'
-            - flush_interval: '10s'
-            - shared_key: __vault__::secret-operations/global/fluentd_shared_key>data>value
-            - nested_directives:
-                - directive: server
-                  attrs:
-                    - host: '10.0.0.84'
-                    - port: 5001
-        - directive: match
           directive_arg: '**'
           attrs:
-            - '@type': secure_forward
+            - '@type': forward
+            - transport: tls
+            - tls_client_cert_path: '/etc/fluent/fluentd.crt'
+            - tls_client_private_key_path: '/etc/fluent/fluentd.key'
+            - tls_ca_cert_path: '/etc/fluent/ca.crt'
+            - tls_allow_self_signed_cert: true
+            - tls_verify_hostname: false
             - self_hostname: {{ salt.grains.get('ipv4')[0] }}
-            - secure: 'false'
-            - flush_interval: '10s'
-            - shared_key: __vault__::secret-operations/global/fluentd_shared_key>data>value
             - nested_directives:
                 - directive: server
                   attrs:

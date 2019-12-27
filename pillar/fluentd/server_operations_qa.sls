@@ -45,12 +45,45 @@ fluentd:
             - '@type': monitor_agent
             - bind: 127.0.0.1
             - port: 24220
+    - name: fluentd_server_log
+      settings:
+        - directive: label
+          directive_arg: '@FLUENT_LOG'
+          attrs:
+            - nested_directives:
+              - directive: filter
+                attrs:
+                  - '@type': record_transformer
+                  - nested_directives:
+                    - directive: record
+                      attrs:
+                        - host: "#{Socket.gethostname}"
+              - directive: match
+                directive_arg: 'fluent.*'
+                attrs:
+                  - '@id': fluentd_server_es_outbound
+                  - '@type': elasticsearch_dynamic
+                  - logstash_format: 'true'
+                  - hosts: {{ es_hosts }}
+                  - logstash_prefix: 'logstash-${record.fetch("environment", "blank") != "blank" ? record.fetch("environment") : tag_parts[0]}'
+                  - include_tag_key: 'true'
+                  - tag_key: fluentd_tag
+                  - reload_on_failure: 'true'
+                  - reconnect_on_error: 'true'
+                  - flatten_hashes: 'true'
+                  - flatten_hashes_separator: __
+                  - nested_directives:
+                      - directive: buffer
+                        attrs:
+                          - flush_interval: '10s'
+                          - flush_thread_count: 2
     - name: elasticsearch
       settings:
         - directive: source
           attrs:
             - '@id': heroku_logs_inbound
             - '@type': heroku_syslog_http
+            - '@label': '@es_logging'
             - tag: heroku_logs
             - port: 9000
             - bind: ::1
@@ -58,29 +91,29 @@ fluentd:
           attrs:
             - '@id': mailgun-events
             - '@type': http
+            - '@label': '@es_logging'
             - port: 9001
             - bind: ::1
         - directive: source
           attrs:
             - '@id': salt_logs_inbound
             - '@type': udp
+            - '@label': '@es_logging'
             - tag: saltmaster
-            - format: json
             - port: 9999
             - bind: ::1
             - nested_directives:
                 - directive: parse
                   attrs:
+                    - '@type': json
                     - keep_time_key: 'true'
         - directive: source
           attrs:
             - '@type': forward
+            - '@label': '@es_logging'
             - port: 5001
             - bind: ::1
             - nested_directives:
-                - directive: security
-                  attrs:
-                    - self_hostname: {{ salt.grains.get('external_ip') }}
                 - directive: transport
                   directive_arg: tls
                   attrs:
@@ -88,11 +121,6 @@ fluentd:
                     - private_key_path: {{ fluentd_key_path }}
                     - ca_path: {{ ca_cert_path }}
                     - client_cert_auth: 'true'
-        - directive: match
-          directive_arg: '**'
-          attrs:
-            - '@type': relabel
-            - '@label': '@es_logging'
         - directive: label
           directive_arg: '@es_logging'
           attrs:
@@ -103,7 +131,6 @@ fluentd:
                   - '@id': es_outbound
                   - '@type': elasticsearch_dynamic
                   - logstash_format: 'true'
-                  - flush_interval: '10s'
                   - hosts: {{ es_hosts }}
                   - logstash_prefix: 'logstash-${record.fetch("environment", "blank") != "blank" ? record.fetch("environment") : tag_parts[0]}'
                   - include_tag_key: 'true'
@@ -112,6 +139,11 @@ fluentd:
                   - reconnect_on_error: 'true'
                   - flatten_hashes: 'true'
                   - flatten_hashes_separator: __
+                  - nested_directives:
+                      - directive: buffer
+                        attrs:
+                          - flush_interval: '10s'
+                          - flush_thread_count: 4
 
 beacons:
   service:
