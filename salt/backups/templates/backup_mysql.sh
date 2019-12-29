@@ -11,7 +11,7 @@ cd /backups/
 PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
           remove-all-but-n-full 5 --archive-dir {{ cachedir }} \
           --asynchronous-upload --s3-use-multiprocessing \
-          --tempdir /backups/tmp/ \
+          --tempdir /backups/tmp/ --force\
           s3+http://odl-operations-backups/{{ settings.get('directory', 'mysql') }}
 
 /usr/bin/mydumper --host {{ settings.host }} \

@@ -10,7 +10,7 @@ mountpoint /mnt/efs || mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,
 PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
           remove-all-but-n-full 5 --archive-dir {{ cachedir }} \
           --asynchronous-upload --s3-use-multiprocessing \
-          --tempdir /backups/tmp/ \
+          --tempdir /backups/tmp/ --force\
           s3+http://odl-operations-backups/{{ settings.get('directory', 'course_assets') }}/
 
 PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
