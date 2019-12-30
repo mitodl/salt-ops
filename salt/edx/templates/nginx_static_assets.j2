@@ -25,10 +25,3 @@
         # Expire other static files immediately (there should be very few / none of these)
         expires epoch;
     }
-
-{% if salt.grains.get('business_unit') == 'residential' and not 'next' in salt.grains.get('purpose') %}
-    # Redirect registration page to authentication page
-    location /register {
-        return 301 https://$host/login;
-    }
-{% endif %}
