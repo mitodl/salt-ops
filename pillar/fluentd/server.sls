@@ -28,7 +28,6 @@ fluentd:
     - fluent-plugin-s3
     - fluent-plugin-avro
     - fluent-plugin-anonymizer
-    - fluent-plugin-logzio
     - fluent-plugin-elasticsearch
   proxied_plugins:
     - route: heroku-http
@@ -182,19 +181,6 @@ fluentd:
                   - '@type': relabel
                   - '@label': '@es_logging'
         - directive: match
-          directive_arg: 'edx.xqwatcher.686.**'
-          attrs:
-            - '@type': copy
-            - nested_directives:
-              - directive: store
-                attrs:
-                  - '@type': relabel
-                  - '@label': '@logzio_686'
-              - directive: store
-                attrs:
-                  - '@type': relabel
-                  - '@label': '@es_logging'
-        - directive: match
           directive_arg: '**'
           attrs:
             - '@type': relabel
@@ -326,26 +312,6 @@ fluentd:
                             - '@type': json
                     - include_time_key: 'true'
                     - time_slice_format: '%Y-%m-%d-%H'
-        - directive: label
-          directive_arg: '@logzio_686'
-          attrs:
-            - nested_directives:
-                - directive: match
-                  directive_arg: 'edx.xqwatcher.686.**'
-                  attrs:
-                    - '@type': logzio_buffered
-                    - endpoint_url: __vault__::secret-residential/mitx-production/logzio-686-url>data>value
-                    - output_include_time: 'true'
-                    - output_include_tags: 'true'
-                    - http_idle_timeout: 10
-                    - nested_directives:
-                        - directive: buffer
-                          attrs:
-                            - '@type': memory
-                            - flush_thread_count: 4
-                            - flush_interval: '3s'
-                            - chunk_limit_size: 16m
-                            - queue_limit_length: 4096
 
 beacons:
   service:
