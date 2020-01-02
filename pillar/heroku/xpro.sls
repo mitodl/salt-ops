@@ -160,6 +160,7 @@ heroku:
     OPENEDX_OAUTH_APP_NAME: 'edx-oauth-app'
     # This replaces OPENEDX_GRADES_API_TOKEN and is tied to xpro-grades-api user in openedx
     OPENEDX_SERVICE_WORKER_API_TOKEN: __vault__::secret-{{ business_unit }}/{{ environment }}/openedx-service-worker-api-token>data>value
+    OPENEDX_SERVICE_WORKER_USERNAME: xpro-service-worker-api
     PGBOUNCER_DEFAULT_POOL_SIZE: 50
     PGBOUNCER_MIN_POOL_SIZE: 5
     RECAPTCHA_SITE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>site_key
