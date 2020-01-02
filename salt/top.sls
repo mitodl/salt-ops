@@ -24,8 +24,8 @@ base:
     - edx.xqwatcher
   'roles:amps-redirect':
     - match: grain
+    - letsencrypt
     - nginx
-    - nginx.certificates
   'roles:backups':
     - match: grain
     - backups.backup
