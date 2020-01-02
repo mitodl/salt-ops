@@ -34,6 +34,6 @@ nginx:
               - location /.well-known/
                 - alias: /usr/share/nginx/html/.well-known/
               - location /certificates/
-                - return 301 https://courses.edx.org$request_uri
+                - return: 301 https://courses.edx.org$request_uri
               - location /
                 - return: 301 https://xpro.mit.edu/
