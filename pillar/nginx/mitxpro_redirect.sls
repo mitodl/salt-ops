@@ -31,8 +31,8 @@ nginx:
                   :ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256"
               - ssl_prefer_server_ciphers: 'on'
               - resolver: 1.1.1.1
-              - location ~ /.well-known:
-                - allow: all
+              - location /.well-known/
+                - alias: /usr/share/nginx/html/.well-known/
               - location /certificates/
                 - rewrite ^(.*)$ https://courses.edx.org$1 permanent
               - location /
