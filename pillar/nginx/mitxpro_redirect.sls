@@ -31,9 +31,9 @@ nginx:
                   :ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256"
               - ssl_prefer_server_ciphers: 'on'
               - resolver: 1.1.1.1
-              - location /.well-known/
+              - location /.well-known/:
                 - alias: /usr/share/nginx/html/.well-known/
-              - location /certificates/
+              - location /certificates/:
                 - return: 301 https://courses.edx.org$request_uri
-              - location /
+              - location /:
                 - return: 301 https://xpro.mit.edu/
