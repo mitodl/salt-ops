@@ -112,6 +112,7 @@ heroku:
     {% if env_data.env_name == 'production' %}
     {% set pg_creds = salt.vault.cached_read('postgres-production-apps-mitxpro/creds/mitxpro', cache_prefix='heroku-mitxpro') %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxpro
+    CERTIFICATE_CREATION_DELAY_IN_HOURS: 48
     {% endif %}
     DRIVE_OUTPUT_FOLDER_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>folder_id
     DRIVE_SERVICE_ACCOUNT_CREDS: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>service_account_creds
