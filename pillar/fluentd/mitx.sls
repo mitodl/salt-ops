@@ -8,7 +8,7 @@ fluentd:
       - ruby2.3-dev
       - build-essential
   configs:
-    - name: fluentd_log
+    - name: edx
       settings:
         - directive: label
           directive_arg: '@FLUENT_LOG'
@@ -21,8 +21,6 @@ fluentd:
                     - directive: record
                       attrs:
                         - host: "#{Socket.gethostname}"
-    - name: edx
-      settings:
         - directive: source
           attrs:
             - '@id': edx_nginx_access_log
