@@ -186,6 +186,7 @@ fluentd:
             - tls_ca_cert_path: '/etc/fluent/ca.crt'
             - tls_allow_self_signed_cert: 'true'
             - tls_verify_hostname: 'false'
+            - verify_connection_at_startup: 'true'
             - nested_directives:
                 - directive: server
                   attrs:
