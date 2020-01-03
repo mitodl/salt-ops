@@ -119,7 +119,6 @@ fluentd:
                   attrs:
                     - cert_path: {{ fluentd_cert_path }}
                     - private_key_path: {{ fluentd_key_path }}
-                    - ca_path: {{ ca_cert_path }}
                     - client_cert_auth: 'true'
         - directive: label
           directive_arg: '@es_logging'
