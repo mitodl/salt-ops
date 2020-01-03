@@ -112,7 +112,7 @@ fluentd:
             - '@type': forward
             - '@label': '@es_logging'
             - port: 5001
-            - bind: ::1
+            - bind: '0.0.0.0'
             - nested_directives:
                 - directive: transport
                   directive_arg: tls
