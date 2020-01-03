@@ -1,5 +1,11 @@
 {% from "fluentd/record_tagging.jinja" import record_tagging with context %}
 {% from "fluentd/auth_log.jinja" import auth_log_source, auth_log_filter with context %}
+{% set ENVIRONMENT = salt.grains.get('environment') %}
+{% set minion_id = salt.grains.get('id', '') %}
+{% set cert = salt.vault.cached_write('pki-intermediate-mitxpro-qa/issue/fluentd-client', common_name='fluentd.{}.{}'.format(minion_id, ENVIRONMENT)) %}
+{% set fluentd_cert_path = '/etc/fluent/fluentd.crt' %}
+{% set fluentd_key_path = '/etc/fluent/fluentd.key' %}
+{% set ca_cert_path = '/etc/fluent/ca.crt' %}
 
 fluentd:
   overrides:
@@ -7,6 +13,18 @@ fluentd:
       - ruby2.3
       - ruby2.3-dev
       - build-essential
+  cert:
+    fluentd_cert:
+      content: |
+        {{ cert.data.certificate|indent(8)}}
+      path: {{ fluentd_cert_path }}
+    fluentd_key:
+      content: |
+        {{ cert.data.private_key|indent(8) }}
+      path: {{ fluentd_key_path }}
+    ca_cert:
+      content: |
+        {{ cert.data.issuing_ca|indent(8) }}
   configs:
     - name: edx
       settings:
@@ -26,9 +44,9 @@ fluentd:
                 attrs:
                   - '@type': forward
                   - transport: tls
-                  - tls_client_cert_path: '/etc/fluent/fluentd.crt'
-                  - tls_client_private_key_path: '/etc/fluent/fluentd.key'
-                  - tls_ca_cert_path: '/etc/fluent/ca.crt'
+                  - tls_client_cert_path: {{ fluentd_cert_path }}
+                  - tls_client_private_key_path: {{ fluentd_key_path }}
+                  - tls_ca_cert_path: {{ ca_cert_path }}
                   - tls_allow_self_signed_cert: 'true'
                   - tls_verify_hostname: 'false'
                   - nested_directives:
