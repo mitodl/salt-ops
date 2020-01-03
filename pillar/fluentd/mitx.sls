@@ -25,6 +25,7 @@ fluentd:
     ca_cert:
       content: |
         {{ cert.data.issuing_ca|indent(8) }}
+      path: {{ ca_cert_path }}
   configs:
     - name: edx
       settings:
