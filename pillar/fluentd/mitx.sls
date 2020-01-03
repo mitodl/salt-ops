@@ -2,7 +2,7 @@
 {% from "fluentd/auth_log.jinja" import auth_log_source, auth_log_filter with context %}
 {% set ENVIRONMENT = salt.grains.get('environment') %}
 {% set minion_id = salt.grains.get('id', '') %}
-{% set cert = salt.vault.cached_write('pki-intermediate-mitxpro-qa/issue/fluentd-client', common_name='fluentd.{}.{}'.format(minion_id, ENVIRONMENT)) %}
+{% set cert = salt.vault.cached_write('pki-intermediate-{}/issue/fluentd-client'.format(ENVIRONMENT), common_name='fluentd.{}.{}'.format(minion_id, ENVIRONMENT)) %}
 {% set fluentd_cert_path = '/etc/fluent/fluentd.crt' %}
 {% set fluentd_key_path = '/etc/fluent/fluentd.key' %}
 {% set ca_cert_path = '/etc/fluent/ca.crt' %}
