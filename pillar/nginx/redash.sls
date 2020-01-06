@@ -34,21 +34,14 @@ nginx:
         config:
           - server:
               - server_name: {{ server_domain_names|tojson }}
-              - listen:
-                  - 80
-              - listen:
-                  - '[::]:80'
+              - listen: 80
+              - listen: '[::]:80'
               - location /:
                   - return: 301 https://$host$request_uri
           - server:
               - server_name: {{ server_domain_names }}
-              - listen:
-                  - 443
-                  - ssl
-                  - default
-              - listen:
-                  - '[::]:443'
-                  - ssl
+              - listen: '443 ssl default_server'
+              - listen: '[::]:443 ssl'
               - root: /opt/redash/
               - ssl_certificate: /etc/nginx/ssl/odl_wildcard.crt
               - ssl_certificate_key: /etc/nginx/ssl/odl_wildcard.key
@@ -56,9 +49,7 @@ nginx:
               - ssl_stapling_verify: 'on'
               - ssl_session_timeout: 1d
               - ssl_session_tickets: 'off'
-              - ssl_protocols:
-                  - TLSv1.2
-                  - TLSv1.3
+              - ssl_protocols: 'TLSv1.2 TLSv1.3'
               - ssl_ciphers: "ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256\
                    :ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384\
                    :DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256\

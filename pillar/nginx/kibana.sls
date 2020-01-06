@@ -21,30 +21,21 @@ nginx:
         config:
           - server:
               - server_name: {{ server_domain_names|tojson }}
-              - listen:
-                  - 80
-              - listen:
-                  - '[::]:80'
+              - listen: 80
+              - listen: '[::]:80'
               - location /:
                   - return: 301 https://$host$request_uri
           - server:
               - server_name: {{ server_domain_names|tojson }}
-              - listen:
-                  - 443
-                  - ssl
-                  - default
-              - listen:
-                  - '[::]:443'
-                  - ssl
+              - listen: '443 ssl default_server'
+              - listen: '[::]:443 ssl'
               - ssl_certificate: /etc/nginx/ssl/odl.mit.edu.crt
               - ssl_certificate_key: /etc/nginx/ssl/odl.mit.edu.key
               - ssl_stapling: 'on'
               - ssl_stapling_verify: 'on'
               - ssl_session_timeout: 1d
               - ssl_session_tickets: 'off'
-              - ssl_protocols:
-                  - TLSv1.2
-                  - TLSv1.3
+              - ssl_protocols: 'TLSv1.2 TLSv1.3'
               - ssl_ciphers: "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256\
                   :DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384\
                   :ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256\
@@ -53,15 +44,9 @@ nginx:
               - resolver: 1.1.1.1
               - location /:
                   - proxy_pass: http://localhost:5601/
-                  - proxy_set_header:
-                    - Host
-                    - $host
-                  - proxy_set_header:
-                    - X-Real-IP
-                    - $remote_addr
-                  - proxy_set_header:
-                    - X-Forwarded-For__vault__::secret-operations/global/mitca_ssl_cert>data>value
-                    - $remote_addr
+                  - proxy_set_header: 'Host $host'
+                  - proxy_set_header: 'X-Real-IP $remote_addr'
+                  - proxy_set_header: "X-Forwarded-For {{ salt.vault.read('secret-operations/global/mitca_ssl_cert').data.value) }} $remote_addr"
                   - proxy_headers_hash_bucket_size: 128
                   - proxy_read_timeout: 240s
               - ssl_client_certificate: /etc/ssl/certs/mitca.pem
