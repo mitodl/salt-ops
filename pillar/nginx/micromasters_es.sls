@@ -52,8 +52,7 @@ nginx:
               - ssl_stapling_verify: 'on'
               - ssl_session_timeout: 1d
               - ssl_session_tickets: 'off'
-              - ssl_protocols:
-                  - TLSv1.2
+              - ssl_protocols: TLSv1.2
               - ssl_ciphers: 'TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256'
               - ssl_prefer_server_ciphers: 'on'
               - resolver: 8.8.8.8

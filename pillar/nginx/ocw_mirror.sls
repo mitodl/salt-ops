@@ -46,10 +46,7 @@ nginx:
               - ssl_stapling_verify: 'on'
               - ssl_session_timeout: 1d
               - ssl_session_tickets: 'off'
-              - ssl_protocols:
-                  - TLSv1.1
-                  - TLSv1.2
-                  - TLSv1.3
+              - ssl_protocols: 'TLSv1.1 TLSv1.2 TLSv1.3'
               - ssl_ciphers: "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256\
                   :DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384\
                   :ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256\
@@ -57,11 +54,5 @@ nginx:
               - ssl_prefer_server_ciphers: 'on'
               - resolver: 1.1.1.1
               - location /:
-                  - try_files:
-                      - $uri
-                      - $uri/index.htm
-                      - =404
-                  - rewrite:
-                      - ^(/[^\.\?]+[^/])$
-                      - $1/
-                      - permanent
+                  - try_files: '$uri $uri/index.htm =404'
+                  - rewrite: '^(/[^\.\?]+[^/])$ $1/ permanent'
