@@ -72,14 +72,6 @@ fluentd:
                     - delimiter_pattern: '/\s+(?=(?:[^"]*"[^"]*")*[^"]*$)/'
                     - time_key: time
                     - types: time:time
-                - directive: filter
-                  attrs:
-                    - '@type': grep
-                    - nested_directives:
-                      - directive: exclude
-                        attrs:
-                          - key: user_agent
-                          - pattern: '/^ELB-HealthChecker$/'
         - directive: source
           attrs:
             - '@id': edx_cms_log
@@ -174,7 +166,33 @@ fluentd:
                     - time_type: string
                     - time_format: '%Y-%m-%dT%H:%M:%S.%N%:z'
         - {{ auth_log_source('syslog.auth', '/var/log/auth.log') }}
-        - {{ auth_log_filter('grep', 'ident', 'python') }}
+        - directive: filter
+          directive_arg: edx.nginx.access
+          attrs:
+            - '@type': grep
+            - nested_directives:
+              - directive: exclude
+                attrs:
+                  - key: user_agent
+                  - pattern: '/ELB-HealthChecker/'
+        - directive: filter
+          directive_arg: edx.lms.stderr
+          attrs:
+            - '@type': grep
+            - nested_directives:
+              - directive: exclude
+                attrs:
+                  - key: message
+                  - pattern: '/heartbeat/'
+        - directive: filter
+          directive_arg: syslog.auth
+          attrs:
+            - '@type': grep
+            - nested_directives:
+              - directive: exclude
+                attrs:
+                  - key: ident
+                  - pattern: '/CRON/'
         - {{ record_tagging |yaml() }}
         - directive: match
           directive_arg: '**'
