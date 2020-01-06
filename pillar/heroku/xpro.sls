@@ -26,6 +26,7 @@
       'MITXPRO_BASE_URL': 'https://xpro-ci.odl.mit.edu',
       'MITXPRO_SECURE_SSL_HOST': 'xpro-ci.odl.mit.edu',
       'ENABLE_ORDER_RECEIPTS': True,
+      'SHEETS_MONITORING_FREQUENCY': 86400,
       'vault_env_path': 'rc-apps',
       'USE_X_FORWARDED_HOST': False,
       'VOUCHER_COMPANY_ID': 1
@@ -54,6 +55,7 @@
       'MITXPRO_SECURE_SSL_HOST': 'xpro-rc.odl.mit.edu',
       'vault_env_path': 'rc-apps',
       'ENABLE_ORDER_RECEIPTS': True,
+      'SHEETS_MONITORING_FREQUENCY': 43200,
       'USE_X_FORWARDED_HOST': False,
       'VOUCHER_COMPANY_ID': 1
       },
@@ -80,6 +82,7 @@
       'MITXPRO_BASE_URL': 'https://xpro.mit.edu',
       'MITXPRO_SECURE_SSL_HOST': 'xpro.mit.edu',
       'ENABLE_ORDER_RECEIPTS': True,
+      'SHEETS_MONITORING_FREQUENCY': 3600,
       'vault_env_path': 'production-apps',
       'USE_X_FORWARDED_HOST': True,
       'VOUCHER_COMPANY_ID': 4
@@ -171,7 +174,7 @@ heroku:
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
     SHEETS_ADMIN_EMAILS: {{ salt.sdb.get('sdb://consul/xpro/' ~ environment ~'/sheets-admin-emails') }}
     SHEETS_DATE_TIMEZONE: America/New_York
-    SHEETS_MONITORING_FREQUENCY: 3600
+    SHEETS_MONITORING_FREQUENCY: {{ env_data.SHEETS_MONITORING_FREQUENCY }}
     SHEETS_TASK_OFFSET: 120
     SHOW_UNREDEEMED_COUPON_ON_DASHBOARD: True
     SITE_NAME: "MIT xPRO"
