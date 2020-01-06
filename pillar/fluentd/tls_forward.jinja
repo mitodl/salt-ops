@@ -4,9 +4,9 @@
     'attrs': [
         {'@type': 'forward'},
         {'transport': 'tls'},
-        {'tls_client_cert_path': salt.sdb.yaml.get('fluentd:cert_path')},
-        {'tls_client_private_key_path': salt.sdb.yaml.get('fluentd:cert_key_path')},
-        {'tls_ca_cert_path': salt.sdb.yaml.get('fluentd:ca_cert_path')},
+        {'tls_client_cert_path': sdb.get('sdb://yaml/fluentd:cert_path')},
+        {'tls_client_private_key_path': sdb.get('sdb://yaml/fluentd:cert_key_path')},
+        {'tls_ca_cert_path': sdb.get('sdb://yaml/fluentd:ca_cert_path')},
         {'tls_allow_self_signed_cert': 'true'},
         {'tls_verify_hostname': 'false'},
         {'verify_connection_at_startup': 'true'},

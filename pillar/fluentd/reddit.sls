@@ -2,8 +2,6 @@
 {% from "fluentd/tls_forward.jinja" import tls_forward with context %}
 
 fluentd:
-  plugins:
-    - fluent-plugin-keyvalue-parser
   configs:
     - name: reddit
       settings:

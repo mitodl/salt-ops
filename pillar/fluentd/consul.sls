@@ -15,7 +15,6 @@ fluentd:
             - format: syslog
             - tag: consul.server
         - {{ auth_log_source('syslog.auth', '/var/log/auth.log') }}
-        - {{ auth_log_filter('grep', 'ident', '/consul', 'consul.server') }}
         - {{ auth_log_filter('grep', 'ident', '/CRON/') }}
         - {{ record_tagging |yaml() }}
         - {{ tls_forward |yaml() }}

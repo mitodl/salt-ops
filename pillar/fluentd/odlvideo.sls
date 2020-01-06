@@ -2,9 +2,6 @@
 {% from "fluentd/tls_forward.jinja" import tls_forward with context %}
 
 fluentd:
-  plugins:
-    - fluent-plugin-secure-forward
-    - fluent-plugin-keyvalue-parser
   configs:
     - name: odlvideo
       settings:
