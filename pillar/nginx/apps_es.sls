@@ -5,26 +5,6 @@ nginx:
     config:
       http:
         access_log: !!null
-    extra_config:
-      logging:
-        log_format app_metrics: >-
-          'time=$time_iso8601
-          client=$remote_addr
-          method=$request_method
-          request="$request"
-          request_length=$request_length
-          status=$status
-          bytes_sent=$bytes_sent
-          body_bytes_sent=$body_bytes_sent
-          referer=$http_referer
-          user_agent="$http_user_agent"
-          upstream_addr=$upstream_addr
-          upstream_status=$upstream_status
-          request_time=$request_time
-          upstream_response_time=$upstream_response_time
-          upstream_connect_time=$upstream_connect_time
-          upstream_header_time=$upstream_header_time'
-        access_log: /var/log/nginx/access.log app_metrics
   dh_param:
     dhparam.pem: __vault__::secret-operations/{{ ENVIRONMENT }}/dhparam>data>value
   certificates:
@@ -38,12 +18,8 @@ nginx:
         config:
           - server:
               - server_name: elasticsearch-{{ ENVIRONMENT }}.odl.mit.edu
-              - listen:
-                  - 443
-                  - ssl
-              - listen:
-                  - '[::]:443'
-                  - ssl
+              - listen: '443 ssl'
+              - listen: '[::]:443 ssl'
               - location ~ ^/(_alias|_aliases|discussions|micromasters|_refresh|_mapping):
                   - proxy_pass: http://127.0.0.1:9200$request_uri
                   - proxy_set_header: 'X-Forwarded-For $proxy_add_x_forwarded_for'

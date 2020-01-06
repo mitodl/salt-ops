@@ -39,21 +39,14 @@ nginx:
         config:
           - server:
               - server_name: {{ server_domains[ENVIRONMENT] }} {# This is a hack to work around the way that shibboleth/init.sls is set up for entityID  (TMM 2018-07-24) #}
-              - listen:
-                  - 80
-              - listen:
-                  - '[::]:80'
+              - listen: 80
+              - listen: '[::]:80'
               - location /:
                   - return: 301 https://$host$request_uri
           - server:
               - server_name: {{ server_domains[ENVIRONMENT] }}{# This is a hack to work around the way that shibboleth/init.sls is set up for entityID  (TMM 2018-07-24) #}
-              - listen:
-                  - 443
-                  - ssl
-                  - default
-              - listen:
-                  - '[::]:443'
-                  - ssl
+              - listen: '443 ssl default_server'
+              - listen: '[::]:443 ssl'
               - root: /opt/mitx-cas/
               - ssl_certificate: /etc/nginx/ssl/mitx_wildcard.crt
               - ssl_certificate_key: /etc/nginx/ssl/mitx_wildcard.key

@@ -31,21 +31,14 @@ nginx:
         config:
           - server:
               - server_name: {{ server_domain_names|tojson }}
-              - listen:
-                  - 80
-              - listen:
-                  - '[::]:80'
+              - listen: 80
+              - listen: '[::]:80'
               - location /:
                   - return: 301 https://$host$request_uri
           - server:
               - server_name: {{ server_domain_names|tojson }}
-              - listen:
-                  - 443
-                  - ssl
-                  - default
-              - listen:
-                  - '[::]:443'
-                  - ssl
+              - listen: '443 ssl default_server'
+              - listen: '[::]:443 ssl'
               - root: /data2/rsync
               - ssl_certificate: /etc/nginx/ssl/odl_wildcard.crt
               - ssl_certificate_key: /etc/nginx/ssl/odl_wildcard.key

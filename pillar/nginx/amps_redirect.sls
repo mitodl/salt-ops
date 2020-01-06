@@ -15,18 +15,10 @@ nginx:
         config:
           - server:
               - server_name: amps-web.amps.ms.mit.edu
-              - listen:
-                  - 80
-                  - default_server
-              - listen:
-                  - 443
-                  - ssl
-                  - default_server
-              - listen:
-                  - '[::]:80'
-              - listen:
-                  - '[::]:443'
-                  - ssl
+              - listen: '80 default_server'
+              - listen: '443 ssl default_server'
+              - listen: '[::]:80'
+              - listen: '[::]:443 ssl'
               - ssl_certificate: /etc/letsencrypt/live/amps-web.amps.ms.mit.edu/cert.pem
               - ssl_certificate_key: /etc/letsencrypt/live/amps-web.amps.ms.mit.edu/privkey.pem
               - ssl_stapling: 'on'

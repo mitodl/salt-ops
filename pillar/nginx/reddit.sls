@@ -25,12 +25,8 @@ nginx:
               - "''": close
           - server:
               - server_name: {{ server_domain_name }}
-              - listen:
-                  - 443
-                  - ssl
-              - listen:
-                  - '[::]:443'
-                  - ssl
+              - listen: '443 ssl'
+              - listen: '[::]:443 ssl'
               - ssl_certificate: /etc/nginx/ssl/odl.mit.edu.crt
               - ssl_certificate_key: /etc/nginx/ssl/odl.mit.edu.key
               - ssl_stapling: 'on'

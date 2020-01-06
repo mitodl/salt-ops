@@ -5,16 +5,11 @@ nginx:
         enabled: True
         config:
           - server:
-            - server_name: mitxpro.mit.edu
-            - listen:
-                - 80
-            - listen:
-                - 443
-                - ssl
-            - listen:
-              - '[::]:80'
-              - '[::]:443'
-              - ssl
+              - server_name: mitxpro.mit.edu
+              - listen: 80
+              - listen: '443 ssl'
+              - listen: '[::]:80'
+              - listen: '[::]:443 ssl'
               # The certificate uses subject alternative names, including mitxpro.mit.edu.
               - ssl_certificate: /etc/letsencrypt/live/amps-web.amps.ms.mit.edu/cert.pem
               - ssl_certificate_key: /etc/letsencrypt/live/amps-web.amps.ms.mit.edu/privkey.pem

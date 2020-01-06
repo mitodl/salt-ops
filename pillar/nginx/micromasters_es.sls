@@ -25,12 +25,8 @@ nginx:
               - server_name:
                   - micromasters-es.odl.mit.edu
                   - '""'
-              - listen:
-                  - 443
-                  - ssl
-              - listen:
-                  - '[::]:443'
-                  - ssl
+              - listen: '443 ssl'
+              - listen: '[::]:443 ssl'
               - location /_cluster:
                   - allow: 127.0.0.1
                   - allow: 10.10.0.0/16
