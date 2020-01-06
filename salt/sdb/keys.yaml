@@ -1,0 +1,4 @@
+fluentd:
+  cert_path: '/etc/fluent/fluentd.crt'
+  cert_key_path: '/etc/fluent/fluentd.key'
+  ca_cert_path: '/etc/fluent/ca.crt'

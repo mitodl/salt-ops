@@ -13,12 +13,21 @@
 {% endmacro %}
 
 {% macro auth_log_filter(filter_type='grep', exclude_type='agent', exclude_message='CRON', tag='syslog.auth') %}
-{%- set auth_log_filter = {
-      'directive': 'filter',
-      'directive_arg': tag,
-      'attrs': [
-         {'@type': filter_type},
-         {'exclude1': exclude_type + " " + exclude_message},
-         ]} -%}
+{%- auth_log_filter = {
+    'directive': 'filter',
+    'directive_arg': tag,
+    'attrs': [
+        {'@type': filter_type},
+        {'nested_directives': [
+            {'directive': 'exclude',
+             'attrs': [
+                 {'key': exclude_type},
+                 {'pattern': exclude_message},
+                 ]
+            }
+        ]
+        }
+    ]
+} -%}
 {{ auth_log_filter|yaml() }}
 {% endmacro %}

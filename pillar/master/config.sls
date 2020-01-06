@@ -217,6 +217,10 @@ salt_master:
       consul:
         driver: consul
         host: consul.service.consul
+      yaml:
+        driver: yaml
+        files:
+          - salt://sdb/keys.yaml
   proxy_configs:
     apps:
       {% if 'qa' in purpose %}

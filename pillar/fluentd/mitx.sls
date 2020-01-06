@@ -1,11 +1,6 @@
 {% from "fluentd/record_tagging.jinja" import record_tagging with context %}
 {% from "fluentd/auth_log.jinja" import auth_log_source, auth_log_filter with context %}
-{% set ENVIRONMENT = salt.grains.get('environment') %}
-{% set minion_id = salt.grains.get('id', '') %}
-{% set cert = salt.vault.cached_write('pki-intermediate-{}/issue/fluentd-client'.format(ENVIRONMENT), common_name='fluentd.{}.{}'.format(minion_id, ENVIRONMENT)) %}
-{% set fluentd_cert_path = '/etc/fluent/fluentd.crt' %}
-{% set fluentd_key_path = '/etc/fluent/fluentd.key' %}
-{% set ca_cert_path = '/etc/fluent/ca.crt' %}
+{% from "fluentd/tls_forward.jinja" import tls_forward with context %}
 
 fluentd:
   overrides:
@@ -13,19 +8,6 @@ fluentd:
       - ruby2.3
       - ruby2.3-dev
       - build-essential
-  cert:
-    fluentd_cert:
-      content: |
-        {{ cert.data.certificate|indent(8)}}
-      path: {{ fluentd_cert_path }}
-    fluentd_key:
-      content: |
-        {{ cert.data.private_key|indent(8) }}
-      path: {{ fluentd_key_path }}
-    ca_cert:
-      content: |
-        {{ cert.data.issuing_ca|indent(8) }}
-      path: {{ ca_cert_path }}
   configs:
     - name: edx
       settings:
@@ -166,47 +148,8 @@ fluentd:
                     - time_type: string
                     - time_format: '%Y-%m-%dT%H:%M:%S.%N%:z'
         - {{ auth_log_source('syslog.auth', '/var/log/auth.log') }}
-        - directive: filter
-          directive_arg: edx.nginx.access
-          attrs:
-            - '@type': grep
-            - nested_directives:
-              - directive: exclude
-                attrs:
-                  - key: user_agent
-                  - pattern: '/ELB-HealthChecker/'
-        - directive: filter
-          directive_arg: edx.lms.stderr
-          attrs:
-            - '@type': grep
-            - nested_directives:
-              - directive: exclude
-                attrs:
-                  - key: message
-                  - pattern: '/heartbeat/'
-        - directive: filter
-          directive_arg: syslog.auth
-          attrs:
-            - '@type': grep
-            - nested_directives:
-              - directive: exclude
-                attrs:
-                  - key: ident
-                  - pattern: '/CRON/'
+        - {{ auth_log_filter('grep', 'user_agent', '/ELB-HealthChecker/', 'edx.nginx.access') }}
+        - {{ auth_log_filter('grep', 'message', '/heartbeat/', 'edx.lms.stderr') }}
+        - {{ auth_log_filter('grep', 'ident', '/CRON/') }}
         - {{ record_tagging |yaml() }}
-        - directive: match
-          directive_arg: '**'
-          attrs:
-            - '@type': forward
-            - transport: tls
-            - tls_client_cert_path: '/etc/fluent/fluentd.crt'
-            - tls_client_private_key_path: '/etc/fluent/fluentd.key'
-            - tls_ca_cert_path: '/etc/fluent/ca.crt'
-            - tls_allow_self_signed_cert: 'true'
-            - tls_verify_hostname: 'false'
-            - verify_connection_at_startup: 'true'
-            - nested_directives:
-                - directive: server
-                  attrs:
-                    - host: operations-fluentd.query.consul
-                    - port: 5001
+        - {{ tls_forward |yaml() }}
