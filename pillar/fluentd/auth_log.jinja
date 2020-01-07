@@ -13,7 +13,7 @@
 {% endmacro %}
 
 {% macro auth_log_filter(filter_type='grep', exclude_type='agent', exclude_message='CRON', tag='syslog.auth', filter_directive='exclude') %}
-{%- auth_log_filter = {
+{%- set auth_log_filter = {
     'directive': 'filter',
     'directive_arg': tag,
     'attrs': [
