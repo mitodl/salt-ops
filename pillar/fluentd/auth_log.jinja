@@ -12,14 +12,14 @@
 {{ auth_log_source|yaml() }}
 {% endmacro %}
 
-{% macro auth_log_filter(filter_type='grep', exclude_type='agent', exclude_message='CRON', tag='syslog.auth') %}
+{% macro auth_log_filter(filter_type='grep', exclude_type='agent', exclude_message='CRON', tag='syslog.auth', filter_directive='exclude') %}
 {%- auth_log_filter = {
     'directive': 'filter',
     'directive_arg': tag,
     'attrs': [
         {'@type': filter_type},
         {'nested_directives': [
-            {'directive': 'exclude',
+            {'directive': filter_directive,
              'attrs': [
                  {'key': exclude_type},
                  {'pattern': exclude_message},
