@@ -4,8 +4,9 @@
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set server_domain_names = env_data.purposes['mitx-cas'].domains %}
 {% set server_domains = {
-'mitx-qa': server_domain_names[0],
-'mitx-production': server_domain_names[1]
+       'mitx-qa': server_domain_names[0],
+       'mitx-production': server_domain_names[1]
+   }
 %}
 
 nginx:
