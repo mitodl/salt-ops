@@ -3,7 +3,7 @@
 
 fluentd:
   configs:
-    - name: ocworigin
+    ocworigin:
       settings:
         - directive: source
           attrs:

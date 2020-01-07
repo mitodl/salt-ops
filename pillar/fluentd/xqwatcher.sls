@@ -4,7 +4,7 @@
 
 fluentd:
   configs:
-    - name: xqwatcher
+    xqwatcher:
       settings:
         - directive: source
           attrs:

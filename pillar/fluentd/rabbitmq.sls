@@ -5,7 +5,7 @@
 
 fluentd:
   configs:
-    - name: rabbitmq_server
+    rabbitmq_server:
       settings:
         - directive: source
           attrs:

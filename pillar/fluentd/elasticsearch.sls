@@ -3,7 +3,7 @@
 
 fluentd:
   configs:
-    - name: elasticsearch_server
+    elasticsearch_server:
       settings:
         - directive: source
           attrs:

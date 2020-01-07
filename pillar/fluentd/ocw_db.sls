@@ -3,7 +3,7 @@
 
 fluentd:
   configs:
-    - name: ocwdb
+    ocwdb:
       settings:
         - directive: source
           attrs:

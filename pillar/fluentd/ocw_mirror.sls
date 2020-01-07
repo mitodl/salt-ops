@@ -3,7 +3,7 @@
 
 fluentd:
   configs:
-    - name: ocwmirror
+    ocwmirror:
       settings:
         - directive: source
           attrs:

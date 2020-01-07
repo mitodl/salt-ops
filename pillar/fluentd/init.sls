@@ -28,7 +28,7 @@ fluentd:
         {{ cert.data.issuing_ca|indent(8) }}
       path: {{ ca_cert_path }}
   configs:
-     - name: fluentd_log
+     fluentd_log:
        settings:
           - directive: label
             directive_arg: '@FLUENT_LOG'

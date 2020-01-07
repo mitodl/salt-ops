@@ -4,7 +4,7 @@
 
 fluentd:
   configs:
-    - name: edx
+    edx:
       settings:
         - directive: source
           attrs:

@@ -4,7 +4,7 @@
 
 fluentd:
   configs:
-    - name: consul_server
+    consul_server:
       settings:
         - directive: source
           attrs:
