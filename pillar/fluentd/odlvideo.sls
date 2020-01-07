@@ -1,9 +1,7 @@
 {% from "fluentd/record_tagging.jinja" import record_tagging with context %}
+{% from "fluentd/tls_forward.jinja" import tls_forward with context %}
 
 fluentd:
-  plugins:
-    - fluent-plugin-secure-forward
-    - fluent-plugin-keyvalue-parser
   configs:
     - name: odlvideo
       settings:
@@ -39,16 +37,4 @@ fluentd:
                     - '@type': regexp
                     - expression: '^(?<time>\d+\/\d+\/\d+\s\d+:\d+:\d+)\s(?<level_name>\[.*])\s(?<message>.*)'
         - {{ record_tagging |yaml() }}
-        - directive: match
-          directive_arg: '**'
-          attrs:
-            - '@type': secure_forward
-            - self_hostname: {{ salt.grains.get('ipv4')[0] }}
-            - secure: 'false'
-            - flush_interval: '10s'
-            - shared_key: __vault__::secret-operations/global/fluentd_shared_key>data>value
-            - nested_directives:
-                - directive: server
-                  attrs:
-                    - host: operations-fluentd.query.consul
-                    - port: 5001
+        - {{ tls_forward |yaml() }}

@@ -2,8 +2,6 @@
 {% from "fluentd/auth_log.jinja" import auth_log_source, auth_log_filter with context %}
 
 fluentd:
-  plugins:
-    - fluent-plugin-secure-forward
   configs:
     - name: elasticsearch_server
       settings:
@@ -19,18 +17,6 @@ fluentd:
             - format1: '/^\[(?<time>\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2},\d{3})\]\[(?<log_level>\w+)\]\[(?<module_name>.*?)\] (?<message>.*)$/'
             - multiline_flush_interval: '5s'
         - {{ auth_log_source('syslog.auth', '/var/log/auth.log') }}
-        - {{ auth_log_filter('grep', 'ident', 'CRON') }}
+        - {{ auth_log_filter('grep', 'ident', '/CRON/') }}
         - {{ record_tagging |yaml() }}
-        - directive: match
-          directive_arg: '**'
-          attrs:
-            - '@type': secure_forward
-            - self_hostname: {{ salt.grains.get('ipv4')[0] }}
-            - secure: 'false'
-            - flush_interval: '10s'
-            - shared_key: __vault__::secret-operations/global/fluentd_shared_key>data>value
-            - nested_directives:
-              - directive: server
-                attrs:
-                  - host: operations-fluentd.query.consul
-                  - port: 5001
+        - {{ tls_forward |yaml() }}
