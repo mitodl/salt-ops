@@ -3,40 +3,9 @@
 {% from "fluentd/tls_forward.jinja" import tls_forward with context %}
 
 fluentd:
-  overrides:
-    pkgs:
-      - ruby2.3
-      - ruby2.3-dev
-      - build-essential
   configs:
     - name: edx
       settings:
-        - directive: label
-          directive_arg: '@FLUENT_LOG'
-          attrs:
-            - nested_directives:
-              - directive: filter
-                attrs:
-                  - '@type': record_transformer
-                  - nested_directives:
-                    - directive: record
-                      attrs:
-                        - host: "#{Socket.gethostname}"
-              - directive: match
-                directive_arg: 'fluent.*'
-                attrs:
-                  - '@type': forward
-                  - transport: tls
-                  - tls_client_cert_path: {{ fluentd_cert_path }}
-                  - tls_client_private_key_path: {{ fluentd_key_path }}
-                  - tls_ca_cert_path: {{ ca_cert_path }}
-                  - tls_allow_self_signed_cert: 'true'
-                  - tls_verify_hostname: 'false'
-                  - nested_directives:
-                    - directive: server
-                      attrs:
-                        - host: operations-fluentd.query.consul
-                        - port: 5001
         - directive: source
           attrs:
             - '@id': edx_nginx_access_log
