@@ -1,9 +1,9 @@
 {% set ENVIRONMENT = salt.grains.get('environment') %}
 {% set minion_id = salt.grains.get('id', '') %}
 {% set cert = salt.vault.cached_write('pki-intermediate-{}/issue/fluentd-client'.format(ENVIRONMENT), common_name='fluentd.{}.{}'.format(minion_id, ENVIRONMENT), cache_prefix=minion_id) %}
-{% set fluentd_cert_path = sdb.get('sdb://yaml/fluentd:cert_path') %}
-{% set fluentd_cert_key_path = sdb.get('sdb://yaml/fluentd:cert_key_path') %}
-{% set ca_cert_path = sdb.get('sdb://yaml/fluentd:ca_cert_path') %}
+{% set fluentd_cert_path = salt.sdb.get('sdb://yaml/fluentd:cert_path') %}
+{% set fluentd_cert_key_path = salt.sdb.get('sdb://yaml/fluentd:cert_key_path') %}
+{% set ca_cert_path = salt.sdb.get('sdb://yaml/fluentd:ca_cert_path') %}
 
 fluentd:
   overrides:
