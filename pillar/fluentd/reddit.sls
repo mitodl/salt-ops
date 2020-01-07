@@ -3,7 +3,7 @@
 
 fluentd:
   configs:
-    - name: reddit
+    reddit:
       settings:
         - directive: source
           attrs:

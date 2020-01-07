@@ -4,7 +4,7 @@
 
 fluentd:
   configs:
-    - name: auth_server
+    auth_server:
       settings:
         - directive: source
           attrs:

@@ -4,7 +4,7 @@
 
 fluentd:
   configs:
-    - name: mongodb_server
+    mongodb_server:
       settings:
         - directive: source
           attrs:

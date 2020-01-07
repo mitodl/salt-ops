@@ -3,7 +3,7 @@
 
 fluentd:
   configs:
-    - name: ocwcms
+    ocwcms:
       settings:
         - directive: source
           attrs:

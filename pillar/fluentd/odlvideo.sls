@@ -3,7 +3,7 @@
 
 fluentd:
   configs:
-    - name: odlvideo
+    odlvideo:
       settings:
         - directive: source
           attrs:

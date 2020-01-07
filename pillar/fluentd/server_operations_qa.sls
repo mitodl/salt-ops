@@ -38,14 +38,14 @@ fluentd:
       port: 9001
       token: __vault__::secret-operations/{{ ENVIRONMENT }}/mailgun_webhooks_token>data>value
   configs:
-    - name: monitor_agent
+    monitor_agent:
       settings:
         - directive: source
           attrs:
             - '@type': monitor_agent
             - bind: 127.0.0.1
             - port: 24220
-    - name: fluentd_server_log
+    fluentd_log:
       settings:
         - directive: label
           directive_arg: '@FLUENT_LOG'
@@ -77,7 +77,7 @@ fluentd:
                         attrs:
                           - flush_interval: '10s'
                           - flush_thread_count: 2
-    - name: elasticsearch
+    elasticsearch:
       settings:
         - directive: source
           attrs:
