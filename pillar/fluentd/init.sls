@@ -47,7 +47,7 @@ fluentd:
                     - '@type': forward
                     - transport: tls
                     - tls_client_cert_path: {{ fluentd_cert_path }}
-                    - tls_client_private_key_path: {{ fluentd_key_path }}
+                    - tls_client_private_key_path: {{ fluentd_cert_key_path }}
                     - tls_ca_cert_path: {{ ca_cert_path }}
                     - tls_allow_self_signed_cert: 'true'
                     - tls_verify_hostname: 'false'
