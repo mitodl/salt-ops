@@ -20,7 +20,7 @@ nginx:
   server:
     extra_config:
       shib_params:
-        source_path: salt://nginx/ng/files/nginx.conf
+        source_path: salt://nginx/files/default/nginx.conf
         shib_request_set:
           - $shib_uid $upstream_http_variable_uid
           - $shib_eppn $upstream_http_variable_eppn
