@@ -133,7 +133,7 @@ base:
   'G@roles:edx-analytics and P@environment:mitx(pro)?-production':
     - match: compound
     - data.mitx_etl
-  'G@roles:consul_server and G@environment:operations(-qa)?':
+  'G@roles:consul_server and P@environment:operations(-qa)?':
     - match: compound
     - consul.bootcamps
     - vault
