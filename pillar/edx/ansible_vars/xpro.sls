@@ -27,7 +27,7 @@ edx:
     EDXAPP_COMMENTS_SERVICE_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
     EDXAPP_IDA_LOGOUT_URI_LIST: ['{{ heroku_env }}/logout']
     EDXAPP_PRIVATE_REQUIREMENTS:
-      - name: mitxpro-openedx-extensions==0.1.0
+      - name: mitxpro-openedx-extensions==0.1.1
       - name: social-auth-mitxpro==0.2
       - name: ubcpi-xblock==0.6.4
       - name: git+https://github.com/mitodl/edx-git-auto-export.git@v0.1#egg=edx-git-auto-export
