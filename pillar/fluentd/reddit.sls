@@ -17,7 +17,7 @@ fluentd:
                 - directive: parse
                   attrs:
                     - '@type': regexp
-                    - expression: '^(?<time>\w\d{4}\s\d{2}:\d{2}:\d{2}.\d{6})\s(?<code_value>\d+)\s*(?<file_name>.*):(?<line_num>\d+)\]\s(?<message>.*)$'
+                    - expression: '^(?<time>\w\d{4}\s\d{2}:\d{2}:\d{2}.\d{6})\s*(?<code_value>\d+)\s*(?<file_name>.*):(?<line_num>\d+)\]\s*(?<message>.*)$'
         - directive: source
           attrs:
             - '@id': reddit_log
