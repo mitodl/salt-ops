@@ -1,4 +1,5 @@
 {% from "fluentd/record_tagging.jinja" import record_tagging with context %}
+{% from "fluentd/auth_log.jinja" import auth_log_source, auth_log_filter with context %}
 {% from "fluentd/tls_forward.jinja" import tls_forward with context %}
 
 fluentd:
