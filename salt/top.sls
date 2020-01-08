@@ -157,7 +157,7 @@ base:
   'G@roles:mongodb and P@environment:mitx(pro)?-production':
     - match: compound
     - datadog.plugins
-  'G@roles:consul_server and G@environment:operations(-qa)?':
+  'G@roles:consul_server and P@environment:operations(-qa)?':
     - match: compound
     - datadog.plugins
     - vault
