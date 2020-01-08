@@ -15,7 +15,7 @@ fluentd:
             - pos_file: /usr/share/elasticsearch/logs/elasticsearch_fluentd.log.pos
             - format: multiline
             - format_firstline: '/^\[\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2},\d{3}\]/'
-            - format1: '/^\[(?<time>\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2},\d{3})\]\[(?<log_level>\w+)\]\[(?<module_name>.*?)\] (?<message>.*)$/'
+            - format1: '/^\[(?<time>\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2},\d{3})\]\[(?<log_level>\w+\s*?)\]\[(?<module_name>.*?)\] (?<message>.*)$/'
             - multiline_flush_interval: '5s'
         - {{ auth_log_source('syslog.auth', '/var/log/auth.log') }}
         - {{ auth_log_filter('grep', 'ident', '/CRON/') }}

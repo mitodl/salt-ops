@@ -40,7 +40,7 @@ fluentd:
                     - nested_directives:
                       - directive: record
                         attrs:
-                          - host: "#{Socket.gethostname}"
+                          - host: '"#{Socket.gethostname}"'
                 - directive: match
                   directive_arg: 'fluent.*'
                   attrs:
