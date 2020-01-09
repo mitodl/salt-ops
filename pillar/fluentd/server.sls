@@ -1,4 +1,6 @@
 {% set app_name = "fluentd-aggregators" %}
+{% set ENVIRONMENT = salt.grains.get('environment') %}
+{% set minion_id = salt.grains.get('id', '') %}
 {% set micromasters_ir_bucket = 'odl-micromasters-ir-data' %}
 {% set micromasters_ir_bucket_creds = salt.vault.read('aws-mitx/creds/read-write-{bucket}'.format(bucket=micromasters_ir_bucket)) %}
 {% set residential_tracking_bucket = 'odl-residential-tracking-data' %}
@@ -6,10 +8,13 @@
 {% set data_lake_bucket = 'mitodl-data-lake' %}
 {% set edx_tracking_bucket = 'odl-residential-tracking-data' %}
 {% set edx_tracking_bucket_creds = salt.vault.read('aws-mitx/creds/read-write-{bucket}'.format(bucket=edx_tracking_bucket)) %}
-{% set fluentd_shared_key = salt.vault.read('secret-operations/global/fluentd_shared_key').data.value %}
 {% set mailgun_webhooks_token = salt.vault.read('secret-operations/global/mailgun_webhooks_token').data.value %}
 {% set redash_webhook_token = salt.vault.read('secret-operations/global/redash_webhook_token').data.value %}
-{% set odl_wildcard_cert = salt.vault.read('secret-operations/global/odl_wildcard_cert') %}
+{% set es_hosts = 'operations-elasticsearch.query.consul' %}
+{% set cert = salt.vault.cached_write('pki-intermediate-operations/issue/fluentd-server', common_name='operations-fluentd.query.consul', cache_prefix=minion_id) %}
+{% set fluentd_cert_path = salt.sdb.get('sdb://yaml/fluentd:cert_path') %}
+{% set fluentd_cert_key_path = salt.sdb.get('sdb://yaml/fluentd:cert_key_path') %}
+{% set ca_cert_path = salt.sdb.get('sdb://yaml/fluentd:ca_cert_path') %}
 {% import_yaml 'fluentd/fluentd_directories.yml' as fluentd_directories %}
 
 schedule:
@@ -23,8 +28,7 @@ schedule:
 fluentd:
   persistent_directories: {{ fluentd_directories|tojson }}
   plugins:
-    - fluent-plugin-secure-forward
-    - fluent-plugin-heroku-syslog
+    - fluent-plugin-heroku-syslog-http
     - fluent-plugin-s3
     - fluent-plugin-avro
     - fluent-plugin-anonymizer
@@ -40,57 +44,103 @@ fluentd:
       port: 9002
       token: __vault__::secret-operations/global/redash_webhook_token>data>value
   configs:
-    - name: monitor_agent
+    monitor_agent:
       settings:
         - directive: source
           attrs:
             - '@type': monitor_agent
             - bind: 127.0.0.1
             - port: 24220
-    - name: elasticsearch
+    fluentd_log:
+      settings:
+        - directive: label
+          directive_arg: '@FLUENT_LOG'
+          attrs:
+            - nested_directives:
+              - directive: filter
+                attrs:
+                  - '@type': record_transformer
+                  - nested_directives:
+                    - directive: record
+                      attrs:
+                        - host: "#{Socket.gethostname}"
+              - directive: match
+                directive_arg: 'fluent.*'
+                attrs:
+                  - '@id': fluentd_server_es_outbound
+                  - '@type': elasticsearch_dynamic
+                  - logstash_format: 'true'
+                  - hosts: {{ es_hosts }}
+                  - logstash_prefix: 'logstash-${record.fetch("environment", "blank") != "blank" ? record.fetch("environment") : tag_parts[0]}'
+                  - include_tag_key: 'true'
+                  - tag_key: fluentd_tag
+                  - reload_on_failure: 'true'
+                  - reconnect_on_error: 'true'
+                  - flatten_hashes: 'true'
+                  - flatten_hashes_separator: __
+                  - nested_directives:
+                      - directive: buffer
+                        attrs:
+                          - flush_interval: '10s'
+                          - flush_thread_count: 2
+    elasticsearch:
       settings:
         - directive: source
           attrs:
             - '@id': heroku_logs_inbound
-            - '@type': syslog
+            - '@type': heroku_syslog_http
             - tag: heroku_logs
             - bind: 9000
             - port: ::1
-            - protocol_type: tcp
-            - nested_directives:
-                - directive: parse
-                  attrs:
-                    - message_format: rfc5424
         - directive: source
           attrs:
             - '@id': mailgun-events
             - '@type': http
+            - '@label': '@es_logging'
             - port: 9001
             - bind: ::1
-            - format: json
+            - nested_directives:
+                - directive: parse
+                  attrs:
+                    - '@type': json
+                    - keep_time_key: 'true'
         - directive: source
           attrs:
             - '@id': redash-events
             - '@type': http
             - port: 9002
             - bind: ::1
-            - format: json
+            - nested_directives:
+                - directive: parse
+                  attrs:
+                    - '@type': json
+                    - keep_time_key: 'true'
         - directive: source
           attrs:
             - '@id': salt_logs_inbound
             - '@type': udp
+            - '@label': '@es_logging'
             - tag: saltmaster
-            - format: json
             - port: 9999
-            - keep_time_key: 'true'
+            - bind: ::1
+            - nested_directives:
+                - directive: parse
+                  attrs:
+                    - '@type': json
+                    - keep_time_key: 'true'
         - directive: source
           attrs:
-            - '@type': secure_forward
+            - '@type': forward
+            - '@label': '@es_logging'
             - port: 5001
-            - secure: 'false'
-            - cert_auto_generate: 'yes'
-            - self_hostname: {{ salt.grains.get('external_ip') }}
-            - shared_key: {{ fluentd_shared_key }}
+            - bind: '0.0.0.0'
+            - nested_directives:
+                - directive: transport
+                  directive_arg: tls
+                  attrs:
+                    - cert_path: {{ fluentd_cert_path }}
+                    - private_key_path: {{ fluentd_key_path }}
+                    - client_cert_auth: 'true'
         - directive: filter
           directive_arg: 'mailgun.**'
           attrs:
@@ -195,8 +245,7 @@ fluentd:
                   - '@id': es_outbound
                   - '@type': elasticsearch_dynamic
                   - logstash_format: 'true'
-                  - flush_interval: '10s'
-                  - hosts: operations-elasticsearch.query.consul
+                  - hosts: {{ es_hosts }}
                   - logstash_prefix: 'logstash-${record.fetch("environment", "blank") != "blank" ? record.fetch("environment") : tag_parts[0]}'
                   - include_tag_key: 'true'
                   - tag_key: fluentd_tag
@@ -204,6 +253,11 @@ fluentd:
                   - reconnect_on_error: 'true'
                   - flatten_hashes: 'true'
                   - flatten_hashes_separator: __
+                  - nested_directives:
+                      - directive: buffer
+                        attrs:
+                          - flush_interval: '10s'
+                          - flush_thread_count: 4
 
         - directive: label
           directive_arg: '@prod_residential_tracking_events'
