@@ -182,6 +182,8 @@ base:
     - edx
     - edx.sandbox
     - edx.ansible_vars
+  'G@roles:sandbox and P@environment:mitxpro-qa':
+    - match: compound
     - edx.ansible_vars.theme
   'P@roles:(edx|edx-worker|sandbox) and P@environment:mitxpro.*':
     - match: compound
