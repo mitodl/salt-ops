@@ -122,6 +122,10 @@ sandbox_residential_versions: &sandbox_residential_versions
   edx_config_version: open-release/hawthorn.beta1
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
   edxapp: mitx/hawthorn
+  forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
+  forum: open-release/hawthorn.master
+  xqueue_source_repo: 'https://github.com/mitodl/xqueue'
+  xqueue: open-release/hawthorn.master
   codename: hawthorn
   ami_id: ami-80861296
 
