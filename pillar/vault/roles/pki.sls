@@ -18,12 +18,12 @@ vault:
       name: {{ app }}-{{ type }}
       options:
         {% if type == 'server' %}
-        server_flag: True
+        server_flag: true
         allowed_domains: "{{ app }}.service.consul, nearest-{{ app }}.query.consul, {{ fluentd_aggregators }}, {{ app }}-master.service.consul, {{ app }}.service.operations.consul"
         {% else %}
-        client_flag: True
+        client_flag: true
         allowed_domains: "{{ app }}.*.{{ env_name }}"
-        allow_glob_domains: True
+        allow_glob_domains: true
         {% endif %}
         ttl: {{ ttl }}
         max_ttl: {{ ttl }}
