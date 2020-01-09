@@ -5,6 +5,11 @@
 {% set purpose_data = env_settings.environments[environment].purposes[purpose] %}
 
 edx:
+  edxapp:
+    THEME_NAME: '{{ purpose_data.versions.theme_name }}'
+    custom_theme:
+      repo: {{ purpose_data.versions.theme_source_repo }}
+      branch: {{ purpose_data.versions.theme }}
   ansible_vars:
     EDXAPP_ENABLE_COMPREHENSIVE_THEMING: true
     EDXAPP_COMPREHENSIVE_THEME_SOURCE_REPO: '{{ purpose_data.versions.theme_source_repo }}'

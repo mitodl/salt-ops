@@ -32,11 +32,6 @@
 {% set XQUEUE_USER = 'lms' %}
 
 edx:
-  edxapp:
-    THEME_NAME: '{{ purpose_data.versions.theme_name }}'
-    custom_theme:
-      repo: {{ purpose_data.versions.theme_source_repo }}
-      branch: {{ purpose_data.versions.theme }}
   ansible_vars:
     ### COMMON VARS ###
     COMMON_ENABLE_DATADOG: True
