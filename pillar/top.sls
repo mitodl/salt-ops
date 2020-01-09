@@ -234,6 +234,7 @@ base:
     - match: grain
     - nginx
     - nginx.amps_redirect
+    - nginx.mitxpro_redirect
     - beacons.http_status
   'G@roles:backups and P@environment:mitx-(qa|production)':
     - match: compound
