@@ -32,6 +32,8 @@ nginx:
                   :ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256"
               - ssl_prefer_server_ciphers: 'on'
               - resolver: 1.1.1.1
+              - location /.well-known/:
+                - alias: /usr/share/nginx/html/.well-known/
               - location /courses/6/6.045/2015spring/L01/MIT-6.045-lec-mit-0000-2015may14-0929-L01/:
                   - return: 301 https://video.odl.mit.edu/videos/ef3aa2b5dbb14adc9c15452b0d27c436/?start=398
               - location /courses/6/6.045/2015spring/L01/MIT-6.045-lec-mit-0000-2015may07-0929-L01/:
