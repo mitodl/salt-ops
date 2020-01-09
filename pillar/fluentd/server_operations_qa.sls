@@ -1,4 +1,5 @@
 {% set ENVIRONMENT = salt.grains.get('environment') %}
+{% set minion_id = salt.grains.get('id', '') %}
 {% set mailgun_webhooks_token = salt.vault.read('secret-operations/{}/mailgun_webhooks_token'.format(ENVIRONMENT)).data.value %}
 {% set es_hosts = 'operations-elasticsearch.query.consul' %}
 {% set cert = salt.vault.cached_write('pki-intermediate-operations/issue/fluentd-server', common_name='operations-fluentd.query.consul', cache_prefix=minion_id) %}
