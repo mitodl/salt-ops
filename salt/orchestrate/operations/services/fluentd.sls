@@ -10,7 +10,7 @@
 {% set subnet_ids = salt.boto_vpc.describe_subnets(
     vpc_id=salt.boto_vpc.describe_vpcs(
         name=env_data.vpc_name).vpcs[0].id
-    ).subnets|map(attribute='id')|list %}
+    ).subnets|rejectattr('availability_zone', 'equalto', 'us-east-1e')|map(attribute='id')|list %}
 
 create_fluentd_aggregator_security_group:
   boto_secgroup.present:
