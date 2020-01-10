@@ -15,7 +15,7 @@
 {% set OCW_ENVIRONMENT = salt.grains.get('ocw-environment') %}
 {% set OCW_DEPLOYMENT = salt.grains.get('ocw-deployment') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
-{% set server_domain_names = env_data.purposes[app_name].domains[OCW_ENVIRONMENT][OCW_DEPLOYMENT] %}
+{% set server_domain_names = env_data.purposes[app_name].domains %}
 
 
 nginx:
