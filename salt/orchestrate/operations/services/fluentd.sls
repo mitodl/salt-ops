@@ -6,6 +6,7 @@
 {% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', 2) %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
 {% set launch_date = salt.status.time(format="%Y-%m-%d") %}
+{% set release_id = (salt.sdb.get('sdb://consul/' ~ app_name ~ '/' ~ ENVIRONMENT ~ '/release-id') or 'v1') %}
 {% set subnet_ids = salt.boto_vpc.describe_subnets(
     vpc_id=salt.boto_vpc.describe_vpcs(
         name=env_data.vpc_name).vpcs[0].id
@@ -48,7 +49,7 @@ generate_{{ app_name }}_cloud_map_file:
         environment_name: {{ ENVIRONMENT }}
         num_instances: {{ INSTANCE_COUNT }}
         service_name: {{ app_name }}
-        release_id: {{ salt.sdb.get('sdb://consul/{{ app_name }}/{{ ENVIRONMENT }}/release-id')|default('v1') }}
+        release_id: {{ release_id }}
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
             'default', vpc_name=VPC_NAME) }}

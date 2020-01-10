@@ -139,7 +139,7 @@ fluentd:
                   directive_arg: tls
                   attrs:
                     - cert_path: {{ fluentd_cert_path }}
-                    - private_key_path: {{ fluentd_key_path }}
+                    - private_key_path: {{ fluentd_cert_key_path }}
                     - client_cert_auth: 'true'
         - directive: filter
           directive_arg: 'mailgun.**'
