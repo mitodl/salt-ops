@@ -234,6 +234,8 @@ base:
     - apps.ocw.mirror
     - apps.ocw.sync_repo
     - utils.logrotate
+  'G@roles:ocw-mirror and G@ocw-environment:production':
+    - match: compound
     - nginx
     - nginx.certificates
   'P@roles:ocw-(cms|db|origin|mirror) and G@ocw-environment:production':

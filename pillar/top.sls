@@ -275,6 +275,8 @@ base:
     - fluentd.ocw_mirror
     - apps.ocw
     - logrotate.ocw_mirror
+  'G@roles:ocw-mirror and G@ocw-environment:production':
+    - match: compound
     - nginx
     - nginx.ocw_mirror
   'roles:ocw-origin':
