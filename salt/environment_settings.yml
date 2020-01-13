@@ -865,7 +865,7 @@ environments:
             db_instance_class: db.t2.medium
         - name: reddit
           multi_az: True
-          engine: postgres
+          engine: postgresql
           vault_plugin: postgresql-database-plugin
           mount_point: postgresql-production-apps-reddit
           db_instance_class: db.m4.large
