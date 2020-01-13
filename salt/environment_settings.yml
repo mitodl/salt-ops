@@ -872,6 +872,7 @@ environments:
           allocated_storage: 100
           public_access: False
           engine_version: '9.6.11'
+          service_name: postgresql-reddit
           purpose: reddit
           replica:
             db_instance_class: db.t2.medium
