@@ -28,7 +28,7 @@ schedule:
 fluentd:
   overrides:
     nginx_config:
-      server_name: logs.odl.mit.edu
+      server_name: log-input.odl.mit.edu
       cert_file: log-input.crt
       key_file: log-input.key
       cert_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>value
@@ -97,8 +97,8 @@ fluentd:
             - '@id': heroku_logs_inbound
             - '@type': heroku_syslog_http
             - tag: heroku_logs
-            - bind: 9000
-            - port: ::1
+            - bind: ::1
+            - port: 9000
         - directive: source
           attrs:
             - '@id': mailgun-events
