@@ -25,6 +25,12 @@ schedule:
     args:
       - fluentd.config
 
+# Default datadog-agent port conflicts with fluentd
+datadog:
+  config:
+    expvar_port: 5004
+    cmd_port: 5005
+
 fluentd:
   persistent_directories: {{ fluentd_directories|tojson }}
   plugins:
