@@ -26,6 +26,13 @@ schedule:
       - fluentd.config
 
 fluentd:
+  overrides:
+    nginx_config:
+      server_name: logs.odl.mit.edu
+      cert_file: log-input.crt
+      key_file: log-input.key
+      cert_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>value
+      key_contents: __vault__::secret-operations/global/odl_wildcard_cert>data>key
   persistent_directories: {{ fluentd_directories|tojson }}
   plugins:
     - fluent-plugin-heroku-syslog-http
