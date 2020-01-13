@@ -1057,9 +1057,7 @@ environments:
         app: nginx
         business_unit: open-courseware
         domains:
-          production:
-            production:
-              - ocw-rsync.odl.mit.edu
+          - ocw-rsync.odl.mit.edu
 
 business_units:
   - bootcamps
