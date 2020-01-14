@@ -24,6 +24,8 @@ nginx:
                   :ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256"
               - ssl_prefer_server_ciphers: 'on'
               - resolver: 1.1.1.1
+              - location /.well-known/:
+                - alias: /usr/share/nginx/html/.well-known/
               - location /certificates/:
                 - return: 301 https://courses.edx.org$request_uri
               - location /:
