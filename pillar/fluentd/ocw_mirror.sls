@@ -34,4 +34,4 @@ fluentd:
                   - format1: '/^--(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})--/'
                   - format2: '/\s+(?<url>.*?)\s+(?<message>.*)/'
         - {{ record_tagging | yaml() }}
-        - {{ tls_forward |yaml() }}
+        - {{ tls_forward('log-input.odl.mit.edu') }}

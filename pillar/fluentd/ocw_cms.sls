@@ -75,4 +75,4 @@ fluentd:
                   - format2: '/ - \w+ - (?<log_level>[A-Z]+) - (?<message>.*)/'
 {% endif %}
         - {{ record_tagging | yaml() }}
-        - {{ tls_forward |yaml() }}
+        - {{ tls_forward('log-input.odl.mit.edu') }}
