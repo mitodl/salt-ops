@@ -121,4 +121,4 @@ fluentd:
         - {{ auth_log_filter('grep', 'message', '/heartbeat/', 'edx.lms.stderr') }}
         - {{ auth_log_filter('grep', 'ident', '/CRON/') }}
         - {{ record_tagging |yaml() }}
-        - {{ tls_forward }}
+        - {{ tls_forward() }}
