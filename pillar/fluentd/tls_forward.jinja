@@ -1,4 +1,5 @@
-{% set tls_forward = {
+{% macro tls_forward(host='operations-fluentd.query.consul') %}
+{%- set tls_forward = {
     'directive': 'match',
     'directive_arg': '**',
     'attrs': [
@@ -13,11 +14,13 @@
         {'nested_directives': [
             {'directive': 'server',
              'attrs': [
-                 {'host': 'operations-fluentd.query.consul'},
+                 {'host': host},
                  {'port': 5001 },
                  ]
             }
         ]
         }
     ]
-} %}
+} -%}
+{{ tls_forward|yaml() }}
+{% endmacro %}

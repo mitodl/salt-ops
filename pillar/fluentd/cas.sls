@@ -53,4 +53,4 @@ fluentd:
         - {{ auth_log_filter('grep', 'agent', '/Amazon Route 53 Health Check Service/', '**') }}
         - {{ auth_log_filter('grep', 'ident', '/CRON/') }}
         - {{ record_tagging |yaml() }}
-        - {{ tls_forward |yaml() }}
+        - {{ tls_forward }}

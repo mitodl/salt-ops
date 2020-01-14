@@ -19,4 +19,4 @@ fluentd:
                   - '@type': regexp
                   - expression: '^(?<time>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}) \[(?<level_name>.*?)\] (?<message>.*)'
         - {{ record_tagging | yaml() }}
-        - {{ tls_forward |yaml() }}
+        - {{ tls_forward('log-input.odl.mit.edu') }}

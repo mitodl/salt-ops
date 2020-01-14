@@ -37,4 +37,4 @@ fluentd:
                   - '@type': regexp
                   - expression: '^(?<time>\d+\/\d+\/\d+\s\d+:\d+:\d+)\s(?<level_name>\[.*])\s(?<message>.*)'
         - {{ record_tagging | yaml() }}
-        - {{ tls_forward |yaml() }}
+        - {{ tls_forward('log-input.odl.mit.edu') }}
