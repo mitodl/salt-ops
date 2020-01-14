@@ -4,7 +4,6 @@
 {% set fluentd_cert_path = salt.sdb.get('sdb://yaml/fluentd:cert_path') %}
 {% set fluentd_cert_key_path = salt.sdb.get('sdb://yaml/fluentd:cert_key_path') %}
 {% set ca_cert_path = salt.sdb.get('sdb://yaml/fluentd:ca_cert_path') %}
-{% from "fluentd/tls_forward.jinja" import tls_forward with context %}
 
 fluentd:
   overrides:
@@ -55,7 +54,7 @@ fluentd:
                     - nested_directives:
                       - directive: server
                         attrs:
-                          - host: {{ tls_forward.host }}
+                          - host: operations-fluentd.query.consul
                           - port: 5001
 
 beacons:
