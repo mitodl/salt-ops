@@ -21,4 +21,4 @@ fluentd:
         - {{ auth_log_source('syslog.auth', '/var/log/auth.log') }}
         - {{ auth_log_filter('grep', 'ident', 'CRON') }}
         - {{ record_tagging |yaml() }}
-        - {{ tls_forward }}
+        - {{ tls_forward() }}

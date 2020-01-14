@@ -65,4 +65,4 @@ fluentd:
                     - expression: '^(?<time>\d+\/\d+\/\d+\s\d+:\d+:\d+)\s(?<level_name>\[.*])\s(?<message>.*)'
         - {{ auth_log_filter('grep', 'user_agent', '/ELB-HealthChecker/', 'reddit.nginx.access') }}
         - {{ record_tagging |yaml() }}
-        - {{ tls_forward }}
+        - {{ tls_forward() }}

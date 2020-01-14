@@ -39,4 +39,4 @@ fluentd:
             - pos_file: /edx/var/log/supervisor/xqwatcher-stdout.log.pos
             - format: 'none'
         - {{ record_tagging |yaml() }}
-        - {{ tls_forward }}
+        - {{ tls_forward() }}
