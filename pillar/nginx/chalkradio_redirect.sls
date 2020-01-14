@@ -1,5 +1,5 @@
 nginx:
-    servers:
+  servers:
     managed:
       chalkradio-redirect:
         enabled: True
