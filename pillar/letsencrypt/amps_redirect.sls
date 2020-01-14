@@ -5,3 +5,6 @@ letsencrypt:
     common_name: 'amps-web.amps.ms.mit.edu'
     subject_alternative_names:
       - mitxpro.mit.edu
+      - chalkradiopodcast.com
+      - chalkradiopodcast.org
+      - chalkradiopodcast.net
