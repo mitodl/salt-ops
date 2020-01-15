@@ -878,13 +878,14 @@ environments:
             db_instance_class: db.t2.medium
         - name: opendiscussions
           multi_az: True
-          engine: postgres
+          engine: postgresql
           vault_plugin: postgresql-database-plugin
           mount_point: postgresql-production-apps-opendiscussions
           db_instance_class: db.m4.large
           allocated_storage: 100
           public_access: True
           engine_version: '9.6.11'
+          service_name: postgresql-opendiscussions
           purpose: opendiscussions
           replica:
             db_instance_class: db.t2.medium
