@@ -6,7 +6,7 @@
 
 The [`ocwcms` repository](https://github.com/mitocw/ocwcms) contains the code, page assets, and other resources for the OCW origin and CMS servers.
 
-Files in the `web` folder get published to the origin webserver and comprise static assets loaded on the user-facing site, such as HTML, CSS, and Javascript files.
+Files in the `web` folder get published to the origin *and* CMS webservers and consist of static assets loaded on the user-facing site, such as HTML, CSS, and Javascript files. They are mainly needed on the origin webservers, but they should also be pushed to the CMS servers so that course ZIP files get created with the latest page assets.
 
 Files in `publishing` get published to the engine (CMS 2) server, and are mostly programs and scripts.
 
@@ -29,7 +29,7 @@ $ git tag -f qa mybranch
 $ # Tagging it without pulling it down locally:
 $ git tag -f qa origin/Increasing_batch_number
 $ # In either case, pushing the tag to Github:
-$ git push -f qa origin
+$ git push -f origin qa
 ```
 
 Deploying `ocwcms` to all QA servers (run on the Salt master):
