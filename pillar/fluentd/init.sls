@@ -54,7 +54,11 @@ fluentd:
                     - nested_directives:
                       - directive: server
                         attrs:
+                          {% if 'ocw' in ENVIRONMENT %}
+                          - host: log-input.odl.mit.edu
+                          {% else %}
                           - host: operations-fluentd.query.consul
+                          {% endif %}
                           - port: 5001
 
 beacons:
