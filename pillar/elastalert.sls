@@ -134,8 +134,8 @@ elastic_stack:
           opsgenie_priority: P1
           opsgenie_alias: mitx_saml_error
           type: frequency
-          index: logstash-*
-          num_events: 5
+          index: logstash-mitx-*
+          num_events: 1
           timeframe:
             hours: 1
           alert:

@@ -4,6 +4,7 @@
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set purpose_data = env_settings.environments[environment].purposes[purpose] %}
 {% set roles = salt.grains.get('roles') %}
+{% set business_unit = salt.grains.get('business_unit') %}
 
 edx:
   config:
@@ -47,7 +48,7 @@ schedule:
     args:
       - etl.mitx
   {% endif %}
-  {% if 'mitx-' in environment %}
+  {% if 'residential' in business_unit %}
   refresh_saml_provider_metadata:
     days: 5
     function: state.sls
