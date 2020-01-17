@@ -124,6 +124,36 @@ elastic_stack:
                       log_level: ERROR
                   - term:
                       environment.raw: mitx-production
+      - name: mitx_saml_error
+        settings:
+          name: Authentication with MIT Kerberos is currently unavailable
+          description: >-
+            Send a message anytime an error message containing No SAMLProviderData
+            found is encountered in the mitx production logs.
+          opsgenie_key: {{ opsgenie_key }}
+          opsgenie_priority: P1
+          opsgenie_alias: mitx_saml_error
+          type: frequency
+          index: logstash-*
+          num_events: 5
+          timeframe:
+            hours: 1
+          alert:
+            - opsgenie
+          alert_text: >-
+            Authentication with MIT Kerberos is currently unavailable.
+            Need to run manage.py saml pull on residential instance to
+            update metadate.
+          filter:
+            - bool:
+                must:
+                  - match:
+                      message.raw: No SAMLProviderData found
+                  - term:
+                      fluentd_tag.raw: edx.lms
+                should:
+                  - term:
+                      environment.raw: mitx-production
       - name: edx_multiple_forum_roles
         settings:
           name: Multiple Forum roles on MITx or xPRO instances

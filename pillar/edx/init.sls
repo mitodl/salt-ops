@@ -47,3 +47,10 @@ schedule:
     args:
       - etl.mitx
   {% endif %}
+  {% if 'mitx-' in environment %}
+  refresh_saml_provider_metadata:
+    days: 5
+    function: state.sls
+    args:
+      - edx.refresh_saml_provider_metadata
+  {% endif %}
