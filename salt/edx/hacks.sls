@@ -70,6 +70,7 @@ add_xpro_base_url_to_{{ app }}_production_file:
     - text: XPRO_BASE_URL = '{{ heroku_env }}'
 {% endfor %}
 
+{% if 'next-residential' not in purpose %}
 add_jwt_auth_to_production_file:
   file.append:
     - name: /edx/app/edxapp/edx-platform/lms/envs/production.py
@@ -83,4 +84,6 @@ add_jwt_auth_to_production_file:
         'JWT_PRIVATE_SIGNING_JWK': (
             {{ JWT_PRIVATE_SIGNING_JWK_SET }}
         ), })
+{% endif %}
+
 {% endif %}
