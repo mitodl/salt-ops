@@ -4,6 +4,7 @@
 {% set env_settings = env_dict.environments[ENVIRONMENT] %}
 {% set VPC_NAME = salt.environ.get('VPC_NAME', env_settings.vpc_name) %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_settings.business_unit) %}
+{% set RUN_MIGRATIONS = salt.environ.get('RUN_MIGRATIONS') %}
 
 {% set subnet_ids = [] %}
 {% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
@@ -165,16 +166,11 @@ build_edx_base_nodes:
     - highstate: True
     - require:
         - salt: deploy_consul_agent_to_edx_nodes
-    {% if EDX_VERSION %}
+    {% if RUN_MIGRATIONS %}
     - pillar:
         edx:
-          ansible_vars:
-            edx_platform_version: {{ EDX_VERSION }}
-          edxapp:
-            custom_theme:
-              branch: {{ THEME_VERSION }}
-    {% endif %}
-    {% if ENVIRONMENT == 'mitx-production' %}
+          ansible_flags: "-e migrate_db=yes"
+    {% elif ENVIRONMENT == 'mitx-production' %}
     - pillar:
         edx:
           ansible_flags: "--tags install:configuration"
