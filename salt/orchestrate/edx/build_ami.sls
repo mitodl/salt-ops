@@ -4,7 +4,7 @@
 {% set env_settings = env_dict.environments[ENVIRONMENT] %}
 {% set VPC_NAME = salt.environ.get('VPC_NAME', env_settings.vpc_name) %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_settings.business_unit) %}
-{% set RUN_MIGRATIONS = salt.environ.get('RUN_MIGRATIONS') %}
+{% set RUN_MIGRATIONS = salt.environ.get('RUN_MIGRATIONS', False) %}
 
 {% set subnet_ids = [] %}
 {% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
@@ -15,7 +15,6 @@
 {% endfor %}
 
 {% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token').data.value %}
-{% set EDX_VERSION = salt.environ.get('EDX_VERSION') %}
 {% set THEME_VERSION = salt.environ.get('THEME_VERSION', 'ficus') %}
 {% set purposes = env_settings.purposes %}
 {% set edx_codename = purposes[PURPOSE].versions.codename %}
