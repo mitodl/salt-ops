@@ -46,3 +46,5 @@ edx:
       - python3-virtualenv
       - nfs-common
       - postfix
+
+  venv_bin: /usr/lib/python3/dist-packages/virtualenv.py
