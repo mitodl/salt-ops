@@ -39,22 +39,6 @@ current_residential_versions_qa: &current_residential_versions_qa
 
 current_residential_versions_rp: &current_residential_versions_rp
   edx_config_repo: https://github.com/mitodl/configuration
-  edx_config_version: open-release/juniper.alpha1
-  edx_platform_repo: 'https://github.com/mitodl/edx-platform'
-  edxapp: mitx/juniper.alpha
-  forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
-  forum: open-release/juniper.alpha1
-  xqueue_source_repo: 'https://github.com/mitodl/xqueue'
-  xqueue: open-release/juniper.alpha1
-  xqwatcher_courses: production
-  theme_source_repo: 'https://github.com/mitodl/mitx-theme'
-  theme_name: 'mitx-theme'
-  theme: juniper
-  codename: juniper-alpha
-  ami_id: ami-80861296
-
-next_residential_versions: &next_residential_versions
-  edx_config_repo: https://github.com/mitodl/configuration.git
   edx_config_version: open-release/ironwood.master
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
   edxapp: mitx/ironwood
@@ -62,11 +46,27 @@ next_residential_versions: &next_residential_versions
   forum: open-release/ironwood.master
   xqueue_source_repo: 'https://github.com/mitodl/xqueue'
   xqueue: open-release/ironwood.master
-  xqwatcher_courses: master
+  xqwatcher_courses: production
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
   theme_name: 'mitx-theme'
   theme: ironwood
   codename: ironwood
+  ami_id: ami-80861296
+
+next_residential_versions: &next_residential_versions
+  edx_config_repo: https://github.com/mitodl/configuration.git
+  edx_config_version: open-release/juniper.alpha1
+  edx_platform_repo: 'https://github.com/mitodl/edx-platform'
+  edxapp: mitx/juniper.alpha1
+  forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
+  forum: open-release/juniper.alpha1
+  xqueue_source_repo: 'https://github.com/mitodl/xqueue'
+  xqueue: open-release/juniper.alpha1
+  xqwatcher_courses: master
+  theme_source_repo: 'https://github.com/mitodl/mitx-theme'
+  theme_name: 'mitx-theme'
+  theme: juniper
+  codename: juniper-alpha
   ami_id: ami-80861296
 
 edxapp_continuous_delivery_versions: &continuous_delivery_versions
