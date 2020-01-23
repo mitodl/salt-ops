@@ -32,3 +32,18 @@ edx:
       - name: raven
       - name: git+https://github.com/raccoongang/xblock-pdf.git@8d63047c53bc8fdd84fa7b0ec577bb0a729c215f#egg=xblock-pdf
         extra_args: -e
+
+  dependencies:
+    os_packages:
+      - git
+      - libmysqlclient-dev
+      - mariadb-client-10.0
+      - landscape-common
+      - libssl-dev
+      - python3.5
+      - python3.5-dev
+      - python-pip
+      - python-virtualenv
+      - nfs-common
+      - postfix
+      - memcached
