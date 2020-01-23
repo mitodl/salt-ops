@@ -40,6 +40,8 @@ edx:
       - mariadb-client-10.0
       - landscape-common
       - libssl-dev
+      - python2.7
+      - python2.7-dev
       - python3.5
       - python3.5-dev
       - python3-pip
