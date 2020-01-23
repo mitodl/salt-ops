@@ -43,8 +43,9 @@ edx:
       - python3.5
       - python3.5-dev
       - python3-pip
-      - python3-virtualenv
       - nfs-common
       - postfix
 
-  venv_bin: "python3 /usr/lib/python3/dist-packages/virtualenv.py"
+python_dependencies:
+  python_libs:
+    - virtualenv
