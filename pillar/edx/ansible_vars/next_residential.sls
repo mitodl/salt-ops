@@ -42,8 +42,7 @@ edx:
       - libssl-dev
       - python3.5
       - python3.5-dev
-      - python-pip
-      - python-virtualenv
+      - python3-pip
+      - python3-virtualenv
       - nfs-common
       - postfix
-      - memcached
