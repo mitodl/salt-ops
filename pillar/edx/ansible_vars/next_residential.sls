@@ -3,6 +3,7 @@
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 
 edx:
+  python_executable: /usr/bin/python3.5
   ansible_vars:
     EDXAPP_EXTRA_MIDDLEWARE_CLASSES: [] # Worth keeping track of in case we need to take advantage of it
     EDXAPP_ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES: False

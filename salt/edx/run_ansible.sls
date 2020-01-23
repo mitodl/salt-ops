@@ -56,6 +56,7 @@ create_ansible_virtualenv:
   virtualenv.managed:
     - name: {{ venv_path }}
     - requirements: {{ repo_path }}/requirements.txt
+    - python: {{ salt.pillar.get('edx:python_executable', '/usr/bin/python') }}
     - require:
       - git: clone_edx_configuration
       - file: replace_nginx_static_asset_template_fragment
