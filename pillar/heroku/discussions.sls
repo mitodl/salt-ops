@@ -125,6 +125,8 @@ heroku:
     EDX_API_URL: https://api.edx.org/catalog/v1/catalogs/10/courses
     ELASTICSEARCH_HTTP_AUTH: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/elasticsearch>data>http_auth
     ELASTICSEARCH_INDEX: {{ env_data.ELASTICSEARCH_INDEX}}
+    # This should match the nginx config client_max_body_size in apps_es.sls
+    ELASTICSEARCH_INDEXING_CHUNK_SIZE: 75
     ELASTICSEARCH_URL: {{ env_data.ELASTICSEARCH_URL}}
     EMBEDLY_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/embedly_key>data>value
     FEATURE_ANONYMOUS_ACCESS: True
