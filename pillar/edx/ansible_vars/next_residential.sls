@@ -4,7 +4,6 @@
 
 edx:
   ansible_vars:
-    ansible_python_interpreter: "/usr/bin/env python"
     EDXAPP_EXTRA_MIDDLEWARE_CLASSES: [] # Worth keeping track of in case we need to take advantage of it
     EDXAPP_ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES: False
 
@@ -33,23 +32,3 @@ edx:
       - name: raven
       - name: git+https://github.com/raccoongang/xblock-pdf.git@8d63047c53bc8fdd84fa7b0ec577bb0a729c215f#egg=xblock-pdf
         extra_args: -e
-
-  dependencies:
-    os_packages:
-      - git
-      - libmysqlclient-dev
-      - mariadb-client-10.0
-      - landscape-common
-      - libssl-dev
-      - python2.7
-      - python2.7-dev
-      - python3.5
-      - python3.5-dev
-      - python3-pip
-      - python3-apt
-      - nfs-common
-      - postfix
-
-python_dependencies:
-  python_libs:
-    - virtualenv
