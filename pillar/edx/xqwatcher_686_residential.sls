@@ -5,6 +5,11 @@
 {% set python3_version = 'python3.7' %}
 
 edx:
+  xqwatcher:
+    grader_requirements:
+      - numpy
+      - torch: 1.4.0+cpu
+      - torchvision: 0.5.0+cpu
   ansible_vars:
     XQWATCHER_COURSES:
       - COURSE: mit-686x-mooc

@@ -5,6 +5,9 @@
 {% set python3_version = 'python3.7' %}
 
 edx:
+  xqwatcher:
+    grader_requirements:
+      - numpy
   ansible_vars:
    XQWATCHER_COURSES:
     {% for purpose, purpose_data in env_data.purposes.items() %}
