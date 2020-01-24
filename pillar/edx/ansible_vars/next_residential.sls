@@ -4,6 +4,7 @@
 
 edx:
   ansible_vars:
+    ansible_python_interpreter: "/usr/bin/env python"
     EDXAPP_EXTRA_MIDDLEWARE_CLASSES: [] # Worth keeping track of in case we need to take advantage of it
     EDXAPP_ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES: False
 
@@ -45,6 +46,7 @@ edx:
       - python3.5
       - python3.5-dev
       - python3-pip
+      - python3-apt
       - nfs-common
       - postfix
 
