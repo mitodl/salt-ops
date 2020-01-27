@@ -128,7 +128,6 @@ base:
     - nginx
     - elastic-stack.elastalert
     - datadog.plugins
-    - monit
   'P@environment:(operations|mitx(pro)?-production)':
     - match: compound
     - datadog
@@ -184,7 +183,6 @@ base:
     - edx.tests.test_gitreload
   'G@roles:edx and G@environment:mitx-production':
     - match: compound
-    - monit
     - utils.ssh_users
   'G@roles:edx-worker and P@environment:mitx(pro)?-(qa|production)':
     - match: compound
