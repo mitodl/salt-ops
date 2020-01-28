@@ -7,6 +7,7 @@
 edx:
   xqwatcher:
     grader_requirements:
+      - future
       - numpy
       - torch: 1.4.0+cpu
       - torchvision: 0.5.0+cpu
