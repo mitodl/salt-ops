@@ -101,7 +101,7 @@ datadog:
             http_response_status_code: 403
             tags:
               - mit-open-production
-         - name: bootcamp-ecommerce-production
+          - name: bootcamp-ecommerce-production
             url: 'https://bootcamp.odl.mit.edu'
             tls_verify: true
             check_certificate_expiration: true
@@ -110,7 +110,7 @@ datadog:
             http_response_status_code: 403
             tags:
               - bootcamps
-        - name: micromasters-production
+          - name: micromasters-production
             url: 'https://micromasters.mit.edu'
             tls_verify: true
             check_certificate_expiration: true
@@ -119,7 +119,7 @@ datadog:
             http_response_status_code: 403
             tags:
               - micromasters
-        - name: odl-open-discussions-production
+          - name: odl-open-discussions-production
             url: 'https://discussions.odl.mit.edu'
             tls_verify: true
             check_certificate_expiration: true
@@ -128,7 +128,7 @@ datadog:
             http_response_status_code: 403
             tags:
               - mit-open
-        - name: xpro-production
+          - name: xpro-production
             url: 'https://xpro.mit.edu'
             tls_verify: true
             check_certificate_expiration: true
@@ -137,4 +137,3 @@ datadog:
             http_response_status_code: 403
             tags:
               - mitxpro
-
