@@ -24,3 +24,12 @@ consul:
       encrypt: __vault__::secret-operations/global/consul-shared-secret>data>value
       retry_join: {{ lan_nodes|tojson }}
       datacenter: {{ ENVIRONMENT }}
+
+{% if 'production' in ENVIRONMENT %}
+schedule:
+  refresh_datadog-{{ ENVIRONMENT }}_credentials:
+    days: 5
+    function: state.sls
+    args:
+      - datadog.plugins
+{% endif %}
