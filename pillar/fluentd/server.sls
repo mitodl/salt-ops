@@ -177,11 +177,7 @@ fluentd:
                     - keys: $["event-data"]["ip"]
                     - ipv4_mask_bits: 24
                     - ipv6_mask_bits: 104
-        {# The purpose of this block is to stream data from the
-        micromasters application to S3 for analysis by the
-        institutional research team. If they ever need to change
-        the way that they consume that data then this is the
-        place to change it. #}
+       
         - directive: match
           directive_arg: heroku.micromasters
           attrs:
@@ -213,7 +209,7 @@ fluentd:
                   attrs:
                     - '@type': relabel
                     - '@label': '@es_logging'
-        {# End IR block #}
+        
         - directive: match
           directive_arg: edx.tracking
           attrs:
@@ -393,26 +389,26 @@ fluentd:
                             - '@type': json
                     - include_time_key: 'true'
                     - time_slice_format: '%Y-%m-%d-%H'
-         - directive: label
-           directive_arg: '@logzio_686'
-           attrs:
-             - nested_directives:
-                 - directive: match
-                   directive_arg: 'edx.xqwatcher.686.**'
-                   attrs:
-                     - '@type': logzio_buffered
-                     - endpoint_url: __vault__::secret-residential/mitx-production/logzio-686-url>data>value
-                     - output_include_time: 'true'
-                     - output_include_tags: 'true'
-                     - http_idle_timeout: 10
-                     - nested_directives:
-                         - directive: buffer
-                           attrs:
-                             - '@type': memory
-                             - flush_thread_count: 4
-                             - flush_interval: '3s'
-                             - chunk_limit_size: 16m
-                             - queue_limit_length: 4096
+        - directive: label
+          directive_arg: '@logzio_686'
+          attrs:
+            - nested_directives:
+                - directive: match
+                  directive_arg: 'edx.xqwatcher.686.**'
+                  attrs:
+                    - '@type': logzio_buffered
+                    - endpoint_url: __vault__::secret-residential/mitx-production/logzio-686-url>data>value
+                    - output_include_time: 'true'
+                    - output_include_tags: 'true'
+                    - http_idle_timeout: 10
+                    - nested_directives:
+                        - directive: buffer
+                          attrs:
+                            - '@type': memory
+                            - flush_thread_count: 4
+                            - flush_interval: '3s'
+                            - chunk_limit_size: 16m
+                            - queue_limit_length: 4096
 
 beacons:
   service:
