@@ -58,7 +58,7 @@ datadog:
             tags:
               - mitx-production
           - name: latex2edx
-            url: 'https://studio-input-filter.mitx.mit.edu'
+            url: 'https://studio-input-filter.mitx.mit.edu/latex2edx?raw=1'
             tls_verify: true
             check_certificate_expiration: true
             days_warning: 30
