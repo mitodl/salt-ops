@@ -107,7 +107,6 @@ datadog:
             check_certificate_expiration: true
             days_warning: 30
             days_critical: 15
-            http_response_status_code: 403
             tags:
               - bootcamps
           - name: micromasters-production
@@ -116,7 +115,6 @@ datadog:
             check_certificate_expiration: true
             days_warning: 30
             days_critical: 15
-            http_response_status_code: 403
             tags:
               - micromasters
           - name: odl-open-discussions-production
@@ -125,7 +123,6 @@ datadog:
             check_certificate_expiration: true
             days_warning: 30
             days_critical: 15
-            http_response_status_code: 403
             tags:
               - mit-open
           - name: xpro-production
@@ -134,6 +131,5 @@ datadog:
             check_certificate_expiration: true
             days_warning: 30
             days_critical: 15
-            http_response_status_code: 403
             tags:
               - mitxpro
