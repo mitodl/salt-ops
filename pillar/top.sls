@@ -20,8 +20,6 @@ base:
     - nginx
     - nginx.kibana
     - elastalert
-    - monit
-    - monit.lms_503
     - logrotate.kibana
   'G@roles:kibana and G@environment:operations-qa':
     - match: compound
@@ -29,6 +27,7 @@ base:
   'G@roles:kibana and G@environment:operations':
     - match: compound
     - elastic_stack.version_production
+    - datadog.http-check-integration
   'roles:master':
     - match: grain
     - master
@@ -140,6 +139,7 @@ base:
   'G@roles:consul_server and P@environment:mitx(pro)?-production':
     - match: compound
     - datadog.mysql-integration
+    - datadog.http-check-integration
   'P@roles:(vault_server|master)':
     - match: compound
     - vault
@@ -194,21 +194,11 @@ base:
     - edx.ansible_vars.residential
     - edx.mitx-qa
     - edx.inotify_mitx
-    - monit
-    - monit.nginx_cert_expiration
-    - monit.latex2edx
-    - monit.mysql_connection
-    - monit.mongodb_connection
   'P@roles:(edx|edx-worker) and G@environment:mitx-production':
     - match: compound
     - edx.ansible_vars.residential
     - edx.mitx-production
     - edx.inotify_mitx
-    - monit
-    - monit.nginx_cert_expiration
-    - monit.latex2edx
-    - monit.mysql_connection
-    - monit.mongodb_connection
   'P@purpose:.*-draft and P@environment:mitx-(qa|production)':
     - match: compound
     - consul.mitx-draft
