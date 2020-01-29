@@ -80,6 +80,8 @@ salt_master:
             - salt://reactors/opsgenie/post_notification.sls
         - salt/state_result/*/backup/*/result:
             - salt://reactors/opsgenie/post_notification.sls
+        - salt/verify_tracking_logs/failure:
+            - salt://reactors/opsgenie/post_notification.sls
         - backup/*/*/completed:
             - salt://reactors/slack/post_event.sls
         - salt/engine/sqs/mitxpro-production-autoscaling:

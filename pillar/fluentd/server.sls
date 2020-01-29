@@ -145,7 +145,6 @@ fluentd:
         - directive: source
           attrs:
             - '@type': forward
-            - '@label': '@es_logging'
             - port: 5001
             - bind: '0.0.0.0'
             - nested_directives:
