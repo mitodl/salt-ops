@@ -27,6 +27,7 @@
       'MITXPRO_SECURE_SSL_HOST': 'xpro-ci.odl.mit.edu',
       'ENABLE_ORDER_RECEIPTS': True,
       'SHEETS_MONITORING_FREQUENCY': 86400,
+      'SHEETS_REFUND_FIRST_ROW': 254,
       'vault_env_path': 'rc-apps',
       'USE_X_FORWARDED_HOST': False,
       'VOUCHER_COMPANY_ID': 1
@@ -56,6 +57,7 @@
       'vault_env_path': 'rc-apps',
       'ENABLE_ORDER_RECEIPTS': True,
       'SHEETS_MONITORING_FREQUENCY': 43200,
+      'SHEETS_REFUND_FIRST_ROW': 254,
       'USE_X_FORWARDED_HOST': False,
       'VOUCHER_COMPANY_ID': 1
       },
@@ -83,6 +85,7 @@
       'MITXPRO_SECURE_SSL_HOST': 'xpro.mit.edu',
       'ENABLE_ORDER_RECEIPTS': True,
       'SHEETS_MONITORING_FREQUENCY': 3600,
+      'SHEETS_REFUND_FIRST_ROW': 4,
       'vault_env_path': 'production-apps',
       'USE_X_FORWARDED_HOST': True,
       'VOUCHER_COMPANY_ID': 4
@@ -121,6 +124,7 @@ heroku:
     DRIVE_SERVICE_ACCOUNT_CREDS: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>service_account_creds
     DRIVE_SHARED_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>drive_shared_id
     ENABLE_ORDER_RECEIPTS: {{ env_data.ENABLE_ORDER_RECEIPTS }}
+    ENROLLMENT_CHANGE_SHEET_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>enroll_change_sheet_id
     FEATURE_COUPON_SHEETS: True
     FEATURE_COUPON_SHEETS_TRACK_REQUESTER: True
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
@@ -169,12 +173,14 @@ heroku:
     PGBOUNCER_MIN_POOL_SIZE: 5
     RECAPTCHA_SITE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>site_key
     RECAPTCHA_SECRET_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>secret_key
+    REFUND_REQUEST_WORKSHEET_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>refund_worksheet_id
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-secret-key>data>value
     SENTRY_DSN: __vault__::secret-operations/global/xpro/sentry-dsn>data>value
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
     SHEETS_ADMIN_EMAILS: {{ salt.sdb.get('sdb://consul/xpro/' ~ environment ~'/sheets-admin-emails') }}
     SHEETS_DATE_TIMEZONE: America/New_York
     SHEETS_MONITORING_FREQUENCY: {{ env_data.SHEETS_MONITORING_FREQUENCY }}
+    SHEETS_REFUND_FIRST_ROW: {{ env_data.SHEETS_REFUND_FIRST_ROW }}
     SHEETS_TASK_OFFSET: 120
     SHOW_UNREDEEMED_COUPON_ON_DASHBOARD: True
     SITE_NAME: "MIT xPRO"
