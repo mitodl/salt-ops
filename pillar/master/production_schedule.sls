@@ -39,3 +39,9 @@ schedule:
     function: state.sls
     args:
       - master.config
+  verify_shipping_tracking_logs:
+    maxrunning: 1
+    when: 11:00am
+    function: state.sls
+    args:
+      - etl.verify_tracking_logs.sls
