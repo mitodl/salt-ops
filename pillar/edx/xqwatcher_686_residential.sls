@@ -9,8 +9,8 @@ edx:
     grader_requirements:
       - future
       - numpy
-      - torch: 1.4.0+cpu
-      - torchvision: 0.5.0+cpu
+      - torch==1.4.0+cpu
+      - torchvision==0.5.0+cpu
   ansible_vars:
     XQWATCHER_COURSES:
       - COURSE: mit-686x-mooc
