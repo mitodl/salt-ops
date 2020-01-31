@@ -89,7 +89,9 @@ ensure_codejail_requirements_are_installed_for_{{  course.COURSE }}:
         USER: {{ course.QUEUE_CONFIG.HANDLERS[0].CODEJAIL.user }}
 {% endfor %}
 
+{% if salt.pillar.get('edx:xqwatcher:grader_requirements') %}
 ensure_grader_requirements_are_installed:
   pip.installed:
-    - pkgs: {{ salt.pillar.get('edx:xqwatcher:grader_requirements', []) }}
+    - pkgs: {{ salt.pillar.get('edx:xqwatcher:grader_requirements') }}
     - bin_env: /edx/app/xqwatcher/venvs/xqwatcher/bin/pip
+{% endif %}
