@@ -1,9 +1,9 @@
 
 {% set dbhost_ipaddr_data =
      salt.saltutil.runner('mine.get',
-                          tgt='G@roles:ocw-db and G@ocw-environment:qa',
+                          tgt='ocw-qa-cms-db*',
                           fun='network.ip_addrs',
-                          tgt_type='compound')
+                          tgt_type='glob')
 %}
 {# The "db2" database host is always the MySQL one, per our naming convention. #}
 {% set mysql_db_ipaddr = dbhost_ipaddr_data['ocw-qa-cms-db2'][0] %}
