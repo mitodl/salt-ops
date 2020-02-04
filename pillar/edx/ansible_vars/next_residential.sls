@@ -26,7 +26,7 @@ edx:
       - name: git+https://github.com/open-craft/xblock-activetable.git@013003aa3ce28f0ae03b8227dc3a6daa4e19997d#egg=xblock-activetable
         extra_args: -e
       # MITx Residential XBlocks
-      - name: edx-sga==0.8.2
+      - name: edx-sga==0.10.0
       - name: rapid-response-xblock==0.0.5
       - name: git+https://github.com/mitodl/edx-git-auto-export.git@v0.2#egg=edx-git-auto-export
         extra_args: -e
