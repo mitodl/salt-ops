@@ -8,6 +8,7 @@ edx:
     supervisor_version: 4.1.0
     sandbox_base_requirements: /edx/app/edxapp/edx-platform/requirements/edx-sandbox/py35.txt
     COMMON_ENABLE_AWS_ROLE: False
+    COMMON_ENABLE_DATADOG: False
     EDXAPP_HERMES_ENABLED: False
     EDXAPP_EXTRA_MIDDLEWARE_CLASSES: [] # Worth keeping track of in case we need to take advantage of it
     EDXAPP_ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES: False
