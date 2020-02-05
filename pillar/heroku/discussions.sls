@@ -17,6 +17,7 @@
       'MAILGUN_SENDER_DOMAIN': 'discussions-mail.odl.mit.edu',
       'MICROMASTERS_BASE_URL': 'micromasters-ci.odl.mit.edu',
       'MITXPRO_BASE_URL': 'xpro-ci.odl.mit.edu',
+      'OCW_ITERATOR_CHUNK_SIZE': 5000,
       'OCW_LEARNING_COURSE_BUCKET_NAME': 'open-learning-course-data-ci',
       'OCW_UPLOAD_IMAGE_ONLY': True,
       'OPEN_DISCUSSIONS_BASE_URL': 'https://discussions-ci.odl.mit.edu',
@@ -46,6 +47,7 @@
       'MAILGUN_SENDER_DOMAIN': 'discussions-mail.odl.mit.edu',
       'MICROMASTERS_BASE_URL': 'micromasters-rc.odl.mit.edu',
       'MITXPRO_BASE_URL': 'xpro-rc.odl.mit.edu',
+      'OCW_ITERATOR_CHUNK_SIZE': 1000,
       'OCW_LEARNING_COURSE_BUCKET_NAME': 'open-learning-course-data-rc',
       'OCW_UPLOAD_IMAGE_ONLY': True,
       'OPEN_DISCUSSIONS_BASE_URL': 'https://discussions-rc.odl.mit.edu',
@@ -75,6 +77,7 @@
       'MAILGUN_SENDER_DOMAIN': 'mail.open.mit.edu',
       'MICROMASTERS_BASE_URL': 'micromasters.mit.edu',
       'MITXPRO_BASE_URL': 'xpro.mit.edu',
+      'OCW_ITERATOR_CHUNK_SIZE': 1000,
       'OCW_LEARNING_COURSE_BUCKET_NAME': 'open-learning-course-data',
       'OCW_UPLOAD_IMAGE_ONLY': False,
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'discussionsprod',
@@ -154,6 +157,7 @@ heroku:
     OCW_CONTENT_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-only-ocw-content-storage>data>access_key
     OCW_CONTENT_BUCKET_NAME: ocw-content-storage
     OCW_CONTENT_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-only-ocw-content-storage>data>secret_key
+    OCW_ITERATOR_CHUNK_SIZE: {{ env_data.OCW_ITERATOR_CHUNK_SIZE }}
     OCW_LEARNING_COURSE_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-{{ env_data.OCW_LEARNING_COURSE_BUCKET_NAME }}>data>access_key
     OCW_LEARNING_COURSE_BUCKET_NAME: {{ env_data.OCW_LEARNING_COURSE_BUCKET_NAME }}
     OCW_LEARNING_COURSE_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-{{ env_data.OCW_LEARNING_COURSE_BUCKET_NAME }}>data>secret_key
