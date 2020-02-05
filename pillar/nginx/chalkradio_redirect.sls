@@ -27,4 +27,4 @@ nginx:
               - location /.well-known/:
                 - alias: /usr/share/nginx/html/.well-known/
               - location /:
-                - return: 301 https://ocw.mit.edu/educator/chalk-radio-podcast/
+                - return: 301 https://chalk-radio.simplecast.com/
