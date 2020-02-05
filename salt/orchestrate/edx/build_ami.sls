@@ -181,7 +181,11 @@ build_edx_base_nodes:
 {# This is temporarily disabled to get through a Juniper AMI build. The assets
    compilation is working in the highstate above, where Ansible runs it, but
    is failing below with
-   "TypeError: can't compare offset-naive and offset-aware datetimes"  #}
+   "TypeError: can't compare offset-naive and offset-aware datetimes"
+
+   When re-enabling, be sure to uncomment the lines below that contain
+   "compile_assets_for_edx_{{ PURPOSE }}"
+#}
 {#
 compile_assets_for_edx_{{ PURPOSE }}:
   salt.function:
@@ -218,7 +222,7 @@ delete_{{ grain }}_from_grains:
         - boto_ec2: snapshot_edx_worker_{{ ENVIRONMENT }}_node
     - require:
         - salt: build_edx_base_nodes
-        - salt: compile_assets_for_edx_{{ PURPOSE }}
+{#        - salt: compile_assets_for_edx_{{ PURPOSE }} #}
 {% endfor %}
 
 disable_minion_service_before_snapshot:
@@ -230,7 +234,7 @@ disable_minion_service_before_snapshot:
         - salt-minion
     - require:
         - salt: build_edx_base_nodes
-        - salt: compile_assets_for_edx_{{ PURPOSE }}
+{#        - salt: compile_assets_for_edx_{{ PURPOSE }} #}
 
 snapshot_edx_app_{{ ENVIRONMENT }}_node:
   boto_ec2.snapshot_created:
@@ -267,7 +271,7 @@ alert_devops_channel_on_ami_build_failure:
     - onfail:
         - boto_ec2: snapshot_edx_app_{{ ENVIRONMENT }}_node
         - boto_ec2: snapshot_edx_worker_{{ ENVIRONMENT }}_node
-        - salt: compile_assets_for_edx_{{ PURPOSE }}
+{#        - salt: compile_assets_for_edx_{{ PURPOSE }} #}
 
 alert_devops_channel_on_ami_build_success:
   slack.post_message:
