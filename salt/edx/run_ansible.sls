@@ -56,7 +56,8 @@ create_ansible_virtualenv:
   virtualenv.managed:
     - name: {{ venv_path }}
     - requirements: {{ repo_path }}/requirements.txt
-    - system_site_packages: True
+    - system_site_packages: False
+    - no_setuptools: True
     - require:
       - git: clone_edx_configuration
       - file: replace_nginx_static_asset_template_fragment
