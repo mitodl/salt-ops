@@ -39,6 +39,17 @@ install_os_packages:
         - virtualenv: create_ansible_virtualenv
         - git: clone_edx_configuration
 
+{% if 'juniper' not in grains.get('edx_codename') %}
+downgrade_python2_setuptools:
+  pip.installed:
+    - name: setuptools<45
+    - bin_env: /usr/bin/pip2
+    - require:
+        - pkg: install_os_packages
+    - require_in:
+        - cmd: run_ansible
+{% endif %}
+
 {% if salt.pillar.get('edx:generate_tls_certificate') %}
 generate_self_signed_certificate:
   module.run:
