@@ -1,8 +1,15 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set business_unit = salt.grains.get('business_unit', 'residential') %}
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 
 edx:
+  JWT_ISSUER: 'OAUTH_OIDC_ISSUER'
+  JWT_AUDIENCE: '{{ business_unit }}-{{ environment }}-key'
+  JWT_SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/jwt-secret-key>data>value
+  JWT_SIGNING_ALGORITHM: 'RS512'
+  JWT_PRIVATE_SIGNING_JWK: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/private-key>data>value
+  JWT_PUBLIC_SIGNING_JWK_SET: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/public-key>data>value
   ansible_vars:
     ansible_python_interpreter: "/usr/bin/env python"
     supervisor_version: 4.1.0
