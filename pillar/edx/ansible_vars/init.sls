@@ -248,6 +248,7 @@ edx:
     ### Specific configuration overrides ###
 
     {# multivariate #}
+    XQUEUE_VERSION: {{ purpose_data.versions.xqueue }}
     edx_platform_version: {{ purpose_data.versions.edxapp }}
     edx_platform_repo: {{ purpose_data.versions.edx_platform_repo }}
 
