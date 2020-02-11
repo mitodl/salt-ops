@@ -7,6 +7,20 @@
 {% set business_unit = salt.grains.get('business_unit') %}
 
 edx:
+  dependencies:
+    os_packages:
+      - git
+      - libmysqlclient-dev
+      - mariadb-client-10.0
+      - landscape-common
+      - libssl-dev
+      - python2.7
+      - python2.7-dev
+      - python-pip
+      - python-virtualenv
+      - python3-pip
+      - nfs-common
+      - postfix
   config:
     repo: {{ purpose_data.versions.edx_config_repo }}
     branch: {{ purpose_data.versions.edx_config_version }}
