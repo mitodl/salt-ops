@@ -261,3 +261,39 @@ create_webapp_odl_vpn_security_group:
         Department: {{ BUSINESS_UNIT }}
         OU: {{ BUSINESS_UNIT }}
         Environment: {{ ENVIRONMENT }}
+
+create_zookeeper_security_group:
+  boto_secgroup.present:
+    - name: zookeeper-{{ ENVIRONMENT }}
+    - description: ACL for zookeeper log aggregators
+    - vpc_name: {{ VPC_NAME }}
+    - rules:
+        - ip_protocol: tcp
+          from_port: 2181
+          to_port: 2181
+          cidr_ip:
+            - {{ cidr_block }}
+
+create_bookkeeper_security_group:
+  boto_secgroup.present:
+    - name: bookkeeper-{{ ENVIRONMENT }}
+    - description: ACL for bookkeeper log aggregators
+    - vpc_name: {{ VPC_NAME }}
+    - rules:
+        - ip_protocol: tcp
+          from_port: 2181
+          to_port: 2181
+          cidr_ip:
+            - {{ cidr_block }}
+
+create_pulsar_security_group:
+  boto_secgroup.present:
+    - name: pulsar-{{ ENVIRONMENT }}
+    - description: ACL for pulsar log aggregators
+    - vpc_name: {{ VPC_NAME }}
+    - rules:
+        - ip_protocol: tcp
+          from_port: 2181
+          to_port: 2181
+          cidr_ip:
+            - {{ cidr_block }}

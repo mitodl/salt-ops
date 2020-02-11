@@ -1,5 +1,5 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
-{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-qa') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set app_name = 'xqwatcher' %}
 {% set VPC_NAME = env_data.vpc_name %}
