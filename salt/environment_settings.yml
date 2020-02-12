@@ -971,9 +971,9 @@ environments:
       tika:
         app: tika
         business_unit: mit-open
-        domains:
-          - tika-rc-apps.odl.mit.edu
         num_instances: 2
+        security_groups:
+          - webapp
     backends:
       pki:
         - cassandra
