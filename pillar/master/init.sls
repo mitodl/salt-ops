@@ -21,6 +21,7 @@ salt_master:
       - vim
       - mariadb-client
       - postgresl
+      - default-libmysqlclient-dev
     pip_deps:
       - PyOpenssl
       - apache-libcloud
@@ -28,6 +29,7 @@ salt_master:
       - boto>=2.35.0
       - croniter
       - elasticsearch
+      - mysqlclient
       - python-consul
       - python-dateutil
       - pyyaml
