@@ -11,7 +11,7 @@ nginx:
       private_key: __vault__::secret-operations/global/odl_wildcard_cert>data>key
   servers:
     managed:
-      {{ app_name }}
+      {{ app_name }}:
         enabled: True
         config:
           - server:
