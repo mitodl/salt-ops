@@ -55,9 +55,9 @@ current_residential_versions_rp: &current_residential_versions_rp
 
 next_residential_versions: &next_residential_versions
   edx_config_repo: https://github.com/mitodl/configuration.git
-  edx_config_version: master
+  edx_config_version: open-release/juniper.alpha1
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
-  edxapp: master
+  edxapp: mitx/juniper.alpha
   forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
   forum: open-release/juniper.alpha1
   xqueue_source_repo: 'https://github.com/mitodl/xqueue'
