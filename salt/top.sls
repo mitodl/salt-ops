@@ -196,6 +196,9 @@ base:
     - match: compound
     - etl
     - etl.mitx
+  'roles:tika':
+    - match: grain
+    - tika
   'roles:ocw-origin':
     - match: grain
     - utils.configure_debian_source_repos
