@@ -186,6 +186,5 @@ start_gitreload:
   service.running:
     - name: gitreload
     - enable: True
-    - restart: True
     - require:
       - file: configure_gitreload_service
