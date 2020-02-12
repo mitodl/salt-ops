@@ -13,7 +13,7 @@
 {% do security_groups.extend(['master-ssh', 'consul-agent']) %}
 {% set release_id = (salt.sdb.get('sdb://consul/' ~ app_name ~ '/' ~ ENVIRONMENT ~ '/release-id') or 'v1') %}
 {% set target_string = app_name ~ '-' ~ ENVIRONMENT ~ '-*-' ~ release_id %}
-{% set server_domain_names = env_data.purposes[app_name].domains|default([]) %}
+{% set server_domain_names = env_data.purposes[app_name].get('domains', []) %}
 
 load_{{ app_name }}_cloud_profile:
   file.managed:
@@ -112,7 +112,7 @@ update_mine_with_{{ app_name }}_node_data:
 {% for server_domain_name in server_domain_names %}
 {% for zone in zone_list %}
 {% if zone in server_domain_name %}
-register_{{ server_domain_names }}_nodes_with_dns:
+register_{{ server_domain_name }}_nodes_with_dns:
   boto_route53.present:
     - name: {{ server_domain_name }}
     - value: {{ hosts|tojson }}
