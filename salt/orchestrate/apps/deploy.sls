@@ -108,7 +108,7 @@ update_mine_with_{{ app_name }}_node_data:
 {% do hosts.append(grains['external_ip']) %}
 {% endfor %}
 
-{% set zone_list = salt.boto_route53.list_all_zones_by_name %}
+{% set zone_list = salt.boto_route53.list_all_zones_by_name() %}
 {% for server_domain_name in server_domain_names %}
 {% for zone in zone_list %}
 {% if zone in server_domain_name %}
