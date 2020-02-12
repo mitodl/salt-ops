@@ -13,6 +13,7 @@
 {% do security_groups.extend(['master-ssh', 'consul-agent']) %}
 {% set release_id = (salt.sdb.get('sdb://consul/' ~ app_name ~ '/' ~ ENVIRONMENT ~ '/release-id') or 'v1') %}
 {% set target_string = app_name ~ '-' ~ ENVIRONMENT ~ '-*-' ~ release_id %}
+{% set server_domain_names = env_data.purposes[app_name].domains|default([]) %}
 
 load_{{ app_name }}_cloud_profile:
   file.managed:
@@ -89,3 +90,35 @@ build_{{ app_name }}_nodes:
     - highstate: True
     - require:
         - salt: deploy_consul_agent_to_{{ app_name }}_nodes
+
+{% if server_domain_names %}
+update_mine_with_{{ app_name }}_node_data:
+  salt.function:
+    - name: mine.update
+    - tgt: 'G@roles:{{ app_name }} and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+    - require:
+        - salt: build_{{ app_name }}_nodes
+
+{% set hosts = [] %}
+{% for host, grains in salt.saltutil.runner(
+    'mine.get',
+    tgt='G@roles:' ~ app_name ~ ' and G@environment:' ~ ENVIRONMENT, fun='grains.item', tgt_type='compound'
+    ).items() %}
+{% do hosts.append(grains['external_ip']) %}
+{% endfor %}
+
+{% set zone_list = salt.boto_route53.list_all_zones_by_name %}
+{% for server_domain_name in server_domain_names %}
+{% for zone in zone_list %}
+{% if zone in server_domain_name %}
+register_{{ server_domain_names }}_nodes_with_dns:
+  boto_route53.present:
+    - name: {{ server_domain_name }}
+    - value: {{ hosts|tojson }}
+    - zone: {{ zone }}.
+    - record_type: A
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endif %}
