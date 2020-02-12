@@ -1,3 +1,4 @@
+{% set app_name = 'tika' %}
 {% set server_domain_name = 'tika-{}.odl.mit.edu'.format(salt.grains.get('environment')) %}
 {% set ENVIRONMENT = salt.grains.get('environment') %}
 {% set access_token = salt.vault.read('secret-operations/{}/tika/access-token'.format(ENVIRONMENT)).data.value %}
@@ -10,16 +11,9 @@ nginx:
       private_key: __vault__::secret-operations/global/odl_wildcard_cert>data>key
   servers:
     managed:
-      default:
-        enabled: False
-        deleted: True
-        config: None
-      tika:
+      {{ app_name }}
         enabled: True
         config:
-          - map $http_upgrade $connection_upgrade:
-              - default: upgrade
-              - "''": close
           - server:
               - server_name: {{ server_domain_name }}
               - listen: '443 ssl'
