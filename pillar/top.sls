@@ -256,6 +256,10 @@ base:
   'G@roles:rabbitmq and P@environment:(mitx-production|production-apps)':
     - match: compound
     - datadog.rabbitmq-integration
+  'roles:tika':
+    - match: grain
+    - nginx
+    - nginx.tika
   'roles:ocw-cms':
     - match: grain
     - logrotate.ocw_cms

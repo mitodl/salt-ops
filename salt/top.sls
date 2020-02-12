@@ -198,6 +198,7 @@ base:
     - etl.mitx
   'roles:tika':
     - match: grain
+    - nginx
     - tika
   'roles:ocw-origin':
     - match: grain
