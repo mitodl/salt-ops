@@ -45,6 +45,7 @@ salt_master:
         - https://github.com/mitodl/node-formula
         - https://github.com/mitodl/monit-formula
         - https://github.com/mitodl/elastic-stack-formula
+        - https://github.com/mitodl/tika-formula
     ext_pillar:
       git_pillar_provider: pygit2
       git_pillar_base: {{ git_ref }}
