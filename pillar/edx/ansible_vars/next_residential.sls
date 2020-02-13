@@ -65,5 +65,5 @@ edx:
 
 python_dependencies:
   python_libs:
-    - virtualenv
+    - virtualenv<20
     - pyopenssl
