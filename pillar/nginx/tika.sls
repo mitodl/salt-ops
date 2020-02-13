@@ -29,6 +29,8 @@ nginx:
                    :ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256"
               - ssl_prefer_server_ciphers: 'on'
               - resolver: 1.1.1.1
+              - location /status:
+                      - return: 200
               - location /:
                   - 'if ($http_x_access_token != {{ access_token }})':
                       - return: 403
