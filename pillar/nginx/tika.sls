@@ -30,7 +30,7 @@ nginx:
               - ssl_prefer_server_ciphers: 'on'
               - resolver: 1.1.1.1
               - location /status:
-                      - return: 200
+                  - return: 200
               - location /:
                   - 'if ($http_x_access_token != {{ access_token }})':
                       - return: 403
