@@ -30,6 +30,7 @@
       'release_branch': 'master',
       'SOCIAL_AUTH_MICROMASTERS_LOGIN_URL': 'https://micromasters-ci.odl.mit.edu/discussions/',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions-ci.odl.mit.edu/saml/metadata',
+      'TIKA_SERVER_ENDPOINT': 'https://tika-rc-apps.odl.mit.edu',
       'vault_env_path': 'rc-apps'
       },
     'rc': {
@@ -60,6 +61,7 @@
       'release_branch': 'release-candidate',
       'SOCIAL_AUTH_MICROMASTERS_LOGIN_URL': 'https://micromasters-rc.odl.mit.edu/login/edxorg/?next=/discussions/',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions-rc.odl.mit.edu/saml/metadata',
+      'TIKA_SERVER_ENDPOINT': 'https://tika-rc-apps.odl.mit.edu',
       'vault_env_path': 'rc-apps'
       },
     'production': {
@@ -90,6 +92,7 @@
       'release_branch': 'release',
       'SOCIAL_AUTH_MICROMASTERS_LOGIN_URL': 'https://micromasters.mit.edu/login/edxorg/?next=/discussions/',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions.odl.mit.edu/saml/metadata',
+      'TIKA_SERVER_ENDPOINT': 'https://tika-production-apps.odl.mit.edu',
       'vault_env_path': 'production-apps'
       }
 } %}
@@ -212,6 +215,8 @@ heroku:
     SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>private_key
     SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>public_cert
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
+    TIKA_ACCESS_TOKEN: __vault__:secret-operations/{{ env_data.vault_env_path }}/tika/access-token>data>value
+    TIKA_SERVER_ENDPOINT: {{ env_data.TIKA_SERVER_ENDPOINT }}
     USE_X_FORWARDED_HOST: True
     USE_X_FORWARDED_PORT: True
     XPRO_CATALOG_API_URL: https://{{ etl_xpro_host }}/api/programs/
