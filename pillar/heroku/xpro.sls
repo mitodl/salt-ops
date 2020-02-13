@@ -27,6 +27,7 @@
       'MITXPRO_SECURE_SSL_HOST': 'xpro-ci.odl.mit.edu',
       'ENABLE_ORDER_RECEIPTS': True,
       'SHEETS_MONITORING_FREQUENCY': 86400,
+      'SHEETS_DEFERRAL_FIRST_ROW': 184,
       'SHEETS_REFUND_FIRST_ROW': 254,
       'vault_env_path': 'rc-apps',
       'USE_X_FORWARDED_HOST': False,
@@ -57,6 +58,7 @@
       'vault_env_path': 'rc-apps',
       'ENABLE_ORDER_RECEIPTS': True,
       'SHEETS_MONITORING_FREQUENCY': 43200,
+      'SHEETS_DEFERRAL_FIRST_ROW': 184,
       'SHEETS_REFUND_FIRST_ROW': 254,
       'USE_X_FORWARDED_HOST': False,
       'VOUCHER_COMPANY_ID': 1
@@ -85,7 +87,8 @@
       'MITXPRO_SECURE_SSL_HOST': 'xpro.mit.edu',
       'ENABLE_ORDER_RECEIPTS': True,
       'SHEETS_MONITORING_FREQUENCY': 3600,
-      'SHEETS_REFUND_FIRST_ROW': 4,
+      'SHEETS_DEFERRAL_FIRST_ROW': 234,
+      'SHEETS_REFUND_FIRST_ROW': 287,
       'vault_env_path': 'production-apps',
       'USE_X_FORWARDED_HOST': True,
       'VOUCHER_COMPANY_ID': 4
@@ -120,6 +123,7 @@ heroku:
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxpro
     CERTIFICATE_CREATION_DELAY_IN_HOURS: 48
     {% endif %}
+    DEFERRAL_REQUEST_WORKSHEET_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>deferral_worksheet_id
     DRIVE_OUTPUT_FOLDER_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>folder_id
     DRIVE_SERVICE_ACCOUNT_CREDS: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>service_account_creds
     DRIVE_SHARED_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>drive_shared_id
@@ -180,6 +184,7 @@ heroku:
     SHEETS_ADMIN_EMAILS: {{ salt.sdb.get('sdb://consul/xpro/' ~ environment ~'/sheets-admin-emails') }}
     SHEETS_DATE_TIMEZONE: America/New_York
     SHEETS_MONITORING_FREQUENCY: {{ env_data.SHEETS_MONITORING_FREQUENCY }}
+    SHEETS_DEFERRAL_FIRST_ROW: {{ env_data.SHEETS_DEFERRAL_FIRST_ROW }}
     SHEETS_REFUND_FIRST_ROW: {{ env_data.SHEETS_REFUND_FIRST_ROW }}
     SHEETS_TASK_OFFSET: 120
     SHOW_UNREDEEMED_COUPON_ON_DASHBOARD: True
