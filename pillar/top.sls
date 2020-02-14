@@ -73,6 +73,8 @@ base:
     - shibboleth
     - shibboleth.odlvideo
     - fluentd.odlvideo
+  proxy-bootcamps-*:
+    - heroku.bootcamps
   proxy-mitxpro-*:
     - heroku.xpro
   proxy-mit-open-discussions-*:
