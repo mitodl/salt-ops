@@ -227,11 +227,14 @@ salt_master:
   proxy_configs:
     apps:
       {% if 'qa' in purpose %}
+      - proxy-bootcamps-ci
+      - proxy-bootcamps-rc
       - proxy-mitxpro-ci
       - proxy-mitxpro-rc
       - proxy-mit-open-discussions-ci
       - proxy-mit-open-discussions-rc
       {% else %}
+      - proxy-bootcamps-production
       - proxy-mitxpro-production
       - proxy-mit-open-discussions-production
       {% endif %}
