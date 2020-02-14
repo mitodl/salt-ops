@@ -45,9 +45,9 @@
 } %}
 {% set env_data = env_dict[environment] %}
 {% set business_unit = 'bootcamps' %}
-{% set cybersource_creds = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/cybersource') %}
-{% set fluidreview = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/fluidreview') %}
-{% set smapply = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/smappy') %}
+{% set cybersource_creds = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/cybersource').data %}
+{% set fluidreview = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/fluidreview').data %}
+{% set smapply = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/smapply').data %}
 
 proxy:
   proxytype: heroku
@@ -72,15 +72,15 @@ heroku:
     BOOTCAMP_LOG_LEVEL: {{ env_data.BOOTCAMP_LOG_LEVEL }}
     BOOTCAMP_SECURE_SSL_REDIRECT: True
     BOOTCAMP_SUPPORT_EMAIL: {{ env_data.BOOTCAMP_SUPPORT_EMAIL }}
-    CYBERSOURCE_ACCESS_KEY: {{ cybersource_creds.data.access_key }}
-    CYBERSOURCE_PROFILE_ID: {{ cybersource_creds.data.profile_id }}
+    CYBERSOURCE_ACCESS_KEY: {{ cybersource_creds.access_key }}
+    CYBERSOURCE_PROFILE_ID: {{ cybersource_creds.profile_id }}
     CYBERSOURCE_REFERENCE_PREFIX: {{ env_data.CYBERSOURCE_REFERENCE_PREFIX }}
     CYBERSOURCE_SECURE_ACCEPTANCE_URL: {{ env_data.CYBERSOURCE_SECURE_ACCEPTANCE_URL}}
-    CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.data.security_key }}
+    CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.security_key }}
     {% if env_data.env_name == 'production' %}
     {% set pg_creds = salt.vault.cached_read('postgresql-bootcamps/creds/app', cache_prefix='heroku-bootcamp') %}
     BOOTCAMP_ECOMMERCE_EMAIL: __vault__::secret-{{ business_unit }}/production-apps/>cybersource>data>email
-    CYBERSOURCE_TRANSACTION_KEY: none
+    CYBERSOURCE_TRANSACTION_KEY: 'none'
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/bootcamp_ecommerce
     ENABLE_STUNNEL_AMAZON_RDS_FIX: true
     HIREFIRE_TOKEN: __vault__::secret-{{ business_unit }}/production-apps/hirefire_token>data>value
