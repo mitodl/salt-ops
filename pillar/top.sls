@@ -75,6 +75,8 @@ base:
     - fluentd.odlvideo
   proxy-bootcamps-*:
     - heroku.bootcamps
+  proxy-micromasters-*:
+    - heroku.micromasters
   proxy-mitxpro-*:
     - heroku.xpro
   proxy-mit-open-discussions-*:

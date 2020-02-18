@@ -229,12 +229,15 @@ salt_master:
       {% if 'qa' in purpose %}
       - proxy-bootcamps-ci
       - proxy-bootcamps-rc
+      - proxy-mictomasters-ci
+      - proxy-micromasters-rc
       - proxy-mitxpro-ci
       - proxy-mitxpro-rc
       - proxy-mit-open-discussions-ci
       - proxy-mit-open-discussions-rc
       {% else %}
       - proxy-bootcamps-production
+      - proxy-micromasters-production
       - proxy-mitxpro-production
       - proxy-mit-open-discussions-production
       {% endif %}
