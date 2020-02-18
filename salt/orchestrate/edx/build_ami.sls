@@ -178,15 +178,7 @@ build_edx_base_nodes:
 {% set previous_release = salt.sdb.get('sdb://consul/edxapp-{}-{}-release-version'.format(ENVIRONMENT, edx_codename))|int %}
 {% set release_number = previous_release + 1 %}
 
-{# This is temporarily disabled to get through a Juniper AMI build. The assets
-   compilation is working in the highstate above, where Ansible runs it, but
-   is failing below with
-   "TypeError: can't compare offset-naive and offset-aware datetimes"
-
-   When re-enabling, be sure to uncomment the lines below that contain
-   "compile_assets_for_edx_{{ PURPOSE }}"
-#}
-{#
+{% if 'production' in ENVIRONMENT %}
 compile_assets_for_edx_{{ PURPOSE }}:
   salt.function:
     - tgt: 'G@roles:edx-base and G@environment:{{ ENVIRONMENT }}'
@@ -198,7 +190,7 @@ compile_assets_for_edx_{{ PURPOSE }}:
         timeout: 900
     - require:
         - salt: build_edx_base_nodes
-#}
+{% endif %}
 
 remove_unattended_upgrades_service:
   salt.function:
