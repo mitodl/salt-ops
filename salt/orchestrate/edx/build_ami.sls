@@ -190,6 +190,9 @@ compile_assets_for_edx_{{ PURPOSE }}:
         timeout: 900
     - require:
         - salt: build_edx_base_nodes
+    - require_in:
+        - salt: disable_minion_service_before_snapshot
+        - salt: remove_master_key_from_minions
 {% endif %}
 
 remove_unattended_upgrades_service:
@@ -226,7 +229,16 @@ disable_minion_service_before_snapshot:
         - salt-minion
     - require:
         - salt: build_edx_base_nodes
-{#        - salt: compile_assets_for_edx_{{ PURPOSE }} #}
+
+remove_master_key_from_minions:
+  salt.function:
+    - tgt: 'edx*{{ ENVIRONMENT}}*base'
+    - tgt_type: glob
+    - name: file.remove
+    - arg:
+        - /etc/salt/pki/minion/minion_master.pub
+    - require:
+        - salt: build_edx_base_nodes
 
 snapshot_edx_app_{{ ENVIRONMENT }}_node:
   boto_ec2.snapshot_created:
