@@ -49,6 +49,7 @@ base:
     - elastic-stack.elasticsearch
     - elastic-stack.elasticsearch.plugins
     - datadog.plugins
+    - netdata
   'roles:rabbitmq':
     - match: grain
     - rabbitmq

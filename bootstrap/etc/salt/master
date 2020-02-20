@@ -24,6 +24,7 @@ gitfs_remotes:
   - https://github.com/mitodl/consul-formula
   - https://github.com/mitodl/vault-formula
   - https://github.com/mitodl/fluentd-formula
+  - https://github.com/mitodl/netdata-formula
   - https://github.com/mitodl/datadog-formula
 
 root_dir: bootstrap/
