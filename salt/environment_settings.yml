@@ -787,6 +787,23 @@ environments:
         security_groups:
           - vault
           - consul
+      zookeeper:
+        app: zookeeper
+        num_instances: 3
+        size: t3.small
+        business_unit: operations
+        security_groups:
+          - zookeeper
+      pulsar:
+        apps:
+          - pulsar
+          - bookkeeper
+        num_instances: 3
+        size: r5.large
+        business_unit: operations
+        security_groups:
+          - bookkeeper
+          - pulsar
     backends:
       pki:
         - consul
