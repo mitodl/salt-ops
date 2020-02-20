@@ -5,3 +5,4 @@ bookkeeper:
     permittedStartupUsers: bookkeeper
     ledgerDirectories: /var/opt/bookkeeper-ledger
     journalDirectories: /var/opt/bookkeeper-journal
+    ledgerManagerType: hierarchical
