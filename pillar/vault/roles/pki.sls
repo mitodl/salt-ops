@@ -1,5 +1,5 @@
 {% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
-{% set ttl = '8760h' %} # ONE_YEAR
+{% set ttl = '4380h' %} # SIX MONTHS
 {% set ou = 'Open Learning' %}
 {% set org = 'Massachusetts Institute of Technology' %}
 {% set country = 'US' %}
