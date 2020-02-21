@@ -13,6 +13,8 @@ base:
     - consul.dns_proxy
     - consul.tests
     - consul.tests.test_dns_setup
+  'P@environment:operations(-qa)?':
+    - netdata
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
@@ -49,7 +51,6 @@ base:
     - elastic-stack.elasticsearch
     - elastic-stack.elasticsearch.plugins
     - datadog.plugins
-    - netdata
   'roles:rabbitmq':
     - match: grain
     - rabbitmq
