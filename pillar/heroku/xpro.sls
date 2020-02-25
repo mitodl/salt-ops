@@ -97,7 +97,7 @@
 {% set env_data = env_dict[environment] %}
 {% set business_unit = 'mitxpro' %}
 {% set cybersource_creds = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/cybersource') %}
-{% set smtp_config = salt.vault.read('secret-' ~ business_unit ~ '/' ~ business_unit ~ '-' ~ env_data.env_name ~ '/smtp_config') %}
+{% set smtp_config = salt.vault.read('secret-' ~ business_unit ~ '/' ~ business_unit ~ env_data.env_name ~ '/smtp_config') %}
 
 proxy:
   proxytype: heroku
@@ -154,14 +154,14 @@ heroku:
     MITXPRO_EMAIL_TLS: True
     MITXPRO_EMAIL_USER: {{ smtp_config.relay_username }}
     MITXPRO_ENVIRONMENT: {{ env_data.env_name }}
-    MITXPRO_FROM_EMAIL: 'MIT xPRO <xpro@xpro.mit.edu>'
+    MITXPRO_FROM_EMAIL: 'MIT xPRO <support@xpro.mit.edu>'
     MITXPRO_LOG_LEVEL: {{ env_data.app_log_level }}
     MITXPRO_OAUTH_PROVIDER: 'mitxpro-oauth2'
     MITXPRO_REGISTRATION_ACCESS_TOKEN:  __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.openedx_environment }}/xpro-registration-access-token>data>value
-    MITXPRO_REPLY_TO_ADDRESS: 'MIT xPRO <xpro@xpro.mit.edu>'
+    MITXPRO_REPLY_TO_ADDRESS: 'MIT xPRO <support@xpro.mit.edu>'
     MITXPRO_SECURE_SSL_REDIRECT: True
     MITXPRO_SECURE_SSL_HOST: {{ env_data.MITXPRO_SECURE_SSL_HOST }}
-    MITXPRO_SUPPORT_EMAIL: 'support@xpro.mit.edu'
+    MITXPRO_SUPPORT_EMAIL: {{ smtp_config.support_email }}
     MITXPRO_USE_S3: True
     NODE_MODULES_CACHE: False
     OPENEDX_API_BASE_URL: {{ env_data.OPENEDX_API_BASE_URL}}
