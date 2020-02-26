@@ -148,11 +148,11 @@ heroku:
     MITXPRO_BASE_URL: {{ env_data.MITXPRO_BASE_URL }}
     MITXPRO_DB_CONN_MAX_AGE: 0
     MITXPRO_DB_DISABLE_SSL: True    # pgbouncer buildpack uses stunnel to handle encryption
-    MITXPRO_EMAIL_HOST: {{ smtp_config.relay_host }}
-    MITXPRO_EMAIL_PASSWORD: {{ smtp_config.relay_password }}
-    MITXPRO_EMAIL_PORT: {{ smtp_config.relay_port }}
+    MITXPRO_EMAIL_HOST: {{ smtp_config.data.relay_host }}
+    MITXPRO_EMAIL_PASSWORD: {{ smtp_config.data.relay_password }}
+    MITXPRO_EMAIL_PORT: {{ smtp_config.data.relay_port }}
     MITXPRO_EMAIL_TLS: True
-    MITXPRO_EMAIL_USER: {{ smtp_config.relay_username }}
+    MITXPRO_EMAIL_USER: {{ smtp_config.data.relay_username }}
     MITXPRO_ENVIRONMENT: {{ env_data.env_name }}
     MITXPRO_FROM_EMAIL: 'MIT xPRO <support@xpro.mit.edu>'
     MITXPRO_LOG_LEVEL: {{ env_data.app_log_level }}
@@ -161,7 +161,7 @@ heroku:
     MITXPRO_REPLY_TO_ADDRESS: 'MIT xPRO <support@xpro.mit.edu>'
     MITXPRO_SECURE_SSL_REDIRECT: True
     MITXPRO_SECURE_SSL_HOST: {{ env_data.MITXPRO_SECURE_SSL_HOST }}
-    MITXPRO_SUPPORT_EMAIL: {{ smtp_config.support_email }}
+    MITXPRO_SUPPORT_EMAIL: {{ smtp_config.data.support_email }}
     MITXPRO_USE_S3: True
     NODE_MODULES_CACHE: False
     OPENEDX_API_BASE_URL: {{ env_data.OPENEDX_API_BASE_URL}}
