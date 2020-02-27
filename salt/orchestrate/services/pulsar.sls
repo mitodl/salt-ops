@@ -96,7 +96,7 @@ mount_journal_drive:
         - mount.mounted
     - kwarg:
         name: /var/opt/bookkeeper-journal
-        device: /dev/nvme1n1
+        device: /dev/xvdb
         fstype: ext4
         mkmnt: True
     - require:
