@@ -13,7 +13,9 @@ base:
     - consul.dns_proxy
     - consul.tests
     - consul.tests.test_dns_setup
-  'P@environment:operations(-qa)?':
+  'P@environment:(operations|mitx|mitxpro)(-qa)?':
+    - netdata
+  'P@environment:(rc|production)-apps':
     - netdata
   'roles:xqwatcher':
     - match: grain
