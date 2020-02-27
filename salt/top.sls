@@ -1,6 +1,7 @@
 base:
   '*':
     - utils.install_libs
+    - netdata
   'not G@roles:devstack':
     - match: compound
     - utils.inotify_watches
@@ -13,10 +14,6 @@ base:
     - consul.dns_proxy
     - consul.tests
     - consul.tests.test_dns_setup
-  'P@environment:(operations|mitx|mitxpro)(-qa)?':
-    - netdata
-  'P@environment:(rc|production)-apps':
-    - netdata
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
