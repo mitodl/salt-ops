@@ -33,7 +33,7 @@ create_master_ssh_security_group:
           to_port: 19999
           cidr_ip:
             - 10.0.0.0/22
-            - 10.0.0.0/22
+            - 10.1.0.0/22
     - tags:
         Name: master-ssh-{{ ENVIRONMENT }}
         business_unit: {{ BUSINESS_UNIT }}
