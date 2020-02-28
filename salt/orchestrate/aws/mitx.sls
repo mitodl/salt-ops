@@ -420,6 +420,12 @@ create_master_ssh_security_group:
           to_port: 22
           cidr_ip:
             - 10.0.0.0/22
+        # netdata:
+        - ip_protocol: tcp
+          from_port: 19999
+          to_port: 19999
+          cidr_ip:
+            - 10.0.0.0/22
     - require:
         - boto_vpc: create_{{ ENVIRONMENT }}_vpc
 
