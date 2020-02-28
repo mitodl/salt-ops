@@ -176,7 +176,6 @@ fluentd:
                     - keys: $["event-data"]["ip"]
                     - ipv4_mask_bits: 24
                     - ipv6_mask_bits: 104
-       
         - directive: match
           directive_arg: heroku.micromasters
           attrs:
@@ -208,7 +207,6 @@ fluentd:
                   attrs:
                     - '@type': relabel
                     - '@label': '@es_logging'
-        
         - directive: match
           directive_arg: edx.tracking
           attrs:
@@ -222,10 +220,6 @@ fluentd:
                 attrs:
                   - '@type': relabel
                   - '@label': '@prod_xpro_tracking_events'
-              - directive: store
-                attrs:
-                  - '@type': relabel
-                  - '@label': '@es_logging'
         - directive: match
           directive_arg: mailgun.**
           attrs:
