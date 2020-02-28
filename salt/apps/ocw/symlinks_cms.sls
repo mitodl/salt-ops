@@ -88,3 +88,9 @@ symlink_mitx_archived_xml:
     - owner: root
     - group: root
 
+ensure_state_of_applications_dir:
+    file.directory:
+        - name: /mnt/ocwfileshare/Applications
+        - user: plone
+        - group: plone
+        - dir_mode: 0755
