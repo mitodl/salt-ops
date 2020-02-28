@@ -844,6 +844,12 @@ environments:
         num_instances: 3
         security_groups:
           - webapp
+      tika:
+        app: tika
+        business_unit: mit-open
+        num_instances: 3
+        security_groups:
+          - webapp
     backends:
       pki:
         - cassandra
