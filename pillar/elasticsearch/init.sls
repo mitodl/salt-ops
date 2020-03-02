@@ -5,6 +5,8 @@ elasticsearch:
   lookup:
     elastic_stack: True
     configuration_settings:
+      path:
+        data: /var/lib/elasticsearch/data
       discovery:
         zen.hosts_provider: ec2
       cluster.name: {{ ENVIRONMENT }}
