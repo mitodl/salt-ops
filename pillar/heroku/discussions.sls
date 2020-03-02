@@ -215,7 +215,7 @@ heroku:
     SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>private_key
     SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>public_cert
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
-    TIKA_ACCESS_TOKEN: __vault__:secret-operations/{{ env_data.vault_env_path }}/tika/access-token>data>value
+    TIKA_ACCESS_TOKEN: __vault__::secret-operations/{{ env_data.vault_env_path }}/tika/access-token>data>value
     TIKA_SERVER_ENDPOINT: {{ env_data.TIKA_SERVER_ENDPOINT }}
     USE_X_FORWARDED_HOST: True
     USE_X_FORWARDED_PORT: True
