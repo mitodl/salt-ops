@@ -264,7 +264,7 @@ fluentd:
                   - logstash_format: 'true'
                   - hosts: {{ es_hosts }}
                   - logstash_prefix: 'logstash-${record.fetch("environment", "blank") != "blank" ? record.fetch("environment") : tag_parts[0]}'
-                  - logstash-dateformat: '%Y.%W'
+                  - logstash_dateformat: '%Y.%W'
                   - include_tag_key: 'true'
                   - tag_key: fluentd_tag
                   - reload_on_failure: 'true'
