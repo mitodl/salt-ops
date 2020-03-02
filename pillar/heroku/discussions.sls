@@ -125,6 +125,7 @@ heroku:
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/opendiscussions
     {% endif %}
     DEBUG: {{ env_data.DEBUG }}
+    DUPLICATE_COURSES_URL: https://raw.githubusercontent.com/mitodl/open-resource-blacklists/master/duplicate_courses.yml
     EDX_API_ACCESS_TOKEN_URL: https://api.edx.org/oauth2/v1/access_token
     EDX_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/edx-api-client>data>id
     EDX_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/edx-api-client>data>secret
