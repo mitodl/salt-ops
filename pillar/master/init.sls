@@ -33,6 +33,7 @@ salt_master:
       - python-consul
       - python-dateutil
       - pyyaml
+      - raven
       - requests
   ssl:
     cert_path: /etc/salt/ssl/certs/salt.odl.mit.edu.crt

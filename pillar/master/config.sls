@@ -62,6 +62,12 @@ salt_master:
         host: fluentd.service.consul
         port: 9999
         version: 1
+      sentry_handler:
+        dsn: __vault__::secret-operations/global/saltstack-sentry-dsn>data>value
+        context:
+          - id
+          - environment
+          - saltversion
     reactors:
       reactor:
         - salt/beacon/*/inotify/*:
