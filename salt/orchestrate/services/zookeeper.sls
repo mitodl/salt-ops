@@ -54,6 +54,10 @@ generate_cloud_map_file:
     - require:
         - file: load_zookeeper_cloud_profile
 
+ensure_instance_profile_exists_for_zookeeper:
+  boto_iam_role.present:
+    - name: zookeeper-instance-role
+
 deploy_zookeeper_nodes:
   salt.runner:
     - name: cloud.map_run
