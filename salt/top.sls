@@ -54,6 +54,18 @@ base:
     - match: grain
     - rabbitmq
     - rabbitmq.tests
+  'roles:zookeeper':
+    - match: grain
+    - zookeeper
+    - zookeeper.server
+  'roles:bookkeeper':
+    - match: grain
+    - bookkeeper
+    - bookkeeper.tests
+  'roles:pulsar':
+    - match: grain
+    - pulsar
+    - pulsar.tests
   'roles:consul_server':
     - match: grain
     - consul
