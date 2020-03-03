@@ -4,13 +4,6 @@
 
 backups:
   enabled:
-    - title: elasticsearch-operations
-      name: elasticsearch
-      pkgs:
-        - curl
-      settings:
-        snapshot_repository_name: operations_es_backup
-        healthcheck_url: __vault__::secret-operations/global/healthchecks/operations-backups-elasticsearch>data>value
     - title: consul-operations
       name: consul
       pkgs:
