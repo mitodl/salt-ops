@@ -129,6 +129,10 @@ salt_master:
         host: consul.service.consul
       osenv:
         driver: env
+      yaml:
+        driver: yaml
+        files:
+          - salt://sdb/keys.yaml
     vault:
       vault.url: https://active.vault.service.consul:8200
       vault.verify: False
