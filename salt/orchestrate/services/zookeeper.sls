@@ -41,7 +41,7 @@ generate_cloud_map_file:
           Environment: {{ ENVIRONMENT }}
         environment_name: {{ ENVIRONMENT }}
         roles:
-          - zookeeper_server
+          - zookeeper
           - service_discovery
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
