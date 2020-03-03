@@ -139,6 +139,7 @@ sandbox_mitxpro_versions: &sandbox_mitxpro_versions
   theme_source_repo: 'https://github.com/mitodl/mitxpro-theme'
   theme_name: 'mitxpro-theme'
   theme: master
+  xqueue: open-release/ironwood.master
   codename: ironwood
   ami_id: ami-80861296
 
