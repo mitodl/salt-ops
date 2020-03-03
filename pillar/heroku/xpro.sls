@@ -97,7 +97,7 @@
 {% set env_data = env_dict[environment] %}
 {% set business_unit = 'mitxpro' %}
 {% set cybersource_creds = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/cybersource') %}
-{% set smtp_config = salt.vault.read('secret-' ~ business_unit ~ '/' ~ business_unit ~ env_data.env_name ~ '/smtp_config') %}
+{% set smtp_config = salt.vault.read('secret-' ~ business_unit ~ '/' ~ business_unit ~ '-' ~ env_data.env_name ~ '/smtp_config') %}
 
 proxy:
   proxytype: heroku
