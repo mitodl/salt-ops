@@ -1,5 +1,5 @@
 {% set ENVIRONMENT = salt.grains.get('environment') %}
-{% set release_id = salt.sdb.get('sdb://consul/' ~ app_name ~ '/' ~ ENVIRONMENT ~ '/release-id') %}
+{% set release_id = salt.sdb.get('sdb://consul/zookeeper/' ~ ENVIRONMENT ~ '/release-id') %}
 {% if not release_id %}
 {% set release_id = 'v1' %}
 {% endif %}
