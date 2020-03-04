@@ -43,12 +43,15 @@ base:
   'roles:zookeeper':
     - match: grain
     - zookeeper
+    - consul.zookeeper
   'roles:bookkeeper':
     - match: grain
     - bookkeeper
+    - consul.bookkeeper
   'roles:pulsar':
     - match: grain
     - pulsar
+    - consul.pulsar
   'G@roles:fluentd-server and G@environment:operations-qa':
     - match: compound
     - consul.fluentd
