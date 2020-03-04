@@ -123,6 +123,15 @@ heroku:
     {% set pg_creds = salt.vault.cached_read('postgres-production-apps-mitxpro/creds/mitxpro', cache_prefix='heroku-mitxpro') %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxpro
     CERTIFICATE_CREATION_DELAY_IN_HOURS: 48
+    VOUCHER_INTERNATIONAL_AMOUNT_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>amount_key
+    VOUCHER_INTERNATIONAL_COURSE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>course_key
+    VOUCHER_INTERNATIONAL_COURSE_NAME_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>course_name_key
+    VOUCHER_INTERNATIONAL_COURSE_NUMBER_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>course_number_key
+    VOUCHER_INTERNATIONAL_DATES_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>dates_key
+    VOUCHER_INTERNATIONAL_EMPLOYEE_ID_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>employee_id_key
+    VOUCHER_INTERNATIONAL_EMPLOYEE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>employee_key
+    VOUCHER_INTERNATIONAL_PROGRAM_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>program_key
+    VOUCHER_INTERNATIONAL_SCHOOL_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>school_key
     {% endif %}
     DEFERRAL_REQUEST_WORKSHEET_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>deferral_worksheet_id
     DRIVE_OUTPUT_FOLDER_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>folder_id
@@ -201,15 +210,6 @@ heroku:
     VOUCHER_DOMESTIC_EMPLOYEE_ID_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>employee_id_key
     VOUCHER_DOMESTIC_EMPLOYEE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>employee_key
     VOUCHER_DOMESTIC_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>key
-    VOUCHER_INTERNATIONAL_AMOUNT_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>amount_key
-    VOUCHER_INTERNATIONAL_COURSE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>course_key
-    VOUCHER_INTERNATIONAL_COURSE_NAME_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>course_name_key
-    VOUCHER_INTERNATIONAL_COURSE_NUMBER_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>course_number_key
-    VOUCHER_INTERNATIONAL_DATES_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>dates_key
-    VOUCHER_INTERNATIONAL_EMPLOYEE_ID_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>employee_id_key
-    VOUCHER_INTERNATIONAL_EMPLOYEE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>employee_key
-    VOUCHER_INTERNATIONAL_PROGRAM_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>program_key
-    VOUCHER_INTERNATIONAL_SCHOOL_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-international>data>school_key
 
 schedule:
   refresh_{{ env_data.app_name }}_configs:
