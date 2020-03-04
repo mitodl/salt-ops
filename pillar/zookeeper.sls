@@ -8,6 +8,7 @@ zookeeper:
   version: 3.5.7
   user: zookeeper
   group: zookeeper
+  quorum_listen: True
   max_heap_size: {{ salt.grains.get('mem_total') // 1.5 | int }}
   nodes:
     - zookeeper-{{ ENVIRONMENT }}-0-{{ release_id }}.zookeeper.service.consul
