@@ -174,10 +174,12 @@ base:
     - match: compound
     - elastic_stack.version_production
     - elastic_stack.elasticsearch.logging_production
+    - netdata.elasticsearch_logging
   'G@roles:elasticsearch and G@environment:operations-qa':
     - match: compound
     - elastic_stack.version_qa
     - elastic_stack.elasticsearch.logging_qa
+    - netdata.elasticsearch_logging
   'P@roles:(edx|edx-worker)$':
     - match: compound
     - edx
