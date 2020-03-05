@@ -16,7 +16,7 @@
 {% if not release_id %}
 {% set release_id = 'v1' %}
 {% endif %}
-{% set target_string = app_name ~ '-' ~ ENVIRONMENT ~ '-*-' ~ release_id %}
+{% set target_string = 'G@roles:' ~ app_name ~ ' and G@environment:' ~ ENVIRONMENT %}
 
 ensure_pulsar_instance_profile_exists:
   boto_iam_role.present:
@@ -73,10 +73,11 @@ sync_external_modules_for_bookkeeper_nodes:
   salt.function:
     - name: saltutil.sync_all
     - tgt: {{ target_string }}
+    - tgt_type: compound
 
 format_journal_drive:
   salt.function:
-    - tgt: '{{ target_string }} and G@launch-date:{{ launch_date }}'
+    - tgt: {{ target_string }}
     - tgt_type: compound
     - name: state.single
     - arg:
@@ -89,7 +90,7 @@ format_journal_drive:
 
 mount_journal_drive:
   salt.function:
-    - tgt: '{{ target_string }} and G@launch-date:{{ launch_date }}'
+    - tgt: {{ target_string }}
     - tgt_type: compound
     - name: state.single
     - arg:
@@ -104,7 +105,7 @@ mount_journal_drive:
 
 format_ledger_drive:
   salt.function:
-    - tgt: '{{ target_string }} and G@launch-date:{{ launch_date }}'
+    - tgt: {{ target_string }}
     - tgt_type: compound
     - name: state.single
     - arg:
@@ -117,7 +118,7 @@ format_ledger_drive:
 
 mount_ledger_drive:
   salt.function:
-    - tgt: '{{ target_string }} and G@launch-date:{{ launch_date }}'
+    - tgt: {{ target_string }}
     - tgt_type: compound
     - name: state.single
     - arg:
@@ -134,6 +135,7 @@ load_pillar_data_on_{{ ENVIRONMENT }}_bookkeeper_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
     - tgt: {{ target_string }}
+    - tgt_type: compound
     - require:
         - salt: deploy_bookkeeper_nodes
 
@@ -141,6 +143,7 @@ populate_mine_with_{{ ENVIRONMENT }}_bookkeeper_data:
   salt.function:
     - name: mine.update
     - tgt: {{ target_string }}
+    - tgt_type: compound
     - require:
         - salt: load_pillar_data_on_{{ ENVIRONMENT }}_bookkeeper_nodes
 
@@ -149,12 +152,14 @@ reload_pillar_data_on_{{ ENVIRONMENT }}_bookkeeper_nodes:
   salt.function:
     - name: saltutil.refresh_pillar
     - tgt: {{ target_string }}
+    - tgt_type: compound
     - require:
         - salt: populate_mine_with_{{ ENVIRONMENT }}_bookkeeper_data
 
 build_{{ ENVIRONMENT }}_bookkeeper_nodes:
   salt.state:
     - tgt: {{ target_string }}
+    - tgt_type: compound
     - highstate: True
     - require:
         - salt: reload_pillar_data_on_{{ ENVIRONMENT }}_bookkeeper_nodes
