@@ -13,9 +13,9 @@
 {% set app_name = 'pulsar' %}
 {% set release_id = salt.sdb.get('sdb://consul/'
 ~ app_name ~ '/' ~ ENVIRONMENT ~ '/release-id') %}
-{% if not release_id %
+{% if not release_id %}
 {% set release_id = 'v1' %}
-{% endif %}}
+{% endif %}
 {% set target_string = app_name ~ '-' ~ ENVIRONMENT ~ '-*-' ~ release_id %}
 
 ensure_pulsar_instance_profile_exists:
