@@ -83,7 +83,7 @@ format_journal_drive:
     - arg:
         - blockdev.formatted
     - kwarg:
-        name: /dev/xvdb
+        name: /dev/nvme0n1
         fs_type: ext4
     - require:
         - salt: deploy_bookkeeper_nodes
@@ -97,7 +97,7 @@ mount_journal_drive:
         - mount.mounted
     - kwarg:
         name: /var/opt/bookkeeper-journal
-        device: /dev/xvdb
+        device: /dev/nvme0n1
         fstype: ext4
         mkmnt: True
     - require:
@@ -111,7 +111,7 @@ format_ledger_drive:
     - arg:
         - blockdev.formatted
     - kwarg:
-        name: /dev/xvdc
+        name: /dev/nvme1n1
         fs_type: ext4
     - require:
         - salt: deploy_bookkeeper_nodes
@@ -125,7 +125,7 @@ mount_ledger_drive:
         - mount.mounted
     - kwarg:
         name: /var/opt/bookkeeper-ledger
-        device: /dev/xvdc
+        device: /dev/nvme1n1
         fstype: ext4
         mkmnt: True
     - require:
