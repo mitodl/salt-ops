@@ -133,3 +133,12 @@ datadog:
             days_critical: 15
             tags:
               - mitxpro
+          - name: ocw-cms-production
+            url: 'https://ocwcms.mit.edu/acl_users/credentials_cookie_auth/require_login'
+            tls_verify: true
+            check_certificate_expiration: true
+            days_warning: 30
+            days_critical: 15
+            timeout: 60
+            tags:
+              - ocw-cms-production
