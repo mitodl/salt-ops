@@ -529,7 +529,7 @@ environments:
         - engine: memcached
           engine_version: '1.4.34'
           node_type: cache.m3.medium
-          num_cache_nodes: 6
+          num_cache_nodes: 10
           purpose: residential-live
           cluster_id: residential-live
         - engine: memcached
