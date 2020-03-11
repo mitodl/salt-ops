@@ -125,5 +125,9 @@ mitx_cas:
         provider: touchstone
       - host: ^ga.odl.mit.edu
         provider: touchstone
+      - host: ^qisx.odl.mit.edu
+        provider: touchstone
+      - host: ^eecs.odl.mit.edu
+        provider: touchstone
     STATIC_ROOT: /opt/mitx-cas/static
     ZENDESK_PSK: __vault__::secret-operations/global/zendesk-cas-psk>data>value
