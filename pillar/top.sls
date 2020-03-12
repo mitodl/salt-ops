@@ -28,6 +28,7 @@ base:
     - match: compound
     - elastic_stack.version_production
     - datadog.http-check-integration
+    - datadog.elastalert-process-integration
   'roles:master':
     - match: grain
     - master

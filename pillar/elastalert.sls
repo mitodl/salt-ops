@@ -445,11 +445,3 @@ elastic_stack:
                 filter:
                   - term:
                       fluentd_tag: edx.cms
-
-datadog:
-  integrations:
-    process:
-      settings:
-        instances:
-          - name: elastalert
-            search_string: ['elastalert']
