@@ -9,6 +9,8 @@ edx:
     basic_auth:
       username: mitx
       password: __vault__::secret-residential/mitx-production/gitreload>data>value
+  edxapp:
+    max_upload_size: 50
 
 users:
   ichuang:
