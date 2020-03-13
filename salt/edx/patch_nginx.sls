@@ -7,8 +7,6 @@ update_max_upload_size_for_lms:
   service.running:
     - name: nginx
     - reload: True
-    - watch:
-        - file: update_max_upload_size_for_lms
 
 configure_nginx_status_module_for_edx:
   file.managed:
@@ -24,8 +22,11 @@ configure_nginx_status_module_for_edx:
             }
         }
     - group: www-data
+
+reload_edx_nginx_service_after_updates:
   service.running:
     - name: nginx
     - reload: True
-    - watch:
+    - onchanges_any:
         - file: configure_nginx_status_module_for_edx
+        - file: update_max_upload_size_for_lms
