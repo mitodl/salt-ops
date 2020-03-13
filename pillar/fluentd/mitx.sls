@@ -46,7 +46,7 @@ fluentd:
             - pos_file: /edx/var/log/supervisor/cms-stderr.pos
             - format: multiline
             - format_firstline: '/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/'
-            - format1: '/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(?:,\d{3}| [+\-]\d{4}\])? (?<message>.*)/'
+            - format1: '/\[?\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(?:,\d{3}:?| [+\-]\d{4}\])? (?<message>.*)/'
             - multiline_flush_interval: '5s'
         - directive: source
           attrs:
