@@ -445,3 +445,23 @@ elastic_stack:
                 filter:
                   - term:
                       fluentd_tag: edx.cms
+      - name: edx_unregistered_task
+        settings:
+          name: edX task failing
+          description: >-
+            A task has failed due to a mismatch in the source code between the
+            app and worker node.
+          type: frequency
+          index: logstash-mitx*-production*
+          num_events: 1
+          timeframe:
+            minutes: 5
+          alert:
+            - opsgenie
+          alert_text: "Source code mismatch between edX app and worker nodes"
+          filter:
+            - bool:
+                must:
+                  - query_string:
+                      default_field: message
+                      query: (received unregistered task) AND (message has been ignored)
