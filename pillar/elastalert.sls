@@ -488,6 +488,9 @@ elastic_stack:
             minutes: 5
           alert:
             - opsgenie
+          opsgenie_key: {{ opsgenie_key }}
+          opsgenie_priority: P3
+          opsgenie_alias: edx_unregistered_task
           alert_text: "Source code mismatch between edX app and worker nodes"
           filter:
             - bool:
