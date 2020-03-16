@@ -106,7 +106,7 @@ django:
     GA_TRACKING_ID: {{ env_data.ga_id }}
     LECTURE_CAPTURE_USER: {{ salt.sdb.get('sdb://consul/odl-video-service/lecture-capture-user') }}
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
-    MAILGUN_URL: https://api.mailgun.net/v3/video.odl.mit.edu
+    MAILGUN_URL: https://api.mailgun.net/v3/video-mail.odl.mit.edu
     MIT_WS_CERTIFICATE: __vault__::secret-odl-video/global/mit-application-certificate>data>certificate
     MIT_WS_PRIVATE_KEY: __vault__::secret-odl-video/global/mit-application-certificate>data>private_key
     ODL_VIDEO_ADMIN_EMAIL: cuddle_bunnies@mit.edu
