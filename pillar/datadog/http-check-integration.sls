@@ -142,3 +142,11 @@ datadog:
             timeout: 60
             tags:
               - ocw-cms-production
+          - name: starcellbio-production
+            url: 'https://starcellbio.mit.edu'
+            tls_verify: true
+            check_certificate_expiration: true
+            days_warning: 30
+            days_critical: 15
+            tags:
+              - starcellbio
