@@ -418,6 +418,36 @@ elastic_stack:
                 filter:
                   - term:
                       fluentd_tag: ocwcms.zope.event
+      - name: ocw_media_asset_error
+        settings:
+          name: OCW exception processing media asset
+          description: >-
+            There was an exception processing a media asset on an OCW page.
+            In the past, this has been because of incorrectly-named media
+            assets. The error has been generated typically by the
+            media_background_image_urls_mapping endpoint that is requested by
+            the mirror engine.
+          type: frequency
+          index: logstash-ocw-*
+          num_events: 1
+          timeframe:
+            minutes: 5
+          alert:
+            - slack
+          alert_text: "OCW exception processing media asset"
+          slack_webhook_url: {{ slack_webhook_url }}
+          slack_channel_override: '#ocw-eng'
+          slack_username_override: Elastalert
+          slack_msg_color: "warning"
+          filter:
+            - bool:
+                must:
+                  - query_string:
+                      default_field: message
+                      query: MediaAndBackgroundImagesURLView AND mediaAsset
+                filter:
+                  - term:
+                      fluentd_tag: ocwcms.zope.event
       - name: mitx_git_export_failure
         settings:
           name: Automated git export failure
