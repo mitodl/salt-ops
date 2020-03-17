@@ -857,8 +857,8 @@ environments:
         app: starcellbio
         business_unit: starteam
         domains:
-          - starcellbio.odl.mit.edu
           - starcellbio.mit.edu
+          - starcellbio.odl.mit.edu
         num_instances: 3
         security_groups:
           - webapp
