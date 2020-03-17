@@ -25,6 +25,9 @@ nginx:
               - server_name: {{ server_domain_names|join(' ') }}
               - listen: 80
               - listen: '[::]:80'
+              - location /status:
+                  - return: 200 OK
+                  - add_header: Content-Type text/plain
               - location /:
                   - return: 301 https://$host$request_uri
           - server:
