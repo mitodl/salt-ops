@@ -46,7 +46,8 @@ nginx:
               - ssl_prefer_server_ciphers: 'on'
               - resolver: 1.1.1.1
               - location /status:
-                  - return: 200
+                  - return: 200 OK
+                  - add_header: Content-Type text/plain
               - location /:
                   - include: uwsgi_params
                   - uwsgi_ignore_client_abort: 'on'
