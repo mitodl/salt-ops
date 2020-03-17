@@ -78,24 +78,24 @@ uwsgi:
   apps:
     {{ app_name }}:
       uwsgi:
-        - buffer-size: 65535
         - chdir: /opt/{{ app_name }}
         - chown-socket: 'www-data:deploy'
         - disable-write-exception: 'true'
-        - enable-threads: 'true'
         - gid: deploy
         - logto: /var/log/uwsgi/apps/%n.log
         - memory-report: 'true'
         - module: StarCellBio.wsgi
         - pidfile: /var/run/uwsgi/{{ app_name }}.pid
-        - post-buffering: 65535
-        - processes: 2
         - pyhome: /usr/local/pyenv/versions/{{ python_version }}/
         - socket: /var/run/uwsgi/{{ app_name }}.sock
-        - threads: 50
         - thunder-lock: 'true'
-        - max-requests: 1000
         - uid: deploy
+        # The following settings assume 4GB system memory
+        - processes: '32'
+        - cheaper: '4'
+        - cheaper-initial: '16'
+        # cheaper-rss-limit-soft is 3GB
+        - cheaper-rss-limit-soft: '3221225472'
 
 starcellbio:
   config:
