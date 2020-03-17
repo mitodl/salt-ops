@@ -22,7 +22,7 @@ nginx:
         enabled: True
         config:
           - server:
-              - server_name: {{ server_domain_names|join(' ') }}
+              - server_name: '{{ server_domain_names|join(' ') }} ""'
               - listen: 80
               - listen: '[::]:80'
               - location /status:
@@ -31,7 +31,7 @@ nginx:
               - location /:
                   - return: 301 https://$host$request_uri
           - server:
-              - server_name: {{ server_domain_names|join(' ') }}
+              - server_name: '{{ server_domain_names|join(' ') }} ""'
               - listen: '443 ssl default_server'
               - listen: '[::]:443 ssl'
               - root: /opt/{{ app_name }}/
