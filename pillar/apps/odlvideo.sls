@@ -131,7 +131,6 @@ django:
     YT_ACCESS_TOKEN: __vault__::secret-odl-video/{{ ENVIRONMENT }}/youtube-credentials>data>access_token
     YT_CLIENT_ID: __vault__::secret-odl-video/{{ ENVIRONMENT }}/youtube-credentials>data>client_id
     YT_CLIENT_SECRET: __vault__::secret-odl-video/{{ ENVIRONMENT }}/youtube-credentials>data>client_secret
-    YT_DAILY_UPLOAD_LIMIT: 100
     YT_PROJECT_ID: {{ env_data.youtube_project_id }}
     YT_REFRESH_TOKEN: __vault__::secret-odl-video/{{ ENVIRONMENT }}/youtube-credentials>data>refresh_token
   pkgs:
