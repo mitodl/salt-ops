@@ -76,24 +76,20 @@ uwsgi:
   apps:
     {{ app_name }}:
       uwsgi:
-        - buffer-size: 65535
         - chdir: /opt/{{ app_name }}
         - chown-socket: 'www-data:deploy'
         - disable-write-exception: 'true'
-        - enable-threads: 'true'
         - gid: deploy
         - logto: /var/log/uwsgi/apps/%n.log
         - memory-report: 'true'
         - module: mitx_cas.wsgi
         - pidfile: /var/run/uwsgi/{{ app_name }}.pid
-        - post-buffering: 65535
         - processes: 2
         - pyhome: /usr/local/pyenv/versions/{{ python_version }}/
         - socket: /var/run/uwsgi/{{ app_name }}.sock
         - threads: 50
         - thunder-lock: 'true'
         - touch-reload: /etc/mitx-cas/config.yml
-        - max-requests: 1000
         - uid: deploy
         - env: CONFIG_ROOT=/etc/mitx-cas/
 

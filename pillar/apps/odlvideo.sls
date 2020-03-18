@@ -162,17 +162,14 @@ uwsgi:
   apps:
     {{ app_name }}:
       uwsgi:
-        - buffer-size: 65535
         - chdir: /opt/{{ app_name }}
         - chown-socket: 'www-data:deploy'
         - disable-write-exception: 'true'
-        - enable-threads: 'true'
         - gid: deploy
         - logto: /var/log/uwsgi/apps/%n.log
         - memory-report: 'true'
         - module: odl_video.wsgi
         - pidfile: /var/run/uwsgi/{{ app_name }}.pid
-        - post-buffering: 65535
         - processes: 2
         - pyhome: /usr/local/pyenv/versions/{{ python_version }}/
         - socket: /var/run/uwsgi/{{ app_name }}.sock
@@ -185,6 +182,7 @@ uwsgi:
             pidfile=/opt/{{ app_name }}/celery.pid,
             daemonize=true,
             touch=/opt/{{ app_name}}/deploy_complete.txt
+
 
 node:
   install_from_binary: True

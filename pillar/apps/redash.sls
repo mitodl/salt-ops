@@ -102,14 +102,12 @@ uwsgi:
       uwsgi:
         - socket: /var/run/uwsgi/{{ app_name }}.sock
         - chown-socket: 'www-data:redash'
-        - buffer-size: 65535
         - chdir: /opt/{{ app_name }}
         - pyhome: /usr/local/pyenv/versions/{{ python_version }}/
         - uid: redash
         - gid: redash
         - processes: 2
         - threads: 50
-        - enable-threads: 'true'
         - thunder-lock: 'true'
         - logto: /var/log/uwsgi/apps/%n.log
         - module: redash.wsgi:app
