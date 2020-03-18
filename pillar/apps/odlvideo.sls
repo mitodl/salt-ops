@@ -171,8 +171,10 @@ uwsgi:
         - memory-report: 'true'
         - module: odl_video.wsgi
         - pidfile: /var/run/uwsgi/{{ app_name }}.pid
+        - processes: 2
         - pyhome: /usr/local/pyenv/versions/{{ python_version }}/
         - socket: /var/run/uwsgi/{{ app_name }}.sock
+        - threads: 50
         - thunder-lock: 'true'
         - touch-reload: /opt/{{ app_name }}/deploy_complete.txt
         - uid: deploy
@@ -181,13 +183,6 @@ uwsgi:
             pidfile=/opt/{{ app_name }}/celery.pid,
             daemonize=true,
             touch=/opt/{{ app_name}}/deploy_complete.txt
-        # The following settings assume 4GB system memory
-        - processes: '32'
-        - cheaper: '4'
-        - cheaper-initial: '16'
-        # cheaper-rss-limit-soft is 3GB
-        - cheaper-rss-limit-soft: '3221225472'
-
 
 
 node:

@@ -84,18 +84,14 @@ uwsgi:
         - memory-report: 'true'
         - module: mitx_cas.wsgi
         - pidfile: /var/run/uwsgi/{{ app_name }}.pid
+        - processes: 2
         - pyhome: /usr/local/pyenv/versions/{{ python_version }}/
         - socket: /var/run/uwsgi/{{ app_name }}.sock
+        - threads: 50
         - thunder-lock: 'true'
         - touch-reload: /etc/mitx-cas/config.yml
         - uid: deploy
         - env: CONFIG_ROOT=/etc/mitx-cas/
-        # The following settings assume 2GB system memory
-        - processes: '16'
-        - cheaper: '4'
-        - cheaper-initial: '12'
-        # cheaper-rss-limit-soft is 1GB
-        - cheaper-rss-limnit-soft: '1073741824'
 
 mitx_cas:
   deploy_key: __vault__::secret-residential/global/mitx-cas/github-deploy-key>data>value

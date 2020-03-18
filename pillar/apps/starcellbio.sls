@@ -86,16 +86,12 @@ uwsgi:
         - memory-report: 'true'
         - module: StarCellBio.wsgi
         - pidfile: /var/run/uwsgi/{{ app_name }}.pid
+        - processes: 2
         - pyhome: /usr/local/pyenv/versions/{{ python_version }}/
         - socket: /var/run/uwsgi/{{ app_name }}.sock
+        - threads: 50
         - thunder-lock: 'true'
         - uid: deploy
-        # The following settings assume 4GB system memory
-        - processes: '32'
-        - cheaper: '4'
-        - cheaper-initial: '16'
-        # cheaper-rss-limit-soft is 3GB
-        - cheaper-rss-limit-soft: '3221225472'
 
 starcellbio:
   config:

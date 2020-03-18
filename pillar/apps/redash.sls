@@ -106,6 +106,8 @@ uwsgi:
         - pyhome: /usr/local/pyenv/versions/{{ python_version }}/
         - uid: redash
         - gid: redash
+        - processes: 2
+        - threads: 50
         - thunder-lock: 'true'
         - logto: /var/log/uwsgi/apps/%n.log
         - module: redash.wsgi:app
@@ -119,9 +121,3 @@ uwsgi:
             pidfile=/opt/{{ app_name }}/celery.pid,
             daemonize=true,
             touch=/opt/{{ app_name}}/deploy_complete.txt
-        # The following settings assume 16GB system memory
-        - processes: '64'
-        - cheaper: '8'
-        - cheaper-initial: '32'
-        # cheaper-rss-limit-soft is 8GB
-        - cheaper-rss-limit-soft: '8589934592'
