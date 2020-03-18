@@ -157,6 +157,8 @@ heroku:
     MICROMASTERS_CATALOG_API_URL: https://{{ etl_micromasters_host }}/api/v0/catalog/
     MICROMASTERS_COURSE_URL: https://{{ etl_micromasters_host }}/api/v0/courseruns/
     MICROMASTERS_EXTERNAL_LOGIN_URL: https://{{ env_data.MICROMASTERS_BASE_URL}}/discussions
+    MIT_WS_CERTIFICATE: __vault__::secret-{{ business_unit }}/global/mit-application-certificate>data>certificate
+    MIT_WS_PRIVATE_KEY: __vault__::secret-{{ business_unit }}/global/mit-application-certificate>data>private_key
     NEW_RELIC_LOG: stdout
     NODE_MODULES_CACHE: False
     OCW_CONTENT_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-only-ocw-content-storage>data>access_key
@@ -226,6 +228,11 @@ heroku:
     YOUTUBE_DEVELOPER_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/youtube-developer-key>data>value
     YOUTUBE_FETCH_TRANSCRIPT_SCHEDULE_SECONDS: 21600
     YOUTUBE_FETCH_TRANSCRIPT_SLEEP_SECONDS: 20
+
+    # This can be removed when feature makes it to production
+    {% if env_data.env_name != 'production' %}
+    FEATURE_MOIRA: True
+    {% endif %}
     
 schedule:
   refresh_{{ env_data.app_name }}_configs:
