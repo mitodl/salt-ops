@@ -105,18 +105,6 @@ mitx_cas:
         HOST: postgres-mitxcas.service.consul
     SECRET_KEY: __vault__:gen_if_missing:secret-residential/{{ ENVIRONMENT }}/mitx-cas/django-secret-key>data>value
     CAS_ALLOWED_SERVICES:
-      - host: ^lore-ci.herokuapp.com$
-        provider: touchstone
-      - host: ^lore-demo.herokuapp.com$
-        provider: touchstone
-      - host: ^lore-rc.herokuapp.com$
-        provider: touchstone
-      - host: ^lore-release.herokuapp.com$
-        provider: touchstone
-      - host: ^lore.odl.mit.edu$
-        provider: touchstone
-      - host: ^www.lore.odl.mit.edu$
-        provider: touchstone
       - host: ^introml.odl.mit.edu
         provider: touchstone
       - host: ^ga.odl.mit.edu
@@ -124,6 +112,8 @@ mitx_cas:
       - host: ^qisx.odl.mit.edu
         provider: touchstone
       - host: ^eecs.odl.mit.edu
+        provider: touchstone
+      - host: ^go.odl.mit.edu
         provider: touchstone
     STATIC_ROOT: /opt/mitx-cas/static
     ZENDESK_PSK: __vault__::secret-operations/global/zendesk-cas-psk>data>value
