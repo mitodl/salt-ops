@@ -97,6 +97,7 @@ run_ansible:
     - env:
         HOME: /root
 
+{% if 'edx-base-worker' not in salt.grains.get('roles') %}
 {% if 'edx-worker' in salt.grains.get('roles') and not 'qa' in salt.grains.get('environment') %}
 restart_edx_worker_service:
   supervisord.running:
@@ -107,6 +108,7 @@ restart_edx_worker_service:
       - file: place_ansible_environment_configuration
     - require:
       - cmd: run_ansible
+{% endif %}
 {% endif %}
 
 {% if 'edx-analytics' in salt.grains.get('roles') %}
