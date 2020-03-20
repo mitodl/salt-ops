@@ -30,6 +30,7 @@ beacons:
           exclude:
             - /opt/datadog-agent/run
             - /opt/datadog-agent/agent
+            - /opt/netdata/
           recurse: True
           auto_add: True
         /etc:
