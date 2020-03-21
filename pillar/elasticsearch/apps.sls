@@ -126,6 +126,16 @@ elasticsearch:
             actions:
               - 'indices:*'
             auth_key: __vault__::secret-operations/rc-apps/discussions/elasticsearch-auth-key>data>value
+          - name: Guest user access for discussions RC index with HTTP Auth
+            type: allow
+            indices:
+              - 'discussions-rc*'
+            accept_x-forwarded-for_header: 'true'
+            methods:
+              - GET
+            actions:
+              - 'indices:*'
+            auth_key: __vault__::secret-operations/rc-apps/discussions/elasticsearch-guest-user-auth-key>data>value
           - name: Access for discussions CI index with HTTP Auth
             type: allow
             indices:
