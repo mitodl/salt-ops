@@ -100,6 +100,24 @@ uwsgi:
   apps:
     {{ app_name }}:
       uwsgi:
+        - strict: 'true'
+        - enable-threads: 'true'
+        - vacuum: 'true'
+        - single-interpreter: 'true'
+        - die-on-term: 'true'
+        - need-app: 'true'
+        - disable-logging: 'true'
+        - log-4xx: 'true'
+        - log-5xx: 'true'
+        - max-requests: '1000'
+        - max-worker-lifetime: '3600'
+        - reload-on-rss: '200'
+        - worker-reload-mercy: '60'
+        - harakiri: '60'
+        - py-callos-afterfork: 'true'
+        - buffer-size: '65535'
+        - post-buffering: '65535'
+        - auto-procname: 'true'
         - socket: /var/run/uwsgi/{{ app_name }}.sock
         - chown-socket: 'www-data:redash'
         - chdir: /opt/{{ app_name }}
