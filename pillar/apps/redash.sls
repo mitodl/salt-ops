@@ -114,7 +114,7 @@ uwsgi:
         - reload-on-rss: '200'
         - worker-reload-mercy: '60'
         - harakiri: '60'
-        - py-callos-afterfork: 'true'
+        - py-call-osafterfork: 'true'
         - buffer-size: '65535'
         - post-buffering: '65535'
         - auto-procname: 'true'
