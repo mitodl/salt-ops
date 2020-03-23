@@ -84,9 +84,8 @@ datadog:
             tags:
               - mitxpro-production
           - name: odl-video-service-production
-            url: 'https://video.odl.mit.edu/status?token=production-apps'
+            url: 'https://video.odl.mit.edu/static/hash.txt'
             tls_verify: true
-            content_match: 'up'
             check_certificate_expiration: true
             days_warning: 30
             days_critical: 15
