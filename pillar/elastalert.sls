@@ -475,6 +475,34 @@ elastic_stack:
                 filter:
                   - term:
                       fluentd_tag: edx.cms
+      - name: edx_s3_response_error
+        settings:
+          name: edX S3 Response Error
+          description: >-
+            An edX worker got an error from S3 while trying to export course
+            content to Git. This usually means that the uwsgi service needs to
+            be restarted so that Celery can pick up updated credentials.
+          index: logstash-mitx*-production*
+          type: frequency
+          num_events: 1
+          timeframe:
+            minutes: 5
+          alert:
+            - slack
+          alert_text: "Automated git export failure"
+          slack_webhook_url: {{ slack_webhook_url }}
+          slack_channel_override: '#mitx-tech-notifs'
+          slack_username_override: Elastalert
+          slack_msg_color: "warning"
+          filter:
+            - bool:
+                must:
+                  - query_string:
+                      default_field: message
+                      query: S3ResponseError AND async_export_to_git
+                filter:
+                  - term:
+                      fluentd_tag: edx.cms.stderr
       - name: edx_unregistered_task
         settings:
           name: edX task failing
