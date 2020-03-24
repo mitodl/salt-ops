@@ -499,7 +499,7 @@ elastic_stack:
                 must:
                   - query_string:
                       default_field: message
-                      query: S3ResponseError AND async_export_to_git
+                      query: S3ResponseError
                 filter:
                   - term:
                       fluentd_tag: edx.cms.stderr
