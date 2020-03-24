@@ -502,7 +502,7 @@ elastic_stack:
                       query: S3ResponseError
                 filter:
                   - term:
-                      fluentd_tag: edx.cms.stderr
+                      fluentd_tag: edx.*
       - name: edx_unregistered_task
         settings:
           name: edX task failing
