@@ -500,9 +500,9 @@ elastic_stack:
                   - query_string:
                       default_field: message
                       query: S3ResponseError
-                filter:
-                  - term:
-                      fluentd_tag: edx.*
+                  - query_string:
+                      default_field: fluentd_tag
+                      query: edx.cms.* OR edx.lms.*
       - name: edx_unregistered_task
         settings:
           name: edX task failing
