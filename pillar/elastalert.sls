@@ -480,8 +480,8 @@ elastic_stack:
           name: edX S3 Response Error
           description: >-
             An edX worker got an error from S3 while trying to export course
-            content to Git. This usually means that the uwsgi service needs to
-            be restarted so that Celery can pick up updated credentials.
+            content to Git. This may mean that the process needs to be
+            restarted, or the credentials might need to be refreshed.
           index: logstash-mitx*-production*
           type: frequency
           num_events: 1
