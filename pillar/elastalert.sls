@@ -475,6 +475,34 @@ elastic_stack:
                 filter:
                   - term:
                       fluentd_tag: edx.cms
+      - name: edx_s3_response_error
+        settings:
+          name: edX S3 Response Error
+          description: >-
+            An edX worker got an error from S3 while trying to export course
+            content to Git. This may mean that the process needs to be
+            restarted, or the credentials might need to be refreshed.
+          index: logstash-mitx*-production*
+          type: frequency
+          num_events: 1
+          timeframe:
+            minutes: 5
+          alert:
+            - slack
+          alert_text: "Automated git export failure"
+          slack_webhook_url: {{ slack_webhook_url }}
+          slack_channel_override: '#mitx-tech-notifs'
+          slack_username_override: Elastalert
+          slack_msg_color: "warning"
+          filter:
+            - bool:
+                must:
+                  - query_string:
+                      default_field: message
+                      query: S3ResponseError
+                  - query_string:
+                      default_field: fluentd_tag
+                      query: edx.cms.* OR edx.lms.*
       - name: edx_unregistered_task
         settings:
           name: edX task failing
