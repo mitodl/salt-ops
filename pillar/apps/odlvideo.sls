@@ -96,7 +96,7 @@ django:
     DROPBOX_TOKEN: __vault__::secret-odl-video/{{ ENVIRONMENT }}/dropbox_app>data>token
     EDX_BASE_URL: {{ env_data.EDX_BASE_URL }}
     EDX_ACCESS_TOKEN: __vault__::secret-odl-video/{{ ENVIRONMENT }}/edx-access-token>data>value
-    ENABLE_VIDEO_PERMISSIONS: False
+    ENABLE_VIDEO_PERMISSIONS: True
     ET_PIPELINE_ID: {{ env_data.transcode_pipeline_id }}
     ET_PRESET_IDS: 1504127981921-c2jlwt,1504127981867-06dkm6,1504127981819-v44xlx,1504127981769-6cnqhq,1351620000001-200040,1351620000001-200050
     FEATURE_RETRANSCODE_ENABLED: True
