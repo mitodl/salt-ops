@@ -142,6 +142,7 @@ heroku:
     FEATURE_COURSE_FILE_SEARCH: True
     FEATURE_COURSE_UI: {{ env_data.FEATURE_COURSE_UI }}
     FEATURE_INDEX_UPDATES: True
+    FEATURE_MOIRA: True
     FEATURE_PROFILE_UI: True
     FEATURE_SAML_AUTH: True
     FEATURE_SEARCH_UI: True
@@ -228,11 +229,6 @@ heroku:
     YOUTUBE_DEVELOPER_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/youtube-developer-key>data>value
     YOUTUBE_FETCH_TRANSCRIPT_SCHEDULE_SECONDS: 21600
     YOUTUBE_FETCH_TRANSCRIPT_SLEEP_SECONDS: 20
-
-    # This can be removed when feature makes it to production
-    {% if env_data.env_name != 'production' %}
-    FEATURE_MOIRA: True
-    {% endif %}
     
 schedule:
   refresh_{{ env_data.app_name }}_configs:
