@@ -388,7 +388,7 @@ environments:
         app: xqueue-watcher
         business_unit: residential
         versions:
-          xqwatcher: 7a731efae630469c659422c33af7fbba445d81af
+          xqwatcher: c70f1d5523696d9dd51bc0c91ed9f5a35f2d4be3
           edx_config_repo: https://github.com/edx/configuration
           edx_config_version: open-release/ironwood.master
         courses:
@@ -543,7 +543,7 @@ environments:
         app: xqueue-watcher
         business_unit: residential
         versions:
-          xqwatcher: 7a731efae630469c659422c33af7fbba445d81af
+          xqwatcher: c70f1d5523696d9dd51bc0c91ed9f5a35f2d4be3
           edx_config_repo: https://github.com/edx/configuration
           edx_config_version: open-release/ironwood.master
         courses:
