@@ -85,6 +85,6 @@ test_edxapp_{{ connection }}:
 add_an_artificial_wait_for_forum:
   module.run:
     - name: test.sleep
-    - length: 10
+    - length: 30
     - require_in:
         - testinfra: test_edxapp_forum
