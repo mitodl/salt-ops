@@ -141,6 +141,8 @@ edx:
         - name: raven
         - name: git+https://github.com/raccoongang/xblock-pdf.git@8d63047c53bc8fdd84fa7b0ec577bb0a729c215f#egg=xblock-pdf
           extra_args: -e
+        - name: git+https://github.com/mitodl/edx-proctoring@f016be8c44e7ee8bf1bfa5fcc982b0f9d837f2f4#egg=edx-proctoring
+          extra_args: -e
 
     EDXAPP_LMS_ENV_EXTRA:
       EMAIL_USE_DEFAULT_FROM_FOR_BULK: True
@@ -152,6 +154,12 @@ edx:
         ENABLE_VIDEO_UPLOAD_PIPELINE: False
         ENABLE_COMBINED_LOGIN_REGISTRATION: True
         ENABLE_THIRD_PARTY_AUTH: True
+      PROCTORING_BACKENDS:
+        DEFAULT: proctortrack
+        proctortrack:
+          client_id: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>id
+          client_secret: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>secret
+          base_url: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>base_url
       REMOTE_GRADEBOOK:
         URL: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>url
         DEFAULT_NAME: !!null
@@ -165,3 +173,9 @@ edx:
         AUTH_USE_CAS: False
         ENABLE_GIT_AUTO_EXPORT: True
         ENABLE_EXPORT_GIT: True
+      PROCTORING_BACKENDS:
+        DEFAULT: proctortrack
+        proctortrack:
+          client_id: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>id
+          client_secret: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>secret
+          base_url: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>base_url
