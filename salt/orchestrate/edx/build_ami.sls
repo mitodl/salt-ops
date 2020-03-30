@@ -141,6 +141,12 @@ reload_pillar_data_on_edx_nodes:
     - require:
         - salt: populate_mine_with_edx_node_data
 
+saltutil_sync_all:
+  salt.function:
+    - name: saltutil.sync_all
+    - tgt: 'P@roles:(edx-base|edx-base-worker) and G@environment:{{ ENVIRONMENT }}'
+    - tgt_type: compound
+
 {# Deploy Consul agent first so that the edx deployment can use provided DNS endpoints #}
 deploy_consul_agent_to_edx_nodes:
   salt.state:
