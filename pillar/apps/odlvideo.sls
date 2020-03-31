@@ -82,7 +82,7 @@ django:
       - force_checkout: True
       - force_reset: True
   environment:
-    {% if 'rc-apps' in ENVIRONMENT %}:
+    {% if env_data.env_name == 'rc-apps' %}
     FEATURE_VIDEOJS_ANNOTATIONS: True
     {% endif %}
     AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/odl-video-service-{{ env_data.env_name }}>data>access_key
