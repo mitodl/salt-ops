@@ -30,8 +30,7 @@
       'youtube_project_id': 'ovs-youtube-qa',
       'release_branch': 'release-candidate',
       'cloudfront_subdomain': 'du3yhovcx8dht',
-      'EDX_BASE_URL': 'https://courses-rc.xpro.mit.edu',
-      'FEATURE_VIDEOJS_ANNOTATIONS': 'True'
+      'EDX_BASE_URL': 'https://courses-rc.xpro.mit.edu'
       },
     'production-apps': {
       'env_name': 'production',
@@ -83,6 +82,9 @@ django:
       - force_checkout: True
       - force_reset: True
   environment:
+    {% if 'rc-apps' in ENVIRONMENT %}:
+    FEATURE_VIDEOJS_ANNOTATIONS: True
+    {% endif %}
     AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/odl-video-service-{{ env_data.env_name }}>data>access_key
     AWS_REGION: us-east-1
     AWS_S3_DOMAIN: s3.amazonaws.com
