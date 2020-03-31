@@ -30,7 +30,8 @@
       'youtube_project_id': 'ovs-youtube-qa',
       'release_branch': 'release-candidate',
       'cloudfront_subdomain': 'du3yhovcx8dht',
-      'EDX_BASE_URL': 'https://courses-rc.xpro.mit.edu'
+      'EDX_BASE_URL': 'https://courses-rc.xpro.mit.edu',
+      'FEATURE_VIDEOJS_ANNOTATIONS': 'True'
       },
     'production-apps': {
       'env_name': 'production',
