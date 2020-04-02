@@ -41,5 +41,5 @@ $ sudo salt -C 'P@roles:ocw-(origin|cms) and G@ocw-environment:qa' state.sls app
 Deploying `ocwcms` to production (run on the Salt master):
 
 ```
-$ sudo salt -C 'P@roles:ocw-(origin|cms) and G@ocw-environment:production' state.sls apps.ocw.sync_repo
+$ sudo salt -C 'P@roles:ocw-(origin|cms|mirror) and G@ocw-environment:production' state.sls apps.ocw.sync_repo
 ```
