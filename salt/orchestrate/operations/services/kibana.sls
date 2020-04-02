@@ -30,9 +30,9 @@ generate_{{ app_name }}_cloud_map_file:
         release_id: {{ salt.sdb.get('sdb://consul/{{ app_name }}/{{ ENVIRONMENT }}/release-id')|default('v1') }}
         securitygroupid:
           - {{ salt.boto_secgroup.get_group_id(
-            'webapp-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+            'webapp-odl-vpn-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
-            'master-ssh-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+            'salt_master-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           - {{ salt.boto_secgroup.get_group_id(
             'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
         subnetids: {{ subnet_ids|tojson }}
