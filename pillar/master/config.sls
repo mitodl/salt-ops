@@ -50,6 +50,7 @@ salt_master:
         - https://github.com/mitodl/zookeeper-formula
         - https://github.com/mitodl/bookkeeper-formula
         - https://github.com/mitodl/pulsar-formula
+        - https://github.com/mitodl/dremio-formula
     ext_pillar:
       git_pillar_provider: pygit2
       git_pillar_base: {{ git_ref }}

@@ -73,6 +73,11 @@ base:
     - mongodb
     - fluentd.mongodb
     - consul.mongodb
+  dremio*:
+    - dremio
+    - nginx
+    - nginx.dremio
+    - consul
   starcellbio*:
     - apps.starcellbio
     - nginx

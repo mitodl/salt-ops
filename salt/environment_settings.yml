@@ -663,6 +663,16 @@ environments:
         security_groups:
           - vault
           - consul
+      dremio:
+        app: dremio
+        num_instances: 1
+        domains:
+          - dremio.odl.mit.edu
+        business_unit: operations
+        security_groups:
+          - webapp-odl-vpn
+        size:
+          r5.xlarge
       redash:
         app: redash
         num_instances: 3
