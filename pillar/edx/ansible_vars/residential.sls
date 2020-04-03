@@ -91,9 +91,21 @@ edx:
       REMOTE_GRADEBOOK_PASSWORD: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>password
       SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>key
       SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>value
+      PROCTORING_BACKENDS:
+        DEFAULT: proctortrack
+        proctortrack:
+          client_id: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>id
+          client_secret: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>secret
+          base_url: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>base_url
 
     EDXAPP_CMS_AUTH_EXTRA:
       SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
+      PROCTORING_BACKENDS:
+        DEFAULT: proctortrack
+        proctortrack:
+          client_id: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>id
+          client_secret: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>secret
+          base_url: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>base_url
 
     {# multivariate, only needed for current deployment. will be removed in favor of SAML (tmacey 2017/03/20) #}
     EDXAPP_CAS_ATTRIBUTE_PACKAGE: 'git+https://github.com/mitodl/mitx_cas_mapper#egg=mitx_cas_mapper'
@@ -153,13 +165,10 @@ edx:
         SKIP_EMAIL_VALIDATION: True
         ENABLE_VIDEO_UPLOAD_PIPELINE: False
         ENABLE_COMBINED_LOGIN_REGISTRATION: True
+        ENABLE_OAUTH2_PROVIDER: True
         ENABLE_THIRD_PARTY_AUTH: True
-      PROCTORING_BACKENDS:
-        DEFAULT: proctortrack
-        proctortrack:
-          client_id: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>id
-          client_secret: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>secret
-          base_url: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>base_url
+      PROCTORING_SETTINGS:
+        MUST_BE_VERIFIED_TRACK: False
       REMOTE_GRADEBOOK:
         URL: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>url
         DEFAULT_NAME: !!null
@@ -173,9 +182,6 @@ edx:
         AUTH_USE_CAS: False
         ENABLE_GIT_AUTO_EXPORT: True
         ENABLE_EXPORT_GIT: True
-      PROCTORING_BACKENDS:
-        DEFAULT: proctortrack
-        proctortrack:
-          client_id: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>id
-          client_secret: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>secret
-          base_url: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>base_url
+        ENABLE_OAUTH2_PROVIDER: True
+      PROCTORING_SETTINGS:
+        MUST_BE_VERIFIED_TRACK: False
