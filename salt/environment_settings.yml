@@ -691,7 +691,7 @@ environments:
           - webapp
       kibana:
         app: kibana
-        num_instances: 2
+        num_instances: 1
         domains:
           - logs.odl.mit.edu
         business_unit: operations
