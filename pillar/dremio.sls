@@ -7,6 +7,13 @@ dremio:
   config:
     paths:
       dist: dremioS3:///mitodl-data-lake/dremio/accel
+    services:
+      coordinator:
+        enabled: {{ 'dremio-operations-0-v1' == salt.grains.get('id') }}
+        master:
+          enabled: {{ 'dremio-operations-0-v1' == salt.grains.get('id') }}
+      executor:
+        enabled: {{ 'dremio-operations-0-v1' != salt.grains.get('id') }}
   core_site_config:
     configuration:
       property:
