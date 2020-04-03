@@ -105,7 +105,7 @@ heroku:
     PGBOUNCER_DEFAULT_POOL_SIZE: 50
     PGBOUNCER_MIN_POOL_SIZE: 5
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-secret-key>data>value
-    SENTRY_DSN: __vault__::secret-operations/global/{{ business_unit} }/sentry-dsn>data>value
+    SENTRY_DSN: __vault__::secret-operations/global/{{ business_unit}}/sentry-dsn>data>value
     SMAPPLY_ACCESS_TOKEN: {{ smapply.access_token }}
     SMAPPLY_AMOUNTPAID_ID: {{ smapply.amountpaid_id }}
     SMAPPLY_AMOUNT_TO_PAY_ID: {{ smapply.amount_to_pay_id }}
@@ -116,4 +116,3 @@ heroku:
     SMAPPLY_REFRESH_TOKEN: {{ smapply.refresh_token }}
     SMAPPLY_WEBHOOK_AUTH_TOKEN: {{ smapply.webhook_auth_token }}
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
-
