@@ -66,6 +66,9 @@ base:
     - match: grain
     - pulsar
     - pulsar.tests
+  dremio*:
+    - dremio
+    - nginx
   'roles:consul_server':
     - match: grain
     - consul
