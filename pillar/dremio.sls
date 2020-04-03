@@ -1,3 +1,8 @@
+python_dependencies:
+  python_libs:
+    - testinfra
+    - pyhocon
+
 dremio:
   config:
     paths:
