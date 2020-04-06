@@ -6,7 +6,7 @@ python_dependencies:
 dremio:
   config:
     paths:
-      dist: dremioS3:///mitodl-data-lake/dremio/accel
+      dist: dremioS3:///mitodl-data-lake/dremio/
     services:
       coordinator:
         enabled: {{ 'dremio-operations-0-v1' == salt.grains.get('id') }}
