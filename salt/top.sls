@@ -56,6 +56,7 @@ base:
     - rabbitmq.tests
   'roles:zookeeper':
     - match: grain
+    - zookeeper.set_host
     - zookeeper
     - zookeeper.server
   'roles:bookkeeper':
