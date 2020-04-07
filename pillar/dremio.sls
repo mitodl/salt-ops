@@ -12,10 +12,8 @@ python_dependencies:
 
 dremio:
   config:
-    {% if 'dremio-operations-0-v1' == salt.grains.get('id') %}
     paths:
       dist: dremioS3:///mitodl-data-lake/dremio/
-    {% endif %}
     services:
       coordinator:
         enabled: {{ 'dremio-operations-0-v1' == salt.grains.get('id') }}
