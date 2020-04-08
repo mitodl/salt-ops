@@ -228,7 +228,6 @@ edx:
         INDIVIDUAL_DUE_DATES: true
         LICENSING: true
         REQUIRE_COURSE_EMAIL_AUTH: false
-        RESTRICT_ENROLL_NO_ATSIGN_USERNAMES: true
       FIELD_OVERRIDE_PROVIDERS:
         - courseware.student_field_overrides.IndividualStudentOverrideProvider
       GIT_IMPORT_STATIC: True
