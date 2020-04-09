@@ -653,6 +653,16 @@ environments:
     network_prefix: '10.0'
     vpc_name: mitodl-operations-services
     purposes:
+      alcali:
+        app: alcali
+        num_instances: 1
+        domains:
+          - alcali.odl.mit.edu
+        business_unit: operations
+        security_groups:
+          - webapp-odl-vpn
+        size:
+          t3.small
       consul:
         apps:
           - consul

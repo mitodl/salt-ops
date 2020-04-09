@@ -22,6 +22,8 @@ salt_master:
       - mariadb-client
       - postgresl
       - default-libmysqlclient-dev
+      - python3-openssl
+      - python3-psycopg2
     pip_deps:
       - PyOpenssl
       - apache-libcloud

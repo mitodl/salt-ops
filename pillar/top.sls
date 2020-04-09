@@ -73,6 +73,8 @@ base:
     - mongodb
     - fluentd.mongodb
     - consul.mongodb
+  alcali:
+    - apps.alcali
   dremio*:
     - dremio
     - nginx
