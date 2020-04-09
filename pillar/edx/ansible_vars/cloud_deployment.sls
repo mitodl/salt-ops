@@ -271,7 +271,7 @@ edx:
         ENABLE_SYSADMIN_DASHBOARD: true
         ENABLE_INSTRUCTOR_EMAIL: true
       OAUTH_OIDC_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
-      STUDENT_FILEUPLOAD_MAX_SIZE: "20 * 1024 * 1024"
+      STUDENT_FILEUPLOAD_MAX_SIZE: "50 * 1024 * 1024"
       LOGGING_ENV: lms-{{ edxapp_log_env_suffix}}
     EDXAPP_CMS_ENV_EXTRA:
       <<: *common_env_config

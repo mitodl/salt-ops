@@ -29,7 +29,7 @@ edx:
   edxapp:
     TLS_LOCATION: '/etc/pki/tls/certs'
     TLS_KEY_NAME: 'edx-ssl-cert'
-    max_upload_size: 20
+    max_upload_size: 50
 
 schedule:
   refresh_mitx-{{ environment }}_configs:
