@@ -22,6 +22,8 @@ salt_master:
       - mariadb-client
       - postgresl
       - default-libmysqlclient-dev
+      - python3-openssl
+      - python3-psycopg2
     pip_deps:
       - PyOpenssl
       - apache-libcloud
@@ -35,6 +37,7 @@ salt_master:
       - pyyaml
       - raven
       - requests
+      - CherryPy
   ssl:
     cert_path: /etc/salt/ssl/certs/salt.odl.mit.edu.crt
     key_path: /etc/salt/ssl/certs/salt.odl.mit.edu.key
