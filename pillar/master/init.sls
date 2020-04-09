@@ -37,7 +37,6 @@ salt_master:
       - pyyaml
       - raven
       - requests
-      - CherryPy
   ssl:
     cert_path: /etc/salt/ssl/certs/salt.odl.mit.edu.crt
     key_path: /etc/salt/ssl/certs/salt.odl.mit.edu.key

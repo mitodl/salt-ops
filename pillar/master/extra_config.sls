@@ -18,13 +18,13 @@ salt_master:
       returner.pgjsonb.sslmode: verify-full
       returner.pgjsonb.sslrootcert: /usr/local/share/ca-certificates/rds-ca-2019.crt
 
-    rest_cherrypy:
+    rest_tornado:
       port: 8080
-      host: {{ salt_master_internal_ip }}
+      address: {{ salt_master_internal_ip }}
       debug: True
       ssl_crt: /etc/salt/pki/tls/certs/odl_wildcard.crt
       ssl_key: /etc/salt/pki/tls/certs/odl_wildcard.key
-      log_error_file: /var/log/salt/alcali.log
+      disable_ssl: False
 
     external_auth:
       rest:
