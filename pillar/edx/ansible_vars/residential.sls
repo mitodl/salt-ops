@@ -91,21 +91,25 @@ edx:
       REMOTE_GRADEBOOK_PASSWORD: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>password
       SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>key
       SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>value
+      {% if 'mitx-qa' in environment %}
       PROCTORING_BACKENDS:
         DEFAULT: proctortrack
         proctortrack:
           client_id: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>id
           client_secret: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>secret
           base_url: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>base_url
+      {% endif %}
 
     EDXAPP_CMS_AUTH_EXTRA:
       SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
+      {% if 'mitx-qa' in environment %}
       PROCTORING_BACKENDS:
         DEFAULT: proctortrack
         proctortrack:
           client_id: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>id
           client_secret: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>secret
           base_url: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>base_url
+      {% endif %}
 
     {# multivariate, only needed for current deployment. will be removed in favor of SAML (tmacey 2017/03/20) #}
     EDXAPP_CAS_ATTRIBUTE_PACKAGE: 'git+https://github.com/mitodl/mitx_cas_mapper#egg=mitx_cas_mapper'
