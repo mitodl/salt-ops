@@ -91,7 +91,7 @@ edx:
       REMOTE_GRADEBOOK_PASSWORD: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>password
       SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>key
       SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>value
-      {% if 'mitx-qa' in environment %}
+      {% if environment == 'mitx-qa' %}
       PROCTORING_BACKENDS:
         DEFAULT: proctortrack
         proctortrack:
@@ -102,7 +102,7 @@ edx:
 
     EDXAPP_CMS_AUTH_EXTRA:
       SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
-      {% if 'mitx-qa' in environment %}
+      {% if environment == 'mitx-qa' %}
       PROCTORING_BACKENDS:
         DEFAULT: proctortrack
         proctortrack:
