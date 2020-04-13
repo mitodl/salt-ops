@@ -97,6 +97,20 @@ run_ansible:
     - env:
         HOME: /root
 
+update_max_upload_size_for_lms:
+  file.replace:
+    - name: /etc/nginx/sites-enabled/lms
+    - pattern: 'client_max_body_size\s+\d+M;'
+    - repl: 'client_max_body_size {{ salt.pillar.get("edx:edxapp:max_upload_size", "20") }}M;'
+    - backup: False
+    - require:
+        - cmd: run_ansible
+  service.running:
+    - name: nginx
+    - reload: True
+    - onchanges:
+        - file: update_max_upload_size_for_lms
+
 {% if 'edx-base-worker' not in salt.grains.get('roles') %}
 {% if 'edx-worker' in salt.grains.get('roles') and not 'qa' in salt.grains.get('environment') %}
 restart_edx_worker_service:
