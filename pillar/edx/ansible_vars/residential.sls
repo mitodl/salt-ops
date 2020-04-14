@@ -179,6 +179,20 @@ edx:
       REMOTE_GRADEBOOK:
         URL: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>url
         DEFAULT_NAME: !!null
+      {% if environment == 'mitx-qa' %}
+      JWT_AUTH:
+        JWT_AUDIENCE: "https://{{ purpose_data.domains.lms }}"
+        JWT_ISSUER: "https://{{ purpose_data.domains.lms }}/oauth2"
+        JWT_ISSUERS:
+          - AUDIENCE: "pt_openedx_key"
+          - ISSUER: "https://{{ purpose_data.domains.lms }}/oauth2"
+          - SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
+        JWT_SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
+        JWT_PUBLIC_SIGNING_JWK_SET: null
+        JWT_PRIVATE_SIGNING_JWK: null
+        JWT_SIGNING_ALGORITHM: "RS512"
+        JWT_VERIFY_AUDIENCE: false
+      {% endif %}
 
     EDXAPP_CMS_ENV_EXTRA:
       ADDL_INSTALLED_APPS:
@@ -192,3 +206,17 @@ edx:
         ENABLE_OAUTH2_PROVIDER: True
       PROCTORING_SETTINGS:
         MUST_BE_VERIFIED_TRACK: False
+      {% if environment == 'mitx-qa' %}
+      JWT_AUTH:
+        JWT_AUDIENCE: "https://{{ purpose_data.domains.lms }}"
+        JWT_ISSUER: "https://{{ purpose_data.domains.lms }}/oauth2"
+        JWT_ISSUERS:
+          - AUDIENCE: "pt_openedx_key"
+          - ISSUER: "https://{{ purpose_data.domains.lms }}/oauth2"
+          - SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
+        JWT_SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
+        JWT_PUBLIC_SIGNING_JWK_SET: null
+        JWT_PRIVATE_SIGNING_JWK: null
+        JWT_SIGNING_ALGORITHM: "RS512"
+        JWT_VERIFY_AUDIENCE: false
+      {% endif %}
