@@ -156,26 +156,14 @@ salt_master:
           - 'G@roles:consul_server'
           - 'and'
           - 'G@environment:mitxpro-production'
-        consul_mitxpro_qa:
-          - 'G@roles:consul_server'
-          - 'and'
-          - 'G@environment:mitxpro-qa'
         consul_mitx_prod:
           - 'G@roles:consul_server'
           - 'and'
           - 'G@environment:mitx-production'
-        consul_mitx_qa:
-          - 'G@roles:consul_server'
-          - 'and'
-          - 'P@environment:mitx-qa'
         consul_apps_prod:
           - 'G@roles:consul_server'
           - 'and'
           - 'G@environment:production-apps'
-        consul_apps_rc:
-          - 'G@roles:consul_server'
-          - 'and'
-          - 'P@environment:rc-apps'
         ocw_prod:
           - 'P@roles:ocw'
           - 'and'
@@ -196,30 +184,14 @@ salt_master:
           - 'G@roles:rabbitmq'
           - 'and'
           - 'G@environment:mitx-production'
-        rabbitmq_mitx_qa:
-          - 'G@roles:rabbitmq'
-          - 'and'
-          - 'G@environment:mitx-qa'
         rabbitmq_mitxpro_prod:
           - 'G@roles:rabbitmq'
           - 'and'
           - 'G@environment:mitxpro-production'
-        rabbitmq_mitxpro_qa:
-          - 'G@roles:rabbitmq'
-          - 'and'
-          - 'G@environment:mitxpro-qa'
         rabbitmq_apps_prod:
           - 'G@roles:rabbitmq'
           - 'and'
           - 'G@environment:production-apps'
-        rabbitmq_apps_rc:
-          - 'G@roles:rabbitmq'
-          - 'and'
-          - 'G@environment:rc-apps'
-        ovs_rc:
-          - 'G@roles:odl-video-service'
-          - 'and'
-          - 'G@environment:rc-apps'
         ovs_production:
           - 'G@roles:odl-video-service'
           - 'and'
