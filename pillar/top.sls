@@ -80,6 +80,7 @@ base:
     - nginx
     - nginx.dremio
     - consul
+    - consul.dremio
   starcellbio*:
     - apps.starcellbio
     - nginx
