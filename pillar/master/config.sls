@@ -123,6 +123,7 @@ salt_master:
       {% endif %}
     misc:
       worker_threads: 25
+      keep_jobs: 24
       {# this is to avoid timeouts waiting for edx asset compilation during AMI build (TMM 2019-04-01) #}
       gather_job_timeout: 60
     sdb:
