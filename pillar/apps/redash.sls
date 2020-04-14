@@ -46,7 +46,7 @@ django:
   environment:
     # REDASH_GOOGLE_CLIENT_ID: {# google_creds.client_id #}
     # REDASH_GOOGLE_CLIENT_SECRET: {# google_creds.client_secret #}
-    REDASH_ADDITIONAL_QUERY_RUNNERS: redash.query_runner.google_analytics,redash.query_runner.python
+    REDASH_ADDITIONAL_QUERY_RUNNERS: redash.query_runner.google_analytics,redash.query_runner.python,redash.query_runner.dremio_odbc
     REDASH_COOKIE_SECRET: __vault__:gen_if_missing:secret-operations/operations/redash/cookie-secret>data>value
     REDASH_SECRET_KEY: __vault__:gen_if_missing:secret-operations/operations/redash/secret-key>data>value
     REDASH_DATABASE_URL: postgresql://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@postgres-redash.service.consul:5432/redash
@@ -83,6 +83,7 @@ django:
   states:
     setup:
       - apps.redash.install
+      - apps.redash.install_dremio_datasource
     deploy:
       - apps.redash.deploy
       - apps.redash.post_deploy
