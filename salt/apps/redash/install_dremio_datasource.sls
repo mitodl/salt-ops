@@ -9,6 +9,7 @@ install_dremio_odbc_driver:
   file.managed:
     - name: /tmp/dremio-odbc.rpm
     - source: http://download.dremio.com/odbc-driver/dremio-odbc-LATEST.x86_64.rpm
+    - skip_verify: True
   cmd.run:
     - name: alien -i --scripts /tmp/dremio-odbc.rpm
     - require:
@@ -33,4 +34,5 @@ download_dremio_datasource_{{ name }}:
     - source: https://raw.githubusercontent.com/Dezota/DremioDSforRedash/master/{{ fname }}
     - user: redash
     - group: redash
+    - skip_verify: True
 {% endfor %}
