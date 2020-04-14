@@ -19,7 +19,7 @@ salt_master:
         - gitfs
         - roots
       gitfs_base: {{ git_ref }}
-      gitfs_provider: pygit2
+      gitfs_provider: gitpython
       gitfs_remotes:
         - https://github.com/mitodl/salt-ops:
             - root: salt
@@ -53,7 +53,7 @@ salt_master:
         - https://github.com/mitodl/dremio-formula
         - https://github.com/mitodl/alcali-formula
     ext_pillar:
-      git_pillar_provider: pygit2
+      git_pillar_provider: gitpython
       git_pillar_base: {{ git_ref }}
       ext_pillar:
         - git:
