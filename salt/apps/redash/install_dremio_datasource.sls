@@ -31,7 +31,7 @@ install_python_dependencies:
 download_dremio_datasource_{{ name }}:
   file.managed:
     - name: /opt/redash/{{ target }}
-    - source: https://raw.githubusercontent.com/Dezota/DremioDSforRedash/master/{{ fname }}
+    - source: https://raw.githubusercontent.com/mitodl/DremioDSforRedash/master/{{ fname }}
     - user: redash
     - group: redash
     - skip_verify: True
