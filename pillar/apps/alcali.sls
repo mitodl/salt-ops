@@ -13,7 +13,7 @@ alcali:
     port: 8000
     workers: {{ grains['num_cpus'] }}
   config:
-    db_backend: postgresql
+    db_backend: postgres
     db_name: saltmaster
     db_user: __vault__:cache:postgres-operations-saltmaster/creds/saltmaster>data>username
     db_password: __vault__:cache:postgres-operations-saltmaster/creds/saltmaster>data>password
