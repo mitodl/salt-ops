@@ -70,7 +70,7 @@ base:
   dremio*:
     - dremio
     - nginx
-  alcali:
+  alcali*:
     - alcali
   'roles:consul_server':
     - match: grain
