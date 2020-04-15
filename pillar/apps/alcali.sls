@@ -1,6 +1,6 @@
 alcali:
   deploy:
-    repository: https://github.com/mitodl/alcali-formula/alcali.git
+    repository: https://github.com/mitodl/alcali-formula.git
     branch: 2019.2
     user: alcali
     group: alcali
