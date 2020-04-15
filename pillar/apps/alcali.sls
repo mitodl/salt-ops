@@ -15,8 +15,8 @@ alcali:
   config:
     db_backend: postgresql
     db_name: saltmaster
-    db_user: __vault__:cache:postgres-operations-saltmaster/creds/alcali>data>username
-    db_password: __vault__:cache:postgres-operations-saltmaster/creds/alcali>data>password
+    db_user: __vault__:cache:postgres-operations-saltmaster/creds/saltmaster>data>username
+    db_password: __vault__:cache:postgres-operations-saltmaster/creds/saltmaster>data>password
     db_host: operations-rds-postgres-saltmaster.cbnm7ajau6mi.us-east-1.rds.amazonaws.com
     db_port: 5432
     master_minion_id: master-operations-production
