@@ -52,6 +52,7 @@
 {% set pg_creds = salt.vault.cached_read('postgres-{env}-odlvideo/creds/odlvideo'.format(env=ENVIRONMENT), cache_prefix=minion_id) %}
 {% set rabbit_creds = salt.vault.cached_read("rabbitmq-{env}/creds/odlvideo".format(env=ENVIRONMENT), cache_prefix=minion_id) %}
 {% set ga_json = salt.vault.read('secret-odl-video/' ~ ENVIRONMENT ~ '/ga-keyfile-json').data.value|json %}
+{% set business_unit = 'odl-video' %}
 
 schedule:
   refresh_{{ app_name }}_credentials:
@@ -95,10 +96,10 @@ django:
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@postgres-odlvideo.service.consul:5432/odlvideo
     DJANGO_LOG_LEVEL: {{ env_data.log_level }}
     DROPBOX_FOLDER: /Captions
-    DROPBOX_KEY: __vault__::secret-odl-video/{{ ENVIRONMENT }}/dropbox_app>data>key
-    DROPBOX_TOKEN: __vault__::secret-odl-video/{{ ENVIRONMENT }}/dropbox_app>data>token
+    DROPBOX_KEY: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/dropbox_app>data>key
+    DROPBOX_TOKEN: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/dropbox_app>data>token
     EDX_BASE_URL: {{ env_data.EDX_BASE_URL }}
-    EDX_ACCESS_TOKEN: __vault__::secret-odl-video/{{ ENVIRONMENT }}/edx-access-token>data>value
+    EDX_ACCESS_TOKEN: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/edx-access-token>data>value
     ENABLE_VIDEO_PERMISSIONS: True
     ET_PIPELINE_ID: {{ env_data.transcode_pipeline_id }}
     ET_PRESET_IDS: 1504127981921-c2jlwt,1504127981867-06dkm6,1504127981819-v44xlx,1504127981769-6cnqhq,1351620000001-200040,1351620000001-200050
@@ -110,8 +111,8 @@ django:
     LECTURE_CAPTURE_USER: {{ salt.sdb.get('sdb://consul/odl-video-service/lecture-capture-user') }}
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_URL: https://api.mailgun.net/v3/video-mail.odl.mit.edu
-    MIT_WS_CERTIFICATE: __vault__::secret-odl-video/global/mit-application-certificate>data>certificate
-    MIT_WS_PRIVATE_KEY: __vault__::secret-odl-video/global/mit-application-certificate>data>private_key
+    MIT_WS_CERTIFICATE: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/mit-application-certificate>data>certificate
+    MIT_WS_PRIVATE_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/mit-application-certificate>data>private_key
     ODL_VIDEO_ADMIN_EMAIL: cuddle_bunnies@mit.edu
     ODL_VIDEO_BASE_URL: https://{{ env_data.domain }}
     ODL_VIDEO_ENVIRONMENT: {{ ENVIRONMENT }}
@@ -119,8 +120,8 @@ django:
     ODL_VIDEO_LOG_LEVEL: {{ env_data.log_level }}
     ODL_VIDEO_SUPPORT_EMAIL: MIT ODL Video <odl-video-support@mit.edu>
     REDIS_URL: redis://ovs-{{ env_data.env_name }}-redis.service.consul:6379/0
-    SECRET_KEY: __vault__::secret-odl-video/{{ ENVIRONMENT }}/django-secret-key>data>value
-    SENTRY_DSN: __vault__::secret-odl-video/global/sentry-dsn>data>value
+    SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/django-secret-key>data>value
+    SENTRY_DSN: __vault__::secret-{{ business_unit }}/global/sentry-dsn>data>value
     STATUS_TOKEN: {{ ENVIRONMENT }}
     USE_SHIBBOLETH: {{ env_data.use_shibboleth }}
     VIDEO_CLOUDFRONT_DIST: {{ env_data.cloudfront_subdomain }}
@@ -131,11 +132,11 @@ django:
     VIDEO_S3_WATCH_BUCKET: odl-video-service-uploaded{{ '-{}'.format(env_data.bucket_suffix).rstrip('-') }}
     VIDEO_STATUS_UPDATE_FREQUENCY: 60
     VIDEO_WATCH_BUCKET_FREQUENCY: 600
-    YT_ACCESS_TOKEN: __vault__::secret-odl-video/{{ ENVIRONMENT }}/youtube-credentials>data>access_token
-    YT_CLIENT_ID: __vault__::secret-odl-video/{{ ENVIRONMENT }}/youtube-credentials>data>client_id
-    YT_CLIENT_SECRET: __vault__::secret-odl-video/{{ ENVIRONMENT }}/youtube-credentials>data>client_secret
+    YT_ACCESS_TOKEN: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/youtube-credentials>data>access_token
+    YT_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/youtube-credentials>data>client_id
+    YT_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/youtube-credentials>data>client_secret
     YT_PROJECT_ID: {{ env_data.youtube_project_id }}
-    YT_REFRESH_TOKEN: __vault__::secret-odl-video/{{ ENVIRONMENT }}/youtube-credentials>data>refresh_token
+    YT_REFRESH_TOKEN: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/youtube-credentials>data>refresh_token
   pkgs:
     - git
     - build-essential
