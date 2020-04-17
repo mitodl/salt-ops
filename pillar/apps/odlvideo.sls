@@ -105,6 +105,7 @@ django:
     ET_PRESET_IDS: 1504127981921-c2jlwt,1504127981867-06dkm6,1504127981819-v44xlx,1504127981769-6cnqhq,1351620000001-200040,1351620000001-200050
     FEATURE_RETRANSCODE_ENABLED: True
     GA_DIMENSION_CAMERA: dimension1
+    GA_KEYFILE_JSON: '{{ ga_json }}'
     GA_VIEW_ID: {{ env_data.ga_view_id }}
     GA_TRACKING_ID: {{ env_data.ga_id }}
     LECTURE_CAPTURE_USER: {{ salt.sdb.get('sdb://consul/odl-video-service/lecture-capture-user') }}
