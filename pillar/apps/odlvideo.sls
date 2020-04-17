@@ -111,6 +111,7 @@ django:
     LECTURE_CAPTURE_USER: {{ salt.sdb.get('sdb://consul/odl-video-service/lecture-capture-user') }}
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_URL: https://api.mailgun.net/v3/video-mail.odl.mit.edu
+    # Cert and private key need to be stored in vault as strings
     MIT_WS_CERTIFICATE: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/mit-application-certificate>data>certificate
     MIT_WS_PRIVATE_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/mit-application-certificate>data>private_key
     ODL_VIDEO_ADMIN_EMAIL: cuddle_bunnies@mit.edu
