@@ -106,7 +106,7 @@ update_max_upload_for_lms:
     - require:
         - cmd: run_ansible
 
-set_expired_csrf_token_for_lms
+set_expired_csrf_token_for_lms:
   file.line:
     - name: /etc/nginx/sites-enabled/lms
     - mode: ensure
