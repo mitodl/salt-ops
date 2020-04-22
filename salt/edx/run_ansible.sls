@@ -113,7 +113,7 @@ set_expired_csrf_token_for_lms:
     - content: 'add_header Set-Cookie "csrftoken=resetmit; Domain=.mit.edu; Expires=1/January/2019 00:00:00";'
     - after: P3P*
 
-reload_nginx_config
+reload_nginx_config:
   service.running:
     - name: nginx
     - reload: True
