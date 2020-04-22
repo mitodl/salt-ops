@@ -149,6 +149,7 @@ heroku:
     FEATURE_USE_NEW_BRANDING: True
     FEATURE_WIDGETS_UI: True
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
+    GITHUB_ACCESS_TOKEN: __vault__::secret-{{ business_unit }}/global/odlbot-gitub-access-token>data>value
     INDEXING_API_USERNAME: {{ env_data.INDEXING_API_USERNAME }}
     MAILGUN_FROM_EMAIL: 'MIT Open <no-reply@{{ env_data.MAILGUN_SENDER_DOMAIN }}'
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
