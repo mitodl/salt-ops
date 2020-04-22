@@ -1,13 +1,3 @@
-update_max_upload_size_for_lms:
-  file.replace:
-    - name: /etc/nginx/sites-enabled/lms
-    - pattern: 'client_max_body_size\s+\d+M;'
-    - repl: 'client_max_body_size {{ salt.pillar.get("edx:edxapp:max_upload_size", "20") }}M;'
-    - backup: False
-  service.running:
-    - name: nginx
-    - reload: True
-
 configure_nginx_status_module_for_edx:
   file.managed:
     - name: /etc/nginx/sites-enabled/status_monitor
