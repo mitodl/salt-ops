@@ -97,7 +97,7 @@ run_ansible:
     - env:
         HOME: /root
 
-update_max_upload_size_for_lms:
+update_max_upload_size_and_set_csrf_for_lms:
   file.replace:
     - name: /etc/nginx/sites-enabled/lms
     - pattern: 'client_max_body_size\s+\d+M;'
@@ -105,11 +105,16 @@ update_max_upload_size_for_lms:
     - backup: False
     - require:
         - cmd: run_ansible
+  file.line:
+    - name: /etc/nginx/sites-enabled/lms
+    - mode: ensure
+    - content: add_header Set-Cookie "csrftoken=resetmit; Domain=.mit.edu; Expires=1/January/2019 00:00:00";
+    - after: P3P*
   service.running:
     - name: nginx
     - reload: True
     - onchanges:
-        - file: update_max_upload_size_for_lms
+        - file: update_max_upload_size_and_set_csrf_for_lms
 
 {% if 'edx-base-worker' not in salt.grains.get('roles') %}
 {% if 'edx-worker' in salt.grains.get('roles') and not 'qa' in salt.grains.get('environment') %}
