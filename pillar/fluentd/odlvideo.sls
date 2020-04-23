@@ -36,5 +36,19 @@ fluentd:
                   attrs:
                     - '@type': regexp
                     - expression: '^(?<time>\d+\/\d+\/\d+\s\d+:\d+:\d+)\s(?<level_name>\[.*])\s(?<message>.*)'
+        - directive: source
+          attrs:
+            - '@id': odlvideo_uwsgi_log
+            - '@type': tail
+            - enable_watch_timer: 'false'
+            - tag: odlvideo.uwsgi
+            - path: /var/log/uwsgi/apps/odl-video-service.log
+            - pos_file: /var/log/uwsgi/apps/odl-video-service.log.pos
+            - nested_directives:
+                - directive: parse
+                  attrs:
+                    - '@type': json
+                    - json_parser: json
+                    - keep_time_key: 'true'
         - {{ record_tagging |yaml() }}
         - {{ tls_forward() }}
