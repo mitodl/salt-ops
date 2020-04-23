@@ -157,7 +157,7 @@ edx:
         - name: raven
         - name: git+https://github.com/raccoongang/xblock-pdf.git@8d63047c53bc8fdd84fa7b0ec577bb0a729c215f#egg=xblock-pdf
           extra_args: -e
-        - name: git+https://github.com/mitodl/edx-proctoring@f016be8c44e7ee8bf1bfa5fcc982b0f9d837f2f4#egg=edx-proctoring
+        - name: git+https://github.com/mitodl/edx-proctoring@f9c3910fdfba181420b77c2a3c30706abe67d89b#egg=edx-proctoring
           extra_args: -e
 
     EDXAPP_LMS_ENV_EXTRA:
