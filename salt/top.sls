@@ -72,6 +72,7 @@ base:
     - nginx
   alcali*:
     - alcali
+    - nginx
   'roles:consul_server':
     - match: grain
     - consul
