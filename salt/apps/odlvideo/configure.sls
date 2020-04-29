@@ -15,7 +15,7 @@ create_env_file_for_odlvideo:
 
 ensure_perms_of_odlvideo_app_log:
   file.managed:
-    - name: /var/log/odl-video-service.log
+    - name: /var/log/odl-video/django.log
     - user: deploy
     - group: deploy
     - mode: 0644

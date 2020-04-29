@@ -42,8 +42,8 @@ fluentd:
             - '@type': tail
             - enable_watch_timer: 'false'
             - tag: odlvideo.uwsgi
-            - path: /var/log/odl-video-service.log
-            - pos_file: /var/log/odl-video-service.log.pos
+            - path: /var/log/odl-video/django.log
+            - pos_file: /var/log/odl-video/django.log.pos
             - nested_directives:
                 - directive: parse
                   attrs:
