@@ -125,4 +125,43 @@ vault:
       name: odl-video-service-{{ env }}
       options:
         policy: '{{ ovs_policy|json }}'
+    {% load_json as mit_open_policy %}
+    {
+      "Statement": [
+        {
+          "Resource": [
+            "arn:aws:s3:::odl-discussions-{{ env }}",
+            "arn:aws:s3:::odl-discussions-{{ env }}/*"          ],
+          "Action": [
+            "s3:HeadObject",
+            "s3:Get*",
+            "s3:List*",
+            "s3:PutObject",
+            "S3:DeleteObject",
+          ],
+          "Effect": "Allow"
+        },
+        {
+          "Resource": [
+            "arn:aws:s3:::mitx-etl-xpro-production-mitxpro-production",
+            "arn:aws:s3:::mitx-etl-xpro-production-mitxpro-production/*",
+            "arn:aws:s3:::ol-olx-course-exports",
+            "arn:aws:s3:::ol-olx-course-exports/*"
+          ],
+          "Action": [
+            "s3:HeadObject",
+            "s3:Get*",
+            "s3:List*",
+          ],
+          "Effect": "Allow"
+        }
+      ],
+      "Version": "2012-10-17"
+    }
+    {% endload %}
+    mit_open_iam_role_for_{{ env }}:
+      backend: aws-mitx
+      name: mit-open-{{ env }}
+      options:
+        policy: '{{ mit_open_policy|json }}'
     {% endfor %}
