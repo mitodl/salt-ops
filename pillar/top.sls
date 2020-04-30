@@ -94,6 +94,7 @@ base:
     - shibboleth
     - shibboleth.odlvideo
     - fluentd.odlvideo
+    - logrotate.odlvideo
   proxy-bootcamps-*:
     - heroku.bootcamps
   proxy-mitxpro-*:

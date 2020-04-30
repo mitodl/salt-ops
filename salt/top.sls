@@ -125,6 +125,9 @@ base:
     - nginx-shibboleth
     - django
     - uwsgi
+  'roles:odl-video-service':
+    - match: grain
+    - utils.logrotate
   'roles:redash':
     - match: grain
     - utils.configure_debian_source_repos
