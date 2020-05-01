@@ -114,8 +114,8 @@ heroku:
     ALGOLIA_API_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/algolia>data>api_key
     ALGOLIA_APP_ID: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/algolia>data>app_id
     ALLOWED_HOSTS: '["*"]'
-    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-odl-discussions-{{ env_data.env_name }}>data>access_key
-    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-odl-discussions-{{ env_data.env_name }}>data>secret_key
+    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/mit-open-{{ env_data.env_name }}>data>access_key
+    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/mit-open-{{ env_data.env_name }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'odl-discussions-{{ env_data.env_name }}'
     CKEDITOR_ENVIRONMENT_ID:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>environment_id
     CKEDITOR_SECRET_KEY:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>secret_key
