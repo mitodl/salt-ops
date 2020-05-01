@@ -15,6 +15,8 @@ nginx:
       {{ app_name }}:
         enabled: True
         config:
+          - upstream app_server:
+              - server: '0.0.0.0:8000 fail_timeout=0'
           - server:
               - server_name: {{ server_domain_names|tojson }}
               - listen: 80
@@ -39,8 +41,10 @@ nginx:
               - ssl_prefer_server_ciphers: 'on'
               - resolver: 1.1.1.1
               - location /:
-                  - proxy_pass: http://127.0.0.1:8000
-                  - proxy_http_version: 1.1
-                  - proxy_set_header: Host $http_host
-                  - proxy_set_header: X-Forwarded-For $remote_addr
-                  - proxy_pass_header: Server
+                  - try_files: $uri @proxy_to_app
+              - location @proxy_to_app:
+                  - proxy_set_header: 'X-Forwarded-For $proxy_add_x_forwarded_for'
+                  - proxy_set_header: 'X-Forwarded-Proto $scheme'
+                  - proxy_set_header: 'Host $http_host'
+                  - proxy_redirect: off
+                  - proxy_pass: 'http://app_server'
