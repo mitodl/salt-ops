@@ -75,6 +75,8 @@ base:
     - consul.mongodb
   alcali*:
     - apps.alcali
+    - nginx
+    - nginx.alcali
   dremio*:
     - dremio
     - nginx
