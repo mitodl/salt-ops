@@ -131,13 +131,14 @@ vault:
         {
           "Resource": [
             "arn:aws:s3:::odl-discussions-{{ env }}",
-            "arn:aws:s3:::odl-discussions-{{ env }}/*"          ],
+            "arn:aws:s3:::odl-discussions-{{ env }}/*"
+          ],
           "Action": [
             "s3:HeadObject",
             "s3:Get*",
             "s3:List*",
             "s3:PutObject",
-            "S3:DeleteObject",
+            "S3:DeleteObject"
           ],
           "Effect": "Allow"
         },
@@ -151,7 +152,7 @@ vault:
           "Action": [
             "s3:HeadObject",
             "s3:Get*",
-            "s3:List*",
+            "s3:List*"
           ],
           "Effect": "Allow"
         }
