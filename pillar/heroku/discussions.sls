@@ -121,6 +121,7 @@ heroku:
     CKEDITOR_SECRET_KEY:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>secret_key
     CKEDITOR_UPLOAD_URL:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>upload_url
     CLOUDFRONT_DIST: {{ env_data.CLOUDFRONT_DIST }}
+    CSAIL_BASE_URL: https://cap.csail.mit.edu/
     {% if env_data.env_name != 'ci' %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/opendiscussions
     {% endif %}
@@ -159,6 +160,7 @@ heroku:
     MICROMASTERS_CATALOG_API_URL: https://{{ etl_micromasters_host }}/api/v0/catalog/
     MICROMASTERS_COURSE_URL: https://{{ etl_micromasters_host }}/api/v0/courseruns/
     MICROMASTERS_EXTERNAL_LOGIN_URL: https://{{ env_data.MICROMASTERS_BASE_URL}}/discussions
+    MITPE_BASE_URL: https://professional.mit.edu/
     MIT_WS_CERTIFICATE: __vault__::secret-{{ business_unit }}/global/mit-application-certificate>data>certificate
     MIT_WS_PRIVATE_KEY: __vault__::secret-{{ business_unit }}/global/mit-application-certificate>data>private_key
     NEW_RELIC_LOG: stdout
@@ -206,6 +208,7 @@ heroku:
     RECAPTCHA_SECRET_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>secret_key
     RECAPTCHA_SITE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>site_key
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.env_name }}/django-secret-key>data>value
+    SEE_BASE_URL: https://executive.mit.edu/
     SENTRY_DSN: __vault__::secret-operations/global/{{ business_unit }}/sentry-dsn>data>value
     SOCIAL_AUTH_MICROMASTERS_LOGIN_URL: {{ env_data.SOCIAL_AUTH_MICROMASTERS_LOGIN_URL }}
     SOCIAL_AUTH_SAML_CONTACT_NAME: ODL Support
@@ -230,7 +233,7 @@ heroku:
     YOUTUBE_DEVELOPER_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/youtube-developer-key>data>value
     YOUTUBE_FETCH_TRANSCRIPT_SCHEDULE_SECONDS: 21600
     YOUTUBE_FETCH_TRANSCRIPT_SLEEP_SECONDS: 20
-    
+
 schedule:
   refresh_{{ env_data.app_name }}_configs:
     days: 5
