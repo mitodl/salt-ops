@@ -131,7 +131,9 @@ vault:
         {
           "Resource": [
             "arn:aws:s3:::odl-discussions-{{ env }}",
-            "arn:aws:s3:::odl-discussions-{{ env }}/*"
+            "arn:aws:s3:::odl-discussions-{{ env }}/*",
+            "arn:aws:s3:::open-learning-course-data-{{ env }}",
+            "arn:aws:s3:::open-learning-course-data-{{ env }}/*"
           ],
           "Action": [
             "s3:HeadObject",
@@ -147,7 +149,9 @@ vault:
             "arn:aws:s3:::mitx-etl-xpro-production-mitxpro-production",
             "arn:aws:s3:::mitx-etl-xpro-production-mitxpro-production/*",
             "arn:aws:s3:::ol-olx-course-exports",
-            "arn:aws:s3:::ol-olx-course-exports/*"
+            "arn:aws:s3:::ol-olx-course-exports/*",
+            "arn:aws:s3:::ocw-content-storage",
+            "arn:aws:s3:::ocw-content-storage/*"
           ],
           "Action": [
             "s3:HeadObject",
