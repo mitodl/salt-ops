@@ -166,9 +166,7 @@ heroku:
     OCW_CONTENT_BUCKET_NAME: ocw-content-storage
     OCW_CONTENT_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-only-ocw-content-storage>data>secret_key
     OCW_ITERATOR_CHUNK_SIZE: {{ env_data.OCW_ITERATOR_CHUNK_SIZE }}
-    OCW_LEARNING_COURSE_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-{{ env_data.OCW_LEARNING_COURSE_BUCKET_NAME }}>data>access_key
     OCW_LEARNING_COURSE_BUCKET_NAME: open-learning-course-data-{{ env_data.env_name }}
-    OCW_LEARNING_COURSE_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-{{ env_data.OCW_LEARNING_COURSE_BUCKET_NAME }}>data>secret_key
     OCW_UPLOAD_IMAGE_ONLY: {{ env_data.OCW_UPLOAD_IMAGE_ONLY }}
     OLL_ALT_URL: https://openlearninglibrary.mit.edu/courses/
     OLL_API_ACCESS_TOKEN_URL: https://openlearninglibrary.mit.edu/oauth2/access_token/
