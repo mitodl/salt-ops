@@ -5,6 +5,14 @@ open-learning-course-data-{{ env }}:
     - Versioning:
         Status: Enabled
     - region: us-east-1
+    - CORSRules:
+        - AllowedHeaders:
+            - '*'
+          AllowedMethods:
+            - GET
+          AllowedOrigins:
+            - '*'
+          MaxAgeSeconds: 300
     - Tagging:
         OU: mit-open
         business_unit: mit-open
