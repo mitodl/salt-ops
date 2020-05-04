@@ -56,7 +56,7 @@ heroku:
   app_name: {{ env_data.app_name }}
   api_key: __vault__::secret-operations/global/heroku/api_key>data>value
   config_vars:
-    ALLOWED_HOSTS: '[*]'
+    ALLOWED_HOSTS: '["*"]'
     BOOTCAMP_ADMIN_EMAIL: cuddle-bunnies@mit.edu
     BOOTCAMP_ADMISSION_BASE_URL: {{ env_data.BOOTCAMP_ADMISSION_BASE_URL }}
     BOOTCAMP_ADMISSION_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/>admissions>admission_key>data>value
