@@ -116,3 +116,4 @@ heroku:
     SMAPPLY_REFRESH_TOKEN: {{ smapply.refresh_token }}
     SMAPPLY_WEBHOOK_AUTH_TOKEN: {{ smapply.webhook_auth_token }}
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
+    ZENDESK_HELP_WIDGET_ENABLED: True
