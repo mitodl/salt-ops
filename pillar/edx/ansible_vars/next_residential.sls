@@ -5,13 +5,13 @@
 
 edx:
   ansible_vars:
-    ansible_python_interpreter: "/usr/bin/env python"
-    supervisor_version: 4.1.0
     COMMON_ENABLE_AWS_ROLE: False
     COMMON_ENABLE_DATADOG: False
     EDXAPP_HERMES_ENABLED: False
     EDXAPP_EXTRA_MIDDLEWARE_CLASSES: [] # Worth keeping track of in case we need to take advantage of it
     EDXAPP_ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES: False
+
+    EDXAPP_MONGO_AUTH_DB: ''
 
     EDXAPP_PRIVATE_REQUIREMENTS:
       # For Harvard courses. Peer instruction XBlock.
@@ -25,6 +25,8 @@ edx:
       - name: git+https://github.com/open-craft/xblock-vectordraw.git@76976425356dfc7f13570f354c0c438db84c2840#egg=xblock-vectordraw==0.3.0
         extra_args: -e
       - name: git+https://github.com/open-craft/xblock-activetable.git@013003aa3ce28f0ae03b8227dc3a6daa4e19997d#egg=xblock-activetable
+        extra_args: -e
+      - name: git+https://github.com/edx/edx-zoom.git@37c323ae93265937bf60abb92657318efeec96c5#egg=edx-zoom
         extra_args: -e
       # MITx Residential XBlocks
       - name: edx-sga==0.10.0
