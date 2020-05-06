@@ -19,4 +19,3 @@ reload_edx_nginx_service_after_updates:
     - reload: True
     - onchanges_any:
         - file: configure_nginx_status_module_for_edx
-        - file: update_max_upload_size_for_lms
