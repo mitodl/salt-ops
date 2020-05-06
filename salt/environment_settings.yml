@@ -54,7 +54,7 @@ current_residential_versions_rp: &current_residential_versions_rp
   ami_id: ami-80861296
 
 next_residential_versions: &next_residential_versions
-  edx_config_repo: https://github.com/edx/configuration
+  edx_config_repo: https://github.com/mitodl/configuration
   edx_config_version: open-release/juniper.rc1
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
   edxapp: mitx/juniper
