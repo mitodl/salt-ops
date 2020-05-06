@@ -55,11 +55,18 @@ create_ansible_virtualenv:
   #       dependencies at runtime.
   virtualenv.managed:
     - name: {{ venv_path }}
-    - requirements: {{ repo_path }}/requirements.txt
     - python: /usr/bin/python3
     - require:
       - git: clone_edx_configuration
       - file: replace_nginx_static_asset_template_fragment
+  pip.installed:
+    - name: setuptools<46
+    - bin_env: {{ venv_path }}
+
+install_ansible_requirements:
+  pip.installed:
+    - requirements: {{ repo_path }}/requirements.txt
+    - bin_env: {{ venv_path }}
 
 place_ansible_environment_configuration:
   file.managed:
