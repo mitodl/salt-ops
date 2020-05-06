@@ -57,6 +57,7 @@ create_ansible_virtualenv:
     - name: {{ venv_path }}
     - requirements: {{ repo_path }}/requirements.txt
     - system_site_packages: {{ 'juniper' in grains.get('edx_codename', "") }}
+    - python: /usr/bin/python3
     - no_setuptools: True
     - require:
       - git: clone_edx_configuration
