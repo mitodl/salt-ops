@@ -103,6 +103,7 @@ run_ansible:
     - env:
         HOME: /root
 
+{% if 'edx-worker' not in salt.grains.get('roles') %}
 update_max_upload_for_lms:
   file.replace:
     - name: /etc/nginx/sites-enabled/lms
@@ -130,6 +131,7 @@ reload_nginx_config:
     - onchanges:
         - file: update_max_upload_for_lms
         - file: set_expired_csrf_token_for_lms
+{% endif %}
 
 {% if 'edx-base-worker' not in salt.grains.get('roles') %}
 {% if 'edx-worker' in salt.grains.get('roles') and not 'qa' in salt.grains.get('environment') %}
