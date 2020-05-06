@@ -56,9 +56,7 @@ create_ansible_virtualenv:
   virtualenv.managed:
     - name: {{ venv_path }}
     - requirements: {{ repo_path }}/requirements.txt
-    - system_site_packages: {{ 'juniper' in grains.get('edx_codename', "") }}
     - python: /usr/bin/python3
-    - no_setuptools: {{ 'juniper' not in grains.get('edx_codename', "") }}
     - require:
       - git: clone_edx_configuration
       - file: replace_nginx_static_asset_template_fragment
