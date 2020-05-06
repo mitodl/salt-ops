@@ -38,10 +38,10 @@ fluentd:
                     - expression: '^(?<time>\d+\/\d+\/\d+\s\d+:\d+:\d+)\s(?<level_name>\[.*])\s(?<message>.*)'
         - directive: source
           attrs:
-            - '@id': odlvideo_uwsgi_log
+            - '@id': odlvideo_application_log
             - '@type': tail
             - enable_watch_timer: 'false'
-            - tag: odlvideo.uwsgi
+            - tag: odlvideo.application
             - path: /var/log/odl-video/django.log
             - pos_file: /var/log/odl-video/django.log.pos
             - nested_directives:
