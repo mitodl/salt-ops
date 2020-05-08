@@ -30,7 +30,7 @@ edx:
         extra_args: -e
       # MITx Residential XBlocks
       - name: edx-sga==0.10.0
-      - name: rapid-response-xblock==0.0.5
+      - name: rapid-response-xblock==0.0.6
       - name: git+https://github.com/mitodl/edx-git-auto-export.git@v0.2#egg=edx-git-auto-export
         extra_args: -e
       - name: git+https://github.com/Stanford-Online/xblock-in-video-quiz@release/v0.1.7#egg=xblock-in-video-quiz
