@@ -49,8 +49,6 @@
 {% set env_data = env_dict[environment] %}
 {% set business_unit = 'bootcamps' %}
 {% set cybersource_creds = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/cybersource').data %}
-{% set fluidreview = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/fluidreview').data %}
-{% set smapply = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/smapply').data %}
 
 proxy:
   proxytype: heroku
@@ -95,13 +93,6 @@ heroku:
     EDXORG_BASE_URL: {{ env_data.EDXORG_BASE_URL }}
     EDXORG_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/>edx>data>client_id
     EDXORG_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/>edx>data>client_secret
-    FLUIDREVIEW_ACCESS_TOKEN: {{ fluidreview.access_token }}
-    FLUIDREVIEW_AMOUNTPAID_ID: {{ fluidreview.amountpaid_id }}
-    FLUIDREVIEW_BASE_URL:  {{ fluidreview.base_url }}
-    FLUIDREVIEW_CLIENT_ID:  {{ fluidreview.client_id }}
-    FLUIDREVIEW_CLIENT_SECRET:  {{ fluidreview.client_secret }}
-    FLUIDREVIEW_REFRESH_TOKEN:  {{ fluidreview.refresh_token }}
-    FLUIDREVIEW_WEBHOOK_AUTH_TOKEN:  {{ fluidreview.webhook_auth_token }}
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
     GTM_TRACKING_ID: {{ env_data.GTM_TRACKING_ID }}
     HUBSPOT_API_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/>hubspot>data>api_key
@@ -113,14 +104,5 @@ heroku:
     PGBOUNCER_MIN_POOL_SIZE: 5
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-secret-key>data>value
     SENTRY_DSN: __vault__::secret-operations/global/{{ business_unit}}/sentry-dsn>data>value
-    SMAPPLY_ACCESS_TOKEN: {{ smapply.access_token }}
-    SMAPPLY_AMOUNTPAID_ID: {{ smapply.amountpaid_id }}
-    SMAPPLY_AMOUNT_TO_PAY_ID: {{ smapply.amount_to_pay_id }}
-    SMAPPLY_AWARD_COST_ID: {{ smapply.award_cost_id }}
-    SMAPPLY_BASE_URL: {{ smapply.base_url }}
-    SMAPPLY_CLIENT_ID: {{ smapply.client_id }}
-    SMAPPLY_CLIENT_SECRET: {{ smapply.client_secret }}
-    SMAPPLY_REFRESH_TOKEN: {{ smapply.refresh_token }}
-    SMAPPLY_WEBHOOK_AUTH_TOKEN: {{ smapply.webhook_auth_token }}
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
     ZENDESK_HELP_WIDGET_ENABLED: True
