@@ -5,6 +5,7 @@
 
 edx:
   ansible_vars:
+    common_digicert_base_url: http://dl.cacerts.digicert.com/
     COMMON_ENABLE_AWS_ROLE: False
     COMMON_ENABLE_DATADOG: False
     EDXAPP_HERMES_ENABLED: False
