@@ -11,6 +11,7 @@
       'BOOTCAMP_LOG_LEVEL': 'INFO',
       'BOOTCAMP_SUPPORT_EMAIL': 'bootcamp-support@mit.edu',
       'CYBERSOURCE_REFERENCE_PREFIX': 'ci',
+      'CYBERSOURCE_WSDL_URL': 'https://ics2wstest.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
       'EDXORG_BASE_URL': 'https://micromasters.d.mitx.mit.edu',
       'GA_TRACKING_ID': 'UA-5145472-19',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
@@ -24,6 +25,7 @@
       'BOOTCAMP_LOG_LEVEL': 'INFO',
       'BOOTCAMP_SUPPORT_EMAIL': 'bootcamp-support@mit.edu',
       'CYBERSOURCE_REFERENCE_PREFIX': 'rc',
+      'CYBERSOURCE_WSDL_URL': 'https://ics2wstest.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
       'EDXORG_BASE_URL': 'https://courses.stage.edx.org',
       'GA_TRACKING_ID': 'UA-5145472-19',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
@@ -37,6 +39,7 @@
       'BOOTCAMP_LOG_LEVEL': 'INFO',
       'BOOTCAMP_SUPPORT_EMAIL': 'bootcamp@mit.edu',
       'CYBERSOURCE_REFERENCE_PREFIX': 'prod',
+      'CYBERSOURCE_WSDL_URL': 'https://ics2wsa.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
       'EDXORG_BASE_URL': 'https://courses.edx.org',
       'GA_TRACKING_ID': 'UA-5145472-18',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
@@ -73,10 +76,14 @@ heroku:
     BOOTCAMP_SECURE_SSL_REDIRECT: True
     BOOTCAMP_SUPPORT_EMAIL: {{ env_data.BOOTCAMP_SUPPORT_EMAIL }}
     CYBERSOURCE_ACCESS_KEY: {{ cybersource_creds.access_key }}
+    CYBERSOURCE_MERCHANT_ID: 'mit_clb_bootcamp'
     CYBERSOURCE_PROFILE_ID: {{ cybersource_creds.profile_id }}
     CYBERSOURCE_REFERENCE_PREFIX: {{ env_data.CYBERSOURCE_REFERENCE_PREFIX }}
     CYBERSOURCE_SECURE_ACCEPTANCE_URL: {{ env_data.CYBERSOURCE_SECURE_ACCEPTANCE_URL}}
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.security_key }}
+    CYBERSOURCE_TRANSACTION_KEY: {{ cybersource_creds.transaction_key }}
+    CYBERSOURCE_WSDL_URL: {{ env_data.CYBERSOURCE_WSDL_URL }}
+    CYBERSOURCE_INQUIRY_LOG_NACL_ENCRYPTION_KEY: {{ cybersource_creds.inquiry_public_encryption_key }}
     {% if env_data.env_name == 'production' %}
     {% set pg_creds = salt.vault.cached_read('postgresql-bootcamps/creds/app', cache_prefix='heroku-bootcamp') %}
     BOOTCAMP_ECOMMERCE_EMAIL: __vault__::secret-{{ business_unit }}/production-apps/>cybersource>data>email
