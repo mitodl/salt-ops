@@ -57,6 +57,7 @@ create_edx_baseline_instance_in_{{ ENVIRONMENT }}:
     - vm_overrides:
         image: {{ app_image }}
         tag:
+          OU: {{ BUSINESS_UNIT }}
           business_unit: {{ BUSINESS_UNIT }}
           environment: {{ ENVIRONMENT }}
           purpose: {{ PURPOSE }}
@@ -91,6 +92,7 @@ create_edx_worker_baseline_instance_in_{{ ENVIRONMENT }}:
     - vm_overrides:
         image: {{ worker_image }}
         tag:
+          OU: {{ BUSINESS_UNIT }}
           business_unit: {{ BUSINESS_UNIT }}
           environment: {{ ENVIRONMENT }}
           purpose: {{ PURPOSE }}
