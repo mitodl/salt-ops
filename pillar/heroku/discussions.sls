@@ -164,9 +164,7 @@ heroku:
     MIT_WS_PRIVATE_KEY: __vault__::secret-{{ business_unit }}/global/mit-application-certificate>data>private_key
     NEW_RELIC_LOG: stdout
     NODE_MODULES_CACHE: False
-    OCW_CONTENT_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-only-ocw-content-storage>data>access_key
     OCW_CONTENT_BUCKET_NAME: ocw-content-storage
-    OCW_CONTENT_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-only-ocw-content-storage>data>secret_key
     OCW_ITERATOR_CHUNK_SIZE: {{ env_data.OCW_ITERATOR_CHUNK_SIZE }}
     OCW_LEARNING_COURSE_BUCKET_NAME: open-learning-course-data-{{ env_data.env_name }}
     OCW_UPLOAD_IMAGE_ONLY: {{ env_data.OCW_UPLOAD_IMAGE_ONLY }}
