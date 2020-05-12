@@ -63,6 +63,7 @@ create_elb_for_edx_{{ purpose_name }}:
           policy_type: LBCookieStickinessPolicyType
           policy: {}
     - tags:
+        OU: {{ BUSINESS_UNIT }}
         Name: {{ elb_name }}
         business_unit: {{ BUSINESS_UNIT }}
         created_at: "{{ launch_date }}"
@@ -122,6 +123,7 @@ create_elb_for_edx_{{ purpose_name }}_studio:
           policy_type: LBCookieStickinessPolicyType
           policy: {}
     - tags:
+        OU: {{ BUSINESS_UNIT }}
         Name: {{ elb_name }}
         business_unit: {{ BUSINESS_UNIT }}
         created_at: "{{ launch_date }}"
