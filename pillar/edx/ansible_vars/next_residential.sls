@@ -11,9 +11,10 @@ edx:
     EDXAPP_HERMES_ENABLED: False
     EDXAPP_EXTRA_MIDDLEWARE_CLASSES: [] # Worth keeping track of in case we need to take advantage of it
     EDXAPP_ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES: False
-
     EDXAPP_MONGO_AUTH_DB: ''
-
+    EDXAPP_JWT_SIGNING_ALGORITHM: 'RS512'
+    EDXAPP_JWT_PRIVATE_SIGNING_JWK: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/private-key>data>value
+    EDXAPP_JWT_PUBLIC_SIGNING_JWK_SET: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/public-key>data>value
     EDXAPP_PRIVATE_REQUIREMENTS:
       # For Harvard courses. Peer instruction XBlock.
       # edX comment in `configuration' repo at
@@ -43,10 +44,6 @@ edx:
         extra_args: -e
 
     NGINX_SSL_CIPHERS: "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA"
-
-    EDXAPP_JWT_SIGNING_ALGORITHM: 'RS512'
-    JWT_PRIVATE_SIGNING_JWK: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/private-key>data>value
-    EDXAPP_JWT_PUBLIC_SIGNING_JWK_SET: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/public-key>data>value
 
   dependencies:
     os_packages:
