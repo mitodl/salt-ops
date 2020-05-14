@@ -15,6 +15,9 @@ edx:
     EDXAPP_JWT_SIGNING_ALGORITHM: 'RS512'
     EDXAPP_JWT_PRIVATE_SIGNING_JWK: {{ salt.vault.read('secret-' ~  business_unit ~ '/' ~  environment ~ '/jwt-signing-jwk/private-key').data.value }}
     EDXAPP_JWT_PUBLIC_SIGNING_JWK_SET: {{ salt.vault.read('secret-' ~  business_unit ~ '/' ~  environment ~ '/jwt-signing-jwk/public-key').data.value }}
+    EDXAPP_LMS_ENV_EXTRA:
+      FEATURES:
+        ENABLE_THIRD_PARTY_ONLY_AUTH: True
     EDXAPP_PRIVATE_REQUIREMENTS:
       # For Harvard courses. Peer instruction XBlock.
       # edX comment in `configuration' repo at
