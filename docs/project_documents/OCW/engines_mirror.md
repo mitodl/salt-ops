@@ -41,4 +41,4 @@ The mirror publishing process is relatively simple, compared to the other ones f
 11. Creates some symlinks, removes unused media files, and removes temporary files.
 12. Rsyncs the contents of the working directory to `/data2/rsync`.
 
-It appears that `/data2/rsync` is the source from which an OCW employee builds the removable media drive.
+The `/data2/rsync` directory is the source from which an OCW employee builds the removable media drive.
