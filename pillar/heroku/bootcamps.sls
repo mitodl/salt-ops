@@ -96,6 +96,7 @@ heroku:
     EDXORG_BASE_URL: {{ env_data.EDXORG_BASE_URL }}
     EDXORG_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/>edx>data>client_id
     EDXORG_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/>edx>data>client_secret
+    FEATURE_SOCIAL_AUTH_API: True
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
     GTM_TRACKING_ID: {{ env_data.GTM_TRACKING_ID }}
     HUBSPOT_API_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/>hubspot>data>api_key
