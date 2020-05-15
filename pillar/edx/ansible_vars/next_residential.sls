@@ -15,6 +15,8 @@ edx:
     EDXAPP_JWT_SIGNING_ALGORITHM: 'RS512'
     EDXAPP_JWT_PRIVATE_SIGNING_JWK: {{ salt.vault.read('secret-' ~  business_unit ~ '/' ~  environment ~ '/jwt-signing-jwk/private-key').data.value }}
     EDXAPP_JWT_PUBLIC_SIGNING_JWK_SET: {{ salt.vault.read('secret-' ~  business_unit ~ '/' ~  environment ~ '/jwt-signing-jwk/public-key').data.value }}
+    EDXAPP_SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>key
+    EDXAPP_SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>value
     EDXAPP_LMS_ENV_EXTRA:
       FEATURES:
         ENABLE_THIRD_PARTY_ONLY_AUTH: True
