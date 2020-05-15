@@ -80,6 +80,6 @@ The QA CDN has a shorter logfile rotation period than production. Production is 
 
 No logfiles are generated for periods lacking requests.
 
-Access to the logging bucket is granted to the IAM user ocw-fastly-logger, which has two attached policies, `ocw-fastly-log-bucket-rw-qa` and `ocw-fastly-log-bucket-rw-production`.  The `ocw-fastly-logger` user has two Access Keys, one for production and one for QA.
+Access to the logging bucket is granted to the `ocw-fastly-logger` IAM user, which has two attached policies, `ocw-fastly-log-bucket-rw-qa` and `ocw-fastly-log-bucket-rw-production`.  The `ocw-fastly-logger` user has two Access Keys, one for production and one for QA.
 
 Fastly has a web API that we can use to gather analytics and to generate alerts. We have not implemented any API-based statistics or alerts, as of May, 2020; but we have a Trello card for doing so eventually.
