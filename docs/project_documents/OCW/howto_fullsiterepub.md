@@ -69,7 +69,7 @@ Perform the steps of the "For each of the lines" part in "The Staging Publish," 
 
 The production run takes less time than the staging one because it's mostly just copying files that it had to work harder to generate in the staging step.
 
-### Step 3: Clear the Akamai cache
+### Step 3: Clear the Fastly cache
 
-Someone who has access to Akamai's support personnel contacts them and asks for the CDN's cache to be cleared, at which point the republished content is live.
+Someone who has administrator access to Fastly can clear the cache when the production publish is finished. Fastly's recommendation is to use the "mark as stale" option whenever possible.
 

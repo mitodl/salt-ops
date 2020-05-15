@@ -37,7 +37,7 @@ The following lengthy outline is just a **summary** of the events that occur whe
                     1. delete files from mirror server
                     2. copy files to mirror server, either from CMS or from the staging server, depending on whether the resource is a course or department
                     3. copy JSON file to mirror server
-                4. publish ZIP file to Akamai netstorage, if this Task is for a course or supplemental resource (`tasks.py:445`)
+                4. publish ZIP file to S3 bucket, if this Task is for a course or supplemental resource (`tasks.py:445`)
                 5. publish to DSpace holding area, if this Task is for a course or supplemental resource (`tasks.py:448`)
                 6. publish RSS feeds to production origin if this Task is not for a course
 4. Go through the dependent module tasks added above and do `tasks.Task.execute()` (above) for each of them.
