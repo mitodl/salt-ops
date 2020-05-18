@@ -16,6 +16,7 @@
       'EDXORG_BASE_URL': 'https://micromasters.d.mitx.mit.edu',
       'GA_TRACKING_ID': 'UA-5145472-19',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
+      'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
       'vault_env_path': 'rc-apps'
       },
     'rc': {
@@ -31,6 +32,7 @@
       'EDXORG_BASE_URL': 'https://courses.stage.edx.org',
       'GA_TRACKING_ID': 'UA-5145472-19',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
+      'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
       'vault_env_path': 'rc-apps'
       },
     'production': {
@@ -46,12 +48,14 @@
       'EDXORG_BASE_URL': 'https://courses.edx.org',
       'GA_TRACKING_ID': 'UA-5145472-18',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
+      'MAILGUN_SENDER_DOMAIN': 'mail.bootcamp.odl.mit.edu',
       'vault_env_path': 'production-apps'
       }
 } %}
 {% set env_data = env_dict[environment] %}
 {% set business_unit = 'bootcamps' %}
 {% set cybersource_creds = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/cybersource').data %}
+{% set jobma = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/jobma').data %}
 
 proxy:
   proxytype: heroku
@@ -77,6 +81,7 @@ heroku:
     BOOTCAMP_SECURE_SSL_REDIRECT: True
     BOOTCAMP_SUPPORT_EMAIL: {{ env_data.BOOTCAMP_SUPPORT_EMAIL }}
     CYBERSOURCE_ACCESS_KEY: {{ cybersource_creds.access_key }}
+    CYBERSOURCE_INQUIRY_LOG_NACL_ENCRYPTION_KEY: {{ cybersource_creds.inquiry_public_encryption_key }}
     CYBERSOURCE_MERCHANT_ID: 'mit_clb_bootcamp'
     CYBERSOURCE_PROFILE_ID: {{ cybersource_creds.profile_id }}
     CYBERSOURCE_REFERENCE_PREFIX: {{ env_data.CYBERSOURCE_REFERENCE_PREFIX }}
@@ -84,11 +89,9 @@ heroku:
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.security_key }}
     CYBERSOURCE_TRANSACTION_KEY: {{ cybersource_creds.transaction_key }}
     CYBERSOURCE_WSDL_URL: {{ env_data.CYBERSOURCE_WSDL_URL }}
-    CYBERSOURCE_INQUIRY_LOG_NACL_ENCRYPTION_KEY: {{ cybersource_creds.inquiry_public_encryption_key }}
     {% if env_data.env_name == 'production' %}
     {% set pg_creds = salt.vault.cached_read('postgresql-bootcamps/creds/app', cache_prefix='heroku-bootcamp') %}
     BOOTCAMP_ECOMMERCE_EMAIL: __vault__::secret-{{ business_unit }}/production-apps/>cybersource>data>email
-    CYBERSOURCE_TRANSACTION_KEY: 'none'
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/bootcamp_ecommerce
     ENABLE_STUNNEL_AMAZON_RDS_FIX: true
     HIREFIRE_TOKEN: __vault__::secret-{{ business_unit }}/production-apps/hirefire_token>data>value
@@ -101,7 +104,13 @@ heroku:
     GTM_TRACKING_ID: {{ env_data.GTM_TRACKING_ID }}
     HUBSPOT_API_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/>hubspot>data>api_key
     HUBSPOT_ID_PREFIX: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/>hubspot>data>id_prefix
+    JOBMA_ACCESS_TOKEN: {{ jobma.access_token }}
+    JOBMA_BASE_URL: {{ jobma.base_url }}
+    JOBMA_WEBHOOK_ACCESS_TOKEN: {{ jobma.webhook_access_token }}
+    MAILGUN_FROM_EMAIL: 'MIT Bootcamp <no-reply@{{ env_data.MAILGUN_SENDER_DOMAIN }}'
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
+    MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
+    MAILGUN_URL: https://api.mailgun.net/v3/{{ env_data.MAILGUN_SENDER_DOMAIN }}
     NEW_RELIC_APP_NAME: Bootcamp {{ env_data.env_name }}
     NODE_MODULES_CACHE: False
     PGBOUNCER_DEFAULT_POOL_SIZE: 50
