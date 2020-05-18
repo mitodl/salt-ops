@@ -17,11 +17,3 @@ schedule:
     function: state.sls
     args:
       - master.config
-  restore_edx_qa_data:
-    maxrunning: 1
-    when: Monday 1:00pm
-    function: saltutil.runner
-    args:
-      - state.orchestrate
-    kwargs:
-      mods: orchestrate.edx.restore
