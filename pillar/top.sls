@@ -220,6 +220,7 @@ base:
   'P@roles:(edx|edx-worker) and G@environment:mitx-qa':
     - match: compound
     - edx.ansible_vars.residential
+    - edx.ansible_vars.residential_qa
     - edx.mitx-qa
     - edx.inotify_mitx
   'P@roles:(edx|edx-worker) and G@environment:mitx-production':
