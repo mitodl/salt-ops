@@ -4,7 +4,7 @@
 
 {% set env_dict = {
     'ci': {
-      'app_name': 'xpro-ci',
+      'app_name': 'bootcamp-ecommerce-ci',
       'env_name': 'ci',
       'BOOTCAMP_ADMISSION_BASE_URL': 'http://admissions-test.herokuapp.com',
       'BOOTCAMP_ECOMMERCE_BASE_URL': 'https://bootcamp-ecommerce-ci.herokuapp.com',
@@ -20,7 +20,7 @@
       'vault_env_path': 'rc-apps'
       },
     'rc': {
-      'app_name': 'xpro-rc',
+      'app_name': 'bootcamp-ecommerce-rc',
       'env_name': 'rc',
       'BOOTCAMP_ADMISSION_BASE_URL': 'http://admissions-test.herokuapp.com',
       'BOOTCAMP_ECOMMERCE_BASE_URL': 'http://bootcamp-rc.odl.mit.edu/',
@@ -36,7 +36,7 @@
       'vault_env_path': 'rc-apps'
       },
     'production': {
-      'app_name': 'xpro-production',
+      'app_name': 'bootcamp-ecommerce',
       'env_name': 'production',
       'BOOTCAMP_ADMISSION_BASE_URL': 'http://admissions.herokuapp.com',
       'BOOTCAMP_ECOMMERCE_BASE_URL': 'https://bootcamp.odl.mit.edu/',
