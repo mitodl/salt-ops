@@ -65,6 +65,9 @@ heroku:
   api_key: __vault__::secret-operations/global/heroku/api_key>data>value
   config_vars:
     ALLOWED_HOSTS: '["*"]'
+    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-ol-bootcamps-app-{{ env_data.env_name }}>data>access_key
+    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-ol-bootcamps-app-{{ env_data.env_name }}>data>secret_key
+    AWS_STORAGE_BUCKET_NAME: 'ol-bootcamps-app-{{ env_data.env_name }}'
     BOOTCAMP_ADMIN_EMAIL: cuddle-bunnies@mit.edu
     BOOTCAMP_ADMISSION_BASE_URL: {{ env_data.BOOTCAMP_ADMISSION_BASE_URL }}
     BOOTCAMP_ADMISSION_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/>admissions>admission_key>data>value

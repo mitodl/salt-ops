@@ -1,13 +1,13 @@
 {% for env in ['rc', 'ci', 'production'] %}
-xpro-app-{{ env }}:
+ol-bootcamps-app-{{ env }}:
   boto_s3_bucket.present:
-    - Bucket: xpro-app-{{ env }}
+    - Bucket: ol-bootcamps-app-{{ env }}
     - Versioning:
         Status: Enabled
     - region: us-east-1
     - Tagging:
-        OU: mitxpro
-        business_unit: mitxpro
-        Department: mitxpro
+        OU: bootcamps
+        business_unit: bootcamps
+        Department: bootcamps
         Environment: {{ env }}
 {% endfor %}
