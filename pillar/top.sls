@@ -17,6 +17,7 @@ base:
     - match: grain
     - mitca
     - elastic_stack.kibana
+    - elastic_stack.beats
     - nginx
     - nginx.kibana
     - elastalert
