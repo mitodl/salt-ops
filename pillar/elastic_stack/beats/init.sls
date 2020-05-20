@@ -19,6 +19,7 @@ elastic_stack:
           hosts:
             - http://operations-elasticsearch.query.consul:9200
           compression_level: 3
+          index: "metricbeat-%{[agent.version]}-%{+yyyy.w}"
       modules:
         system:
           - module: system
@@ -32,6 +33,6 @@ elastic_stack:
               - process_summary
               - uptime
             enabled: 'true'
-            period: 1s
+            period: 5s
             processes:
               - '.*'
