@@ -150,6 +150,7 @@ base:
     - utils.logrotate
     - nginx
     - elastic-stack.elastalert
+    - elastic-stack.beats
     - datadog.plugins
   'P@environment:(operations|mitx(pro)?-production)':
     - match: compound
