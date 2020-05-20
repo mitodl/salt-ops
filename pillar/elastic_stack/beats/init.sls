@@ -33,6 +33,6 @@ elastic_stack:
               - process_summary
               - uptime
             enabled: 'true'
-            period: 1s
+            period: 5s
             processes:
               - '.*'
