@@ -19,7 +19,6 @@ elastic_stack:
           hosts:
             - http://operations-elasticsearch.query.consul:9200
           compression_level: 3
-          index: "metricbeat-%{[agent.version]}-%{+yyyy.w}"
         setup.template.name: "metricbeat-%{[agent.version]}"
         setup.template.pattern: "metricbeat-%{[agent.version]}-*"
       modules:
