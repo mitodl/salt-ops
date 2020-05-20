@@ -100,13 +100,13 @@ heroku:
     HIREFIRE_TOKEN: __vault__::secret-{{ business_unit }}/production-apps/hirefire_token>data>value
     {% endif %}
     EDXORG_BASE_URL: {{ env_data.EDXORG_BASE_URL }}
-    EDXORG_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/>edx>data>client_id
-    EDXORG_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/>edx>data>client_secret
+    EDXORG_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/edx>data>client_id
+    EDXORG_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/edx>data>client_secret
     FEATURE_SOCIAL_AUTH_API: True
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
     GTM_TRACKING_ID: {{ env_data.GTM_TRACKING_ID }}
-    HUBSPOT_API_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/>hubspot>data>api_key
-    HUBSPOT_ID_PREFIX: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/>hubspot>data>id_prefix
+    HUBSPOT_API_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/hubspot>data>api_key
+    HUBSPOT_ID_PREFIX: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/hubspot>data>id_prefix
     JOBMA_ACCESS_TOKEN: {{ jobma.access_token }}
     JOBMA_BASE_URL: {{ jobma.base_url }}
     JOBMA_WEBHOOK_ACCESS_TOKEN: {{ jobma.webhook_access_token }}
