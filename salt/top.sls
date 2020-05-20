@@ -14,6 +14,8 @@ base:
     - consul.dns_proxy
     - consul.tests
     - consul.tests.test_dns_setup
+  'P@environment:mitx-(qa|production)':
+    - elastic-stack.beats
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
@@ -40,6 +42,7 @@ base:
     - master_utils.dns
     - master_utils.libgit
     - heroku.proxy_config
+    - elastic-stack.beats
   'G@roles:master and P@environment:operations(-qa)?':
     - match: compound
     - master.aws
@@ -49,6 +52,7 @@ base:
     - utils.file_limits
     - elastic-stack.elasticsearch
     - elastic-stack.elasticsearch.plugins
+    - elastic-stack.beats
     - datadog.plugins
   'roles:rabbitmq':
     - match: grain
@@ -129,6 +133,7 @@ base:
   'roles:odl-video-service':
     - match: grain
     - utils.logrotate
+    - elastic-stack.beats
   'roles:redash':
     - match: grain
     - utils.configure_debian_source_repos
