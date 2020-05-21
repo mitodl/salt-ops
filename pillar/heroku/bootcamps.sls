@@ -83,6 +83,7 @@ heroku:
     BOOTCAMP_LOG_LEVEL: {{ env_data.BOOTCAMP_LOG_LEVEL }}
     BOOTCAMP_SECURE_SSL_REDIRECT: True
     BOOTCAMP_SUPPORT_EMAIL: {{ env_data.BOOTCAMP_SUPPORT_EMAIL }}
+    BOOTCAMP_USE_S3: True
     CYBERSOURCE_ACCESS_KEY: {{ cybersource_creds.access_key }}
     CYBERSOURCE_INQUIRY_LOG_NACL_ENCRYPTION_KEY: {{ cybersource_creds.inquiry_public_encryption_key }}
     CYBERSOURCE_MERCHANT_ID: 'mit_clb_bootcamp'
