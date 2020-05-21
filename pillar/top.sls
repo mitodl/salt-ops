@@ -4,6 +4,12 @@ base:
     - common
     - environment_settings
     - fluentd
+  'P@environment:(rc.*|.*-qa|ci)':
+    - match: copound
+    - elastic_stack.version_qa
+  'not P@environment:(rc.*|.*-qa|ci)':
+    - match: compound
+    - elastic_stack.version_production
   'roles:auth_server':
     - match: grain
     - fluentd.cas
@@ -22,12 +28,8 @@ base:
     - nginx.kibana
     - elastalert
     - logrotate.kibana
-  'G@roles:kibana and G@environment:operations-qa':
-    - match: compound
-    - elastic_stack.version_qa
   'G@roles:kibana and G@environment:operations':
     - match: compound
-    - elastic_stack.version_production
     - datadog.http-check-integration
     - datadog.elastalert-process-integration
   'roles:master':
@@ -191,13 +193,11 @@ base:
     - elasticsearch.mitx
   'G@roles:elasticsearch and G@environment:operations':
     - match: compound
-    - elastic_stack.version_production
     - elastic_stack.elasticsearch.logging_production
     - netdata.elasticsearch_logging
     - elastic_stack.beats
   'G@roles:elasticsearch and G@environment:operations-qa':
     - match: compound
-    - elastic_stack.version_qa
     - elastic_stack.elasticsearch.logging_qa
     - netdata.elasticsearch_logging
   'P@roles:(edx|edx-worker)$':
