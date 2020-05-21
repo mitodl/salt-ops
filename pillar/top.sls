@@ -196,10 +196,14 @@ base:
     - elastic_stack.elasticsearch.logging_production
     - netdata.elasticsearch_logging
     - elastic_stack.beats
+    - fluentd.elasticsearch
+    - consul.elasticsearch
   'G@roles:elasticsearch and G@environment:operations-qa':
     - match: compound
     - elastic_stack.elasticsearch.logging_qa
     - netdata.elasticsearch_logging
+    - fluentd.elasticsearch
+    - consul.elasticsearch
   'P@roles:(edx|edx-worker)$':
     - match: compound
     - edx
