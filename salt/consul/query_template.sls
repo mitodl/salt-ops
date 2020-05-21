@@ -33,7 +33,8 @@ create_query_template_for_ops_service:
                 "operations-qa"
               ]
             },
-            "Service": "${match(1)}"
+            "Service": "${match(1)}",
+            "Tags": ["logging"]
           },
           "Template": {
             "Regexp": "^operations-(.*?)$",
