@@ -4,7 +4,7 @@ base:
     - common
     - environment_settings
     - fluentd
-  'P@environment:(rc.*|.*-qa|ci)':
+  'P@environment:(rc.*|.*-qa)':
     - match: compound
     - elastic_stack.version_qa
   'not P@environment:(rc.*|.*-qa|ci)':
