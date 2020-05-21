@@ -7,7 +7,7 @@ base:
   'P@environment:(rc.*|.*-qa)':
     - match: compound
     - elastic_stack.version_qa
-  'not P@environment:(rc.*|.*-qa|ci)':
+  'not P@environment:(rc.*|.*-qa)':
     - match: compound
     - elastic_stack.version_production
   'roles:auth_server':
