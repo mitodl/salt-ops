@@ -34,6 +34,7 @@ base:
     - match: grain
     - master
     - master.config
+    - elastic_stack.version_qa
     - elastic_stack.beats
   master-operations-production:
     - master.production_schedule
@@ -99,6 +100,7 @@ base:
     - shibboleth.odlvideo
     - fluentd.odlvideo
     - logrotate.odlvideo
+    - elastic_stack.version_qa
     - elastic_stack.beats
   proxy-bootcamps-*:
     - heroku.bootcamps
@@ -147,6 +149,7 @@ base:
     - match: compound
     - datadog
     - consul
+    - elastic_stack.version_qa
     - elastic_stack.beats
   'P@environment:mitx(pro)?-(qa|production)':
     - match: compound
