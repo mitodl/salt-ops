@@ -77,3 +77,65 @@ Sometimes we want to push copies of their `open-release` branches, in case we wa
 git checkout -b open-release/koa.rc3 upstream/open-release/koa.rc3
 git push -u origin open-release/juniper.rc3
 ```
+
+### AMI build commands
+
+This is the sequence of Salt commands to run to build AMIs and deploy the edX application.
+
+First, build the new AMIs. "Purpose" in this case is "next-residential-draft," but you can pick "draft" or "live." Our convention is to use "draft." This parameter is needed only for pulling in pillar data. This state will create a couple of EC2 "base" instances from which AMI snapshots will be taken.
+
+```
+sudo -E PURPOSE=next-residential-draft ENVIRONMENT=mitx-qa RUN_MIGRATIONS=1 salt-run state.orchestrate orchestrate.edx.build_ami
+```
+
+If there was an error in the `build_ami` state after the EC2 base instances were provisioned, you can run a highstate like this to try to resume the build:
+
+```
+sudo salt edx*mitx-qa*base state.highstate pillar="{'edx': {'ansible_flags': '-e migrate_db=yes'}}"
+```
+
+Next, the Salt database needs to be updated with the IDs of the AMIs that were just built.
+
+```
+sudo -E ENVIRONMENT=mitx-qa salt-run state.orchestrate orchestrate.edx.update_edxapp_ami_sdb
+```
+
+New EC2 instances are provisioned next from the AMIs, and configured.
+
+```
+sudo -E ANSIBLE_FLAGS='--tags install:configuration' PURPOSES='next-residential-draft,next-residential-live' ENVIRONMENT='mitx-qa' salt-run -l debug state.orchestrate orchestrate.edx.deploy
+```
+
+The instances are added to the load balancer.
+
+```
+sudo -E ENVIRONMENT=mitx-qa PURPOSES=next-residential-draft,next-residential-live salt-run state.orchestrate orchestrate.aws.mitx_elb
+```
+That does not remove old instances from the load balancer! If it succeeded and the new instances are OK, you need to remove the old ones as follows. This is an example. You need to replace the Salt minion names with the real names of your old instances. The cloud.destroy state does not accept wildcards.
+
+```
+salt master-operations-qa cloud.destroy edx-mitx-qa-next-residential-draft-0-v3,edx-mitx-qa-next-residential-live-0-v3,edx-mitx-qa-next-residential-live-1-v3,edx-worker-mitx-qa-next-residential-draft-0-v3,edx-worker-mitx-qa-next-residential-live-0-v3
+```
+
+### Updating the edX app configuration or redeploying the code
+
+If you need to update the edX app's configuration later, you can run this state to update the configuration only:
+
+```
+salt edx-*mitx-qa-next* state.sls edx.run_ansible pillar="{'edx': {'ansible_flags': '--tags install:configuration'}}"
+```
+
+To redeploy; for instance, if there's a new commit to `mitx/<release codename>` in the ODL `edx-platform` repo, try running this:
+
+```
+salt edx-*mitx-qa-next* git.fetch /edx/app/edxapp/edx-platform user=edxapp
+
+# Or, if that doesn't work:
+salt edx-*mitx-qa-next-residential-* git.reset /edx/app/edxapp/edx-platform/ opts='--hard origin/mitx/juniper' user=edxapp
+```
+
+You must restart the application after changing the configuration or redeploying above.
+
+```
+salt edx-*mitx-qa-next-residential-* supervisord.restart all bin_env=/edx/bin/supervisorctl
+```
