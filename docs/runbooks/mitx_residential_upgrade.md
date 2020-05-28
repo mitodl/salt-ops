@@ -41,39 +41,39 @@ Though we build our AMIs from the `mitx/<release codename>` branch, we also keep
 First, a branch is created in our repository for the `mitx/<code name>` release branch for our AMIs:
 
 ```
-git checkout -b mitx/juniper upstream/open-release/juniper.rc1
-git push -u origin mitx/juniper
+git checkout -b mitx/koa upstream/open-release/koa.master
+git push -u origin mitx/koa
 ```
 
-This is usually branched off of edX's first release candidate branch for the relevant release codename.
+This is usually branched off of edX's first `.master` branch for the relevant release codename.
 
 #### The pull and rebase
 
-When a new version is approaching maturity, edX cuts release candidate branches and we update our AMI release branch with the changes from these branches. Here is an example with the Juniper Release Candidate 3 branch.
+When a new version is approaching maturity, edX cuts release candidate branches and we update our AMI release branch with the changes from these branches. Here is an example with a theoretical Koa Release Candidate 3 branch.
 
 First, we check out our AMI release branch:
 
 ```
-git checkout mitx/juniper
+git checkout mitx/koa
 ```
 
 This command should only show our ODL patches to the edX code:
 
 ```
-git log origin/mitx/juniper --not upstream/open-release/juniper.rc3
+git log origin/mitx/koa --not upstream/open-release/koa.rc3
 ```
 
 We then pull in their changes, rebasing ours on top:
 
 ```
-git pull --rebase upstream open-release/juniper.rc3
+git pull --rebase upstream open-release/koa.rc3
 
-git push -f   # push mitx/juniper to our Git origin
+git push -f origin HEAD  # push mitx/juniper to our Git origin
 ```
 
-We also want to push our copies of their `open-release` branches, in case we want to issue PRs against them in the future.
+Sometimes we want to push copies of their `open-release` branches, in case we want to issue PRs against them in the future. We don't necessarily do this right away when we perform an upgrade, but here is what we do if the time comes to issue patches.
 
 ```
-git checkout -b open-release/juniper.rc3 upstream/open-release/juniper.rc3
+git checkout -b open-release/koa.rc3 upstream/open-release/koa.rc3
 git push -u origin open-release/juniper.rc3
 ```
