@@ -18,8 +18,18 @@ edx:
     EDXAPP_SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>key
     EDXAPP_SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>value
     EDXAPP_LMS_ENV_EXTRA:
+      SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
+      REMOTE_GRADEBOOK_USER: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>user
+      REMOTE_GRADEBOOK_PASSWORD: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>password
       FEATURES:
         ENABLE_THIRD_PARTY_ONLY_AUTH: True
+      MONGODB_LOG:
+        db: gitlog_{{ purpose_suffix }}
+        host: mongodb-master.service.consul
+        user: __vault__:cache:mongodb-{{ environment }}/creds/gitlog-{{ purpose }}>data>username
+        password: __vault__:cache:mongodb-{{ environment }}/creds/gitlog-{{ purpose }}>data>password
+        replicaset: "{{ MONGODB_REPLICASET }}"
+        readPreference: "nearest"
     EDXAPP_PRIVATE_REQUIREMENTS:
       # For Harvard courses. Peer instruction XBlock.
       # edX comment in `configuration' repo at
