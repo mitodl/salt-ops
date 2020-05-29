@@ -6,8 +6,9 @@
 
 **Production**: `ocw.mit.edu` or `ocw.global.ssl.fastly.net`. Also `www.ocw.mit.edu`, which just redirects to ocw.mit.edu.
 
-**QA** (misnamed "Staging" in the "Services" menu): `ocw-qa.global.ssl.fastly.net`
+**QA production**: `ocw-qa.global.ssl.fastly.net`
 
+There is no CDN for [production-staging or qa-staging](https://github.mit.edu/odl-engineering/project-status/wiki/App-Links#ocw).
 
 ### HTTP/2
 
