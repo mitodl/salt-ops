@@ -32,6 +32,8 @@ edx:
         password: __vault__:cache:mongodb-{{ environment }}/creds/gitlog-{{ purpose }}>data>password
         replicaset: "{{ MONGODB_REPLICASET }}"
         readPreference: "nearest"
+    EDXAPP_CMS_ENV_EXTRA:
+      SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
     EDXAPP_PRIVATE_REQUIREMENTS:
       # For Harvard courses. Peer instruction XBlock.
       # edX comment in `configuration' repo at
