@@ -94,6 +94,9 @@ If there was an error in the `build_ami` state after the EC2 base instances were
 sudo salt edx*mitx-qa*base state.highstate pillar="{'edx': {'ansible_flags': '-e migrate_db=yes'}}"
 ```
 
+You can iterate over fixing configuration errors with that highstate command, but once things are working you will need to run the `build_ami` above to complete the AMI build.
+
+
 Next, the Salt database needs to be updated with the IDs of the AMIs that were just built.
 
 ```
