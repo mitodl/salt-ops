@@ -50,7 +50,7 @@ edx:
       LOGFILE: "/edx/var/log/gr/gitreload.log"
       VIRTUAL_ENV: /edx/app/edxapp/venvs/edxapp
       EDX_PLATFORM: /edx/app/edxapp/edx-platform
-      DJANGO_SETTINGS: aws
+      DJANGO_SETTINGS: production
       REPODIR: {{ edxapp_git_repo_dir }}
       NUM_THREADS: 3
       GITRELOAD_CONFIG: /edx/app/gitreload/gr.env.json
