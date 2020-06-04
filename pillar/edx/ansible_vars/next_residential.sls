@@ -50,7 +50,7 @@ edx:
       - name: git+https://github.com/edx/edx-zoom.git@37c323ae93265937bf60abb92657318efeec96c5#egg=edx-zoom
         extra_args: -e
       # MITx Residential XBlocks
-      - name: edx-sga==0.10.0
+      - name: edx-sga==0.11.0
       - name: rapid-response-xblock==0.0.7
       - name: git+https://github.com/mitodl/edx-git-auto-export.git@v0.2#egg=edx-git-auto-export
         extra_args: -e
