@@ -15,6 +15,7 @@ mine_functions:
   network.get_hostname: []
 
 mongodb:
+  version: '3.6'
   overrides:
     install_pkgrepo: False
     pkgs:
