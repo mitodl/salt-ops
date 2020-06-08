@@ -17,7 +17,6 @@ mine_functions:
 mongodb:
   version: '3.6'
   overrides:
-    install_pkgrepo: False
     pkgs:
       - mongodb
     service_name: mongodb
