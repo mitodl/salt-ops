@@ -77,9 +77,11 @@ QA bucket: `ocw-fastly-access-logs-qa`
 
 The logs are in JSONL format, where each line is a JSON object.
 
-The QA CDN has a shorter logfile rotation period than production. Production is currently set (as of 2020-05-14) to rotate hourly, and QA is set to rotate every five minutes. Logs can take some time to be uploaded to S3 after they are rotated. For example, a log rotated at midnight will bear a filename marking it with "00:00:00" but it may not be be available in S3 until 00:15 or even later.
+The QA CDN has a shorter logfile rotation period than production. Production is currently set (as of 2020-05-14) to rotate hourly, and QA is set to rotate every five minutes. Logs can take some time to be uploaded to S3 after they are rotated. For example, a log rotated at midnight will bear a filename marking it with "000000" but it may not be be available in S3 until 00:15 or even later.
 
 No logfiles are generated for periods lacking requests.
+
+Fastly is configured to create a monthly (ex. 202005) subfolder in S3 and ship logs of the month to that folder.
 
 Access to the logging bucket is granted to the `ocw-fastly-logger` IAM user, which has two attached policies, `ocw-fastly-log-bucket-rw-qa` and `ocw-fastly-log-bucket-rw-production`.  The `ocw-fastly-logger` user has two Access Keys, one for production and one for QA.
 
