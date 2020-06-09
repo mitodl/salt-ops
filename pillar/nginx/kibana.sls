@@ -49,6 +49,7 @@ nginx:
                   - proxy_set_header: 'X-Forwarded-For $proxy_add_x_forwarded_for'
                   - proxy_headers_hash_bucket_size: 128
                   - proxy_read_timeout: 240s
+              {% if 'operations-qa' not in ENVIRONMENT %}
               - ssl_client_certificate: /etc/ssl/certs/mitca.pem
               - ssl_verify_client: 'on'
               - set $authorized: 'no'
@@ -56,3 +57,4 @@ nginx:
                 - set $authorized: 'yes'
               - if ($authorized !~ "yes"):
                 - return: 403
+              {% endif %}

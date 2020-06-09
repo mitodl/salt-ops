@@ -9,5 +9,6 @@ consul:
           - logging
         {% endif %}
         check:
-          http: 'http://localhost:9200/'
+          tcp: 'localhost:9200'
           interval: 10s
+          timeout: 3s

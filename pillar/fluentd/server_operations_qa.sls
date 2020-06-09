@@ -66,6 +66,11 @@ fluentd:
                   - '@type': elasticsearch_dynamic
                   - logstash_format: 'true'
                   - hosts: {{ es_hosts }}
+                  - scheme: 'https'
+                  - ssl_version: TLSv1_2
+                  - user: __vault__::secret-operations/{{ ENVIRONMENT }}/xpack/elasticsearch_credentials>data>user
+                  - password: __vault__::secret-operations/{{ ENVIRONMENT }}/xpack/elasticsearch_credentials>data>password
+                  - ssl_verify: false
                   - logstash_prefix: 'logstash-${record.fetch("environment", "blank") != "blank" ? record.fetch("environment") : tag_parts[0]}'
                   - logstash_dateformat: '%Y.%W'
                   - include_tag_key: 'true'
@@ -133,6 +138,11 @@ fluentd:
                   - '@type': elasticsearch_dynamic
                   - logstash_format: 'true'
                   - hosts: {{ es_hosts }}
+                  - scheme: 'https'
+                  - ssl_version: TLSv1_2
+                  - user: __vault__::secret-operations/{{ ENVIRONMENT }}/xpack/elasticsearch_credentials>data>user
+                  - password: __vault__::secret-operations/{{ ENVIRONMENT }}/xpack/elasticsearch_credentials>data>password
+                  - ssl_verify: false
                   - logstash_prefix: 'logstash-${record.fetch("environment", "blank") != "blank" ? record.fetch("environment") : tag_parts[0]}'
                   - logstash_dateformat: '%Y.%W'
                   - include_tag_key: 'true'
