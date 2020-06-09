@@ -162,7 +162,7 @@ edx:
         host: mongodb-master.service.consul
         user: __vault__:cache:mongodb-{{ environment }}/creds/gitlog-{{ purpose }}>data>username
         password: __vault__:cache:mongodb-{{ environment }}/creds/gitlog-{{ purpose }}>data>password
-        replicaset: "{{ MONGODB_REPLICASET }}"
+        replicaset: rs0
         readPreference: "nearest"
       SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>key
       SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>value
