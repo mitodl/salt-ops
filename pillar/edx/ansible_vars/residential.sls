@@ -60,6 +60,11 @@ edx:
       location: /edx/app/nginx/gitreload.htpasswd
 
   ansible_vars:
+    common_digicert_base_url: http://dl.cacerts.digicert.com/
+    COMMON_ENABLE_AWS_ROLE: False
+    COMMON_ENABLE_DATADOG: False
+    EDXAPP_HERMES_ENABLED: False
+
     XQUEUE_QUEUES:
         'MITx-42.01x': 'https://xserver.mitx.mit.edu/fgxserver'
         'MITx-8371': 'https://xqueue.mitx.mit.edu/qis_xserver'
@@ -85,44 +90,11 @@ edx:
     EDXAPP_SESSION_COOKIE_DOMAIN: .mitx.mit.edu
     EDXAPP_SESSION_COOKIE_NAME: {{ environment }}-{{ purpose }}-session
 
-    EDXAPP_LMS_AUTH_EXTRA:
-      SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
-      REMOTE_GRADEBOOK_USER: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>user
-      REMOTE_GRADEBOOK_PASSWORD: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>password
-      SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>key
-      SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>value
-      {% if environment == 'mitx-qa' %}
-      PROCTORING_BACKENDS:
-        DEFAULT: proctortrack
-        proctortrack:
-          client_id: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>id
-          client_secret: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>secret
-          base_url: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>base_url
-      {% endif %}
-
-    EDXAPP_CMS_AUTH_EXTRA:
-      SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
-      {% if environment == 'mitx-qa' %}
-      PROCTORING_BACKENDS:
-        DEFAULT: proctortrack
-        proctortrack:
-          client_id: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>id
-          client_secret: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>secret
-          base_url: __vault__::secret-residential/{{ environment }}/{{ purpose }}/edx-proctoring-oauth-client>data>base_url
-      {% endif %}
-
-    {# multivariate, only needed for current deployment. will be removed in favor of SAML (tmacey 2017/03/20) #}
-    EDXAPP_CAS_ATTRIBUTE_PACKAGE: 'git+https://github.com/mitodl/mitx_cas_mapper#egg=mitx_cas_mapper'
-    {# multivariate, only used for current residential #}
-    EDXAPP_CAS_SERVER_URL: 'https://cas.mitx.mit.edu/cas'
-    {# multivariate, only used for current residential #}
-    EDXAPP_CAS_ATTRIBUTE_CALLBACK:
-      module: mitx_cas_mapper
-      function: populate_user
-    {# multivariate, only used for current residential #}
-    EDXAPP_CAS_EXTRA_LOGIN_PARAMS:
-      provider: touchstone
-      appname: MITx
+    EDXAPP_JWT_SIGNING_ALGORITHM: 'RS512'
+    EDXAPP_JWT_PRIVATE_SIGNING_JWK: {{ salt.vault.read('secret-' ~  business_unit ~ '/' ~  environment ~ '/jwt-signing-jwk/private-key').data.value }}
+    EDXAPP_JWT_PUBLIC_SIGNING_JWK_SET: {{ salt.vault.read('secret-' ~  business_unit ~ '/' ~  environment ~ '/jwt-signing-jwk/public-key').data.value }}
+    EDXAPP_SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>key
+    EDXAPP_SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>value
 
     EDXAPP_REGISTRATION_EXTRA_FIELDS:
       confirm_email: "hidden"
@@ -137,28 +109,32 @@ edx:
       country: "hidden"
 
     EDXAPP_PRIVATE_REQUIREMENTS:
-        # For Harvard courses:
-        # Peer instruction XBlock
-        - name: ubcpi-xblock==0.6.4
-        # Vector Drawing and ActiveTable XBlocks (Davidson)
-        - name: git+https://github.com/open-craft/xblock-vectordraw.git@c57df9d98119fd2ca4cb31b9d16c27333cdc65ca#egg=xblock-vectordraw==0.2.1
-          extra_args: -e
-        - name: git+https://github.com/open-craft/xblock-activetable.git@e933d41bb86a8d50fb878787ca680165a092a6d5#egg=xblock-activetable
-          extra_args: -e
-       # MITx Residential XBlocks
-        - name: edx-sga==0.8.2
-        - name: rapid-response-xblock==0.0.5
-        - name: git+https://github.com/mitodl/edx-git-auto-export.git@v0.1#egg=edx-git-auto-export
-          extra_args: -e
-        - name: git+https://github.com/Stanford-Online/xblock-in-video-quiz@release/v0.1.7#egg=xblock-in-video-quiz
-          extra_args: -e
-        - name: xblock-image-modal==0.4.2
-        # Python client for Sentry
-        - name: raven
-        - name: git+https://github.com/raccoongang/xblock-pdf.git@8d63047c53bc8fdd84fa7b0ec577bb0a729c215f#egg=xblock-pdf
-          extra_args: -e
-        - name: git+https://github.com/mitodl/edx-proctoring@f9c3910fdfba181420b77c2a3c30706abe67d89b#egg=edx-proctoring
-          extra_args: -e
+      # For Harvard courses. Peer instruction XBlock.
+      # edX comment in `configuration' repo at
+      # https://github.com/edx/configuration/blob/e7433e03313ffc86a3cfd046c5178ec587841c19/playbooks/roles/edxapp/defaults/main.yml#L528
+      # says:
+      # "Need it from github until we can land https://github.com/ubc/ubcpi/pull/167 upstream."
+      - name: git+https://github.com/edx/ubcpi.git@3c4b2cdc9f595ab8cdb436f559b56f36638313b6#egg=ubcpi-xblock
+        extra_args: -e
+      # Vector Drawing and ActiveTable XBlocks (Davidson)
+      - name: git+https://github.com/open-craft/xblock-vectordraw.git@76976425356dfc7f13570f354c0c438db84c2840#egg=xblock-vectordraw==0.3.0
+        extra_args: -e
+      - name: git+https://github.com/open-craft/xblock-activetable.git@013003aa3ce28f0ae03b8227dc3a6daa4e19997d#egg=xblock-activetable
+        extra_args: -e
+      - name: git+https://github.com/edx/edx-zoom.git@37c323ae93265937bf60abb92657318efeec96c5#egg=edx-zoom
+        extra_args: -e
+      # MITx Residential XBlocks
+      - name: edx-sga==0.11.0
+      - name: rapid-response-xblock==0.0.7
+      - name: git+https://github.com/mitodl/edx-git-auto-export.git@v0.2#egg=edx-git-auto-export
+        extra_args: -e
+      - name: git+https://github.com/Stanford-Online/xblock-in-video-quiz@release/v0.1.7#egg=xblock-in-video-quiz
+        extra_args: -e
+      - name: xblock-image-modal==0.4.2
+      # Python client for Sentry
+      - name: raven
+      - name: git+https://github.com/raccoongang/xblock-pdf.git@8d63047c53bc8fdd84fa7b0ec577bb0a729c215f#egg=xblock-pdf
+        extra_args: -e
 
     EDXAPP_LMS_ENV_EXTRA:
       EMAIL_USE_DEFAULT_FROM_FOR_BULK: True
@@ -174,11 +150,22 @@ edx:
         RESTRICT_ENROLL_NO_ATSIGN_USERNAMES: true
         RESTRICT_ENROLL_SOCIAL_PROVIDERS:
           - mit-kerberos
-      PROCTORING_SETTINGS:
-        MUST_BE_VERIFIED_TRACK: False
+        ENABLE_THIRD_PARTY_ONLY_AUTH: True
       REMOTE_GRADEBOOK:
         URL: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>url
         DEFAULT_NAME: !!null
+      SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
+      REMOTE_GRADEBOOK_USER: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>user
+      REMOTE_GRADEBOOK_PASSWORD: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>password
+      MONGODB_LOG:
+        db: gitlog_{{ purpose_suffix }}
+        host: mongodb-master.service.consul
+        user: __vault__:cache:mongodb-{{ environment }}/creds/gitlog-{{ purpose }}>data>username
+        password: __vault__:cache:mongodb-{{ environment }}/creds/gitlog-{{ purpose }}>data>password
+        replicaset: "{{ MONGODB_REPLICASET }}"
+        readPreference: "nearest"
+      SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>key
+      SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>value
 
     EDXAPP_CMS_ENV_EXTRA:
       ADDL_INSTALLED_APPS:
@@ -190,8 +177,7 @@ edx:
         ENABLE_GIT_AUTO_EXPORT: True
         ENABLE_EXPORT_GIT: True
         ENABLE_OAUTH2_PROVIDER: True
-      PROCTORING_SETTINGS:
-        MUST_BE_VERIFIED_TRACK: False
+      SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
       {% if environment == 'mitx-qa' %}
       JWT_AUTH:
         JWT_AUDIENCE: "https://{{ purpose_data.domains.lms }}"
@@ -206,3 +192,5 @@ edx:
         JWT_SIGNING_ALGORITHM: "RS512"
         JWT_VERIFY_AUDIENCE: false
       {% endif %}
+
+    NGINX_SSL_CIPHERS: "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA"

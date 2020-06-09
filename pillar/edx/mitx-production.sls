@@ -11,6 +11,20 @@ edx:
       password: __vault__::secret-residential/mitx-production/gitreload>data>value
   edxapp:
     max_upload_size: 50
+  dependencies:
+    os_packages:
+      - git
+      - libmysqlclient-dev
+      - mariadb-client-10.0
+      - landscape-common
+      - libssl-dev
+      - python3.5
+      - python3.5-dev
+      - python-pip
+      - python3-pip
+      - python-virtualenv
+      - nfs-common
+      - postfix
 
 users:
   ichuang:

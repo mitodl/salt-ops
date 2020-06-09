@@ -23,34 +23,34 @@ edxapp_secret_backends: &edxapp_secret_backends
 
 current_residential_versions_qa: &current_residential_versions_qa
   edx_config_repo: https://github.com/mitodl/configuration
-  edx_config_version: open-release/ironwood.master
+  edx_config_version: open-release/juniper.master
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
-  edxapp: mitx/ironwood
+  edxapp: mitx/juniper
   forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
-  forum: open-release/ironwood.master
+  forum: open-release/juniper.master
   xqueue_source_repo: 'https://github.com/mitodl/xqueue'
-  xqueue: open-release/ironwood.master
+  xqueue: open-release/juniper.master
   xqwatcher_courses: production
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
   theme_name: 'mitx-theme'
-  theme: ironwood
-  codename: ironwood
+  theme: juniper
+  codename: juniper
   ami_id: ami-80861296
 
 current_residential_versions_rp: &current_residential_versions_rp
   edx_config_repo: https://github.com/mitodl/configuration
-  edx_config_version: open-release/ironwood.master
+  edx_config_version: open-release/juniper.master
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
-  edxapp: mitx/ironwood
+  edxapp: mitx/juniper
   forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
-  forum: open-release/ironwood.master
+  forum: open-release/juniper.master
   xqueue_source_repo: 'https://github.com/mitodl/xqueue'
-  xqueue: open-release/ironwood.master
+  xqueue: open-release/juniper.master
   xqwatcher_courses: production
   theme_source_repo: 'https://github.com/mitodl/mitx-theme'
   theme_name: 'mitx-theme'
-  theme: ironwood
-  codename: ironwood
+  theme: juniper
+  codename: juniper
   ami_id: ami-80861296
 
 next_residential_versions: &next_residential_versions
