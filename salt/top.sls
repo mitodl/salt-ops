@@ -1,7 +1,6 @@
 base:
   '*':
     - utils.install_libs
-    - netdata
   'not G@roles:devstack':
     - match: compound
     - utils.inotify_watches
