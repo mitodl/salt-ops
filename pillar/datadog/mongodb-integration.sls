@@ -7,7 +7,7 @@ datadog:
     mongo:
       settings:
         instances:
-          - server: mongodb://{{ mongodb_creds.data.username }}:{{ mongodb_creds.data.password }}@localhost:27017/{{ mongodb_creds.data.db }}
+          - server: mongodb://{{ mongodb_creds.data.username }}:{{ mongodb_creds.data.password }}@localhost:27017/admin
             replica_check: True
             tags:
               - {{ salt.grains.get('environment') }}

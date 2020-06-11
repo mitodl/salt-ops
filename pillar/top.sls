@@ -77,6 +77,7 @@ base:
     - mongodb
     - fluentd.mongodb
     - consul.mongodb
+    - datadog.mongodb-integration
   alcali*:
     - apps.alcali
     - nginx
@@ -291,7 +292,7 @@ base:
     - rabbitmq
     - fluentd.rabbitmq
     - consul.rabbitmq
-  'G@roles:rabbitmq and P@environment:(mitx-production|production-apps)':
+  'G@roles:rabbitmq and P@environment:(mitxpro-production|mitx-production|production-apps)':
     - match: compound
     - datadog.rabbitmq-integration
   'roles:tika':
