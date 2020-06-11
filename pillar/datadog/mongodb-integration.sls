@@ -8,6 +8,7 @@ datadog:
       settings:
         instances:
           - server: mongodb://{{ mongodb_creds.data.username }}:{{ mongodb_creds.data.password }}@localhost:27017/{{ mongodb_creds.data.db }}
+            replica_check: True
             tags:
               - {{ salt.grains.get('environment') }}
 {% endif %}
