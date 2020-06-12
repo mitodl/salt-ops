@@ -45,6 +45,21 @@ Only the production site has a custom TLS certificate. The certificate is issued
 
 The TLS certificate covers `ocw.mit.edu` and `www.ocw.mit.edu`. The latter is hosted only for the purpose of redirecting to `ocw.mit.edu`.
 
+### Purging the Cache
+
+Purging the cache can be done as follows.
+
+From the [admin panel Home page](https://manage.fastly.com/services/all), choose the CDN that you want to purge via the "active version" link.
+
+Click "Configure" at the very top of the page.
+
+You should see a page with a "Purge" dropdown menu near the top of the page. This provides options for purging by URL or "cache key." A cache key is a token that we assign to various groups of pages; for example, courses, stylesheets, Javascript scripts, and images. Either select a particular URL or choose one of the following cache keys:
+
+* The URL path slug of a course; for example, "16-63j-system-safety-spring-2016"
+* "courses" to to purge _all_ courses
+* "styles" to purge _all_ stylesheets in the "/styles" path
+* "scripts" to purge _all_ Javascript in the "/scripts" path
+* "images" to purge _all_ images in the "/images" path
 
 ### Differences Between QA and Production CDNs
 
