@@ -20,7 +20,8 @@
     'LOGFILE': "/edx/var/log/gr/gitreload.log",
     'VIRTUAL_ENV': '/edx/app/edxapp/venvs/edxapp',
     'EDX_PLATFORM': '/edx/app/edxapp/edx-platform',
-    'DJANGO_SETTINGS': 'production'
+    'DJANGO_SETTINGS': 'production',
+    'LMS_CFG': '/edx/etc/lms.yml'
 }) -%}
 {% set gr_repo = salt.pillar.get('edx:gitreload:gr_repo',
                                  'github.com/mitodl/gitreload') -%}
