@@ -86,7 +86,7 @@ create_gitreload_config:
 
 install_gitreload:
   pip.installed:
-    - name: gitreload==0.2.4
+    - name: gitreload==0.2.5
     - exists_action: w
     - bin_env: {{ gr_env.VIRTUAL_ENV }}
     - upgrade: True
