@@ -14,8 +14,8 @@ nginx:
         enabled: True
         config:
           - server:
-              - server_name: amps-web.amps.ms.mit.edu
-              - listen: '80'
+              - server_name: 'amps-web.amps.ms.mit.edu amps.odl.mit.edu'
+              - listen: '80 default'
               - listen: '443 ssl'
               - listen: '[::]:80'
               - listen: '[::]:443 ssl'
