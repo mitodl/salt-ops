@@ -16,7 +16,10 @@
       'EDXORG_BASE_URL': 'https://micromasters.d.mitx.mit.edu',
       'GA_TRACKING_ID': 'UA-5145472-19',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
+      'HUBSPOT_PORTAL_ID': '6431386',
+      'HUBSPOT_CREATE_USER_FORM_ID': '995ee734-a0ff-47cc-b747-6ea1d2dd6303',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
+      'SITE_NAME': 'MIT Bootcamps CI',
       'vault_env_path': 'rc-apps'
       },
     'rc': {
@@ -32,7 +35,10 @@
       'EDXORG_BASE_URL': 'https://courses.stage.edx.org',
       'GA_TRACKING_ID': 'UA-5145472-19',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
+      'HUBSPOT_PORTAL_ID': '6431386',
+      'HUBSPOT_CREATE_USER_FORM_ID': '995ee734-a0ff-47cc-b747-6ea1d2dd6303',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
+      'SITE_NAME': 'MIT Bootcamps RC',
       'vault_env_path': 'rc-apps'
       },
     'production': {
@@ -49,6 +55,7 @@
       'GA_TRACKING_ID': 'UA-5145472-18',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
       'MAILGUN_SENDER_DOMAIN': 'mail.bootcamp.odl.mit.edu',
+      'SITE_NAME': 'MIT Bootcamps',
       'vault_env_path': 'production-apps'
       }
 } %}
@@ -121,5 +128,10 @@ heroku:
     RECAPTCHA_SECRET_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>secret_key
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-secret-key>data>value
     SENTRY_DSN: __vault__::secret-operations/global/{{ business_unit}}/sentry-dsn>data>value
+    SITE_NAME: {{ env_data.SITE_NAME }}
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
     ZENDESK_HELP_WIDGET_ENABLED: True
+    {% if env_data.env_name == 'ci' or env_data.env_name == 'rc' %}
+    HUBSPOT_PORTAL_ID: {{ env_data.HUBSPOT_PORTAL_ID }}
+    HUBSPOT_CREATE_USER_FORM_ID: {{ env_data.HUBSPOT_CREATE_USER_FORM_ID }}
+    {% endif %}
