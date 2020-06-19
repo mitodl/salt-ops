@@ -2,7 +2,7 @@
 {% set sqs_edx_worker_mitxpro_production_queue = 'edx-worker-xpro-production-mitxpro-production-autoscaling' %}
 {% set purpose = salt.grains.get('purpose') %}
 {% if 'qa' in purpose %}
-{% set git_ref = 'master' %}
+{% set git_ref = 'main' %}
 {% else %}
 {% set git_ref = 'production' %}
 {% endif %}
