@@ -18,6 +18,7 @@
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
       'HUBSPOT_PORTAL_ID': '6431386',
       'HUBSPOT_CREATE_USER_FORM_ID': '995ee734-a0ff-47cc-b747-6ea1d2dd6303',
+      'HUBSPOT_FOOTER_FORM_GUID': 'a8cffaac-4207-446a-b295-5f44656596f8',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
       'SITE_NAME': 'MIT Bootcamps CI',
       'vault_env_path': 'rc-apps'
@@ -37,6 +38,7 @@
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
       'HUBSPOT_PORTAL_ID': '6431386',
       'HUBSPOT_CREATE_USER_FORM_ID': '995ee734-a0ff-47cc-b747-6ea1d2dd6303',
+      'HUBSPOT_FOOTER_FORM_GUID': 'a8cffaac-4207-446a-b295-5f44656596f8',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
       'SITE_NAME': 'MIT Bootcamps RC',
       'vault_env_path': 'rc-apps'
@@ -134,4 +136,5 @@ heroku:
     {% if env_data.env_name == 'ci' or env_data.env_name == 'rc' %}
     HUBSPOT_PORTAL_ID: {{ env_data.HUBSPOT_PORTAL_ID }}
     HUBSPOT_CREATE_USER_FORM_ID: {{ env_data.HUBSPOT_CREATE_USER_FORM_ID }}
+    HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
     {% endif %}
