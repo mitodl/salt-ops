@@ -77,6 +77,7 @@ base:
     - mongodb
     - fluentd.mongodb
     - consul.mongodb
+  mongodb*production*:
     - datadog.mongodb-integration
   alcali*:
     - apps.alcali
