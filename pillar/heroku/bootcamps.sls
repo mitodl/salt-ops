@@ -89,7 +89,7 @@ heroku:
     BOOTCAMP_EMAIL_TLS: True
     BOOTCAMP_EMAIL_USER: mitxmail
     BOOTCAMP_ENVIRONMENT: {{ env_data.env_name }}
-    BOOTCAMP_FROM_EMAIL: MIT Bootcamp <mitx-support@mit.edu>
+    BOOTCAMP_FROM_EMAIL: MIT Bootcamps <bootcamp-support@mit.edu>
     BOOTCAMP_LOG_LEVEL: {{ env_data.BOOTCAMP_LOG_LEVEL }}
     BOOTCAMP_SECURE_SSL_REDIRECT: True
     BOOTCAMP_SUPPORT_EMAIL: {{ env_data.BOOTCAMP_SUPPORT_EMAIL }}
@@ -124,7 +124,7 @@ heroku:
     JOBMA_ACCESS_TOKEN: {{ jobma.access_token }}
     JOBMA_BASE_URL: {{ jobma.base_url }}
     JOBMA_WEBHOOK_ACCESS_TOKEN: {{ jobma.webhook_access_token }}
-    MAILGUN_FROM_EMAIL: 'MIT Bootcamp <no-reply@{{ env_data.MAILGUN_SENDER_DOMAIN }}'
+    MAILGUN_FROM_EMAIL: 'MIT Bootcamps <no-reply@{{ env_data.MAILGUN_SENDER_DOMAIN }}'
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
     MAILGUN_URL: https://api.mailgun.net/v3/{{ env_data.MAILGUN_SENDER_DOMAIN }}
