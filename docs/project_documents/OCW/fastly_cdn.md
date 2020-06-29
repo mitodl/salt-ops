@@ -56,10 +56,22 @@ Click "Configure" at the very top of the page.
 You should see a page with a "Purge" dropdown menu near the top of the page. This provides options for purging by URL or "cache key." A cache key is a token that we assign to various groups of pages; for example, courses, stylesheets, Javascript scripts, and images. Either select a particular URL or choose one of the following cache keys:
 
 * The URL path slug of a course; for example, "16-63j-system-safety-spring-2016"
-* "courses" to to purge _all_ courses
+* "courses" to to purge _all_ courses, plus all of their related RSS (.xml) files
 * "styles" to purge _all_ stylesheets in the "/styles" path
 * "scripts" to purge _all_ Javascript in the "/scripts" path
 * "images" to purge _all_ images in the "/images" path
+* "high-school" to purge _all_ resources under "/high-school"
+* "ocw-labs" to purge _all_ resources under "/ocw-labs"
+* "about" to purge _all_ resources under "/about"
+* "ans7870" to purge _all_ of the "large files" resources for courses, under "/ans7870"
+* "educator" to purge _all_ resources under "/educator"
+* "faculty" to purge _all_ resources under "/faculty"
+* "give" to purge _all_ resources under "/give"
+* "help" to purge _all_ resources under "/help"
+* "resources" to purge _all_ resources under "/resources"
+* "search" to purge _all_ resources under "/search"
+* "terms" to purge _all_ resources under "/terms"
+* "webfonts" to purge _all_ webfont files under "/webfonts"
 
 ### Differences Between QA and Production CDNs
 
