@@ -56,6 +56,9 @@
       'EDXORG_BASE_URL': 'https://courses.edx.org',
       'GA_TRACKING_ID': 'UA-5145472-18',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
+      'HUBSPOT_PORTAL_ID': '6119748',
+      'HUBSPOT_CREATE_USER_FORM_ID': '9ada5d38-33ee-415c-8cb2-9d72e735b1d5',
+      'HUBSPOT_FOOTER_FORM_GUID': '2d798908-c195-4c0c-b075-a10b0c1b08f3',
       'MAILGUN_SENDER_DOMAIN': 'mail.bootcamp.odl.mit.edu',
       'SITE_NAME': 'MIT Bootcamps',
       'vault_env_path': 'production-apps'
@@ -114,6 +117,9 @@ heroku:
     GTM_TRACKING_ID: {{ env_data.GTM_TRACKING_ID }}
     HUBSPOT_API_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/hubspot>data>api_key
     HUBSPOT_ID_PREFIX: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/hubspot>data>id_prefix
+    HUBSPOT_PORTAL_ID: {{ env_data.HUBSPOT_PORTAL_ID }}
+    HUBSPOT_CREATE_USER_FORM_ID: {{ env_data.HUBSPOT_CREATE_USER_FORM_ID }}
+    HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
     MAILGUN_FROM_EMAIL: 'MIT Bootcamp <no-reply@{{ env_data.MAILGUN_SENDER_DOMAIN }}'
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
@@ -131,9 +137,6 @@ heroku:
     ZENDESK_HELP_WIDGET_ENABLED: True
     {% if env_data.env_name == 'ci' or env_data.env_name == 'rc' %}
     {% set jobma = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/jobma').data %}
-    HUBSPOT_PORTAL_ID: {{ env_data.HUBSPOT_PORTAL_ID }}
-    HUBSPOT_CREATE_USER_FORM_ID: {{ env_data.HUBSPOT_CREATE_USER_FORM_ID }}
-    HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
     JOBMA_ACCESS_TOKEN: {{ jobma.access_token }}
     JOBMA_BASE_URL: {{ jobma.base_url }}
     JOBMA_WEBHOOK_ACCESS_TOKEN: {{ jobma.webhook_access_token }}
