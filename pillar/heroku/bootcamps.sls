@@ -137,12 +137,6 @@ heroku:
     ZENDESK_HELP_WIDGET_ENABLED: True
     {% if env_data.env_name == 'ci' or env_data.env_name == 'rc' %}
     {% set jobma = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/jobma').data %}
-<<<<<<< HEAD
-    HUBSPOT_PORTAL_ID: {{ env_data.HUBSPOT_PORTAL_ID }}
-    HUBSPOT_CREATE_USER_FORM_ID: {{ env_data.HUBSPOT_CREATE_USER_FORM_ID }}
-    HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
-=======
->>>>>>> restore HUBSPOT_FOOTER_FORM_GUID on CI/RC; add other HUBSPOT values for prod
     JOBMA_ACCESS_TOKEN: {{ jobma.access_token }}
     JOBMA_BASE_URL: {{ jobma.base_url }}
     JOBMA_WEBHOOK_ACCESS_TOKEN: {{ jobma.webhook_access_token }}
