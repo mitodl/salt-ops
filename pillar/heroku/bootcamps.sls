@@ -136,8 +136,6 @@ heroku:
     SITE_NAME: {{ env_data.SITE_NAME }}
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
     ZENDESK_HELP_WIDGET_ENABLED: True
-    {% if env_data.env_name == 'ci' or env_data.env_name == 'rc' %}
     HUBSPOT_PORTAL_ID: {{ env_data.HUBSPOT_PORTAL_ID }}
     HUBSPOT_CREATE_USER_FORM_ID: {{ env_data.HUBSPOT_CREATE_USER_FORM_ID }}
     HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
-    {% endif %}
