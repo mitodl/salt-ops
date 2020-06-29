@@ -18,6 +18,7 @@
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
       'HUBSPOT_PORTAL_ID': '6431386',
       'HUBSPOT_CREATE_USER_FORM_ID': '995ee734-a0ff-47cc-b747-6ea1d2dd6303',
+      'HUBSPOT_FOOTER_FORM_GUID': 'a8cffaac-4207-446a-b295-5f44656596f8',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
       'SITE_NAME': 'MIT Bootcamps CI',
       'vault_env_path': 'rc-apps'
@@ -37,6 +38,7 @@
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
       'HUBSPOT_PORTAL_ID': '6431386',
       'HUBSPOT_CREATE_USER_FORM_ID': '995ee734-a0ff-47cc-b747-6ea1d2dd6303',
+      'HUBSPOT_FOOTER_FORM_GUID': 'a8cffaac-4207-446a-b295-5f44656596f8',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
       'SITE_NAME': 'MIT Bootcamps RC',
       'vault_env_path': 'rc-apps'
@@ -131,6 +133,7 @@ heroku:
     {% set jobma = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/jobma').data %}
     HUBSPOT_PORTAL_ID: {{ env_data.HUBSPOT_PORTAL_ID }}
     HUBSPOT_CREATE_USER_FORM_ID: {{ env_data.HUBSPOT_CREATE_USER_FORM_ID }}
+    HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
     JOBMA_ACCESS_TOKEN: {{ jobma.access_token }}
     JOBMA_BASE_URL: {{ jobma.base_url }}
     JOBMA_WEBHOOK_ACCESS_TOKEN: {{ jobma.webhook_access_token }}
