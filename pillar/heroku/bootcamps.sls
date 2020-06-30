@@ -90,6 +90,7 @@ heroku:
     BOOTCAMP_EMAIL_USER: mitxmail
     BOOTCAMP_ENVIRONMENT: {{ env_data.env_name }}
     BOOTCAMP_LOG_LEVEL: {{ env_data.BOOTCAMP_LOG_LEVEL }}
+ 	BOOTCAMP_REPLY_TO_ADDRESS: 'MIT Bootcamps <bootcamps-support@mit.edu>'
     BOOTCAMP_SECURE_SSL_REDIRECT: True
     BOOTCAMP_SUPPORT_EMAIL: {{ env_data.BOOTCAMP_SUPPORT_EMAIL }}
     BOOTCAMP_USE_S3: True
