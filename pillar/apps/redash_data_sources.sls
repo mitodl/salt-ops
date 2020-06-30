@@ -38,8 +38,8 @@ redash:
         dbname: opendiscussions
         host: postgresql-opendiscussions.service.production-apps.consul
         port: 5432
-        user: __vault__:cache:postgresql-production-apps-opendiscussions/creds/readonly>data>username
-        password: __vault__:cache:postgresql-production-apps-opendiscussions/creds/readonly>data>password
+        user: __vault__:cache:postgres-production-apps-opendiscussions/creds/readonly>data>username
+        password: __vault__:cache:postgres-production-apps-opendiscussions/creds/readonly>data>password
     - name: Open Discussions Reddit
       type: pg
       options:
