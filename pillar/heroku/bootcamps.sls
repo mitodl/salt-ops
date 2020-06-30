@@ -89,7 +89,6 @@ heroku:
     BOOTCAMP_EMAIL_TLS: True
     BOOTCAMP_EMAIL_USER: mitxmail
     BOOTCAMP_ENVIRONMENT: {{ env_data.env_name }}
-    BOOTCAMP_FROM_EMAIL: MIT Bootcamps <bootcamp-support@mit.edu>
     BOOTCAMP_LOG_LEVEL: {{ env_data.BOOTCAMP_LOG_LEVEL }}
     BOOTCAMP_SECURE_SSL_REDIRECT: True
     BOOTCAMP_SUPPORT_EMAIL: {{ env_data.BOOTCAMP_SUPPORT_EMAIL }}
