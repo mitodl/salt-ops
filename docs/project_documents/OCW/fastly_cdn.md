@@ -64,6 +64,7 @@ You should see a page with a "Purge" dropdown menu near the top of the page. Thi
 * "ocw-labs" to purge _all_ resources under "/ocw-labs"
 * "about" to purge _all_ resources under "/about"
 * "ans7870" to purge _all_ of the "large files" resources for courses, under "/ans7870"
+* "ans15436" to purge _all_ of the "zip files" resources for courses, under "/ans15436"
 * "educator" to purge _all_ resources under "/educator"
 * "faculty" to purge _all_ resources under "/faculty"
 * "give" to purge _all_ resources under "/give"
