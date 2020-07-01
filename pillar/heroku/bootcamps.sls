@@ -109,6 +109,7 @@ heroku:
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/bootcamp_ecommerce
     ENABLE_STUNNEL_AMAZON_RDS_FIX: true
     HIREFIRE_TOKEN: __vault__::secret-{{ business_unit }}/production-apps/hirefire_token>data>value
+    USE_X_FORWARDED_HOST: True
     {% endif %}
     EDXORG_BASE_URL: {{ env_data.EDXORG_BASE_URL }}
     EDXORG_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/edx>data>client_id
