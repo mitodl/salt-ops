@@ -1,6 +1,6 @@
 {% set minion_id = salt.grains.get('id', '') %}
 {% set xpro_db_creds = salt.vault.cached_read('postgres-production-apps-mitxpro/creds/readonly', cache_prefix=minion_id) %}
-{% set open_db_creds = salt.vault.cached_read('postgresql-production-apps-opendiscussions/creds/readonly', cache_prefix=minion_id) %}
+{% set open_db_creds = salt.vault.cached_read('postgres-production-apps-opendiscussions/creds/readonly', cache_prefix=minion_id) %}
 
 etl_dependencies:
   - python3
