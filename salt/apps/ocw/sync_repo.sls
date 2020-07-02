@@ -42,6 +42,19 @@ ensure_state_of_src_symlink:
     - target: /var/lib/ocwcms/plone/src
     - force: True
     - backupname: src_old
+
+sync_ocwcms_web_directory_for_cms:
+  rsync.synchronized:
+    - name: /var/www/html
+    - prepare: True
+    - source: /var/lib/ocwcms/web/
+    - delete: True
+    - update: True
+    - additional_opts:
+        - '-p'
+        - '-t'
+        - '-c'
+        - '--delay-updates'
 {% endif %}
 
 {% if 'ocw-origin' in roles %}
