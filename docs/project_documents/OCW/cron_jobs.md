@@ -14,7 +14,7 @@ Runs as `ocwuser` from that account's crontab.
 
 Runs [`news_feeds_downloader.py`](https://github.com/mitocw/ocwcms/blob/32acfd7d9d217afbe88fb58263da8e2755391ee1/publishing/news_feeds_dowloader.py)
 
-Downloads the file `ocw_news_feeds.xml` from <https://mitopencourseware.wordpress.com/feed/> and copies it to the [mirror server and production server](architecture_overview.md). This file is consumed by [a Javascript script on the home page](https://github.com/mitocw/ocwcms/blob/5488df87bdd09ffeea2b874fb8db21d49a826457/web/scripts/ocw_rss_news.js) that displays course-related news.
+Downloads the file `ocw_news_feeds.xml` from <https://www.ocw-openmatters.org/feed/> and copies it to the [mirror server and production server](architecture_overview.md). This file is consumed by [a Javascript script on the home page](https://github.com/mitocw/ocwcms/blob/5488df87bdd09ffeea2b874fb8db21d49a826457/web/scripts/ocw_rss_news.js) that displays course-related news.
 
 The cron job is managed by [our `engines.sls` Salt state](https://github.com/mitodl/salt-ops/blob/f41844f3bb4fc2c38f06bd8a5760e583097ec3df/salt/apps/ocw/engines.sls#L40-L45).
 
