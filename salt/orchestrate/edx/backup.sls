@@ -16,6 +16,11 @@ ensure_backup_bucket_exists:
     - Versioning:
         Status: Enabled
     - region: us-east-1
+    - Tagging:
+        OU: operations
+        business_unit: operations
+        Department: operations
+        Environment: operations
 
 ensure_instance_profile_exists_for_backups:
   boto_iam_role.present:
