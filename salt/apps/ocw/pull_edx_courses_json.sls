@@ -2,7 +2,7 @@
 pull_edx_courses_json:
   module.run:
     - name: s3.get
-    - bucket: open-learning-course-data
+    - bucket: open-learning-course-data-production
     - path: edx_courses.json
     - local_file: /var/www/ocw/courses/edx_courses.json
 
