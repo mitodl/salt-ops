@@ -217,9 +217,13 @@ delete_{{ grain }}_from_grains:
   salt.function:
     - tgt: 'edx*{{ ENVIRONMENT}}*base'
     - tgt_type: compound
-    - name: grains.delkey
-    - arg:
-        - {{ grain }}
+    - name: state.single
+    - arg: 
+      - grains.absent
+    - kwarg:
+        {{ grain }}
+        force: True
+        destructive: True
     - require_in:
         - boto_ec2: snapshot_edx_app_{{ ENVIRONMENT }}_node
         - boto_ec2: snapshot_edx_worker_{{ ENVIRONMENT }}_node
