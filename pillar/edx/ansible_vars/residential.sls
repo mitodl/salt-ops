@@ -175,8 +175,6 @@ edx:
           client_id: __vault__::secret-{{ business_unit }}/{{ environment }}/proctortrack>data>client_id
           client_secret: __vault__::secret-{{ business_unit }}/{{ environment }}/proctortrack>data>client_secret
           base_url: __vault__::secret-{{ business_unit }}/{{ environment }}/proctortrack>data>base_url
-      JWT_AUTH:
-        JWT_AUDIENCE: 'pt_openedx_key'
       DEFAULT_JWT_ISSUER:
         AUDIENCE: "https://{{ purpose_data.domains.lms }}"
       JWT_AUTH:
@@ -187,8 +185,6 @@ edx:
           - ISSUER: "https://{{ purpose_data.domains.lms }}/oauth2"
           - SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
         JWT_SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
-        JWT_PUBLIC_SIGNING_JWK_SET: null
-        JWT_PRIVATE_SIGNING_JWK: null
         JWT_SIGNING_ALGORITHM: "RS512"
         JWT_VERIFY_AUDIENCE: false
 
@@ -221,8 +217,6 @@ edx:
           - ISSUER: "https://{{ purpose_data.domains.lms }}/oauth2"
           - SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
         JWT_SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
-        JWT_PUBLIC_SIGNING_JWK_SET: null
-        JWT_PRIVATE_SIGNING_JWK: null
         JWT_SIGNING_ALGORITHM: "RS512"
         JWT_VERIFY_AUDIENCE: false
 
