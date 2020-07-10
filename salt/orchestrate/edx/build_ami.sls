@@ -221,7 +221,7 @@ delete_{{ grain }}_from_grains:
     - arg: 
       - grains.absent
     - kwarg:
-        {{ grain }}
+        name: {{ grain }}
         force: True
         destructive: True
     - require_in:
