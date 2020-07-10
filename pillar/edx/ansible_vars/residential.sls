@@ -150,7 +150,6 @@ edx:
     EDXAPP_JWT_AUDIENCE: "mitx_jwt"
     EDXAPP_LMS_ISSUER: "https://{{ purpose_data.domains.lms }}/oauth2"
     EDXAPP_JWT_SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
-    EDXAPP_JWT_SIGNING_ALGORITHM: "RS512"
     # End ProctorTrack settings
     
     EDXAPP_LMS_ENV_EXTRA:
