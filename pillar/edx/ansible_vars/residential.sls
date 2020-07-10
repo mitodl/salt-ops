@@ -214,8 +214,8 @@ edx:
         JWT_ISSUER: "https://{{ purpose_data.domains.lms }}/oauth2"
         JWT_ISSUERS:
           - AUDIENCE: "pt_openedx_key"
-          - ISSUER: "https://{{ purpose_data.domains.lms }}/oauth2"
-          - SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
+            ISSUER: "https://{{ purpose_data.domains.lms }}/oauth2"
+            SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
         JWT_SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
         JWT_SIGNING_ALGORITHM: "RS512"
         JWT_VERIFY_AUDIENCE: false
