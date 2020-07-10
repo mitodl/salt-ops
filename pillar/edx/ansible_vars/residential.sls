@@ -137,6 +137,22 @@ edx:
       - name: git+https://github.com/raccoongang/xblock-pdf.git@8d63047c53bc8fdd84fa7b0ec577bb0a729c215f#egg=xblock-pdf
         extra_args: -e
 
+    # Start ProctorTrack settings
+    EDXAPP_PROCTORING_SETTINGS:
+      MUST_BE_VERIFIED_TRACK: false
+
+    EDXAPP_PROCTORING_BACKENDS:
+      DEFAULT: "proctortrack"
+      "proctortrack":
+        client_id: __vault__::secret-{{ business_unit }}/{{ environment }}/proctortrack>data>client_id
+        client_secret: __vault__::secret-{{ business_unit }}/{{ environment }}/proctortrack>data>client_secret
+        base_url: __vault__::secret-{{ business_unit }}/{{ environment }}/proctortrack>data>base_url
+    EDXAPP_JWT_AUDIENCE: "mitx_jwt"
+    EDXAPP_LMS_ISSUER: "https://{{ purpose_data.domains.lms }}/oauth2"
+    EDXAPP_JWT_SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
+    EDXAPP_JWT_SIGNING_ALGORITHM: "RS512"
+    # End ProctorTrack settings
+    
     EDXAPP_LMS_ENV_EXTRA:
       EMAIL_USE_DEFAULT_FROM_FOR_BULK: True
       FEATURES:
@@ -167,26 +183,6 @@ edx:
         readPreference: "nearest"
       SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>key
       SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>value
-      PROCTORING_SETTINGS:
-        MUST_BE_VERIFIED_TRACK: false
-      PROCTORING_BACKENDS:
-        DEFAULT: "proctortrack"
-        proctortrack:
-          client_id: __vault__::secret-{{ business_unit }}/{{ environment }}/proctortrack>data>client_id
-          client_secret: __vault__::secret-{{ business_unit }}/{{ environment }}/proctortrack>data>client_secret
-          base_url: __vault__::secret-{{ business_unit }}/{{ environment }}/proctortrack>data>base_url
-      DEFAULT_JWT_ISSUER:
-        AUDIENCE: "https://{{ purpose_data.domains.lms }}"
-      JWT_AUTH:
-        JWT_AUDIENCE: "pt_openedx_key"
-        JWT_ISSUER: "https://{{ purpose_data.domains.lms }}/oauth2"
-        JWT_ISSUERS:
-          - AUDIENCE: "pt_openedx_key"
-            ISSUER: "https://{{ purpose_data.domains.lms }}/oauth2"
-            SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
-        JWT_SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
-        JWT_SIGNING_ALGORITHM: "RS512"
-        JWT_VERIFY_AUDIENCE: false
 
     EDXAPP_CMS_ENV_EXTRA:
       ADDL_INSTALLED_APPS:
@@ -199,25 +195,5 @@ edx:
         ENABLE_EXPORT_GIT: True
         ENABLE_OAUTH2_PROVIDER: True
       SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
-      PROCTORING_SETTINGS:
-        MUST_BE_VERIFIED_TRACK: false
-      PROCTORING_BACKENDS:
-        DEFAULT: "proctortrack"
-        proctortrack:
-          client_id: __vault__::secret-{{ business_unit }}/{{ environment }}/proctortrack>data>client_id
-          client_secret: __vault__::secret-{{ business_unit }}/{{ environment }}/proctortrack>data>client_secret
-          base_url: __vault__::secret-{{ business_unit }}/{{ environment }}/proctortrack>data>base_url
-      DEFAULT_JWT_ISSUER:
-        AUDIENCE: "https://{{ purpose_data.domains.lms }}"
-      JWT_AUTH:
-        JWT_AUDIENCE: "pt_openedx_key"
-        JWT_ISSUER: "https://{{ purpose_data.domains.lms }}/oauth2"
-        JWT_ISSUERS:
-          - AUDIENCE: "pt_openedx_key"
-            ISSUER: "https://{{ purpose_data.domains.lms }}/oauth2"
-            SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
-        JWT_SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
-        JWT_SIGNING_ALGORITHM: "RS512"
-        JWT_VERIFY_AUDIENCE: false
 
     NGINX_SSL_CIPHERS: "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA"
