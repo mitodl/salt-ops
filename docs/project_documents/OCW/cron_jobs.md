@@ -87,9 +87,14 @@ Downloads an XML file of MITx courses from edX.org and merges the data in that f
 
 For a given MIT course code, the XML describes the relevant course on MITx.
 
-It's not clear from anything in the `ocwcms` repo what this file is used for, but there is a JSON file ([`edx_courses.json`](https://github.com/mitocw/ocwcms/blob/32acfd7d9d217afbe88fb58263da8e2755391ee1/web/scripts/mitx-related-courses.js#L9)) that is consumed by the Javascript that writes the "MITx Versions" section of a course's home page. This cron job does not appear to generate that JSON file. We have observed at least one page on the website (<https://ocw.mit.edu/courses/materials-science-and-engineering/3-091sc-introduction-to-solid-state-chemistry-fall-2010/>) that incurs requests in our Nginx access log from a mobile device for `mitx_feeds.xml`, so it's possible that there's some "magic" in the Javascript that's not apparent from a global keyword search through the code. It's also possible that the XML is consumed by a partner site.
+We have observed at least one page on the website (<https://ocw.mit.edu/courses/materials-science-and-engineering/3-091sc-introduction-to-solid-state-chemistry-fall-2010/>) that incurs requests in our Nginx access log from a mobile device for `mitx_feeds.xml`, so it's possible that there's some "magic" in the Javascript that's not apparent from a global keyword search through the code. It's also possible that the XML is consumed by a partner site.
 
 The cron job is managed by [our `engines.sls` Salt state](https://github.com/mitodl/salt-ops/blob/f41844f3bb4fc2c38f06bd8a5760e583097ec3df/salt/apps/ocw/engines.sls#L102-L108).
+
+### Pull edx_courses.json
+
+There is a JSON file ([`edx_courses.json`](https://github.com/mitocw/ocwcms/blob/32acfd7d9d217afbe88fb58263da8e2755391ee1/web/scripts/mitx-related-courses.js#L9)) that is consumed by the Javascript that writes the "MITx Versions" section of a course's home page. It is also consumed by the [MITx Courses and Related OCW Courseware](https://ocw.mit.edu/courses/mitx-related-courseware/) page. The ["pull edx courses json" cron job](https://github.com/mitodl/salt-ops/blob/d0708676a5530b8e19ea76fecb6b0b75653896a6/salt/apps/ocw/pull_edx_courses_json.sls)  downloads that JSON file from the `open-learning-course-data` S3 bucket.
+
 
 ### Update Broken Links Report
 
