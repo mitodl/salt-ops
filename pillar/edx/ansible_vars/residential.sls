@@ -150,7 +150,6 @@ edx:
         base_url: __vault__::secret-{{ business_unit }}/{{ environment }}/proctortrack>data>base_url
     EDXAPP_JWT_AUDIENCE: "mitx_jwt"
     EDXAPP_LMS_ISSUER: "https://{{ purpose_data.domains.lms }}/oauth2"
-    EDXAPP_JWT_SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt_secret_key>data>value
     # End ProctorTrack settings
     
     EDXAPP_LMS_ENV_EXTRA:
