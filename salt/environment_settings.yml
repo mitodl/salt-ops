@@ -581,10 +581,10 @@ environments:
           <<: *current_residential_versions_rp
         instances:
           edx:
-            number: 18
+            number: 9
             type: r5.large
           edx-worker:
-            number: 6
+            number: 3
             type: t3.xlarge
           analytics:
             number: 1
