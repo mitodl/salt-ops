@@ -142,7 +142,7 @@ edx:
       MUST_BE_VERIFIED_TRACK: false
 
     EDXAPP_PROCTORING_BACKENDS:
-      DEFAULT: "null"
+      DEFAULT: "proctortrack"
       "null": {}
       "proctortrack":
         client_id: __vault__::secret-{{ business_unit }}/{{ environment }}/proctortrack>data>client_id
