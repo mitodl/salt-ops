@@ -3,6 +3,7 @@ base:
     - match: compound
     - common
     - environment_settings
+  '* and not proxy-* and not G@roles:devstack'
     - fluentd
   'P@environment:(rc.*|.*-qa)':
     - match: compound
