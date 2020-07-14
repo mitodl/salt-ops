@@ -1,6 +1,8 @@
 #!jinja|yaml
 
 {% set rabbitmq_admin_password = 'changeme' %}
+{% set ENVIRONMENT = salt.grains.get('environment') %}
+{% set BUSINESS_UNIT = salt.grains.get('business_unit', 'residential') %}
 
 rabbitmq:
   overrides:
