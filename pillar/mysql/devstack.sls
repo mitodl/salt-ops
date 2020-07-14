@@ -8,6 +8,8 @@ mysql:
     mysql_host: 0.0.0.0
     mysqld:
       bind-address: 0.0.0.0
+    lookup:
+      python: python3-mysqldb
 
   database:
     - edxapp_devstack
