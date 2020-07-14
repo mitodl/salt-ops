@@ -32,3 +32,4 @@ rabbitmq:
       state: present
     - name: '/celery'
       state: present
+  erlang_cookie: __vault__:gen_if_missing:secret-{{ BUSINESS_UNIT }}/{{ ENVIRONMENT }}/erlang_cookie>data>value
