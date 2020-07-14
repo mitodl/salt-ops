@@ -18,3 +18,7 @@ upload_tar_to_s3:
     - local_file: {{ edx_tracking_local_folder }}/edx_tracking_{{ instance_id }}.tgz
     - key: {{ aws_creds.secret_key }}
     - keyid: {{ aws_creds.access_key}}
+
+tracking_data_uploaded:
+  file.touch:
+    - name: {{ edx_tracking_local_folder }}/tracking_uploaded.txt
