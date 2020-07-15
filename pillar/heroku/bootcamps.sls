@@ -55,7 +55,7 @@
       'CYBERSOURCE_WSDL_URL': 'https://ics2wsa.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
       'EDXORG_BASE_URL': 'https://courses.edx.org',
       'GA_TRACKING_ID': 'UA-5145472-18',
-      'GTM_TRACKING_ID': 'GTM-NZT8SRC',
+      'GTM_TRACKING_ID': 'GTM-TFSZHVB',
       'HUBSPOT_PORTAL_ID': '6119748',
       'HUBSPOT_CREATE_USER_FORM_ID': '9ada5d38-33ee-415c-8cb2-9d72e735b1d5',
       'HUBSPOT_FOOTER_FORM_GUID': '2d798908-c195-4c0c-b075-a10b0c1b08f3',
