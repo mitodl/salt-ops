@@ -39,17 +39,17 @@ edx:
     TLS_KEY_NAME: {{ TLS_KEY_NAME }}
   config:
     repo: 'https://github.com/mitodl/configuration.git'
-    branch: 'open-release/ginkgo.master'
+    branch: 'open-release/juniper.master'
   dependencies:
     os_packages:
       - git
       - libmysqlclient-dev
       - landscape-common
       - libssl-dev
-      - python2.7
-      - python2.7-dev
-      - python-pip
-      - python-virtualenv
+      - python3
+      - python3-dev
+      - python3-pip
+      - python3-virtualenv
       - nfs-common
       - postfix
       - memcached
@@ -76,9 +76,9 @@ edx:
       - rsyslog
       - git
       - unzip
-      - python2.7
-      - python-pip
-      - python2.7-dev
+      - python3
+      - python3-pip
+      - python3-dev
     {# residential only #}
     edxapp_course_static_dir: /edx/var/edxapp/course_static_dummy {# private variable, used to hack around the fact that we mount our course data via a shared file system (tmacey 2017-03-16) #}
     {# residential only, set this in order to verride the `fs_root` setting for module/content store, need to understand more fully how this gets used in GITHUB_REPO_ROOT (tmacey 2017/03/17) #}
@@ -282,6 +282,6 @@ edx:
     EDXAPP_LMS_NGINX_PORT: 80
     EDXAPP_LMS_SSL_NGINX_PORT: 443
     edx_platform_repo: 'https://github.com/mitodl/edx-platform.git'
-    edx_platform_version: 'mitx/ginkgo'
+    edx_platform_version: 'mitx/juniper'
 
     COMMON_ENABLE_AWS_ROLE: False
