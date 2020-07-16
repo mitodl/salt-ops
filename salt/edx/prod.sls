@@ -79,7 +79,10 @@ place_tls_{{ ext }}_file:
 {% endfor %}
 {% endif %}
 
-{% if 'devstack' or 'sandbox' not in salt.grains.get('roles') %}
+
+{# BEGIN states that do not apply to "sandbox" and "devstack" ... #}
+{% if not ('devstack' in salt.grains.get('roles')) or ('sandbox' in salt.grains.get('roles')) %}
+
 {% set device_name = '{}.{}.efs.us-east-1.amazonaws.com:/'.format(salt.grains.get('ec2:availability_zone', 'us-east-1b'), salt.pillar.get('edx:efs_id')) %}
 {% set fstab_contents = salt.mount.fstab() %}
 {% for fmount, settings in fstab_contents.items() %}
@@ -92,7 +95,6 @@ remove_{{ settings.device }}_mount_config_from_fstab:
 {% endif %}
 {% endfor %}
 
-{% if 'devstack' not in salt.grains.get('roles') %}
 mount_efs_filesystem_for_course_assets:
   mount.mounted:
     - name: /mnt/data
@@ -101,7 +103,6 @@ mount_efs_filesystem_for_course_assets:
     - mkmnt: True
     - persist: True
     - mount: True
-{% endif %}
 
 create_course_asset_symlink:
   file.symlink:
@@ -140,7 +141,9 @@ add_private_ssh_key_to_www-data_for_git_export:
     - dir_mode: 0700
     - user: www-data
     - group: www-data
+
 {% endif %}
+{# END states that do not apply to "sandbox" and "devstack" ... #}
 
 {% if theme_name %}
 install_edxapp_theme:
