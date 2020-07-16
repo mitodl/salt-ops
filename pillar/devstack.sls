@@ -2,9 +2,9 @@
 
 {% set business_unit = 'mitodl' %}
 {% set purpose = 'devstack' %}
-{% set environment = salt.environ.get('environment', 'dev-ginkgo') %}
+{% set environment = salt.environ.get('environment', 'dev-juniper') %}
 {% set purpose_suffix = 'devstack' %}
-{% set edx_platform_branch = 'mitx/ginkgo' %}
+{% set edx_platform_branch = 'mitx/juniper' %}
 
 {% set edxapp_rabbitmq_username = 'admin' %}
 {% set edxapp_rabbitmq_password = 'changeme' %}
@@ -68,7 +68,7 @@ edx:
     COMMON_MYSQL_MIGRATE_USER: {{ admin_mysql_username }}
     COMMON_MYSQL_MIGRATE_PASS: {{ admin_mysql_password }}
     edxapp_theme_source_repo: 'https://github.com/mitodl/mitx-theme.git'
-    edxapp_theme_version: 'ginkgo'
+    edxapp_theme_version: 'juniper'
 
     common_debian_pkgs:
       - ntp
