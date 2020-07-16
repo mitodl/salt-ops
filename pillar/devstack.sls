@@ -50,6 +50,7 @@ edx:
       - python3-dev
       - python3-pip
       - python3-virtualenv
+      - python3-openssl
       - nfs-common
       - postfix
       - memcached
