@@ -54,7 +54,6 @@ edx:
       - nfs-common
       - postfix
       - memcached
-  efs_id: fs-6f55af26
   playbooks:
     - 'mitx_devstack.yml'
   django:

@@ -92,6 +92,7 @@ remove_{{ settings.device }}_mount_config_from_fstab:
 {% endif %}
 {% endfor %}
 
+{% if 'devstack' not in salt.grains.get('roles') %}
 mount_efs_filesystem_for_course_assets:
   mount.mounted:
     - name: /mnt/data
@@ -100,6 +101,7 @@ mount_efs_filesystem_for_course_assets:
     - mkmnt: True
     - persist: True
     - mount: True
+{% endif %}
 
 create_course_asset_symlink:
   file.symlink:
