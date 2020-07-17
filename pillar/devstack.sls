@@ -1,6 +1,6 @@
 #!jinja|yaml
 
-{% set business_unit = 'mitodl' %}
+{% set business_unit = salt.environ.get('business_unit', 'mitodl') %}
 {% set purpose = 'devstack' %}
 {% set environment = salt.environ.get('environment', 'dev-juniper') %}
 {% set purpose_suffix = 'devstack' %}
