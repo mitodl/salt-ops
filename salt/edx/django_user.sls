@@ -1,6 +1,11 @@
 {% set django_superuser_account = salt.pillar.get('devstack:edx:django:django_superuser_account', 'devstack') %}
 {% set django_superuser_password = salt.pillar.get('devstack:edx:django:django_superuser_password', 'changeme') %}
 
+ensure_state_of_edx_platform_base_dir:
+  file.directory:
+    - name: /edx/app/edxapp/edx-platform
+    - user: edxapp
+
 create_django_superuser_account:
   cmd.run:
     - name: /edx/bin/python.edxapp /edx/bin/manage.edxapp lms manage_user {{ django_superuser_account }} {{ django_superuser_account }}@example.com --staff --superuser --settings=devstack
