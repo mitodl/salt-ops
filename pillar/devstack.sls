@@ -180,6 +180,7 @@ edx:
     EDXAPP_CONTACT_EMAIL: {{ DEFAULT_FEEDBACK_EMAIL }}
     EDXAPP_COMPREHENSIVE_THEME_DIRS:
       - /edx/app/edxapp/themes/
+    EDXAPP_EDXAPP_SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/edxapp-django-secret-key>data>value
     EDXAPP_ENABLE_CMSH_EXTENDED: False
     EDXAPP_ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES: False
     EDXAPP_CUSTOM_COURSES_EDX: True
