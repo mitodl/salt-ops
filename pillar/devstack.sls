@@ -286,3 +286,5 @@ edx:
     edx_platform_version: 'mitx/juniper'
 
     COMMON_ENABLE_AWS_ROLE: False
+
+    SUPERVISOR_VERSION: 4.2.0
