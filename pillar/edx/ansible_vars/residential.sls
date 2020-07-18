@@ -154,6 +154,10 @@ edx:
     EDXAPP_LMS_ISSUER: "https://{{ purpose_data.domains.lms }}/oauth2"
     # End ProctorTrack settings
     
+    # Enable Secure flag on cookies for browser SameSite restrictions
+    EDXAPP_CSRF_COOKIE_SECURE: true
+    EDXAPP_SESSION_COOKIE_SECURE: true
+    
     EDXAPP_LMS_ENV_EXTRA:
       EMAIL_USE_DEFAULT_FROM_FOR_BULK: True
       FEATURES:
