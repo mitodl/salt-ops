@@ -289,3 +289,5 @@ edx:
     COMMON_ENABLE_AWS_ROLE: False
 
     SUPERVISOR_VERSION: 4.2.0
+
+    LMS_CFG: /edx/etc/lms.yml
