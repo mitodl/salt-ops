@@ -24,7 +24,7 @@
 {% set MONGODB_MODULESTORE_ENGINE = 'xmodule.modulestore.mongo.MongoModuleStore' %}
 {% set MONGODB_PORT = 27017 %}
 {% set MONGODB_USE_SSL = False %}
-{% set MYSQL_HOST = 'mysql.service.consul' %}
+{% set MYSQL_HOST = 'localhost' %}
 {% set MYSQL_PASSWORD = 'changeme' %}
 {% set MYSQL_PORT = 3306 %}
 {% set THEME_NAME = 'mitx-theme' %}
