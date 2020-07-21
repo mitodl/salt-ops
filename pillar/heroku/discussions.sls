@@ -3,7 +3,6 @@
 
 {% set env_dict = {
     'ci': {
-      'AKISMET_BLOG_URL': 'https://discussions-ci.odl.mit.edu',
       'app_log_level': 'INFO',
       'app_name': 'odl-open-discussions-ci',
       'CLOUDFRONT_DIST': 'd28ic9ywb63ioi',
@@ -34,7 +33,6 @@
       'vault_env_path': 'rc-apps'
       },
     'rc': {
-      'AKISMET_BLOG_URL': 'https://discussions-rc.odl.mit.edu',
       'app_log_level': 'INFO',
       'app_name': 'odl-open-discussions-rc',
       'CLOUDFRONT_DIST': 'd1d3xcwjqmwwj2',
@@ -65,7 +63,6 @@
       'vault_env_path': 'rc-apps'
       },
     'production': {
-      'AKISMET_BLOG_URL': 'https://open.mit.edu',
       'app_log_level': 'INFO',
       'app_name': 'odl-open-discussions',
       'CLOUDFRONT_DIST': 'd2mcnjhkvrfuy2',
@@ -111,8 +108,8 @@ heroku:
   app_name: {{ env_data.app_name }}
   api_key: __vault__::secret-operations/global/heroku/api_key>data>value
   config_vars:
-    AKISMET_API_KEY: __vault__::secret-operations/{{ env_data.env_name }}/{{ business_unit }}/akismet>data>api_key
-    AKISMET_BLOG_URL: {{ env_data.AKISMET_BLOG_URL }}
+    AKISMET_API_KEY: __vault__::secret-{{ business_unit }}/global/akismet>data>api_key
+    AKISMET_BLOG_URL: https://discussions-rc.odl.mit.edu
     ALGOLIA_API_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/algolia>data>api_key
     ALGOLIA_APP_ID: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/algolia>data>app_id
     ALLOWED_HOSTS: '["*"]'
