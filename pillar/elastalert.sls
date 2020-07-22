@@ -526,3 +526,30 @@ elastic_stack:
                   - query_string:
                       default_field: message
                       query: (received unregistered task) AND (message has been ignored)
+      - name: lms_saml_failure
+        settings:
+          name: SAML failure in LMS
+          description: >-
+            SAML authentication has failed in the edX LMS
+          type: frequency
+          num_events: 1
+          timeframe:
+            minutes: 5
+          alert:
+            - opsgenie
+          opsgenie_key: {{ opsgenie_key }}
+          opsgenie_priority: P2
+          opsgenie_alias: lms_saml_failure
+          alert_text: "SAML authentication has failed in the edX LMS"
+          filter:
+            - bool:
+                must:
+                  - query_string:
+                      default_field: message
+                      query: "Authentication with MIT Kerberos is currently unavailable"
+                  - query_string:
+                      default_field: fluentd_tag
+                      query: edx.lms.stderr
+                  - query_string:
+                      default_field: environment
+                      query: mitx-production
