@@ -530,7 +530,9 @@ elastic_stack:
         settings:
           name: SAML failure in LMS
           description: >-
-            SAML authentication has failed in the edX LMS
+            SAML authentication has failed in the edX LMS.
+            It is possible that the edx.refresh_saml_provider_metadata state has
+            not been succeeding, or needs to be run again.
           type: frequency
           num_events: 1
           timeframe:
@@ -540,7 +542,11 @@ elastic_stack:
           opsgenie_key: {{ opsgenie_key }}
           opsgenie_priority: P2
           opsgenie_alias: lms_saml_failure
-          alert_text: "SAML authentication has failed in the edX LMS"
+          alert_text: >-
+            SAML authentication has failed in the edX LMS.
+            The following Salt state is supposed to run on a schedule to refresh
+            SAML provider metadata. Does it need to be. run again?
+            https://github.com/mitodl/salt-ops/blob/main/salt/edx/refresh_saml_provider_metadata.sls
           filter:
             - bool:
                 must:
