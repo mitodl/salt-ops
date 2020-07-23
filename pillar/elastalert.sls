@@ -526,3 +526,36 @@ elastic_stack:
                   - query_string:
                       default_field: message
                       query: (received unregistered task) AND (message has been ignored)
+      - name: lms_saml_failure
+        settings:
+          name: SAML failure in LMS
+          description: >-
+            SAML authentication has failed in the edX LMS.
+            It is possible that the edx.refresh_saml_provider_metadata state has
+            not been succeeding, or needs to be run again.
+          type: frequency
+          num_events: 1
+          timeframe:
+            minutes: 5
+          alert:
+            - opsgenie
+          opsgenie_key: {{ opsgenie_key }}
+          opsgenie_priority: P2
+          opsgenie_alias: lms_saml_failure
+          alert_text: >-
+            SAML authentication has failed in the edX LMS.
+            The following Salt state is supposed to run on a schedule to refresh
+            SAML provider metadata. Does it need to be. run again?
+            https://github.com/mitodl/salt-ops/blob/main/salt/edx/refresh_saml_provider_metadata.sls
+          filter:
+            - bool:
+                must:
+                  - query_string:
+                      default_field: message
+                      query: "Authentication with MIT Kerberos is currently unavailable"
+                  - query_string:
+                      default_field: fluentd_tag
+                      query: edx.lms.stderr
+                  - query_string:
+                      default_field: environment
+                      query: mitx-production
