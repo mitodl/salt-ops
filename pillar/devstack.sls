@@ -2,9 +2,9 @@
 
 {% set business_unit = salt.grains.get('business_unit', 'mitodl') %}
 {% set purpose = 'devstack' %}
-{% set environment = salt.grains.get('environment', 'dev-hawthorn') %}
+{% set environment = salt.grains.get('environment', 'dev-juniper') %}
 {% set purpose_suffix = 'devstack' %}
-{% set edx_platform_branch = 'mitx/hawthorn' %}
+{% set edx_platform_branch = 'mitx/juniper' %}
 
 {% set edxapp_rabbitmq_username = 'admin' %}
 {% set edxapp_rabbitmq_password = 'changeme' %}
@@ -39,7 +39,7 @@ edx:
     TLS_KEY_NAME: {{ TLS_KEY_NAME }}
   config:
     repo: 'https://github.com/mitodl/configuration.git'
-    branch: 'open-release/hawthorn.master'
+    branch: 'open-release/juniper.master'
   dependencies:
     os_packages:
       - git
@@ -67,7 +67,7 @@ edx:
     COMMON_MYSQL_MIGRATE_USER: {{ admin_mysql_username }}
     COMMON_MYSQL_MIGRATE_PASS: {{ admin_mysql_password }}
     edxapp_theme_source_repo: 'https://github.com/mitodl/mitx-theme.git'
-    edxapp_theme_version: 'hawthorn'
+    edxapp_theme_version: 'juniper'
 
     common_debian_pkgs:
       - ntp
@@ -284,7 +284,7 @@ edx:
     EDXAPP_LMS_NGINX_PORT: 80
     EDXAPP_LMS_SSL_NGINX_PORT: 443
     edx_platform_repo: 'https://github.com/mitodl/edx-platform.git'
-    edx_platform_version: 'mitx/hawthorn'
+    edx_platform_version: 'mitx/juniper'
 
     COMMON_ENABLE_AWS_ROLE: False
 
