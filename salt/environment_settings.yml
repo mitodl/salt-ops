@@ -564,10 +564,10 @@ environments:
           xqwatcher_courses: master
         instances:
           edx:
-            number: 6
+            number: 3
             type: r5.large
           edx-worker:
-            number: 4
+            number: 3
             type: t3.large
       residential-live:
         app: edx-platform
