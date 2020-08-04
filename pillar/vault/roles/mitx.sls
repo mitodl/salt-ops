@@ -3,6 +3,14 @@
 
 vault:
   roles:
+
+    {# Production and QA environments are handled separately with the
+       conditionals below because of different Vault plugins being used for
+       different mount points, due to the mount points having been created
+       at different times. Vault used to have separate backend types for MySQL,
+       Postgres, etc., and then they created a general purpose database backend
+       type that has support for the different engines. #}
+
     {% for env in ['mitx-qa', 'mitx-production', 'mitxpro-qa', 'mitxpro-production'] %}
     # This will need to be removed once we start using the database backend
     {% if env in ['mitx-qa', 'mitx-production'] %}
@@ -10,7 +18,9 @@ vault:
       backend: mysql-{{ env }}
       name: admin
       options:
-        sql: {% raw %}"CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON `%`.* TO '{{name}}' WITH GRANT OPTION;"{% endraw %}
+        sql: {% raw %}"CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';
+        GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON `%`.* TO '{{name}}' WITH GRANT OPTION;
+        GRANT RELOAD ON *.* to {{name}};"{% endraw %}
         revocation_sql: {% raw %}"DROP USER '{{name}}';"{% endraw %}
     readonly-mysql-{{ env }}:
       backend: mysql-{{ env }}
