@@ -43,3 +43,9 @@ Deploying `ocwcms` to production (run on the Salt master):
 ```
 $ sudo salt -C 'P@roles:ocw-(origin|cms|mirror) and G@ocw-environment:production' state.sls apps.ocw.sync_repo
 ```
+
+As noted above, Plone should be restarted if any `.py` files in the `plone` folder have been changed. Here is an example, with QA:
+
+```
+$ sudo salt ocw-qa-cms-[12] cmd.run '/usr/local/Plone/zeocluster/bin/client1 restart' 
+```
