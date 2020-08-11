@@ -7,7 +7,7 @@
 #
 
 {% set app_name = 'ocw-mirror' %}
-{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set env_settings = salt.cp.get_file_str("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'ocw') %}
 #
 # FIXME: The ocw-environment and ocw-deployment grains are not created by Salt

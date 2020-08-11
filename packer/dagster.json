@@ -1,0 +1,62 @@
+{
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "if [ $(which apt-get) ];",
+        "then",
+        "    sudo apt-get update",
+        "    PKG_MANAGER='apt-get'",
+        "    PKGS='python3-dev git curl'",
+        "else",
+        "    PKG_MANAGER='yum'",
+        "    PKGS='python3-devel git curl'",
+        "fi",
+        "sudo $PKG_MANAGER -y install $PKGS",
+        "if [ $(which pip) ];",
+        "then",
+        "    echo ''",
+        "else",
+        "    curl -L 'https://bootstrap.pypa.io/get-pip.py' > get_pip.py",
+        "    sudo python3 get_pip.py",
+        "    rm get_pip.py",
+        "fi",
+        "sudo pip3 install gitpython"
+      ]
+    },
+    {
+      "local_state_tree": "salt",
+      "local_pillar_roots": "pillar",
+      "minion_config": "packer/minion_configs/dagster.conf",
+      "type": "salt-masterless"
+    }
+  ],
+  "builders": [
+    {
+      "ami_description": "Deployment image for Dagster server generated on {{timestamp}}",
+      "ami_name": "dagster",
+      "ami_virtualization_type": "hvm",
+      "force_deregister": true,
+      "ssh_username": "admin",
+      "type": "amazon-ebs",
+      "source_ami": "ami-05c0d7f3fffb419c8",
+      "snapshot_tags": {
+        "OU": "data",
+        "purpose": "data-pipeline",
+        "app": "dagster"
+      },
+      "run_volume_tags": {
+        "OU": "data",
+        "purpose": "data-pipeline",
+        "app": "dagster"
+      },
+      "tags": {
+        "OU": "data",
+        "purpose": "data-pipeline",
+        "app": "dagster"
+      },
+      "instance_type": "m5a.large",
+      "subnet_id": "subnet-0e4a9c3626ecc0868"
+    }
+  ]
+}

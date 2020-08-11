@@ -145,6 +145,42 @@ sandbox_mitxpro_versions: &sandbox_mitxpro_versions
 
 
 environments:
+  data-qa:
+    business_unit: data
+    network_prefix: '10.2'
+    vpc_name: ol-data-qa
+    vpc_peers:
+      - operations-qa
+      - mitx-qa
+      - mitxpro-qa
+    purposes:
+      dagster:
+        app: dagster
+        num_instances: 1
+        domains:
+          - pipelines-qa.odl.mit.edu
+        business_unit: data
+        security_groups:
+          - webapp-odl-vpn
+        size: r5a.large
+  data-production:
+    business_unit: data
+    network_prefix: '10.3'
+    vpc_name: ol-data-production
+    vpc_peers:
+      - operations
+      - mitx-production
+      - mitxpro-production
+    purposes:
+      dagster:
+        app: dagster
+        num_instances: 1
+        domains:
+          - pipelines.odl.mit.edu
+        business_unit: data
+        security_groups:
+          - webapp-odl-vpn
+        size: r5a.large
   mitxpro-qa:
     business_unit: mitxpro
     network_prefix: '10.6'

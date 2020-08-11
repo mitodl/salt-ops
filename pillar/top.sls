@@ -3,7 +3,7 @@ base:
     - match: compound
     - common
     - environment_settings
-  '* and not proxy-* and not G@roles:devstack':
+  '* and not proxy-* and not G@roles:devstack and not G@context:packer':
     - match: compound
     - fluentd
   'P@environment:(rc.*|.*-qa)':
@@ -44,6 +44,11 @@ base:
     # - master.extra_config
   master-operations-qa:
     - master.qa_schedule
+  'roles:dagster':
+    - match: grain
+    - dagster
+    - nginx
+    - nginx.dagster
   'roles:fluentd':
     - match: grain
     - fluentd

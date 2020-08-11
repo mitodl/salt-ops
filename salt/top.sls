@@ -70,6 +70,10 @@ base:
     - match: grain
     - pulsar
     - pulsar.tests
+  'roles:dagster':
+    - match: grain
+    - dagster
+    - nginx
   dremio*:
     - dremio
     - nginx

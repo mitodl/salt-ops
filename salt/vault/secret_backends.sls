@@ -1,6 +1,6 @@
 {% set SIX_MONTHS = '4368h' %}
 {% set pki_ttl = '8760h' %} # ONE_YEAR
-{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set env_settings = salt.cp.get_file_str("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml")|load_yaml %}
 
 enable_transit_secret_backend:
   vault.secret_backend_enabled:
