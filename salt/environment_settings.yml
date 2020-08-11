@@ -25,7 +25,7 @@ current_residential_versions_qa: &current_residential_versions_qa
   edx_config_repo: https://github.com/mitodl/configuration
   edx_config_version: open-release/juniper.master
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
-  edxapp: mitx/juniper
+  edxapp: mitx/juniper-stable
   forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
   forum: open-release/juniper.master
   xqueue_source_repo: 'https://github.com/mitodl/xqueue'
@@ -41,7 +41,7 @@ current_residential_versions_rp: &current_residential_versions_rp
   edx_config_repo: https://github.com/mitodl/configuration
   edx_config_version: open-release/juniper.master
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
-  edxapp: mitx/juniper
+  edxapp: mitx/juniper-stable
   forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
   forum: open-release/juniper.master
   xqueue_source_repo: 'https://github.com/mitodl/xqueue'
