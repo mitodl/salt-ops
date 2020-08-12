@@ -11,7 +11,6 @@
       'ELASTICSEARCH_URL': 'https://elasticsearch-rc-apps.odl.mit.edu',
       'env_name': 'ci',
       'FEATURE_COURSE_UI': True,
-      'FEATURE_SPAM_EXEMPTIONS': True,
       'GA_TRACKING_ID': 'UA-5145472-29',
       'INDEXING_API_USERNAME': 'od_mm_ci_api',
       'NEW_RELIC_APP_NAME': 'discussions-ci',
@@ -42,7 +41,6 @@
       'ELASTICSEARCH_URL': 'https://elasticsearch-rc-apps.odl.mit.edu',
       'env_name': 'rc',
       'FEATURE_COURSE_UI': True,
-      'FEATURE_SPAM_EXEMPTIONS': True,
       'GA_TRACKING_ID': 'UA-5145472-29',
       'INDEXING_API_USERNAME': 'od_mm_rc_api',
       'NEW_RELIC_APP_NAME': 'discussions-rc',
@@ -71,7 +69,6 @@
       'DEBUG': False,
       'env_name': 'production',
       'FEATURE_COURSE_UI': False,
-      'FEATURE_SPAM_EXEMPTIONS': True,
       'ELASTICSEARCH_INDEX': 'discussions',
       'ELASTICSEARCH_URL': 'https://elasticsearch-production-apps.odl.mit.edu',
       'GA_TRACKING_ID': 'UA-5145472-30',
@@ -144,7 +141,7 @@ heroku:
     FEATURE_COMMENT_NOTIFICATIONS: True
     FEATURE_COURSE_FILE_SEARCH: True
     FEATURE_COURSE_UI: {{ env_data.FEATURE_COURSE_UI }}
-    FEATURE_SPAM_EXEMPTIONS: {{ env_data.FEATURE_SPAM_EXEMPTIONS }}
+    FEATURE_SPAM_EXEMPTIONS: True
     FEATURE_INDEX_UPDATES: True
     FEATURE_MOIRA: True
     FEATURE_PODCAST_APIS: True
