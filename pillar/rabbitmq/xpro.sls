@@ -1,6 +1,6 @@
 #!jinja|yaml|gpg
 
-{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set env_settings = salt.cp.get_file_str("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.grains.get('environment') %}
 {% set BUSINESS_UNIT = salt.grains.get('business_unit', 'residential') %}
 

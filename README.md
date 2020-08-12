@@ -10,3 +10,5 @@ Points of Interest
 `/pillar`: This directory contains all of the pillar data that is used to configure the various environments, applications, and infrastructure
 
 `/docs`: The documentation (such as it is) for various aspects of our infrastructure, runbooks, etc.
+
+`/packer`: This is where packer configuration files for the different systems we need to build and deploy are maintained. This also contains a subdirectory of minion configs to be used during build time.

@@ -1,28 +1,31 @@
-{% set app_name = 'dremio' %}
-{% set env_settings = salt.cp.get_file_str("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml")|load_yaml %}
+{% set app_name = 'dagster' %}
+{% set env_settings = salt.cp.get_file_str("https://raw.githubusercontent.com/mitodl/salt-ops/dagster_packer/salt/environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'operations') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set server_domain_names = env_data.purposes[app_name].domains %}
 
 nginx:
   install_from_repo: True
+  {% if grains.get('context') != 'packer' %}
   certificates:
     odl_wildcard:
       public_cert: __vault__::secret-operations/global/odl_wildcard_cert>data>value
       private_key: __vault__::secret-operations/global/odl_wildcard_cert>data>key
+  {% endif %}
   servers:
     managed:
       {{ app_name }}:
         enabled: True
         config:
           - server:
-              - server_name: {{ server_domain_names|tojson }}
+              - server_name: {{ server_domain_names|join(' ') }}
               - listen: 80
               - listen: '[::]:80'
+          {% if grains.get('context') != 'packer' %}
               - location /:
                   - return: 301 https://$host$request_uri
           - server:
-              - server_name: {{ server_domain_names|tojson }}
+              - server_name: {{ server_domain_names|join(' ') }}
               - listen: '443 ssl default_server'
               - listen: '[::]:443 ssl'
               - ssl_certificate: /etc/nginx/ssl/odl_wildcard.crt
@@ -38,12 +41,12 @@ nginx:
                   :ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256"
               - ssl_prefer_server_ciphers: 'on'
               - resolver: 1.1.1.1
+          {% endif %}
               - location /:
-                  - proxy_pass: http://127.0.0.1:9047
+                  - proxy_pass: http://127.0.0.1:3000
                   - proxy_http_version: 1.1
                   - proxy_set_header: 'Connection "upgrade"'
                   - proxy_set_header: Upgrade $http_upgrade
                   - proxy_set_header: Host $http_host
                   - proxy_set_header: X-Forwarded-For $remote_addr
                   - proxy_pass_header: Server
-                  - client_max_body_size: '20m'

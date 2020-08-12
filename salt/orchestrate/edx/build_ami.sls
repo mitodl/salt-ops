@@ -1,6 +1,6 @@
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT') %}
 {% set PURPOSE = salt.environ.get('PURPOSE', 'current-residential-draft') %}
-{% set env_dict = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set env_dict = salt.cp.get_file_str("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml")|load_yaml %}
 {% set env_settings = env_dict.environments[ENVIRONMENT] %}
 {% set VPC_NAME = salt.environ.get('VPC_NAME', env_settings.vpc_name) %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_settings.business_unit) %}

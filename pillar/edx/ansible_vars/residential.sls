@@ -1,4 +1,4 @@
-{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set env_settings = salt.cp.get_file_str("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml")|load_yaml %}
 {% set business_unit = salt.grains.get('business_unit', 'residential') %}
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}

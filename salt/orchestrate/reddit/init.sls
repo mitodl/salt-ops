@@ -1,5 +1,5 @@
 {% set app_name = 'reddit' %}
-{% set env_settings = salt.cp.get_file_str("salt://environment_settings.yml")|load_yaml %}
+{% set env_settings = salt.cp.get_file_str("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml")|load_yaml %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set VPC_NAME = env_data.vpc_name %}
