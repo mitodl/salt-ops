@@ -60,7 +60,8 @@
       'SOCIAL_AUTH_MICROMASTERS_LOGIN_URL': 'https://micromasters-rc.odl.mit.edu/login/edxorg/?next=/discussions/',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions-rc.odl.mit.edu/saml/metadata',
       'TIKA_SERVER_ENDPOINT': 'https://tika-rc-apps.odl.mit.edu',
-      'vault_env_path': 'rc-apps'
+      'vault_env_path': 'rc-apps',
+      'OCW_NEXT_URL': 'ocw-next.netlify.app'
       },
     'production': {
       'app_log_level': 'INFO',
@@ -181,7 +182,11 @@ heroku:
     OPEN_DISCUSSIONS_BASE_URL: {{ env_data.OPEN_DISCUSSIONS_BASE_URL }}
     OPEN_DISCUSSIONS_COOKIE_DOMAIN: {{ env_data.OPEN_DISCUSSIONS_COOKIE_DOMAIN }}
     OPEN_DISCUSSIONS_COOKIE_NAME: {{ env_data.OPEN_DISCUSSIONS_COOKIE_NAME}}
+    {% if env_data.get('OCW_NEXT_URL') %}
+    OPEN_DISCUSSIONS_CORS_ORIGIN_WHITELIST: '["{{ env_data.MICROMASTERS_BASE_URL }}", "{{ env_data.OCW_NEXT_URL }}"]'
+    {% else %}
     OPEN_DISCUSSIONS_CORS_ORIGIN_WHITELIST: '["{{ env_data.MICROMASTERS_BASE_URL }}"]'
+    {% endif %}
     OPEN_DISCUSSIONS_DB_CONN_MAX_AGE: 0
     OPEN_DISCUSSIONS_DB_DISABLE_SSL: True
     OPEN_DISCUSSIONS_DEFAULT_SITE_KEY: micromasters
