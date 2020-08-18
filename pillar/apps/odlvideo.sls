@@ -210,7 +210,7 @@ uwsgi:
 
 node:
   install_from_binary: True
-  version: 10.15.1
+  version: 13.13.0
 
 beacons:
   memusage:
