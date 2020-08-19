@@ -53,7 +53,8 @@
       "tags": {
         "OU": "data",
         "purpose": "data-pipeline",
-        "app": "dagster"
+        "app": "dagster",
+        "Name": "dagster"
       },
       "instance_type": "m5a.large",
       "subnet_id": "subnet-0e4a9c3626ecc0868"
