@@ -1,4 +1,4 @@
-{% import_yaml salt.cp.cache_file('salt://environment_settings.yml') as env_settings %}
+{% set env_settings = salt.file.read(salt.cp.get_url("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml"))|load_yaml %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'rc-apps') %}
 
 nginx-shibboleth:

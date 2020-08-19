@@ -1,4 +1,4 @@
-{% set env_settings = salt.file.read(salt.cp.cache_file("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml"))|load_yaml %}
+{% set env_settings = salt.file.read(salt.cp.get_url("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml"))|load_yaml %}
 {% for env in ['mitxpro-qa', 'mitxpro-production', 'mitx-qa', 'mitx-production'] %}
 {% set env_data = env_settings.environments[env] %}
 {% for purpose in env_data.purposes %}

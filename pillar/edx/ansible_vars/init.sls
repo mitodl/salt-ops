@@ -3,7 +3,7 @@
 {# EDXAPP_LMS_SITE_NAME: lms.service.consul #}
 {# EDXAPP_CMS_SITE_NAME: cms.service.consul #}
 
-{% set env_settings = salt.file.read(salt.cp.cache_file("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml"))|load_yaml %}
+{% set env_settings = salt.file.read(salt.cp.get_url("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml"))|load_yaml %}
 {% set business_unit = salt.grains.get('business_unit', 'residential') %}
 {% set purpose = salt.grains.get('purpose', 'current-residential-live') %}
 {% set purpose_suffix = purpose.replace('-', '_') %}

@@ -3,7 +3,7 @@
 # Make sure that instance profiles exist for node types so that
 # they can be granted access via permissions attached to those
 # profiles because it's easier than managing IAM keys
-{% set env_data = salt.file.read(salt.cp.cache_file("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml"))|load_yaml %}
+{% set env_data = salt.file.read(salt.cp.get_url("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml"))|load_yaml %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-qa') %}
 {% set env_settings = env_data.environments[ENVIRONMENT] %}
 {% set PURPOSE_PREFIX = salt.environ.get('PURPOSE_PREFIX', 'current-residential') %}
