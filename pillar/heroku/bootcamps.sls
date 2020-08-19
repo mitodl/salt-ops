@@ -126,6 +126,7 @@ heroku:
     JOBMA_ACCESS_TOKEN: {{ jobma.access_token }}
     JOBMA_BASE_URL: {{ jobma.base_url }}
     JOBMA_WEBHOOK_ACCESS_TOKEN: {{ jobma.webhook_access_token }}
+    JOBMA_LINK_EXPIRATION_DAYS: 13
     MAILGUN_FROM_EMAIL: 'MIT Bootcamps <no-reply@{{ env_data.MAILGUN_SENDER_DOMAIN }}'
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
