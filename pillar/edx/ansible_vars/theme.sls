@@ -1,4 +1,4 @@
-{% set env_settings = salt.file.read(salt.cp.get_url("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml"))|load_yaml %}
+{% set env_settings = salt.cp.get_url("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml", dest=None)|load_yaml %}
 {% set purpose = salt.grains.get('purpose', 'xpro-qa') %}
 {% set environment = salt.grains.get('environment', 'xpro-qa') %}
 {% set env_data = env_settings.environments[environment] %}

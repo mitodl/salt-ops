@@ -2,7 +2,7 @@
 {% set python_version = '2.7.14' %}
 {% set python_bin_dir = '/usr/local/pyenv/versions/{0}/bin'.format(python_version) %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'operations') %}
-{% set env_settings = salt.file.read(salt.cp.get_url("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml"))|load_yaml %}
+{% set env_settings = salt.cp.get_url("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml", dest=None)|load_yaml %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set purpose_data = env_data.purposes[app_name] %}
 {% set minion_id = salt.grains.get('id', '') %}

@@ -2,7 +2,7 @@
 {% set instanceid = payload['Message']|load_json %}
 {% set ENVIRONMENT = 'mitxpro-production' %}
 {% set PURPOSE = 'xpro-production' %}
-{% set env_dict = salt.file.read(salt.cp.get_url("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml"))|load_yaml %}
+{% set env_dict = salt.cp.get_url("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml", dest=None)|load_yaml %}
 {% set env_settings = env_dict.environments[ENVIRONMENT] %}
 {% set purposes = env_settings.purposes %}
 {% set edx_codename = purposes[PURPOSE].versions.codename %}

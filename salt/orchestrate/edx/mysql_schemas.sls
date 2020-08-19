@@ -1,7 +1,7 @@
 #!jinja|yaml
 
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT') %}
-{% set env_settings = salt.file.read(salt.cp.get_url("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml"))|load_yaml %}
+{% set env_settings = salt.cp.get_url("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml", dest=None)|load_yaml %}
 {% set environment = salt.pillar.get('environments:{}'.format(ENVIRONMENT)) %}
 {% set purposes = environment.purposes %}
 
