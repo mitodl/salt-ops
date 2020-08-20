@@ -39,6 +39,7 @@ base:
     - master
     - master.config
     - elastic_stack.beats
+    - master.api
   master-operations-production:
     - master.production_schedule
     # - master.extra_config
