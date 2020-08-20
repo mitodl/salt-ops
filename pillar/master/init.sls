@@ -6,37 +6,36 @@ salt_master:
   libgit:
     release: '0.28.2'
     hash: 42b5f1e9b9159d66d86fff0394215c5733b6ef8f9b9d054cdd8c73ad47177fc3
-  overrides:
-    pkgs:
-      - build-essential
-      - curl
-      - git
-      - libffi-dev
-      - libssh2-1-dev
-      - libssl-dev
-      - mosh
-      - python3-dev
-      - python3-pip
-      - tmux
-      - vim
-      - mariadb-client
-      - postgresl
-      - default-libmysqlclient-dev
-      - python3-openssl
-      - python3-psycopg2
-    pip_deps:
-      - PyOpenssl
-      - apache-libcloud
-      - boto3
-      - boto>=2.35.0
-      - croniter
-      - elasticsearch
-      - mysqlclient
-      - python-consul
-      - python-dateutil
-      - pyyaml
-      - raven
-      - requests
+  pkgs:
+    - build-essential
+    - curl
+    - git
+    - libffi-dev
+    - libssh2-1-dev
+    - libssl-dev
+    - mosh
+    - python3-dev
+    - python3-pip
+    - tmux
+    - vim
+    - mariadb-client
+    - postgresl
+    - default-libmysqlclient-dev
+    - python3-openssl
+    - python3-psycopg2
+  pip_deps:
+    - PyOpenssl
+    - apache-libcloud
+    - boto3
+    - boto>=2.35.0
+    - croniter
+    - elasticsearch
+    - mysqlclient
+    - python-consul
+    - python-dateutil
+    - pyyaml
+    - raven
+    - requests
   ssl:
     cert_path: /etc/salt/ssl/certs/salt.odl.mit.edu.crt
     key_path: /etc/salt/ssl/certs/salt.odl.mit.edu.key
