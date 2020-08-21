@@ -42,6 +42,7 @@ base:
     - master_utils.libgit
     - heroku.proxy_config
     - elastic-stack.beats
+    - caddy
   'G@roles:master and P@environment:operations(-qa)?':
     - match: compound
     - master.aws
