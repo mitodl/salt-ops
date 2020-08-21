@@ -53,6 +53,7 @@ salt_master:
         - https://github.com/mitodl/dremio-formula
         - https://github.com/mitodl/alcali-formula
         - https://github.com/mitodl/mysql-formula
+        - https://github.com/mitodl/caddy-formula
     ext_pillar:
       git_pillar_provider: gitpython
       git_pillar_base: {{ git_ref }}
