@@ -6,7 +6,8 @@ caddy:
       http:
         servers:
           salt_api:
-            listen: ':443'
+            listen:
+              - ':443'
             routes:
               - match:
                   {% if 'qa' in ENVIRONMENT %}
@@ -15,4 +16,7 @@ caddy:
                   - host: salt-production.odl.mit.edu
                   {% endif %}
                 handle:
-                  - reverse_proxy: 127.0.0.1:8080
+                  - handler: reverse_proxy
+                    transport: http
+                    upstreams:
+                      - dial: 127.0.0.1:8080

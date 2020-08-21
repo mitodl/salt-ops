@@ -40,6 +40,7 @@ base:
     - master.config
     - elastic_stack.beats
     - master.api
+    - caddy
     - caddy.master
   master-operations-production:
     - master.production_schedule

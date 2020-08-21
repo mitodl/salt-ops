@@ -15,9 +15,7 @@ salt_master:
         port: 8080
         address: 0.0.0.0
         debug: True
-        ssl_crt: /etc/salt/pki/tls/certs/odl_wildcard.crt
-        ssl_key: /etc/salt/pki/tls/certs/odl_wildcard.key
-        disable_ssl: False
+        disable_ssl: True
         websockets: True
       external_auth:
         pam:
