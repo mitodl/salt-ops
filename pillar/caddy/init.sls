@@ -11,15 +11,16 @@ caddy:
           roll_size_mb: 10
           roll_gzip: True
       logs:
-        writer:
-          output: file
-          filename: /var/log/caddy/caddy.log
-          roll: True
-          roll_size_mb: 10
-          roll_gzip: True
-        encoder:
-          format: json
-        level: WARN
+        default:
+          writer:
+            output: file
+            filename: /var/log/caddy/caddy.log
+            roll: True
+            roll_size_mb: 10
+            roll_gzip: True
+          encoder:
+            format: json
+          level: WARN
     storage:
       module: file_system
       root: /var/lib/caddy/
