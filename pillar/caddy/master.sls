@@ -11,12 +11,15 @@ caddy:
             routes:
               - match:
                   {% if 'qa' in ENVIRONMENT %}
-                  - host: salt-qa.odl.mit.edu
+                  - host:
+                      - salt-qa.odl.mit.edu
                   {% else %}
-                  - host: salt-production.odl.mit.edu
+                  - host:
+                      - salt-production.odl.mit.edu
                   {% endif %}
                 handle:
                   - handler: reverse_proxy
-                    transport: http
+                    transport:
+                      protocol: http
                     upstreams:
                       - dial: 127.0.0.1:8080

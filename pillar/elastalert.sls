@@ -535,6 +535,7 @@ elastic_stack:
             not been succeeding, or needs to be run again.
           type: frequency
           num_events: 1
+          index: logstash-mitx-*
           timeframe:
             minutes: 5
           alert:
