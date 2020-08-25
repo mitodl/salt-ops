@@ -130,6 +130,7 @@ datadog:
             check_certificate_expiration: true
             days_warning: 30
             days_critical: 15
+            timeout: 60
             tags:
               - mitxpro
           - name: ocw-cms-production
