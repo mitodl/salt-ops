@@ -552,8 +552,7 @@ elastic_stack:
             - bool:
                 must:
                   - query_string:
-                      default_field: message
-                      query: "Authentication with MIT Kerberos is currently unavailable"
+                      query: 'message: "Authentication with MIT Kerberos is currently unavailable"'
                   - query_string:
                       default_field: fluentd_tag
                       query: edx.lms.stderr
