@@ -250,7 +250,7 @@ edx:
         dsn: {{ sentry_dsn }}
 
     EDXAPP_CODE_JAIL_LIMITS:
-      REALTIME: 3
+      REALTIME: 10
       CPU: 3
       FSIZE: 1048576
       PROXY: 0
