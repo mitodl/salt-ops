@@ -160,6 +160,8 @@ edx:
     
     EDXAPP_LMS_ENV_EXTRA:
       EMAIL_USE_DEFAULT_FROM_FOR_BULK: True
+      CANVAS_BASE_URL: __vault__::secret-{{ business_unit }}/{{ environment}}/canvas>data>base_url
+      CANVAS_ACCESS_TOKEN: __vault__::secret-{{ business_unit }}/{{ environment}}/canvas>data>access_token
       FEATURES:
         AUTH_USE_CAS: False
         ALLOW_PUBLIC_ACCOUNT_CREATION: True
@@ -169,6 +171,7 @@ edx:
         ENABLE_COMBINED_LOGIN_REGISTRATION: True
         ENABLE_OAUTH2_PROVIDER: True
         ENABLE_THIRD_PARTY_AUTH: True
+        ENABLE_CANVAS_INTEGRATION: True
         RESTRICT_ENROLL_NO_ATSIGN_USERNAMES: true
         RESTRICT_ENROLL_SOCIAL_PROVIDERS:
           - mit-kerberos
