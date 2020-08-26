@@ -68,7 +68,7 @@ test_edxapp_efs_mount:
 {% for attribute, value in lms_env.items() %}
 test_edxapp_lms_env_{{ attribute }}:
   testinfra.file:
-    - name: '/edx/app/edxapp/lms.env.json'
+    - name: '/edx/etc/lms.yml'
     - exists: True
     - content_string:
         expected: '{{ value }}'
