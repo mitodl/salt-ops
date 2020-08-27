@@ -37,7 +37,7 @@ salt_master:
           pulumi:
             - '@wheel'
         rest:
-          ^url: https://{{ alcali_internal_ip }}:8000/api/token/verify/
+          '^url': 'https://{{ alcali_internal_ip }}:8000/api/token/verify/'
           admin:
             - '.*'
             - '@runner'
