@@ -39,7 +39,7 @@ salt_master:
         rest:
           ^url: https://{{ alcali_internal_ip }}:8000/api/token/verify/
           admin:
-            - .*
+            - '.*'
             - '@runner'
             - '@wheel'
             - '@jobs'
