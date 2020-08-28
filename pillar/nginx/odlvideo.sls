@@ -84,3 +84,13 @@ nginx:
                   - expires: max
                   - add_header: 'Access-Control-Allow-Origin *'
                   - try_files: '$uri $uri/ /staticfiles/$1 /staticfiles/$1/ =404'
+              - location /collections/letterlocking:
+                  - return: 301 https://www.youtube.com/c/Letterlocking/videos
+              - location /collections/letterlocking/videos:
+                  - return: 301 https://www.youtube.com/c/Letterlocking/videos
+              - location /collections/letterlocking/videos/30213-iron-gall-ink-a-quick-and-easy-method:
+                  - return: 301 https://www.youtube.com/playlist?list=PL2uZTM-xaHP4tFQT7eTTK3sWRoJMcDWwB
+              - location /collections/letterlocking/videos/30215-elizabeth-stuart-s-deciphering-sir-thomas-roe-s-letter-cryptography-1626:
+                  - return: 301 https://www.youtube.com/watch?v=6X_ZXrLs8I8&list=PL2uZTM-xaHP4tFQT7eTTK3sWRoJMcDWwB&index=3&t=0s
+              - location /collections/letterlocking/videos/30209-a-tiny-spy-letter-constantijn-huygens-to-amalia-von-solms-1635:
+                  - return: 301 https://www.youtube.com/watch?v=PePWd-h679c&list=PL2uZTM-xaHP4tFQT7eTTK3sWRoJMcDWwB&index=7&t=0s
