@@ -1,5 +1,5 @@
 # -*- mode: yaml -*-
-{% set environment = salt.grains.get('environment') %}
+{% set environment = salt.grains.get('environment', 'data-qa') %}
 
 dagster:
   home: /opt/ol_data_pipelines
@@ -21,8 +21,8 @@ dagster:
         class: PostgresRunStorage
         config:
           postgres_db:
-            username: __vault__:cache:postgres-dagster-{{ environment }}/creds/app
-            password: __vault__:cache:postgres-dagster-{{ environment }}/creds/app
+            username: __vault__:cache:postgres-dagster-{{ environment }}/creds/app>data>username
+            password: __vault__:cache:postgres-dagster-{{ environment }}/creds/app>data>password
             hostname: dagster_db.service.{{ environment }}.consul
             db_name: dagster
             port: 5432
@@ -31,8 +31,8 @@ dagster:
         class: PostgresEventLogStorage
         config:
           postgres_db:
-            username: __vault__:cache:postgres-dagster-{{ environment }}/creds/app
-            password: __vault__:cache:postgres-dagster-{{ environment }}/creds/app
+            username: __vault__:cache:postgres-dagster-{{ environment }}/creds/app>data>username
+            password: __vault__:cache:postgres-dagster-{{ environment }}/creds/app>data>password
             hostname: dagster_db.service.{{ environment }}.consul
             db_name: dagster
             port: 5432
@@ -41,8 +41,8 @@ dagster:
         class: PostgresScheduleStorage
         config:
           postgres_db:
-            username: __vault__:cache:postgres-dagster-{{ environment }}/creds/app
-            password: __vault__:cache:postgres-dagster-{{ environment }}/creds/app
+            username: __vault__:cache:postgres-dagster-{{ environment }}/creds/app>data>username
+            password: __vault__:cache:postgres-dagster-{{ environment }}/creds/app>data>password
             hostname: dagster_db.service.{{ environment }}.consul
             db_name: dagster
             port: 5432

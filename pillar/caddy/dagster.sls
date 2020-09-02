@@ -19,8 +19,10 @@ caddy:
                   - handler: headers
                     response:
                       add:
-                        Connection: upgrade
-                        Upgrade: websocket
+                        Connection:
+                          - upgrade
+                        Upgrade:
+                          - websocket
                   - handler: reverse_proxy
                     transport:
                       protocol: http
