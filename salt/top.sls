@@ -74,7 +74,7 @@ base:
   'roles:dagster':
     - match: grain
     - dagster
-    - nginx
+    - caddy
   dremio*:
     - dremio
     - nginx

@@ -50,8 +50,8 @@ base:
   'roles:dagster':
     - match: grain
     - dagster
-    - nginx
-    - nginx.dagster
+    - caddy
+    - caddy.dagster
   'roles:fluentd':
     - match: grain
     - fluentd

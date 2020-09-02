@@ -21,8 +21,8 @@ dagster:
         class: PostgresRunStorage
         config:
           postgres_db:
-            username: __vault__:cache:postgres-{{ environment }}/creds/app
-            password: __vault__:cache:postgres-{{ environment }}/creds/app
+            username: __vault__:cache:postgres-dagster-{{ environment }}/creds/app
+            password: __vault__:cache:postgres-dagster-{{ environment }}/creds/app
             hostname: dagster_db.service.{{ environment }}.consul
             db_name: dagster
             port: 5432
@@ -31,8 +31,8 @@ dagster:
         class: PostgresEventLogStorage
         config:
           postgres_db:
-            username: __vault__:cache:postgres-{{ environment }}/creds/app
-            password: __vault__:cache:postgres-{{ environment }}/creds/app
+            username: __vault__:cache:postgres-dagster-{{ environment }}/creds/app
+            password: __vault__:cache:postgres-dagster-{{ environment }}/creds/app
             hostname: dagster_db.service.{{ environment }}.consul
             db_name: dagster
             port: 5432
@@ -41,8 +41,8 @@ dagster:
         class: PostgresScheduleStorage
         config:
           postgres_db:
-            username: __vault__:cache:postgres-{{ environment }}/creds/app
-            password: __vault__:cache:postgres-{{ environment }}/creds/app
+            username: __vault__:cache:postgres-dagster-{{ environment }}/creds/app
+            password: __vault__:cache:postgres-dagster-{{ environment }}/creds/app
             hostname: dagster_db.service.{{ environment }}.consul
             db_name: dagster
             port: 5432
