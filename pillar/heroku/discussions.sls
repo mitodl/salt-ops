@@ -91,7 +91,8 @@
       'SOCIAL_AUTH_MICROMASTERS_LOGIN_URL': 'https://micromasters.mit.edu/login/edxorg/?next=/discussions/',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions.odl.mit.edu/saml/metadata',
       'TIKA_SERVER_ENDPOINT': 'https://tika-production-apps.odl.mit.edu',
-      'vault_env_path': 'production-apps'
+      'vault_env_path': 'production-apps',
+      'OCW_NEXT_URL': 'ocw-beta.odl.mit.edu'
       }
 } %}
 {% set env_data = env_dict[environment] %}
