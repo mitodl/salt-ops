@@ -131,16 +131,16 @@ sandbox_residential_versions: &sandbox_residential_versions
 
 sandbox_mitxpro_versions: &sandbox_mitxpro_versions
   edx_config_repo: https://github.com/mitodl/configuration.git
-  edx_config_version: open-release/ironwood.master
+  edx_config_version: open-release/juniper.master
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
-  edxapp: xpro/ironwood
+  edxapp: xpro/juniper
   forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
-  forum: open-release/ironwood.master
+  forum: open-release/juniper.master
   theme_source_repo: 'https://github.com/mitodl/mitxpro-theme'
   theme_name: 'mitxpro-theme'
   theme: master
-  xqueue: open-release/ironwood.master
-  codename: ironwood
+  xqueue: open-release/juniper.master
+  codename: juniper
   ami_id: ami-80861296
 
 
