@@ -148,7 +148,7 @@ environments:
   data-qa:
     business_unit: data
     network_prefix: '10.2'
-    vpc_name: ol-data-qa
+    vpc_name: QA Data Services
     vpc_peers:
       - operations-qa
       - mitx-qa
@@ -166,7 +166,7 @@ environments:
   data-production:
     business_unit: data
     network_prefix: '10.3'
-    vpc_name: ol-data-production
+    vpc_name: Production Data Services
     vpc_peers:
       - operations
       - mitx-production

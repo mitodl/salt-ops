@@ -34,6 +34,7 @@ generate_cloud_map_file:
           Department: {{ BUSINESS_UNIT }}
           OU: {{ BUSINESS_UNIT }}
           Environment: {{ ENVIRONMENT }}
+          consul_env: {{ ENVIRONMENT }}
         environment_name: {{ ENVIRONMENT }}
         roles:
           - consul_server
