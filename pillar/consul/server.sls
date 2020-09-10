@@ -37,7 +37,7 @@ consul:
           master: __vault__::secret-operations/{{ ENVIRONMENT }}/consul-acl-master-token>data>value
     aws_services:
       services:
-        {% for dbconfig in env_data.get('backends', {}).get('rds', []) %}
+        {% for dbconfig in env_data.backends.get('rds', []) %}
         {% set rds_endpoint = salt.boto_rds.get_endpoint('{env}-rds-{engine}-{db}'.format(env=ENVIRONMENT, engine=dbconfig.engine, db=dbconfig.name)) %}
         {% if rds_endpoint %}
         {% set service_name = dbconfig.pop('service_name', dbconfig.engine ~ '-' ~ dbconfig.name) %}
