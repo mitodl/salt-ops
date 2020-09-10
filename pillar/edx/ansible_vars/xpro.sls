@@ -29,7 +29,8 @@ edx:
     EDXAPP_PRIVATE_REQUIREMENTS:
       - name: mitxpro-openedx-extensions==0.1.1
       - name: social-auth-mitxpro==0.3
-      - name: ubcpi-xblock==0.6.5
+      - name: git+https://github.com/edx/ubcpi.git@3c4b2cdc9f595ab8cdb436f559b56f36638313b6#egg=ubcpi-xblock
+        extra_args: -e
       - name: git+https://github.com/mitodl/edx-git-auto-export.git@v0.1#egg=edx-git-auto-export
       # Python client for Sentry
       - name: raven
