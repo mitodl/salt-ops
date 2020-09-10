@@ -131,6 +131,7 @@ heroku:
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
     MAILGUN_URL: https://api.mailgun.net/v3/{{ env_data.MAILGUN_SENDER_DOMAIN }}
+    MAX_FILE_UPLOAD_MB: 10
     NEW_RELIC_APP_NAME: Bootcamp {{ env_data.env_name }}
     NODE_MODULES_CACHE: False
     PGBOUNCER_DEFAULT_POOL_SIZE: 50
