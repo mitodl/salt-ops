@@ -5,7 +5,8 @@ dagster:
   home: /opt/ol_data_pipelines
   dagit:
     path: /opt/ol_data_pipelines/bin
-    flags: -w /etc/dagster/workspace.yaml
+    flags:
+      - '-w /etc/dagster/workspace.yaml'
   config:
     instance:
       scheduler:
@@ -23,7 +24,7 @@ dagster:
           postgres_db:
             username: __vault__:cache:postgres-dagster-{{ environment }}/creds/app>data>username
             password: __vault__:cache:postgres-dagster-{{ environment }}/creds/app>data>password
-            hostname: dagster_db.service.{{ environment }}.consul
+            hostname: dagster_db.service.consul
             db_name: dagster
             port: 5432
       event_log_storage:
@@ -33,7 +34,7 @@ dagster:
           postgres_db:
             username: __vault__:cache:postgres-dagster-{{ environment }}/creds/app>data>username
             password: __vault__:cache:postgres-dagster-{{ environment }}/creds/app>data>password
-            hostname: dagster_db.service.{{ environment }}.consul
+            hostname: dagster_db.service.consul
             db_name: dagster
             port: 5432
       schedule_storage:
@@ -43,7 +44,7 @@ dagster:
           postgres_db:
             username: __vault__:cache:postgres-dagster-{{ environment }}/creds/app>data>username
             password: __vault__:cache:postgres-dagster-{{ environment }}/creds/app>data>password
-            hostname: dagster_db.service.{{ environment }}.consul
+            hostname: dagster_db.service.consul
             db_name: dagster
             port: 5432
   pkg_sources:

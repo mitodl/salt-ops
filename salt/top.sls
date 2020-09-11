@@ -7,7 +7,7 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
-  'P@environment:(operations|operations-qa|mitx-qa|mitx-production|mitxpro-qa|mitxpro-production|rc-apps|production-apps)':
+  'P@environment:(operations|operations-qa|mitx-qa|mitx-production|mitxpro-qa|mitxpro-production|rc-apps|production-apps|data-qa|data-production)':
     - match: compound
     - consul
     - consul.dns_proxy

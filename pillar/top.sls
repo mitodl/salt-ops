@@ -50,6 +50,7 @@ base:
   'roles:dagster':
     - match: grain
     - dagster
+    - consul
     - caddy
     - caddy.dagster
   'roles:fluentd':
