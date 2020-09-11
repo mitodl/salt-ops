@@ -40,7 +40,7 @@ django:
     revision: {{ env_data.release_branch }}
     repository_url: https://github.com/starteam/starcellbio_html.git
     state_params:
-      - branch: env_data.release_branch
+      - branch: {{ env_data.release_branch }}
       - force_fetch: True
       - force_checkout: True
       - force_reset: True
