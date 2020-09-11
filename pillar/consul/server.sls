@@ -9,6 +9,13 @@
     tgt_type='glob').items() %}
 {% do wan_nodes.append('{0}'.format(addr['ec2:local_ipv4'])) %}
 {% endfor %}
+{% for host, addr in salt.saltutil.runner(
+    'mine.get',
+    tgt='consul-data-*',
+    fun='grains.item',
+    tgt_type='glob').items() %}
+{% do wan_nodes.append('{0}'.format(addr['ec2:local_ipv4'])) %}
+{% endfor %}
 
 consul:
   extra_configs:
