@@ -5,7 +5,7 @@ dagster:
   home: /opt/ol_data_pipelines
   dagit:
     path: /opt/ol_data_pipelines/bin
-    flags: -w etc/workspace.yaml
+    flags: -w /etc/dagster/workspace.yaml
   config:
     instance:
       scheduler:
@@ -47,4 +47,4 @@ dagster:
             db_name: dagster
             port: 5432
   pkg_sources:
-    - ol-data-pipelines: https://ol-eng-artifacts.s3.amazonaws.com/ol-data-pipelines/ol-data-pipelines_0.1.1_amd64.deb
+    - ol-data-pipelines: https://ol-eng-artifacts.s3.amazonaws.com/ol-data-pipelines/ol-data-pipelines_0.1.2_amd64.deb
