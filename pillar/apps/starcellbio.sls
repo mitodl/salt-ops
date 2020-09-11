@@ -53,7 +53,7 @@ django:
     - libncurses5-dev
     - libssl-dev
     - libxml2-dev
-    - libxslt-dev
+    - libxslt1-dev
     - mariadb-client
     - nodejs
     - openjdk-8-jre
