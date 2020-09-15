@@ -11,7 +11,6 @@ caddy:
     os: linux
     arch: amd64
     plugins:
-      - github.com/greenpau/caddy-auth
       - github.com/greenpau/caddy-auth-jwt
       - github.com/greenpau/caddy-auth-portal
   config:
