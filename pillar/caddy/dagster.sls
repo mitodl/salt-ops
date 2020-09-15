@@ -41,23 +41,21 @@ caddy:
                       - /login
                 terminal: true
                 handle:
-                - handler: authentication
-                  providers:
-                    portal:
-                      auth_url_path: /login
-                      backends:
-                      - method: local
-                        path: /var/lib/caddy/auth/users.json
-                        realm: local
-                      jwt:
-                        token_issuer: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ ENVIRONMENT }}/caddy-jwt-issuer>data>value
-                        token_secret: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ ENVIRONMENT }}/caddy-jwt-secret>data>value
-                      primary: true
-                      ui:
-                        allow_role_selection: false
-                        auto_redirect_url: ''
-                        logo_description: Dagster
-                        logo_url: https://dagster.io/images/logo.png
-                        templates:
-                          portal: assets/ui/portal.template
+                - handler: auth_portal
+                  auth_url_path: /login
+                  backends:
+                    - method: local
+                      path: /var/lib/caddy/auth/users.json
+                      realm: local
+                  jwt:
+                    token_issuer: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ ENVIRONMENT }}/caddy-jwt-issuer>data>value
+                    token_secret: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ ENVIRONMENT }}/caddy-jwt-secret>data>value
+                    primary: true
+                  ui:
+                    allow_role_selection: false
+                    auto_redirect_url: ''
+                    logo_description: Dagster
+                    logo_url: https://dagster.io/images/logo.png
+                    templates:
+                      portal: assets/ui/portal.template
 
