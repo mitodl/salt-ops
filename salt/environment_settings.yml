@@ -1149,6 +1149,7 @@ environments:
 
 business_units:
   - bootcamps
+  - data
   - micromasters
   - mitxpro
   - odl-video
