@@ -6,6 +6,13 @@
 {% set server_domain_names = env_data.purposes[app_name].domains %}
 
 caddy:
+  auth:
+    local_users:
+      - username: tmacey
+        password_hash: __vault__::secret-operations/global/caddy-auth-users/tmacey>data>password_hash
+        email: __vault__::secret-operations/global/caddy-auth-users/tmacey>data>email
+        roles:
+          - superadmin
   install_from_repo: False
   custom_build:
     os: linux
