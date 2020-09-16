@@ -62,8 +62,6 @@ caddy:
                       add:
                         Connection:
                           - upgrade
-                        Upgrade:
-                          - websocket
                   - handler: reverse_proxy
                     transport:
                       protocol: http
