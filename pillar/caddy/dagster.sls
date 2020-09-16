@@ -13,6 +13,26 @@ caddy:
         email: __vault__::secret-operations/global/caddy-auth-users/tmacey>data>email
         roles:
           - superadmin
+      - username: shaidar
+        password_hash: __vault__::secret-operations/global/caddy-auth-users/shaidar>data>password_hash
+        email: __vault__::secret-operations/global/caddy-auth-users/shaidar>data>email
+        roles:
+          - superadmin
+      # - username: pdpinch
+      #   password_hash: __vault__::secret-operations/global/caddy-auth-users/pdpinch>data>password_hash
+      #   email: __vault__::secret-operations/global/caddy-auth-users/pdpinch>data>email
+      #   roles:
+      #     - superadmin
+      # - username: mbreedlove
+      #   password_hash: __vault__::secret-operations/global/caddy-auth-users/mbreedlove>data>password_hash
+      #   email: __vault__::secret-operations/global/caddy-auth-users/mbreedlove>data>email
+      #   roles:
+      #     - superadmin
+      # - username: aroy
+      #   password_hash: __vault__::secret-operations/global/caddy-auth-users/aroy>data>password_hash
+      #   email: __vault__::secret-operations/global/caddy-auth-users/aroy>data>email
+      #   roles:
+      #     - superadmin
   install_from_repo: False
   custom_build:
     os: linux
