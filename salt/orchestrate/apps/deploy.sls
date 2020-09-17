@@ -91,7 +91,7 @@ build_{{ app_name }}_nodes:
     - require:
         - salt: deploy_consul_agent_to_{{ app_name }}_nodes
 
-{% if server_domain_names %}
+{% if server_domain_names and not salt.environ.get('SKIP_DNS', False) %}
 update_mine_with_{{ app_name }}_node_data:
   salt.function:
     - name: mine.update
