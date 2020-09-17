@@ -116,6 +116,7 @@ heroku:
     EDXORG_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/edx>data>client_secret
     FEATURE_SOCIAL_AUTH_API: True
     FEATURE_CMS_HOME_PAGE: True
+    FEATURE_NOVOED_INTEGRATION: False
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
     GTM_TRACKING_ID: {{ env_data.GTM_TRACKING_ID }}
     HUBSPOT_API_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/hubspot>data>api_key
@@ -134,6 +135,9 @@ heroku:
     MAX_FILE_UPLOAD_MB: 10
     NEW_RELIC_APP_NAME: Bootcamp {{ env_data.env_name }}
     NODE_MODULES_CACHE: False
+    NOVOED_API_BASE_URL: https://api.novoed.com/
+    NOVOED_API_KEY: __vault__::secret-operations/global/{{ business_unit }}/novoed>data>api_key
+    NOVOED_API_SECRET: __vault__::secret-operations/global/{{ business_unit }}/novoed>data>api_secret
     PGBOUNCER_DEFAULT_POOL_SIZE: 50
     PGBOUNCER_MIN_POOL_SIZE: 5
     RECAPTCHA_SITE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>site_key
