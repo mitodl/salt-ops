@@ -1,6 +1,10 @@
-{% set alcali_internal_ip = salt.saltutil.runner('mine.get',
+{% set alcali_internal_ip = '127.0.0.1' %}
+{% set alcali_ip_addrs = salt.saltutil.runner('mine.get',
                                                   tgt='alcali*',
                                                   fun='network.ip_addrs') %}
+{% for minion, values in (alcali_ip_addrs or {}).items() %}
+{% set alcali_internal_ip = values[0] %}
+{% endfor %}
 {% set environment = salt.grains.get('environment', 'operations-qa') %}
 
 salt_master:
