@@ -721,7 +721,7 @@ environments:
           r5.xlarge
       redash:
         app: redash
-        num_instances: 3
+        num_instances: 4
         domains:
           - bi.odl.mit.edu
         business_unit: operations
