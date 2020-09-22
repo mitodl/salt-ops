@@ -20,6 +20,8 @@ edx:
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
     EDXAPP_COMMENTS_SERVICE_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
     EDXAPP_IDA_LOGOUT_URI_LIST: ['{{ heroku_env }}/logout']
+    EDXAPP_SOCIAL_AUTH_OAUTH_SECRETS:
+        mitxpro-oauth2: __vault__::secret-{{ business_unit }}/{{ environment }}/xpro-app-oauth2-client-secret-{{ purpose }}>data>value
     EDXAPP_LMS_ISSUER: https://{{ env_data.purposes[purpose].domains.lms }}/oauth2
     EDXAPP_JWT_AUDIENCE: '{{ business_unit }}-{{ environment }}-key'
     EDXAPP_JWT_SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/jwt-secret-key>data>value
@@ -73,9 +75,6 @@ edx:
         ENABLE_THIRD_PARTY_AUTH: True
         ALLOW_PUBLIC_ACCOUNT_CREATION: True
         SKIP_EMAIL_VALIDATION: True
-    EDXAPP_LMS_AUTH_EXTRA:
-      SOCIAL_AUTH_OAUTH_SECRETS:
-        mitxpro-oauth2: __vault__::secret-{{ business_unit }}/{{ environment }}/xpro-app-oauth2-client-secret-{{ purpose }}>data>value
     EDXAPP_CMS_ENV_EXTRA:
       ADDL_INSTALLED_APPS:
         - git_auto_export
