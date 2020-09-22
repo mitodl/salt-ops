@@ -20,7 +20,7 @@ edx:
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
     EDXAPP_COMMENTS_SERVICE_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
     EDXAPP_IDA_LOGOUT_URI_LIST: ['{{ heroku_env }}/logout']
-    EDXAPP_LMS_ISSUER: {{ heroku_env }}/oauth2
+    EDXAPP_LMS_ISSUER: https://{{ env_data.purposes[purpose].domains.lms }}/oauth2
     EDXAPP_JWT_AUDIENCE: '{{ business_unit }}-{{ environment }}-key'
     EDXAPP_JWT_SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/jwt-secret-key>data>value
     EDXAPP_JWT_SIGNING_ALGORITHM: 'RS512'
