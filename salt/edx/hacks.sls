@@ -70,7 +70,7 @@ add_xpro_base_url_to_{{ app }}_production_file:
     - text: XPRO_BASE_URL = '{{ heroku_env }}'
 {% endfor %}
 
-{% if 'next-residential' not in purpose %}
+{% if 'ironwood' in grains.get('edx_codename') %}
 add_jwt_auth_to_production_file:
   file.append:
     - name: /edx/app/edxapp/edx-platform/lms/envs/production.py

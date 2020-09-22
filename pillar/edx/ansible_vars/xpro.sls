@@ -13,12 +13,6 @@
 {% set heroku_env = heroku_xpro_env_url_mapping['{}'.format(purpose)] %}
 
 edx:
-  JWT_ISSUER: 'OAUTH_OIDC_ISSUER'
-  JWT_AUDIENCE: '{{ business_unit }}-{{ environment }}-key'
-  JWT_SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/jwt-secret-key>data>value
-  JWT_SIGNING_ALGORITHM: 'RS512'
-  JWT_PRIVATE_SIGNING_JWK: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/private-key>data>value
-  JWT_PUBLIC_SIGNING_JWK_SET: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/public-key>data>value
   ansible_vars:
     EDXAPP_EDX_API_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/edx-api-key>data>value
     EDXAPP_SESSION_COOKIE_DOMAIN: .xpro.mit.edu
@@ -26,6 +20,12 @@ edx:
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
     EDXAPP_COMMENTS_SERVICE_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
     EDXAPP_IDA_LOGOUT_URI_LIST: ['{{ heroku_env }}/logout']
+    EDXAPP_LMS_ISSUER: https://{{ env_data.purposes[purpose].domains.lms }}/oauth2
+    EDXAPP_JWT_AUDIENCE: '{{ business_unit }}-{{ environment }}-key'
+    EDXAPP_JWT_SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/jwt-secret-key>data>value
+    EDXAPP_JWT_SIGNING_ALGORITHM: 'RS512'
+    EDXAPP_JWT_PRIVATE_SIGNING_JWK: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/private-key>data>value
+    EDXAPP_JWT_PUBLIC_SIGNING_JWK_SET: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/public-key>data>value
     EDXAPP_PRIVATE_REQUIREMENTS:
       - name: mitxpro-openedx-extensions==0.2.2
       - name: social-auth-mitxpro==0.4
