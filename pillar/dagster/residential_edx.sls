@@ -13,7 +13,7 @@
 {% set mitx_environment = mitx_map[environment].mitx_environment %}
 
 dagster:
-  config:
+  pipeline_configs:
     residential_edx:
       execution:
         multiprocess:

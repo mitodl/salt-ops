@@ -13,7 +13,7 @@
 {% set xpro_environment = xpro_map[environment].xpro_environment %}
 
 dagster:
-  config:
+  pipeline_configs:
     residential_edx:
       execution:
         multiprocess:
