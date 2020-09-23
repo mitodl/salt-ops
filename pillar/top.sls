@@ -50,6 +50,8 @@ base:
   'roles:dagster':
     - match: grain
     - dagster
+    - dagster.xpro_edx
+    - dagster.residential_edx
     - consul
     - caddy
     - caddy.dagster
