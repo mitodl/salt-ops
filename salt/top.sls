@@ -295,3 +295,8 @@ base:
     - edx.prod
     - rabbitmq.configure
     - edx.django_user
+  'roles:ocw-next-build':
+    - match: grain
+    - fluentd
+    - utils.logrotate
+    - apps.ocw.nextgen_build_install
