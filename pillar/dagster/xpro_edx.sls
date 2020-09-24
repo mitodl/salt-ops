@@ -39,8 +39,8 @@ dagster:
           config:
             edx_mongodb_forum_database_name: forum_{{ xpro_purpose|replace('-', '_') }}
             edx_mongodb_host: mongodb-master.service.{{ xpro_environment }}.consul
-            edx_mongodb_password: __vault__:cache:mongodb-{{ xpro_environment }}/creds/readonly>data>password
-            edx_mongodb_username: __vault__:cache:mongodb-{{ xpro_environment }}/creds/readonly>data>username
+            edx_mongodb_password: __vault__:cache:mongodb-{{ xpro_environment }}/creds/forum-{{ xpro_purpose }}>data>password
+            edx_mongodb_username: __vault__:cache:mongodb-{{ xpro_environment }}/creds/forum-{{ xpro_purpose }}>data>username
         edx_upload_daily_extracts:
           config:
             edx_etl_results_bucket: mitx-etl-{{ xpro_purpose }}-{{ xpro_environment }}
