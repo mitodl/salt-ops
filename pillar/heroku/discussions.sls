@@ -198,6 +198,7 @@ heroku:
     OPEN_DISCUSSIONS_EMAIL_USER: __vault__::secret-operations/global/mit-smtp>data>relay_username
     OPEN_DISCUSSIONS_ENVIRONMENT: {{ env_data.env_name }}
     OPEN_DISCUSSIONS_FROM_EMAIL: MIT ODL Discussions <odl-discussions-support@mit.edu>
+    OPEN_DISCUSSIONS_FRONTPAGE_DIGEST_MAX_POSTS: 10
     OPEN_DISCUSSIONS_JWT_SECRET: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.env_name }}/jwt_secret>data>value
     OPEN_DISCUSSIONS_LOG_LEVEL: {{ env_data.app_log_level }}
     OPEN_DISCUSSIONS_REDDIT_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/open-discussions-reddit>data>reddit_client_id
