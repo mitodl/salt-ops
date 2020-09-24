@@ -14,7 +14,7 @@
 
 dagster:
   pipeline_configs:
-    residential_edx:
+    xpro_edx:
       execution:
         multiprocess:
           config:
