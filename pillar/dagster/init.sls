@@ -15,7 +15,8 @@ dagster:
       module: dagster_aws.s3.compute_log_manager
       class: S3ComputeLogManager
       config:
-        bucket: dagster-{{ environment }}/compute-logs/
+        bucket: dagster-{{ environment }}
+        prefix: compute-logs/
     run_storage:
       module: dagster_postgres.run_storage
       class: PostgresRunStorage
