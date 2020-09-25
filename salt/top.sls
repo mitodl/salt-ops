@@ -301,4 +301,4 @@ base:
     - utils.logrotate
     - node
     - apps.ocw.nextgen_build_install
-    - apps.ocw.nextgen_build_sync
+    - apps.ocw.nextgen_build_pull_data
