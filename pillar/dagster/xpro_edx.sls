@@ -28,6 +28,9 @@ dagster:
         results_dir:
           config:
             outputs_directory_date_format: '%Y%m%d'
+        healthchecks:
+          config:
+            check_id: __vault__::secret-data/{{ environment }}/pipelines/edx/xpro/healthchecks-io-check-id>data>value
         sqldb:
           config:
             mysql_db_name: edxapp_{{ xpro_purpose|replace('-', '_') }}
