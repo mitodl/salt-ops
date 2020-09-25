@@ -18,11 +18,11 @@ caddy:
         email: __vault__::secret-operations/global/caddy-auth-users/shaidar>data>email
         roles:
           - superadmin
-      # - username: pdpinch
-      #   password_hash: __vault__::secret-operations/global/caddy-auth-users/pdpinch>data>password_hash
-      #   email: __vault__::secret-operations/global/caddy-auth-users/pdpinch>data>email
-      #   roles:
-      #     - superadmin
+      - username: pdpinch
+        password_hash: __vault__::secret-operations/global/caddy-auth-users/pdpinch>data>password_hash
+        email: __vault__::secret-operations/global/caddy-auth-users/pdpinch>data>email
+        roles:
+          - superadmin
       # - username: mbreedlove
       #   password_hash: __vault__::secret-operations/global/caddy-auth-users/mbreedlove>data>password_hash
       #   email: __vault__::secret-operations/global/caddy-auth-users/mbreedlove>data>email
