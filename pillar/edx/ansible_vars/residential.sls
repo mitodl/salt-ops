@@ -139,6 +139,7 @@ edx:
         extra_args: -e
       # edx-proctoring fork to accomodate ProctorTrack
       - name: git+https://github.com/mitodl/edx-proctoring.git@mitx/juniper#egg=edx_proctoring
+      - name: git+https://github.com/mitodl/edx-val@mitx/juniper#egg=edxval
 
     # Start ProctorTrack settings
     EDXAPP_PROCTORING_SETTINGS:
