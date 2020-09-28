@@ -20,6 +20,9 @@ edx:
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
     EDXAPP_COMMENTS_SERVICE_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
     EDXAPP_IDA_LOGOUT_URI_LIST: ['{{ heroku_env }}/logout']
+    # Enable Secure flag on cookies for browser SameSite restrictions
+    EDXAPP_CSRF_COOKIE_SECURE: true
+    EDXAPP_SESSION_COOKIE_SECURE: true
     EDXAPP_SOCIAL_AUTH_OAUTH_SECRETS:
         mitxpro-oauth2: __vault__::secret-{{ business_unit }}/{{ environment }}/xpro-app-oauth2-client-secret-{{ purpose }}>data>value
     EDXAPP_LMS_ISSUER: https://{{ env_data.purposes[purpose].domains.lms }}/oauth2
@@ -66,6 +69,9 @@ edx:
       MARKETING_SITE_ROOT: {{ heroku_env }}
       MITXPRO_CORE_REDIRECT_ALLOW_RE_LIST: ["^/(admin|auth|login|logout|register|api|oauth2|user_api|heartbeat)", "^/courses/.*/xblock/.*/handler_noauth/outcome_service_handler"]
       THIRD_PARTY_AUTH_BACKENDS: ["social_auth_mitxpro.backends.MITxProOAuth2"]
+      # django-session-cookie middleware
+      DCS_SESSION_COOKIE_SAMESITE: 'Strict'
+      DCS_SESSION_COOKIE_SAMESITE_FORCE_ALL: True
       FEATURES:
         REROUTE_ACTIVATION_EMAIL: {{ support_email }}
         ENABLE_VIDEO_UPLOAD_PIPELINE: False
