@@ -3,6 +3,7 @@
     'discussions': 'mailgun-eng'} %}
 {% set slack_webhook_url = '__vault__::secret-operations/global/slack-odl/slack_webhook_url>data>value' %}
 {% set opsgenie_key = ' __vault__::secret-operations/global/opsgenie/opsgenie_ops_team_api>data>value' %}
+{% set squadcast_url = '__vault__::secret-operations/global/squadcast/generic-elastalert-url>data>value' %}
 
 elastic_stack:
   elastalert:
@@ -53,6 +54,11 @@ elastic_stack:
             minutes: 5
           alert:
             - opsgenie
+            - post
+          http_post_url: {{ squadcast_url }}
+          http_post_all_values: True
+          http_post_static_payload:
+            Title: MITx SSH Event
           alert_text: "SSH session detected"
           filter:
             - bool:
@@ -84,6 +90,11 @@ elastic_stack:
             minutes: 5
           alert:
             - opsgenie
+            - post
+          http_post_url: {{ squadcast_url }}
+          http_post_all_values: True
+          http_post_static_payload:
+            Title: edX Operational Failure
           alert_text: "Operational Failure on mitx or xpro production detected"
           filter:
             - bool:
@@ -111,6 +122,11 @@ elastic_stack:
             hours: 1
           alert:
             - opsgenie
+            - post
+          http_post_url: {{ squadcast_url }}
+          http_post_all_values: True
+          http_post_static_payload:
+            Title: GitReload Error
           alert_text: "git-reload error on mitx-production detected"
           filter:
             - bool:
@@ -140,6 +156,11 @@ elastic_stack:
             hours: 1
           alert:
             - opsgenie
+            - post
+          http_post_url: {{ squadcast_url }}
+          http_post_all_values: True
+          http_post_static_payload:
+            Title: MITx SAML Auth Failure
           alert_text: >-
             Authentication with MIT Kerberos is currently unavailable.
             Need to run manage.py saml pull on residential instance to
@@ -254,6 +275,11 @@ elastic_stack:
             minutes: 5
           alert:
             - opsgenie
+            - post
+          http_post_url: {{ squadcast_url }}
+          http_post_all_values: True
+          http_post_static_payload:
+            Title: RabbitMQ Login Failed
           alert_text: "invalid credentials"
           filter:
             - bool:
@@ -279,6 +305,11 @@ elastic_stack:
             minutes: 30
           alert:
             - opsgenie
+            - post
+          http_post_url: {{ squadcast_url }}
+          http_post_all_values: True
+          http_post_static_payload:
+            Title: FluentD S3 Credentials Expired
           alert_text: >-
              The IAM credentials for the FluentD servers to ship
              to S3 have expired and need to be regenerated.
@@ -331,6 +362,11 @@ elastic_stack:
             minutes: 5
           alert:
             - opsgenie
+            - post
+          http_post_url: {{ squadcast_url }}
+          http_post_all_values: True
+          http_post_static_payload:
+            Title: Nginx Bad Gateway
           alert_text: >-
             The upstream service on {0} is not responding to Nginx
           alert_text_args:
@@ -489,7 +525,7 @@ elastic_stack:
             minutes: 5
           alert:
             - slack
-          alert_text: "Automated git export failure"
+          alert_text: "S3 Error For edX Workers"
           slack_webhook_url: {{ slack_webhook_url }}
           slack_channel_override: '#mitx-tech-notifs'
           slack_username_override: Elastalert
