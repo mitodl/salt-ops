@@ -3,7 +3,8 @@
 {% set business_unit = salt.grains.get('business_unit', 'residential') %}
 {% set edx_tracking_bucket = 'odl-{}-tracking-backup'.format(business_unit) %}
 {% set aws_creds = salt.pillar.get('edx:tracking_backups:aws_creds') %}
-{% set archive_name = 'edx_tracking_' ~ instance_id ~ '-' ~ salt.system.get_system_date_time().split(' ')[0] ~ '.tgz' %}
+{% set date = salt.system.get_system_date_time().split(' ')[0] %}
+{% set archive_name = 'edx_tracking_' ~ instance_id ~ '-' ~ date ~ '.tgz' %}
 
 tar_tracking_data:
   cmd.run:
@@ -15,7 +16,7 @@ upload_tar_to_s3:
   module.run:
     - name: s3.put
     - bucket: {{ edx_tracking_bucket }}
-    - path: {{ instance_id }}.tgz
+    - path: {{ instance_id }}-{{ date }}.tgz
     - local_file: {{ edx_tracking_local_folder }}/{{ archive_name }}
     - key: {{ aws_creds.secret_key }}
     - keyid: {{ aws_creds.access_key}}
