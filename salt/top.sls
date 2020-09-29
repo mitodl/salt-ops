@@ -11,8 +11,6 @@ base:
     - match: compound
     - consul
     - consul.dns_proxy
-    - consul.tests
-    - consul.tests.test_dns_setup
   'P@environment:mitx-(qa|production)':
     - elastic-stack.beats
   'roles:xqwatcher':
@@ -86,8 +84,6 @@ base:
     - match: grain
     - consul
     - consul.dns_proxy
-    - consul.tests
-    - consul.tests.test_dns_setup
   'roles:fluentd':
     - match: grain
     - fluentd
