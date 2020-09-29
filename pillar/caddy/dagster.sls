@@ -57,7 +57,8 @@ caddy:
                   auth_url_path: /login
                   primary: true
                   backends:
-                    - method: local
+                    - name: Dagster
+                      method: local
                       path: /var/lib/caddy/auth/users.json
                       realm: local
                   jwt:

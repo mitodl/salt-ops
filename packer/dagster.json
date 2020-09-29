@@ -25,6 +25,7 @@
       ]
     },
     {
+      "bootstrap_args": "-U",
       "local_state_tree": "salt",
       "local_pillar_roots": "pillar",
       "minion_config": "packer/minion_configs/dagster.conf",
