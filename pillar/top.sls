@@ -247,6 +247,9 @@ base:
     - edx.ansible_vars.residential_qa
     - edx.mitx-qa
     - edx.inotify_mitx
+  'purpose:continuous-delivery':
+    - match: grain
+    - edx.mitx-koa
   'P@roles:(edx|edx-worker) and G@environment:mitx-production':
     - match: compound
     - edx.ansible_vars.residential
