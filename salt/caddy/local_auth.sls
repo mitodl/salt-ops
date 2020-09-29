@@ -39,5 +39,6 @@ File.managed(
     user='caddy',
     group='caddy',
     makedirs=True,
-    recurse=['user', 'group']
+    recurse=['user', 'group'],
+    onchanges_in=Service('caddy_service_running')
 )
