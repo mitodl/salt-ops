@@ -2,8 +2,8 @@ edx:
   dependencies:
     os_packages:
       - git
-      - libmariadbclient-dev
-      - mariadb-client-10.3
+      - mysql-client
+      - libmysqlclient-dev
       - landscape-common
       - libssl-dev
       - virtualenv
