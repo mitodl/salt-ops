@@ -41,18 +41,6 @@ edx:
     COMMON_MYSQL_MIGRATE_PASS: __vault__:cache:mysql-{{ environment }}/creds/admin>data>password
 
     ### EDXAPP ENVIRONMENT ###
-    {# TODO: Determine if this is still necessary (tmacey 2017/03/16) #}
-    common_debian_pkgs:
-      - ntp
-      - acl
-      - lynx-cur
-      - logrotate
-      - rsyslog
-      - git
-      - unzip
-      - python2.7
-      - python-pip
-      - python2.7-dev
     elb_pre_post: false {# prevents ansible from trying to handle ELB for us (tmacey 2017-03-16) #}
     EDXAPP_AWS_S3_CUSTOM_DOMAIN: !!null
     EDXAPP_CMS_ROOT_URL: "https://{{ CMS_DOMAIN }}"
