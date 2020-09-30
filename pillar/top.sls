@@ -250,6 +250,7 @@ base:
   'purpose:continuous-delivery':
     - match: grain
     - edx.mitx-koa
+    - edx.ansible_vars.koa
   'P@roles:(edx|edx-worker) and G@environment:mitx-production':
     - match: compound
     - edx.ansible_vars.residential
