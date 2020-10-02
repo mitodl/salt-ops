@@ -172,15 +172,18 @@ environments:
       - mitx-production
       - mitxpro-production
     purposes:
+      redash:
+        app: redash
+        num_instances: 4
+        domains:
+          - bi-qa.odl.mit.edu
+        business_unit: operations
       dagster:
         app: dagster
         num_instances: 1
         domains:
           - pipelines.odl.mit.edu
         business_unit: data
-        security_groups:
-          - webapp-odl-vpn
-        size: r5a.large
   mitxpro-qa:
     business_unit: mitxpro
     network_prefix: '10.6'
