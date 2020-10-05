@@ -28,7 +28,7 @@ ensure_os_package_prerequisites:
       # jq is not necessary, but it's nice to have for troubleshooting.
       - jq
 
-git_pull_ocw_apps:
+git_pull_ocw_to_hugo:
   git.latest:
     - name: https://github.com/mitodl/ocw-to-hugo.git
     - target: /home/ocw/ocw-to-hugo
@@ -41,6 +41,8 @@ git_pull_ocw_apps:
     - user: ocw
     - require:
       - pkg: ensure_os_package_prerequisites
+
+git_pull_hugo_course_publisher:
   git.latest:
     - name: https://github.com/mitodl/hugo-course-publisher.git
     - target: /home/ocw/hugo-course-publisher
@@ -63,7 +65,8 @@ manage_course_publisher_env_file:
     - contents: |
         SEARCH_API_URL={{ ocw_next.search_api_url }}
     - require:
-      - git: git_pull_ocw_apps
+      - git: git_pull_ocw_to_hugo
+      - git: git_pull_hugo_course_publisher
 
 install_ocw_apps:
   cmd.script:
@@ -72,4 +75,5 @@ install_ocw_apps:
     - source: salt://apps/ocw/templates/nextgen_install_ocw_apps.sh
     - runas: ocw
     - require:
-      - git: git_pull_ocw_apps
+      - git: git_pull_ocw_to_hugo
+      - git: git_pull_hugo_course_publisher
