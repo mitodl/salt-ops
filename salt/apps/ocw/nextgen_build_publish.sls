@@ -15,8 +15,6 @@ run_hugo_course_publisher:
     # `cwd' is specified because it drops a log file here.
     - cwd: /home/ocw/hugo-course-publisher
     - runas: ocw
-    - env:
-      - NODE_OPTIONS: '-max_old_space_size=8192'
     - require:
       - cmd: run_ocw_to_hugo
 
