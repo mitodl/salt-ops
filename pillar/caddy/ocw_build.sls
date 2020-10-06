@@ -51,8 +51,8 @@ caddy:
                           - handle:
                               - handler: json_parse
                       - match:
-                          - expression: {hmac.signature} == {http.regexp.1}
-                          - expression: {json.ref}.endswith('{{ env_map[ENVIRONMENT]["target_branch"] }}')
+                          - expression: "{hmac.signature} == {http.regexp.1}"
+                          - expression: "{json.ref}.endswith(\"{{ env_map[ENVIRONMENT]['target_branch'] }}\")"
                         handle:
                           - handler: exec
                             command: salt-call
