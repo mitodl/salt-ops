@@ -350,9 +350,13 @@ base:
     - fluentd.ocw_db
   'P@roles:ocw-(cms|db|origin|mirror) and G@ocw-environment:production':
     - datadog
-  'G@roles:ocw-build and G@environment:applications-production':
+  'G@roles:ocw-build and G@environment:production-apps':
     - match: compound
     - apps.ocw-next-production
-  'G@roles:ocw-build and G@environment:applications-qa':
+    - caddy
+    - caddy.ocw_build
+  'G@roles:ocw-build and G@environment:rc-apps':
     - match: compound
     - apps.ocw-next-qa
+    - caddy
+    - caddy.ocw_build

@@ -1,6 +1,6 @@
 
 ocw-next:
-  website_bucket: ocw-beta-production-course-site
+  website_bucket: ocw-website-applications-production
   source_data_bucket: open-learning-course-data-production
   search_api_url: //open.mit.edu/api/v0/search/
   ocw_to_hugo_git_ref: release
