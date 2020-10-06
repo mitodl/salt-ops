@@ -18,7 +18,7 @@ ensure_os_package_prerequisites:
   pkg.installed:
     - refresh: True
     - pkgs:
-        - aws
+        - awscli
         - git
         - build-essential
         - gcc
