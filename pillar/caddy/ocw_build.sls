@@ -5,10 +5,10 @@
 {% set business_unit = env_data.purposes[app_name].business_unit %}
 {% set server_domain_names = env_data.purposes[app_name].domains %}
 {% set env_map = {
-    'applications-qa': {
+    'rc-apps': {
         'target_branch': 'release-candidate'
     },
-    'applications-production': {
+    'production-apps': {
         'target_branch': 'release'
     }
 } %}

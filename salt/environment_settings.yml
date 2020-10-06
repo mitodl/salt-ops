@@ -899,6 +899,12 @@ environments:
     vpc_peers:
       - mitodl-operations-services
     purposes:
+      ocw-build:
+        app: ocw-build
+        num_instances: 1
+        domains:
+          - ocw-build.odl.mit.edu
+        business_unit: open-courseware
       odl-video-service:
         app: odl-video-service
         num_instances: 3
@@ -1030,6 +1036,12 @@ environments:
     vpc_peers:
       - operations-qa
     purposes:
+      ocw-build:
+        app: ocw-build
+        num_instances: 1
+        domains:
+          - ocw-build-qa.odl.mit.edu
+        business_unit: open-courseware
       odl-video-service:
         app: odl-video-service
         business_unit: odl-video-service
