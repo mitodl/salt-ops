@@ -353,6 +353,10 @@ base:
   'G@roles:ocw-build and G@environment:applications-production':
     - match: compound
     - apps.ocw-next-production
+    - caddy
+    - caddy.ocw_build
   'G@roles:ocw-build and G@environment:applications-qa':
     - match: compound
     - apps.ocw-next-qa
+    - caddy
+    - caddy.ocw_build

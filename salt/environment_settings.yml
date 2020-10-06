@@ -145,6 +145,22 @@ sandbox_mitxpro_versions: &sandbox_mitxpro_versions
 
 
 environments:
+  applications-qa:
+    purposes:
+      ocw-build:
+        app: ocw-build
+        num_instances: 1
+        domains:
+          - ocw-build-qa.odl.mit.edu
+        business_unit: open-courseware
+  applications-production:
+    purposes:
+      ocw-build:
+        app: ocw-build
+        num_instances: 1
+        domains:
+          - ocw-build.odl.mit.edu
+        business_unit: open-courseware
   data-qa:
     business_unit: data
     network_prefix: '10.2'
@@ -160,9 +176,6 @@ environments:
         domains:
           - pipelines-qa.odl.mit.edu
         business_unit: data
-        security_groups:
-          - webapp-odl-vpn
-        size: r5a.large
   data-production:
     business_unit: data
     network_prefix: '10.3'
