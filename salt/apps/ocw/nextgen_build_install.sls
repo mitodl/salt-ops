@@ -16,17 +16,16 @@ manage_yarn_pkg_repo:
 
 ensure_os_package_prerequisites:
   pkg.installed:
-    refresh: True
-    pkgs:
-      - aws
-      - git
-      - build-essential
-      - gcc
-      - g++
-      - make
-      - yarn
-      # jq is not necessary, but it's nice to have for troubleshooting.
-      - jq
+    - refresh: True
+    - pkgs:
+        - aws
+        - git
+        - build-essential
+        - gcc
+        - g++
+        - make
+        - yarn
+        - jq
 
 git_pull_ocw_to_hugo:
   git.latest:
