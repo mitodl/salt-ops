@@ -17,6 +17,3 @@ test_git_package_latest_version:
   testinfra.package:
     - name: git
     - is_installed: True
-    - version:
-        expected: '2.7'
-        comparison: search
