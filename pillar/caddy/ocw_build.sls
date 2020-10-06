@@ -31,7 +31,7 @@ caddy:
               - ':443'
             routes:
               - match:
-                  - host: {{ server_domain_names|to_json }
+                  - host: {{ server_domain_names|to_json }}
                 handle:
                 - handler: subroute
                   routes:
