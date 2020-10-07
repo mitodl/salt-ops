@@ -21,6 +21,7 @@
       'HUBSPOT_FOOTER_FORM_GUID': 'a8cffaac-4207-446a-b295-5f44656596f8',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
       'NOVOED_SAML_DEBUG': True,
+      'NOVOED_SAML_LOGIN_URL': 'https://app.novoed.com/saml/sso?provider=mitbootcamps-stg',
       'SITE_NAME': 'MIT Bootcamps CI',
       'vault_env_path': 'rc-apps'
       },
@@ -42,6 +43,7 @@
       'HUBSPOT_FOOTER_FORM_GUID': 'a8cffaac-4207-446a-b295-5f44656596f8',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
       'NOVOED_SAML_DEBUG': True,
+      'NOVOED_SAML_LOGIN_URL': 'https://app.novoed.com/saml/sso?provider=mitbootcamps-stg',
       'SITE_NAME': 'MIT Bootcamps RC',
       'vault_env_path': 'rc-apps'
       },
@@ -63,6 +65,7 @@
       'HUBSPOT_FOOTER_FORM_GUID': '2d798908-c195-4c0c-b075-a10b0c1b08f3',
       'MAILGUN_SENDER_DOMAIN': 'mail.bootcamp.odl.mit.edu',
       'NOVOED_SAML_DEBUG': False,
+      'NOVOED_SAML_LOGIN_URL': 'https://app.novoed.com/saml/sso?provider=mitbootcamps',
       'SITE_NAME': 'MIT Bootcamps',
       'vault_env_path': 'production-apps'
       }
@@ -146,6 +149,7 @@ heroku:
     NOVOED_SAML_DEBUG: {{ env_data.NOVOED_SAML_DEBUG }}
     NOVOED_SAML_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/novoed>data>saml_key
     NOVOED_SAML_CERT: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/novoed>data>saml_cert
+    NOVOED_SAML_LOGIN_URL: {{ env_data.NOVOED_SAML_LOGIN_URL }}
     PGBOUNCER_DEFAULT_POOL_SIZE: 50
     PGBOUNCER_MIN_POOL_SIZE: 5
     RECAPTCHA_SITE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>site_key
