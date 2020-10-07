@@ -14,6 +14,11 @@ manage_yarn_pkg_repo:
     - name: deb https://dl.yarnpkg.com/debian/ stable main
     - key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
 
+manage_node_pkg_repo:
+  pkgrepo.managed:
+    - name: deb https://deb.nodesource.com/node_12.x buster main
+    - key_url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+
 ensure_os_package_prerequisites:
   pkg.installed:
     - refresh: True
@@ -24,6 +29,7 @@ ensure_os_package_prerequisites:
         - gcc
         - g++
         - make
+        - nodejs
         - yarn
         - jq
 
