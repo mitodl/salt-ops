@@ -9,4 +9,5 @@ ocw-next:
 node:
   version: 12.18.4
   pkg:
+    version: 12
     use_upstream_repo: True
