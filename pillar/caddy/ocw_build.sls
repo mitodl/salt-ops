@@ -50,15 +50,15 @@ caddy:
                                 secret: __vault__:gen_if_missing:secret-operations/global/github-hmac-secret-string>data>value
                           - handle:
                               - handler: json_parse
-                      - match:
-                          - expression: "{hmac.signature} == {http.regexp.1}"
-                          - expression: "{json.ref}.endswith(\"{{ env_map[ENVIRONMENT]['target_branch'] }}\")"
-                        handle:
-                          - handler: exec
-                            command: salt-call
-                            args:
-                              - state.sls
-                              - apps.ocw.nextgen_build_pull_data,apps.ocw.nextgen_build_install,apps.ocw.nextgen_build_publish
+                          - match:
+                              - expression: "{hmac.signature} == {http.regexp.1}"
+                              - expression: "{json.ref}.endsWith(\"{{ env_map[ENVIRONMENT]['target_branch'] }}\")"
+                            handle:
+                              - handler: exec
+                                command: salt-call
+                                args:
+                                  - state.sls
+                                  - apps.ocw.nextgen_build_pull_data,apps.ocw.nextgen_build_install,apps.ocw.nextgen_build_publish
                 - handler: file_server
                   root: /home/ocw/hugo-course-publisher/dist/
                   index_names:
