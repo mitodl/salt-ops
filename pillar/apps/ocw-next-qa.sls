@@ -10,5 +10,3 @@ node:
   version: 12.18.4
   pkg:
     use_upstream_repo: True
-    archive:
-      uri: https://deb.nodesource.com/node_12.x
