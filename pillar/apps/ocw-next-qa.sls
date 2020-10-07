@@ -8,6 +8,7 @@ ocw-next:
 
 node:
   version: 12.18.4
-  install_from_ppa: True
-  ppa:
-    repository_url: https://deb.nodesource.com/node_12.x
+  pkg:
+    use_upstream_repo: True
+    archive:
+      uri: https://deb.nodesource.com/node_12.x
