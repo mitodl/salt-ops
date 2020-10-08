@@ -55,12 +55,9 @@ caddy:
                               - expression: "{json.ref}.endsWith(\"{{ env_map[ENVIRONMENT]['target_branch'] }}\")"
                             handle:
                               - handler: exec
-                                command: salt-call
-                                args:
-                                  - state.sls
-                                  - apps.ocw.nextgen_build_pull_data,apps.ocw.nextgen_build_install,apps.ocw.nextgen_build_publish
+                                command: /opt/ocw/webhook-publish.sh
                 - handler: file_server
-                  root: /home/ocw/hugo-course-publisher/dist/
+                  root: /opt/ocw/hugo-course-publisher/dist/
                   index_names:
                     - index.html
                     - index.htm
@@ -71,4 +68,4 @@ caddy:
                             - /coursemedia
                       handle:
                         - handler: file_server
-                          root: /home/ocw/open-learning-course-data
+                          root: /opt/ocw/open-learning-course-data

@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+
+LOG_FILE=/opt/webhook-publish.log
+SOURCE_DATA_BUCKET={{ source_data_bucket }}
+SOURCE_DATA_DIR=/opt/ocw/open-learning-course-data
+MARKDOWN_DIR=/opt/ocw/hugo-course-publisher/site/content
+SITE_OUTPUT_DIR=/opt/ocw/hugo-course-publisher/dist/  # Should end in '/'
+WEBSITE_BUCKET={{ website_bucket }}
+lock_dir=/tmp/webhook-publish-lock
+
+log_message() {
+    echo `date +'%Y-%m-%d %H:%M:%S'` $1 | tee -a ${LOG_FILE}
+}
+
+error_and_exit() {
+	log_message $1
+	rm -rf $lock_dir
+	exit 1
+}
+
+mkdir $lock_dir
+if [ $? -ne 0 ]; then
+	error_and_exit "Can not acquire lock. Another run in-progress?"
+fi
+
+cat /dev/null > $LOG_FILE || error_and_exit "Can not initialize logfile"
+
+log_message "Pulling ocw-to-hugo"
+cd /opt/ocw/ocw-to-hugo
+git pull || error_and_exit "Can not 'git pull' ocw-to-hugo"
+npm install . || error_and_exit "Can not 'npm install' ocw-to-hugo"
+
+log_message "Pulling hugo-course-publisher"
+cd /opt/ocw/hugo-course-publisher
+git pull || error_and_exit "Can not pull hugo-course-publisher"
+yarn install --pure-lockfile \
+    || error_and_exit "Can not install hugo-course-publisher"
+
+log_message "Pulling source data"
+aws s3 sync s3://$SOURCE_DATA_BUCKET/ $SOURCE_DATA_DIR --delete --only-show-errors
+if [ $? -ne 0 ]; then
+	error_and_exit "Failed to pull source data"
+fi
+
+log_message "Running ocw-to-hugo"
+cd /opt/ocw/ocw-to-hugo
+node src/bin/index.js -i $SOURCE_DATA_DIR -o $MARKDOWN_DIR \
+    --strips3 --staticPrefix /coursemedia
+if [ $? -ne 0 ]; then
+	error_and_exit "Failed to run ocw-to-hugo. See logs in /opt/ocw/ocw-to-hugo"
+fi
+
+log_message "Running hugo-course-publisher"
+cd /opt/ocw/hugo-course-publisher
+npm run build 2>&1 > /opt/ocw/hugo-course-publisher.log
+if [ $? -ne 0 ]; then
+	error_and_exit "Failed to run hugo-course-publisher. See /opt/ocw/hugo-course-publisher.log"
+fi
+
+log_message "Syncing to S3 bucket"
+# a little double-check to make sure the source directory ends in a slash, to
+# prevent the site from getting copied into a subdirectory ...
+echo "$SITE_OUTPUT_DIR" | grep -q '/$'
+if [ $? -ne 0 ]; then
+	log_message "WARNING: appending '/' to $SITE_OUTPUT_DIR"
+	SITE_OUTPUT_DIR=$SITE_OUTPUT_DIR/
+fi
+aws s3 sync $SITE_OUTPUT_DIR s3://$WEBSITE_BUCKET/ \
+    --delete --only-show-errors 2>&1 > /opt/ocw/website-sync.log
+if [ $? -ne 0 ]; then
+	error_and_exit "Failed to sync to S3 bucket. See /opt/ocw/website-sync.log"
+fi
+
+# TODO: Hit Fastly API to flush cache!
+
+rmdir $lock_dir
+exit 0
