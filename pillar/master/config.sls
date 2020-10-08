@@ -43,7 +43,6 @@ salt_master:
         - https://github.com/mitodl/pgbouncer-formula
         - https://github.com/mitodl/python-formula
         - https://github.com/mitodl/node-formula
-        - https://github.com/mitodl/monit-formula
         - https://github.com/mitodl/elastic-stack-formula
         - https://github.com/mitodl/tika-formula
         - https://github.com/mitodl/netdata-formula
