@@ -18,6 +18,15 @@ ensure_os_package_prerequisites:
         - yarn
         - jq
 
+ensure_state_of_caddy_home:
+  # the formula doesn't create a caddy home dir, but we actually want it
+  # because we need a place for dotfiles, etc., that are created by
+  # npm.
+  file.directory:
+    - name: /home/caddy
+    - user: caddy
+    - group: caddy
+
 ensure_state_of_opt_ocw:
   file.directory:
     - name: /opt/ocw
