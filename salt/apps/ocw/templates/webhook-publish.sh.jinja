@@ -6,6 +6,7 @@ SOURCE_DATA_DIR=/opt/ocw/open-learning-course-data
 MARKDOWN_DIR=/opt/ocw/hugo-course-publisher/site/content
 SITE_OUTPUT_DIR=/opt/ocw/hugo-course-publisher/dist/  # Should end in '/'
 WEBSITE_BUCKET={{ website_bucket }}
+lock_dir=/tmp/webhook-publish-lock
 
 log_message() {
     echo `date +'%Y-%m-%d %H:%M:%S'` $1 | tee -a ${LOG_FILE}
@@ -13,8 +14,14 @@ log_message() {
 
 error_and_exit() {
 	log_message $1
+	rm -rf $lock_dir
 	exit 1
 }
+
+mkdir $lock_dir
+if [ $? -ne 0 ]; then
+	error_and_exit "Can not acquire lock. Another run in-progress?"
+fi
 
 cat /dev/null > $LOG_FILE || error_and_exit "Can not initialize logfile"
 
@@ -66,4 +73,5 @@ fi
 
 # TODO: Hit Fastly API to flush cache!
 
+rmdir $lock_dir
 exit 0
