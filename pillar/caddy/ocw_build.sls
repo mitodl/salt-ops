@@ -55,7 +55,7 @@ caddy:
                               - expression: "{json.ref}.endsWith(\"{{ env_map[ENVIRONMENT]['target_branch'] }}\")"
                             handle:
                               - handler: exec
-                                command: /usr/local/bin/webhook-publish.sh
+                                command: /opt/ocw/webhook-publish.sh
                 - handler: file_server
                   root: /opt/ocw/hugo-course-publisher/dist/
                   index_names:

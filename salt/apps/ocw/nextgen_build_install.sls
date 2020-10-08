@@ -77,7 +77,7 @@ install_ocw_apps:
 
 install_caddy_webhook_script:
   file.managed:
-    - name: /usr/local/bin/webhook-publish.sh
+    - name: /opt/ocw/webhook-publish.sh
     - user: caddy
     - group: caddy
     - mode: 0777
