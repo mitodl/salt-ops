@@ -7,6 +7,7 @@ ocw-next:
   hugo_course_publisher_git_ref: release-candidate
 
 node:
+  version: 12.19.0
   pkg:
     version: 12
     use_upstream_repo: True
