@@ -61,7 +61,7 @@
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions-rc.odl.mit.edu/saml/metadata',
       'TIKA_SERVER_ENDPOINT': 'https://tika-rc-apps.odl.mit.edu',
       'vault_env_path': 'rc-apps',
-      'OCW_NEXT_URL': 'ocw-next.netlify.app'
+      'OCW_NEXT_URL': 'ocwnext-rc.odl.mit.edu'
       },
     'production': {
       'app_log_level': 'INFO',
@@ -92,7 +92,7 @@
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions.odl.mit.edu/saml/metadata',
       'TIKA_SERVER_ENDPOINT': 'https://tika-production-apps.odl.mit.edu',
       'vault_env_path': 'production-apps',
-      'OCW_NEXT_URL': 'ocw-beta.odl.mit.edu'
+      'OCW_NEXT_URL': 'ocwnext.odl.mit.edu'
       }
 } %}
 {% set env_data = env_dict[environment] %}
