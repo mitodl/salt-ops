@@ -20,7 +20,8 @@ error_and_exit() {
 
 mkdir $lock_dir
 if [ $? -ne 0 ]; then
-	error_and_exit "Can not acquire lock. Another run in-progress?"
+	echo "Can not acquire lock. Another run in-progress?" >&2
+	exit 1
 fi
 
 cat /dev/null > $LOG_FILE || error_and_exit "Can not initialize logfile"
