@@ -56,6 +56,7 @@ caddy:
                             handle:
                               - handler: exec
                                 command: /opt/ocw/webhook-publish.sh
+                                timeout: 1h
                 - handler: file_server
                   root: /opt/ocw/hugo-course-publisher/dist/
                   index_names:
