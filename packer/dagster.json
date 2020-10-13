@@ -40,7 +40,15 @@
       "force_deregister": true,
       "ssh_username": "admin",
       "type": "amazon-ebs",
-      "source_ami": "ami-05c0d7f3fffb419c8",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "root-device-type": "ebs",
+          "name": "debian-10-amd64*"
+        },
+        "most_recent": true,
+        "owners": ["136693071363"]
+      },
       "snapshot_tags": {
         "OU": "data",
         "purpose": "data-pipeline",
