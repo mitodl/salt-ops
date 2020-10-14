@@ -89,9 +89,11 @@ install_caddy_webhook_script:
     - name: /opt/ocw/webhook-publish.sh
     - user: caddy
     - group: caddy
-    - mode: 0777
+    - mode: 0700
     - source: salt://apps/ocw/templates/webhook-publish.sh.jinja
     - template: jinja
     - context:
         website_bucket: {{ ocw_next.website_bucket }}
         source_data_bucket: {{ ocw_next.source_data_bucket }}
+        fastly_api_token: {{ ocw_next.fastly_api_token }}
+        fastly_service_id: {{ ocw_next.fastly_service_id }}
