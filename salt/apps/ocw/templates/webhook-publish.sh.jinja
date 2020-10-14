@@ -6,6 +6,8 @@ SOURCE_DATA_DIR=/opt/ocw/open-learning-course-data
 MARKDOWN_DIR=/opt/ocw/hugo-course-publisher/site/content
 SITE_OUTPUT_DIR=/opt/ocw/hugo-course-publisher/dist/  # Should end in '/'
 WEBSITE_BUCKET={{ website_bucket }}
+FASTLY_API_TOKEN={{ fastly_api_token }}
+FASTLY_SERVICE_ID={{ fastly_service_id }}
 # lock_dir ensures that only one run of this script happens at once.
 lock_dir=/tmp/webhook-publish-lock
 # If retry_file is present, the script will run itself again to catch changes
@@ -83,7 +85,12 @@ if [ $? -ne 0 ]; then
     error_and_exit "Failed to sync to S3 bucket. See /opt/ocw/website-sync.log"
 fi
 
-# TODO: Hit Fastly API to flush cache!
+log_message "Clearing Fastly cache"
+curl -s -H "Fastly-Key: $FASTLY_API_TOKEN" \
+    https://api.fastly.com/$FASTLY_SERVICE_ID/purge_all
+if [ $? -ne 0 ]; then
+	log_message "WARNING: Failed to clear Fastly cache!"
+fi
 
 log_message "Done"
 
