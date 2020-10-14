@@ -639,10 +639,10 @@ environments:
           <<: *current_residential_versions_rp
         instances:
           edx:
-            number: 9
+            number: 18
             type: r5.large
           edx-worker:
-            number: 3
+            number: 6
             type: t3.xlarge
           analytics:
             number: 1
