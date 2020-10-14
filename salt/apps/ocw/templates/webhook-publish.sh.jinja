@@ -86,7 +86,7 @@ if [ $? -ne 0 ]; then
 fi
 
 log_message "Clearing Fastly cache"
-curl -s -H "Fastly-Key: $FASTLY_API_TOKEN" \
+curl -s -X POST -H "Fastly-Key: $FASTLY_API_TOKEN" \
     https://api.fastly.com/$FASTLY_SERVICE_ID/purge_all
 if [ $? -ne 0 ]; then
 	log_message "WARNING: Failed to clear Fastly cache!"
