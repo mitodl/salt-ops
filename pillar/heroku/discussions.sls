@@ -184,7 +184,7 @@ heroku:
     OPEN_DISCUSSIONS_COOKIE_DOMAIN: {{ env_data.OPEN_DISCUSSIONS_COOKIE_DOMAIN }}
     OPEN_DISCUSSIONS_COOKIE_NAME: {{ env_data.OPEN_DISCUSSIONS_COOKIE_NAME}}
     {% if env_data.get('OCW_NEXT_URL') %}
-    {% set od_cors_whitelist = env_data.OCW_NEXT_URL %}
+    {% set od_cors_whitelist = env_data.get('OCW_NEXT_URL') %}
     {{ od_cors_whitelist.append(env_data.MICROMASTERS_BASE_URL) }}
     OPEN_DISCUSSIONS_CORS_ORIGIN_WHITELIST: {{ od_cors_whitelist | tojson }}
     {% else %}
