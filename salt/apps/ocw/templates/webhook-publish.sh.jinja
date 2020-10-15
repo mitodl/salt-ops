@@ -35,8 +35,9 @@ fi
 if [ ! -e $retry_file ]; then
     cat /dev/null > $LOG_FILE || error_and_exit "Can not initialize logfile"
 else
-	# Do not initialize the logfile if this is a re-run
-	rm $retry_file
+    # Do not initialize the logfile if this is a re-run
+    log_message "This is a re-run."
+    rm $retry_file
 fi
 
 log_message "Pulling ocw-to-hugo"
@@ -86,15 +87,16 @@ if [ $? -ne 0 ]; then
 fi
 
 log_message "Clearing Fastly cache"
-curl -s -X POST -H "Fastly-Key: $FASTLY_API_TOKEN" \
-    https://api.fastly.com/$FASTLY_SERVICE_ID/purge_all
+curl -f -X POST -H "Fastly-Key: $FASTLY_API_TOKEN" \
+    https://api.fastly.com/service/$FASTLY_SERVICE_ID/purge_all
 if [ $? -ne 0 ]; then
-	log_message "WARNING: Failed to clear Fastly cache!"
+    log_message "WARNING: Failed to clear Fastly cache!"
 fi
 
 log_message "Done"
 
 if [ -e $retry_file ]; then
+    log_message "$retry_file exists. Removing $lock_dir and re-running ..."
     rmdir $lock_dir
     exec $0
 else
