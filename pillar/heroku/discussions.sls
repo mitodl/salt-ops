@@ -61,7 +61,7 @@
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions-rc.odl.mit.edu/saml/metadata',
       'TIKA_SERVER_ENDPOINT': 'https://tika-rc-apps.odl.mit.edu',
       'vault_env_path': 'rc-apps',
-      'OCW_NEXT_URL': 'ocw-next.netlify.app'
+      'OCW_NEXT_URL': ['ocwnext-rc.odl.mit.edu']
       },
     'production': {
       'app_log_level': 'INFO',
@@ -92,7 +92,7 @@
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions.odl.mit.edu/saml/metadata',
       'TIKA_SERVER_ENDPOINT': 'https://tika-production-apps.odl.mit.edu',
       'vault_env_path': 'production-apps',
-      'OCW_NEXT_URL': 'ocw-beta.odl.mit.edu'
+      'OCW_NEXT_URL': ['ocwnext.odl.mit.edu', 'ocw-beta.odl.mit.edu']
       }
 } %}
 {% set env_data = env_dict[environment] %}
@@ -184,7 +184,7 @@ heroku:
     OPEN_DISCUSSIONS_COOKIE_DOMAIN: {{ env_data.OPEN_DISCUSSIONS_COOKIE_DOMAIN }}
     OPEN_DISCUSSIONS_COOKIE_NAME: {{ env_data.OPEN_DISCUSSIONS_COOKIE_NAME}}
     {% if env_data.get('OCW_NEXT_URL') %}
-    OPEN_DISCUSSIONS_CORS_ORIGIN_WHITELIST: '["{{ env_data.MICROMASTERS_BASE_URL }}", "{{ env_data.OCW_NEXT_URL }}"]'
+    OPEN_DISCUSSIONS_CORS_ORIGIN_WHITELIST: {{ env_data.OCW_NEXT_URL.push(env_data.MICROMASTERS_BASE_URL) | tojson }}
     {% else %}
     OPEN_DISCUSSIONS_CORS_ORIGIN_WHITELIST: '["{{ env_data.MICROMASTERS_BASE_URL }}"]'
     {% endif %}
