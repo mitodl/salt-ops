@@ -6,6 +6,7 @@
       'app_log_level': 'INFO',
       'app_name': 'odl-open-discussions-ci',
       'CLOUDFRONT_DIST': 'd28ic9ywb63ioi',
+      'CORS_URLS': ['micromasters-ci.odl.mit.edu'],
       'DEBUG': False,
       'ELASTICSEARCH_INDEX': 'discussions-ci',
       'ELASTICSEARCH_URL': 'https://elasticsearch-rc-apps.odl.mit.edu',
@@ -36,6 +37,7 @@
       'app_log_level': 'INFO',
       'app_name': 'odl-open-discussions-rc',
       'CLOUDFRONT_DIST': 'd1d3xcwjqmwwj2',
+      'CORS_URLS': ['micromasters-rc.odl.mit.edu', 'ocwnext-rc.odl.mit.edu'],
       'DEBUG': False,
       'ELASTICSEARCH_INDEX': 'discussions-rc',
       'ELASTICSEARCH_URL': 'https://elasticsearch-rc-apps.odl.mit.edu',
@@ -61,12 +63,12 @@
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions-rc.odl.mit.edu/saml/metadata',
       'TIKA_SERVER_ENDPOINT': 'https://tika-rc-apps.odl.mit.edu',
       'vault_env_path': 'rc-apps',
-      'OCW_NEXT_URL': ['ocwnext-rc.odl.mit.edu']
       },
     'production': {
       'app_log_level': 'INFO',
       'app_name': 'odl-open-discussions',
       'CLOUDFRONT_DIST': 'd2mcnjhkvrfuy2',
+      'CORS_URLS': ['micromasters.mit.edu', 'ocwnext.odl.mit.edu', 'ocw-beta.odl.mit.edu'],
       'DEBUG': False,
       'env_name': 'production',
       'FEATURE_COURSE_UI': False,
@@ -92,7 +94,6 @@
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions.odl.mit.edu/saml/metadata',
       'TIKA_SERVER_ENDPOINT': 'https://tika-production-apps.odl.mit.edu',
       'vault_env_path': 'production-apps',
-      'OCW_NEXT_URL': ['ocwnext.odl.mit.edu', 'ocw-beta.odl.mit.edu']
       }
 } %}
 {% set env_data = env_dict[environment] %}
@@ -183,13 +184,7 @@ heroku:
     OPEN_DISCUSSIONS_BASE_URL: {{ env_data.OPEN_DISCUSSIONS_BASE_URL }}
     OPEN_DISCUSSIONS_COOKIE_DOMAIN: {{ env_data.OPEN_DISCUSSIONS_COOKIE_DOMAIN }}
     OPEN_DISCUSSIONS_COOKIE_NAME: {{ env_data.OPEN_DISCUSSIONS_COOKIE_NAME}}
-    {% if env_data.get('OCW_NEXT_URL') %}
-    {% set od_cors_whitelist = env_data.get('OCW_NEXT_URL') %}
-    {% do od_cors_whitelist.append(env_data.get('MICROMASTERS_BASE_URL')) %}
-    OPEN_DISCUSSIONS_CORS_ORIGIN_WHITELIST: {{ od_cors_whitelist | tojson }}
-    {% else %}
-    OPEN_DISCUSSIONS_CORS_ORIGIN_WHITELIST: '["{{ env_data.MICROMASTERS_BASE_URL }}"]'
-    {% endif %}
+    OPEN_DISCUSSIONS_CORS_ORIGIN_WHITELIST: '{{ env_data.CORS_URLS|tojson }}'
     OPEN_DISCUSSIONS_DB_CONN_MAX_AGE: 0
     OPEN_DISCUSSIONS_DB_DISABLE_SSL: True
     OPEN_DISCUSSIONS_DEFAULT_SITE_KEY: micromasters
