@@ -22,6 +22,7 @@ caddy:
       - github.com/abiosoft/caddy-exec
       - github.com/abiosoft/caddy-hmac
       - github.com/abiosoft/caddy-json-parse
+      - github.com/greenpau/caddy-trace
   config:
     apps:
       http:
