@@ -8,9 +8,10 @@
 
 {% set subnet_ids = [] %}
 {% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
-    'public1-{}'.format(ENVIRONMENT),
-    'public2-{}'.format(ENVIRONMENT),
-    'public3-{}'.format(ENVIRONMENT)])['subnets'] %}
+    '{}-subnet-1'.format(ENVIRONMENT),
+    '{}-subnet-2'.format(ENVIRONMENT),
+    '{}-subnet-3'.format(ENVIRONMENT),
+    '{}-subnet-4'.format(ENVIRONMENT)])['subnets'] %}
 {% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
 
