@@ -34,20 +34,6 @@ ensure_state_of_opt_ocw:
     - group: caddy
     - dir_mode: '0755'
 
-git_pull_ocw_to_hugo:
-  git.latest:
-    - name: https://github.com/mitodl/ocw-to-hugo.git
-    - target: /opt/ocw/ocw-to-hugo
-    - rev: {{ ocw_next.ocw_to_hugo_git_ref }}
-    - force_checkout: True
-    - force_clone: True
-    - force_reset: True
-    - force_fetch: True
-    - update_head: True
-    - user: caddy
-    - require:
-      - pkg: ensure_os_package_prerequisites
-
 git_pull_hugo_course_publisher:
   git.latest:
     - name: https://github.com/mitodl/hugo-course-publisher.git
@@ -71,7 +57,6 @@ manage_course_publisher_env_file:
     - contents: |
         SEARCH_API_URL={{ ocw_next.search_api_url }}
     - require:
-      - git: git_pull_ocw_to_hugo
       - git: git_pull_hugo_course_publisher
 
 install_ocw_apps:
@@ -81,7 +66,6 @@ install_ocw_apps:
     - source: salt://apps/ocw/templates/nextgen_install_ocw_apps.sh
     - runas: caddy
     - require:
-      - git: git_pull_ocw_to_hugo
       - git: git_pull_hugo_course_publisher
 
 install_caddy_webhook_script:
