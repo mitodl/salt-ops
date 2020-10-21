@@ -206,7 +206,7 @@ environments:
   mitxpro-qa:
     business_unit: mitxpro
     network_prefix: '10.6'
-    vpc_name: MITxPro QA
+    vpc_name: xPro QA
     vpc_peers:
       - operations-qa
     secret_backends:
@@ -298,7 +298,7 @@ environments:
   mitxpro-production:
     business_unit: mitxpro
     network_prefix: '10.8'
-    vpc_name: MITxPro Production
+    vpc_name: xPro Production
     vpc_peers:
       - mitodl-operations-services
     provider_services:
