@@ -37,7 +37,7 @@
       'app_log_level': 'INFO',
       'app_name': 'odl-open-discussions-rc',
       'CLOUDFRONT_DIST': 'd1d3xcwjqmwwj2',
-      'CORS_URLS': ['micromasters-rc.odl.mit.edu', 'ocwnext-rc.odl.mit.edu'],
+      'CORS_URLS': ['micromasters-rc.odl.mit.edu', 'ocwnext-rc.odl.mit.edu', 'ocw-next.netlify.app'],
       'DEBUG': False,
       'ELASTICSEARCH_INDEX': 'discussions-rc',
       'ELASTICSEARCH_URL': 'https://elasticsearch-rc-apps.odl.mit.edu',
