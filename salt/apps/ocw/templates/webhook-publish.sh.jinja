@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
 LOG_FILE=/opt/ocw/webhook-publish.log
-SOURCE_DATA_BUCKET={{ source_data_bucket }}
-SOURCE_DATA_DIR=/opt/ocw/open-learning-course-data
-MARKDOWN_DIR=/opt/ocw/hugo-course-publisher/site/content
 SITE_OUTPUT_DIR=/opt/ocw/hugo-course-publisher/dist/  # Should end in '/'
 WEBSITE_BUCKET={{ website_bucket }}
 FASTLY_API_TOKEN={{ fastly_api_token }}
@@ -13,6 +10,16 @@ lock_dir=/tmp/webhook-publish-lock
 # If retry_file is present, the script will run itself again to catch changes
 # that came in during the period of the current run.
 retry_file=/tmp/webhook-publish-retry
+
+# Configuration for hugo-course-publisher
+OCW_TO_HUGO_INPUT=/opt/ocw/open-learning-course-data
+OCW_TO_HUGO_DOWNLOAD=1
+OCW_TO_HUGO_STRIPS3=1
+OCW_TO_HUGO_STATIC_PREFIX=/coursemedia
+AWS_BUCKET_NAME={{ source_data_bucket }}
+
+export OCW_TO_HUGO_INPUT OCW_TO_HUGO_DOWNLOAD OCW_TO_HUGO_STRIPS3 \
+       OCW_TO_HUGO_STATIC_PREFIX AWS_BUCKET_NAME
 
 
 log_message() {
@@ -40,33 +47,21 @@ else
     rm $retry_file
 fi
 
-log_message "Pulling ocw-to-hugo"
-cd /opt/ocw/ocw-to-hugo
-git pull || error_and_exit "Can not 'git pull' ocw-to-hugo"
-npm install . || error_and_exit "Can not 'npm install' ocw-to-hugo"
+cd /opt/ocw/hugo-course-publisher \
+    || error_and_exit "Can not cd to hugo-course-publisher!"
 
 log_message "Pulling hugo-course-publisher"
-cd /opt/ocw/hugo-course-publisher
 git pull || error_and_exit "Can not pull hugo-course-publisher"
 yarn install --pure-lockfile \
     || error_and_exit "Can not install hugo-course-publisher"
 
-log_message "Pulling source data"
-aws s3 sync s3://$SOURCE_DATA_BUCKET/ $SOURCE_DATA_DIR --delete --only-show-errors
+log_message "Pulling ocw-to-hugo and source data"
+npm run import:ocw
 if [ $? -ne 0 ]; then
-    error_and_exit "Failed to pull source data"
-fi
-
-log_message "Running ocw-to-hugo"
-cd /opt/ocw/ocw-to-hugo
-node src/bin/index.js -i $SOURCE_DATA_DIR -o $MARKDOWN_DIR \
-    --strips3 --staticPrefix /coursemedia
-if [ $? -ne 0 ]; then
-    error_and_exit "Failed to run ocw-to-hugo. See logs in /opt/ocw/ocw-to-hugo"
+    error_and_exit "Failed to pull ocw-to-hugo or source data"
 fi
 
 log_message "Running hugo-course-publisher"
-cd /opt/ocw/hugo-course-publisher
 npm run build 2>&1 > /opt/ocw/hugo-course-publisher.log
 if [ $? -ne 0 ]; then
     error_and_exit "Failed to run hugo-course-publisher. See /opt/ocw/hugo-course-publisher.log"
