@@ -71,3 +71,13 @@ caddy:
                       handle:
                         - handler: file_server
                           root: /opt/ocw/open-learning-course-data
+                - handler: subroute
+                  routes:
+                    - match:
+                        - header_regexp:
+                            X-Monitor-Token: __vault__::secret-open-courseware/{{ ENVIRONMENT }}/monitoring>data>token
+                        - path:
+                            - /status
+                      handle:
+                        - handler: static_response
+                          body: OK
