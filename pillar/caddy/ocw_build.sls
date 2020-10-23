@@ -74,8 +74,6 @@ caddy:
                 - handler: subroute
                   routes:
                     - match:
-                        - header_regexp:
-                            X-Monitor-Token: __vault__::secret-open-courseware/{{ ENVIRONMENT }}/monitoring>data>token
                         - path:
                             - /status
                       handle:
