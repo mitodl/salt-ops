@@ -71,3 +71,11 @@ caddy:
                       handle:
                         - handler: file_server
                           root: /opt/ocw/open-learning-course-data
+                - handler: subroute
+                  routes:
+                    - match:
+                        - path:
+                            - /status
+                      handle:
+                        - handler: static_response
+                          body: OK
