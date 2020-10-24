@@ -279,6 +279,9 @@ base:
   'xqwatcher-686*':
     - match: glob
     - edx.xqwatcher_686_residential
+  'xqwatcher-6S082*':
+    - match: glob
+    - edx.xqwatcher_6S082
   'roles:amps-redirect':
     - match: grain
     - nginx

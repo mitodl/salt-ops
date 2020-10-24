@@ -446,13 +446,15 @@ environments:
         app: xqueue-watcher
         business_unit: residential
         versions:
-          xqwatcher: c70f1d5523696d9dd51bc0c91ed9f5a35f2d4be3
+          xqwatcher: a95cc96
           edx_config_repo: https://github.com/edx/configuration
-          edx_config_version: open-release/ironwood.master
+          edx_config_version: open-release/juniper.master
         courses:
           - name: 600x
             num_instances: 2
           - name: 686
+            num_instances: 1
+          - name: 6S082
             num_instances: 1
       current-residential-live:
         app: edx-platform
@@ -601,14 +603,16 @@ environments:
         app: xqueue-watcher
         business_unit: residential
         versions:
-          xqwatcher: c70f1d5523696d9dd51bc0c91ed9f5a35f2d4be3
+          xqwatcher: a95cc96
           edx_config_repo: https://github.com/edx/configuration
-          edx_config_version: open-release/ironwood.master
+          edx_config_version: open-release/juniper.master
         courses:
           - name: 600x
             num_instances: 3
           - name: 686
             num_instances: 6
+          - name: 6S082
+            num_instances: 1
       residential-draft:
         app: edx-platform
         business_unit: residential

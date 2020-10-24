@@ -83,6 +83,7 @@ edx:
         'test-pull': !!null
         'certificates': !!null
         'mitx-686xgrader': !!null
+        'mitx-6S082grader': !!null
     EDXAPP_GOOGLE_ANALYTICS_ACCOUNT: {{ edxapp_google_analytics_account }}
     EDXAPP_YOUTUBE_API_KEY: __vault__::secret-residential/global/edxapp-youtube-api-key>data>value
     EDXAPP_SUPPORT_SITE_LINK: 'https://odl.zendesk.com/hc/en-us/requests/new'
