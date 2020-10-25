@@ -483,6 +483,7 @@ environments:
           gitreload: gr-qa.mitx.mit.edu
         versions:
           <<: *current_residential_versions_qa
+          xqwatcher_courses: master
         instances:
           edx:
             number: 1
@@ -517,6 +518,7 @@ environments:
           gitreload: gr-qa-next.mitx.mit.edu
         versions:
           <<: *next_residential_versions
+          xqwatcher_courses: master
         instances:
           edx:
             number: 1
@@ -547,6 +549,7 @@ environments:
           gitreload: prod-gr-qa-testing.mitx.mit.edu
         versions:
           <<: *continuous_delivery_versions
+          xqwatcher_courses: master
         instances:
           edx:
             number: 1

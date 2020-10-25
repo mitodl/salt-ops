@@ -13,10 +13,16 @@ edx:
    XQWATCHER_COURSES:
     {% for purpose, purpose_data in env_data.purposes.items() %}
     {% if 'residential' in purpose %}
-    - COURSE: "mit-600x-{{ purpose }}-{{ queue_name }}"
+    - COURSE: "mit-6S082-{{ purpose }}-{{ queue_name }}"
       GIT_REPO: git@github.mit.edu:mitx/graders-mit-6S082r
       GIT_REF: {{ purpose_data.versions.xqwatcher_courses }}
-      PYTHON_REQUIREMENTS: []
+      PYTHON_REQUIREMENTS:
+        - name: numpy
+          version: 1.17.2
+        - name: scikit-learn
+          version: 0.21.3
+        - name: scipy
+          version: 1.3.1
       PYTHON_EXECUTABLE: /usr/bin/{{ python3_version }}
       QUEUE_NAME: {{ queue_name }}
       QUEUE_CONFIG:
@@ -33,7 +39,7 @@ edx:
               lang: python3
               bin_path: "{{ xqwatcher_venv_base }}/mit-6S082/bin/python"
             KWARGS:
-              grader_root: ../data/mit-6S082-{{ purpose }}-{{ queue_name }}/graders/python3graders/
+              grader_root: ../data/mit-6S082-{{ purpose }}-{{ queue_name }}/
     {% endif %}
     {% endfor %}
 
@@ -45,7 +51,7 @@ schedule:
     function: git.pull
     minutes: 5
     args:
-      - /edx/app/xqwatcher/data/mit-600x-{{ purpose }}-{{ queue_name }}/
+      - /edx/app/xqwatcher/data/mit-6S082-{{ purpose }}-{{ queue_name }}/
     kwargs:
       identity: /edx/app/xqwatcher/.ssh/xqwatcher-courses
   {% endif %}
