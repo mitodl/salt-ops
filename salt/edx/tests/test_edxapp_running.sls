@@ -12,7 +12,6 @@ our configurations. Test the following:
 
 {% set supervisor_services = [
     'edxapp:lms',
-    'forum',
     'xqueue',
     'xqueue_consumer'
   ] %}
@@ -21,7 +20,6 @@ our configurations. Test the following:
     'ssl': 'tcp://0.0.0.0:443',
     'lms': 'tcp://127.0.0.1:8000',
     'xqueue': 'tcp://0.0.0.0:18040',
-    'forum': 'tcp://0.0.0.0:4567',
   } %}
 
 # Additional connections that should be tested in integration tests: (TMM 2017/07/31)
@@ -82,9 +80,9 @@ test_edxapp_{{ connection }}:
     - is_listening: True
 {% endfor %}
 
-add_an_artificial_wait_for_forum:
-  module.run:
-    - name: test.sleep
-    - length: 30
-    - require_in:
-        - testinfra: test_edxapp_forum
+# add_an_artificial_wait_for_forum:
+#   module.run:
+#     - name: test.sleep
+#     - length: 30
+#     - require_in:
+#         - testinfra: test_edxapp_forum
