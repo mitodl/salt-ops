@@ -101,8 +101,8 @@ provision_cloudfront_distribution_for_{{ purpose }}_in_{{ ENVIRONMENT }}:
             Quantity: 0
             RestrictionType: none
         ViewerCertificate:
-          ACMCertificateArn: arn:aws:acm:us-east-1:610119931565:certificate/31cbdb62-7553-472b-979a-3063c3e1fddc
-          Certificate: arn:aws:acm:us-east-1:610119931565:certificate/31cbdb62-7553-472b-979a-3063c3e1fddc
+          ACMCertificateArn: arn:aws:acm:us-east-1:610119931565:certificate/263b0a3a-9a28-4146-abaa-034f874b8e17
+          Certificate: arn:aws:acm:us-east-1:610119931565:certificate/263b0a3a-9a28-4146-abaa-034f874b8e17
           CertificateSource: acm
           MinimumProtocolVersion: TLSv1.1_2016
           SSLSupportMethod: sni-only

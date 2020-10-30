@@ -45,7 +45,7 @@ create_elb_for_edx_{{ purpose_name }}:
           instance_port: 443
           elb_protocol: HTTPS
           instance_protocol: HTTPS
-          certificate:  arn:aws:acm:us-east-1:610119931565:certificate/133082a7-f4a2-483b-a013-e94d9d531364
+          certificate:  arn:aws:acm:us-east-1:610119931565:certificate/0541c001-bf98-46df-b4be-2cf7d0631e60
         - elb_port: 80
           instance_port: 80
           elb_protocol: HTTP
@@ -99,7 +99,7 @@ create_elb_for_edx_{{ purpose_name }}_studio:
           instance_port: 443
           elb_protocol: HTTPS
           instance_protocol: HTTPS
-          certificate:  arn:aws:acm:us-east-1:610119931565:certificate/133082a7-f4a2-483b-a013-e94d9d531364
+          certificate:  arn:aws:acm:us-east-1:610119931565:certificate/0541c001-bf98-46df-b4be-2cf7d0631e60
           policies:
             - {{ elb_name }}-sticky-cookie-policy
         - elb_port: 80
