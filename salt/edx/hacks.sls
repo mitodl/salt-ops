@@ -45,6 +45,7 @@ copy_select_static_assets_to_static_subfolder:
     - preserve: True
 {% endif %}
 
+{% if 'tumbleweed' != salt.grains.get('edx_codename') %}
 set_from_bulk_email_address_in_lms_production_file:
   file.append:
     - name: /edx/app/edxapp/edx-platform/lms/envs/production.py
@@ -86,4 +87,5 @@ add_jwt_auth_to_production_file:
         ), })
 {% endif %}
 
+{% endif %}
 {% endif %}
