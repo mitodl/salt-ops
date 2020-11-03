@@ -224,11 +224,13 @@ base:
     - edx
     - edx.ansible_vars
     - edx.ansible_vars.cloud_deployment
-    - edx.ansible_vars.theme
     - edx.scheduled_jobs
     - fluentd.mitx
     - datadog.nginx-integration
     - datadog.supervisord-integration
+  'P@roles:(edx|edx-worker) and not G@edx_codename:tumbleweed':
+    - match: compound
+    - edx.ansible_vars.theme
   'G@roles:sandbox and P@environment:mitx(pro)?-qa':
     - match: compound
     - edx
