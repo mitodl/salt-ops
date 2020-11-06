@@ -16,7 +16,7 @@
 {% endfor %}
 
 {% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token').data.value %}
-{% set THEME_VERSION = salt.environ.get('THEME_VERSION', 'ficus') %}
+{% set THEME_VERSION = salt.environ.get('THEME_VERSION', 'juniper') %}
 {% set purposes = env_settings.purposes %}
 {% set edx_codename = purposes[PURPOSE].versions.codename %}
 {% set instance_name = 'edxapp-{}-{}-base'.format(ENVIRONMENT, edx_codename) %}
@@ -24,6 +24,9 @@
 {% if ENVIRONMENT == 'mitx-production' %}
 {% set app_image = salt.sdb.get('sdb://consul/edx_mitx-qa_{}_ami_id'.format(edx_codename)) %}
 {% set worker_image = salt.sdb.get('sdb://consul/edx_worker_mitx-qa_{}_ami_id'.format(edx_codename)) %}
+{% elif edx_codename == 'koa' %}
+{% set app_image = salt.sdb.get('sdb://consul/focal_ami_id') %}
+{% set worker_image = salt.sdb.get('sdb://consul/focal_ami_id') %}
 {% else %}
 {% set app_image = salt.sdb.get('sdb://consul/xenial_ami_id') %}
 {% set worker_image = salt.sdb.get('sdb://consul/xenial_ami_id') %}
