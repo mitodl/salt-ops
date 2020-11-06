@@ -250,4 +250,4 @@ pgbouncer:
 
 beacons:
   memusage:
-    - percent: 89%
+    - percent: 85%
