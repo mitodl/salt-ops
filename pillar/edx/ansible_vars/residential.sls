@@ -134,8 +134,6 @@ edx:
       - name: git+https://github.com/Stanford-Online/xblock-in-video-quiz@release/v0.1.7#egg=xblock-in-video-quiz
         extra_args: -e
       - name: xblock-image-modal==0.4.2
-      # Python client for Sentry
-      - name: raven
       # edX EOX core plugin for Sentry
       - name: eox-core[sentry]
       - name: git+https://github.com/raccoongang/xblock-pdf.git@8d63047c53bc8fdd84fa7b0ec577bb0a729c215f#egg=xblock-pdf
