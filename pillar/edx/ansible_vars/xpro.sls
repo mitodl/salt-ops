@@ -39,9 +39,8 @@ edx:
       - name: git+https://github.com/edx/ubcpi.git@3c4b2cdc9f595ab8cdb436f559b56f36638313b6#egg=ubcpi-xblock
         extra_args: -e
       - name: git+https://github.com/mitodl/edx-git-auto-export.git@v0.2#egg=edx-git-auto-export
-      # Python client for Sentry
-      - name: raven
-
+      # edX EOX core plugin for Sentry
+      - name: eox-core[sentry]
     ### Koa settings ###
     # Related keys/values can be removed once all envs are on Koa
     # EDXAPP_ENABLE_VIDEO_UPLOAD_PIPELINE: True
@@ -92,6 +91,9 @@ edx:
         ENABLE_THIRD_PARTY_AUTH: True
         ALLOW_PUBLIC_ACCOUNT_CREATION: True
         SKIP_EMAIL_VALIDATION: True
+      EOX_CORE_SENTRY_INTEGRATION_DSN: __vault__::secret-residential/{{ environment }}{{ purpose }}/sentry>data>dsn
+      EOX_CORE_SENTRY_IGNORED_ERRORS: []
+
     EDXAPP_CMS_ENV_EXTRA:
       ADDL_INSTALLED_APPS:
         - git_auto_export
