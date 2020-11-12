@@ -138,7 +138,7 @@ sandbox_mitxpro_versions: &sandbox_mitxpro_versions
   forum: master
   theme_source_repo: 'https://github.com/mitodl/mitxpro-theme'
   theme_name: 'mitxpro-theme'
-  theme: master
+  theme: koa
   xqueue: master
   codename: koa
   ami_id: ami-0885b1f6bd170450c
