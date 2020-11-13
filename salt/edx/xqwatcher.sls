@@ -30,6 +30,7 @@ install_os_packages_for_xqwatcher:
         - python3-pip
         - python3-virtualenv
         - libmysqlclient-dev
+        - mariadb-client
         - libssl-dev
     - refresh: True
     - refresh_modules: True
