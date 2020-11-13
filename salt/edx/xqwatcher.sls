@@ -25,13 +25,9 @@ install_os_packages_for_xqwatcher:
   pkg.installed:
     - pkgs:
         - git
-        - python
-        - python-dev
         - {{ python3_version }}
         - {{ python3_version}}-dev
-        - python-pip
         - python3-pip
-        - python-virtualenv
         - python3-virtualenv
         - libmysqlclient-dev
         - libssl-dev
