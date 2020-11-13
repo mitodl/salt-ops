@@ -456,6 +456,8 @@ environments:
             num_instances: 1
           - name: 6S082
             num_instances: 1
+          - name: 940
+            num_instances: 1
       current-residential-live:
         app: edx-platform
         business_unit: residential
@@ -615,6 +617,8 @@ environments:
           - name: 686
             num_instances: 6
           - name: 6S082
+            num_instances: 1
+          - name: 940
             num_instances: 1
       residential-draft:
         app: edx-platform
