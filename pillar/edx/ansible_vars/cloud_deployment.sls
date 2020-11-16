@@ -99,6 +99,10 @@ edx:
       {% endfor %}
       {% endif %}
       {% endfor %}
+
+    ### Koa settings ###
+    # Related keys/values can be removed once all envs are on Koa
+    # EDXAPP_ENABLE_INSTRUCTOR_ANALYTICS: true
     ### XQUEUE ENVIRONMENT ###
     XQUEUE_LOGGING_ENV: {{ edxapp_log_env_suffix }}
     XQUEUE_DJANGO_USERS:
@@ -123,6 +127,9 @@ edx:
     #################### Forum Settings ############################################
     ################################################################################
     FORUM_API_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
+    {% if 'koa' in grains.get('edx_codename') %}
+    FORUM_ELASTICSEARCH_HOST_ES7: "nearest-elasticsearch.query.consul"
+    {% endif %}
     FORUM_ELASTICSEARCH_HOST: "nearest-elasticsearch.query.consul"
     FORUM_MONGO_USER: __vault__:cache:mongodb-{{ environment }}/creds/forum-{{ purpose }}>data>username
     FORUM_MONGO_PASSWORD: __vault__:cache:mongodb-{{ environment }}/creds/forum-{{ purpose }}>data>password
@@ -266,6 +273,7 @@ edx:
         <<: *common_feature_flags
         ALLOW_COURSE_STAFF_GRADE_DOWNLOADS: true
         ENABLE_INSTRUCTOR_REMOTE_GRADEBOOK_CONTROLS: true
+        # Koa default is True
         ENABLE_GRADE_DOWNLOADS: true
         ENABLE_SHOPPING_CART: true
         ENABLE_SYSADMIN_DASHBOARD: true

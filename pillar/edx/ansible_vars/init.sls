@@ -50,6 +50,11 @@ edx:
     EDXAPP_LMS_ROOT_URL: "https://{{ LMS_DOMAIN }}"
     EDXAPP_LMS_SITE_NAME: {{ purpose_data.domains.lms }}
     EDXAPP_CMS_SITE_NAME: {{ purpose_data.domains.cms }}
+    
+    ### Koa settings ###
+    # Related keys/values can be removed once all envs are on Koa
+    # EDXAPP_AUTH_USE_OPENID_PROVIDER: false
+    # EDXAPP_ENABLE_SPECIAL_EXAMS: true
 
     ####################################################################
     ############### MongoDB SETTINGS ###################################
@@ -188,7 +193,7 @@ edx:
       CERTIFICATES_ENABLED: false
       DISABLE_LOGIN_BUTTON: false
       ENABLE_COURSE_BLOCKS_NAVIGATION_API: true
-      ENABLE_DISCUSSION_SERVICE: true
+      ENABLE_DISCUSSION_SERVICE: true # Koa default is True. Remove
       ENABLE_RENDER_XBLOCK_API: true
       ENABLE_SPECIAL_EXAMS: true
       PREVIEW_LMS_BASE: {{ purpose_data.domains.preview }}

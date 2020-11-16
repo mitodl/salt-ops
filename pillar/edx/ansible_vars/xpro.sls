@@ -41,6 +41,13 @@ edx:
       - name: git+https://github.com/mitodl/edx-git-auto-export.git@v0.2#egg=edx-git-auto-export
       # Python client for Sentry
       - name: raven
+
+    ### Koa settings ###
+    # Related keys/values can be removed once all envs are on Koa
+    # EDXAPP_ENABLE_VIDEO_UPLOAD_PIPELINE: True
+    # EDXAPP_THIRD_PARTY_AUTH_BACKENDS:
+    # - social_auth_mitxpro.backends.MITxProOAuth2
+    ###########
     EDXAPP_REGISTRATION_EXTRA_FIELDS:
       confirm_email: "hidden"
       level_of_education: "optional"
@@ -73,13 +80,13 @@ edx:
       THIRD_PARTY_AUTH_BACKENDS: ["social_auth_mitxpro.backends.MITxProOAuth2"]
       # django-session-cookie middleware
       {% if 'juniper' in grains.get('edx_codename') %}
-      DCS_SESSION_COOKIE_SAMESITE: 'Strict'
-      DCS_SESSION_COOKIE_SAMESITE_FORCE_ALL: True
+      DCS_SESSION_COOKIE_SAMESITE: 'Strict' # Koa default is accurate. Remove
+      DCS_SESSION_COOKIE_SAMESITE_FORCE_ALL: True # Koa default is accurate. Remove
       {% endif %}
       FEATURES:
         REROUTE_ACTIVATION_EMAIL: {{ support_email }}
         ENABLE_VIDEO_UPLOAD_PIPELINE: False
-        ENABLE_COMBINED_LOGIN_REGISTRATION: True
+        ENABLE_COMBINED_LOGIN_REGISTRATION: True # Koa default is True. Remove
         ENABLE_MKTG_SITE: True
         ENABLE_OAUTH2_PROVIDER: True
         ENABLE_THIRD_PARTY_AUTH: True
