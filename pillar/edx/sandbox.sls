@@ -11,9 +11,6 @@
 {% set MONGODB_PORT = 27017 %}
 
 edx:
-  config:
-    repo: https://github.com/mitodl/configuration.git
-    branch: master
   playbooks:
     - 'edx-east/edxapp.yml'
     - 'edx-east/worker.yml'
