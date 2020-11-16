@@ -111,6 +111,7 @@ edx:
       country: "hidden"
 
     EDXAPP_PRIVATE_REQUIREMENTS:
+      {% if not ('koa' in grains.get('edx_codename')) %}
       # For Harvard courses. Peer instruction XBlock.
       # edX comment in `configuration' repo at
       # https://github.com/edx/configuration/blob/e7433e03313ffc86a3cfd046c5178ec587841c19/playbooks/roles/edxapp/defaults/main.yml#L528
@@ -125,6 +126,7 @@ edx:
         extra_args: -e
       - name: git+https://github.com/edx/edx-zoom.git@37c323ae93265937bf60abb92657318efeec96c5#egg=edx-zoom
         extra_args: -e
+      {% endif %}
       # MITx Residential XBlocks
       - name: edx-sga==0.11.0
       - name: rapid-response-xblock==0.0.7
@@ -158,7 +160,11 @@ edx:
     # Enable Secure flag on cookies for browser SameSite restrictions
     EDXAPP_CSRF_COOKIE_SECURE: true
     EDXAPP_SESSION_COOKIE_SECURE: true
-    
+
+    ### Koa settings ###
+    # Related keys/values can be removed once all envs are on Koa
+    # EDXAPP_ENABLE_EXPORT_GIT: true
+    ###############
     EDXAPP_LMS_ENV_EXTRA:
       EMAIL_USE_DEFAULT_FROM_FOR_BULK: True
       CANVAS_BASE_URL: __vault__::secret-{{ business_unit }}/{{ environment}}/canvas>data>base_url
@@ -168,8 +174,8 @@ edx:
         ALLOW_PUBLIC_ACCOUNT_CREATION: True
         DISABLE_HONOR_CERTIFICATES: True
         SKIP_EMAIL_VALIDATION: True
-        ENABLE_VIDEO_UPLOAD_PIPELINE: False
-        ENABLE_COMBINED_LOGIN_REGISTRATION: True
+        ENABLE_VIDEO_UPLOAD_PIPELINE: False # Koa default is False. Remove
+        ENABLE_COMBINED_LOGIN_REGISTRATION: True # Koa default is True. Remove
         ENABLE_OAUTH2_PROVIDER: True
         ENABLE_THIRD_PARTY_AUTH: True
         ENABLE_CANVAS_INTEGRATION: True

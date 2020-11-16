@@ -38,6 +38,9 @@ edx:
     ################################################################################
     FORUM_API_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
     FORUM_ELASTICSEARCH_HOST: "nearest-elasticsearch.query.consul"
+    {% if 'koa' in grains.get('edx_codename') %}
+    FORUM_ELASTICSEARCH_HOST_ES7: "nearest-elasticsearch.query.consul"
+    {% endif %}
     FORUM_MONGO_USER: __vault__:cache:mongodb-{{ environment }}/creds/forum-{{ purpose }}>data>username
     FORUM_MONGO_PASSWORD: __vault__:cache:mongodb-{{ environment }}/creds/forum-{{ purpose }}>data>password
     FORUM_MONGO_HOSTS:

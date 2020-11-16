@@ -15,7 +15,7 @@ edx:
     EDXAPP_COMPREHENSIVE_THEME_SOURCE_REPO: '{{ purpose_data.versions.theme_source_repo }}'
     EDXAPP_COMPREHENSIVE_THEME_VERSION: {{ purpose_data.versions.theme }}
     edxapp_theme_source_repo: '{{ purpose_data.versions.theme_source_repo }}'
-    edxapp_theme_version: {{ purpose_data.versions.theme }}
+    EDXAPP_THEME_VERSION: {{ purpose_data.versions.theme }}
     EDXAPP_COMPREHENSIVE_THEME_DIRS:
       - /edx/app/edxapp/themes/
     {# multivariate #}
