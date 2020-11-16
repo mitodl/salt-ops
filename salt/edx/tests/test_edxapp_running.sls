@@ -54,6 +54,7 @@ test_edxapp_{{ service }}:
     - is_running: True
 {% endfor %}
 
+{% if not ('sandbox' in salt.grains.get('roles')) %}
 # Check if AWS EFS is mounted
 test_edxapp_efs_mount:
   testinfra.mount_point:
@@ -62,6 +63,7 @@ test_edxapp_efs_mount:
     - filesystem:
         expected: nfs4
         comparison: eq
+{% endif %}
 
 {% for attribute, value in lms_env.items() %}
 test_edxapp_lms_env_{{ attribute }}:
