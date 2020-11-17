@@ -268,6 +268,8 @@ base:
   'P@purpose:.*next-residential.*':
     - match: compound
     - edx.ansible_vars.next_residential
+    - edx.mitx-koa
+    - edx.ansible_vars.koa
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
