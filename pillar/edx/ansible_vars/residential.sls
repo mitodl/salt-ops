@@ -198,7 +198,7 @@ edx:
         readPreference: "nearest"
       SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>key
       SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>value
-      EOX_CORE_SENTRY_INTEGRATION_DSN: __vault__::secret-residential/{{ environment }}{{ purpose }}/sentry>data>dsn
+      EOX_CORE_SENTRY_INTEGRATION_DSN: __vault__::secret-residential/{{ environment }}/{{ purpose }}/sentry>data>dsn
       EOX_CORE_SENTRY_IGNORED_ERRORS: []
 
     EDXAPP_CMS_ENV_EXTRA:
