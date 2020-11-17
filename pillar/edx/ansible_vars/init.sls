@@ -241,7 +241,11 @@ edx:
 
     {# multivariate #}
     XQUEUE_VERSION: {{ purpose_data.versions.xqueue }}
+    {% if not ('koa' in grains.get('edx_codename')) %}
     edx_platform_version: {{ purpose_data.versions.edxapp }}
+    {% else %}
+    EDX_PLATFORM_VERSION: {{ purpose_data.versions.edxapp }}
+    {% endif %}
     edx_platform_repo: {{ purpose_data.versions.edx_platform_repo }}
 
     EDXAPP_LMS_PREVIEW_NGINX_PORT: 80
