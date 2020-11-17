@@ -25,13 +25,12 @@ install_os_packages_for_xqwatcher:
   pkg.installed:
     - pkgs:
         - git
-        - {{ python3_version }}
-        - {{ python3_version}}-dev
+        - python3
+        - python3-dev
         - python3-pip
         - python3-virtualenv
         - libmariadb-dev
         - libmariadb-dev-compat
-        - mysql-client
         - libssl-dev
     - refresh: True
     - refresh_modules: True
