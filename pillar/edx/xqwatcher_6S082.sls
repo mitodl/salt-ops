@@ -2,7 +2,7 @@
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
 {% set env_data = env_settings.environments[environment] %}
 {% set xqwatcher_venv_base = '/edx/app/xqwatcher/venvs' %}
-{% set python3_version = 'python3.7' %}
+{% set python3_version = 'python3.8' %}
 {% set queue_name = 'mitx-6S082grader' %}
 
 edx:
