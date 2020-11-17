@@ -59,9 +59,6 @@ create_ansible_virtualenv:
     - require:
       - git: clone_edx_configuration
       - file: replace_nginx_static_asset_template_fragment
-  pip.installed:
-    - name: setuptools<46
-    - bin_env: {{ venv_path }}
 
 install_ansible_requirements:
   pip.installed:
