@@ -447,7 +447,7 @@ environments:
         business_unit: residential
         versions:
           xqwatcher: a95cc96
-          edx_config_repo: https://github.com/edx/configuration
+          edx_config_repo: https://github.com/mitodl/configuration
           edx_config_version: open-release/koa.master
         courses:
           - name: 600x
@@ -609,7 +609,7 @@ environments:
         business_unit: residential
         versions:
           xqwatcher: a95cc96
-          edx_config_repo: https://github.com/edx/configuration
+          edx_config_repo: https://github.com/mitodl/configuration
           edx_config_version: open-release/koa.master
         courses:
           - name: 600x
