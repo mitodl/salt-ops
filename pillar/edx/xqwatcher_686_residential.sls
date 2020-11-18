@@ -18,35 +18,35 @@ edx:
         GIT_REF: master
         PYTHON_REQUIREMENTS:
           - name: numpy
-            version: 1.17.2
+            version: 1.19.4
           - name: pandas
-            version: 0.25.1
+            version: 1.1.4
           - name: scikit-image
-            version: 0.15.0
+            version: 0.17.2
           - name: scikit-learn
-            version: 0.21.3
+            version: 0.23.2
           - name: scipy
-            version: 1.3.1
+            version: 1.5.4
           - name: matplotlib
-            version: 3.1.1
+            version: 3.3.3
           - name: pytz
-            version: 2019.2
+            version: 2019.3
           - name: networkx
-            version: 2.3
+            version: 2.5
           - name: cycler
             version: 0.10.0
           - name: decorator
-            version: 4.4.0
+            version: 4.4.2
           - name: Pillow
-            version: 6.1.0
+            version: 8.0.1
           - name: pyparsing
-            version: 2.4.2
+            version: 2.4.7
           - name: PyWavelets
-            version: 1.0.3
+            version: 1.1.1
           - name: six
             version: 1.11.0
-          - name: https://download.pytorch.org/whl/cpu/torch-1.0.1.post2-cp37-cp37m-linux_x86_64.whl#egg=pytorch
-            version: 1.0.1
+          - name: https://download.pytorch.org/whl/cpu/torch-1.7.0%2Bcpu-cp38-cp38-linux_x86_64.whl#egg=pytorch
+            version: 1.7.0
         PYTHON_EXECUTABLE: /usr/bin/{{ python3_version }}
         QUEUE_NAME: mitx-686xgrader
         QUEUE_CONFIG:
@@ -71,36 +71,35 @@ edx:
         GIT_REF: master
         PYTHON_REQUIREMENTS:
           - name: numpy
-            version: 1.17.2
+            version: 1.19.4
           - name: pandas
-            version: 0.25.1
+            version: 1.1.4
           - name: scikit-image
-            version: 0.15.0
+            version: 0.17.2
           - name: scikit-learn
-            version: 0.21.3
+            version: 0.23.2
           - name: scipy
-            version: 1.3.1
+            version: 1.5.4
           - name: matplotlib
-            version: 3.1.1
+            version: 3.3.3
           - name: pytz
-            version: 2019.2
+            version: 2019.3
           - name: networkx
-            version: 2.3
+            version: 2.5
           - name: cycler
             version: 0.10.0
           - name: decorator
-            version: 4.4.0
+            version: 4.4.2
           - name: Pillow
-            version: 6.1.0
+            version: 8.0.1
           - name: pyparsing
-            version: 2.4.2
+            version: 2.4.7
           - name: PyWavelets
-            version: 1.0.3
+            version: 1.1.1
           - name: six
             version: 1.11.0
-          - name: https://download.pytorch.org/whl/cpu/torch-1.0.1.post2-cp37-cp37m-linux_x86_64.whl#egg=pytorch
-            version: 1.0.1
-        PYTHON_EXECUTABLE: /usr/bin/{{ python3_version }}
+          - name: https://download.pytorch.org/whl/cpu/torch-1.7.0%2Bcpu-cp38-cp38-linux_x86_64.whl#egg=pytorch
+            version: 1.7.0        PYTHON_EXECUTABLE: /usr/bin/{{ python3_version }}
         QUEUE_NAME: mitx-686xgrader
         QUEUE_CONFIG:
           AUTH:
