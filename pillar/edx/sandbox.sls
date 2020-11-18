@@ -49,7 +49,7 @@ edx:
     FORUM_SINATRA_ENV: "production"
     FORUM_USE_TCP: True
     forum_source_repo: {{ purpose_data.versions.forum_source_repo }}
-    forum_version: {{ purpose_data.versions.forum }}
+    FORUM_VERSION: {{ purpose_data.versions.forum }}
     ########## END FORUM ########################################
     EDXAPP_LMS_ENV_EXTRA:
       FEATURES:
