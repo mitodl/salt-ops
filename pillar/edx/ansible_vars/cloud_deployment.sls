@@ -142,7 +142,11 @@ edx:
     FORUM_SINATRA_ENV: "production"
     FORUM_USE_TCP: True
     forum_source_repo: {{ purpose_data.versions.forum_source_repo }}
+    {% if not ('koa' in grains.get('edx_codename')) %}
     forum_version: {{ purpose_data.versions.forum }}
+    {% else %}
+    FORUM_VERSION: {{ purpose_data.versions.forum }}
+    {% endif %}
     ########## END FORUM ########################################
     {% if environment == 'mitx-production' or environment == 'mitxpro-production' %}
     COMMON_ENABLE_NEWRELIC: True
