@@ -245,7 +245,9 @@ edx:
 
     common_env_config: &common_env_config
       ADDL_INSTALLED_APPS:
+      {% if not ('koa' in grains.get('edx_codename')) %}
         - ubcpi
+      {% endif %}
         - raven.contrib.django.raven_compat
       ADMINS:
       - ['MITx Stacktrace Recipients', 'cuddle-bunnies@mit.edu']
