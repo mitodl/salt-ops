@@ -32,7 +32,8 @@ install_os_packages_for_xqwatcher:
         - libmariadb-dev
         - libmariadb-dev-compat
         - libssl-dev
-        - libblas-dev
+        - libopenblas-dev
+        - liblapack-dev
     - refresh: True
     - refresh_modules: True
     - require_in:
