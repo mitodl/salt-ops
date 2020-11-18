@@ -9,6 +9,7 @@
       'CORS_URLS': ['micromasters-ci.odl.mit.edu'],
       'DEBUG': False,
       'ELASTICSEARCH_INDEX': 'discussions-ci',
+      'ELASTICSEARCH_SHARD_COUNT': 2,
       'ELASTICSEARCH_URL': 'https://elasticsearch-rc-apps.odl.mit.edu',
       'env_name': 'ci',
       'FEATURE_COURSE_UI': True,
@@ -40,6 +41,7 @@
       'CORS_URLS': ['micromasters-rc.odl.mit.edu', 'ocwnext-rc.odl.mit.edu', 'ocw-next.netlify.app'],
       'DEBUG': False,
       'ELASTICSEARCH_INDEX': 'discussions-rc',
+      'ELASTICSEARCH_SHARD_COUNT': 2,
       'ELASTICSEARCH_URL': 'https://elasticsearch-rc-apps.odl.mit.edu',
       'env_name': 'rc',
       'FEATURE_COURSE_UI': True,
@@ -73,6 +75,7 @@
       'env_name': 'production',
       'FEATURE_COURSE_UI': False,
       'ELASTICSEARCH_INDEX': 'discussions',
+      'ELASTICSEARCH_SHARD_COUNT': 3,
       'ELASTICSEARCH_URL': 'https://elasticsearch-production-apps.odl.mit.edu',
       'GA_TRACKING_ID': 'UA-5145472-30',
       'INDEXING_API_USERNAME': 'od_mm_prod_api',
@@ -137,6 +140,7 @@ heroku:
     ELASTICSEARCH_INDEX: {{ env_data.ELASTICSEARCH_INDEX}}
     # This should match the nginx config client_max_body_size in apps_es.sls
     ELASTICSEARCH_INDEXING_CHUNK_SIZE: 75
+    ELASTICSEARCH_SHARD_COUNT: {{ env_data.ELASTICSEARCH_SHARD_COUNT }}
     ELASTICSEARCH_URL: {{ env_data.ELASTICSEARCH_URL}}
     EMBEDLY_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/embedly_key>data>value
     FEATURE_ANONYMOUS_ACCESS: True
