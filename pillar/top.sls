@@ -236,9 +236,9 @@ base:
     - edx
     - edx.sandbox
     - edx.ansible_vars
-  'G@roles:sandbox and P@environment:mitxpro-qa':
-    - match: compound
     - edx.ansible_vars.theme
+  'G@edx_codename:koa':
+    - match: compound
     - edx.ansible_vars.koa
   'P@roles:(edx|edx-worker|sandbox) and P@environment:mitxpro.*':
     - match: compound
@@ -253,7 +253,6 @@ base:
   'purpose:continuous-delivery':
     - match: grain
     - edx.mitx-koa
-    - edx.ansible_vars.koa
   'P@roles:(edx|edx-worker) and G@environment:mitx-production':
     - match: compound
     - edx.ansible_vars.residential
@@ -269,7 +268,6 @@ base:
     - match: compound
     - edx.ansible_vars.next_residential
     - edx.mitx-koa
-    - edx.ansible_vars.koa
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
