@@ -9,8 +9,7 @@ edx:
     grader_requirements:
       - future
       - numpy
-      - torch==1.7.0+cpu
-      - torchvision==0.8.1+cpu
+      - 'https://download.pytorch.org/whl/cpu/torch-1.7.0%2Bcpu-cp38-cp38-linux_x86_64.whl#egg=pytorch'
   ansible_vars:
     XQWATCHER_COURSES:
       - COURSE: mit-686x-mooc
