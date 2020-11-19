@@ -248,8 +248,8 @@ edx:
       ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES: True
 
     common_env_config: &common_env_config
-      ADDL_INSTALLED_APPS:
       {% if not ('koa' in grains.get('edx_codename')) %}
+      ADDL_INSTALLED_APPS:
         - ubcpi
         - raven.contrib.django.raven_compat
       {% endif %}
