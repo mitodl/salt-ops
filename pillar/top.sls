@@ -237,9 +237,6 @@ base:
     - edx.sandbox
     - edx.ansible_vars
     - edx.ansible_vars.theme
-  'G@edx_codename:koa':
-    - match: compound
-    - edx.ansible_vars.koa
   'P@roles:(edx|edx-worker|sandbox) and P@environment:mitxpro.*':
     - match: compound
     - edx.mitxpro
@@ -268,6 +265,9 @@ base:
     - match: compound
     - edx.ansible_vars.next_residential
     - edx.mitx-koa
+  'G@edx_codename:koa':
+    - match: compound
+    - edx.ansible_vars.koa
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
