@@ -251,8 +251,8 @@ edx:
       ADDL_INSTALLED_APPS:
       {% if not ('koa' in grains.get('edx_codename')) %}
         - ubcpi
-      {% endif %}
         - raven.contrib.django.raven_compat
+      {% endif %}
       ADMINS:
       - ['MITx Stacktrace Recipients', 'cuddle-bunnies@mit.edu']
       BOOK_URL: ""
