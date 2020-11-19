@@ -44,7 +44,7 @@ edx:
           - name: PyWavelets
             version: 1.1.1
           - name: six
-            version: 1.11.0
+            version: 1.15.0
           - name: 'https://download.pytorch.org/whl/cpu/torch-1.7.0%2Bcpu-cp38-cp38-linux_x86_64.whl#egg=pytorch'
             version: 1.7.0
         PYTHON_EXECUTABLE: /usr/bin/{{ python3_version }}
@@ -97,7 +97,7 @@ edx:
           - name: PyWavelets
             version: 1.1.1
           - name: six
-            version: 1.11.0
+            version: 1.15.0
           - name: 'https://download.pytorch.org/whl/cpu/torch-1.7.0%2Bcpu-cp38-cp38-linux_x86_64.whl#egg=pytorch'
             version: 1.7.0
         PYTHON_EXECUTABLE: /usr/bin/{{ python3_version }}
