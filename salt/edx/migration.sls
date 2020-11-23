@@ -1,4 +1,4 @@
-{% set edxapp_bin = '/edx/bin/python.edxapp' %}
+{% set edxapp_bin = '/edx/app/edxapp/venvs/edxapp/bin/python' %}
 {% set migrations = ['lms', 'cms'] %}
 
 {% for migration in migrations %}
