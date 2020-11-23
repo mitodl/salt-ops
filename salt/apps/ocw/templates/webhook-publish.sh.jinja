@@ -14,13 +14,10 @@ retry_file=/tmp/webhook-publish-retry
 
 # Configuration for hugo-course-publisher
 OCW_TO_HUGO_INPUT=/opt/ocw/open-learning-course-data
-OCW_TO_HUGO_DOWNLOAD=1
 OCW_TO_HUGO_STRIPS3=1
 OCW_TO_HUGO_STATIC_PREFIX=/coursemedia
-AWS_BUCKET_NAME={{ source_data_bucket }}
 
-export OCW_TO_HUGO_INPUT OCW_TO_HUGO_DOWNLOAD OCW_TO_HUGO_STRIPS3 \
-       OCW_TO_HUGO_STATIC_PREFIX AWS_BUCKET_NAME
+export OCW_TO_HUGO_INPUT OCW_TO_HUGO_STRIPS3 OCW_TO_HUGO_STATIC_PREFIX
 
 
 log_message() {
