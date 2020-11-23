@@ -204,7 +204,9 @@ edx:
 
     EDXAPP_CMS_ENV_EXTRA:
       ADDL_INSTALLED_APPS:
+      {% if not ('koa' in grains.get('edx_codename')) %}
         - ubcpi
+      {% endif %}
         - git_auto_export
         - imagemodal
       FEATURES:
