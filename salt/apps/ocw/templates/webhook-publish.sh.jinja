@@ -54,6 +54,13 @@ fi
 cd /opt/ocw/hugo-course-publisher \
     || error_and_exit "Can not cd to hugo-course-publisher!"
 
+log_message "Clearing node_modules directory"
+# just to be safe
+rm -rf node_modules
+if [ $? -ne 0 ]; then
+    error_and_exit "Could not delete node_modules"
+fi
+
 log_message "Pulling hugo-course-publisher"
 git pull || error_and_exit "Can not pull hugo-course-publisher"
 yarn install --pure-lockfile \
@@ -63,13 +70,6 @@ log_message "Clearing site/content directory"
 rm -rf site/content/*
 if [ $? -ne 0 ]; then
     error_and_exit "Could not clear site/content directory"
-fi
-
-log_message "Clearing node_modules directory"
-# just to be safe
-rm -rf node_modules
-if [ $? -ne 0 ]; then
-    error_and_exit "Could not delete node_modules"
 fi
 
 log_message "Running ocw-to-hugo via import:ocw NPM target"
