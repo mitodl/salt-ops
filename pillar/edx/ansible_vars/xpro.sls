@@ -91,7 +91,7 @@ edx:
         ENABLE_THIRD_PARTY_AUTH: True
         ALLOW_PUBLIC_ACCOUNT_CREATION: True
         SKIP_EMAIL_VALIDATION: True
-      EOX_CORE_SENTRY_INTEGRATION_DSN: __vault__::secret-residential/{{ environment }}{{ purpose }}/sentry>data>dsn
+      EOX_CORE_SENTRY_INTEGRATION_DSN: __vault__::secret-{{ business_unit }}/{{ environment }}{{ purpose }}/sentry>data>dsn
       EOX_CORE_SENTRY_IGNORED_ERRORS: []
 
     EDXAPP_CMS_ENV_EXTRA:
