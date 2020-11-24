@@ -77,9 +77,9 @@ deploy_restore_instance_to_{{ ENVIRONMENT }}:
             - DeviceName: xvda
               Ebs.VolumeSize: 8
               Ebs.VolumeType: gp2
-            - DeviceName: /dev/xvdb
-              Ebs.VolumeSize: 400
-              Ebs.VolumeType: gp2
+            # - DeviceName: /dev/xvdb
+            #   Ebs.VolumeSize: 400
+            #   Ebs.VolumeType: gp2
           enable_term_protect: True
     - require:
         - file: load_backup_host_cloud_profile
