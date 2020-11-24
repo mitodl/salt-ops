@@ -1,7 +1,5 @@
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'mitx-qa') %}
 {% set VPC_NAME = salt.environ.get('VPC_NAME', 'MITx QA') %}
-{% set VPC_RESOURCE_SUFFIX = salt.environ.get('VPC_RESOURCE_SUFFIX',
-                                              VPC_NAME.lower() | replace(' ', '-')) %}
 {% set subnet_ids = [] %}
 {% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
     '{}-subnet-1'.format(ENVIRONMENT),
@@ -68,13 +66,13 @@ deploy_restore_instance_to_{{ ENVIRONMENT }}:
               SubnetId: {{ subnet_ids[0] }}
               SecurityGroupId:
                 - {{ salt.boto_secgroup.get_group_id(
-                     'master-ssh-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
+                     'master-ssh-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
                 - {{ salt.boto_secgroup.get_group_id(
-                     'edx-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
+                     'edx-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
                 - {{ salt.boto_secgroup.get_group_id(
                      'default', vpc_name=VPC_NAME) }}
                 - {{ salt.boto_secgroup.get_group_id(
-                     'consul-agent-{}'.format(VPC_RESOURCE_SUFFIX), vpc_name=VPC_NAME) }}
+                     'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
           block_device_mappings:
             - DeviceName: xvda
               Ebs.VolumeSize: 8
