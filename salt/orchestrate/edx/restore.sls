@@ -47,40 +47,37 @@ load_backup_host_cloud_profile:
     - template: jinja
 
 deploy_restore_instance_to_{{ ENVIRONMENT }}:
-  salt.function:
+  salt.runner:
     - name: cloud.profile
-    - tgt: 'roles:master'
-    - tgt_type: grain
-    - arg:
-        - backup_host
+    - prof: backup_host
+    - instances:
         - {{ instance_name }}
-    - kwarg:
-        vm_overrides:
-          grains:
-            environment: {{ ENVIRONMENT }}
-            roles:
-              - restores
-          network_interfaces:
-            - DeviceIndex: 0
-              AssociatePublicIpAddress: True
-              SubnetId: {{ subnet_ids[0] }}
-              SecurityGroupId:
-                - {{ salt.boto_secgroup.get_group_id(
-                     'master-ssh-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-                - {{ salt.boto_secgroup.get_group_id(
-                     'edx-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-                - {{ salt.boto_secgroup.get_group_id(
-                     'default', vpc_name=VPC_NAME) }}
-                - {{ salt.boto_secgroup.get_group_id(
-                     'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
-          block_device_mappings:
-            - DeviceName: xvda
-              Ebs.VolumeSize: 8
-              Ebs.VolumeType: gp2
-            - DeviceName: /dev/xvdb
-              Ebs.VolumeSize: 400
-              Ebs.VolumeType: gp2
-          enable_term_protect: True
+    - grains:
+        environment: {{ ENVIRONMENT }}
+        roles:
+            - restores
+    - vm_overrides:
+        network_interfaces:
+          - DeviceIndex: 0
+            AssociatePublicIpAddress: True
+            SubnetId: {{ subnet_ids[0] }}
+            SecurityGroupId:
+              - {{ salt.boto_secgroup.get_group_id(
+                'master-ssh-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+              - {{ salt.boto_secgroup.get_group_id(
+                'edx-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+              - {{ salt.boto_secgroup.get_group_id(
+                'default', vpc_name=VPC_NAME) }}
+              - {{ salt.boto_secgroup.get_group_id(
+                'consul-agent-{}'.format(ENVIRONMENT), vpc_name=VPC_NAME) }}
+        block_device_mappings:
+          - DeviceName: xvda
+            Ebs.VolumeSize: 8
+            Ebs.VolumeType: gp2
+          - DeviceName: /dev/xvdb
+            Ebs.VolumeSize: 400
+            Ebs.VolumeType: gp2
+        enable_term_protect: True
     - require:
         - file: load_backup_host_cloud_profile
         - boto_iam_role: ensure_instance_profile_exists_for_backups
