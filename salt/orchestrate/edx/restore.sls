@@ -4,7 +4,10 @@
                                               VPC_NAME.lower() | replace(' ', '-')) %}
 {% set subnet_ids = [] %}
 {% for subnet in salt.boto_vpc.describe_subnets(subnet_names=[
-    'public1-{}'.format(VPC_RESOURCE_SUFFIX), 'public2-{}'.format(VPC_RESOURCE_SUFFIX), 'public3-{}'.format(VPC_RESOURCE_SUFFIX)])['subnets'] %}
+    '{}-subnet-1'.format(ENVIRONMENT),
+    '{}-subnet-2'.format(ENVIRONMENT),
+    '{}-subnet-3'.format(ENVIRONMENT),
+    '{}-subnet-4'.format(ENVIRONMENT)])['subnets'] %}
 {% do subnet_ids.append('{0}'.format(subnet['id'])) %}
 {% endfor %}
 {% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token').data.value %}
