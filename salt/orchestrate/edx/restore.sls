@@ -96,6 +96,7 @@ format_and_mount_backup_drive:
     - require:
         - salt: deploy_restore_instance_to_{{ ENVIRONMENT }}
 
+{% if RESTORE %}
 {% if salt['cloud.get_instance'](instance_name) %}
 {% if salt['cloud.get_instance'](instance_name)['state'] != 'running' %}
 start_restore_instance_in_{{ ENVIRONMENT }}:
@@ -124,7 +125,6 @@ wait_for_restore_instance_to_connect:
 {% endif %}
 {% endif %}
 
-{% if RESTORE %}
 execute_enabled_restore_scripts:
   salt.state:
     - tgt: 'G@roles:restores and G@environment:{{ ENVIRONMENT }}'
