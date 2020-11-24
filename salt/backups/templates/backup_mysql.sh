@@ -21,7 +21,7 @@ PASSPHRASE={{ settings.duplicity_passphrase }} /usr/bin/duplicity \
                   --database {{ settings.database }} \
                   --outputdir {{ backupdir }} \
                   --threads {{ settings.get('threads', 4) }} \
-                  --compress-protocol --less-locking \
+                  --compress-protocol --no-locks \
                   --routines --triggers --rows 1000000 \
                   --logfile /backups/{{ settings.database }}-dump-log.txt
 
