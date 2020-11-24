@@ -9,6 +9,7 @@
 {% endfor %}
 {% set slack_api_token = salt.vault.read('secret-operations/global/slack/slack_api_token').data.value %}
 {% set instance_name = 'restore-{}'.format(ENVIRONMENT) %}
+{% set RESTORE = salt.environ.get('RESTORE', False) %}
 
 ensure_backup_bucket_exists:
   boto_s3_bucket.present:
@@ -120,6 +121,7 @@ wait_for_restore_instance_to_connect:
 {% endif %}
 {% endif %}
 
+{% if RESTORE %}
 execute_enabled_restore_scripts:
   salt.state:
     - tgt: 'G@roles:restores and G@environment:{{ ENVIRONMENT }}'
@@ -162,3 +164,4 @@ alert_devops_channel_on_success:
     - require:
         - salt: execute_enabled_restore_scripts
         - salt: stop_restore_instance_in_{{ ENVIRONMENT }}
+{% endif %}
