@@ -7,18 +7,17 @@
       'domain': 'auth.mitx.mit.edu',
       'log_level': 'DEBUG',
       'release_branch': 'upgrade-python-3-django-2',
-      'python_version': '3.8.6',
-      'python_bin_dir': '/usr/local/pyenv/shims'
+      'python_version': '3.8.6'
       },
     'mitx-production': {
       'domain': 'cas.mitx.mit.edu',
       'log_level': 'WARN',
       'release_branch': 'master',
-      'python_version': '2.7.15',
-      'python_bin_dir': '/usr/local/pyenv/versions/2.7.15/bin'
+      'python_version': '2.7.15'
       }
 } %}
 {% set env_data = env_dict[ENVIRONMENT] %}
+{% set python_bin_dir = '/usr/local/pyenv/versions/{0}/bin'.format(env_data.python_version) %}
 
 
 schedule:
@@ -35,8 +34,8 @@ python:
       user: root
 
 django:
-  pip_path: {{ env_data.python_bin_dir }}/pip2
-  django_admin_path: {{ env_data.python_bin_dir }}/django-admin
+  pip_path: {{ python_bin_dir }}/pip2
+  django_admin_path: {{ python_bin_dir }}/django-admin
   app_name: {{ app_name }}
   settings_module: mitx_cas.settings
   automatic_migrations: True
@@ -70,8 +69,8 @@ django:
 
 uwsgi:
   overrides:
-    pip_path: {{ env_data.python_bin_dir }}/pip
-    uwsgi_path: {{ env_data.python_bin_dir }}/uwsgi
+    pip_path: {{ python_bin_dir }}/pip
+    uwsgi_path: {{ python_bin_dir }}/uwsgi
   emperor_config:
     uwsgi:
       - logto: /var/log/uwsgi/emperor.log
