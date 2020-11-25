@@ -34,7 +34,7 @@ python:
       user: root
 
 django:
-  pip_path: {{ python_bin_dir }}/pip2
+  pip_path: {{ python_bin_dir }}/pip
   django_admin_path: {{ python_bin_dir }}/django-admin
   app_name: {{ app_name }}
   settings_module: mitx_cas.settings
