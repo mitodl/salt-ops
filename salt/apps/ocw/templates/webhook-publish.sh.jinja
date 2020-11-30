@@ -74,6 +74,7 @@ if [ $option != "full" ]; then
         log_message "Pulled new commit, so continuing with publish."
     else
         log_message "No new commit or got a rev-parse error, so stopping here."
+        rmdir $lock_dir
         exit 0
     fi
 fi
