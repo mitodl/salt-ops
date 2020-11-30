@@ -1,5 +1,18 @@
 #!/usr/bin/env bash
 
+# Usage
+#
+# To run a normal publish, running only if code has changed:
+#
+# cd /opt/ocw
+# ./webhook-publish.sh
+#
+# OR, to publish everything, no matter if any code has changed:
+#
+# cd /opt/ocw
+# ./webhook-publish.sh full
+
+
 LOG_FILE=/opt/ocw/webhook-publish.log
 SOURCE_DATA_BUCKET={{ source_data_bucket }}
 SITE_OUTPUT_DIR=/opt/ocw/hugo-course-publisher/dist/  # Should end in '/'
@@ -19,6 +32,8 @@ OCW_TO_HUGO_STATIC_PREFIX=/coursemedia
 
 export OCW_TO_HUGO_INPUT OCW_TO_HUGO_STRIPS3 OCW_TO_HUGO_STATIC_PREFIX
 
+# Optional script argument
+option=$1
 
 log_message() {
     echo `date +'%Y-%m-%d %H:%M:%S'` $1 | tee -a ${LOG_FILE}
@@ -45,14 +60,30 @@ else
     rm $retry_file
 fi
 
+cd /opt/ocw/hugo-course-publisher \
+    || error_and_exit "Can not cd to hugo-course-publisher!"
+
+orig_commit=`git rev-parse HEAD`
+log_message "Pulling hugo-course-publisher"
+git pull || error_and_exit "Can not pull hugo-course-publisher"
+new_commit=`git rev-parse HEAD`
+log_message "$orig_commit -> $new_commit"
+
+if [ $option != "full" ]; then
+    if [ "$orig_commit" != "$new_commit" ]; then
+        log_message "Pulled new commit, so continuing with publish."
+    else
+        log_message "No new commit or got a rev-parse error, so stopping here."
+        rmdir $lock_dir
+        exit 0
+    fi
+fi
+
 log_message "Pulling source data"
 aws s3 sync s3://$SOURCE_DATA_BUCKET/ $OCW_TO_HUGO_INPUT/ --delete --only-show-errors
 if [ $? -ne 0 ]; then
     error_and_exit "Failed to pull source data"
 fi
-
-cd /opt/ocw/hugo-course-publisher \
-    || error_and_exit "Can not cd to hugo-course-publisher!"
 
 log_message "Clearing node_modules directory"
 # just to be safe
@@ -61,8 +92,7 @@ if [ $? -ne 0 ]; then
     error_and_exit "Could not delete node_modules"
 fi
 
-log_message "Pulling hugo-course-publisher"
-git pull || error_and_exit "Can not pull hugo-course-publisher"
+log_message "Doing yarn install"
 yarn install --pure-lockfile \
     || error_and_exit "Can not install hugo-course-publisher"
 
