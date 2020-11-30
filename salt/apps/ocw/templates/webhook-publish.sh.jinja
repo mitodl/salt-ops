@@ -69,7 +69,7 @@ git pull || error_and_exit "Can not pull hugo-course-publisher"
 new_commit=`git rev-parse HEAD`
 log_message "$orig_commit -> $new_commit"
 
-if [ $option == "full" ]; then
+if [ $option != "full" ]; then
     if [ "$orig_commit" != "$new_commit" ]; then
         log_message "Pulled new commit, so continuing with publish."
     else
