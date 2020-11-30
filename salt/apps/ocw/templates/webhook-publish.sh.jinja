@@ -45,14 +45,25 @@ else
     rm $retry_file
 fi
 
+cd /opt/ocw/hugo-course-publisher \
+    || error_and_exit "Can not cd to hugo-course-publisher!"
+
+orig_commit=`git rev-parse HEAD`
+log_message "Pulling hugo-course-publisher"
+git pull || error_and_exit "Can not pull hugo-course-publisher"
+new_commit=`git rev-parse HEAD`
+log_message "$orig_commit -> $new_commit"
+if [ "x$orig_commit" != "x$new_commit" ]; then
+    log_message "Pulled new commit, so continuing with publish."
+else
+    error_and_exit "No new commit or got a rev-parse error, so stopping here."
+fi
+
 log_message "Pulling source data"
 aws s3 sync s3://$SOURCE_DATA_BUCKET/ $OCW_TO_HUGO_INPUT/ --delete --only-show-errors
 if [ $? -ne 0 ]; then
     error_and_exit "Failed to pull source data"
 fi
-
-cd /opt/ocw/hugo-course-publisher \
-    || error_and_exit "Can not cd to hugo-course-publisher!"
 
 log_message "Clearing node_modules directory"
 # just to be safe
@@ -61,8 +72,7 @@ if [ $? -ne 0 ]; then
     error_and_exit "Could not delete node_modules"
 fi
 
-log_message "Pulling hugo-course-publisher"
-git pull || error_and_exit "Can not pull hugo-course-publisher"
+log_message "Doing yarn install"
 yarn install --pure-lockfile \
     || error_and_exit "Can not install hugo-course-publisher"
 
