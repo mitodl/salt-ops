@@ -73,7 +73,8 @@ if [ $option != "full" ]; then
     if [ "$orig_commit" != "$new_commit" ]; then
         log_message "Pulled new commit, so continuing with publish."
     else
-        error_and_exit "No new commit or got a rev-parse error, so stopping here."
+        log_message "No new commit or got a rev-parse error, so stopping here."
+        exit 0
     fi
 fi
 
