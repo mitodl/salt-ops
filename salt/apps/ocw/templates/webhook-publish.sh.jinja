@@ -102,6 +102,12 @@ if [ $? -ne 0 ]; then
     error_and_exit "Could not clear site/content directory"
 fi
 
+log_message "Clearing site/data/courses directory"
+rm -rf site/data/courses/*
+if [ $? -ne 0 ]; then
+    error_and_exit "Could not clear site/data/courses directory"
+fi
+
 log_message "Running ocw-to-hugo via import:ocw NPM target"
 npm run import:ocw
 if [ $? -ne 0 ]; then
