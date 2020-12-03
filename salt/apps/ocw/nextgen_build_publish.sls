@@ -4,7 +4,7 @@ run_ocw_to_hugo:
   cmd.run:
     # Installing ocw-to-hugo without the `-g' switch leaves us without an
     # `ocw-to-hugo' executable, so we use the path to `index.js'
-    - name: node src/bin/index.js -i /opt/ocw/open-learning-course-data -o /opt/ocw/hugo-course-publisher/site/ --strips3 --staticPrefix /coursemedia
+    - name: node src/bin/index.js -i /opt/ocw/open-learning-course-data -o /opt/ocw/hugo-course-publisher/site/content --strips3 --staticPrefix /coursemedia
     # `cwd' is specified because it drops a log file here.
     - cwd: /opt/ocw/ocw-to-hugo
     - runas: caddy
