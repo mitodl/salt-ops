@@ -146,6 +146,7 @@ sandbox_mitxpro_versions: &sandbox_mitxpro_versions
 
 environments:
   applications-qa:
+    vpc_name: OL Applications QA
     purposes:
       ocw-build:
         app: ocw-build
