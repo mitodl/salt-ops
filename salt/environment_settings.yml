@@ -153,7 +153,7 @@ environments:
         domains:
           - ocw-build-qa.odl.mit.edu
         business_unit: open-courseware
-    tika:
+      tika:
         app: tika
         business_unit: mit-open
         num_instances: 2
