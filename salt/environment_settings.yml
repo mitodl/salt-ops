@@ -153,6 +153,12 @@ environments:
         domains:
           - ocw-build-qa.odl.mit.edu
         business_unit: open-courseware
+    tika:
+        app: tika
+        business_unit: mit-open
+        num_instances: 2
+        security_groups:
+          - webapp
   applications-production:
     purposes:
       ocw-build:
@@ -1091,12 +1097,6 @@ environments:
         domains:
           - starcellbio-qa.odl.mit.edu
         num_instances: 1
-        security_groups:
-          - webapp
-      tika:
-        app: tika
-        business_unit: mit-open
-        num_instances: 2
         security_groups:
           - webapp
     backends:
