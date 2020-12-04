@@ -1,5 +1,5 @@
 {% set env_settings = salt.cp.get_url("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml", dest=None)|load_yaml %}
-{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
+{% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'applications-qa') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set app_name = salt.environ.get('APP_NAME') %}
 {% set VPC_NAME = env_data.vpc_name %}
@@ -10,7 +10,7 @@
         name=env_data.vpc_name).vpcs[0].id
     ).subnets|rejectattr('availability_zone', 'equalto', 'us-east-1e')|map(attribute='id')|list %}
 {% set security_groups = env_data.purposes[app_name].get('security_groups', []) %}
-{% do security_groups.extend(['master-ssh', 'consul-agent']) %}
+{% do security_groups.extend(['salt-minion', 'consul-agent']) %}
 {% set release_id = (salt.sdb.get('sdb://consul/' ~ app_name ~ '/' ~ ENVIRONMENT ~ '/release-id') or 'v1') %}
 {% set target_string = app_name ~ '-' ~ ENVIRONMENT ~ '-*-' ~ release_id %}
 {% set server_domain_names = env_data.purposes[app_name].get('domains', []) %}
@@ -38,7 +38,7 @@ generate_{{ app_name }}_cloud_map_file:
         securitygroupid:
           {% for group_name in security_groups %}
           - {{ salt.boto_secgroup.get_group_id(
-            '{}-{}'.format(group_name, ENVIRONMENT), vpc_name=VPC_NAME) }}
+            '{}-{}'.format(ENVIRONMENT, group_name), vpc_name=VPC_NAME) }}
           {% endfor %}
         subnetids: {{ subnet_ids|tojson }}
         tags:
