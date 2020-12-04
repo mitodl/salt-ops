@@ -2,7 +2,7 @@
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set app_name = salt.environ.get('APP_NAME') %}
-{% set VPC_NAME = env_data.vpc_name %}
+{% set VPC_NAME = salt.environ.get('VPC_NAME', env_data.vpc_name %}
 {% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', env_data.purposes[app_name].num_instances) %}
 {% set BUSINESS_UNIT = env_data.purposes[app_name].business_unit %}
 {% set subnet_ids = salt.boto_vpc.describe_subnets(
