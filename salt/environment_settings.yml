@@ -154,12 +154,6 @@ environments:
         domains:
           - ocw-build-qa.odl.mit.edu
         business_unit: open-courseware
-      tika:
-        app: tika
-        business_unit: mit-open
-        num_instances: 2
-        security_groups:
-          - webapp
   applications-production:
     purposes:
       ocw-build:
@@ -1083,6 +1077,12 @@ environments:
         num_instances: 2
         business_unit: operations
         healthcheck: /health
+        security_groups:
+          - webapp
+      tika:
+        app: tika
+        business_unit: mit-open
+        num_instances: 2
         security_groups:
           - webapp
       apps-es:
