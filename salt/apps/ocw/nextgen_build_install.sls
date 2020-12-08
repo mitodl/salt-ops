@@ -81,3 +81,4 @@ install_caddy_webhook_script:
         source_data_bucket: {{ ocw_next.source_data_bucket }}
         fastly_api_token: {{ ocw_next.fastly_api_token }}
         fastly_service_id: {{ ocw_next.fastly_service_id }}
+        hugo_course_publisher_git_ref: {{ ocw_next.hugo_course_publisher_git_ref }}
