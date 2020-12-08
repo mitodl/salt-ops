@@ -5,6 +5,7 @@
     'ci': {
       'app_log_level': 'INFO',
       'app_name': 'odl-open-discussions-ci',
+      'CELERY_WORKER_MAX_MEMORY_PER_CHILD': 125000,
       'CLOUDFRONT_DIST': 'd28ic9ywb63ioi',
       'CORS_URLS': ['micromasters-ci.odl.mit.edu'],
       'DEBUG': False,
@@ -37,6 +38,7 @@
     'rc': {
       'app_log_level': 'INFO',
       'app_name': 'odl-open-discussions-rc',
+      'CELERY_WORKER_MAX_MEMORY_PER_CHILD': 125000,      
       'CLOUDFRONT_DIST': 'd1d3xcwjqmwwj2',
       'CORS_URLS': ['micromasters-rc.odl.mit.edu', 'ocwnext-rc.odl.mit.edu', 'ocw-next.netlify.app'],
       'DEBUG': False,
@@ -69,6 +71,7 @@
     'production': {
       'app_log_level': 'INFO',
       'app_name': 'odl-open-discussions',
+      'CELERY_WORKER_MAX_MEMORY_PER_CHILD': 250000,
       'CLOUDFRONT_DIST': 'd2mcnjhkvrfuy2',
       'CORS_URLS': ['micromasters.mit.edu', 'ocwnext.odl.mit.edu', 'ocw-beta.odl.mit.edu'],
       'DEBUG': False,
@@ -122,6 +125,7 @@ heroku:
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/mit-open-{{ env_data.env_name }}>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/mit-open-{{ env_data.env_name }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'odl-discussions-{{ env_data.env_name }}'
+    CELERY_WORKER_MAX_MEMORY_PER_CHILD: {{ env_data.CELERY_WORKER_MAX_MEMORY_PER_CHILD }}
     CKEDITOR_ENVIRONMENT_ID:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>environment_id
     CKEDITOR_SECRET_KEY:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>secret_key
     CKEDITOR_UPLOAD_URL:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>upload_url
