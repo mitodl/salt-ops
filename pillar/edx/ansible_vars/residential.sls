@@ -98,6 +98,13 @@ edx:
     EDXAPP_SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>key
     EDXAPP_SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>value
 
+    EDXAPP_MKTG_URL_LINK_MAP:
+      CONTACT: !!null
+      FAQ: !!null
+      HONOR: !!null
+      PRIVACY: !!null
+      TOS_AND_HONOR: !!null
+
     EDXAPP_REGISTRATION_EXTRA_FIELDS:
       confirm_email: "hidden"
       level_of_education: "optional"
