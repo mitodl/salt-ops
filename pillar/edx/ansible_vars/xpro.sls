@@ -11,6 +11,7 @@
     'xpro-production': 'https://xpro.mit.edu'
   } %}
 {% set heroku_env = heroku_xpro_env_url_mapping['{}'.format(purpose)] %}
+{% set purpose_data = env_data.purposes[purpose] %}
 {% set LMS_DOMAIN = purpose_data.domains.lms %}
 {% set CMS_DOMAIN = purpose_data.domains.cms %}
 
@@ -120,7 +121,6 @@ edx:
     EDXAPP_MANAGE_MICROFRONTENDS: True
     MFE_DEPLOY_VERSION: open-release/koa.master
     MFE_DEPLOY_SITENAME: 'xPRO'
-    MFE_BASE_SCHEMA: https
     MFE_STANDALONE_NGINX: False
 
     MFES:
@@ -137,7 +137,7 @@ edx:
     MFE_NODE_ENV: production
     MFE_SITE_NAME: "xPRO"
     MFE_ENVIRONMENT_EXTRA:
-      STUDIO_BASE_URL='{{ CMS_DOMAIN }}'
+      STUDIO_BASE_URL: '{{ CMS_DOMAIN }}'
 
     # .. toggle_name: ENABLE_COURSEWARE_MICROFRONTEND
     # .. toggle_implementation: DjangoSetting
