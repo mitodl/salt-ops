@@ -11,6 +11,8 @@
     'xpro-production': 'https://xpro.mit.edu'
   } %}
 {% set heroku_env = heroku_xpro_env_url_mapping['{}'.format(purpose)] %}
+{% set LMS_DOMAIN = purpose_data.domains.lms %}
+{% set CMS_DOMAIN = purpose_data.domains.cms %}
 
 edx:
   ansible_vars:
@@ -113,3 +115,42 @@ edx:
     EDXAPP_BUGS_EMAIL: {{ support_email }}
     EDXAPP_CONTACT_EMAIL: {{ support_email }}
     EDXAPP_TECH_SUPPORT_EMAIL: {{ support_email }}
+
+    # Configuration for managing micro frontends
+    EDXAPP_MANAGE_MICROFRONTENDS: True
+    MFE_DEPLOY_VERSION: open-release/koa.master
+    MFE_DEPLOY_SITENAME: 'xPRO'
+    MFE_BASE_SCHEMA: https
+    MFE_STANDALONE_NGINX: False
+
+    MFES:
+      - name: learning
+        repo: frontend-app-learning
+        public_path: "/courseware/"
+
+    MFE_HOSTNAME: "{{ LMS_DOMAIN }}"
+
+    MFE_BASE: "{{ LMS_DOMAIN }}"
+    MFE_BASE_SCHEMA: "https"
+    MFE_CSRF_TOKEN_API_PATH: "/csrf/api/v1/token"
+    MFE_LMS_BASE_URL: "{{ LMS_DOMAIN }}"
+    MFE_NODE_ENV: production
+    MFE_SITE_NAME: "xPRO"
+    MFE_ENVIRONMENT_EXTRA:
+      STUDIO_BASE_URL='{{ CMS_DOMAIN }}'
+
+    # .. toggle_name: ENABLE_COURSEWARE_MICROFRONTEND
+    # .. toggle_implementation: DjangoSetting
+    # .. toggle_default: False
+    # .. toggle_description: Set to True to enable the Courseware MFE at the platform level for global staff (see
+    #   REDIRECT_TO_COURSEWARE_MICROFRONTEND for course rollout)
+    # .. toggle_use_cases: open_edx
+    # .. toggle_creation_date: 2020-03-05
+    # .. toggle_target_removal_date: None
+    # .. toggle_tickets: 'https://github.com/edx/edx-platform/pull/23317'
+    # .. toggle_warnings: Also set settings.LEARNING_MICROFRONTEND_URL and see REDIRECT_TO_COURSEWARE_MICROFRONTEND for
+    #   rollout.
+    LMS_ENV_EXTRA:
+      ENABLE_COURSEWARE_MICROFRONTEND: True
+    # Needed to link to the learning micro-frontend.
+    EDXAPP_LEARNING_MICROFRONTEND_URL: /learning/
