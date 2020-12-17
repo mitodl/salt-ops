@@ -32,9 +32,10 @@ caddy:
                               http_basic:
                                 accounts:
                                   - username: pulumi
+                                    # Password should be bcrypted and base64 encoded
                                     password: __vault__::secret-operations/global/consul-caddy-http-auth-password>data>value
                           - handler: reverse_proxy
                             transport:
                               protocol: http
-                              upstreams:
-                                - dial: 127.0.0.1:8600
+                            upstreams:
+                              - dial: 127.0.0.1:8500
