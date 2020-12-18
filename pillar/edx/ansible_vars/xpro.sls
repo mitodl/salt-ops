@@ -70,6 +70,18 @@ edx:
       TOS: "terms-of-service"
     EDXAPP_SUPPORT_SITE_LINK: 'https://xpro.zendesk.com/hc'
     EDXAPP_LMS_ENV_EXTRA:
+      # .. toggle_name: ENABLE_COURSEWARE_MICROFRONTEND
+      # .. toggle_implementation: DjangoSetting
+      # .. toggle_default: False
+      # .. toggle_description: Set to True to enable the Courseware MFE at the platform level for global staff (see
+      #   REDIRECT_TO_COURSEWARE_MICROFRONTEND for course rollout)
+      # .. toggle_use_cases: open_edx
+      # .. toggle_creation_date: 2020-03-05
+      # .. toggle_target_removal_date: None
+      # .. toggle_tickets: 'https://github.com/edx/edx-platform/pull/23317'
+      # .. toggle_warnings: Also set settings.LEARNING_MICROFRONTEND_URL and see REDIRECT_TO_COURSEWARE_MICROFRONTEND for
+      #   rollout.
+      ENABLE_COURSEWARE_MICROFRONTEND: True
       BULK_EMAIL_DEFAULT_FROM_EMAIL: {{ support_email }}
       COMPLETION_VIDEO_COMPLETE_PERCENTAGE: 0.85
       COMPLETION_BY_VIEWING_DELAY_MS: 1000
@@ -139,18 +151,5 @@ edx:
     MFE_ENVIRONMENT_EXTRA:
       STUDIO_BASE_URL: '{{ CMS_DOMAIN }}'
 
-    # .. toggle_name: ENABLE_COURSEWARE_MICROFRONTEND
-    # .. toggle_implementation: DjangoSetting
-    # .. toggle_default: False
-    # .. toggle_description: Set to True to enable the Courseware MFE at the platform level for global staff (see
-    #   REDIRECT_TO_COURSEWARE_MICROFRONTEND for course rollout)
-    # .. toggle_use_cases: open_edx
-    # .. toggle_creation_date: 2020-03-05
-    # .. toggle_target_removal_date: None
-    # .. toggle_tickets: 'https://github.com/edx/edx-platform/pull/23317'
-    # .. toggle_warnings: Also set settings.LEARNING_MICROFRONTEND_URL and see REDIRECT_TO_COURSEWARE_MICROFRONTEND for
-    #   rollout.
-    LMS_ENV_EXTRA:
-      ENABLE_COURSEWARE_MICROFRONTEND: True
     # Needed to link to the learning micro-frontend.
     EDXAPP_LEARNING_MICROFRONTEND_URL: /learning/
