@@ -18,6 +18,9 @@
 {% endfor %}
 
 consul:
+  products:
+    consul: 1.9.0
+    consul-esm: 0.5.0
   extra_configs:
     defaults:
       enable_syslog: True
