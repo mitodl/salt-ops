@@ -18,6 +18,22 @@
 {% endfor %}
 
 consul:
+  products:
+    consul-esm: 0.5.0
+  esm_configs:
+    log_level: "INFO"
+    consul_service: "consul-esm"
+    consul_service_tag: "consul-esm"
+    consul_kv_path: "consul-esm/"
+    external_node_meta:
+      "external-node": True
+    node_reconnect_timeout: "72h"
+    node_probe_interval: "30s"
+    http_addr: "localhost:8500"
+    token: __vault__::secret-operations/{{ ENVIRONMENT }}/consul-acl-master-token>data>value
+    ping_type: "udp"
+    passing_threshold: 0
+    critical_threshold: 5
   extra_configs:
     defaults:
       enable_syslog: True
