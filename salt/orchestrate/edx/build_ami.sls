@@ -200,8 +200,8 @@ compile_assets_for_edx_{{ PURPOSE }}:
         - /edx/bin/edxapp-update-assets
     - kwarg:
         timeout: 900
-    # - require:
-    #     - salt: build_edx_base_nodes
+    - require:
+        - salt: build_edx_base_nodes
     - require_in:
         - salt: disable_minion_service_before_snapshot
         - salt: remove_master_key_from_minions
@@ -231,8 +231,8 @@ delete_{{ grain }}_from_grains:
     - require_in:
         - boto_ec2: snapshot_edx_app_{{ ENVIRONMENT }}_node
         - boto_ec2: snapshot_edx_worker_{{ ENVIRONMENT }}_node
-    # - require:
-    #     - salt: build_edx_base_nodes
+    - require:
+        - salt: build_edx_base_nodes
 {#        - salt: compile_assets_for_edx_{{ PURPOSE }} #}
 {% endfor %}
 
@@ -243,8 +243,8 @@ disable_minion_service_before_snapshot:
     - name: service.disable
     - arg:
         - salt-minion
-    # - require:
-    #     - salt: build_edx_base_nodes
+    - require:
+        - salt: build_edx_base_nodes
 
 remove_master_key_from_minions:
   salt.function:
@@ -253,8 +253,8 @@ remove_master_key_from_minions:
     - name: file.remove
     - arg:
         - /etc/salt/pki/minion/minion_master.pub
-    # - require:
-    #     - salt: build_edx_base_nodes
+    - require:
+        - salt: build_edx_base_nodes
 
 snapshot_edx_app_{{ ENVIRONMENT }}_node:
   boto_ec2.snapshot_created:
