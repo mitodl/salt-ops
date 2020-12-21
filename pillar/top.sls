@@ -85,6 +85,8 @@ base:
     - consul.server
     - fluentd.consul
     - datadog.consul-integration
+    - caddy
+    - caddy.consul
   'roles:mongodb':
     - match: grain
     - mongodb

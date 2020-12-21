@@ -84,6 +84,7 @@ base:
     - match: grain
     - consul
     - consul.dns_proxy
+    - caddy
   'roles:fluentd':
     - match: grain
     - fluentd

@@ -240,19 +240,6 @@ environments:
         - fluentd
         - mongodb
         - rabbitmq
-      rds:
-        - name: mitxproqa
-          multi_az: False
-          engine: mariadb
-          vault_plugin: mysql-database-plugin
-          password_length: 40
-          db_instance_class: db.t2.medium
-          allocated_storage: 100
-          public_access: False
-          engine_version: '10.3'
-          purpose: xpro-qa
-          service_name: mysql
-          mount_point: mysql-mitxpro-qa
       elasticache:
         - engine: memcached
           engine_version: '1.5.16'
@@ -342,19 +329,6 @@ environments:
         - fluentd
         - mongodb
         - rabbitmq
-      rds:
-        - name: mitxproproduction
-          multi_az: True
-          engine: mariadb
-          vault_plugin: mysql-database-plugin
-          password_length: 40
-          db_instance_class: db.m5.large
-          allocated_storage: 250
-          public_access: False
-          engine_version: '10.3'
-          purpose: xpro-production
-          service_name: mysql
-          mount_point: mysql-mitxpro-production
       elasticache:
         - engine: memcached
           engine_version: '1.5.16'
