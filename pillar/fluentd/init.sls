@@ -7,7 +7,7 @@
 
 fluentd:
   overrides:
-    version: "1.8.0"
+    version: "1.11.5"
     user: root
     group: root
   pki:
