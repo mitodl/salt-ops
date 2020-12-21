@@ -11,7 +11,7 @@
 {% set mailgun_webhooks_token = salt.vault.read('secret-operations/global/mailgun_webhooks_token').data.value %}
 {% set redash_webhook_token = salt.vault.read('secret-operations/global/redash_webhook_token').data.value %}
 {% set es_hosts = 'operations-elasticsearch.query.consul' %}
-{% set cert = salt.vault.cached_write('pki-intermediate-operations/issue/fluentd-server', common_name='operations-fluentd.query.consul', ttl='2880h', cache_prefix=minion_id) %}
+{% set cert = salt.vault.cached_write('pki-intermediate-operations/issue/fluentd-server', common_name='operations-fluentd.query.consul', ttl='720h', cache_prefix=minion_id) %}
 {% set fluentd_cert_path = salt.sdb.get('sdb://yaml/fluentd:cert_path') %}
 {% set fluentd_cert_key_path = salt.sdb.get('sdb://yaml/fluentd:cert_key_path') %}
 {% set ca_cert_path = salt.sdb.get('sdb://yaml/fluentd:ca_cert_path') %}

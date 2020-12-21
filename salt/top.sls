@@ -298,4 +298,3 @@ base:
     - node
     - caddy
     - apps.ocw.nextgen_build_install
-    - apps.ocw.nextgen_build_pull_data

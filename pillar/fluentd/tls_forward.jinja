@@ -10,7 +10,7 @@
         {'tls_ca_cert_path': salt.sdb.get('sdb://yaml/fluentd:ca_cert_path')},
         {'tls_allow_self_signed_cert': 'true'},
         {'tls_verify_hostname': 'false'},
-        {'verify_connection_at_startup': 'true'},
+        {'verify_connection_at_startup': 'false'},
         {'nested_directives': [
             {'directive': 'server',
              'attrs': [

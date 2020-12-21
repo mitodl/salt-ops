@@ -1,22 +1,23 @@
 # -*- mode: yaml -*-
 {% set app_name = 'mitx-cas' %}
-{% set python_version = '2.7.15' %}
-{% set python_bin_dir = '/usr/local/pyenv/versions/{0}/bin'.format(python_version) %}
 {% set ENVIRONMENT = salt.grains.get('environment', 'mitx-qa') %}
 {% set minion_id = salt.grains.get('id', '') %}
 {% set env_dict = {
     'mitx-qa': {
       'domain': 'auth.mitx.mit.edu',
       'log_level': 'DEBUG',
-      'release_branch': 'master'
+      'release_branch': 'upgrade-python-3-django-2',
+      'python_version': '3.8.6'
       },
     'mitx-production': {
       'domain': 'cas.mitx.mit.edu',
       'log_level': 'WARN',
-      'release_branch': 'master'
+      'release_branch': 'master',
+      'python_version': '2.7.15'
       }
 } %}
 {% set env_data = env_dict[ENVIRONMENT] %}
+{% set python_bin_dir = '/usr/local/pyenv/versions/{0}/bin'.format(env_data.python_version) %}
 
 
 schedule:
@@ -28,12 +29,12 @@ schedule:
 
 python:
   versions:
-    - number: {{ python_version }}
+    - number: {{ env_data.python_version }}
       default: True
       user: root
 
 django:
-  pip_path: {{ python_bin_dir }}/pip2
+  pip_path: {{ python_bin_dir }}/pip
   django_admin_path: {{ python_bin_dir }}/django-admin
   app_name: {{ app_name }}
   settings_module: mitx_cas.settings
@@ -103,7 +104,7 @@ uwsgi:
         - module: mitx_cas.wsgi
         - pidfile: /var/run/uwsgi/{{ app_name }}.pid
         - processes: 2
-        - pyhome: /usr/local/pyenv/versions/{{ python_version }}/
+        - pyhome: /usr/local/pyenv/versions/{{ env_data.python_version }}/
         - socket: /var/run/uwsgi/{{ app_name }}.sock
         - threads: 50
         - thunder-lock: 'true'

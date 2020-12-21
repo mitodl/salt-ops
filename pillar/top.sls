@@ -270,6 +270,7 @@ base:
   'G@edx_codename:koa':
     - match: compound
     - edx.ansible_vars.koa
+    - edx.mitx-koa
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher

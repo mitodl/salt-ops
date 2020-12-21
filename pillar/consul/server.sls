@@ -19,6 +19,7 @@
 
 consul:
   products:
+    consul: 1.9.0
     consul-esm: 0.5.0
   esm_configs:
     log_level: "INFO"

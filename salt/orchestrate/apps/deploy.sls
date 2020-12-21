@@ -2,12 +2,12 @@
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set app_name = salt.environ.get('APP_NAME') %}
-{% set VPC_NAME = env_data.vpc_name %}
+{% set VPC_NAME = salt.environ.get('VPC_NAME', env_data.vpc_name) %}
 {% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', env_data.purposes[app_name].num_instances) %}
 {% set BUSINESS_UNIT = env_data.purposes[app_name].business_unit %}
 {% set subnet_ids = salt.boto_vpc.describe_subnets(
     vpc_id=salt.boto_vpc.describe_vpcs(
-        name=env_data.vpc_name).vpcs[0].id
+        name=VPC_NAME).vpcs[0].id
     ).subnets|rejectattr('availability_zone', 'equalto', 'us-east-1e')|map(attribute='id')|list %}
 {% set security_groups = env_data.purposes[app_name].get('security_groups', []) %}
 {% do security_groups.extend(['master-ssh', 'consul-agent']) %}
