@@ -103,19 +103,19 @@ xpro_qa_versions: &xpro_qa_versions
 
 xpro_production_versions: &xpro_production_versions
   edx_config_repo: https://github.com/mitodl/configuration
-  edx_config_version: open-release/ironwood.master
+  edx_config_version: open-release/koa.master
   edx_platform_repo: 'https://github.com/mitodl/edx-platform'
-  edxapp: xpro/ironwood
+  edxapp: xpro/koa
   forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
-  forum: open-release/ironwood.master
+  forum: open-release/koa.master
   xqueue_source_repo: 'https://github.com/mitodl/xqueue'
-  xqueue: open-release/ironwood.master
+  xqueue: open-release/koa.master
   xqwatcher_courses: master
   theme_source_repo: 'https://github.com/mitodl/mitxpro-theme'
   theme_name: 'mitxpro-theme'
-  theme: master
-  codename: ironwood
-  ami_id: ami-80861296
+  theme: koa
+  codename: koa
+  ami_id: ami-0885b1f6bd170450c
 
 sandbox_residential_versions: &sandbox_residential_versions
   edx_config_repo: https://github.com/edx/configuration.git
