@@ -3,7 +3,7 @@
 {% set ENVIRONMENT = salt.grains.get('environment', 'data-qa') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set business_unit = env_data.business_unit %}
-{% set server_domain_names = env_data.purposes[app_name].domains %}
+{% set server_domain_names = 'consul-' ~ ENVIRONMENT ~ '.odl.mit.edu' %}
 
 caddy:
   install_from_repo: False
