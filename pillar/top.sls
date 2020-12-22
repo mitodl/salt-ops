@@ -87,7 +87,7 @@ base:
     - datadog.consul-integration
     - caddy
     - caddy.consul
-    - caddy.route53_challenge
+    - caddy.odl_wildcard_tls
   'roles:mongodb':
     - match: grain
     - mongodb
