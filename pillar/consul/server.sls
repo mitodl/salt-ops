@@ -28,7 +28,7 @@ consul:
       consul_service_tag: "consul-esm"
       consul_kv_path: "consul-esm/"
       external_node_meta:
-        "external-node": True
+        external-node: "true"
       node_reconnect_timeout: "72h"
       node_probe_interval: "30s"
       http_addr: "localhost:8500"
