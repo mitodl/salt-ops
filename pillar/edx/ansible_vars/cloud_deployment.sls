@@ -18,7 +18,13 @@
 {% set EDXAPP_CMS_ISSUER = "https://{}/oauth2".format(CMS_DOMAIN) %}
 {% set TIME_ZONE = 'America/New_York' %}
 {% set roles = salt.grains.get('roles', 'edx-live') %}
+{% if 'mitxpro' in environment %}
+{% set VAULT_MYSQL_MOUNT_POINT = 'mariadb-mitxpro-edxapp-' ~ environment %}
+{% set MYSQL_HOST = 'edxapp-mysql.service.consul' %}
+{% else %}
+{% set VAULT_MYSQL_MOUNT_POINT = 'mysql-' ~ environment %}
 {% set MYSQL_HOST = 'mysql.service.consul' %}
+{% endif %}
 {% set MYSQL_PORT = 3306 %}
 {% set MONGODB_HOST = 'mongodb-master.service.consul' %}
 {% set MONGODB_PORT = 27017 %}
@@ -114,9 +120,9 @@ edx:
     XQUEUE_BASIC_AUTH_PASSWORD: __vault__:gen_if_missing:secret-{{ business_unit }}/global/xqueue-password>data>value
     XQUEUE_MYSQL_DB_NAME: xqueue_{{ purpose_suffix }}
     XQUEUE_MYSQL_HOST: {{ MYSQL_HOST }}
-    XQUEUE_MYSQL_PASSWORD: __vault__:cache:mysql-{{ environment }}/creds/xqueue-{{ purpose }}>data>password
+    XQUEUE_MYSQL_PASSWORD: __vault__:cache:{{ VAULT_MYSQL_MOUNT_POINT }}/creds/xqueue-{{ purpose }}>data>password
     XQUEUE_MYSQL_PORT: {{ MYSQL_PORT }}
-    XQUEUE_MYSQL_USER: __vault__:cache:mysql-{{ environment }}/creds/xqueue-{{ purpose }}>data>username
+    XQUEUE_MYSQL_USER: __vault__:cache:{{ VAULT_MYSQL_MOUNT_POINT }}/creds/xqueue-{{ purpose }}>data>username
     XQUEUE_UPLOAD_BUCKET: {{ bucket_prefix }}-grades-{{ purpose }}-{{ environment }}
     xqueue_source_repo: {{ purpose_data.versions.xqueue_source_repo }}
     xqueue_version: {{ purpose_data.versions.xqueue }}
@@ -156,9 +162,9 @@ edx:
 
     EDXAPP_MYSQL_CSMH_DB_NAME: edxapp_csmh_{{ purpose_suffix }}
     EDXAPP_MYSQL_CSMH_HOST: {{ MYSQL_HOST }}
-    EDXAPP_MYSQL_CSMH_PASSWORD: __vault__:cache:mysql-{{ environment }}/creds/edxapp-csmh-{{ purpose }}>data>password
+    EDXAPP_MYSQL_CSMH_PASSWORD: __vault__:cache:{{ VAULT_MYSQL_MOUNT_POINT }}/creds/edxapp-csmh-{{ purpose }}>data>password
     EDXAPP_MYSQL_CSMH_PORT: {{ MYSQL_PORT }}
-    EDXAPP_MYSQL_CSMH_USER: __vault__:cache:mysql-{{ environment }}/creds/edxapp-csmh-{{ purpose }}>data>username
+    EDXAPP_MYSQL_CSMH_USER: __vault__:cache:{{ VAULT_MYSQL_MOUNT_POINT }}/creds/edxapp-csmh-{{ purpose }}>data>username
 
     EDXAPP_DEFAULT_FILE_STORAGE: 'storages.backends.s3boto.S3BotoStorage'
     EDXAPP_AWS_STORAGE_BUCKET_NAME: {{ bucket_prefix }}-storage-{{ purpose }}-{{ environment }}

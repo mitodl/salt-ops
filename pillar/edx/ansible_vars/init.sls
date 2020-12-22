@@ -22,7 +22,13 @@
 {% set MONGODB_REPLICASET = salt.pillar.get('mongodb:replset_name', 'rs0') %}
 {% set MONGODB_PORT = 27017 %}
 {% set MONGODB_USE_SSL = False %}
+{% if 'mitxpro' in environment %}
+{% set VAULT_MYSQL_MOUNT_POINT = 'mariadb-mitxpro-edxapp-' ~ environment %}
+{% set MYSQL_HOST = 'edxapp-mysql.service.consul' %}
+{% else %}
+{% set VAULT_MYSQL_MOUNT_POINT = 'mysql-' ~ environment %}
 {% set MYSQL_HOST = 'mysql.service.consul' %}
+{% endif %}
 {% set MYSQL_PORT = 3306 %}
 
 {% set TIME_ZONE = 'America/New_York' %}
@@ -34,10 +40,10 @@
 edx:
   ansible_vars:
     ### COMMON VARS ###
-    COMMON_MYSQL_ADMIN_USER: __vault__:cache:mysql-{{ environment }}/creds/admin>data>username
-    COMMON_MYSQL_ADMIN_PASS: __vault__:cache:mysql-{{ environment }}/creds/admin>data>password
-    COMMON_MYSQL_MIGRATE_USER: __vault__:cache:mysql-{{ environment }}/creds/admin>data>username
-    COMMON_MYSQL_MIGRATE_PASS: __vault__:cache:mysql-{{ environment }}/creds/admin>data>password
+    COMMON_MYSQL_ADMIN_USER: __vault__:cache:{{ VAULT_MYSQL_MOUNT_POINT }}/creds/admin>data>username
+    COMMON_MYSQL_ADMIN_PASS: __vault__:cache:{{ VAULT_MYSQL_MOUNT_POINT }}/creds/admin>data>password
+    COMMON_MYSQL_MIGRATE_USER: __vault__:cache:{{ VAULT_MYSQL_MOUNT_POINT }}/creds/admin>data>username
+    COMMON_MYSQL_MIGRATE_PASS: __vault__:cache:{{ VAULT_MYSQL_MOUNT_POINT }}/creds/admin>data>password
 
     ### EDXAPP ENVIRONMENT ###
     elb_pre_post: false {# prevents ansible from trying to handle ELB for us (tmacey 2017-03-16) #}
@@ -129,9 +135,9 @@ edx:
     #####################################################################
     EDXAPP_MYSQL_DB_NAME: edxapp_{{ purpose_suffix }}
     EDXAPP_MYSQL_HOST: {{ MYSQL_HOST }}
-    EDXAPP_MYSQL_PASSWORD: __vault__:cache:mysql-{{ environment }}/creds/edxapp-{{ purpose }}>data>password
+    EDXAPP_MYSQL_PASSWORD: __vault__:cache:{{ VAULT_MYSQL_MOUNT_POINT }}/creds/edxapp-{{ purpose }}>data>password
     EDXAPP_MYSQL_PORT: {{ MYSQL_PORT }}
-    EDXAPP_MYSQL_USER: __vault__:cache:mysql-{{ environment }}/creds/edxapp-{{ purpose }}>data>username
+    EDXAPP_MYSQL_USER: __vault__:cache:{{ VAULT_MYSQL_MOUNT_POINT }}/creds/edxapp-{{ purpose }}>data>username
 
     #####################################################################
     ########### Auth Configs ############################################
