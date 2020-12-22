@@ -5,7 +5,7 @@ base:
     - environment_settings
   '* and not proxy-* and not restore-* and not G@roles:devstack and not G@context:packer':
     - match: compound
-    - fluentd
+    #- fluentd
   'P@environment:(rc.*|.*-qa)':
     - match: compound
     - elastic_stack.version_qa
@@ -227,7 +227,7 @@ base:
     - edx.ansible_vars
     - edx.ansible_vars.cloud_deployment
     - edx.scheduled_jobs
-    - fluentd.mitx
+    #- fluentd.mitx
     - datadog.nginx-integration
     - datadog.supervisord-integration
   'P@roles:(edx|edx-worker) and not G@edx_codename:tumbleweed':
