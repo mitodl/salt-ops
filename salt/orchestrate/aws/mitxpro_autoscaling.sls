@@ -99,17 +99,17 @@ create_autoscaling_group_for_{{ app_name }}:
     {% endif %}
     - suspended_processes:
         - AlarmNotification
-    - scaling_policies:
-        - name: ScaleUp
-          adjustment_type: ChangeInCapacity
-          as_name: {{ app_name }}-{{ ENVIRONMENT }}-autoscaling-group
-          cooldown: 1800
-          scaling_adjustment: 2
-        - name: ScaleDown
-          adjustment_type: ChangeInCapacity
-          as_name: {{ app_name }}-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-group
-          cooldown: 1800
-          scaling_adjustment: -1
+    # - scaling_policies:
+    #     - name: ScaleUp
+    #       adjustment_type: ChangeInCapacity
+    #       as_name: {{ app_name }}-{{ ENVIRONMENT }}-autoscaling-group
+    #       cooldown: 1800
+    #       scaling_adjustment: 2
+    #     - name: ScaleDown
+    #       adjustment_type: ChangeInCapacity
+    #       as_name: {{ app_name }}-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-group
+    #       cooldown: 1800
+    #       scaling_adjustment: -1
     - alarms:
         CPU:
           name: {{ app_name }}-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-group-alarm
