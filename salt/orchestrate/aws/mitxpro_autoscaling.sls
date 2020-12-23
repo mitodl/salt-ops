@@ -85,10 +85,9 @@ create_autoscaling_group_for_{{ app_name }}:
     - health_check_type: EC2
     - region: {{ region }}
     - tags:
-        - key: 'Environment'
-          value: {{ ENVIRONMENT }}
-        - key: 'purpose'
-          value: {{ purpose }}
+        'Environment': {{ ENVIRONMENT }}
+        'purpose': {{ purpose }}
+        'OU': {{ BUSINESS_UNIT }}
     - availability_zones:
       - us-east-1b
       - us-east-1c
