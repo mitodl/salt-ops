@@ -14,7 +14,9 @@
 {% set sns_topic = env_data.provider_services[app_name].sns.topic ~ '-' ~ ENVIRONMENT ~ '-autoscaling' %}
 {% set edx_codename = purpose_data.versions.codename %}
 {% set env_suffix = ENVIRONMENT.strip('-')[1] %}
-{% set security_groups = ['{}-salt-minion'.format(ENVIRONMENT), '{}-consul-agent'.format(ENVIRONMENT), 'default', 'mitxpro-edxapp-access-{}'.format(env_suffix), 'mitxpro-edxapp-db-access-{}'.format(env_suffix)]) %}
+{% set security_groups = ['{}-salt-minion'.format(ENVIRONMENT),
+                          '{}-consul-agent'.format(ENVIRONMENT), 'default',
+                          'mitxpro-edxapp-access-{}'.format(env_suffix)]) %}
 {% set subnet_ids = salt.boto_vpc.describe_subnets(vpc_id=salt.boto_vpc.describe_vpcs(name=VPC_NAME).vpcs[0].id).subnets|map(attribute='id')|list %}
 
 {% set region = 'us-east-1' %}
