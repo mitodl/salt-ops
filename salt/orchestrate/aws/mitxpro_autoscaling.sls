@@ -13,7 +13,7 @@
 {% set sqs_queue = env_data.provider_services[app_name].sqs.queue ~ '-' ~ ENVIRONMENT ~ '-autoscaling' %}
 {% set sns_topic = env_data.provider_services[app_name].sns.topic ~ '-' ~ ENVIRONMENT ~ '-autoscaling' %}
 {% set edx_codename = purpose_data.versions.codename %}
-{% set env_suffix = ENVIRONMENT.strip('-')[1] %}
+{% set env_suffix = ENVIRONMENT.split('-')[1] %}
 {% set security_groups = ['{}-salt-minion'.format(ENVIRONMENT),
                           '{}-consul-agent'.format(purpose), 'default',
                           'mitxpro-edxapp-access-{}'.format(env_suffix)] %}
