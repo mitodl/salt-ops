@@ -30,6 +30,7 @@ ec2_autoscale_launch:
         purpose: {{ PURPOSE }}
         business_unit: {{ business_unit }}
         release_number: {{ release_number}}
+        edx_codename: {{ edx_codename }}
     {% else %}
     - instances: edx-{{ ENVIRONMENT }}-xpro-production-{{ instanceid['EC2InstanceId'].strip('i-') }}
     - grains:
@@ -39,6 +40,7 @@ ec2_autoscale_launch:
         purpose: {{ PURPOSE }}
         business_unit: {{ business_unit }}
         release_number: {{ release_number}}
+        edx_codename: {{ edx_codename }}
     {% endif %}
 
 {% elif 'TERMINATE' in payload['Message'] %}
