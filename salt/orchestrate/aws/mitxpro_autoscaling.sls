@@ -74,6 +74,12 @@ create_autoscaling_group_for_{{ app_name }}:
         {% for group_name in security_groups %}
           - {{ salt.boto_secgroup.get_group_id(group_name), vpc_name=VPC_NAME) }}
         {% endfor %}
+      - block_device_mappings:
+          - DeviceName: /dev/xvda
+          - Ebs:
+              VolumeSize: 25
+              VolumeType: gp2
+              Encrypted: True
     - min_size: {{ min_size }}
     - max_size: {{ max_size }}
     - desired_capacity: {{ min_size }}
