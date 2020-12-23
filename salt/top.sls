@@ -4,9 +4,9 @@ base:
   'not G@roles:devstack':
     - match: compound
     - utils.inotify_watches
-    #- fluentd
-    #- fluentd.plugins
-    #- fluentd.config
+    - fluentd
+    - fluentd.plugins
+    - fluentd.config
   'P@environment:(operations|operations-qa|mitx-qa|mitx-production|mitxpro-qa|mitxpro-production|rc-apps|production-apps|data-qa|data-production)':
     - match: compound
     - consul
@@ -203,9 +203,9 @@ base:
     - edx.patch_nginx
     - edx.hacks
     - edx.tests
-    #- fluentd
-    #- fluentd.plugins
-    #- fluentd.config
+    - fluentd
+    - fluentd.plugins
+    - fluentd.config
   'G@roles:edx and P@environment:mitx-(qa|production)':
     - match: compound
     - edx.gitreload
@@ -220,9 +220,9 @@ base:
     - edx.prod
     - edx.run_ansible
     - edx.hacks
-    #- fluentd
-    #- fluentd.plugins
-    #- fluentd.config
+    - fluentd
+    - fluentd.plugins
+    - fluentd.config
   'G@roles:edx-analytics and P@environment:mitx(pro)?-production':
     - match: compound
     - etl
