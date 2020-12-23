@@ -154,7 +154,7 @@ fluentd:
                   attrs:
                     - cert_path: {{ fluentd_cert_path }}
                     - private_key_path: {{ fluentd_cert_key_path }}
-                    - client_cert_auth: 'true'
+                    - client_cert_auth: 'false'
         - directive: filter
           directive_arg: 'mailgun.**'
           attrs:
