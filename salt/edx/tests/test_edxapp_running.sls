@@ -30,7 +30,6 @@ our configurations. Test the following:
 
 {% set running_services = [
     'nginx',
-    #'fluentd',
     'supervisor'
   ] %}
 
