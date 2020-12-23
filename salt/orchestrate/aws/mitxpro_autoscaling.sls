@@ -127,8 +127,8 @@ create_autoscaling_group_for_{{ app_name }}:
             ok_actions: [ 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:ok' ]
     - notification_arn: 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sns_topic }}'
     - notification_types:
-        - autoscaling:EC2_INSTANCE_LAUNCH
-        - autoscaling:EC2_INSTANCE_TERMINATE
+        - "autoscaling:EC2_INSTANCE_LAUNCH"
+        - "autoscaling:EC2_INSTANCE_TERMINATE"
     - require:
         - boto_sns: create_{{ sns_topic }}-sns-topic
 {% endfor %}
