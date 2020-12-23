@@ -5,7 +5,7 @@
 # Using QA AMI build to deploy production instances 
 {% set AMI_ENV = salt.environ.get('AMI_ENV', 'mitxpro-qa') %}
 
-{% set purpose = salt.grains.get('purpose', 'xpro-production') %}
+{% set purpose = salt.environ.get('PURPOSE', 'xpro-production') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
 {% set VPC_NAME = env_data.vpc_name %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
