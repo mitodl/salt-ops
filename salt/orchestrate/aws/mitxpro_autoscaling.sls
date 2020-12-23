@@ -84,10 +84,10 @@ create_autoscaling_group_for_{{ app_name }}:
     - desired_capacity: {{ min_size }}
     - health_check_type: EC2
     - region: {{ region }}
-    - tags:
-        'Environment': {{ ENVIRONMENT }}
-        'purpose': {{ purpose }}
-        'OU': {{ BUSINESS_UNIT }}
+    # - tags:
+    #     'Environment': {{ ENVIRONMENT }}
+    #     'purpose': {{ purpose }}
+    #     'OU': {{ BUSINESS_UNIT }}
     - availability_zones:
       - us-east-1b
       - us-east-1c
@@ -97,8 +97,8 @@ create_autoscaling_group_for_{{ app_name }}:
     - load_balancers:
       - {{ elb_name }}
     {% endif %}
-    - suspended_processes:
-        - AlarmNotification
+    # - suspended_processes:
+    #     - AlarmNotification
     # - scaling_policies:
     #     - name: ScaleUp
     #       adjustment_type: ChangeInCapacity
@@ -110,25 +110,25 @@ create_autoscaling_group_for_{{ app_name }}:
     #       as_name: {{ app_name }}-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-group
     #       cooldown: 1800
     #       scaling_adjustment: -1
-    - alarms:
-        CPU:
-          name: {{ app_name }}-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-group-alarm
-          attributes:
-            metric: CPUUtilization
-            namespace: AWS/EC2
-            statistic: Average
-            comparison: '>='
-            threshold: 70.0
-            period: 60
-            evaluation_periods: 3
-            unit: null
-            description: '{{ app_name }}-{{ purpose }}-{{ ENVIRONMENT }} ASG alarm'
-            alarm_actions: [ 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:launch' ]
-            ok_actions: [ 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:ok' ]
-    - notification_arn: 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sns_topic }}'
-    - notification_types:
-        - "autoscaling:EC2_INSTANCE_LAUNCH"
-        - "autoscaling:EC2_INSTANCE_TERMINATE"
+    # - alarms:
+    #     CPU:
+    #       name: {{ app_name }}-{{ purpose }}-{{ ENVIRONMENT }}-autoscaling-group-alarm
+    #       attributes:
+    #         metric: CPUUtilization
+    #         namespace: AWS/EC2
+    #         statistic: Average
+    #         comparison: '>='
+    #         threshold: 70.0
+    #         period: 60
+    #         evaluation_periods: 3
+    #         unit: null
+    #         description: '{{ app_name }}-{{ purpose }}-{{ ENVIRONMENT }} ASG alarm'
+    #         alarm_actions: [ 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:launch' ]
+    #         ok_actions: [ 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:ok' ]
+    # - notification_arn: 'arn:aws:sns:{{ region }}:{{ AWS_ACCOUNT_ID }}:{{ sns_topic }}'
+    # - notification_types:
+    #     - "autoscaling:EC2_INSTANCE_LAUNCH"
+    #     - "autoscaling:EC2_INSTANCE_TERMINATE"
     - require:
         - boto_sns: create_{{ sns_topic }}-sns-topic
 {% endfor %}
