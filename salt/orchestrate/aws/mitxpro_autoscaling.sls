@@ -72,7 +72,7 @@ create_autoscaling_group_for_{{ app_name }}:
       - associate_public_ip_address: True
       - security_groups:
         {% for group_name in security_groups %}
-          - {{ salt.boto_secgroup.get_group_id(group_name), vpc_name=VPC_NAME) }}
+          - {{ salt.boto_secgroup.get_group_id(group_name), vpc_name=VPC_NAME }}
         {% endfor %}
       - block_device_mappings:
           - DeviceName: /dev/xvda
