@@ -34,9 +34,9 @@ dagster:
         sqldb:
           config:
             mysql_db_name: edxapp_{{ xpro_purpose|replace('-', '_') }}
-            mysql_hostname: mysql.service.{{ xpro_environment }}.consul
-            mysql_username: __vault__:cache:mysql-{{ xpro_environment }}/creds/readonly>data>username
-            mysql_password: __vault__:cache:mysql-{{ xpro_environment }}/creds/readonly>data>password
+            mysql_hostname: edxapp-mysql.service.{{ xpro_environment }}.consul
+            mysql_username: __vault__:cache:mariadb-mitxpro-edxapp-{{ xpro_environment }}/creds/readonly>data>username
+            mysql_password: __vault__:cache:mariadb-mitxpro-edxapp-{{ xpro_environment }}/creds/readonly>data>password
       solids:
         export_edx_forum_database:
           config:
