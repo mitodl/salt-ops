@@ -54,37 +54,37 @@ caddy:
                 terminal: true
                 handle:
                 - handler: auth_portal
-                  auth_url_path: /login
-                  primary: true
-                  backends:
-                    - name: Dagster
-                      method: local
-                      path: /var/lib/caddy/auth/users.json
-                      realm: local
-                  jwt:
-                    token_name: access_token
-                    token_issuer: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ ENVIRONMENT }}/caddy-jwt-issuer>data>value
-                    token_secret: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ ENVIRONMENT }}/caddy-jwt-secret>data>value
-                  ui:
-                    allow_role_selection: false
-                    auto_redirect_url: ''
-                    logo_description: Dagster
-                    logo_url: https://dagster.io/images/logo.png
-                    private_links:
-                      - title: Dagster
-                        link: /
+                  portal:
+                    auth_url_path: /login
+                    primary: true
+                    backends:
+                      - name: Dagster
+                        method: local
+                        path: /var/lib/caddy/auth/users.json
+                        realm: local
+                    jwt:
+                      token_name: access_token
+                      token_secret: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ ENVIRONMENT }}/caddy-jwt-secret>data>value
+                    ui:
+                      allow_role_selection: false
+                      auto_redirect_url: ''
+                      logo_description: Dagster
+                      logo_url: https://dagster.io/images/logo.png
+                      private_links:
+                        - title: Dagster
+                          link: /
               - match:
                   - host: {{ server_domain_names|tojson }}
                 handle:
                   - handler: authentication
                     providers:
                       jwt:
-                        primary: true
-                        auth_url_path: /login
-                        trusted_tokens:
-                          - token_name: access_token
-                            token_issuer: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ ENVIRONMENT }}/caddy-jwt-issuer>data>value
-                            token_secret: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ ENVIRONMENT }}/caddy-jwt-secret>data>value
+                        authorizer:
+                          primary: true
+                          auth_url_path: /login
+                          trusted_tokens:
+                            - token_name: access_token
+                              token_secret: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ ENVIRONMENT }}/caddy-jwt-secret>data>value
                   - handler: headers
                     response:
                       add:
