@@ -50,7 +50,7 @@ dagster:
             edx_etl_results_bucket: mitx-etl-{{ xpro_purpose }}-{{ xpro_environment }}
         list_edx_courses:
           config:
-            edx_token_type: bearer
+            edx_token_type: jwt
             edx_base_url: __vault__::secret-data/{{ environment }}/pipelines/edx/xpro/edx-oauth-client>data>url
             edx_client_id: __vault__::secret-data/{{ environment }}/pipelines/edx/xpro/edx-oauth-client>data>id
             edx_client_secret: __vault__::secret-data/{{ environment }}/pipelines/edx/xpro/edx-oauth-client>data>secret
