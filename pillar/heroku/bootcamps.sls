@@ -36,7 +36,7 @@
       'CYBERSOURCE_REFERENCE_PREFIX': 'rc',
       'CYBERSOURCE_WSDL_URL': 'https://ics2wstest.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
       'EDXORG_BASE_URL': 'https://courses.stage.edx.org',
-      'FEATURE_ENABLE_CERTIFICATE_USER_VIEW': T'GA_TRACKING_ID': 'UA-5145472-19',
+      'GA_TRACKING_ID': 'UA-5145472-19',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
       'HUBSPOT_PORTAL_ID': '6431386',
       'HUBSPOT_CREATE_USER_FORM_ID': '995ee734-a0ff-47cc-b747-6ea1d2dd6303',
