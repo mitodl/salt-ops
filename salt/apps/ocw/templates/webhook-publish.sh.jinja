@@ -15,26 +15,24 @@
 
 LOG_FILE=/opt/ocw/webhook-publish.log
 SOURCE_DATA_BUCKET={{ source_data_bucket }}
-SITE_OUTPUT_DIR=/opt/ocw/hugo-course-publisher/dist/  # Should end in '/'
+SOURCE_DATA_DIR=/opt/ocw/open-learning-course-data
+SITE_OUTPUT_DIR=/opt/ocw/ocw-www/dist/  # Should end in '/'
+COURSES_MARKDOWN_DIR=/opt/ocw/ocw-to-hugo/private/output
 WEBSITE_BUCKET={{ website_bucket }}
 FASTLY_API_TOKEN={{ fastly_api_token }}
 FASTLY_SERVICE_ID={{ fastly_service_id }}
-HUGO_COURSE_PUBLISHER_GIT_REF={{ hugo_course_publisher_git_ref }}
+OCW_TO_HUGO_GIT_REF={{ ocw_to_hugo_git_ref }}
+OCW_WWW_GIT_REF={{ ocw_www_git_ref }}
+OCW_COURSE_HUGO_STARTER_GIT_REF={{ ocw_course_hugo_starter_git_ref }}
+COURSE_BASE_URL={{ course_base_url }}
 # lock_dir ensures that only one run of this script happens at once.
 lock_dir=/tmp/webhook-publish-lock
 # If retry_file is present, the script will run itself again to catch changes
 # that came in during the period of the current run.
 retry_file=/tmp/webhook-publish-retry
 
-# Configuration for hugo-course-publisher
-OCW_TO_HUGO_INPUT=/opt/ocw/open-learning-course-data
-OCW_TO_HUGO_STRIPS3=1
-OCW_TO_HUGO_STATIC_PREFIX=/coursemedia
-
-export OCW_TO_HUGO_INPUT OCW_TO_HUGO_STRIPS3 OCW_TO_HUGO_STATIC_PREFIX
-
 # Optional script argument
-option=$1
+script_option=$1
 
 log_message() {
     echo `date +'%Y-%m-%d %H:%M:%S'` $1 | tee -a ${LOG_FILE}
@@ -45,6 +43,40 @@ error_and_exit() {
     rm -rf $lock_dir
     exit 1
 }
+
+# Do a git fetch and git reset to accomplish a `git pull` without failing if
+# there was a change to the git history.
+# Return 0 if the working copy was changed, 1 if it was not.
+# Return 0 also if we don't care and will publish anyway with 'full' option
+#
+git_fetch_and_reset() {
+    repo_name=$1
+    git_ref=$2
+    orig_commit=`git rev-parse HEAD`
+    log_message "Pulling $repo_name"
+    git fetch && git reset --hard origin/$git_ref \
+        || error_and_exit "Can not pull $repo_name"
+    new_commit=`git rev-parse HEAD`
+    log_message "$orig_commit -> $new_commit"
+    if [ "$orig_commit" != "$new_commit" ]; then
+        log_message "... Pulled new commit"
+        return 0
+    else
+        log_message "... No new commit"
+        return 1
+    fi
+}
+
+clear_directory() {
+    dir=$1
+    log_message "Clearing $dir"
+    rm -rf $dir
+    if [ $? -ne 0 ]; then
+        error_and_exit "Could not clear $dir"
+    fi
+}
+
+# Manage locking directory and retry file
 
 mkdir $lock_dir
 if [ $? -ne 0 ]; then
@@ -61,66 +93,105 @@ else
     rm $retry_file
 fi
 
-cd /opt/ocw/hugo-course-publisher \
-    || error_and_exit "Can not cd to hugo-course-publisher!"
 
-orig_commit=`git rev-parse HEAD`
-log_message "Pulling hugo-course-publisher"
-git fetch && git reset --hard origin/$HUGO_COURSE_PUBLISHER_GIT_REF \
-    || error_and_exit "Can not pull hugo-course-publisher"
-new_commit=`git rev-parse HEAD`
-log_message "$orig_commit -> $new_commit"
+# Pull source data
 
-if [ "$option" != "full" ]; then
-    if [ "$orig_commit" != "$new_commit" ]; then
-        log_message "Pulled new commit, so continuing with publish."
+log_message "Pulling source data"
+aws s3 sync s3://$SOURCE_DATA_BUCKET/ $SOURCE_DATA_DIR/ --delete \
+    --only-show-errors
+if [ $? -ne 0 ]; then
+    error_and_exit "Failed to pull source data"
+fi
+
+
+# Pull ocw-www
+
+cd /opt/ocw/ocw-www || error_and_exit "Can not cd to ocw-www"
+git_fetch_and_reset ocw-www $OCW_WWW_GIT_REF
+ocw_www_changed=$?
+
+
+# Pull ocw-to-hugo
+
+cd /opt/ocw/ocw-to-hugo || error_and_exit "Can not cd to ocw-to-hugo"
+git_fetch_and_reset ocw-to-hugo $OCW_TO_HUGO_GIT_REF
+ocw_to_hugo_changed=$?
+
+# Pull ocw-course-hugo-starter
+
+cd /opt/ocw/ocw-course-hugo-starter \
+    || error_and_exit "Can not cd to ocw-course-hugo-starter"
+git_fetch_and_reset ocw-course-hugo-starter $OCW_COURSE_HUGO_STARTER_GIT_REF
+ocw_course_hugo_starter_changed=$?
+
+
+# Continue if there were changes, or if we want a 'full' run regardless of
+# changes.
+if [ "$script_option" != "full" ]; then
+    if [ $ocw_www_changed -eq 0 ] || [ $ocw_to_hugo_changed -eq 0 ] \
+            || [ $ocw_course_hugo_starter_changed -eq 0 ]; then
+
+        log_message "Pulled new commit; continuing with publish."
+
     else
-        log_message "No new commit or got a rev-parse error, so stopping here."
+
+        log_message "No new commits; stopping."
         rmdir $lock_dir
         exit 0
     fi
 fi
 
-log_message "Pulling source data"
-aws s3 sync s3://$SOURCE_DATA_BUCKET/ $OCW_TO_HUGO_INPUT/ --delete --only-show-errors
+
+# Run ocw-to-hugo
+
+cd /opt/ocw/ocw-to-hugo
+
+clear_directory /opt/ocw/ocw-to-hugo/node_modules
+
+log_message "Doing yarn install of ocw-to-hugo"
+yarn install --pure-lockfile || error_and_exit "Can not install ocw-to-hugo"
+
+log_message "Running ocw-to-hugo"
+node . -i $SOURCE_DATA_DIR -o $COURSES_MARKDOWN_DIR \
+    --strips3 --staticPrefix /coursemedia 2>&1 > /opt/ocw/ocw-to-hugo.log
 if [ $? -ne 0 ]; then
-    error_and_exit "Failed to pull source data"
+    error_and_exit "Failed to run ocw-to-hugo. See /opt/ocw/ocw-to-hugo.log"
 fi
 
-log_message "Clearing node_modules directory"
-# just to be safe
-rm -rf node_modules
+
+# Run ocw-www build
+
+cd /opt/ocw/ocw-www
+
+clear_directory /opt/ocw/ocw-www/node_modules
+clear_directory "/opt/ocw/ocw-www/site/content/*"
+clear_directory "/opt/ocw/ocw-www/site/data/courses/*"
+
+log_message "Doing yarn install of ocw-www"
+yarn install --pure-lockfile || error_and_exit "Can not install ocw-www"
+
+log_message "Running ocw-www build"
+npm run build 2>&1 > /opt/ocw/hugo-www.log
 if [ $? -ne 0 ]; then
-    error_and_exit "Could not delete node_modules"
+    error_and_exit "Failed to run ocw-www. See /opt/ocw/ocw-www.log"
 fi
 
-log_message "Doing yarn install"
-yarn install --pure-lockfile \
-    || error_and_exit "Can not install hugo-course-publisher"
 
-log_message "Clearing site/content directory"
-rm -rf site/content/*
+# Run course builds with ocw-course-hugo-starter
+
+log_message "Running ocw-course-hugo-starter build"
+cd /opt/ocw/ocw-course-hugo-starter
+./build.sh \
+    --output $SITE_OUTPUT_DIR \
+    --courses $COURSES_MARKDOWN_DIR \
+    --baseUrl $COURSE_BASE_URL \
+    2>&1 > /opt/ocw/course-builds.log
 if [ $? -ne 0 ]; then
-    error_and_exit "Could not clear site/content directory"
+    error_and_exit "Failed to run course builds. See /opt/ocw/course-builds.log"
 fi
 
-log_message "Clearing site/data/courses directory"
-rm -rf site/data/courses/*
-if [ $? -ne 0 ]; then
-    error_and_exit "Could not clear site/data/courses directory"
-fi
 
-log_message "Running ocw-to-hugo via import:ocw NPM target"
-npm run import:ocw
-if [ $? -ne 0 ]; then
-    error_and_exit "Failed to run import:ocw target"
-fi
-
-log_message "Running hugo-course-publisher"
-npm run build 2>&1 > /opt/ocw/hugo-course-publisher.log
-if [ $? -ne 0 ]; then
-    error_and_exit "Failed to run hugo-course-publisher. See /opt/ocw/hugo-course-publisher.log"
-fi
+# Sync HTML to S3 bucket
 
 log_message "Syncing to S3 bucket"
 # a little double-check to make sure the source directory ends in a slash, to
@@ -136,6 +207,9 @@ if [ $? -ne 0 ]; then
     error_and_exit "Failed to sync to S3 bucket. See /opt/ocw/website-sync.log"
 fi
 
+
+# Clear CDN cache
+
 log_message "Clearing Fastly cache"
 curl -f -X POST -H "Fastly-Key: $FASTLY_API_TOKEN" \
     https://api.fastly.com/service/$FASTLY_SERVICE_ID/purge_all
@@ -144,6 +218,9 @@ if [ $? -ne 0 ]; then
 fi
 
 log_message "Done"
+
+
+# Clean up
 
 if [ -e $retry_file ]; then
     log_message "$retry_file exists. Removing $lock_dir and re-running ..."
