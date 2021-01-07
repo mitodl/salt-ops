@@ -6,14 +6,14 @@
     'mitx-qa': {
       'domain': 'auth.mitx.mit.edu',
       'log_level': 'DEBUG',
-      'release_branch': 'upgrade-python-3-django-2',
+      'release_branch': 'master',
       'python_version': '3.8.6'
       },
     'mitx-production': {
       'domain': 'cas.mitx.mit.edu',
       'log_level': 'WARN',
       'release_branch': 'master',
-      'python_version': '2.7.15'
+      'python_version': '3.8.6'
       }
 } %}
 {% set env_data = env_dict[ENVIRONMENT] %}
@@ -108,7 +108,7 @@ uwsgi:
         - socket: /var/run/uwsgi/{{ app_name }}.sock
         - threads: 50
         - thunder-lock: 'true'
-        - touch-reload: /etc/mitx-cas/config.yml
+        - touch-reload: /etc/mitx-cas/cas.yml
         - uid: deploy
         - env: CONFIG_ROOT=/etc/mitx-cas/
 
