@@ -61,6 +61,7 @@ django:
     - zlib1g-dev
     - libpqxx-dev
     - libxml2-dev
+    - libxslt2-dev
     - libffi-dev
   states:
     setup:
@@ -92,7 +93,6 @@ uwsgi:
         - reload-on-rss: '200'
         - worker-reload-mercy: '60'
         - harakiri: '60'
-        - py-call-osafterfork: 'true'
         - buffer-size: '65535'
         - post-buffering: '65535'
         - auto-procname: 'true'
