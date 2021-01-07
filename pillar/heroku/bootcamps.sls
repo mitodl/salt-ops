@@ -122,6 +122,7 @@ heroku:
     EDXORG_BASE_URL: {{ env_data.EDXORG_BASE_URL }}
     EDXORG_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/edx>data>client_id
     EDXORG_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/edx>data>client_secret
+    FEATURE_ENABLE_CERTIFICATE_USER_VIEW: True
     FEATURE_SOCIAL_AUTH_API: True
     FEATURE_CMS_HOME_PAGE: True
     FEATURE_NOVOED_INTEGRATION: False
