@@ -165,8 +165,6 @@ fi
 cd /opt/ocw/ocw-www
 
 clear_directory /opt/ocw/ocw-www/node_modules
-clear_directory "/opt/ocw/ocw-www/site/content/*"
-clear_directory "/opt/ocw/ocw-www/site/data/courses/*"
 
 log_message "Doing yarn install of ocw-www"
 yarn install --pure-lockfile 2>&1 > /opt/ocw/ocw-www-yarn-install.log \
