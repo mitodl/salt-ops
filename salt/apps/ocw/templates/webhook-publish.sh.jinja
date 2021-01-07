@@ -149,7 +149,8 @@ cd /opt/ocw/ocw-to-hugo
 clear_directory /opt/ocw/ocw-to-hugo/node_modules
 
 log_message "Doing yarn install of ocw-to-hugo"
-yarn install --pure-lockfile || error_and_exit "Can not install ocw-to-hugo"
+yarn install --pure-lockfile 2>&1 > /opt/ocw/ocw-to-hugo-install.log \
+    || error_and_exit "Can not install ocw-to-hugo"
 
 log_message "Running ocw-to-hugo"
 node . -i $SOURCE_DATA_DIR -o $COURSES_MARKDOWN_DIR \
@@ -168,7 +169,8 @@ clear_directory "/opt/ocw/ocw-www/site/content/*"
 clear_directory "/opt/ocw/ocw-www/site/data/courses/*"
 
 log_message "Doing yarn install of ocw-www"
-yarn install --pure-lockfile || error_and_exit "Can not install ocw-www"
+yarn install --pure-lockfile 2>&1 > /opt/ocw/ocw-www-yarn-install.log \
+    || error_and_exit "Can not install ocw-www"
 
 log_message "Running ocw-www build"
 npm run build 2>&1 > /opt/ocw/hugo-www.log
