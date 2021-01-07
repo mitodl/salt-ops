@@ -61,6 +61,7 @@ django:
     - zlib1g-dev
     - libpqxx-dev
     - libxml2-dev
+    - libffi-dev
   states:
     setup:
       - apps.mitx_cas.install
