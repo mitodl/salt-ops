@@ -47,7 +47,6 @@ error_and_exit() {
 # Do a git fetch and git reset to accomplish a `git pull` without failing if
 # there was a change to the git history.
 # Return 0 if the working copy was changed, 1 if it was not.
-# Return 0 also if we don't care and will publish anyway with 'full' option
 #
 git_fetch_and_reset() {
     repo_name=$1
