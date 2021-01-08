@@ -192,7 +192,7 @@ fi
 
 # Sync HTML to S3 bucket
 
-log_message "Syncing to S3 bucket"
+log_message "Syncing to S3 bucket ($WEBSITE_BUCKET)"
 # a little double-check to make sure the source directory ends in a slash, to
 # prevent the site from getting copied into a subdirectory ...
 echo "$SITE_OUTPUT_DIR" | grep -q '/$'
