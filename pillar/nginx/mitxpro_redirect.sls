@@ -26,7 +26,12 @@ nginx:
               - resolver: 1.1.1.1
               - location /.well-known/:
                 - alias: /usr/share/nginx/html/.well-known/
-              - location /certificates/:
-                - return: 301 https://courses.edx.org$request_uri
+              - location ~*  ^/certificates/(.*)$:
+                - return: 301 https://certificates.mitxpro.mit.edu/course/$1.pdf
+              # The following redirect is for requests for /credentials/[id] that
+              # are being proxied from the certificates.mitxpro.mit.edu
+              # Cloudfront distribution.
+              - location ~*  ^/credentials/(.*?)/.*$:
+                - return: 301 https://certificates.mitxpro.mit.edu/program/$1.pdf
               - location /:
                 - return: 301 https://xpro.mit.edu/
