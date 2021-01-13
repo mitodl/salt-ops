@@ -224,8 +224,11 @@ salt_master:
       - proxy-mitxpro-rc
       - proxy-mit-open-discussions-ci
       - proxy-mit-open-discussions-rc
+      - proxy-ocw-studio-ci
+      - proxy-ocw-studio-rc
       {% else %}
       - proxy-bootcamps-production
       - proxy-mitxpro-production
       - proxy-mit-open-discussions-production
+      - proxy-ocw-studio-production
       {% endif %}

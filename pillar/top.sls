@@ -126,6 +126,8 @@ base:
     - heroku.xpro
   proxy-mit-open-discussions-*:
     - heroku.discussions
+  proxy-ocw-studio-*:
+    - heroku.ocw-studio
   'roles:mitx-cas':
     - match: grain
     - apps.mitx_cas
