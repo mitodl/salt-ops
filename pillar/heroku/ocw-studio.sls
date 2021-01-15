@@ -4,6 +4,7 @@
 {% set env_dict = {
     'ci': {
       'app_name': 'ocw-studio-ci',
+      'env': 'qa',
       'env_name': 'ci',
       'MAILGUN_SENDER_DOMAIN': 'ocw-ci.mail.odl.mit.edu',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
@@ -44,11 +45,11 @@ heroku:
   api_key: __vault__::secret-operations/global/heroku/api_key>data>value
   config_vars:
     ALLOWED_HOSTS: '["*"]'
-    #AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-ol-ocw-studio-app-{{ env_data.env_name }}>data>access_key
-    #AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-ol-ocw-studio-app-{{ env_data.env_name }}>data>secret_key
-    #AWS_STORAGE_BUCKET_NAME: 'ol-ocw-studio-app-{{ env_data.env_name }}'
+    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-only-ocw-to-hugo-output-{{ env_data.env }}>data>access_key
+    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-only-ocw-to-hugo-output-{{ env_data.env }}>data>secret_key
+    # AWS_STORAGE_BUCKET_NAME: 'ol-ocw-studio-app-{{ env_data.env_name }}'
     {% if env_data.env_name != 'ci' %}
-    {% set pg_creds = salt.vault.cached_read('postgres-ocw-studio-applications-{}/creds/ocw_studio'.format(env_data.env), cache_prefix='heroku-ocw-studio') %}
+    {% set pg_creds = salt.vault.cached_read('postgres-ocw-studio-applications-{}/creds/app'.format(env_data.env), cache_prefix='heroku-ocw-studio-' ~ env_data.env) %}
     {% set rds_endpoint = salt.boto_rds.get_endpoint('ocw-studio-db-applications-{}'.format(env_data.env)) %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/ocw_studio
     {% endif %}
