@@ -19,6 +19,7 @@ SOURCE_DATA_DIR=/opt/ocw/open-learning-course-data
 SITE_OUTPUT_DIR=/opt/ocw/ocw-www/dist/  # Should end in '/'
 COURSES_MARKDOWN_DIR=/opt/ocw/ocw-to-hugo/private/output
 WEBSITE_BUCKET={{ website_bucket }}
+OCW_TO_HUGO_BUCKET={{ ocw_to_hugo_bucket }}
 FASTLY_API_TOKEN={{ fastly_api_token }}
 FASTLY_SERVICE_ID={{ fastly_service_id }}
 OCW_TO_HUGO_GIT_REF={{ ocw_to_hugo_git_ref }}
@@ -216,8 +217,17 @@ if [ $? -ne 0 ]; then
     log_message "WARNING: Failed to clear Fastly cache!"
 fi
 
-log_message "Done"
+# Sync ocw-to-hugo output to S3
 
+log_message "Syncing ocw-to-hugo output to S3"
+aws s3 sync $COURSES_MARKDOWN_DIR/ s3://$OCW_TO_HUGO_BUCKET/ \
+    --delete --only-show-errors 2>&1 > /opt/ocw/ocw-to-hugo-output-sync.log
+if [ $? -ne 0 ]; then
+    error_and_exit "Failed to sync to S3 bucket. See /opt/ocw/ocw-to-hugo-output-sync.log"
+fi
+
+
+log_message "Done"
 
 # Clean up
 
