@@ -115,6 +115,7 @@ install_caddy_webhook_script:
     - template: jinja
     - context:
         website_bucket: {{ ocw_next.website_bucket }}
+        ocw_to_hugo_bucket: {{ ocw_next.ocw_to_hugo_bucket }}
         source_data_bucket: {{ ocw_next.source_data_bucket }}
         fastly_api_token: {{ ocw_next.fastly_api_token }}
         fastly_service_id: {{ ocw_next.fastly_service_id }}
