@@ -11,8 +11,6 @@ base:
     - match: compound
     - consul
     - consul.dns_proxy
-  'P@environment:mitx-(qa|production)':
-    - elastic-stack.beats
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
@@ -39,7 +37,6 @@ base:
     - master_utils.dns
     - master_utils.libgit
     - heroku.proxy_config
-    - elastic-stack.beats
     - caddy
   'G@roles:master and P@environment:operations(-qa)?':
     - match: compound
@@ -50,7 +47,6 @@ base:
     - utils.file_limits
     - elastic-stack.elasticsearch
     - elastic-stack.elasticsearch.plugins
-    - elastic-stack.beats
     - datadog.plugins
   'roles:rabbitmq':
     - match: grain
@@ -135,7 +131,6 @@ base:
   'roles:odl-video-service':
     - match: grain
     - utils.logrotate
-    - elastic-stack.beats
   'roles:redash':
     - match: grain
     - utils.configure_debian_source_repos
@@ -157,7 +152,6 @@ base:
     - utils.logrotate
     - nginx
     - elastic-stack.elastalert
-    - elastic-stack.beats
     - datadog.plugins
   'P@environment:(operations|mitx(pro)?-production)':
     - match: compound
