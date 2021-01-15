@@ -1,7 +1,7 @@
 
 ocw-next:
   website_bucket: ocw-website-applications-qa
-  ocw_to_hugo_bucketh: ocw-to-hugo-output-qa
+  ocw_to_hugo_bucket: ocw-to-hugo-output-qa
   source_data_bucket: open-learning-course-data-rc
   search_api_url: //discussions-rc.odl.mit.edu/api/v0/search/
   ocw_to_hugo_git_ref: release-candidate
