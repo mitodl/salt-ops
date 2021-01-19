@@ -7,7 +7,7 @@
       'app_name': 'odl-open-discussions-ci',
       'CELERY_WORKER_MAX_MEMORY_PER_CHILD': 125000,
       'CLOUDFRONT_DIST': 'd28ic9ywb63ioi',
-      'CORS_URLS': ['micromasters-ci.odl.mit.edu'],
+      'CORS_URLS': ['micromasters-ci.odl.mit.edu', ocwnext-rc.odl.mit.edu],
       'DEBUG': False,
       'ELASTICSEARCH_INDEX': 'discussions-ci',
       'ELASTICSEARCH_SHARD_COUNT': 2,
@@ -40,7 +40,7 @@
       'app_name': 'odl-open-discussions-rc',
       'CELERY_WORKER_MAX_MEMORY_PER_CHILD': 125000,      
       'CLOUDFRONT_DIST': 'd1d3xcwjqmwwj2',
-      'CORS_URLS': ['micromasters-rc.odl.mit.edu', 'ocwnext-rc.odl.mit.edu', 'ocw-next.netlify.app'],
+      'CORS_URLS': ['micromasters-rc.odl.mit.edu', 'ocwnext-rc.odl.mit.edu', 'ocw-next.netlify.app', 'ocwnext-rc.odl.mit.edu/'],
       'DEBUG': False,
       'ELASTICSEARCH_INDEX': 'discussions-rc',
       'ELASTICSEARCH_SHARD_COUNT': 2,
@@ -192,6 +192,8 @@ heroku:
     OPEN_DISCUSSIONS_COOKIE_DOMAIN: {{ env_data.OPEN_DISCUSSIONS_COOKIE_DOMAIN }}
     OPEN_DISCUSSIONS_COOKIE_NAME: {{ env_data.OPEN_DISCUSSIONS_COOKIE_NAME}}
     OPEN_DISCUSSIONS_CORS_ORIGIN_WHITELIST: '{{ env_data.CORS_URLS|tojson }}'
+    CORS_ALLOWED_ORIGINS: '{{ env_data.CORS_URLS|tojson }}'
+    CORS_ALLOWED_ORIGIN_REGEXES: ^.+ocw-next.netlify.app$
     OPEN_DISCUSSIONS_DB_CONN_MAX_AGE: 0
     OPEN_DISCUSSIONS_DB_DISABLE_SSL: True
     OPEN_DISCUSSIONS_DEFAULT_SITE_KEY: micromasters
