@@ -26,11 +26,16 @@ OCW_TO_HUGO_GIT_REF={{ ocw_to_hugo_git_ref }}
 OCW_WWW_GIT_REF={{ ocw_www_git_ref }}
 OCW_COURSE_HUGO_STARTER_GIT_REF={{ ocw_course_hugo_starter_git_ref }}
 COURSE_BASE_URL={{ course_base_url }}
+OCW_STUDIO_BASE_URL={{ ocw_studio_base_url }}
 # lock_dir ensures that only one run of this script happens at once.
 lock_dir=/tmp/webhook-publish-lock
 # If retry_file is present, the script will run itself again to catch changes
 # that came in during the period of the current run.
 retry_file=/tmp/webhook-publish-retry
+
+# Export those shell variables that must be environment variables for the
+# processes we execute
+export OCW_STUDIO_BASE_URL
 
 # Optional script argument
 script_option=$1

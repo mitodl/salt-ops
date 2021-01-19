@@ -123,3 +123,4 @@ install_caddy_webhook_script:
         ocw_www_git_ref: {{ ocw_next.ocw_www_git_ref }}
         ocw_course_hugo_starter_git_ref: {{ ocw_next.ocw_course_hugo_starter_git_ref }}
         course_base_url: {{ ocw_next.course_base_url }}
+        ocw_studio_base_url: {{ ocw_next.ocw_studio_base_url }}
