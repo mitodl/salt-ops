@@ -108,7 +108,7 @@ edx:
 
     ### Koa settings ###
     # Related keys/values can be removed once all envs are on Koa
-    # EDXAPP_ENABLE_INSTRUCTOR_ANALYTICS: true
+    EDXAPP_ENABLE_INSTRUCTOR_ANALYTICS: true
     ### XQUEUE ENVIRONMENT ###
     XQUEUE_LOGGING_ENV: {{ edxapp_log_env_suffix }}
     XQUEUE_DJANGO_USERS:
@@ -133,9 +133,7 @@ edx:
     #################### Forum Settings ############################################
     ################################################################################
     FORUM_API_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
-    #{% if 'koa' in grains.get('edx_codename') %}
-    #FORUM_ELASTICSEARCH_HOST_ES7: "nearest-elasticsearch.query.consul"
-    #{% endif %}
+    FORUM_ELASTICSEARCH_HOST_ES7: "nearest-elasticsearch.query.consul"
     FORUM_ELASTICSEARCH_HOST: "nearest-elasticsearch.query.consul"
     FORUM_MONGO_USER: __vault__:cache:mongodb-{{ environment }}/creds/forum-{{ purpose }}>data>username
     FORUM_MONGO_PASSWORD: __vault__:cache:mongodb-{{ environment }}/creds/forum-{{ purpose }}>data>password
@@ -148,11 +146,7 @@ edx:
     FORUM_SINATRA_ENV: "production"
     FORUM_USE_TCP: True
     forum_source_repo: {{ purpose_data.versions.forum_source_repo }}
-    {% if not ('koa' in grains.get('edx_codename')) %}
-    forum_version: {{ purpose_data.versions.forum }}
-    {% else %}
     FORUM_VERSION: {{ purpose_data.versions.forum }}
-    {% endif %}
     ########## END FORUM ########################################
     {% if environment == 'mitx-production' or environment == 'mitxpro-production' %}
     COMMON_ENABLE_NEWRELIC: True
@@ -254,19 +248,12 @@ edx:
       ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES: True
 
     common_env_config: &common_env_config
-      {% if not ('koa' in grains.get('edx_codename')) %}
-      ADDL_INSTALLED_APPS:
-        - ubcpi
-        - raven.contrib.django.raven_compat
-      {% endif %}
       ADMINS:
       - ['MITx Stacktrace Recipients', 'cuddle-bunnies@mit.edu']
       BOOK_URL: ""
       DATA_DIR: {{ edxapp_git_repo_dir }}
       SERVER_EMAIL: {{ smtp_config.data.server_email }}
       TIME_ZONE_DISPLAYED_FOR_DEADLINES: "{{ TIME_ZONE }}"
-      RAVEN_CONFIG:
-        dsn: {{ sentry_dsn }}
 
     EDXAPP_CODE_JAIL_LIMITS:
       REALTIME: 10

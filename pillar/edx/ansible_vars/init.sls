@@ -58,8 +58,8 @@ edx:
     
     ### Koa settings ###
     # Related keys/values can be removed once all envs are on Koa
-    # EDXAPP_AUTH_USE_OPENID_PROVIDER: false
-    # EDXAPP_ENABLE_SPECIAL_EXAMS: true
+    EDXAPP_AUTH_USE_OPENID_PROVIDER: false
+    EDXAPP_ENABLE_SPECIAL_EXAMS: true
 
     ####################################################################
     ############### MongoDB SETTINGS ###################################

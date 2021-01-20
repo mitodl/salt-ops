@@ -46,9 +46,9 @@ edx:
       - name: eox-core[sentry]
     ### Koa settings ###
     # Related keys/values can be removed once all envs are on Koa
-    # EDXAPP_ENABLE_VIDEO_UPLOAD_PIPELINE: True
-    # EDXAPP_THIRD_PARTY_AUTH_BACKENDS:
-    # - social_auth_mitxpro.backends.MITxProOAuth2
+    EDXAPP_ENABLE_VIDEO_UPLOAD_PIPELINE: True
+    EDXAPP_THIRD_PARTY_AUTH_BACKENDS:
+      - social_auth_mitxpro.backends.MITxProOAuth2
     ###########
     EDXAPP_REGISTRATION_EXTRA_FIELDS:
       confirm_email: "hidden"

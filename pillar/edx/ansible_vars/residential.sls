@@ -118,22 +118,6 @@ edx:
       country: "hidden"
 
     EDXAPP_PRIVATE_REQUIREMENTS:
-      {% if not ('koa' in grains.get('edx_codename')) %}
-      # For Harvard courses. Peer instruction XBlock.
-      # edX comment in `configuration' repo at
-      # https://github.com/edx/configuration/blob/e7433e03313ffc86a3cfd046c5178ec587841c19/playbooks/roles/edxapp/defaults/main.yml#L528
-      # says:
-      # "Need it from github until we can land https://github.com/ubc/ubcpi/pull/167 upstream."
-      - name: git+https://github.com/edx/ubcpi.git@3c4b2cdc9f595ab8cdb436f559b56f36638313b6#egg=ubcpi-xblock
-        extra_args: -e
-      # Vector Drawing and ActiveTable XBlocks (Davidson)
-      - name: git+https://github.com/open-craft/xblock-vectordraw.git@76976425356dfc7f13570f354c0c438db84c2840#egg=xblock-vectordraw==0.3.0
-        extra_args: -e
-      - name: git+https://github.com/open-craft/xblock-activetable.git@013003aa3ce28f0ae03b8227dc3a6daa4e19997d#egg=xblock-activetable
-        extra_args: -e
-      - name: git+https://github.com/edx/edx-zoom.git@37c323ae93265937bf60abb92657318efeec96c5#egg=edx-zoom
-        extra_args: -e
-      {% endif %}
       # MITx Residential XBlocks
       - name: edx-sga==0.11.0
       - name: rapid-response-xblock==0.0.8
@@ -170,7 +154,7 @@ edx:
 
     ### Koa settings ###
     # Related keys/values can be removed once all envs are on Koa
-    # EDXAPP_ENABLE_EXPORT_GIT: true
+    EDXAPP_ENABLE_EXPORT_GIT: true
     ###############
     EDXAPP_LMS_ENV_EXTRA:
       EMAIL_USE_DEFAULT_FROM_FOR_BULK: True
@@ -211,9 +195,6 @@ edx:
 
     EDXAPP_CMS_ENV_EXTRA:
       ADDL_INSTALLED_APPS:
-      {% if not ('koa' in grains.get('edx_codename')) %}
-        - ubcpi
-      {% endif %}
         - git_auto_export
         - imagemodal
       FEATURES:
