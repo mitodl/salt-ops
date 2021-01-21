@@ -176,7 +176,7 @@ yarn install --pure-lockfile > /opt/ocw/ocw-www-yarn-install.log 2>&1 \
     || error_and_exit "Can not install ocw-www"
 
 log_message "Running ocw-www build"
-npm run build 2>&1 > /opt/ocw/hugo-www.log
+npm run build > /opt/ocw/hugo-www.log 2>&1
 if [ $? -ne 0 ]; then
     error_and_exit "Failed to run ocw-www. See /opt/ocw/ocw-www.log"
 fi
