@@ -154,12 +154,12 @@ cd /opt/ocw/ocw-to-hugo
 clear_directory /opt/ocw/ocw-to-hugo/node_modules
 
 log_message "Doing yarn install of ocw-to-hugo"
-yarn install --pure-lockfile 2>&1 > /opt/ocw/ocw-to-hugo-install.log \
+yarn install --pure-lockfile > /opt/ocw/ocw-to-hugo-install.log 2>&1 \
     || error_and_exit "Can not install ocw-to-hugo"
 
 log_message "Running ocw-to-hugo"
 node . -i $SOURCE_DATA_DIR -o $COURSES_MARKDOWN_DIR \
-    --strips3 --staticPrefix /coursemedia 2>&1 > /opt/ocw/ocw-to-hugo.log
+    --strips3 --staticPrefix /coursemedia > /opt/ocw/ocw-to-hugo.log 2>&1
 if [ $? -ne 0 ]; then
     error_and_exit "Failed to run ocw-to-hugo. See /opt/ocw/ocw-to-hugo.log"
 fi
@@ -172,7 +172,7 @@ cd /opt/ocw/ocw-www
 clear_directory /opt/ocw/ocw-www/node_modules
 
 log_message "Doing yarn install of ocw-www"
-yarn install --pure-lockfile 2>&1 > /opt/ocw/ocw-www-yarn-install.log \
+yarn install --pure-lockfile > /opt/ocw/ocw-www-yarn-install.log 2>&1 \
     || error_and_exit "Can not install ocw-www"
 
 log_message "Running ocw-www build"
@@ -190,7 +190,7 @@ cd /opt/ocw/ocw-course-hugo-starter
     --output $SITE_OUTPUT_DIR \
     --courses $COURSES_MARKDOWN_DIR \
     --baseUrl $COURSE_BASE_URL \
-    2>&1 > /opt/ocw/course-builds.log
+    > /opt/ocw/course-builds.log 2>&1
 if [ $? -ne 0 ]; then
     error_and_exit "Failed to run course builds. See /opt/ocw/course-builds.log"
 fi
@@ -207,7 +207,7 @@ if [ $? -ne 0 ]; then
     SITE_OUTPUT_DIR=$SITE_OUTPUT_DIR/
 fi
 aws s3 sync $SITE_OUTPUT_DIR s3://$WEBSITE_BUCKET/ \
-    --delete --only-show-errors 2>&1 > /opt/ocw/website-sync.log
+    --delete --only-show-errors > /opt/ocw/website-sync.log 2>&1
 if [ $? -ne 0 ]; then
     error_and_exit "Failed to sync to S3 bucket. See /opt/ocw/website-sync.log"
 fi
@@ -226,7 +226,7 @@ fi
 
 log_message "Syncing ocw-to-hugo output to S3"
 aws s3 sync $COURSES_MARKDOWN_DIR/ s3://$OCW_TO_HUGO_BUCKET/ \
-    --delete --only-show-errors 2>&1 > /opt/ocw/ocw-to-hugo-output-sync.log
+    --delete --only-show-errors > /opt/ocw/ocw-to-hugo-output-sync.log 2>&1
 if [ $? -ne 0 ]; then
     error_and_exit "Failed to sync to S3 bucket. See /opt/ocw/ocw-to-hugo-output-sync.log"
 fi
