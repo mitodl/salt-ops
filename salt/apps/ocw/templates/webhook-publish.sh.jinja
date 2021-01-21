@@ -196,6 +196,22 @@ if [ $? -ne 0 ]; then
 fi
 
 
+# Write commit hash files
+
+log_message "Writing commit hash files"
+
+cd /opt/ocw/ocw-www \
+&& git rev-parse HEAD > $SITE_OUTPUT_DIR/static/ocw-www-hash.txt \
+&& cd /opt/ocw/ocw-to-hugo \
+&& git rev-parse HEAD > $SITE_OUTPUT_DIR/static/ocw-to-hugo-hash.txt \
+&& cd /opt/ocw/ocw-course-hugo-starter \
+&& git rev-parse HEAD > $SITE_OUTPUT_DIR/static/ocw-course-hugo-starter-hash.txt
+
+if [ $? -ne 0 ]; then
+    error_and_exit "Failed to write commit hash files"
+fi
+
+
 # Sync HTML to S3 bucket
 
 log_message "Syncing to S3 bucket ($WEBSITE_BUCKET)"
