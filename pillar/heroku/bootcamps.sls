@@ -14,6 +14,7 @@
       'CYBERSOURCE_REFERENCE_PREFIX': 'ci',
       'CYBERSOURCE_WSDL_URL': 'https://ics2wstest.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
       'EDXORG_BASE_URL': 'https://micromasters.d.mitx.mit.edu',
+      'FEATURE_NOVOED_INTEGRATION': False,
       'GA_TRACKING_ID': 'UA-5145472-19',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
       'HUBSPOT_PORTAL_ID': '6431386',
@@ -36,6 +37,7 @@
       'CYBERSOURCE_REFERENCE_PREFIX': 'rc',
       'CYBERSOURCE_WSDL_URL': 'https://ics2wstest.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
       'EDXORG_BASE_URL': 'https://courses.stage.edx.org',
+      'FEATURE_NOVOED_INTEGRATION': True,
       'GA_TRACKING_ID': 'UA-5145472-19',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
       'HUBSPOT_PORTAL_ID': '6431386',
@@ -58,6 +60,7 @@
       'CYBERSOURCE_REFERENCE_PREFIX': 'prod',
       'CYBERSOURCE_WSDL_URL': 'https://ics2wsa.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
       'EDXORG_BASE_URL': 'https://courses.edx.org',
+      'FEATURE_NOVOED_INTEGRATION': True,
       'GA_TRACKING_ID': 'UA-5145472-18',
       'GTM_TRACKING_ID': 'GTM-TFSZHVB',
       'HUBSPOT_PORTAL_ID': '6119748',
@@ -125,7 +128,7 @@ heroku:
     FEATURE_ENABLE_CERTIFICATE_USER_VIEW: True
     FEATURE_SOCIAL_AUTH_API: True
     FEATURE_CMS_HOME_PAGE: True
-    FEATURE_NOVOED_INTEGRATION: False
+    FEATURE_NOVOED_INTEGRATION: {{ env_data.FEATURE_NOVOED_INTEGRATION }}
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
     GTM_TRACKING_ID: {{ env_data.GTM_TRACKING_ID }}
     HUBSPOT_API_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/hubspot>data>api_key
