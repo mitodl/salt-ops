@@ -375,3 +375,6 @@ base:
     - apps.ocw-next-qa
     - caddy
     - caddy.ocw_build
+  'roles:ocw-build'
+    - match: grain
+    - logrotate.ocw_build

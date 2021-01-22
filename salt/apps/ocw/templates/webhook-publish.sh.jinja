@@ -12,8 +12,8 @@
 # cd /opt/ocw
 # ./webhook-publish.sh full
 
-
-LOG_FILE=/opt/ocw/webhook-publish.log
+LOG_DIR=/opt/ocw/logs
+LOG_FILE=$LOG_DIR/webhook-publish.log
 SOURCE_DATA_BUCKET={{ source_data_bucket }}
 SOURCE_DATA_DIR=/opt/ocw/open-learning-course-data
 SITE_OUTPUT_DIR=/opt/ocw/ocw-www/dist/  # Should end in '/'
@@ -151,14 +151,14 @@ cd /opt/ocw/ocw-to-hugo
 clear_directory /opt/ocw/ocw-to-hugo/node_modules
 
 log_message "Doing yarn install of ocw-to-hugo"
-yarn install --pure-lockfile > /opt/ocw/ocw-to-hugo-install.log 2>&1 \
+yarn install --pure-lockfile >> $LOG_DIR/ocw-to-hugo-install.log 2>&1 \
     || error_and_exit "Can not install ocw-to-hugo"
 
 log_message "Running ocw-to-hugo"
 node . -i $SOURCE_DATA_DIR -o $COURSES_MARKDOWN_DIR \
-    --strips3 --staticPrefix /coursemedia > /opt/ocw/ocw-to-hugo.log 2>&1
+    --strips3 --staticPrefix /coursemedia >> $LOG_DIR/ocw-to-hugo.log 2>&1
 if [ $? -ne 0 ]; then
-    error_and_exit "Failed to run ocw-to-hugo. See /opt/ocw/ocw-to-hugo.log"
+    error_and_exit "Failed to run ocw-to-hugo. See $LOG_DIR/ocw-to-hugo.log"
 fi
 
 
@@ -169,13 +169,13 @@ cd /opt/ocw/ocw-www
 clear_directory /opt/ocw/ocw-www/node_modules
 
 log_message "Doing yarn install of ocw-www"
-yarn install --pure-lockfile > /opt/ocw/ocw-www-yarn-install.log 2>&1 \
+yarn install --pure-lockfile >> $LOG_DIR/ocw-www-yarn-install.log 2>&1 \
     || error_and_exit "Can not install ocw-www"
 
 log_message "Running ocw-www build"
-npm run build > /opt/ocw/hugo-www.log 2>&1
+npm run build >> $LOG_DIR/hugo-www.log 2>&1
 if [ $? -ne 0 ]; then
-    error_and_exit "Failed to run ocw-www. See /opt/ocw/ocw-www.log"
+    error_and_exit "Failed to run ocw-www. See $LOG_DIR/ocw-www.log"
 fi
 
 
@@ -187,9 +187,9 @@ cd /opt/ocw/ocw-course-hugo-starter
     --output $SITE_OUTPUT_DIR \
     --courses $COURSES_MARKDOWN_DIR \
     --baseUrl $COURSE_BASE_URL \
-    > /opt/ocw/course-builds.log 2>&1
+    >> $LOG_DIR/course-builds.log 2>&1
 if [ $? -ne 0 ]; then
-    error_and_exit "Failed to run course builds. See /opt/ocw/course-builds.log"
+    error_and_exit "Failed to run course builds. See $LOG_DIR/course-builds.log"
 fi
 
 
@@ -220,9 +220,9 @@ if [ $? -ne 0 ]; then
     SITE_OUTPUT_DIR=$SITE_OUTPUT_DIR/
 fi
 aws s3 sync $SITE_OUTPUT_DIR s3://$WEBSITE_BUCKET/ \
-    --delete --only-show-errors > /opt/ocw/website-sync.log 2>&1
+    --delete --only-show-errors >> $LOG_DIR/website-sync.log 2>&1
 if [ $? -ne 0 ]; then
-    error_and_exit "Failed to sync to S3 bucket. See /opt/ocw/website-sync.log"
+    error_and_exit "Failed to sync to S3 bucket. See $LOG_DIR/website-sync.log"
 fi
 
 
@@ -239,9 +239,9 @@ fi
 
 log_message "Syncing ocw-to-hugo output to S3"
 aws s3 sync $COURSES_MARKDOWN_DIR/ s3://$OCW_TO_HUGO_BUCKET/ \
-    --delete --only-show-errors > /opt/ocw/ocw-to-hugo-output-sync.log 2>&1
+    --delete --only-show-errors >> $LOG_DIR/ocw-to-hugo-output-sync.log 2>&1
 if [ $? -ne 0 ]; then
-    error_and_exit "Failed to sync to S3 bucket. See /opt/ocw/ocw-to-hugo-output-sync.log"
+    error_and_exit "Failed to sync to S3 bucket. See $LOG_DIR/ocw-to-hugo-output-sync.log"
 fi
 
 

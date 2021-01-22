@@ -41,6 +41,13 @@ ensure_state_of_opt_ocw:
     - group: caddy
     - dir_mode: '0755'
 
+ensure_state_of_log_directory:
+  file.directory:
+    - name: /opt/ocw/logs
+    - user: caddy
+    - group: caddy
+    - dir_mode: '0755'
+
 git_pull_ocw_to_hugo:
   git.latest:
     - name: https://github.com/mitodl/ocw-to-hugo.git
