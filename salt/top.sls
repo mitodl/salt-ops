@@ -292,3 +292,4 @@ base:
     - node
     - caddy
     - apps.ocw.nextgen_build_install
+    - utils.logrotate
