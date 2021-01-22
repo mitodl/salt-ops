@@ -90,10 +90,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-if [ ! -e $retry_file ]; then
-    cat /dev/null > $LOG_FILE || error_and_exit "Can not initialize logfile"
-else
-    # Do not initialize the logfile if this is a re-run
+if [ -e $retry_file ]; then
     log_message "This is a re-run."
     rm $retry_file
 fi
