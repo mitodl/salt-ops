@@ -40,7 +40,7 @@
       'app_name': 'odl-open-discussions-rc',
       'CELERY_WORKER_MAX_MEMORY_PER_CHILD': 125000,      
       'CLOUDFRONT_DIST': 'd1d3xcwjqmwwj2',
-      'CORS_URLS': ['https://micromasters-rc.odl.mit.edu', 'https://ocwnext-rc.odl.mit.edu', 'https://ocw-next.netlify.app', 'https://ocwnext-rc.odl.mit.edu/'],
+      'CORS_URLS': ['https://micromasters-rc.odl.mit.edu', 'https://ocwnext-rc.odl.mit.edu', 'https://ocw-next.netlify.app', 'https://ocwnext-rc.odl.mit.edu'],
       'DEBUG': False,
       'ELASTICSEARCH_INDEX': 'discussions-rc',
       'ELASTICSEARCH_SHARD_COUNT': 2,
