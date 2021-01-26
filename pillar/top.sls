@@ -378,3 +378,4 @@ base:
   'roles:ocw-build':
     - match: grain
     - logrotate.ocw_build
+    - vector.ocw_build

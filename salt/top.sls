@@ -288,7 +288,7 @@ base:
     - edx.django_user
   'roles:ocw-build':
     - match: grain
-    - fluentd
+    - vector
     - node
     - caddy
     - apps.ocw.nextgen_build_install
