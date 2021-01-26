@@ -120,7 +120,7 @@ edx:
     EDXAPP_PRIVATE_REQUIREMENTS:
       # MITx Residential XBlocks
       - name: edx-sga==0.11.0
-      - name: rapid-response-xblock==0.0.8
+      - name: rapid-response-xblock==0.0.9
       - name: git+https://github.com/mitodl/edx-git-auto-export.git@v0.2#egg=edx-git-auto-export
         extra_args: -e
       - name: git+https://github.com/Stanford-Online/xblock-in-video-quiz@release/v0.1.7#egg=xblock-in-video-quiz
