@@ -7,7 +7,7 @@
       'app_name': 'odl-open-discussions-ci',
       'CELERY_WORKER_MAX_MEMORY_PER_CHILD': 125000,
       'CLOUDFRONT_DIST': 'd28ic9ywb63ioi',
-      'CORS_URLS': ['micromasters-ci.odl.mit.edu', ocwnext-rc.odl.mit.edu],
+      'CORS_URLS': ['micromasters-ci.odl.mit.edu', 'ocwnext-rc.odl.mit.edu'],
       'DEBUG': False,
       'ELASTICSEARCH_INDEX': 'discussions-ci',
       'ELASTICSEARCH_SHARD_COUNT': 2,
