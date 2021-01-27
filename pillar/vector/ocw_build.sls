@@ -4,7 +4,7 @@ vector:
       webhook_publish_log:
         type: file
         include:
-          - /opt/ocw/logs/webhook_publish.log
+          - /opt/ocw/logs/webhook-publish.log
     transforms:
       webhook_publish_log_parser:
         inputs:
