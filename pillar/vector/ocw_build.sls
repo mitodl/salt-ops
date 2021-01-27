@@ -1,5 +1,7 @@
 vector:
   configuration:
+    api:
+      enabled: true
     sources:
       webhook_publish_log:
         type: file
