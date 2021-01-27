@@ -14,9 +14,9 @@ vector:
         type: regex_parser
         field: message
         patterns:
-          - '^(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) (?P<message>.*)$'
+          - '^(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{9}) (?P<message>.*)$'
         types:
-          timestamp: timestamp|%F %T
+          timestamp: timestamp|%Y-%m-%d %H:%M:%S.%f
         overwrite_target: true
       enriched_webhook_publish_log:
         inputs:
