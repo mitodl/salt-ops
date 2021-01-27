@@ -23,7 +23,8 @@ vector:
           - webhook_publish_log_parser
         type: add_fields
         fields:
-          category: ocw_build
+          labels:
+            - ocw_build
     sinks:
       es_cluster:
         inputs:
