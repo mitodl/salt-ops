@@ -28,9 +28,7 @@ ensure_state_of_systemd_service_file:
   file.managed:
     - name: /etc/systemd/system/vector.service
     - source: salt://vector/files/vector.service
-  {% if salt.grains.get('init') == 'systemd' %}
   cmd.wait:
     - name: systemctl daemon-reload
     - watch:
         - file: ensure_state_of_systemd_service_file
-  {% endif %}
