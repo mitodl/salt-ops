@@ -30,5 +30,5 @@ vector:
         inputs:
           - enriched_webhook_publish_log
         type: elasticsearch
-        host: 'http://operations-elasticsearch.query.consul:9200'
+        endpoint: 'http://operations-elasticsearch.query.consul:9200'
         index: logstash-ocw-build-%Y.%W
