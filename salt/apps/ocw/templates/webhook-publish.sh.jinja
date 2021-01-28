@@ -252,7 +252,7 @@ log_message "Done"
 if [ -e $retry_file ]; then
     log_message "$retry_file exists. Removing $lock_dir and re-running ..."
     rmdir $lock_dir
-    exec $0
+    exec /opt/ocw/webhook-publish.sh
 else
     rmdir $lock_dir
 fi
