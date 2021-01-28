@@ -108,6 +108,7 @@ edx:
         SKIP_EMAIL_VALIDATION: True
       EOX_CORE_SENTRY_INTEGRATION_DSN: __vault__::secret-{{ business_unit }}/{{ environment }}{{ purpose }}/sentry>data>dsn
       EOX_CORE_SENTRY_IGNORED_ERRORS: []
+      XPRO_BASE_URL: '{{ heroku_env }}'
 
     EDXAPP_CMS_ENV_EXTRA:
       ADDL_INSTALLED_APPS:
