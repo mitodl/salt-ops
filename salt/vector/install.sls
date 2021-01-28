@@ -30,5 +30,5 @@ ensure_state_of_systemd_service_file:
     - source: salt://vector/files/vector.service
   cmd.wait:
     - name: systemctl daemon-reload
-    - watch:
+    - onchanges:
         - file: ensure_state_of_systemd_service_file
