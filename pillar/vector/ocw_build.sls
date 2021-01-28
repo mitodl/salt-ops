@@ -32,3 +32,4 @@ vector:
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
         index: logstash-ocw-build-%Y.%W
+        healthcheck: false
