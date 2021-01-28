@@ -41,7 +41,7 @@ export OCW_STUDIO_BASE_URL
 script_option=$1
 
 log_message() {
-    echo `date +'%Y-%m-%d %H:%M:%S'` $1 | tee -a ${LOG_FILE}
+    echo `date +'%Y-%m-%d %H:%M:%S.%N'` $1 | tee -a ${LOG_FILE}
 }
 
 error_and_exit() {
