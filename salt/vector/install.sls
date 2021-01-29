@@ -1,11 +1,11 @@
 ensure_package_prerequisite_installations:
   pkg.installed:
-    pkgs:
-      - debian-keyring
-      - debian-archive-keyring
-      - apt-transport-https
-      - ca-certificates
-      - gnupg
+    - pkgs:
+        - debian-keyring
+        - debian-archive-keyring
+        - apt-transport-https
+        - ca-certificates
+        - gnupg
 
 install_vector_repo_key:
   cmd.run:
