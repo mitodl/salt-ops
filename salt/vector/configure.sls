@@ -2,7 +2,6 @@ include:
   - .service
 
 ensure_absence_of_default_toml_configuration:
-{# We will use YAML, instead. #}
   file.absent:
     - name: /etc/vector/vector.toml
 
