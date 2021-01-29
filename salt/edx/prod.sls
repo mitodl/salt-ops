@@ -71,7 +71,7 @@ place_tls_{{ ext }}_file:
 {# BEGIN states that do not apply to "sandbox" and "devstack" ... #}
 {% if not ('sandbox' in salt.grains.get('roles')) %}
 
-{% set device_name = '{}.{}.efs.us-east-1.amazonaws.com:/'.format(salt.grains.get('ec2:availability_zone', 'us-east-1b'), salt.pillar.get('edx:efs_id')) %}
+{% set device_name = '{}.efs.us-east-1.amazonaws.com:/'.format(salt.pillar.get('edx:efs_id')) %}
 {% set fstab_contents = salt.mount.fstab() %}
 {% for fmount, settings in fstab_contents.items() %}
 {% if fmount == '/mnt/data' and settings.fstype == 'nfs4' and settings.device != device_name %}
