@@ -1,3 +1,8 @@
+# This module is deprecated as of 2021-01-29. Do not modify or update. If any changes
+# are necessary then reimplement using Pulumi code in the mitodl/ol-infrastructure
+# repository.
+# TODO: Migrate this to Pulumi code - TMM 2021-01-29
+
 create_query_template_for_nearest_service:
   http.query:
     - name: 'http://consul.service.consul:8500/v1/query'
