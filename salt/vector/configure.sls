@@ -9,6 +9,6 @@ manage_vector_configuration_file:
   file.managed:
     - name: /etc/vector/vector.yaml
     - contents: |
-        {{ salt.pillar.get('vector:configuration')|yaml(False)|indent(4) }}
+        {{ salt.pillar.get('vector:configuration')|yaml(False)|indent(8) }}
     - onchanges_in:
       - service: vector_service_running
