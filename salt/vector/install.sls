@@ -22,7 +22,7 @@ ensure_vector_package_state:
     - name: vector
     - refresh: True
     - require:
-      - cmd: update_apt_sources_list
+      - pkgrepo: update_apt_sources_list
 
 ensure_state_of_systemd_service_file:
   file.managed:
