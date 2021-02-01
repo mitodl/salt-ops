@@ -193,8 +193,7 @@ heroku:
     OPEN_DISCUSSIONS_COOKIE_NAME: {{ env_data.OPEN_DISCUSSIONS_COOKIE_NAME}}
     OPEN_DISCUSSIONS_CORS_ORIGIN_WHITELIST: '{{ env_data.CORS_URLS|tojson }}'
     CORS_ALLOWED_ORIGINS: '{{ env_data.CORS_URLS|tojson }}'
-    CORS_ALLOWED_ORIGIN_REGEXES:
-      - '^.+ocw-next.netlify.app$'
+    CORS_ALLOWED_ORIGIN_REGEXES: "['^.+ocw-next.netlify.app$']"
     OPEN_DISCUSSIONS_DB_CONN_MAX_AGE: 0
     OPEN_DISCUSSIONS_DB_DISABLE_SSL: True
     OPEN_DISCUSSIONS_DEFAULT_SITE_KEY: micromasters
