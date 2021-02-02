@@ -39,4 +39,3 @@ add_social_auth_https_redirect_to_lms_production_file:
     - name: /edx/app/edxapp/edx-platform/lms/envs/production.py
     - text: SOCIAL_AUTH_REDIRECT_IS_HTTPS = ENV_TOKENS.get('SOCIAL_AUTH_REDIRECT_IS_HTTPS', True)
 {% endif %}
-{% endif %}
