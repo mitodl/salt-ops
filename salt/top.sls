@@ -293,3 +293,6 @@ base:
     - caddy
     - apps.ocw.nextgen_build_install
     - utils.logrotate
+  'roles:vector-aggregator':
+    - match: grain
+    - vector

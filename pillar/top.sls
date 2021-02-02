@@ -379,3 +379,6 @@ base:
     - match: grain
     - logrotate.ocw_build
     - vector.ocw_build
+  'roles:vector-aggregator':
+    - match: grain
+    - vector.aggregator
