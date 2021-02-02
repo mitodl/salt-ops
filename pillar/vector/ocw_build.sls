@@ -1,3 +1,5 @@
+{% set ENVIRONMENT = salt.grains.get('environment') %}
+
 vector:
   configuration:
     api:
@@ -23,13 +25,15 @@ vector:
           - webhook_publish_log_parser
         type: add_fields
         fields:
+          environment: {{ ENVIRONMENT }}
+          roles:
+            - ocw-build
           labels:
-            - ocw_build
+            - ocwbuild.webhook-publish
     sinks:
-      es_cluster:
+      aggregator:
+        type: vector
         inputs:
           - enriched_webhook_publish_log
-        type: elasticsearch
-        endpoint: 'http://operations-elasticsearch.query.consul:9200'
-        index: logstash-ocw-build-%Y.%W
-        healthcheck: false
+        address: CHANGE THIS to equivalnt of log-input-qa.odl.mit.edu
+        healthcheck: true
