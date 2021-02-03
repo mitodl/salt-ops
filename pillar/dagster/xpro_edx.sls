@@ -19,12 +19,11 @@ dagster:
         multiprocess:
           config:
             max_concurrent: {{ salt.grains.get('num_cpus') * 2 }}
-      storage:
-        s3:
+      resources:
+        io_manager:
           config:
             s3_bucket: dagster-{{ environment }}
             s3_prefix: pipeline-storage/xpro_edx
-      resources:
         results_dir:
           config:
             outputs_directory_date_format: '%Y%m%d'

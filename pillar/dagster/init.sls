@@ -9,8 +9,8 @@ dagster:
       - '-w /etc/dagster/workspace.yaml'
   instance_config:
     scheduler:
-      module: dagster_cron.cron_scheduler
-      class: SystemCronScheduler
+      module: dagster.core.scheduler
+      class: DagsterDaemonScheduler
     compute_logs:
       module: dagster_aws.s3.compute_log_manager
       class: S3ComputeLogManager
