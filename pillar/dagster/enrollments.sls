@@ -3,7 +3,7 @@
 
 dagster:
   pipeline_configs:
-    xpro_edx:
+    enrollments:
       execution:
         multiprocess:
           config:
