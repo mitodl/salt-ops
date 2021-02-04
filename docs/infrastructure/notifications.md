@@ -11,11 +11,11 @@
 | elastalert                      |                    | upstream service not responding to Nginx  | devops-alerts          |          | P1       |
 | lecture-capture-machines        | Win Video          | scheduled script                          | odl-video-service-eng  | nightly  |          |
 | instance(s)                     | residential        | mitx_etl                                  | devops-notifications   |          |          |
-| monit                           | residential        | latex2edx                                 | mitx-eng-alerts        |          |          |
-| monit                           | residential        | lms_503                                   | mitx-eng-alerts        |          |          |
-| monit                           | residential        | mongodb_connection                        | mitx-eng-alerts        |          |          |
-| monit                           | residential        | mysql_connection                          | mitx-eng-alerts        |          |          |
-| monit                           | residential        | nginx_cert_expiration                     | devops-notificaitons   |          |          |
+| monit (deprecated)              | residential        | latex2edx                                 |                        |          |          |
+| monit (deprecated)              | residential        | lms_503                                   |                        |          |          |
+| monit (deprecated)              | residential        | mongodb_connection                        |                        |          |          |
+| monit (deprecated)              | residential        | mysql_connection                          |                        |          |          |
+| monit (deprecated)              | residential        | nginx_cert_expiration                     |                        |          |          |
 | datadog                         |                    | high load                                 | devops-alerts          |          | P3       |
 | datadog                         |                    | low mem                                   | devops-alerts          |          | P3       |
 | datadog                         |                    | low disk                                  | devops-alerts          |          | P3       |
