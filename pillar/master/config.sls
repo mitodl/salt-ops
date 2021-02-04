@@ -50,7 +50,6 @@ salt_master:
         - https://github.com/mitodl/bookkeeper-formula
         - https://github.com/mitodl/pulsar-formula
         - https://github.com/mitodl/dremio-formula
-        - https://github.com/mitodl/alcali-formula
         - https://github.com/mitodl/mysql-formula
         - https://github.com/mitodl/caddy-formula
         - https://github.com/mitodl/dagster-formula

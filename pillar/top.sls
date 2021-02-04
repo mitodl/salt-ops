@@ -95,10 +95,6 @@ base:
     - consul.mongodb
   mongodb*production*:
     - datadog.mongodb-integration
-  alcali*:
-    - apps.alcali
-    - nginx
-    - nginx.alcali
   dremio*:
     - dremio
     - nginx
