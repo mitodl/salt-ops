@@ -3,7 +3,7 @@
 
 dagster:
   pipeline_configs:
-    enrollments:
+    mitx_bigquery:
       execution:
         multiprocess:
           config:
