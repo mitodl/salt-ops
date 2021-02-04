@@ -1,3 +1,4 @@
+{% set environment = salt.grains.get('environment', 'data-qa') %}
 {% set bigquery_creds = salt.vault.read('secret-operations/data/institutional-research-bigquery-service-account').data.value %}
 
 dagster:
