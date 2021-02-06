@@ -32,7 +32,6 @@ base:
     - logrotate.kibana
   'G@roles:kibana and G@environment:operations':
     - match: compound
-    - datadog.http-check-integration
     - datadog.elastalert-process-integration
   'roles:master':
     - match: grain
