@@ -298,7 +298,6 @@ base:
     - nginx.mitxpro_redirect
     - nginx.chalkradio_redirect
     - letsencrypt.amps_redirect
-    - beacons.http_status
   'G@roles:backups and P@environment:mitx-(qa|production)':
     - match: compound
     - backups.mitx
