@@ -11,6 +11,7 @@ ocw-next:
   fastly_service_id: __vault__::secret-open-courseware/rc-apps/fastly-api>data>service_id
   course_base_url: https://ocwnext-rc.odl.mit.edu/courses
   ocw_studio_base_url: https://ocw-studio-rc.odl.mit.edu/
+  gtm_account_id: GTM-57BZ8PN
 
 node:
   version: 12.19.0
