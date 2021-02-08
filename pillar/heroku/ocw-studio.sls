@@ -6,6 +6,7 @@
       'app_name': 'ocw-studio-ci',
       'env': 'qa',
       'env_name': 'ci',
+      'GTM_ACCOUNT_ID': 'GTM-5JZ7X78',
       'MAILGUN_SENDER_DOMAIN': 'ocw-ci.mail.odl.mit.edu',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
       'sentry_log_level': 'WARN',
@@ -16,6 +17,7 @@
       'app_name': 'ocw-studio-rc',
       'env': 'qa',
       'env_name': 'rc',
+      'GTM_ACCOUNT_ID': 'GTM-57BZ8PN',
       'MAILGUN_SENDER_DOMAIN': 'ocw-rc.mail.odl.mit.edu',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
       'sentry_log_level': 'WARN',
@@ -26,6 +28,7 @@
       'app_name': 'ocw-studio',
       'env': 'production',
       'env_name': 'production',
+      'GTM_ACCOUNT_ID': 'GTM-MQCSLSQ',
       'MAILGUN_SENDER_DOMAIN': 'ocw.mail.odl.mit.edu',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
       'sentry_log_level': 'WARN',
@@ -53,6 +56,7 @@ heroku:
     {% set rds_endpoint = salt.boto_rds.get_endpoint('ocw-studio-db-applications-{}'.format(env_data.env)) %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/ocw_studio
     {% endif %}
+    GTM_ACCOUNT_ID: {{ env_data.GTM_ACCOUNT_ID }}
     MAILGUN_FROM_EMAIL: 'MIT OCW <no-reply@{{ env_data.MAILGUN_SENDER_DOMAIN }}'
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
