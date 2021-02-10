@@ -131,4 +131,4 @@ install_caddy_webhook_script:
         ocw_course_hugo_starter_git_ref: {{ ocw_next.ocw_course_hugo_starter_git_ref }}
         course_base_url: {{ ocw_next.course_base_url }}
         ocw_studio_base_url: {{ ocw_next.ocw_studio_base_url }}
-        gtm_account_id: {{ gtm_account_id }}
+        gtm_account_id: {{ ocw_next.gtm_account_id }}
