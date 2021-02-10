@@ -99,7 +99,6 @@ django:
     DROPBOX_KEY: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/dropbox_app>data>key
     DROPBOX_TOKEN: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/dropbox_app>data>token
     EDX_BASE_URL: {{ env_data.EDX_BASE_URL }}
-    EDX_ACCESS_TOKEN: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/edx-access-token>data>value
     ENABLE_VIDEO_PERMISSIONS: True
     ET_PIPELINE_ID: {{ env_data.transcode_pipeline_id }}
     ET_PRESET_IDS: 1504127981921-c2jlwt,1504127981867-06dkm6,1504127981819-v44xlx,1504127981769-6cnqhq,1351620000001-200040,1351620000001-200050
@@ -121,6 +120,8 @@ django:
     ODL_VIDEO_LOG_LEVEL: {{ env_data.log_level }}
     ODL_VIDEO_SUPPORT_EMAIL: MIT ODL Video <odl-video-support@mit.edu>
     ODL_VIDEO_LOG_FILE: /var/log/odl-video/django.log
+    OPENEDX_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/openedx-api>data>client_id
+    OPENEDX_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/openedx-api>data>client_secret
     REDIS_URL: redis://ovs-{{ env_data.env_name }}-redis.service.consul:6379/0
     SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/django-secret-key>data>value
     SENTRY_DSN: __vault__::secret-{{ business_unit }}/global/sentry-dsn>data>value
