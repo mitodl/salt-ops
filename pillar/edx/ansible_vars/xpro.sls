@@ -15,7 +15,7 @@
 {% set LMS_DOMAIN = purpose_data.domains.lms %}
 {% set CMS_DOMAIN = purpose_data.domains.cms %}
 {% set edxapp_domains = purpose_data.domains.values()|list %}
-{% do edxapp_domains.append(heroku_xpro_env_domain_mapping[purpose]) }
+{% do edxapp_domains.append(heroku_xpro_env_domain_mapping[purpose]) %}
 
 edx:
   ansible_vars:
