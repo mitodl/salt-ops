@@ -10,7 +10,7 @@
     'xpro-qa': 'rc.xpro.mit.edu',
     'xpro-production': 'xpro.mit.edu'
   } %}
-{% set heroku_env = heroku_xpro_env_domain_mapping['https://{}'.format(purpose)] %}
+{% set heroku_env = 'https://' ~ heroku_xpro_env_domain_mapping[purpose] %}
 {% set purpose_data = env_data.purposes[purpose] %}
 {% set LMS_DOMAIN = purpose_data.domains.lms %}
 {% set CMS_DOMAIN = purpose_data.domains.cms %}
