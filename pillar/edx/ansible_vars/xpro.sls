@@ -5,18 +5,21 @@
 {% set env_data = env_settings.environments[environment] %}
 {% set bucket_prefix = env_data.secret_backends.aws.bucket_prefix %}
 {% set support_email = 'support@xpro.mit.edu' %}
-{% set heroku_xpro_env_url_mapping = {
-    'sandbox': 'https://xpro-ci.odl.mit.edu',
-    'xpro-qa': 'https://xpro-rc.odl.mit.edu',
-    'xpro-production': 'https://xpro.mit.edu'
+{% set heroku_xpro_env_domain_mapping = {
+    'sandbox': 'xpro-ci.odl.mit.edu',
+    'xpro-qa': 'rc.xpro.mit.edu',
+    'xpro-production': 'xpro.mit.edu'
   } %}
-{% set heroku_env = heroku_xpro_env_url_mapping['{}'.format(purpose)] %}
+{% set heroku_env = heroku_xpro_env_domain_mapping['https://{}'.format(purpose)] %}
 {% set purpose_data = env_data.purposes[purpose] %}
 {% set LMS_DOMAIN = purpose_data.domains.lms %}
 {% set CMS_DOMAIN = purpose_data.domains.cms %}
+{% set edxapp_domains = purpose_data.domains.values()|list %}
+{% do edxapp_domains.append(heroku_xpro_env_domain_mapping[purpose]) }
 
 edx:
   ansible_vars:
+    EDXAPP_LOGIN_REDIRECT_WHITELIST: {{ edxapp_domains|tojson }}
     EDXAPP_EDX_API_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/edx-api-key>data>value
     EDXAPP_SESSION_COOKIE_DOMAIN: .xpro.mit.edu
     EDXAPP_SESSION_COOKIE_NAME: {{ environment }}-{{ purpose }}-session
