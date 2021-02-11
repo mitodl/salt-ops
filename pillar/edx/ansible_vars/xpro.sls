@@ -91,8 +91,15 @@ edx:
       COURSE_ABOUT_VISIBILITY_PERMISSION: staff
       COURSE_CATALOG_VISIBILITY_PERMISSION: staff
       COURSE_MODE_DEFAULTS:
-        name: "Audit"
-        slug: "audit"
+        bulk_sku: !!null
+        currency: 'usd'
+        description: !!null
+        expiration_datetime: !!null
+        min_price: 0
+        name: 'Professional'
+        sku: !!null
+        slug: 'no-id-professional'
+        suggested_prices: ''
       EMAIL_USE_DEFAULT_FROM_FOR_BULK: True
       MARKETING_SITE_ROOT: {{ heroku_env }}
       MITXPRO_CORE_REDIRECT_ALLOW_RE_LIST: ["^/(admin|auth|login|logout|register|api|oauth2|user_api|heartbeat)", "^/courses/.*/xblock/.*/handler_noauth/outcome_service_handler"]
