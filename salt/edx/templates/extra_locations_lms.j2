@@ -25,3 +25,11 @@
         try_files $uri @proxy_to_lms_app;
     }
 {% endif %}
+
+location ~ .*\.php {
+    return 404;
+}
+
+location ~ ^/wp-(admin|content) {
+    return 404;
+}
