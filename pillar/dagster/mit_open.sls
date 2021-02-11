@@ -1,5 +1,9 @@
 {% set environment = salt.grains.get('environment', 'data-qa') %}
 {% set bigquery_creds = salt.vault.read('secret-operations/data/institutional-research-bigquery-service-account').data.value %}
+{% set open_env_map = {
+  'data-qa': 'rc-apps',
+  'data-production': 'production-apps'
+} %}
 
 dagster:
   pipeline_configs:
@@ -12,10 +16,10 @@ dagster:
         postgres_db:
           config:
             dbname: opendiscussions
-            host: postgres-opendiscussions.service.production-apps.consul
-            password: __vault__:cache:postgres-{{ environment }}-opendiscussions/creds/readonly>data>password
+            host: postgres-opendiscussions.service.{{ open_env_map[environment] }}.consul
+            password: __vault__:cache:postgres-{{ open_env_map[environment] }}-opendiscussions/creds/readonly>data>password
             port: 5432
-            user: __vault__:cache:postgres-{{ environment }}-opendiscussions/creds/readonly>data>username
+            user: __vault__:cache:postgres-{{ open_env_map[environment] }}-opendiscussions/creds/readonly>data>username
       solids:
         download_run_data:
           config:
