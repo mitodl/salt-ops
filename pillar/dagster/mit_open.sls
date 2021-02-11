@@ -1,5 +1,4 @@
 {% set environment = salt.grains.get('environment', 'data-qa') %}
-{% set bigquery_creds = salt.vault.read('secret-operations/data/institutional-research-bigquery-service-account').data.value %}
 {% set open_env_map = {
   'data-qa': 'rc-apps',
   'data-production': 'production-apps'
