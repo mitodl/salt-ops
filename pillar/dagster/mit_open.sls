@@ -22,9 +22,9 @@ dagster:
       solids:
         download_run_data:
           config:
-            outputs_dir: s3://mitodl-data-lake/enrollments/open/
+            outputs_dir: s3://mitodl-data-lake/mit-open/course-runs/
             file_base: run_data
         download_user_data:
           config:
             file_base: user_data
-            outputs_dir: s3://mitodl-data-lake/enrollments/open/
+            outputs_dir: s3://mitodl-data-lake/mit-open/users/
