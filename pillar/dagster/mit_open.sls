@@ -15,7 +15,7 @@ dagster:
         postgres_db:
           config:
             dbname: opendiscussions
-            host: postgres-opendiscussions.service.{{ open_env_map[environment] }}.consul
+            host: {{ open_env_map[environment] }}-rds-postgresql-opendiscussions.cbnm7ajau6mi.us-east-1.rds.amazonaws.com
             password: __vault__:cache:postgres-{{ open_env_map[environment] }}-opendiscussions/creds/readonly>data>password
             port: 5432
             user: __vault__:cache:postgres-{{ open_env_map[environment] }}-opendiscussions/creds/readonly>data>username
