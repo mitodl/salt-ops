@@ -7,10 +7,6 @@
 dagster:
   pipeline_configs:
     open-discussions:
-      execution:
-        multiprocess:
-          config:
-            max_concurrent: {{ salt.grains.get('num_cpus') * 2 }}
       resources:
         postgres_db:
           config:

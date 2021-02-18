@@ -4,10 +4,6 @@
 dagster:
   pipeline_configs:
     mitx_bigquery:
-      execution:
-        multiprocess:
-          config:
-            max_concurrent: {{ salt.grains.get('num_cpus') * 2 }}
       resources:
         io_manager:
           config:
