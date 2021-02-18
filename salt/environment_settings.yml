@@ -363,11 +363,11 @@ environments:
           edxapp:
             min_number: 6
             max_number: 10
-            type: r5.large
+            type: r5a.large
           edx-worker:
             min_number: 3
             max_number: 7
-            type: t3.large
+            type: t3a.large
           analytics:
             number: 1
             eip: eipalloc-0b5eaa0b85c89d093
