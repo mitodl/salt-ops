@@ -14,17 +14,17 @@ dagster:
       resources:
         postgres_db:
           config:
-            dbname: opendiscussions
-            host: {{ open_env_map[environment] }}-rds-postgresql-opendiscussions.cbnm7ajau6mi.us-east-1.rds.amazonaws.com
-            password: __vault__:cache:postgres-{{ open_env_map[environment] }}-opendiscussions/creds/readonly>data>password
-            port: 5432
-            user: __vault__:cache:postgres-{{ open_env_map[environment] }}-opendiscussions/creds/readonly>data>username
+            postgres_db_name: opendiscussions
+            postgres_hostname: {{ open_env_map[environment] }}-rds-postgresql-opendiscussions.cbnm7ajau6mi.us-east-1.rds.amazonaws.com
+            postgres_password: __vault__:cache:postgres-{{ open_env_map[environment] }}-opendiscussions/creds/readonly>data>password
+            postgres_port: 5432
+            postgres_username: __vault__:cache:postgres-{{ open_env_map[environment] }}-opendiscussions/creds/readonly>data>username
       solids:
-        download_run_data:
+        fetch_open_run_data:
           config:
             outputs_dir: s3://mitodl-data-lake/mit-open/course-runs/
             file_base: run_data
-        download_user_data:
+        fetch_open_user_data:
           config:
             file_base: user_data
             outputs_dir: s3://mitodl-data-lake/mit-open/users/
