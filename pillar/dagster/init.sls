@@ -49,4 +49,4 @@ dagster:
           port: 5432
   pipeline_configs:
   pkg_sources:
-    - ol-data-pipelines: https://ol-eng-artifacts.s3.amazonaws.com/ol-data-pipelines/ol-data-pipelines_0.3.1_amd64.deb
+    - ol-data-pipelines: https://ol-eng-artifacts.s3.amazonaws.com/ol-data-pipelines/ol-data-pipelines_0.3.2_amd64.deb
