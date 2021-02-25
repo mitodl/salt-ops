@@ -1,0 +1,371 @@
+vector:
+  configuration:
+
+    api:
+      enabled: true
+
+    log_schema:
+      timestamp_key: "@timestamp"
+
+    sources:
+
+      {% if 'edx' in salt.grains.get('roles') %}
+
+      nginx_access_log:
+        type: file
+        include:
+          - /edx/var/log/nginx/access.log
+
+      nginx_error_log:
+        type: file
+        include:
+          - /edx/var/log/nginx/error.log
+
+      # This is gone. Changed in Koa?
+      # cms_log:
+      #   type: file
+      #   include:
+      #     - /edx/var/log/cms/edx.log
+
+      cms_stderr_log:
+        type: file
+        include:
+          - /edx/var/log/supervisor/cms-stderr.log
+
+      # This is gone. Changed in Koa?
+      # lms_log:
+      #   type: file
+      #   include:
+      #     - /edx/var/log/lms/edx.log
+
+      lms_stderr_log:
+        type: file
+        include:
+          - /edx/var/log/supervisor/lms-stderr.log
+
+      {% endif %}
+
+      {% if 'edx-worker' in salt.grains.get('roles') %}
+
+      worker_cms_stderr_log:
+        type: file
+        include:
+          - /edx/var/log/supervisor/cms_*stderr.log
+
+      worker_lms_stderr_log:
+        type: file
+        include:
+          - /edx/var/log/supervisor/lms_*stderr.log
+
+      {% endif %}
+
+      tracking_log:
+        type: file
+        include:
+          - /edx/var/log/tracking/tracking.log
+
+      auth_log:
+        type: file
+        include:
+          - /var/log/auth.log
+
+    transforms:
+
+      {% if 'edx' in salt.grains.get('roles') %}
+
+      nginx_access_log_parser:
+        inputs:
+          - nginx_access_log
+        type: logfmt_parser
+        types:
+          time: timestamp|%Y-%m-%d %H:%M:%S%:z
+          client: bytes
+          status: bytes
+          upstream_addr: bytes
+          upstream_status: bytes
+        field: message
+        drop_field: true
+
+      nginx_access_log_sampler:
+        inputs:
+          - nginx_access_log_parser
+        type: sampler
+        rate: 1
+        exclude:
+          type: check_fields
+          "message.contains": "ELB-HealthChecker"
+
+      nginx_access_log_labeler:
+        inputs:
+          - nginx_access_log_sampler
+        type: add_fields
+        fields:
+          labels:
+            - nginx_access
+            - edx_nginx_access
+
+      nginx_access_log_timestamp_renamer:
+        inputs:
+          - nginx_access_log_labeler
+        type: rename_fields
+        fields:
+          time: "@timestamp"
+
+      nginx_error_log_parser:
+        inputs:
+          - nginx_error_log
+        type: regex_parser
+        field: message
+        overwrite_target: true
+        patterns:
+          - '^(?P<time>\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2}) \[(?P<log_level>\w+)\] \S+ (?P<message>.*)$'
+        types:
+          time: timestamp|%Y/%m/%d %H:%M:%S
+
+      nginx_error_log_labeler:
+        inputs:
+          - nginx_error_log_parser
+        type: add_fields
+        fields:
+          labels:
+            - nginx_error
+            - edx_nginx_error
+
+      nginx_error_log_timestamp_renamer:
+        inputs:
+          - nginx_error_log_labeler
+        type: rename_fields
+        fields:
+          time: "@timestamp"
+
+      # the following transform has to parse lines with varying formats.
+      # examples:
+      # 1)
+      # [2021-01-27 19:03:16 +0000] [894] [INFO] Listening at: http://127.0.0.1:8010 (894)
+      #
+      # 2) (we ignore the 2nd line)
+      # 2021-01-28 18:52:48,256 ERROR 52258 [edx_proctoring.api] [user 8] [ip 208.127.88.219] api.py:341 - Cannot find the proctored exam in this course course-v1:MITx+mkd.2021_1+2021_Spring with content_id: block-v1:MITx+mkd.2021_1+2021_Spring+type@sequential+block@7a1ecea654fb49699dde8a40a3a72e3d
+      # NoneType: None
+      #
+      cms_stderr_log_parser:
+        inputs:
+          - cms_stderr_log
+        type: regex_parser
+        field: message
+        overwrite_target: true
+        patterns:
+          - '\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) [+\-]\d{4}\] \[(?P<pid>\d+)\] \[(?P<log_level>[A-Z]+)\] (?P<message>.*)'
+          - '(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} (?P<log_level>[A-Z]+) (?P<pid>\d+) (?P<message>.*)'
+        types:
+          time: timestamp|%Y-%m-%d %H:%M:%S
+          pid: bytes
+
+      cms_stderr_log_labeler:
+        inputs:
+          - cms_stderr_log_parser
+        type: add_fields
+        fields:
+          labels:
+            - edx_cms_stderr
+
+      cms_stderr_timestamp_renamer:
+        inputs:
+          - cms_stderr_log_labeler
+        type: rename_fields
+        fields:
+          time: "@timestamp"
+
+      cms_stderr_sampler:
+        inputs:
+          - cms_stderr_timestamp_renamer
+        type: sampler
+        rate: 1
+        exclude:
+          type: check_fields
+          "message.starts_with": "GET"
+
+      # the following transform also has to process lines with varying formats.
+      # examples:
+      # 1)
+      #     [2021-02-25 19:09:22 +0000] [2056637] [INFO] POST /search/course_discovery/
+      # 2)
+      #     2021-02-25 19:09:22,728 WARNING 2056637 [django.security.csrf] [user None] [ip 127.0.0.1] log.py:222 - Forbidden (CSRF cookie not set.): /search/course_discovery/
+      lms_stderr_log_parser:
+        inputs:
+          - lms_stderr_log
+        type: regex_parser
+        field: message
+        overwrite_target: true
+        patterns:
+          - '\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) [+\-]\d{4}\] \[(?P<pid>\d+)\] \[(?P<log_level>[A-Z]+)\] (?P<message>.*)'
+          - '(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} (?P<log_level>[A-Z]+) (?P<pid>\d+) (?P<message>.*)'
+        types:
+          time: timestamp|%Y-%m-%d %H:%M:%S
+          pid: bytes
+
+      lms_stderr_log_labeler:
+        inputs:
+          - lms_stderr_log_parser
+        type: add_fields
+        fields:
+          labels:
+            - edx_lms_stderr
+
+      lms_stderr_timestamp_renamer:
+        inputs:
+          - lms_stderr_log_labeler
+        type: rename_fields
+        fields:
+          time: "@timestamp"
+
+      lms_stderr_sampler:
+        inputs:
+          - lms_stderr_timestamp_renamer
+        type: sampler
+        rate: 1
+        exclude:
+          type: check_fields
+          "message.starts_with": "GET"
+
+      {% endif %}
+
+      {% if 'edx-worker' in salt.grains.get('roles') %}
+
+      # edX worker's "cms" supervisor stderr log,
+      # e.g. /edx/var/log/supervisor/cms_default_4-stderr.log
+      # is formatted as in these examples:
+      #
+      # [2021-02-25 16:29:59,191: ERROR/ForkPoolWorker-4] git_auto_export.tasks.async_export_to_git[b6320d3b-d208-4ea4-ae53-4d0fbedc247c]: Failed async course content export to git (course id: course-v1:MITx+8.011r_8+2021_Spring): Unable to push changes.  This is usually because the remote repository cannot be contacted
+      # [2021-02-25 18:05:02,524: INFO/MainProcess] Received task: lms.djangoapps.discussion.tasks.update_discussions_map[9413651f-6863-4f62-bc61-85f565515568]  ETA:[2021-02-25 18:05:32.505810+00:00]
+      # [2021-02-25 16:31:14,432: ERROR/ForkPoolWorker-4] Error running git push command: b"To github.mit.edu:MITx-Studio2LMS/content-mit-8011r_8-2021_Spring.git\n ! [rejected]  [...]
+      #
+      worker_cms_stderr_log_parser:
+        inputs:
+          - worker_cms_stderr_log
+        type: regex_parser
+        field: message
+        overwrite_target: true
+        patterns:
+          - '\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}): (?P<log_level>[A-Z]+)/(?P<process>.*?)\] (?P<message>.*)'
+        types:
+          time: timestamp|%Y-%m-%d %H:%M:%S,%3f
+
+      # edX worker's "lms" supervisor stderr log,
+      # e.g. /edx/var/log/supervisor/lms_default_4-stderr.log
+      # is formatted as in this example:
+      #
+      # 2021-02-25 19:45:01,275 WARNING 1403559 [edx_toggles.toggles.internal.waffle] [user None] [ip None] waffle.py:207 - Grades: Flag 'grades.enforce_freeze_grade_after_course_end' accessed without a request
+      #
+      worker_lms_stderr_log_parser:
+        inputs:
+          - worker_lms_stderr_log
+        type: regex_parser
+        field: message
+        overwrite_target: true
+        patterns:
+          - '(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) (?P<log_level>[A-Z]+) (?P<pid>\d+) \[(?P<module>.*?)\] \[user (?P<user>.*?)\] \[ip (?P<client_ip>.*?)\] (?P<code_loc>.*?) - (?P<message>.*)'
+        types:
+          time: timestamp|%Y-%m-%d %H:%M:%S,%3f
+
+      worker_stderr_log_labeler:
+        inputs:
+          - worker_cms_stderr_log_parser
+          - worker_lms_stderr_log_parser
+        type: add_fields
+        fields:
+          labels:
+            - edx_worker
+
+      worker_stderr_timestamp_renamer:
+        inputs:
+          - worker_stderr_log_labeler
+        type: rename_fields
+        fields:
+          time: "@timestamp"
+
+      {% endif %}
+
+      tracking_log_parser:
+        inputs:
+          - tracking_log
+        type: json_parser
+        field: message
+        drop_field: true
+
+      tracking_log_timestamp_coercer:
+        inputs:
+          - tracking_log_parser
+        type: coercer
+        types:
+          time: timestamp|%Y-%m-%dT%H:%M:%S%.6f%:z
+
+      tracking_log_timestamp_renamer:
+        inputs:
+          - tracking_log_timestamp_coercer
+        type: rename_fields
+        fields:
+          time: "@timestamp"
+
+      auth_log_parser:
+        inputs:
+          - auth_log
+        type: regex_parser
+        field: message
+        overwrite_target: true
+        patterns:
+          - '^(?P<time>\w{3} \d{2} \d{2}:\d{2}:\d{2}) \S+ (?P<service>.*?)\[(?P<pid>\d+)\]: (?P<message>.*)'
+        fields:
+          time: timestamp|%b %d %H:%M:%S
+
+      auth_log_sampler:
+        inputs:
+          - auth_log_parser
+        type: sampler
+        rate: 1
+        exclude:
+          type: check_fields
+          "message.contains": "CRON"
+
+    sinks:
+
+      {% if 'edx' in salt.grains.get('roles') %}
+
+      elasticsearch_nginx_access:
+        inputs:
+          - nginx_access_log_timestamp_renamer
+        type: elasticsearch
+        endpoint: 'http://operations-elasticsearch.query.consul:9200'
+        index: mitx-nginx-access-%Y.%W
+        healthcheck: false
+
+      elasticsearch_nginx_error:
+        inputs:
+          - nginx_error_log_timestamp_renamer
+        type: elasticsearch
+        endpoint: 'http://operations-elasticsearch.query.consul:9200'
+        index: mitx-nginx-error-%Y.%W
+        healthcheck: false
+
+      {% endif %}
+
+      elasticsearch_lms_cms_worker:
+        inputs:
+          {% if 'edx' in salt.grains.get('roles') %}
+          - cms_stderr_sampler
+          - lms_stderr_sampler
+          {% endif %}
+          {% if 'edx-worker' in salt.grains.get('roles') %}
+          - worker_stderr_timestamp_renamer
+          {% endif %}
+        type: elasticsearch
+        endpoint: 'http://operations-elasticsearch.query.consul:9200'
+        index: mitx-%Y.%W
+        healthcheck: false
+
+      elasticsearch_tracking:
+        inputs:
+          - tracking_log_timestamp_renamer
+        type: elasticsearch
+        endpoint: 'http://operations-elasticsearch.query.consul:9200'
+        index: mitx-tracking-%Y.%W
+        healthcheck: false
