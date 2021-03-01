@@ -43,6 +43,11 @@ vector:
         include:
           - /edx/var/log/supervisor/lms-stderr.log
 
+      gitreload_log:
+        type: file
+        include:
+          - /edx/var/log/gr/gitreload.log
+
       {% endif %}
 
       {% if 'edx-worker' in salt.grains.get('roles') %}
@@ -227,6 +232,35 @@ vector:
           type: check_fields
           "message.starts_with": "GET"
 
+      # gitreload log sample:
+      # 2021-02-28 19:54:48,495 DEBUG 2894216 [gitreload] web.py:64 - ip-10-7-3-149- Received push event from github
+      #
+      gitreload_parser:
+        inputs:
+          - gitreload_log
+        type: regex_parser
+        field: message
+        overwrite_target: true
+        patterns:
+          - '(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} (?P<log_level>[A-Z]+) (?P<pid>\d+) \[.*?\] (?P<code_loc>\S+) - (?P<host>.+?)- (?P<message>.*)'
+        types:
+          time: timestamp|%Y-%m-%d %H:%M:%S
+
+      gitreload_log_labeler:
+        inputs:
+          - gitreload_parser
+        type: add_fields
+        fields:
+          labels:
+            - edx_gitreload
+
+      gitreload_timestamp_renamer:
+        inputs:
+          - gitreload_log_labeler
+        type: rename_fields
+        fields:
+          time: "@timestamp"
+
       {% endif %}
 
       {% if 'edx-worker' in salt.grains.get('roles') %}
@@ -344,6 +378,14 @@ vector:
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
         index: logs-mitx-nginx-error-%Y.%W
+        healthcheck: false
+
+      elasticsearch_gitreload:
+        inputs:
+          - gitreload_timestamp_renamer
+        type: elasticsearch
+        endpoint: 'http://operations-elasticsearch.query.consul:9200'
+        index: logs-mitx-gitreload-%Y.%W
         healthcheck: false
 
       {% endif %}
