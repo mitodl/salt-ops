@@ -359,7 +359,7 @@ vector:
           {% endif %}
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
-        index: mitx-%Y.%W
+        index: logs-mitx-stderr-%Y.%W
         healthcheck: false
 
       elasticsearch_tracking:
@@ -367,5 +367,5 @@ vector:
           - tracking_log_timestamp_renamer
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
-        index: mitx-tracking-%Y.%W
+        index: logs-mitx-tracking-%Y.%W
         healthcheck: false
