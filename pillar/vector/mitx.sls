@@ -335,7 +335,7 @@ vector:
           - nginx_access_log_timestamp_renamer
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
-        index: mitx-nginx-access-%Y.%W
+        index: logs-mitx-nginx-access-%Y.%W
         healthcheck: false
 
       elasticsearch_nginx_error:
@@ -343,7 +343,7 @@ vector:
           - nginx_error_log_timestamp_renamer
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
-        index: mitx-nginx-error-%Y.%W
+        index: logs-mitx-nginx-error-%Y.%W
         healthcheck: false
 
       {% endif %}
