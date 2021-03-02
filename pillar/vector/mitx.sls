@@ -120,6 +120,7 @@ vector:
         inputs:
           - nginx_error_log
         type: regex_parser
+        drop_failed: true
         field: message
         overwrite_target: true
         patterns:
@@ -156,6 +157,7 @@ vector:
         inputs:
           - cms_stderr_log
         type: regex_parser
+        drop_failed: true
         field: message
         overwrite_target: true
         patterns:
@@ -199,6 +201,7 @@ vector:
         inputs:
           - lms_stderr_log
         type: regex_parser
+        drop_failed: true
         field: message
         overwrite_target: true
         patterns:
@@ -239,6 +242,7 @@ vector:
         inputs:
           - gitreload_log
         type: regex_parser
+        drop_failed: true
         field: message
         overwrite_target: true
         patterns:
@@ -277,6 +281,7 @@ vector:
         inputs:
           - worker_cms_stderr_log
         type: regex_parser
+        drop_failed: true
         field: message
         overwrite_target: true
         patterns:
@@ -294,6 +299,7 @@ vector:
         inputs:
           - worker_lms_stderr_log
         type: regex_parser
+        drop_failed: true
         field: message
         overwrite_target: true
         patterns:
@@ -344,6 +350,7 @@ vector:
         inputs:
           - auth_log
         type: regex_parser
+        drop_failed: true
         field: message
         overwrite_target: true
         patterns:
