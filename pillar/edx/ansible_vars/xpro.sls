@@ -101,6 +101,7 @@ edx:
         slug: 'no-id-professional'
         suggested_prices: ''
       EMAIL_USE_DEFAULT_FROM_FOR_BULK: True
+      LOGOUT_REDIRECT_URL: {{ heroku_env }}
       MARKETING_SITE_ROOT: {{ heroku_env }}
       MITXPRO_CORE_REDIRECT_ALLOW_RE_LIST: ["^/(admin|auth|login|logout|register|api|oauth2|user_api|heartbeat)", "^/courses/.*/xblock/.*/handler_noauth/outcome_service_handler"]
       THIRD_PARTY_AUTH_BACKENDS: ["social_auth_mitxpro.backends.MITxProOAuth2"]
@@ -116,7 +117,7 @@ edx:
         ENABLE_THIRD_PARTY_AUTH: True
         ALLOW_PUBLIC_ACCOUNT_CREATION: True
         SKIP_EMAIL_VALIDATION: True
-      EOX_CORE_SENTRY_INTEGRATION_DSN: __vault__::secret-{{ business_unit }}/{{ environment }}{{ purpose }}/sentry>data>dsn
+      EOX_CORE_SENTRY_INTEGRATION_DSN: __vault__::secret-{{ business_unit }}/{{ environment }}/{{ purpose }}/sentry>data>dsn
       EOX_CORE_SENTRY_IGNORED_ERRORS: []
       XPRO_BASE_URL: '{{ heroku_env }}'
 
