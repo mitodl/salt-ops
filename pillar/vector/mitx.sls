@@ -31,6 +31,11 @@ vector:
         type: file
         include:
           - /edx/var/log/supervisor/cms-stderr.log
+        multiline:
+          start_pattern: '^\[?\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          mode: halt_before
+          condition_pattern: '^\[?\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          timeout_ms: 500
 
       # This is gone. Changed in Koa?
       # lms_log:
@@ -42,6 +47,11 @@ vector:
         type: file
         include:
           - /edx/var/log/supervisor/lms-stderr.log
+        multiline:
+          start_pattern: '^\[?\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          mode: halt_before
+          condition_pattern: '^\[?\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          timeout_ms: 500
 
       gitreload_log:
         type: file
@@ -149,7 +159,7 @@ vector:
       # 1)
       # [2021-01-27 19:03:16 +0000] [894] [INFO] Listening at: http://127.0.0.1:8010 (894)
       #
-      # 2) (we ignore the 2nd line)
+      # 2)
       # 2021-01-28 18:52:48,256 ERROR 52258 [edx_proctoring.api] [user 8] [ip 208.127.88.219] api.py:341 - Cannot find the proctored exam in this course course-v1:MITx+mkd.2021_1+2021_Spring with content_id: block-v1:MITx+mkd.2021_1+2021_Spring+type@sequential+block@7a1ecea654fb49699dde8a40a3a72e3d
       # NoneType: None
       #
@@ -161,8 +171,8 @@ vector:
         field: message
         overwrite_target: true
         patterns:
-          - '\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) [+\-]\d{4}\] \[(?P<pid>\d+)\] \[(?P<log_level>[A-Z]+)\] (?P<message>.*)'
-          - '(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} (?P<log_level>[A-Z]+) (?P<pid>\d+) (?P<message>.*)'
+          - '(?ms)^\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) [+\-]\d{4}\] \[(?P<pid>\d+)\] \[(?P<log_level>[A-Z]+)\] (?P<message>.*)'
+          - '(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} (?P<log_level>[A-Z]+) (?P<pid>\d+) (?P<message>.*)'
         types:
           time: timestamp|%Y-%m-%d %H:%M:%S
           pid: bytes
@@ -205,8 +215,8 @@ vector:
         field: message
         overwrite_target: true
         patterns:
-          - '\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) [+\-]\d{4}\] \[(?P<pid>\d+)\] \[(?P<log_level>[A-Z]+)\] (?P<message>.*)'
-          - '(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} (?P<log_level>[A-Z]+) (?P<pid>\d+) (?P<message>.*)'
+          - '(?ms)^\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) [+\-]\d{4}\] \[(?P<pid>\d+)\] \[(?P<log_level>[A-Z]+)\] (?P<message>.*)'
+          - '(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} (?P<log_level>\S+) (?P<pid>\d+) \[(?P<namespace>.*?)\] \[user (?P<user>.*?)\] \[ip (?P<client_ip>.*?)\] (?P<file>.*?):(?P<line_number>\d+) - (?P<message>.*)'
         types:
           time: timestamp|%Y-%m-%d %H:%M:%S
           pid: bytes
