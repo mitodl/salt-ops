@@ -66,11 +66,21 @@ vector:
         type: file
         include:
           - /edx/var/log/supervisor/cms_*stderr.log
+        multiline:
+          start_pattern: '^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          mode: halt_before
+          condition_pattern: '^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          timeout_ms: 500
 
       worker_lms_stderr_log:
         type: file
         include:
           - /edx/var/log/supervisor/lms_*stderr.log
+        multiline:
+          start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          mode: halt_before
+          condition_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          timeout_ms: 500
 
       {% endif %}
 
@@ -295,7 +305,7 @@ vector:
         field: message
         overwrite_target: true
         patterns:
-          - '\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}): (?P<log_level>[A-Z]+)/(?P<process>.*?)\] (?P<message>.*)'
+          - '(?ms)^\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}): (?P<log_level>[A-Z]+)/(?P<process>.*?)\] (?P<message>.*)'
         types:
           time: timestamp|%Y-%m-%d %H:%M:%S,%3f
 
@@ -313,7 +323,7 @@ vector:
         field: message
         overwrite_target: true
         patterns:
-          - '(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) (?P<log_level>[A-Z]+) (?P<pid>\d+) \[(?P<namespace>.*?)\] \[user (?P<user>.*?)\] \[ip (?P<client_ip>.*?)\] (?P<filename>.+?):(?P<line_number>\d+) - (?P<message>.*)'
+          - '(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) (?P<log_level>[A-Z]+) (?P<pid>\d+) \[(?P<namespace>.*?)\] \[user (?P<user>.*?)\] \[ip (?P<client_ip>.*?)\] (?P<filename>.+?):(?P<line_number>\d+) - (?P<message>.*)'
         types:
           time: timestamp|%Y-%m-%d %H:%M:%S,%3f
 
