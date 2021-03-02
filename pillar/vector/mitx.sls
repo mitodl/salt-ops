@@ -242,7 +242,7 @@ vector:
         field: message
         overwrite_target: true
         patterns:
-          - '(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} (?P<log_level>[A-Z]+) (?P<pid>\d+) \[.*?\] (?P<code_loc>\S+) - (?P<host>.+?)- (?P<message>.*)'
+          - '(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} (?P<log_level>[A-Z]+) (?P<pid>\d+) \[.*?\] (?P<filename>.+?):(?P<line_number>\d+) - (?P<host>.+?)- (?P<message>.*)'
         types:
           time: timestamp|%Y-%m-%d %H:%M:%S
 
@@ -297,7 +297,7 @@ vector:
         field: message
         overwrite_target: true
         patterns:
-          - '(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) (?P<log_level>[A-Z]+) (?P<pid>\d+) \[(?P<module>.*?)\] \[user (?P<user>.*?)\] \[ip (?P<client_ip>.*?)\] (?P<code_loc>.*?) - (?P<message>.*)'
+          - '(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) (?P<log_level>[A-Z]+) (?P<pid>\d+) \[(?P<namespace>.*?)\] \[user (?P<user>.*?)\] \[ip (?P<client_ip>.*?)\] (?P<filename>.+?):(?P<line_number>\d+) - (?P<message>.*)'
         types:
           time: timestamp|%Y-%m-%d %H:%M:%S,%3f
 
