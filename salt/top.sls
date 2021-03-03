@@ -194,9 +194,7 @@ base:
     - edx.patch_nginx
     - edx.hacks
     - edx.tests
-    - fluentd
-    - fluentd.plugins
-    - fluentd.config
+    - vector
   'G@roles:edx and P@environment:mitx-(qa|production)':
     - match: compound
     - edx.gitreload
