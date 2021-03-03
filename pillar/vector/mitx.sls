@@ -414,6 +414,14 @@ vector:
         fields:
           time: "@timestamp"
 
+      tracking_log_labeler:
+        inputs:
+          - tracking_log_timestamp_renamer
+        type: add_fields
+        fields:
+          labels:
+            - edx_tracking
+
       auth_log_parser:
         inputs:
           - auth_log
@@ -481,7 +489,7 @@ vector:
 
       elasticsearch_tracking:
         inputs:
-          - tracking_log_timestamp_renamer
+          - tracking_log_labeler
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
         index: logs-mitx-tracking-%Y.%W
