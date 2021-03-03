@@ -113,7 +113,7 @@ vector:
           - nginx_access_log
         type: logfmt_parser
         types:
-          time: timestamp|%Y-%m-%d %H:%M:%S%:z
+          time: timestamp|%F %T%:z
           client: bytes
           status: bytes
           upstream_addr: bytes
@@ -156,7 +156,7 @@ vector:
         patterns:
           - '^(?P<time>\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2}) \[(?P<log_level>\w+)\] \S+ (?P<message>.*)$'
         types:
-          time: timestamp|%Y/%m/%d %H:%M:%S
+          time: timestamp|%Y/%m/%d %T
 
       nginx_error_log_labeler:
         inputs:
@@ -194,7 +194,7 @@ vector:
           - '(?ms)^\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) [+\-]\d{4}\] \[(?P<pid>\d+)\] \[(?P<log_level>[A-Z]+)\] (?P<message>.*)'
           - '(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} (?P<log_level>[A-Z]+) (?P<pid>\d+) (?P<message>.*)'
         types:
-          time: timestamp|%Y-%m-%d %H:%M:%S
+          time: timestamp|%F %T
           pid: bytes
 
       cms_stderr_log_labeler:
@@ -238,7 +238,7 @@ vector:
           - '(?ms)^\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) [+\-]\d{4}\] \[(?P<pid>\d+)\] \[(?P<log_level>[A-Z]+)\] (?P<message>.*)'
           - '(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} (?P<log_level>\S+) (?P<pid>\d+) \[(?P<namespace>.*?)\] \[user (?P<user>.*?)\] \[ip (?P<client_ip>.*?)\] (?P<file>.*?):(?P<line_number>\d+) - (?P<message>.*)'
         types:
-          time: timestamp|%Y-%m-%d %H:%M:%S
+          time: timestamp|%F %T
           pid: bytes
 
       lms_stderr_log_labeler:
@@ -278,7 +278,7 @@ vector:
         patterns:
           - '(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} (?P<log_level>[A-Z]+) (?P<pid>\d+) \[.*?\] (?P<filename>.+?):(?P<line_number>\d+) - (?P<host>.+?)- (?P<message>.*)'
         types:
-          time: timestamp|%Y-%m-%d %H:%M:%S
+          time: timestamp|%F %T
 
       gitreload_log_labeler:
         inputs:
@@ -353,7 +353,7 @@ vector:
         patterns:
           - '(?ms)^\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}): (?P<log_level>[A-Z]+)/(?P<process>.*?)\] (?P<message>.*)'
         types:
-          time: timestamp|%Y-%m-%d %H:%M:%S,%3f
+          time: timestamp|%F %T,%3f
 
       # edX worker's "lms" supervisor stderr log,
       # e.g. /edx/var/log/supervisor/lms_default_4-stderr.log
@@ -371,7 +371,7 @@ vector:
         patterns:
           - '(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) (?P<log_level>[A-Z]+) (?P<pid>\d+) \[(?P<namespace>.*?)\] \[user (?P<user>.*?)\] \[ip (?P<client_ip>.*?)\] (?P<filename>.+?):(?P<line_number>\d+) - (?P<message>.*)'
         types:
-          time: timestamp|%Y-%m-%d %H:%M:%S,%3f
+          time: timestamp|%F %T,%3f
 
       worker_stderr_log_labeler:
         inputs:
@@ -403,7 +403,7 @@ vector:
           - tracking_log_parser
         type: coercer
         types:
-          time: timestamp|%Y-%m-%dT%H:%M:%S%.6f%:z
+          time: timestamp|%FT%T%.6f%:z
 
       tracking_log_timestamp_renamer:
         inputs:
@@ -422,7 +422,7 @@ vector:
         patterns:
           - '^(?P<time>\w{3} \d{2} \d{2}:\d{2}:\d{2}) \S+ (?P<service>.*?)\[(?P<pid>\d+)\]: (?P<message>.*)'
         fields:
-          time: timestamp|%b %d %H:%M:%S
+          time: timestamp|%b %d %T
 
       auth_log_sampler:
         inputs:
