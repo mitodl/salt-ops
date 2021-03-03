@@ -124,9 +124,8 @@ vector:
       nginx_access_log_sampler:
         inputs:
           - nginx_access_log_parser
-        type: sampler
-        rate: 1
-        exclude:
+        type: filter
+        condition:
           type: check_fields
           "message.contains": "ELB-HealthChecker"
 
@@ -200,9 +199,8 @@ vector:
       cms_stderr_sampler:
         inputs:
           - cms_stderr_log_parser
-        type: sampler
-        rate: 1
-        exclude:
+        type: filter
+        condition:
           type: check_fields
           "message.starts_with": "GET"
 
@@ -245,9 +243,8 @@ vector:
       lms_stderr_sampler:
         inputs:
           - lms_stderr_log_parser
-        type: sampler
-        rate: 1
-        exclude:
+        type: filter
+        condition:
           type: check_fields
           "message.starts_with": "GET"
 
@@ -314,9 +311,8 @@ vector:
       xqueue_stderr_log_sampler:
         inputs:
           - xqueue_stderr_log_parser
-        type: sampler
-        rate: 1
-        exclude:
+        type: filter
+        condition:
           type: check_fields
           "message.regex": '^(GET|POST)'
 
@@ -434,9 +430,8 @@ vector:
       auth_log_sampler:
         inputs:
           - auth_log_parser
-        type: sampler
-        rate: 1
-        exclude:
+        type: filter
+        condition:
           type: check_fields
           "message.contains": "CRON"
 
