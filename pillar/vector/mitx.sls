@@ -240,6 +240,7 @@ vector:
         types:
           time: timestamp|%F %T
           pid: bytes
+          line_number: bytes
 
       lms_stderr_sampler:
         inputs:
@@ -279,6 +280,8 @@ vector:
           - '(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} (?P<log_level>[A-Z]+) (?P<pid>\d+) \[.*?\] (?P<filename>.+?):(?P<line_number>\d+) - (?P<host>.+?)- (?P<message>.*)'
         types:
           time: timestamp|%F %T
+          pid: bytes
+          line_number: bytes
 
       gitreload_log_labeler:
         inputs:
@@ -306,6 +309,7 @@ vector:
           - '(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) \[(?P<pid>.*?)\] \[(?P<log_level>).*?\] (?P<message>.*)'
         types:
           time: timestamp|%F %T
+          pid: bytes
 
       xqueue_stderr_log_sampler:
         inputs:
@@ -372,6 +376,8 @@ vector:
           - '(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) (?P<log_level>[A-Z]+) (?P<pid>\d+) \[(?P<namespace>.*?)\] \[user (?P<user>.*?)\] \[ip (?P<client_ip>.*?)\] (?P<filename>.+?):(?P<line_number>\d+) - (?P<message>.*)'
         types:
           time: timestamp|%F %T,%3f
+          pid: bytes
+          line_number: bytes
 
       worker_stderr_log_labeler:
         inputs:
@@ -423,6 +429,7 @@ vector:
           - '^(?P<time>\w{3} \d{2} \d{2}:\d{2}:\d{2}) \S+ (?P<service>.*?)\[(?P<pid>\d+)\]: (?P<message>.*)'
         fields:
           time: timestamp|%b %d %T
+          pid: bytes
 
       auth_log_sampler:
         inputs:
