@@ -58,6 +58,16 @@ vector:
         include:
           - /edx/var/log/gr/gitreload.log
 
+      xqueue_stderr_log:
+        type: file
+        include:
+          - /edx/var/log/supervisor/xqueue-stderr.log
+        multiline:
+          start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          mode: halt_before
+          condition_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          timeout_ms: 500
+
       {% endif %}
 
       {% if 'edx-worker' in salt.grains.get('roles') %}
@@ -285,6 +295,42 @@ vector:
         fields:
           time: "@timestamp"
 
+      xqueue_stderr_log_parser:
+        inputs:
+          - xqueue_stderr_log
+        type: regex_parser
+        drop_failed: true
+        field: message
+        overwrite_target: true
+        patterns:
+          - '(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) \[(?P<pid>.*?)\] \[(?P<log_level>).*?\] (?P<message>.*)'
+        types:
+          time: timestamp|%F %T
+
+      xqueue_stderr_log_sampler:
+        inputs:
+          - xqueue_stderr_log_parser
+        type: sampler
+        rate: 1
+        exclude:
+          type: check_fields
+          "message.regex": '^(GET|POST)'
+
+      xqueue_stderr_log_labeler:
+        inputs:
+          - xqueue_stderr_log_sampler
+        type: add_fields
+        fields:
+          labels:
+            - edx_xqueue
+
+      xqueue_stderr_timestamp_renamer:
+        inputs:
+          - xqueue_stderr_log_labeler
+        type: rename_fields
+        fields:
+          time: "@timestamp"
+
       {% endif %}
 
       {% if 'edx-worker' in salt.grains.get('roles') %}
@@ -422,6 +468,7 @@ vector:
           {% if 'edx' in salt.grains.get('roles') %}
           - cms_stderr_sampler
           - lms_stderr_sampler
+          - xqueue_stderr_timestamp_renamer
           {% endif %}
           {% if 'edx-worker' in salt.grains.get('roles') %}
           - worker_stderr_timestamp_renamer
