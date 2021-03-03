@@ -1,0 +1,18 @@
+{% set vector = salt['grains.filter_by']({
+    'Debian': {
+        'pkg_dependencies': [
+            'debian-keyring',
+            'debian-archive-keyring',
+            'apt-transport-https',
+            'ca-certificates',
+            'gnupg'
+        ]
+    },
+    'Ubuntu': {
+        'pkg_dependencies': [
+            'apt-transport-https',
+            'ca-certificates',
+            'gnupg'
+        ]
+    }
+}, grain='os', merge=salt.pillar.get('vector:overrides'), base='default') %}

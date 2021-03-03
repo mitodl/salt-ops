@@ -1,11 +1,10 @@
+{% from "vector/map.jinja" import vector with context %}
+
+
 ensure_package_prerequisite_installations:
   pkg.installed:
-    - pkgs:
-        - debian-keyring
-        - debian-archive-keyring
-        - apt-transport-https
-        - ca-certificates
-        - gnupg
+    - pkgs: {{ vector.pkg_dependencies }}
+    - update: true
 
 install_vector_repo_key:
   cmd.run:
@@ -14,7 +13,7 @@ install_vector_repo_key:
 update_apt_sources_list:
   pkgrepo.managed:
     - humanname: Vector
-    - name: deb https://repositories.timber.io/public/vector/deb/debian {{ salt.grains.get('oscodename', 'stable') }} main
+    - name: deb https://repositories.timber.io/public/vector/deb/{{ salt.grains.get('os', 'Debian')|lower }} {{ salt.grains.get('oscodename', 'stable') }} main
     - refresh_db: True
 
 ensure_vector_package_state:
