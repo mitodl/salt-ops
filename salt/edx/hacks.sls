@@ -39,3 +39,15 @@ add_social_auth_https_redirect_to_lms_production_file:
     - name: /edx/app/edxapp/edx-platform/lms/envs/production.py
     - text: SOCIAL_AUTH_REDIRECT_IS_HTTPS = ENV_TOKENS.get('SOCIAL_AUTH_REDIRECT_IS_HTTPS', True)
 {% endif %}
+
+{% if 'residential' in salt.grains.get('purpose') and 'edx-worker' in salt.grains.get('roles') %}
+add_cron_task_for_saml_metadata_refresh:
+  cron.present:
+    - user: edxapp
+    - identifier: edx-saml-metadata-refresh
+    - comment: Periodically pull the SAML metadata so that it doesn't expire and break edX login
+    - name: . /edx/app/edxapp/edxapp_env && /edx/app/edxapp/venvs/edxapp/bin/python /edx/app/edxapp/edx-platform/manage.py lms saml --pull
+    - minute: random
+    - hour: random
+    - dayweek: random
+{% endif %}
