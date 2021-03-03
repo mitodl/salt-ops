@@ -422,10 +422,9 @@ vector:
         field: message
         overwrite_target: true
         patterns:
-          - '^(?P<time>\w{3} \d{2} \d{2}:\d{2}:\d{2}) \S+ (?P<service>.*?)\[(?P<pid>\d+)\]: (?P<message>.*)'
+          - '^(?P<time>\w{3} \d{2} \d{2}:\d{2}:\d{2}) \S+ (?P<process>.*?): (?P<message>.*)'
         types:
           time: timestamp|%b %d %T
-          pid: bytes
 
       auth_log_sampler:
         inputs:
