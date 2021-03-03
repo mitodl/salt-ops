@@ -16,6 +16,7 @@
       'youtube_project_id': 'ovs-youtube-qa',
       'release_branch': 'master',
       'cloudfront_subdomain': 'd2jnipcnro4zno',
+      'redis_max_connections': 30,
       'EDX_BASE_URL': 'https://courses-ci.xpro.mit.edu'
       },
     'rc-apps': {
@@ -30,6 +31,7 @@
       'youtube_project_id': 'ovs-youtube-qa',
       'release_branch': 'release-candidate',
       'cloudfront_subdomain': 'du3yhovcx8dht',
+      'redis_max_connections': 65000,
       'EDX_BASE_URL': 'https://courses-rc.xpro.mit.edu'
       },
     'production-apps': {
@@ -44,6 +46,7 @@
       'youtube_project_id': 'ovs-youtube-production',
       'release_branch': 'release',
       'cloudfront_subdomain': 'd3tsb3m56iwvoq',
+      'redis_max_connections': 65000,
       'EDX_BASE_URL': 'https://courses.xpro.mit.edu'
       }
 } %}
@@ -123,6 +126,7 @@ django:
     OPENEDX_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/openedx-api>data>client_id
     OPENEDX_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/openedx-api>data>client_secret
     REDIS_URL: redis://ovs-{{ env_data.env_name }}-redis.service.consul:6379/0
+    REDIS_MAX_CONNECTIONS: {{ env_data.redis_max_connections }}
     SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/django-secret-key>data>value
     SENTRY_DSN: __vault__::secret-{{ business_unit }}/global/sentry-dsn>data>value
     STATUS_TOKEN: {{ ENVIRONMENT }}
