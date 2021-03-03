@@ -427,7 +427,7 @@ vector:
         overwrite_target: true
         patterns:
           - '^(?P<time>\w{3} \d{2} \d{2}:\d{2}:\d{2}) \S+ (?P<service>.*?)\[(?P<pid>\d+)\]: (?P<message>.*)'
-        fields:
+        types:
           time: timestamp|%b %d %T
           pid: bytes
 
