@@ -127,7 +127,7 @@ vector:
         type: filter
         condition:
           type: check_fields
-          "message.contains": "ELB-HealthChecker"
+          "message.not_contains": "ELB-HealthChecker"
 
       nginx_access_log_labeler:
         inputs:
@@ -202,7 +202,7 @@ vector:
         type: filter
         condition:
           type: check_fields
-          "message.starts_with": "GET"
+          "message.not_starts_with": "GET"
 
       cms_stderr_log_labeler:
         inputs:
@@ -246,7 +246,7 @@ vector:
         type: filter
         condition:
           type: check_fields
-          "message.starts_with": "GET"
+          "message.not_starts_with": "GET"
 
       lms_stderr_log_labeler:
         inputs:
@@ -314,7 +314,7 @@ vector:
         type: filter
         condition:
           type: check_fields
-          "message.regex": '^(GET|POST)'
+          "message.not_regex": '^(GET|POST)'
 
       xqueue_stderr_log_labeler:
         inputs:
@@ -432,7 +432,7 @@ vector:
         type: filter
         condition:
           type: check_fields
-          "message.contains": "CRON"
+          "message.not_contains": "CRON"
 
     sinks:
 
