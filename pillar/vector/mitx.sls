@@ -197,9 +197,18 @@ vector:
           time: timestamp|%F %T
           pid: bytes
 
-      cms_stderr_log_labeler:
+      cms_stderr_sampler:
         inputs:
           - cms_stderr_log_parser
+        type: sampler
+        rate: 1
+        exclude:
+          type: check_fields
+          "message.starts_with": "GET"
+
+      cms_stderr_log_labeler:
+        inputs:
+          - cms_stderr_sampler
         type: add_fields
         fields:
           labels:
@@ -211,15 +220,6 @@ vector:
         type: rename_fields
         fields:
           time: "@timestamp"
-
-      cms_stderr_sampler:
-        inputs:
-          - cms_stderr_timestamp_renamer
-        type: sampler
-        rate: 1
-        exclude:
-          type: check_fields
-          "message.starts_with": "GET"
 
       # the following transform also has to process lines with varying formats.
       # examples:
@@ -241,9 +241,18 @@ vector:
           time: timestamp|%F %T
           pid: bytes
 
-      lms_stderr_log_labeler:
+      lms_stderr_sampler:
         inputs:
           - lms_stderr_log_parser
+        type: sampler
+        rate: 1
+        exclude:
+          type: check_fields
+          "message.starts_with": "GET"
+
+      lms_stderr_log_labeler:
+        inputs:
+          - lms_stderr_sampler
         type: add_fields
         fields:
           labels:
@@ -255,15 +264,6 @@ vector:
         type: rename_fields
         fields:
           time: "@timestamp"
-
-      lms_stderr_sampler:
-        inputs:
-          - lms_stderr_timestamp_renamer
-        type: sampler
-        rate: 1
-        exclude:
-          type: check_fields
-          "message.starts_with": "GET"
 
       # gitreload log sample:
       # 2021-02-28 19:54:48,495 DEBUG 2894216 [gitreload] web.py:64 - ip-10-7-3-149- Received push event from github
@@ -466,8 +466,8 @@ vector:
       elasticsearch_lms_cms_worker:
         inputs:
           {% if 'edx' in salt.grains.get('roles') %}
-          - cms_stderr_sampler
-          - lms_stderr_sampler
+          - cms_stderr_timestamp_renamer
+          - lms_stderr_timestamp_renamer
           - xqueue_stderr_timestamp_renamer
           {% endif %}
           {% if 'edx-worker' in salt.grains.get('roles') %}
