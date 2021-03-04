@@ -30,7 +30,7 @@ vector:
         types:
           time: timestamp|%Y-%m-%dT%H:%M:%S%.3f%z
 
-     field_adder:
+      field_adder:
         inputs:
           - log_parser
         type: add_fields
