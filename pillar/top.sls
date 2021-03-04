@@ -92,7 +92,7 @@ base:
   'roles:mongodb':
     - match: grain
     - mongodb
-    - fluentd.mongodb
+    - vector.mongodb
     - consul.mongodb
   mongodb*production*:
     - datadog.mongodb-integration
