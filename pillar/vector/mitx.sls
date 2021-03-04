@@ -6,6 +6,7 @@ vector:
 
     log_schema:
       timestamp_key: "@timestamp"
+      host_key: log_host
 
     sources:
 
@@ -13,11 +14,13 @@ vector:
 
       nginx_access_log:
         type: file
+        file_key: log_file
         include:
           - /edx/var/log/nginx/access.log
 
       nginx_error_log:
         type: file
+        file_key: log_file
         include:
           - /edx/var/log/nginx/error.log
 
@@ -29,6 +32,7 @@ vector:
 
       cms_stderr_log:
         type: file
+        file_key: log_file
         include:
           - /edx/var/log/supervisor/cms-stderr.log
         multiline:
@@ -45,6 +49,7 @@ vector:
 
       lms_stderr_log:
         type: file
+        file_key: log_file
         include:
           - /edx/var/log/supervisor/lms-stderr.log
         multiline:
@@ -55,11 +60,13 @@ vector:
 
       gitreload_log:
         type: file
+        file_key: log_file
         include:
           - /edx/var/log/gr/gitreload.log
 
       xqueue_stderr_log:
         type: file
+        file_key: log_file
         include:
           - /edx/var/log/supervisor/xqueue-stderr.log
         multiline:
@@ -74,6 +81,7 @@ vector:
 
       worker_cms_stderr_log:
         type: file
+        file_key: log_file
         include:
           - /edx/var/log/supervisor/cms_*stderr.log
         multiline:
@@ -84,6 +92,7 @@ vector:
 
       worker_lms_stderr_log:
         type: file
+        file_key: log_file
         include:
           - /edx/var/log/supervisor/lms_*stderr.log
         multiline:
@@ -95,12 +104,14 @@ vector:
       {% endif %}
 
       tracking_log:
+        file_key: log_file
         type: file
         include:
           - /edx/var/log/tracking/tracking.log
 
       auth_log:
         type: file
+        file_key: log_file
         include:
           - /var/log/auth.log
 
