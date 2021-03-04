@@ -140,7 +140,7 @@ vector:
           type: check_fields
           "message.not_contains": "ELB-HealthChecker"
 
-      nginx_access_log_labeler:
+      nginx_access_log_field_adder:
         inputs:
           - nginx_access_log_sampler
         type: add_fields
@@ -148,10 +148,11 @@ vector:
           labels:
             - nginx_access
             - edx_nginx_access
+          environment: {{ salt.grains.get('environment') }}
 
       nginx_access_log_timestamp_renamer:
         inputs:
-          - nginx_access_log_labeler
+          - nginx_access_log_field_adder
         type: rename_fields
         fields:
           time: "@timestamp"
@@ -168,7 +169,7 @@ vector:
         types:
           time: timestamp|%Y/%m/%d %T
 
-      nginx_error_log_labeler:
+      nginx_error_log_field_adder:
         inputs:
           - nginx_error_log_parser
         type: add_fields
@@ -176,10 +177,11 @@ vector:
           labels:
             - nginx_error
             - edx_nginx_error
+          environment: {{ salt.grains.get('environment') }}
 
       nginx_error_log_timestamp_renamer:
         inputs:
-          - nginx_error_log_labeler
+          - nginx_error_log_field_adder
         type: rename_fields
         fields:
           time: "@timestamp"
@@ -215,17 +217,18 @@ vector:
           type: check_fields
           "message.not_regex": "^(GET|POST)"
 
-      cms_stderr_log_labeler:
+      cms_stderr_log_field_adder:
         inputs:
           - cms_stderr_sampler
         type: add_fields
         fields:
           labels:
             - edx_cms_stderr
+          environment: {{ salt.grains.get('environment') }}
 
       cms_stderr_timestamp_renamer:
         inputs:
-          - cms_stderr_log_labeler
+          - cms_stderr_log_field_adder
         type: rename_fields
         fields:
           time: "@timestamp"
@@ -259,17 +262,18 @@ vector:
           type: check_fields
           "message.not_regex": "^(GET|POST)"
 
-      lms_stderr_log_labeler:
+      lms_stderr_log_field_adder:
         inputs:
           - lms_stderr_sampler
         type: add_fields
         fields:
           labels:
             - edx_lms_stderr
+          environment: {{ salt.grains.get('environment') }}
 
       lms_stderr_timestamp_renamer:
         inputs:
-          - lms_stderr_log_labeler
+          - lms_stderr_log_field_adder
         type: rename_fields
         fields:
           time: "@timestamp"
@@ -291,17 +295,18 @@ vector:
           pid: bytes
           line_number: bytes
 
-      gitreload_log_labeler:
+      gitreload_log_field_adder:
         inputs:
           - gitreload_parser
         type: add_fields
         fields:
           labels:
             - edx_gitreload
+          environment: {{ salt.grains.get('environment') }}
 
       gitreload_timestamp_renamer:
         inputs:
-          - gitreload_log_labeler
+          - gitreload_log_field_adder
         type: rename_fields
         fields:
           time: "@timestamp"
@@ -327,17 +332,18 @@ vector:
           type: check_fields
           "message.not_regex": '^(GET|POST)'
 
-      xqueue_stderr_log_labeler:
+      xqueue_stderr_log_field_adder:
         inputs:
           - xqueue_stderr_log_sampler
         type: add_fields
         fields:
           labels:
             - edx_xqueue
+          environment: {{ salt.grains.get('environment') }}
 
       xqueue_stderr_timestamp_renamer:
         inputs:
-          - xqueue_stderr_log_labeler
+          - xqueue_stderr_log_field_adder
         type: rename_fields
         fields:
           time: "@timestamp"
@@ -386,7 +392,7 @@ vector:
           pid: bytes
           line_number: bytes
 
-      worker_stderr_log_labeler:
+      worker_stderr_log_field_adder:
         inputs:
           - worker_cms_stderr_log_parser
           - worker_lms_stderr_log_parser
@@ -394,10 +400,11 @@ vector:
         fields:
           labels:
             - edx_worker
+          environment: {{ salt.grains.get('environment') }}
 
       worker_stderr_timestamp_renamer:
         inputs:
-          - worker_stderr_log_labeler
+          - worker_stderr_log_field_adder
         type: rename_fields
         fields:
           time: "@timestamp"
@@ -425,13 +432,14 @@ vector:
         fields:
           time: "@timestamp"
 
-      tracking_log_labeler:
+      tracking_log_field_adder:
         inputs:
           - tracking_log_timestamp_renamer
         type: add_fields
         fields:
           labels:
             - edx_tracking
+          environment: {{ salt.grains.get('environment') }}
 
       auth_log_parser:
         inputs:
@@ -453,7 +461,7 @@ vector:
           type: check_fields
           "process.not_contains": "CRON"
 
-      auth_log_labeler:
+      auth_log_field_adder:
         inputs:
           - auth_log_sampler
         type: add_fields
@@ -461,6 +469,7 @@ vector:
           labels:
             - authlog
             - edx_authlog
+          environment: {{ salt.grains.get('environment') }}
 
     sinks:
 
@@ -509,7 +518,7 @@ vector:
 
       elasticsearch_tracking:
         inputs:
-          - tracking_log_labeler
+          - tracking_log_field_adder
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
         index: logs-mitx-tracking-%Y.%W
@@ -517,7 +526,7 @@ vector:
 
       elasticsearch_authlog:
         inputs:
-          - auth_log_labeler
+          - auth_log_field_adder
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
         index: logs-authlog-%Y.%W
