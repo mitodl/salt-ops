@@ -1,7 +1,7 @@
 base:
   '*':
     - utils.install_libs
-  'not G@roles:devstack':
+  'not G@roles:devstack and not G@roles:edx and not G@roles:mongodb':
     - match: compound
     - utils.inotify_watches
     - fluentd
@@ -175,6 +175,7 @@ base:
     - match: grain
     - mongodb
     - mongodb.consul_check
+    - vector
   'G@roles:mongodb and P@environment:mitx(pro)?-production':
     - match: compound
     - datadog.plugins
