@@ -451,7 +451,7 @@ vector:
         type: filter
         condition:
           type: check_fields
-          "message.not_contains": "CRON"
+          "process.not_contains": "CRON"
 
       auth_log_labeler:
         inputs:
