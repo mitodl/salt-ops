@@ -1,8 +1,6 @@
 include:
   - .service
 
-# FIXME: ^^^ this starts the service before it's configured.
-
 ensure_absence_of_default_toml_configuration:
   file.absent:
     - name: /etc/vector/vector.toml
