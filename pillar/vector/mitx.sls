@@ -213,7 +213,7 @@ vector:
         type: filter
         condition:
           type: check_fields
-          "message.not_starts_with": "GET"
+          "message.not_regex": "^(GET|POST)"
 
       cms_stderr_log_labeler:
         inputs:
@@ -257,7 +257,7 @@ vector:
         type: filter
         condition:
           type: check_fields
-          "message.not_starts_with": "GET"
+          "message.not_regex": "^(GET|POST)"
 
       lms_stderr_log_labeler:
         inputs:
