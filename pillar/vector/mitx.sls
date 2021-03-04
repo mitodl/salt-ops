@@ -515,7 +515,7 @@ vector:
         index: logs-mitx-tracking-%Y.%W
         healthcheck: false
 
-      elasticsearch_auth:
+      elasticsearch_authlog:
         inputs:
           - auth_log_labeler
         type: elasticsearch
