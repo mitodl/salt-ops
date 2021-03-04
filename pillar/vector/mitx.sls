@@ -453,6 +453,15 @@ vector:
           type: check_fields
           "message.not_contains": "CRON"
 
+      auth_log_labeler:
+        inputs:
+          - auth_log_sampler
+        type: add_fields
+        fields:
+          labels:
+            - authlog
+            - edx_authlog
+
     sinks:
 
       {% if 'edx' in salt.grains.get('roles') %}
@@ -505,3 +514,10 @@ vector:
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
         index: logs-mitx-tracking-%Y.%W
         healthcheck: false
+
+      elasticsearch_auth:
+        inputs:
+          - auth_log_labeler
+        type: elasticsearch
+        endpoint: 'http://operations-elasticsearch.query.consul:9200'
+        index: logs-authlog-%Y.%W
