@@ -15,7 +15,7 @@ nginx:
             status=$status
             bytes_sent=$bytes_sent
             body_bytes_sent=$body_bytes_sent
-            referer=$http_referer
+            referer="$http_referer"
             user_agent="$http_user_agent"
             upstream_addr=$upstream_addr
             upstream_status=$upstream_status
