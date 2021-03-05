@@ -33,7 +33,8 @@
       'SOCIAL_AUTH_MICROMASTERS_LOGIN_URL': 'https://micromasters-ci.odl.mit.edu/discussions/',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions-ci.odl.mit.edu/saml/metadata',
       'TIKA_SERVER_ENDPOINT': 'https://tika-rc-apps.odl.mit.edu',
-      'vault_env_path': 'rc-apps'
+      'vault_env_path': 'rc-apps',
+      'env_stage': 'ci',
       },
     'rc': {
       'app_log_level': 'INFO',
@@ -67,6 +68,7 @@
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions-rc.odl.mit.edu/saml/metadata',
       'TIKA_SERVER_ENDPOINT': 'https://tika-rc-apps.odl.mit.edu',
       'vault_env_path': 'rc-apps',
+      'env_stage': 'qa',
       },
     'production': {
       'app_log_level': 'INFO',
@@ -100,6 +102,7 @@
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions.odl.mit.edu/saml/metadata',
       'TIKA_SERVER_ENDPOINT': 'https://tika-production-apps.odl.mit.edu',
       'vault_env_path': 'production-apps',
+      'env_stage': 'production',
       }
 } %}
 {% set env_data = env_dict[environment] %}
@@ -122,9 +125,12 @@ heroku:
     ALGOLIA_API_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/algolia>data>api_key
     ALGOLIA_APP_ID: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/algolia>data>app_id
     ALLOWED_HOSTS: '["*"]'
-    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/mit-open-{{ env_data.env_name }}>data>access_key
-    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/mit-open-{{ env_data.env_name }}>data>secret_key
+    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/mit-open-application-{{ env_data.env_name }}>data>access_key
+    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/mit-open-application-{{ env_data.env_name }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'odl-discussions-{{ env_data.env_name }}'
+    ATHENA_WORK_GROUP: ol-warehouse-{{ env_data.env_stage }}
+    ATHENA_MITX_DATABASE: ol_warehouse_mit_open_{{ env_data.env_stage }}
+    ATHENA_REGION: us-east-1
     CELERY_WORKER_MAX_MEMORY_PER_CHILD: {{ env_data.CELERY_WORKER_MAX_MEMORY_PER_CHILD }}
     CKEDITOR_ENVIRONMENT_ID:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>environment_id
     CKEDITOR_SECRET_KEY:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>secret_key
