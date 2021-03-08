@@ -51,7 +51,7 @@ base:
     - dagster
     - dagster.xpro_edx
     - dagster.residential_edx
-    - dagster.enrollments
+    - dagster.mitx_enrollments
     - dagster.mit_open
     - consul
     - caddy
