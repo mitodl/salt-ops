@@ -129,7 +129,7 @@ heroku:
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/mit-open-application-{{ env_data.env_name }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'odl-discussions-{{ env_data.env_name }}'
     ATHENA_WORK_GROUP: ol-warehouse-{{ env_data.env_stage }}
-    ATHENA_MITX_DATABASE: ol_warehouse_mit_open_{{ env_data.env_stage }}
+    ATHENA_MITX_DATABASE: ol_warehouse_mitx_{{ env_data.env_stage }}
     ATHENA_REGION: us-east-1
     CELERY_WORKER_MAX_MEMORY_PER_CHILD: {{ env_data.CELERY_WORKER_MAX_MEMORY_PER_CHILD }}
     CKEDITOR_ENVIRONMENT_ID:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>environment_id

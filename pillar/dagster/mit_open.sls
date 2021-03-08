@@ -1,6 +1,6 @@
 {% set environment = salt.grains.get('environment', 'data-qa') %}
 {% set env_suffix = environment.split('-')[-1] %}
-{% set bucket = "s3://ol-data-lake-mit-open-" ~ env_suffix %}
+{% set bucket = "s3://ol-data-lake-mit-open-" ~ env_suffix ~ "/raw" %}
 {% set open_env_map = {
   'data-qa': 'rc-apps',
   'data-production': 'production-apps'
@@ -20,10 +20,10 @@ dagster:
       solids:
         fetch_open_run_data:
           config:
-            outputs_dir: {{ bucket }}/mit-open-application-db/mit-open-course-runs/
+            outputs_dir: {{ bucket }}/mit-open-application-db/course-runs/
         fetch_open_user_data:
           config:
-            outputs_dir: {{ bucket }}/mit-open-application-db/mit-open-users/
+            outputs_dir: {{ bucket }}/mit-open-application-db/users/
         fetch_open_course_data:
           config:
-            outputs_dir: {{ bucket }}/mit-open-application-db/mit-open-courses/
+            outputs_dir: {{ bucket }}/mit-open-application-db/courses/
