@@ -524,6 +524,6 @@ vector:
         encoding:
           codec: ndjson
         batch:
-          timeout_secs: {{ 60 * 60 * 24 }}
+          timeout_secs: {{ 60 * 60 }}
           max_bytes: {{ 1024 * 1024 * 1024 * 2 }}
         healthcheck: false
