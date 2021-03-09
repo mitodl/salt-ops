@@ -432,6 +432,16 @@ vector:
         fields:
           time: "@timestamp"
 
+      tracking_log_field_adder:
+        inputs:
+          - tracking_log_timestamp_renamer
+        type: add_fields
+        fields:
+          labels:
+            - edx_tracking
+          environment: {{ salt.grains.get('environment') }}
+
+
       auth_log_parser:
         inputs:
           - auth_log
@@ -505,6 +515,14 @@ vector:
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
         index: logs-mitx-stderr-%Y.%W
+        healthcheck: false
+
+      elasticsearch_tracking:
+        inputs:
+          - tracking_log_field_adder
+        type: elasticsearch
+        endpoint: 'http://operations-elasticsearch.query.consul:9200'
+        index: logs-mitx-tracking-%Y.%W
         healthcheck: false
 
       elasticsearch_authlog:
