@@ -536,9 +536,9 @@ vector:
         inputs:
           - tracking_log_timestamp_renamer
         type: aws_s3
-        bucket: {{ salt.grains.get('environment') }}-tracking-logs
+        bucket: odl-residential-tracking-data
         region: us-east-1
-        key_prefix: "%F/tracking-{{ salt.grains.get('environment') }}_%F.%T_"
+        key_prefix: "%F-%H_"
         encoding:
           codec: ndjson
         batch:
