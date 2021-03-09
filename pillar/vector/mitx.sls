@@ -432,15 +432,6 @@ vector:
         fields:
           time: "@timestamp"
 
-      tracking_log_field_adder:
-        inputs:
-          - tracking_log_timestamp_renamer
-        type: add_fields
-        fields:
-          labels:
-            - edx_tracking
-          environment: {{ salt.grains.get('environment') }}
-
       auth_log_parser:
         inputs:
           - auth_log
@@ -516,17 +507,23 @@ vector:
         index: logs-mitx-stderr-%Y.%W
         healthcheck: false
 
-      elasticsearch_tracking:
-        inputs:
-          - tracking_log_field_adder
-        type: elasticsearch
-        endpoint: 'http://operations-elasticsearch.query.consul:9200'
-        index: logs-mitx-tracking-%Y.%W
-        healthcheck: false
-
       elasticsearch_authlog:
         inputs:
           - auth_log_field_adder
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
         index: logs-authlog-%Y.%W
+
+      s3_tracking:
+        inputs:
+          - tracking_log_timestamp_renamer
+        type: aws_s3
+        bucket: {{ salt.grains.get('environment') }}-tracking-logs
+        region: us-east-1
+        key_prefix: "%F/tracking-{{ salt.grains.get('environment') }}_%F.%T_"
+        encoding:
+          codec: ndjson
+        batch:
+          timeout_secs: {{ 60 * 60 * 24 }}
+          max_bytes: {{ 1024 * 1024 * 1024 * 2 }}
+        healthcheck: false
