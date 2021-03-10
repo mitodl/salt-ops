@@ -81,25 +81,25 @@ ensure_tracking_bucket_exists:
     - Bucket: {{ edx_tracking_bucket }}
     - region: us-east-1
 
-ensure_instance_profile_exists_for_tracking:
-  boto_iam_role.present:
-    - name: edx-{{ ENVIRONMENT }}-instance-role
-    - delete_policies: False
-    - policies:
-        edx-old-tracking-logs-policy:
-          Statement:
-            - Action:
-                - s3:GetObject
-                - s3:ListAllMyBuckets
-                - s3:ListBucket
-                - s3:ListObjects
-                - s3:PutObject
-              Effect: Allow
-              Resource:
-                - arn:aws:s3:::{{ edx_tracking_bucket }}
-                - arn:aws:s3:::{{ edx_tracking_bucket }}/*
-    - require:
-        - boto_s3_bucket: ensure_tracking_bucket_exists
+# ensure_instance_profile_exists_for_tracking:
+#   boto_iam_role.present:
+#     - name: edx-{{ ENVIRONMENT }}-instance-role
+#     - delete_policies: False
+#     - policies:
+#         edx-old-tracking-logs-policy:
+#           Statement:
+#             - Action:
+#                 - s3:GetObject
+#                 - s3:ListAllMyBuckets
+#                 - s3:ListBucket
+#                 - s3:ListObjects
+#                 - s3:PutObject
+#               Effect: Allow
+#               Resource:
+#                 - arn:aws:s3:::{{ edx_tracking_bucket }}
+#                 - arn:aws:s3:::{{ edx_tracking_bucket }}/*
+#     - require:
+#         - boto_s3_bucket: ensure_tracking_bucket_exists
 
 deploy_edx_cloud_map:
   salt.function:

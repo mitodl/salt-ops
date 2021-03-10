@@ -24,16 +24,16 @@ ensure_backup_bucket_exists:
 ensure_instance_profile_exists_for_backups:
   boto_iam_role.present:
     - name: backups-instance-role
-    - delete_policies: False
-    - policies:
-        operations-backups-policy:
-          Statement:
-            - Action:
-                - s3:*
-              Effect: Allow
-              Resource:
-                - arn:aws:s3:::odl-operations-backups
-                - arn:aws:s3:::odl-operations-backups/*
+    # - delete_policies: False
+    # - policies:
+    #     operations-backups-policy:
+    #       Statement:
+    #         - Action:
+    #             - s3:*
+    #           Effect: Allow
+    #           Resource:
+    #             - arn:aws:s3:::odl-operations-backups
+    #             - arn:aws:s3:::odl-operations-backups/*
     - require:
         - boto_s3_bucket: ensure_backup_bucket_exists
 
