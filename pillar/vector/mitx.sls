@@ -1,3 +1,8 @@
+{% if environment == 'mitx-qa' %}
+{% set tracking_bucket = 'odl-residential-tracking-data-qa' %}
+{% elif environment == 'mitx-production' %}
+{% set tracking_bucket = 'odl-residential-tracking-data' %}
+
 vector:
   configuration:
 
@@ -530,3 +535,17 @@ vector:
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
         index: logs-authlog-%Y.%W
+
+      s3_tracking:
+        inputs:
+          - tracking_log_timestamp_coercer
+        type: aws_s3
+        bucket: {{ tracking_bucket }}
+        region: us-east-1
+        key_prefix: "logs/%F-%H_"
+        encoding:
+          codec: ndjson
+        batch:
+          timeout_secs: {{ 60 * 60 }}
+          max_bytes: {{ 1024 * 1024 * 1024 * 2 }}
+        healthcheck: false
