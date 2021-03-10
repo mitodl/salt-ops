@@ -446,7 +446,6 @@ vector:
             - edx_tracking
           environment: {{ salt.grains.get('environment') }}
 
-
       auth_log_parser:
         inputs:
           - auth_log
@@ -539,7 +538,7 @@ vector:
 
       s3_tracking:
         inputs:
-          - tracking_log_timestamp_renamer
+          - tracking_log_timestamp_coercer
         type: aws_s3
         bucket: {{ tracking_bucket }}
         region: us-east-1
