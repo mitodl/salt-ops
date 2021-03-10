@@ -543,7 +543,7 @@ vector:
         type: aws_s3
         bucket: {{ tracking_bucket }}
         region: us-east-1
-        key_prefix: "%F-%H_"
+        key_prefix: "logs/%F-%H_"
         encoding:
           codec: ndjson
         batch:
