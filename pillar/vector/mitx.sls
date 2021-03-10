@@ -1,3 +1,8 @@
+{% if environment == 'mitx-qa' %}
+{% set tracking_bucket = 'odl-residential-tracking-data-qa' %}
+{% elif environment == 'mitx-production' %}
+{% set tracking_bucket = 'odl-residential-tracking-data' %}
+
 vector:
   configuration:
 
@@ -536,7 +541,7 @@ vector:
         inputs:
           - tracking_log_timestamp_renamer
         type: aws_s3
-        bucket: odl-residential-tracking-data
+        bucket: {{ tracking_bucket }}
         region: us-east-1
         key_prefix: "%F-%H_"
         encoding:
