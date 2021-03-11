@@ -10,7 +10,7 @@ vector:
       enabled: true
 
     log_schema:
-      timestamp_key: "@timestamp"
+      timestamp_key: vector_timestamp
       host_key: log_host
 
     sources:
