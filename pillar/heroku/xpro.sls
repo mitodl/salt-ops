@@ -140,6 +140,10 @@ heroku:
     HIREFIRE_TOKEN: __vault__::secret-{{ business_unit }}/production-apps/hirefire_token>data>value
     {% endif %}
     DEFERRAL_REQUEST_WORKSHEET_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>deferral_worksheet_id
+    DIGITAL_CREDENTIALS_DEEP_LINK_URL: dccrequest://request
+    DIGITAL_CREDENTIALS_ISSUER_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>issuer_id
+    DIGITAL_CREDENTIALS_OAUTH2_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>oauth2_client_id
+    DIGITAL_CREDENTIALS_VERIFICATION_METHOD: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>verification_method
     DRIVE_OUTPUT_FOLDER_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>folder_id
     DRIVE_SERVICE_ACCOUNT_CREDS: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>service_account_creds
     DRIVE_SHARED_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>drive_shared_id
@@ -159,6 +163,8 @@ heroku:
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
+    MITOL_DIGITAL_CREDENTIALS_VERIFY_SERVICE_BASE_URL: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>sign_and_verify_url
+    MITOL_DIGITAL_CREDENTIALS_HMAC_SECRET: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>hmac_secret
     MITXPRO_ADMIN_EMAIL: 'cuddle-bunnies@mit.edu'
     MITXPRO_BASE_URL: {{ env_data.MITXPRO_BASE_URL }}
     MITXPRO_DB_CONN_MAX_AGE: 0
