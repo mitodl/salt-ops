@@ -2,6 +2,7 @@
 {% set tracking_bucket = 'odl-residential-tracking-data-qa' %}
 {% elif environment == 'mitx-production' %}
 {% set tracking_bucket = 'odl-residential-tracking-data' %}
+{% endif %}
 
 vector:
   configuration:
