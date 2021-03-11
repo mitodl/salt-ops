@@ -1,3 +1,5 @@
+{% set environment = salt.grains.get('environment') %}
+
 {% if environment == 'mitx-qa' %}
 {% set tracking_bucket = 'odl-residential-tracking-data-qa' %}
 {% elif environment == 'mitx-production' %}
@@ -154,7 +156,7 @@ vector:
           labels:
             - nginx_access
             - edx_nginx_access
-          environment: {{ salt.grains.get('environment') }}
+          environment: {{ environment }}
 
       nginx_access_log_timestamp_renamer:
         inputs:
@@ -183,7 +185,7 @@ vector:
           labels:
             - nginx_error
             - edx_nginx_error
-          environment: {{ salt.grains.get('environment') }}
+          environment: {{ environment }}
 
       nginx_error_log_timestamp_renamer:
         inputs:
@@ -230,7 +232,7 @@ vector:
         fields:
           labels:
             - edx_cms_stderr
-          environment: {{ salt.grains.get('environment') }}
+          environment: {{ environment }}
 
       cms_stderr_timestamp_renamer:
         inputs:
@@ -275,7 +277,7 @@ vector:
         fields:
           labels:
             - edx_lms_stderr
-          environment: {{ salt.grains.get('environment') }}
+          environment: {{ environment }}
 
       lms_stderr_timestamp_renamer:
         inputs:
@@ -308,7 +310,7 @@ vector:
         fields:
           labels:
             - edx_gitreload
-          environment: {{ salt.grains.get('environment') }}
+          environment: {{ environment }}
 
       gitreload_timestamp_renamer:
         inputs:
@@ -345,7 +347,7 @@ vector:
         fields:
           labels:
             - edx_xqueue
-          environment: {{ salt.grains.get('environment') }}
+          environment: {{ environment }}
 
       xqueue_stderr_timestamp_renamer:
         inputs:
@@ -406,7 +408,7 @@ vector:
         fields:
           labels:
             - edx_worker
-          environment: {{ salt.grains.get('environment') }}
+          environment: {{ environment }}
 
       worker_stderr_timestamp_renamer:
         inputs:
@@ -445,7 +447,7 @@ vector:
         fields:
           labels:
             - edx_tracking
-          environment: {{ salt.grains.get('environment') }}
+          environment: {{ environment }}
 
       auth_log_parser:
         inputs:
@@ -475,7 +477,7 @@ vector:
           labels:
             - authlog
             - edx_authlog
-          environment: {{ salt.grains.get('environment') }}
+          environment: {{ environment }}
 
     sinks:
 
