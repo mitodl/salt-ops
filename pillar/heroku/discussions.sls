@@ -14,6 +14,7 @@
       'ELASTICSEARCH_URL': 'https://elasticsearch-rc-apps.odl.mit.edu',
       'env_name': 'ci',
       'FEATURE_COURSE_UI': True,
+      'GA_G_TRACKING_ID': 'G-N6Y7B0Z3JL',
       'GA_TRACKING_ID': 'UA-5145472-29',
       'INDEXING_API_USERNAME': 'od_mm_ci_api',
       'NEW_RELIC_APP_NAME': 'discussions-ci',
@@ -48,6 +49,7 @@
       'ELASTICSEARCH_URL': 'https://elasticsearch-rc-apps.odl.mit.edu',
       'env_name': 'rc',
       'FEATURE_COURSE_UI': True,
+      'GA_G_TRACKING_ID': 'G-N6Y7B0Z3JL',
       'GA_TRACKING_ID': 'UA-5145472-29',
       'INDEXING_API_USERNAME': 'od_mm_rc_api',
       'NEW_RELIC_APP_NAME': 'discussions-rc',
@@ -82,6 +84,7 @@
       'ELASTICSEARCH_INDEX': 'discussions',
       'ELASTICSEARCH_SHARD_COUNT': 3,
       'ELASTICSEARCH_URL': 'https://elasticsearch-production-apps.odl.mit.edu',
+      'GA_G_TRACKING_ID': 'G-5L2PYSTC4H',
       'GA_TRACKING_ID': 'UA-5145472-30',
       'INDEXING_API_USERNAME': 'od_mm_prod_api',
       'NEW_RELIC_APP_NAME': 'discussions-production',
@@ -168,6 +171,7 @@ heroku:
     FEATURE_SEARCH_UI: True
     FEATURE_USE_NEW_BRANDING: True
     FEATURE_WIDGETS_UI: True
+    GA_G_TRACKING_ID: {{ env_data.GA_G_TRACKING_ID }}
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
     GITHUB_ACCESS_TOKEN: __vault__::secret-{{ business_unit }}/global/odlbot-github-access-token>data>value
     INDEXING_API_USERNAME: {{ env_data.INDEXING_API_USERNAME }}
