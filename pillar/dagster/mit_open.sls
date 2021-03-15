@@ -7,6 +7,10 @@
 } %}
 
 dagster:
+  execution:
+    multiprocess:
+      config:
+        max_concurrent: 4
   pipeline_configs:
     open-discussions:
       resources:
