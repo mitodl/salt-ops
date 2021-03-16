@@ -134,7 +134,7 @@ vector:
         source: |
           parsed, err = parse_logfmt(.message)
           if parsed != null {
-            .@timestamp, err = parse_timestamp(parsed.time, "%F %T%:z")
+            .@timestamp = parse_timestamp!(parsed.time, "%F %T%:z")
             del(.message)
             del(parsed.time)
             ., err = merge(., parsed)
