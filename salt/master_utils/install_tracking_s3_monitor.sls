@@ -12,7 +12,7 @@ install_monitor_script:
             # ... and this will return error status for no matching objects:
             aws s3 ls s3://$bucket/logs/$today
         done
-        curl -s '{{ __vault__::secret-operations/global/healthchecks/mitx-tracking-s3>data>value }}'
+        curl -s '{{ salt.pillar.get('healthchecks:mitx_s3_tracking_url') }}'
     - mode: '0755'
 
 monitor_script_cronjob:

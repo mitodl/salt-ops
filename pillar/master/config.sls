@@ -231,3 +231,6 @@ salt_master:
       - proxy-mit-open-discussions-production
       - proxy-ocw-studio-production
       {% endif %}
+
+healthchecks:
+  mitx_s3_tracking_url: __vault__::secret-operations/global/healthchecks/mitx-tracking-s3>data>value
