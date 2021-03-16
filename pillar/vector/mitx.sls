@@ -130,69 +130,57 @@ vector:
       nginx_access_log_parser:
         inputs:
           - nginx_access_log
-        type: logfmt_parser
-        types:
-          time: timestamp|%F %T%:z
-          client: bytes
-          status: bytes
-          upstream_addr: bytes
-          upstream_status: bytes
-        field: message
-        drop_field: true
+        type: remap
+        source: |
+          parsed, err = parse_logfmt(.message)
+          if parsed != null {
+            .@timestamp = parse_timestamp!(parsed.time, "%F %T%:z")
+            del(.message)
+            ., err = merge(., parsed)
+            .labels = ["nginx_access", "edx_nginx_access"]
+            .environment = "{{ environment }}"
+          } else {
+            log(err, level: "error")
+            .malformed = true
+          }
 
-      nginx_access_log_sampler:
+      nginx_access_log_malformed_message_filter:
         inputs:
           - nginx_access_log_parser
         type: filter
-        condition:
-          type: check_fields
-          "message.not_contains": "ELB-HealthChecker"
+        condition: .malformed != true
 
-      nginx_access_log_field_adder:
+      nginx_access_log_healthcheck_filter:
         inputs:
-          - nginx_access_log_sampler
-        type: add_fields
-        fields:
-          labels:
-            - nginx_access
-            - edx_nginx_access
-          environment: {{ environment }}
-
-      nginx_access_log_timestamp_renamer:
-        inputs:
-          - nginx_access_log_field_adder
-        type: rename_fields
-        fields:
-          time: "@timestamp"
+          - nginx_access_log_malformed_message_filter
+        type: filter
+        condition: '!contains(.message, "ELB-HealthChecker")'
 
       nginx_error_log_parser:
         inputs:
           - nginx_error_log
-        type: regex_parser
-        drop_failed: true
-        field: message
-        overwrite_target: true
-        patterns:
-          - '^(?P<time>\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2}) \[(?P<log_level>\w+)\] \S+ (?P<message>.*)$'
-        types:
-          time: timestamp|%Y/%m/%d %T
+        type: remap
+        source: |
+          matches, err = parse_regex(
+            .message,
+            r'^(?P<time>\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2}) \[(?P<log_level>\w+)\] \S+ (?P<message>.*)$'
+          )
+          if matches != null {
+            .message = matches.message
+            .@timestamp = parse_timestamp!(matches.time, "%Y/%m/%d %T")
+            .time = .@timestamp
+            .labels = ["nginx_error", "edx_nginx_error"]
+            .environment = "{{ environment }}"
+          } else {
+            log(err, level: "error")
+            .malformed = true
+          }
 
-      nginx_error_log_field_adder:
+      nginx_error_log_malformed_message_filter:
         inputs:
           - nginx_error_log_parser
-        type: add_fields
-        fields:
-          labels:
-            - nginx_error
-            - edx_nginx_error
-          environment: {{ environment }}
-
-      nginx_error_log_timestamp_renamer:
-        inputs:
-          - nginx_error_log_field_adder
-        type: rename_fields
-        fields:
-          time: "@timestamp"
+        type: filter
+        condition: .malformed != true
 
       # the following transform has to parse lines with varying formats.
       # examples:
@@ -206,40 +194,46 @@ vector:
       cms_stderr_log_parser:
         inputs:
           - cms_stderr_log
-        type: regex_parser
-        drop_failed: true
-        field: message
-        overwrite_target: true
-        patterns:
-          - '(?ms)^\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) [+\-]\d{4}\] \[(?P<pid>\d+)\] \[(?P<log_level>[A-Z]+)\] (?P<message>.*)'
-          - '(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} (?P<log_level>[A-Z]+) (?P<pid>\d+) (?P<message>.*)'
-        types:
-          time: timestamp|%F %T
-          pid: bytes
+        type: remap
+        source: |
+          match, err = parse_regex(
+            .message,
+            r'(?ms)^\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [+\-]\d{4})\] \[(?P<pid>\d+)\] \[(?P<log_level>[A-Z]+)\] (?P<message>.*)'
+          )
+          if match != null {
+            .@timestamp = parse_timestamp!(match.time, "%F %T %z")
+          } else {
+            match, err = parse_regex(
+              .message,
+              r'(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) (?P<log_level>[A-Z]+) (?P<pid>\d+) (?P<message>.*)'
+            )
+            if match != null {
+              .@timestamp = parse_timestamp!(match.time, "%F %T,%3f")
+            }
+          }
+          if err == null {
+            .time = .@timestamp
+            .message = match.message
+            .log_level = match.log_level
+            .pid = match.pid
+            .labels = ["edx_cms_stderr"]
+            .environment = "{{ environment }}"
+          } else {
+            log(err, level: "error")
+            .malformed = true
+          }
 
-      cms_stderr_sampler:
+      cms_stderr_malformed_message_filter:
         inputs:
           - cms_stderr_log_parser
         type: filter
-        condition:
-          type: check_fields
-          "message.not_regex": "^(GET|POST)"
+        condition: .malformed != true
 
-      cms_stderr_log_field_adder:
+      cms_stderr_httpreq_filter:
         inputs:
-          - cms_stderr_sampler
-        type: add_fields
-        fields:
-          labels:
-            - edx_cms_stderr
-          environment: {{ environment }}
-
-      cms_stderr_timestamp_renamer:
-        inputs:
-          - cms_stderr_log_field_adder
-        type: rename_fields
-        fields:
-          time: "@timestamp"
+          - cms_stderr_malformed_message_filter
+        type: filter
+        condition: "!match(.message, r'^(GET|POST|HEAD|PUT)')"
 
       # the following transform also has to process lines with varying formats.
       # examples:
@@ -250,41 +244,61 @@ vector:
       lms_stderr_log_parser:
         inputs:
           - lms_stderr_log
-        type: regex_parser
-        drop_failed: true
-        field: message
-        overwrite_target: true
-        patterns:
-          - '(?ms)^\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) [+\-]\d{4}\] \[(?P<pid>\d+)\] \[(?P<log_level>[A-Z]+)\] (?P<message>.*)'
-          - '(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} (?P<log_level>\S+) (?P<pid>\d+) \[(?P<namespace>.*?)\] \[user (?P<user>.*?)\] \[ip (?P<client_ip>.*?)\] (?P<file>.*?):(?P<line_number>\d+) - (?P<message>.*)'
-        types:
-          time: timestamp|%F %T
-          pid: bytes
-          line_number: bytes
+        type: remap
+        source: |
+          match, err = parse_regex(
+            .message,
+            r'(?ms)^\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [+\-]\d{4})\] \[(?P<pid>\d+)\] \[(?P<log_level>[A-Z]+)\] (?P<message>.*)'
+          )
+          if match != null {
+            .@timestamp = parse_timestamp!(match.time, "%F %T %z")
+          } else {
+            match, err = parse_regex(
+              .message,
+              r'(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) (?P<log_level>\S+) (?P<pid>\d+) \[(?P<namespace>.*?)\] \[user (?P<user>.*?)\] \[ip (?P<client_ip>.*?)\] (?P<file>.*?):(?P<line_number>\d+) - (?P<message>.*)'
+            )
+            if match != null {
+              .@timestamp = parse_timestamp!(match.time, "%F %T,%3f")
+            }
+          }
+          if err == null {
+            .time = .@timestamp
+            .message = match.message
+            .log_level = match.log_level
+            .pid = match.pid
+            if exists(match.namespace) {
+              .namespace = match.namespace
+            }
+            if exists(match.user) {
+              .user = match.user
+            }
+            if exists(match.client_ip) {
+              .client_ip = match.client_ip
+            }
+            if exists(match.file) {
+              .file = match.file
+            }
+            if exists(match.line_number) {
+              .line_number = match.line_number
+            }
+            .labels = ["edx_cms_stderr"]
+            .environment = "{{ environment }}"
+          } else {
+            log(err, level: "error")
+            .malformed = true
+          }
 
-      lms_stderr_sampler:
+      lms_stderr_malformed_message_filter:
         inputs:
           - lms_stderr_log_parser
         type: filter
-        condition:
-          type: check_fields
-          "message.not_regex": "^(GET|POST)"
+        condition: .malformed != true
 
-      lms_stderr_log_field_adder:
+      lms_stderr_sampler:
         inputs:
-          - lms_stderr_sampler
-        type: add_fields
-        fields:
-          labels:
-            - edx_lms_stderr
-          environment: {{ environment }}
-
-      lms_stderr_timestamp_renamer:
-        inputs:
-          - lms_stderr_log_field_adder
-        type: rename_fields
-        fields:
-          time: "@timestamp"
+          - lms_stderr_malformed_message_filter
+        type: filter
+        condition: "!match(.message, r'^(GET|POST|HEAD|PUT)')"
 
       # gitreload log sample:
       # 2021-02-28 19:54:48,495 DEBUG 2894216 [gitreload] web.py:64 - ip-10-7-3-149- Received push event from github
@@ -292,69 +306,67 @@ vector:
       gitreload_parser:
         inputs:
           - gitreload_log
-        type: regex_parser
-        drop_failed: true
-        field: message
-        overwrite_target: true
-        patterns:
-          - '(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d{3} (?P<log_level>[A-Z]+) (?P<pid>\d+) \[.*?\] (?P<filename>.+?):(?P<line_number>\d+) - (?P<host>.+?)- (?P<message>.*)'
-        types:
-          time: timestamp|%F %T
-          pid: bytes
-          line_number: bytes
+        type: remap
+        source: |
+          matches, err = parse_regex(
+            .message,
+            r'(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) (?P<log_level>[A-Z]+) (?P<pid>\d+) \[.*?\] (?P<file>.+?):(?P<line_number>\d+) - (?P<host>.+?)- (?P<message>.*)'
+          )
+          if matches != null {
+            .message = matches.message
+            .log_level = matches.log_level
+            .pid = matches.pid
+            .file = matches.file
+            .line_number = matches.line_number
+            .host = matches.host
+            .@timestamp = parse_timestamp!(matches.time, "%F %T,%3f")
+            .time = .@timestamp
+            .labels = ["edx_gitreload"]
+            .environment = "{{ environment }}"
+          } else {
+            log(err, level: "error")
+            .malformed = true
+          }
 
-      gitreload_log_field_adder:
+      gitreload_malformed_message_filter:
         inputs:
           - gitreload_parser
-        type: add_fields
-        fields:
-          labels:
-            - edx_gitreload
-          environment: {{ environment }}
-
-      gitreload_timestamp_renamer:
-        inputs:
-          - gitreload_log_field_adder
-        type: rename_fields
-        fields:
-          time: "@timestamp"
+        type: filter
+        condition: .malformed != true
 
       xqueue_stderr_log_parser:
         inputs:
           - xqueue_stderr_log
-        type: regex_parser
-        drop_failed: true
-        field: message
-        overwrite_target: true
-        patterns:
-          - '(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) \[(?P<pid>.*?)\] \[(?P<log_level>).*?\] (?P<message>.*)'
-        types:
-          time: timestamp|%F %T
-          pid: bytes
+        type: remap
+        source: |
+          matches, err = parse_regex(
+            .message,
+            r'(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) \[(?P<pid>.*?)\] \[(?P<log_level>).*?\] (?P<message>.*)'
+          )
+          if matches != null {
+            .message = matches.message
+            .pid = matches.pid
+            .log_level = matches.log_level
+            .@timestamp = parse_timestamp!(matches.time, "%F %T")
+            .time = .@timestamp
+            .labels = ["edx_xqueue"]
+            .environment = "{{ environment }}"
+          } else {
+            log(err, level: "error")
+            .malformed = true
+          }
 
-      xqueue_stderr_log_sampler:
+      xqueue_stderr_malformed_message_filter:
         inputs:
           - xqueue_stderr_log_parser
         type: filter
-        condition:
-          type: check_fields
-          "message.not_regex": '^(GET|POST)'
+        condition: .malformed != true
 
-      xqueue_stderr_log_field_adder:
+      xqueue_stderr_httpreq_filter:
         inputs:
-          - xqueue_stderr_log_sampler
-        type: add_fields
-        fields:
-          labels:
-            - edx_xqueue
-          environment: {{ environment }}
-
-      xqueue_stderr_timestamp_renamer:
-        inputs:
-          - xqueue_stderr_log_field_adder
-        type: rename_fields
-        fields:
-          time: "@timestamp"
+          - xqueue_stderr_malformed_message_filter
+        type: filter
+        condition: "!match(.message, r'^(GET|POST|HEAD|PUT)')"
 
       {% endif %}
 
@@ -371,14 +383,24 @@ vector:
       worker_cms_stderr_log_parser:
         inputs:
           - worker_cms_stderr_log
-        type: regex_parser
-        drop_failed: true
-        field: message
-        overwrite_target: true
-        patterns:
-          - '(?ms)^\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}): (?P<log_level>[A-Z]+)/(?P<process>.*?)\] (?P<message>.*)'
-        types:
-          time: timestamp|%F %T,%3f
+        type: remap
+        source: |
+          matches, err = parse_regex(
+            .message,
+            r'(?ms)^\[(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}): (?P<log_level>[A-Z]+)/(?P<process>.*?)\] (?P<message>.*)'
+          )
+          if matches != null {
+            .message = matches.message
+            .log_level = matches.log_level
+            .process = matches.process
+            .@timestamp = parse_timestamp!(matches.time, "%F %T,%3f")
+            .time = .@timestamp
+            .labels = ["edx_worker"]
+            .environment = "{{ environment }}"
+          } else {
+            log(err, level: "error")
+            .malformed = true
+          }
 
       # edX worker's "lms" supervisor stderr log,
       # e.g. /edx/var/log/supervisor/lms_default_4-stderr.log
@@ -389,95 +411,100 @@ vector:
       worker_lms_stderr_log_parser:
         inputs:
           - worker_lms_stderr_log
-        type: regex_parser
-        drop_failed: true
-        field: message
-        overwrite_target: true
-        patterns:
-          - '(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) (?P<log_level>[A-Z]+) (?P<pid>\d+) \[(?P<namespace>.*?)\] \[user (?P<user>.*?)\] \[ip (?P<client_ip>.*?)\] (?P<filename>.+?):(?P<line_number>\d+) - (?P<message>.*)'
-        types:
-          time: timestamp|%F %T,%3f
-          pid: bytes
-          line_number: bytes
+        type: remap
+          matches, err = parse_regex(
+            .message,
+            r'(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) (?P<log_level>[A-Z]+) (?P<pid>\d+) \[(?P<namespace>.*?)\] \[user (?P<user>.*?)\] \[ip (?P<client_ip>.*?)\] (?P<file>.+?):(?P<line_number>\d+) - (?P<message>.*)'
+          )
+          if matches != null {
+            .message = matches.message
+            .log_level = matches.log_level
+            .pid = matches.pid
+            .namespace = matches.namespace
+            .user = matches.user
+            .client_ip = matches.client_ip
+            .file = matches.file
+            .line_number = matches.line_number
+            .@timestamp = parse_timestamp!(matches.time, "%F %T,%3f")
+            .time = .@timestamp
+            .labels = ["edx_worker"]
+            .environment = "{{ environment }}"
+          } else {
+            log(err, level: "error")
+            .malformed = true
+          }
 
-      worker_stderr_log_field_adder:
+      worker_stderr_malformed_message_filter:
         inputs:
           - worker_cms_stderr_log_parser
           - worker_lms_stderr_log_parser
-        type: add_fields
-        fields:
-          labels:
-            - edx_worker
-          environment: {{ environment }}
-
-      worker_stderr_timestamp_renamer:
-        inputs:
-          - worker_stderr_log_field_adder
-        type: rename_fields
-        fields:
-          time: "@timestamp"
+        type: filter
+        condition: .malformed != true
 
       {% endif %}
 
       tracking_log_parser:
         inputs:
           - tracking_log
-        type: json_parser
-        field: message
-        drop_field: true
+        type: remap
+        source: |
+          parsed, err = parse_json(.message)
+          if parsed != null {
+            del(.message)
+            ., err = merge(., parsed)
+            .labels = ["edx_tracking"]
+            .environment = "{{ environment }}"
+          } else {
+            log(err, level: "error")
+            .malformed = true
+          }
 
-      tracking_log_timestamp_coercer:
+      tracking_log_malformed_message_filter:
         inputs:
           - tracking_log_parser
-        type: coercer
-        types:
-          time: timestamp|%FT%T%.6f%:z
+        type: filter
+        condition: .malformed != true
 
-      tracking_log_timestamp_renamer:
+      tracking_log_elasticsearch_timestamper:
         inputs:
-          - tracking_log_timestamp_coercer
-        type: rename_fields
-        fields:
-          time: "@timestamp"
-
-      tracking_log_field_adder:
-        inputs:
-          - tracking_log_timestamp_renamer
-        type: add_fields
-        fields:
-          labels:
-            - edx_tracking
-          environment: {{ environment }}
+          - tracking_log_malformed_message_filter
+        type: remap
+        source: |
+          .@timestamp = parse_timestamp!(.time, "%FT%T%.6f%:z")
+          .time = .@timestamp
 
       auth_log_parser:
         inputs:
           - auth_log
-        type: regex_parser
-        drop_failed: true
-        field: message
-        overwrite_target: true
-        patterns:
-          - '^(?P<time>\w{3}\s+\d+\s+\d{2}:\d{2}:\d{2}) \S+ (?P<process>.*?): (?P<message>.*)'
-        types:
-          time: timestamp|%b %e %T
+        type: remap
+        source: |
+          matches, err = parse_regex(
+            .message,
+            r'^(?P<time>\w{3}\s+\d+\s+\d{2}:\d{2}:\d{2}) \S+ (?P<process>.*?): (?P<message>.*)'
+          )
+          if matches != null {
+            .message = matches.message
+            .process = matches.process
+            .@timestamp = parse_timestamp!(matches.time, "%b %e %Tf")
+            .time = .@timestamp
+            .labels = ["authlog", "edx_authlog"]
+            .environment = "{{ environment }}"
+          } else {
+            log(err, level: "error")
+            .malformed = true
+          }
 
-      auth_log_sampler:
+      auth_log_malformed_message_filter:
         inputs:
           - auth_log_parser
         type: filter
-        condition:
-          type: check_fields
-          "process.not_contains": "CRON"
+        condition: .malformed != true
 
-      auth_log_field_adder:
+      auth_log_cron_filter:
         inputs:
-          - auth_log_sampler
-        type: add_fields
-        fields:
-          labels:
-            - authlog
-            - edx_authlog
-          environment: {{ environment }}
+          - auth_log_malformed_message_filter
+        type: filter
+        condition: '!contains(.process, "CRON")'
 
     sinks:
 
@@ -485,7 +512,7 @@ vector:
 
       elasticsearch_nginx_access:
         inputs:
-          - nginx_access_log_timestamp_renamer
+          - nginx_access_log_healthcheck_filter
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
         index: logs-mitx-nginx-access-%Y.%W
@@ -493,7 +520,7 @@ vector:
 
       elasticsearch_nginx_error:
         inputs:
-          - nginx_error_log_timestamp_renamer
+          - nginx_error_log_malformed_message_filter
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
         index: logs-mitx-nginx-error-%Y.%W
@@ -501,7 +528,7 @@ vector:
 
       elasticsearch_gitreload:
         inputs:
-          - gitreload_timestamp_renamer
+          - gitreload_malformed_message_filter
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
         index: logs-mitx-gitreload-%Y.%W
@@ -512,12 +539,12 @@ vector:
       elasticsearch_lms_cms_worker:
         inputs:
           {% if 'edx' in salt.grains.get('roles') %}
-          - cms_stderr_timestamp_renamer
-          - lms_stderr_timestamp_renamer
-          - xqueue_stderr_timestamp_renamer
+          - cms_stderr_httpreq_filter
+          - lms_stderr_sampler
+          - xqueue_stderr_httpreq_filter
           {% endif %}
           {% if 'edx-worker' in salt.grains.get('roles') %}
-          - worker_stderr_timestamp_renamer
+          - worker_stderr_malformed_message_filter
           {% endif %}
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
@@ -526,7 +553,7 @@ vector:
 
       elasticsearch_tracking:
         inputs:
-          - tracking_log_field_adder
+          - tracking_log_elasticsearch_timestamper
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
         index: logs-mitx-tracking-%Y.%W
@@ -534,14 +561,14 @@ vector:
 
       elasticsearch_authlog:
         inputs:
-          - auth_log_field_adder
+          - auth_log_cron_filter
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
         index: logs-authlog-%Y.%W
 
       s3_tracking:
         inputs:
-          - tracking_log_timestamp_coercer
+          - tracking_log_malformed_message_filter
         type: aws_s3
         bucket: {{ tracking_bucket }}
         region: us-east-1
