@@ -136,7 +136,6 @@ vector:
           if parsed != null {
             .@timestamp = parse_timestamp!(parsed.time, "%F %T%:z")
             del(.message)
-            del(parsed.time)
             ., err = merge(., parsed)
             .labels = ["nginx_access", "edx_nginx_access"]
             .environment = "{{ environment }}"
@@ -169,6 +168,7 @@ vector:
           if matches != null {
             .message = matches.message
             .@timestamp = parse_timestamp!(matches.time, "%Y/%m/%d %T")
+            .time = .@timestamp
             .labels = ["nginx_error", "edx_nginx_error"]
             .environment = "{{ environment }}"
           } else {
@@ -212,6 +212,7 @@ vector:
             }
           }
           if err == null {
+            .time = .@timestamp
             .message = match.message
             .log_level = match.log_level
             .pid = match.pid
@@ -261,6 +262,7 @@ vector:
             }
           }
           if err == null {
+            .time = .@timestamp
             .message = match.message
             .log_level = match.log_level
             .pid = match.pid
@@ -318,6 +320,7 @@ vector:
             .line_number = matches.line_number
             .host = matches.host
             .@timestamp = parse_timestamp!(matches.time, "%F %T,%3f")
+            .time = .@timestamp
             .labels = ["edx_gitreload"]
             .environment = "{{ environment }}"
           } else {
@@ -345,6 +348,7 @@ vector:
             .pid = matches.pid
             .log_level = matches.log_level
             .@timestamp = parse_timestamp!(matches.time, "%F %T")
+            .time = .@timestamp
             .labels = ["edx_xqueue"]
             .environment = "{{ environment }}"
           } else {
@@ -390,6 +394,7 @@ vector:
             .log_level = matches.log_level
             .process = matches.process
             .@timestamp = parse_timestamp!(matches.time, "%F %T,%3f")
+            .time = .@timestamp
             .labels = ["edx_worker"]
             .environment = "{{ environment }}"
           } else {
@@ -421,6 +426,7 @@ vector:
             .file = matches.file
             .line_number = matches.line_number
             .@timestamp = parse_timestamp!(matches.time, "%F %T,%3f")
+            .time = .@timestamp
             .labels = ["edx_worker"]
             .environment = "{{ environment }}"
           } else {
@@ -465,7 +471,7 @@ vector:
         type: remap
         source: |
           .@timestamp = parse_timestamp!(.time, "%FT%T%.6f%:z")
-          del(.time)
+          .time = .@timestamp
 
       auth_log_parser:
         inputs:
@@ -480,6 +486,7 @@ vector:
             .message = matches.message
             .process = matches.process
             .@timestamp = parse_timestamp!(matches.time, "%b %e %Tf")
+            .time = .@timestamp
             .labels = ["authlog", "edx_authlog"]
             .environment = "{{ environment }}"
           } else {
