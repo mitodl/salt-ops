@@ -450,6 +450,7 @@ vector:
         source: |
           parsed, err = parse_json(.message)
           if parsed != null {
+            .raw_message = .message
             del(.message)
             ., err = merge(., parsed)
             .labels = ["edx_tracking"]
