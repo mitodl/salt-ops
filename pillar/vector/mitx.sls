@@ -412,6 +412,7 @@ vector:
         inputs:
           - worker_lms_stderr_log
         type: remap
+        source: |
           matches, err = parse_regex(
             .message,
             r'(?ms)^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) (?P<log_level>[A-Z]+) (?P<pid>\d+) \[(?P<namespace>.*?)\] \[user (?P<user>.*?)\] \[ip (?P<client_ip>.*?)\] (?P<file>.+?):(?P<line_number>\d+) - (?P<message>.*)'
