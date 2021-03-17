@@ -136,7 +136,7 @@ vector:
           if parsed != null {
             .@timestamp = parse_timestamp!(parsed.time, "%F %T%:z")
             del(.message)
-            ., err = merge(., parsed)
+            . = merge(., parsed)
             .labels = ["nginx_access", "edx_nginx_access"]
             .environment = "{{ environment }}"
           } else {
@@ -451,7 +451,7 @@ vector:
           parsed, err = parse_json(.message)
           if parsed != null {
             del(.message)
-            ., err = merge(., parsed)
+            . = merge!(., parsed)
             .labels = ["edx_tracking"]
             .environment = "{{ environment }}"
           } else {
