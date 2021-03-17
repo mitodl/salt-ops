@@ -366,7 +366,7 @@ vector:
         inputs:
           - xqueue_stderr_malformed_message_filter
         type: filter
-        condition: "!match(.message, r'^(GET|POST|HEAD|PUT)')"
+        condition: "! match!(.message, r'^(GET|POST|HEAD|PUT)')"
 
       {% endif %}
 
