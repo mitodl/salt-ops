@@ -546,7 +546,7 @@ vector:
           if matches != null {
             .message = matches.message
             .process = matches.process
-            .@timestamp = parse_timestamp!(matches.time, "%b %e %Tf")
+            .@timestamp = parse_timestamp!(matches.time, "%b %e %T")
             .time = .@timestamp
             .labels = ["authlog", "edx_authlog"]
             .environment = "{{ environment }}"
