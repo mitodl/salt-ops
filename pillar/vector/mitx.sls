@@ -87,22 +87,77 @@ vector:
 
       {% if 'edx-worker' in salt.grains.get('roles') %}
 
-      worker_cms_stderr_log:
+      worker_cms_stderr_log_default_4:
         type: file
         file_key: log_file
         include:
-          - /edx/var/log/supervisor/cms_*stderr.log
+          - /edx/var/log/supervisor/cms_default_4-stderr.log
         multiline:
           start_pattern: '^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
           mode: halt_before
           condition_pattern: '^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
           timeout_ms: 500
 
-      worker_lms_stderr_log:
+      worker_cms_stderr_log_high_3:
         type: file
         file_key: log_file
         include:
-          - /edx/var/log/supervisor/lms_*stderr.log
+          - /edx/var/log/supervisor/cms_high_3-stderr.log
+        multiline:
+          start_pattern: '^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          mode: halt_before
+          condition_pattern: '^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          timeout_ms: 500
+
+      worker_cms_stderr_log_low_5:
+        type: file
+        file_key: log_file
+        include:
+          - /edx/var/log/supervisor/cms_low_5-stderr.log
+        multiline:
+          start_pattern: '^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          mode: halt_before
+          condition_pattern: '^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          timeout_ms: 500
+
+      worker_lms_stderr_log_default_4:
+        type: file
+        file_key: log_file
+        include:
+          - /edx/var/log/supervisor/lms_default_4-stderr.log
+        multiline:
+          start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          mode: halt_before
+          condition_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          timeout_ms: 500
+
+      worker_lms_stderr_log_high_3:
+        type: file
+        file_key: log_file
+        include:
+          - /edx/var/log/supervisor/lms_high_3-stderr.log
+        multiline:
+          start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          mode: halt_before
+          condition_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          timeout_ms: 500
+
+      worker_lms_high_mem_1:
+        type: file
+        file_key: log_file
+        include:
+          - /edx/var/log/supervisor/lms_high_mem_1-stderr.log
+        multiline:
+          start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          mode: halt_before
+          condition_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          timeout_ms: 500
+
+      worker_lms_low_5:
+        type: file
+        file_key: log_file
+        include:
+          - /edx/var/log/supervisor/lms_low_5-stderr.log
         multiline:
           start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
           mode: halt_before
@@ -382,7 +437,9 @@ vector:
       #
       worker_cms_stderr_log_parser:
         inputs:
-          - worker_cms_stderr_log
+          - worker_cms_stderr_log_default_4
+          - worker_cms_stderr_log_high_3
+          - worker_cms_stderr_log_low_5
         type: remap
         source: |
           matches, err = parse_regex(
@@ -410,7 +467,10 @@ vector:
       #
       worker_lms_stderr_log_parser:
         inputs:
-          - worker_lms_stderr_log
+          - worker_lms_stderr_log_default_4
+          - worker_lms_stderr_log_high_3
+          - worker_lms_high_mem_1
+          - worker_lms_low_5
         type: remap
         source: |
           matches, err = parse_regex(
