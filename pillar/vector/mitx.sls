@@ -154,7 +154,7 @@ vector:
         inputs:
           - nginx_access_log_malformed_message_filter
         type: filter
-        condition: '!contains(.message, "ELB-HealthChecker")'
+        condition: '! contains!(.message, "ELB-HealthChecker")'
 
       nginx_error_log_parser:
         inputs:
@@ -233,7 +233,7 @@ vector:
         inputs:
           - cms_stderr_malformed_message_filter
         type: filter
-        condition: "!match(.message, r'^(GET|POST|HEAD|PUT)')"
+        condition: "! match!(.message, r'^(GET|POST|HEAD|PUT)')"
 
       # the following transform also has to process lines with varying formats.
       # examples:
@@ -298,7 +298,7 @@ vector:
         inputs:
           - lms_stderr_malformed_message_filter
         type: filter
-        condition: "!match(.message, r'^(GET|POST|HEAD|PUT)')"
+        condition: "! match!(.message, r'^(GET|POST|HEAD|PUT)')"
 
       # gitreload log sample:
       # 2021-02-28 19:54:48,495 DEBUG 2894216 [gitreload] web.py:64 - ip-10-7-3-149- Received push event from github
@@ -504,7 +504,7 @@ vector:
         inputs:
           - auth_log_malformed_message_filter
         type: filter
-        condition: '!contains(.process, "CRON")'
+        condition: '! contains!(.process, "CRON")'
 
     sinks:
 
