@@ -541,7 +541,7 @@ vector:
         source: |
           parsed, err = parse_syslog(.message)
           if parsed != null {
-            . = merge!(., parsed)
+            . = merge(., parsed)
             .@timestamp = .timestamp
             del(.timestamp)
             .labels = ["authlog", "edx_authlog"]
