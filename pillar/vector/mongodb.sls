@@ -28,7 +28,7 @@ vector:
             r'^(?P<time>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}\+\d{4}) (?P<log_level>\w) (?P<component>\w+)\s+\[(?P<context>.+?)\] (?P<message>.*)'
           )
           if matches != null {
-            @timestamp = parse_timestamp!(matches.time, "%FT%T%.3f%z")
+            .@timestamp = parse_timestamp!(matches.time, "%FT%T%.3f%z")
             .message = matches.message
             .component = matches.component
             .context = matches.context
