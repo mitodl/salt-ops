@@ -539,8 +539,9 @@ vector:
           - auth_log
         type: remap
         source: |
-          ., err = parse_syslog(.message)
-          if err == null {
+          parsed, err = parse_syslog(.message)
+          if parsed != null {
+            . = merge!(., parsed)
             .@timestamp = .timestamp
             del(.timestamp)
             .labels = ["authlog", "edx_authlog"]
