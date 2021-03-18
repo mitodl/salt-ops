@@ -56,7 +56,7 @@
       'MAILGUN_SENDER_DOMAIN': 'discussions-mail.odl.mit.edu',
       'MICROMASTERS_BASE_URL': 'micromasters-rc.odl.mit.edu',
       'MITXPRO_BASE_URL': 'xpro-rc.odl.mit.edu',
-      'OCW_ITERATOR_CHUNK_SIZE': 1000,
+      'OCW_ITERATOR_CHUNK_SIZE': 5000,
       'OCW_UPLOAD_IMAGE_ONLY': True,
       'OPEN_DISCUSSIONS_BASE_URL': 'https://discussions-rc.odl.mit.edu',
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'discussionsrc',
