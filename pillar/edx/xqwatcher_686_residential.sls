@@ -61,11 +61,6 @@ edx:
                 user: mit-686x-mooc
                 lang: python3
                 bin_path: '{% raw %}{{ xqwatcher_venv_base }}{% endraw %}/mit-686x-mooc/bin/python'
-                limits:
-                  CPU: 5
-                  FSIZE: 1048576
-                  PROXY: 0
-                  NPROC: 15
               KWARGS:
                 grader_root: ../data/mit-686x-mooc/graders/
       {% for purpose, purpose_data in env_data.purposes.items() %}
@@ -119,11 +114,6 @@ edx:
                 user: mit-686x
                 lang: python3
                 bin_path: '{% raw %}{{ xqwatcher_venv_base }}{% endraw %}/mit-686x/bin/python'
-                limits:
-                  CPU: 5
-                  FSIZE: 1048576
-                  PROXY: 0
-                  NPROC: 15
               KWARGS:
                 grader_root: ../data/mit-686x-{{ purpose }}/graders/
       {% endif %}
