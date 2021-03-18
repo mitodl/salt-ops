@@ -63,7 +63,6 @@ edx:
                 bin_path: '{% raw %}{{ xqwatcher_venv_base }}{% endraw %}/mit-686x-mooc/bin/python'
                 limits:
                   CPU: 5
-                  REALTIME: 5
                   FSIZE: 1048576
                   PROXY: 0
                   NPROC: 15
@@ -122,7 +121,6 @@ edx:
                 bin_path: '{% raw %}{{ xqwatcher_venv_base }}{% endraw %}/mit-686x/bin/python'
                 limits:
                   CPU: 5
-                  REALTIME: 5
                   FSIZE: 1048576
                   PROXY: 0
                   NPROC: 15
