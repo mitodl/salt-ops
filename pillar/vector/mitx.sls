@@ -209,7 +209,7 @@ vector:
         inputs:
           - nginx_access_log_malformed_message_filter
         type: filter
-        condition: '! contains!(.message, "ELB-HealthChecker")'
+        condition: '! contains!(.user_agent, "ELB-HealthChecker")'
 
       nginx_error_log_parser:
         inputs:
