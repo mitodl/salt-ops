@@ -539,19 +539,12 @@ vector:
           - auth_log
         type: remap
         source: |
-          matches, err = parse_regex(
-            .message,
-            r'^(?P<time>\w{3}\s+\d+\s+\d{2}:\d{2}:\d{2}) \S+ (?P<process>.*?): (?P<message>.*)'
-          )
-          if matches != null {
-            .message = matches.message
-            .process = matches.process
-            .@timestamp = parse_timestamp!(matches.time, "%b %e %T")
-            .time = .@timestamp
+          ., err = parse_syslog(.message)
+          if err == null {
+            .@timestamp = .timestamp
+            del(.timestamp)
             .labels = ["authlog", "edx_authlog"]
-            .environment = "{{ environment }}"
           } else {
-            log(err, level: "error")
             .malformed = true
           }
 
@@ -565,7 +558,7 @@ vector:
         inputs:
           - auth_log_malformed_message_filter
         type: filter
-        condition: '! contains!(.process, "CRON")'
+        condition: .appname != "CRON"
 
     sinks:
 
