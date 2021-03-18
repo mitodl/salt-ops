@@ -189,7 +189,7 @@ vector:
         source: |
           parsed, err = parse_logfmt(.message)
           if parsed != null {
-            .@timestamp = parse_timestamp!(parsed.time, "%F %T%:z")
+            .@timestamp = parse_timestamp!(parsed.time, "%FT%T%:z")
             del(.message)
             . = merge(., parsed)
             .labels = ["nginx_access", "edx_nginx_access"]
