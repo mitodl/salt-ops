@@ -66,7 +66,7 @@ edx:
                   REALTIME: 5
                   FSIZE: 1048576
                   PROXY: 0
-                  NPROC: 15
+                  NPROC: 25
               KWARGS:
                 grader_root: ../data/mit-686x-mooc/graders/
       {% for purpose, purpose_data in env_data.purposes.items() %}
@@ -125,7 +125,7 @@ edx:
                   REALTIME: 5
                   FSIZE: 1048576
                   PROXY: 0
-                  NPROC: 15
+                  NPROC: 25
               KWARGS:
                 grader_root: ../data/mit-686x-{{ purpose }}/graders/
       {% endif %}
