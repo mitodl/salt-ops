@@ -140,7 +140,6 @@ heroku:
     HIREFIRE_TOKEN: __vault__::secret-{{ business_unit }}/production-apps/hirefire_token>data>value
     {% endif %}
     DEFERRAL_REQUEST_WORKSHEET_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>deferral_worksheet_id
-    DIGITAL_CREDENTIALS_DEEP_LINK_URL: dccrequest://request
     DIGITAL_CREDENTIALS_ISSUER_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>issuer_id
     DIGITAL_CREDENTIALS_OAUTH2_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>oauth2_client_id
     DIGITAL_CREDENTIALS_VERIFICATION_METHOD: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>verification_method
@@ -163,8 +162,10 @@ heroku:
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
-    MITOL_DIGITAL_CREDENTIALS_VERIFY_SERVICE_BASE_URL: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>sign_and_verify_url
+    MITOL_DIGITAL_CREDENTIALS_AUTH_TYPE: xpro
+    MITOL_DIGITAL_CREDENTIALS_DEEP_LINK_URL: dccrequest://request
     MITOL_DIGITAL_CREDENTIALS_HMAC_SECRET: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>hmac_secret
+    MITOL_DIGITAL_CREDENTIALS_VERIFY_SERVICE_BASE_URL: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>sign_and_verify_url
     MITXPRO_ADMIN_EMAIL: 'cuddle-bunnies@mit.edu'
     MITXPRO_BASE_URL: {{ env_data.MITXPRO_BASE_URL }}
     MITXPRO_DB_CONN_MAX_AGE: 0
@@ -185,6 +186,7 @@ heroku:
     MITXPRO_SUPPORT_EMAIL: {{ smtp_config.data.support_email }}
     MITXPRO_USE_S3: True
     NODE_MODULES_CACHE: False
+    OAUTH2_PROVIDER_ALLOWED_REDIRECT_URI_SCHEMES: http,https,dccrequest  # this adds 'dccrequest' to the defaults and should match the scheme in MITOL_DIGITAL_CREDENTIALS_DEEP_LINK_URL
     OPENEDX_API_BASE_URL: {{ env_data.OPENEDX_API_BASE_URL}}
     OPENEDX_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/openedx-api-client>data>client-id
     OPENEDX_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ environment }}/openedx-api-client>data>client-secret
