@@ -227,7 +227,7 @@ base:
     - edx.ansible_vars
     - edx.ansible_vars.cloud_deployment
     - edx.scheduled_jobs
-    - vector.mitx
+    - vector.edx
     - datadog.nginx-integration
     - datadog.supervisord-integration
   'P@roles:(edx|edx-worker) and not G@edx_codename:tumbleweed':
