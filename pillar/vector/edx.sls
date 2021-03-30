@@ -1,9 +1,25 @@
 {% set environment = salt.grains.get('environment') %}
 
 {% if environment == 'mitx-qa' %}
+
+{% set index_name_base = 'logs-mitx' %}
 {% set tracking_bucket = 'odl-residential-tracking-data-qa' %}
+
 {% elif environment == 'mitx-production' %}
+
+{% set index_name_base = 'logs-mitx' %}
 {% set tracking_bucket = 'odl-residential-tracking-data' %}
+
+{% elif environment == 'mitxpro-qa' %}
+
+{% set index_name_base = 'logs-mitxpro' %}
+{% set tracking_bucket = 'odl-xpro-tracking-data-qa' %}
+
+{% elif environment == 'mitxpro-production' %}
+
+{% set index_name_base = 'logs-mitxpro' %}
+{% set tracking_bucket = 'odl-xpro-tracking-data' %}
+
 {% endif %}
 
 vector:
@@ -570,7 +586,7 @@ vector:
           - nginx_access_log_healthcheck_filter
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
-        index: logs-mitx-nginx-access-%Y.%W
+        index: {{ index_name_base }}-nginx-access-%Y.%W
         healthcheck: false
 
       elasticsearch_nginx_error:
@@ -578,7 +594,7 @@ vector:
           - nginx_error_log_malformed_message_filter
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
-        index: logs-mitx-nginx-error-%Y.%W
+        index: {{ index_name_base }}-nginx-error-%Y.%W
         healthcheck: false
 
       elasticsearch_gitreload:
@@ -586,7 +602,7 @@ vector:
           - gitreload_malformed_message_filter
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
-        index: logs-mitx-gitreload-%Y.%W
+        index: {{ index_name_base }}-gitreload-%Y.%W
         healthcheck: false
 
       {% endif %}
@@ -603,7 +619,7 @@ vector:
           {% endif %}
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
-        index: logs-mitx-stderr-%Y.%W
+        index: {{ index_name_base }}-stderr-%Y.%W
         healthcheck: false
 
       elasticsearch_tracking:
@@ -611,7 +627,7 @@ vector:
           - tracking_log_elasticsearch_timestamper
         type: elasticsearch
         endpoint: 'http://operations-elasticsearch.query.consul:9200'
-        index: logs-mitx-tracking-%Y.%W
+        index: {{ index_name_base }}-tracking-%Y.%W
         healthcheck: false
 
       elasticsearch_authlog:
