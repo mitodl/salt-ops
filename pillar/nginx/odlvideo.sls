@@ -94,3 +94,5 @@ nginx:
                   - return: 301 https://www.youtube.com/watch?v=6X_ZXrLs8I8&list=PL2uZTM-xaHP4tFQT7eTTK3sWRoJMcDWwB&index=3&t=0s
               - location /collections/letterlocking/videos/30209-a-tiny-spy-letter-constantijn-huygens-to-amalia-von-solms-1635:
                   - return: 301 https://www.youtube.com/watch?v=PePWd-h679c&list=PL2uZTM-xaHP4tFQT7eTTK3sWRoJMcDWwB&index=7&t=0s
+              - location /collections/c8c5179c7596408fa0f09f6b76082331:
+                  - return: 301 https://www.youtube.com/c/MITEnergyInitiative
