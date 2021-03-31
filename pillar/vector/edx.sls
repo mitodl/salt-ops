@@ -352,7 +352,7 @@ vector:
             if exists(match.line_number) {
               .line_number = match.line_number
             }
-            .labels = ["edx_cms_stderr"]
+            .labels = ["edx_lms_stderr"]
             .environment = "{{ environment }}"
           } else {
             log(err, level: "error")
