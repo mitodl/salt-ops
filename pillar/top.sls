@@ -201,7 +201,7 @@ base:
     - vault.roles.pki
   'G@roles:elasticsearch and P@environment:(rc|production)-apps':
     - match: compound
-    - elasticsearch.apps
+    - elastic_stack.elasticsearch.apps
     - nginx
     - nginx.apps_es
     - datadog.nginx-integration
