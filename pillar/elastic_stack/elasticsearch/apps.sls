@@ -18,7 +18,7 @@ elastic_stack:
           aws:
             region: us-east-1
       - name: readonlyrest
-        location: https://raw.githubusercontent.com/mitodl/salt-ops/master/salt/artifacts/readonlyrest-1.17.0_es6.6.1.zip
+        location: https://raw.githubusercontent.com/mitodl/salt-ops/master/salt/artifacts/readonlyrest-1.28.2_es6.8.14.zip
     plugin_settings:
       readonlyrest:
         readonlyrest:
