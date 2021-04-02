@@ -6,11 +6,10 @@ elastic_stack:
       cloud.node.auto_attributes: true
       cluster.name: {{ ENVIRONMENT }}
       discovery.ec2.tag.escluster: {{ ENVIRONMENT }}
-      discovery.seed_providers: ec2
       gateway.expected_nodes: 3
       gateway.recover_after_nodes: 2
       gateway.recover_after_time: 5m
-      network.host: ['_eth0_', '_lo_']
+      network.host: ['_site_', '_local_']
       path:
         data: /var/lib/elasticsearch/data
     plugins:
