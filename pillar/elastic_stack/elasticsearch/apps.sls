@@ -27,10 +27,13 @@ elastic_stack:
           access_control_rules:
             - name: Cluster access within VPC
               type: allow
-              accept_x-forwarded-for_header: 'true'
               actions:
                 - 'cluster:*'
               hosts:
+                - localhost
+                - 127.0.0.1
+                - {{ env_data.network_prefix }}.0.0/16
+              x_forwarded_for:
                 - localhost
                 - 127.0.0.1
                 - {{ env_data.network_prefix }}.0.0/16
@@ -39,7 +42,6 @@ elastic_stack:
               indices:
                 - micromasters
                 - 'micromasters_*'
-              accept_x-forwarded-for_header: 'true'
               actions:
                 - 'indices:*'
               auth_key: __vault__::secret-micromasters/production/elasticsearch-auth-key>data>value
@@ -47,7 +49,6 @@ elastic_stack:
               type: allow
               indices:
                 - 'micromasters-rc*'
-              accept_x-forwarded-for_header: 'true'
               actions:
                 - 'indices:*'
               auth_key: __vault__::secret-micromasters/rc/elasticsearch-auth-key>data>value
@@ -55,13 +56,11 @@ elastic_stack:
               type: allow
               indices:
                 - 'micromasters-ci*'
-              accept_x-forwarded-for_header: 'true'
               actions:
                 - 'indices:*'
               auth_key: __vault__::secret-micromasters/ci/elasticsearch-auth-key>data>value
             - name: View existence of Micromasters indices with RC Auth
               type: allow
-              accept_x-forwarded-for_header: 'true'
               methods:
                 - GET
                 - HEAD
@@ -78,7 +77,6 @@ elastic_stack:
               auth_key: __vault__::secret-micromasters/rc/elasticsearch-auth-key>data>value
             - name: View existence of Micromasters indices with CI Auth
               type: allow
-              accept_x-forwarded-for_header: 'true'
               methods:
                 - GET
                 - HEAD
@@ -95,7 +93,6 @@ elastic_stack:
               auth_key: __vault__::secret-micromasters/ci/elasticsearch-auth-key>data>value
             - name: View existence of Micromasters indices with Production Auth
               type: allow
-              accept_x-forwarded-for_header: 'true'
               methods:
                 - GET
                 - HEAD
@@ -115,7 +112,6 @@ elastic_stack:
               indices:
                 - discussions
                 - 'discussions_*'
-              accept_x-forwarded-for_header: 'true'
               actions:
                 - 'indices:*'
               auth_key: __vault__::secret-operations/production-apps/discussions/elasticsearch-auth-key>data>value
@@ -123,7 +119,6 @@ elastic_stack:
               type: allow
               indices:
                 - 'discussions-rc*'
-              accept_x-forwarded-for_header: 'true'
               actions:
                 - 'indices:*'
               auth_key: __vault__::secret-operations/rc-apps/discussions/elasticsearch-auth-key>data>value
@@ -131,7 +126,6 @@ elastic_stack:
               type: allow
               indices:
                 - 'discussions-rc*'
-              accept_x-forwarded-for_header: 'true'
               methods:
                 - GET
               actions:
@@ -141,13 +135,11 @@ elastic_stack:
               type: allow
               indices:
                 - 'discussions-ci*'
-              accept_x-forwarded-for_header: 'true'
               actions:
                 - 'indices:*'
               auth_key: __vault__::secret-operations/ci/discussions/elasticsearch-auth-key>data>value
             - name: View existence of indices with RC Auth
               type: allow
-              accept_x-forwarded-for_header: 'true'
               methods:
                 - GET
                 - HEAD
@@ -164,7 +156,6 @@ elastic_stack:
               auth_key: __vault__::secret-operations/rc-apps/discussions/elasticsearch-auth-key>data>value
             - name: View existence of indices with CI Auth
               type: allow
-              accept_x-forwarded-for_header: 'true'
               methods:
                 - GET
                 - HEAD
@@ -181,7 +172,6 @@ elastic_stack:
               auth_key: __vault__::secret-operations/ci/discussions/elasticsearch-auth-key>data>value
             - name: View existence of indices with Production Auth
               type: allow
-              accept_x-forwarded-for_header: 'true'
               methods:
                 - GET
                 - HEAD
