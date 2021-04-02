@@ -12,9 +12,10 @@ elastic_stack:
       gateway.recover_after_nodes: 2
       gateway.expected_nodes: 3
       gateway.recover_after_time: 5m
-      rest.action.multi.allow_explicit_index: 'false'
-      xpack.security.enabled: 'false'
-      xpack.monitoring.collection.enabled: 'false'
+      rest.action.multi.allow_explicit_index: false
+      xpack.security.enabled: false
+      xpack.monitoring.collection.enabled: false
+      xpack.ml.enabled: false
     plugins:
       - name: discovery-ec2
         config:
