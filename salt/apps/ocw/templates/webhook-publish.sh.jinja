@@ -22,7 +22,6 @@ WEBSITE_BUCKET={{ website_bucket }}
 OCW_TO_HUGO_BUCKET={{ ocw_to_hugo_bucket }}
 FASTLY_API_TOKEN={{ fastly_api_token }}
 FASTLY_SERVICE_ID={{ fastly_service_id }}
-OCW_TO_HUGO_GIT_REF={{ ocw_to_hugo_git_ref }}
 OCW_WWW_GIT_REF={{ ocw_www_git_ref }}
 OCW_COURSE_HUGO_STARTER_GIT_REF={{ ocw_course_hugo_starter_git_ref }}
 COURSE_BASE_URL={{ course_base_url }}
@@ -114,20 +113,12 @@ cd /opt/ocw/ocw-www || error_and_exit "Can not cd to ocw-www"
 git_fetch_and_reset ocw-www $OCW_WWW_GIT_REF
 ocw_www_changed=$?
 
-
-# Pull ocw-to-hugo
-
-cd /opt/ocw/ocw-to-hugo || error_and_exit "Can not cd to ocw-to-hugo"
-git_fetch_and_reset ocw-to-hugo $OCW_TO_HUGO_GIT_REF
-ocw_to_hugo_changed=$?
-
 # Pull ocw-course-hugo-starter
 
 cd /opt/ocw/ocw-course-hugo-starter \
     || error_and_exit "Can not cd to ocw-course-hugo-starter"
 git_fetch_and_reset ocw-course-hugo-starter $OCW_COURSE_HUGO_STARTER_GIT_REF
 ocw_course_hugo_starter_changed=$?
-
 
 # Continue if there were changes, or if we want a 'full' run regardless of
 # changes.
@@ -146,11 +137,24 @@ if [ "$script_option" != "full" ]; then
 fi
 
 
+# Install ocw-course-hugo-theme and ocw-to-hugo which is a dependency of that
+cd /opt/ocw/ocw-course-hugo-starter
+
+# Install dependencies in the _vendor folder
+rm -rf _vendor
+hugo mod get -u || error_and_exit "Unable to install go dependencies of ocw-course-hugo-starter"
+hugo mod vendor || error_and_exit "Unable to run hugo mod vendor for ocw-course-hugo-starter"
+
+# Install packages for ocw-course-hugo-theme (this should include ocw-to-hugo)
+cd ./_vendor/github.com/mitodl/ocw-course-hugo-theme
+log_message "Doing yarn install of dependencies for ocw-course-hugo-theme"
+yarn install --pure-lockfile >> $LOG_DIR/ocw-course-hugo-theme-install.log 2>&1 \
+    || error_and_exit "Can't install dependencies for ocw-course-hugo-theme"
+
 # Run ocw-to-hugo
+cd ./node_modules/@mitodl/ocw-to-hugo
 
-cd /opt/ocw/ocw-to-hugo
-
-clear_directory /opt/ocw/ocw-to-hugo/node_modules
+clear_directory ./node_modules
 
 log_message "Doing yarn install of ocw-to-hugo"
 yarn install --pure-lockfile >> $LOG_DIR/ocw-to-hugo-install.log 2>&1 \
