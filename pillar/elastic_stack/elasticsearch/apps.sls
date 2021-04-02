@@ -6,6 +6,8 @@ elastic_stack:
   version: 6.8.14
   elasticsearch:
     configuration_settings:
+      discovery:
+        zen.hosts_provider: ec2
       discovery.zen.minimum_master_nodes: 2
       gateway.recover_after_nodes: 2
       gateway.expected_nodes: 3
