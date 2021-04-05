@@ -231,6 +231,9 @@ base:
     - vector.edx
     - datadog.nginx-integration
     - datadog.supervisord-integration
+  'P@roles:(edx|edx-worker)$and not G@roles:edx-analytics':
+    - match: compound
+    - vector.edx
   'P@roles:(edx|edx-worker) and not G@edx_codename:tumbleweed':
     - match: compound
     - edx.ansible_vars.theme
