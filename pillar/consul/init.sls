@@ -18,7 +18,7 @@ consul:
       disable_host_node_id: True
       dns_config:
         allow_stale: True
-        node_ttl: 30s
+        node_ttl: 60s
         service_ttl:
           "*": 30s
       encrypt: __vault__::secret-operations/global/consul-shared-secret>data>value
