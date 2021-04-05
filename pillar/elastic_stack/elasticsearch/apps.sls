@@ -29,17 +29,21 @@ elastic_stack:
           enable: 'true'
           response_if_req_forbidden: Acess Denied
           access_control_rules:
+            - name: All APIs from localhost
+              type: allow
+              actions:
+                - 'cluster:*'
+                - 'indices:*'
+                - 'internal:*'
+              hosts_local:
+                - '127.0.0.1'
             - name: Cluster access within VPC
               type: allow
               actions:
                 - 'cluster:*'
               hosts:
-                - localhost
-                - 127.0.0.1
                 - {{ env_data.network_prefix }}.0.0/16
               x_forwarded_for:
-                - localhost
-                - 127.0.0.1
                 - {{ env_data.network_prefix }}.0.0/16
             - name: Access for micromasters production index with HTTP Auth
               type: allow
