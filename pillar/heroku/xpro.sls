@@ -51,6 +51,7 @@
       'CSRF_TRUSTED_ORIGINS': 'rc.xpro.mit.edu,xpro-rc.odl.mit.edu',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
       'CYBERSOURCE_WSDL_URL': 'https://ics2wstest.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
+      'DIGITAL_CREDENTIALS_SUPPORTED_RUNS': 'course-v1:xPRO+TestCourse1+R2,course-v1:xPRO+TestCourse2+R2,program-v1:xPRO+TestProgram',
       'HUBSPOT_CREATE_USER_FORM_ID': '9c823b8c-5db8-42b9-8a93-c411ceb55aaf',
       'HUBSPOT_FOOTER_FORM_GUID': 'ff810010-c33c-4e99-9285-32d283fbc816',
       'HUBSPOT_ID_PREFIX': 'xpro-rc',
@@ -86,6 +87,7 @@
       'CSRF_TRUSTED_ORIGINS': 'xpro.mit.edu,xpro-web.odl.mit.edu',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://secureacceptance.cybersource.com/pay',
       'CYBERSOURCE_WSDL_URL': 'https://ics2wsa.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
+      'DIGITAL_CREDENTIALS_SUPPORTED_RUNS': 'course-v1:xPRO+QCFx2+R8',
       'HUBSPOT_CREATE_USER_FORM_ID': '9ada5d38-33ee-415c-8cb2-9d72e735b1d5',
       'HUBSPOT_FOOTER_FORM_GUID': '6f7e46ec-f757-43a4-b109-597210df0f75',
       'HUBSPOT_ID_PREFIX': 'xpro',
@@ -142,6 +144,7 @@ heroku:
     DEFERRAL_REQUEST_WORKSHEET_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>deferral_worksheet_id
     DIGITAL_CREDENTIALS_ISSUER_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>issuer_id
     DIGITAL_CREDENTIALS_OAUTH2_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>oauth2_client_id
+    DIGITAL_CREDENTIALS_SUPPORTED_RUNS: {{ env_data.DIGITAL_CREDENTIALS_SUPPORTED_RUNS }}
     DIGITAL_CREDENTIALS_VERIFICATION_METHOD: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>verification_method
     DRIVE_OUTPUT_FOLDER_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>folder_id
     DRIVE_SERVICE_ACCOUNT_CREDS: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>service_account_creds
