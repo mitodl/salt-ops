@@ -106,7 +106,7 @@ edx:
       MITXPRO_CORE_REDIRECT_ALLOW_RE_LIST: ["^/(admin|auth|login|logout|register|api|oauth2|user_api|heartbeat)", "^/courses/.*/xblock/.*/handler_noauth/outcome_service_handler"]
       THIRD_PARTY_AUTH_BACKENDS: ["social_auth_mitxpro.backends.MITxProOAuth2"]
       # django-session-cookie middleware
-      DCS_SESSION_COOKIE_SAMESITE: 'Strict'
+      DCS_SESSION_COOKIE_SAMESITE: 'Lax'
       DCS_SESSION_COOKIE_SAMESITE_FORCE_ALL: True
       FEATURES:
         REROUTE_ACTIVATION_EMAIL: {{ support_email }}
