@@ -16,6 +16,7 @@
       'openedx_environment': 'mitxpro-qa',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
       'CYBERSOURCE_WSDL_URL': 'https://ics2wstest.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
+      'DIGITAL_CREDENTIALS_SUPPORTED_RUNS': '',
       'HUBSPOT_CREATE_USER_FORM_ID': '9c823b8c-5db8-42b9-8a93-c411ceb55aaf',
       'HUBSPOT_FOOTER_FORM_GUID': 'ff810010-c33c-4e99-9285-32d283fbc816',
       'HUBSPOT_ID_PREFIX': 'xpro-ci',
