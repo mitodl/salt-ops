@@ -167,6 +167,7 @@ base:
     - match: compound
     - elastic-stack.elasticsearch
     - elastic-stack.elasticsearch.plugins
+    - elastic-stack.elasticsearch.apps.cronjobs
     - nginx
   'G@roles:elasticsearch and P@environment:mitx(pro)?-(qa|production)':
     - match: compound
