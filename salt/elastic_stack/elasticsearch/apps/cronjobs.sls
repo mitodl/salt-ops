@@ -21,7 +21,7 @@ manage_ci_index_pruning_job:
     - user: root
     - hour: 6
     - minute: random
-    - day: 6
+    - dayweek: 6
     - name: >-
         for index in `curl -s localhost:9200/_cat/indices/*-ci* | awk '{print $3}'`;
         do curl -X DELETE localhost:9200/$index; done > /var/tmp/prune-ci-idx.log 2>&1
