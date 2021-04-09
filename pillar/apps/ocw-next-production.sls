@@ -4,7 +4,6 @@ ocw-next:
   ocw_to_hugo_bucket: ocw-to-hugo-output-production
   source_data_bucket: open-learning-course-data-production
   search_api_url: //open.mit.edu/api/v0/search/
-  ocw_to_hugo_git_ref: release
   ocw_www_git_ref: release
   ocw_course_hugo_starter_git_ref: release
   fastly_api_token: __vault__::secret-open-courseware/production-apps/fastly-api>data>token
