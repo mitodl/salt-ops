@@ -154,6 +154,7 @@ heroku:
     ENROLLMENT_CHANGE_SHEET_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>enroll_change_sheet_id
     FEATURE_COUPON_SHEETS: True
     FEATURE_COUPON_SHEETS_TRACK_REQUESTER: True
+    FEATURE_DIGITAL_CREDENTIALS: True
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
     HUBSPOT_CREATE_USER_FORM_ID: {{ env_data.HUBSPOT_CREATE_USER_FORM_ID }}
     GTM_TRACKING_ID: {{ env_data.GOOGLE_TAG_MANAGER_ID }}
