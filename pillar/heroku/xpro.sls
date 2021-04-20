@@ -35,7 +35,7 @@
       'SHEETS_REFUND_ERROR_COL': 13,
       'SHEETS_REFUND_SKIP_ROW_COL': 14,
       'vault_env_path': 'rc-apps',
-      'USE_X_FORWARDED_HOST': False,
+      'USE_X_FORWARDED_HOST': True,
       'VOUCHER_COMPANY_ID': 1
       },
     'rc': {
@@ -71,7 +71,7 @@
       'SHEETS_REFUND_COMPLETED_DATE_COL': 13,
       'SHEETS_REFUND_ERROR_COL': 14,
       'SHEETS_REFUND_SKIP_ROW_COL': 15,
-      'USE_X_FORWARDED_HOST': False,
+      'USE_X_FORWARDED_HOST': True,
       'VOUCHER_COMPANY_ID': 1
       },
     'production': {
