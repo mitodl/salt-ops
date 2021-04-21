@@ -225,7 +225,9 @@ base:
   'P@roles:(edx|edx-worker)$':
     - match: compound
     - edx
+    - edx.mitx-pkgs
     - edx.ansible_vars
+    - edx.ansible_vars.pkgs
     - edx.ansible_vars.cloud_deployment
     - edx.scheduled_jobs
     - vector.edx
@@ -259,7 +261,6 @@ base:
     - match: compound
     - edx.ansible_vars.residential
     - edx.mitx-production
-    - edx.inotify_mitx
   'P@purpose:.*-draft and P@environment:mitx-(qa|production)':
     - match: compound
     - consul.mitx-draft
@@ -269,11 +270,6 @@ base:
   'P@purpose:.*next-residential.*':
     - match: compound
     - edx.ansible_vars.next_residential
-    - edx.mitx-koa
-  'G@edx_codename:koa':
-    - match: compound
-    - edx.ansible_vars.koa
-    - edx.mitx-koa
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher

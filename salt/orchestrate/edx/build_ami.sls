@@ -24,13 +24,9 @@
 {% if ENVIRONMENT == 'mitx-production' %}
 {% set app_image = salt.sdb.get('sdb://consul/edx_mitx-qa_{}_ami_id'.format(edx_codename)) %}
 {% set worker_image = salt.sdb.get('sdb://consul/edx_worker_mitx-qa_{}_ami_id'.format(edx_codename)) %}
-{% elif edx_codename == 'koa' %}
+{% else %}
 {% set app_image = salt.sdb.get('sdb://consul/focal_ami_id') %}
 {% set worker_image = salt.sdb.get('sdb://consul/focal_ami_id') %}
-{% else %}
-{% set app_image = salt.sdb.get('sdb://consul/xenial_ami_id') %}
-{% set worker_image = salt.sdb.get('sdb://consul/xenial_ami_id') %}
-{% endif %}
 
 update_edxapp_codename_value:
   salt.function:
