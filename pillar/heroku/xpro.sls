@@ -35,7 +35,6 @@
       'SHEETS_REFUND_ERROR_COL': 13,
       'SHEETS_REFUND_SKIP_ROW_COL': 14,
       'vault_env_path': 'rc-apps',
-      'USE_X_FORWARDED_HOST': False,
       'VOUCHER_COMPANY_ID': 1
       },
     'rc': {
@@ -71,7 +70,6 @@
       'SHEETS_REFUND_COMPLETED_DATE_COL': 13,
       'SHEETS_REFUND_ERROR_COL': 14,
       'SHEETS_REFUND_SKIP_ROW_COL': 15,
-      'USE_X_FORWARDED_HOST': False,
       'VOUCHER_COMPANY_ID': 1
       },
     'production': {
@@ -107,7 +105,6 @@
       'SHEETS_REFUND_ERROR_COL': 14,
       'SHEETS_REFUND_SKIP_ROW_COL': 15,
       'vault_env_path': 'production-apps',
-      'USE_X_FORWARDED_HOST': True,
       'VOUCHER_COMPANY_ID': 4
       }
 } %}
@@ -225,7 +222,7 @@ heroku:
     SHOW_UNREDEEMED_COUPON_ON_DASHBOARD: True
     SITE_NAME: "MIT xPRO"
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
-    USE_X_FORWARDED_HOST: {{ env_data.USE_X_FORWARDED_HOST }}
+    USE_X_FORWARDED_HOST: True
     VOUCHER_COMPANY_ID: {{ env_data.VOUCHER_COMPANY_ID }}
     VOUCHER_DOMESTIC_AMOUNT_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>amount_key
     VOUCHER_DOMESTIC_COURSE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/voucher-domestic>data>course_key
