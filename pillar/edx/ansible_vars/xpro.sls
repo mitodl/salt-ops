@@ -40,6 +40,7 @@ edx:
     EDXAPP_JWT_PRIVATE_SIGNING_JWK: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/private-key>data>value
     EDXAPP_JWT_PUBLIC_SIGNING_JWK_SET: __vault__::secret-{{ business_unit }}/{{ environment }}/jwt-signing-jwk/public-key>data>value
     EDXAPP_PRIVATE_REQUIREMENTS:
+      - name: edx-username-changer==0.0.1
       - name: mitxpro-openedx-extensions==0.2.2
       - name: social-auth-mitxpro==0.4
       - name: git+https://github.com/edx/ubcpi.git@3c4b2cdc9f595ab8cdb436f559b56f36638313b6#egg=ubcpi-xblock
