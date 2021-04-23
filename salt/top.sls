@@ -169,7 +169,15 @@ base:
     - elastic-stack.elasticsearch.plugins
     - elastic_stack.elasticsearch.apps.cronjobs
     - nginx
-  'G@roles:elasticsearch and P@environment:mitx(pro)?-(qa|production)':
+  'G@roles:elasticsearch and P@environment:mitx-qa':
+    - match: compound
+    - elastic-stack.elasticsearch
+    - elastic-stack.elasticsearch.plugins
+  'G@roles:elasticsearch and P@environment:mitxpro-qa':
+    - match: compound
+    - elasticsearch
+    - elasticsearch.plugins
+  'G@roles:elasticsearch and P@environment:mitx(pro)?-production':
     - match: compound
     - elasticsearch
     - elasticsearch.plugins
