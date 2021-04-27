@@ -96,6 +96,9 @@ base:
     - consul.mongodb
   mongodb*production*:
     - datadog.mongodb-integration
+  'G@roles:mongodb and G@environment:mitx-qa':
+    - match: compound
+    - mongodb.mitx-qa
   dremio*:
     - dremio
     - nginx
