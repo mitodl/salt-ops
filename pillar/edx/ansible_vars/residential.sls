@@ -130,8 +130,8 @@ edx:
       - name: eox-core[sentry]
       - name: git+https://github.com/raccoongang/xblock-pdf.git@8d63047c53bc8fdd84fa7b0ec577bb0a729c215f#egg=xblock-pdf
         extra_args: -e
-      # edx-proctoring fork to accomodate ProctorTrack
-      - name: git+https://github.com/mitodl/edx-proctoring.git@mitx/juniper#egg=edx_proctoring
+      # edX Sysadmin plugin
+      - name: https://github.com/mitodl/edx-sysadmin#egg=edx-sysadmin
 
     # Start ProctorTrack settings
     EDXAPP_PROCTORING_SETTINGS:
@@ -174,6 +174,7 @@ edx:
         RESTRICT_ENROLL_SOCIAL_PROVIDERS:
           - mit-kerberos
         ENABLE_THIRD_PARTY_ONLY_AUTH: True
+        ENABLE_SYSADMIN_DASHBOARD: False
       REMOTE_GRADEBOOK:
         URL: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>url
         DEFAULT_NAME: !!null
