@@ -11,7 +11,7 @@
 {% endfor %}
 
 mongodb:
-  version: '4.0'
+  version: '4.4'
   key: '20691EEC35216C63CAF66CE1656408E390CFB1F5'
   overrides:
     config:
