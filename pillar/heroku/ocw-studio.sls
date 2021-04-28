@@ -79,7 +79,7 @@ heroku:
     OCW_STUDIO_SUPPORT_EMAIL: {{ env_data.OCW_STUDIO_SUPPORT_EMAIL }}
     OCW_STUDIO_USE_S3: True
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ app }}/{{ environment }}/django-secret-key>data>value
-    SENTRY_DSN: __vault__::secret-operations/global/{{ business_unit}}/sentry-dsn>data>value
+    SENTRY_DSN: __vault__::secret-operations/global/open-courseware/ocw-studio/sentry-dsn>data>value
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
     SOCIAL_AUTH_SAML_CONTACT_NAME: Open Learning Support
     SOCIAL_AUTH_SAML_IDP_ATTRIBUTE_EMAIL: urn:oid:0.9.2342.19200300.100.1.3
