@@ -46,7 +46,6 @@
       }
 } %}
 {% set env_data = env_dict[environment] %}
-{% set business_unit = 'open-courseware' %}
 {% set app = 'ocw-studio' %}
 
 proxy:
@@ -78,7 +77,7 @@ heroku:
     OCW_STUDIO_LOG_LEVEL: {{ env_data.OCW_STUDIO_LOG_LEVEL }}
     OCW_STUDIO_SUPPORT_EMAIL: {{ env_data.OCW_STUDIO_SUPPORT_EMAIL }}
     OCW_STUDIO_USE_S3: True
-    SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ app }}/{{ environment }}/django-secret-key>data>value
+    SECRET_KEY: __vault__:gen_if_missing:secret-open-courseware/{{ app }}/{{ environment }}/django-secret-key>data>value
     SENTRY_DSN: __vault__::secret-operations/global/open-courseware/ocw-studio/sentry-dsn>data>value
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
     SOCIAL_AUTH_SAML_CONTACT_NAME: Open Learning Support
@@ -88,11 +87,11 @@ heroku:
     SOCIAL_AUTH_SAML_IDP_ENTITY_ID: https://idp.mit.edu/shibboleth
     SOCIAL_AUTH_SAML_IDP_URL: https://idp.mit.edu/idp/profile/SAML2/Redirect/SSO
     SOCIAL_AUTH_SAML_LOGIN_URL: https://idp.mit.edu/idp/profile/SAML2/Redirect/SSO
-    SOCIAL_AUTH_SAML_IDP_X509: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>idp_x509
+    SOCIAL_AUTH_SAML_IDP_X509: __vault__::secret-operations/{{ env_data.vault_env_path }}/open-courseware/saml>data>idp_x509
     SOCIAL_AUTH_SAML_ORG_DISPLAYNAME: MIT Open Learning
     SOCIAL_AUTH_SAML_SECURITY_ENCRYPTED: True
     SOCIAL_AUTH_SAML_SP_ENTITY_ID: {{ env_data.SOCIAL_AUTH_SAML_SP_ENTITY_ID }}
-    SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>private_key
-    SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>public_cert
-    STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ app }}/{{ environment }}/django-status-token>data>value
+    SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/open-courseware/saml>data>private_key
+    SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-operations/{{ env_data.vault_env_path }}/open-courseware/saml>data>public_cert
+    STATUS_TOKEN: __vault__:gen_if_missing:secret-open-courseware/{{ app }}/{{ environment }}/django-status-token>data>value
     USE_X_FORWARDED_PORT: True
