@@ -11,9 +11,8 @@
 {% endfor %}
 
 mongodb:
-  version: '3.6'
-  key: '2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5'
   overrides:
+    version: '3.6'
     config:
       net:
         bindIp: '0.0.0.0,::'
