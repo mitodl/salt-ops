@@ -14,6 +14,7 @@ mongodb:
   version: '4.4'
   key: '20691EEC35216C63CAF66CE1656408E390CFB1F5'
   overrides:
+    version: '4.4'
     config:
       net:
         bindIp: '0.0.0.0,::'
