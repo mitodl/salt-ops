@@ -191,6 +191,9 @@ if [ $? -ne 0 ]; then
     error_and_exit "Failed to run course builds. See $LOG_DIR/course-builds.log"
 fi
 
+# Undo our changes to ocw-www's go.mod file
+cd /opt/ocw/ocw-www
+cp go.mod.bak go.mod
 
 # Write commit hash files
 
