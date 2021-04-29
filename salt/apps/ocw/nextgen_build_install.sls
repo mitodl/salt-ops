@@ -76,11 +76,11 @@ git_pull_ocw_www:
     - require:
       - pkg: ensure_os_package_prerequisites
 
-git_pull_ocw_course_hugo_starter:
+git_pull_ocw_hugo_themes:
   git.latest:
-    - name: https://github.com/mitodl/ocw-course-hugo-starter.git
-    - target: /opt/ocw/ocw-course-hugo-starter
-    - rev: {{ ocw_next.ocw_course_hugo_starter_git_ref }}
+    - name: https://github.com/mitodl/ocw-hugo-themes.git
+    - target: /opt/ocw/ocw-hugo-themes
+    - rev: {{ ocw_next.ocw_hugo_themes_git_ref }}
     - force_checkout: True
     - force_clone: True
     - force_reset: True
@@ -101,16 +101,16 @@ manage_ocw_www_env_file:
     - require:
       - git: git_pull_ocw_www
 
-manage_ocw_course_hugo_starter_env_file:
+manage_ocw_hugo_themes_env_file:
   file.managed:
-    - name: /opt/ocw/ocw-course-hugo-starter/.env
+    - name: /opt/ocw/ocw-hugo-themes/.env
     - user: caddy
     - group: caddy
     - mode: 0640
     - contents: |
         SEARCH_API_URL={{ ocw_next.search_api_url }}
     - require:
-      - git: git_pull_ocw_course_hugo_starter
+      - git: git_pull_ocw_hugo_themes
 
 install_caddy_webhook_script:
   file.managed:
@@ -128,7 +128,7 @@ install_caddy_webhook_script:
         fastly_service_id: {{ ocw_next.fastly_service_id }}
         ocw_to_hugo_git_ref: {{ ocw_next.ocw_to_hugo_git_ref }}
         ocw_www_git_ref: {{ ocw_next.ocw_www_git_ref }}
-        ocw_course_hugo_starter_git_ref: {{ ocw_next.ocw_course_hugo_starter_git_ref }}
+        ocw_hugo_themes_git_ref: {{ ocw_next.ocw_hugo_themes_git_ref }}
         course_base_url: {{ ocw_next.course_base_url }}
         ocw_studio_base_url: {{ ocw_next.ocw_studio_base_url }}
         gtm_account_id: {{ ocw_next.gtm_account_id }}
