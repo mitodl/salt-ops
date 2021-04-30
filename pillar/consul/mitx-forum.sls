@@ -1,6 +1,6 @@
 consul:
   extra_configs:
-    edx_services:
+    edx__forum_service:
       services:
         - name: forum-{{ salt.grains.get('purpose') }}
           port: 4567
