@@ -23,7 +23,7 @@ edx:
     EDXAPP_EDX_API_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/edx-api-key>data>value
     EDXAPP_SESSION_COOKIE_DOMAIN: .xpro.mit.edu
     EDXAPP_SESSION_COOKIE_NAME: {{ environment }}-{{ purpose }}-session
-    EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
+    EDXAPP_COMMENTS_SERVICE_URL: "http://forum-{{ environment }}.service.consul:4567"
     EDXAPP_COMMENTS_SERVICE_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
     EDXAPP_IDA_LOGOUT_URI_LIST: ['{{ heroku_env }}/logout']
     # Enable Secure flag on cookies for browser SameSite restrictions
