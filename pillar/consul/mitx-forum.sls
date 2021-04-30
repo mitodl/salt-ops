@@ -5,5 +5,5 @@ consul:
         - name: forum-{{ salt.grains.get('purpose') }}
           port: 4567
           check:
-            http: 'http://localhost:4567'
+            tcp: 'localhost:4567'
             interval: 30s
