@@ -112,7 +112,6 @@ install_caddy_webhook_script:
         source_data_bucket: {{ ocw_next.source_data_bucket }}
         fastly_api_token: {{ ocw_next.fastly_api_token }}
         fastly_service_id: {{ ocw_next.fastly_service_id }}
-        ocw_to_hugo_git_ref: {{ ocw_next.ocw_to_hugo_git_ref }}
         ocw_www_git_ref: {{ ocw_next.ocw_www_git_ref }}
         ocw_hugo_themes_git_ref: {{ ocw_next.ocw_hugo_themes_git_ref }}
         course_base_url: {{ ocw_next.course_base_url }}
