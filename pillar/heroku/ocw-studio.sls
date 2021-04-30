@@ -72,7 +72,7 @@ heroku:
     GIT_API_URL: "https://github.mit.edu/api/v3"
     {% endif %}
     GIT_ORGANIZATION: {{ env_data.GITHUB_ORGANIZATION }}
-    GIT_TOkEN: __vault__::secret-open-courseware/ocw-studio/{{ environment }}/github-user-token>data>value
+    GIT_TOKEN: __vault__::secret-open-courseware/ocw-studio/{{ environment }}/github-user-token>data>value
     GTM_ACCOUNT_ID: {{ env_data.GTM_ACCOUNT_ID }}
     MAILGUN_FROM_EMAIL: 'MIT OCW <no-reply@{{ env_data.MAILGUN_SENDER_DOMAIN }}'
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
