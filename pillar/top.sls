@@ -173,6 +173,9 @@ base:
   'P@environment:mitx(pro)?-(qa|production)':
     - match: compound
     - consul.mitx
+  'G@roles:edx and G@environment:mitxpro-*':
+    - match: compound
+    - consul.mitx-forum
   'P@environment:(operations|data)(-qa|-production)?':
     - match: compound
     - consul.operations
