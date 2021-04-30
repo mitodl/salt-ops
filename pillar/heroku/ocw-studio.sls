@@ -69,7 +69,7 @@ heroku:
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/ocw_studio
     {% endif %}
     {% if environment == "rc" %}
-    GIT_API_URL: https://github.mit.edu/api/v3
+    GIT_API_URL: "https://github.mit.edu/api/v3"
     {% endif %}
     GIT_ORGANIZATION: {{ env_data.GITHUB_ORGANIZATION }}
     GIT_TOkEN: __vault__::secret-open-courseware/ocw-studio/{{ environment }}/github-user-token>data>value
