@@ -6,6 +6,7 @@
       'app_name': 'ocw-studio-ci',
       'env': 'qa',
       'env_name': 'ci',
+      'GITHUB_ORGANIZATION': 'ocw-content-ci',
       'GTM_ACCOUNT_ID': 'GTM-5JZ7X78',
       'MAILGUN_SENDER_DOMAIN': 'ocw-ci.mail.odl.mit.edu',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio-ci.odl.mit.edu/',
@@ -21,6 +22,7 @@
       'env': 'qa',
       'env_name': 'rc',
       'GTM_ACCOUNT_ID': 'GTM-57BZ8PN',
+      'GITHUB_ORGANIZATION': 'ocw-content-rc',
       'MAILGUN_SENDER_DOMAIN': 'ocw-rc.mail.odl.mit.edu',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio-rc.odl.mit.edu/',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
@@ -35,6 +37,7 @@
       'env': 'production',
       'env_name': 'production',
       'GTM_ACCOUNT_ID': 'GTM-MQCSLSQ',
+      'GITHUB_ORGANIZATION': 'ocw-content',
       'MAILGUN_SENDER_DOMAIN': 'ocw.mail.odl.mit.edu',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio.odl.mit.edu/',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
@@ -59,11 +62,17 @@ heroku:
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/ocw-studio-app-{{ env_data.env }}>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/ocw-studio-app-{{ env_data.env }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'ol-ocw-studio-app-{{ env_data.env }}'
+    CONTENT_SYNC_BACKEND=content_sync.backends.github.GithubBackend
     {% if env_data.env_name != 'ci' %}
     {% set pg_creds = salt.vault.cached_read('postgres-ocw-studio-applications-{}/creds/app'.format(env_data.env), cache_prefix='heroku-ocw-studio-' ~ env_data.env) %}
     {% set rds_endpoint = salt.boto_rds.get_endpoint('ocw-studio-db-applications-{}'.format(env_data.env)) %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/ocw_studio
     {% endif %}
+    {% if environment == "rc" %}
+    GIT_API_URL: https://github.mit.edu/api/v3
+    {% endif %}
+    GIT_ORGANIZATION: {{ env_data.GITHUB_ORGANIZATION }}
+    GIT_TOkEN: __vault__::secret-open-courseware/ocw-studio/{{ environment }}/github-user-token>data>value
     GTM_ACCOUNT_ID: {{ env_data.GTM_ACCOUNT_ID }}
     MAILGUN_FROM_EMAIL: 'MIT OCW <no-reply@{{ env_data.MAILGUN_SENDER_DOMAIN }}'
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
