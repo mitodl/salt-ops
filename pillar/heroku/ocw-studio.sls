@@ -90,9 +90,9 @@ heroku:
     SENTRY_DSN: __vault__::secret-operations/global/open-courseware/ocw-studio/sentry-dsn>data>value
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
     SOCIAL_AUTH_SAML_CONTACT_NAME: Open Learning Support
-    SOCIAL_AUTH_SAML_IDP_ATTRIBUTE_EMAIL: urn:oid:0.9.2342.19200300.100.1.3
-    SOCIAL_AUTH_SAML_IDP_ATTRIBUTE_NAME: urn:oid:2.16.840.1.113730.3.1.241
-    SOCIAL_AUTH_SAML_IDP_ATTRIBUTE_PERM_ID: urn:oid:1.3.6.1.4.1.5923.1.1.1.6
+    SOCIAL_AUTH_SAML_IDP_ATTRIBUTE_EMAIL: "urn:oid:0.9.2342.19200300.100.1.3"
+    SOCIAL_AUTH_SAML_IDP_ATTRIBUTE_NAME: "urn:oid:2.16.840.1.113730.3.1.241"
+    SOCIAL_AUTH_SAML_IDP_ATTRIBUTE_PERM_ID: "urn:oid:1.3.6.1.4.1.5923.1.1.1.6"
     SOCIAL_AUTH_SAML_IDP_ENTITY_ID: https://idp.mit.edu/shibboleth
     SOCIAL_AUTH_SAML_IDP_URL: https://idp.mit.edu/idp/profile/SAML2/Redirect/SSO
     SOCIAL_AUTH_SAML_LOGIN_URL: https://idp.mit.edu/idp/profile/SAML2/Redirect/SSO
