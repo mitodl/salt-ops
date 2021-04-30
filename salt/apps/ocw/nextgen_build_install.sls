@@ -48,20 +48,6 @@ ensure_state_of_log_directory:
     - group: caddy
     - dir_mode: '0755'
 
-git_pull_ocw_to_hugo:
-  git.latest:
-    - name: https://github.com/mitodl/ocw-to-hugo.git
-    - target: /opt/ocw/ocw-to-hugo
-    - rev: {{ ocw_next.ocw_to_hugo_git_ref }}
-    - force_checkout: True
-    - force_clone: True
-    - force_reset: True
-    - force_fetch: True
-    - update_head: True
-    - user: caddy
-    - require:
-      - pkg: ensure_os_package_prerequisites
-
 git_pull_ocw_www:
   git.latest:
     - name: https://github.com/mitodl/ocw-www.git
