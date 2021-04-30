@@ -114,7 +114,7 @@ git_fetch_and_reset ocw-www $OCW_WWW_GIT_REF
 ocw_www_changed=$?
 
 # Temporarily modify ocw-www's go.mod to point at our local copy of ocw-hugo-themes
-cp go.mod go.mod.bak
+cp go.mod go.mod.bak || error_and_exit "Could not back up go.mod in ocw-www"
 printf "\nreplace github.com/mitodl/ocw-hugo-themes/base-theme => /opt/ocw/ocw-hugo-themes/base-theme\n" >> go.mod
 printf "\nreplace github.com/mitodl/ocw-hugo-themes/www => /opt/ocw/ocw-hugo-themes/www\n" >> go.mod
 
