@@ -37,6 +37,9 @@ retry_file=/tmp/webhook-publish-retry
 # processes we execute
 export OCW_STUDIO_BASE_URL
 export GTM_ACCOUNT_ID
+export OCW_TO_HUGO_OUTPUT_DIR=$COURSES_MARKDOWN_DIR
+export COURSE_OUTPUT_DIR=$SITE_OUTPUT_DIR/courses
+export COURSE_BASE_URL=$COURSE_BASE_URL
 
 # Optional script argument
 script_option=$1
@@ -171,8 +174,6 @@ fi
 
 # Run course builds with ocw-hugo-themes
 echo "Running hugo on courses in $COURSES_MARKDOWN_DIR..."
-export OCW_TO_HUGO_OUTPUT_DIR=$COURSES_MARKDOWN_DIR
-export COURSE_OUTPUT_DIR=$SITE_OUTPUT_DIR/courses
 cd /opt/ocw/ocw-hugo-themes
 ./build_scripts/build_all_courses.sh >> $LOG_DIR/course-builds.log 2>&1
 if [ $? -ne 0 ]; then
