@@ -3,7 +3,6 @@ base:
     - utils.install_libs
   'not G@roles:devstack and not G@roles:edx and not G@roles:mongodb':
     - match: compound
-    - utils.inotify_watches
     - fluentd
     - fluentd.plugins
     - fluentd.config
