@@ -198,6 +198,7 @@ edx:
       CERTIFICATES_ENABLED: false
       DISABLE_LOGIN_BUTTON: false
       ENABLE_COURSE_BLOCKS_NAVIGATION_API: true
+      ENABLE_DISCUSSION_SERVICE: true # Koa default is True. Remove
       ENABLE_RENDER_XBLOCK_API: true
       ENABLE_SPECIAL_EXAMS: true
       PREVIEW_LMS_BASE: {{ purpose_data.domains.preview }}
