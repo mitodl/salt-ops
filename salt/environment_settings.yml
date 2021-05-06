@@ -117,6 +117,38 @@ xpro_production_versions: &xpro_production_versions
   codename: koa
   ami_id: ami-0885b1f6bd170450c
 
+mitx_online_qa_versions: &mitx_online_qa_versions
+  edx_config_repo: https://github.com/edx/configuration
+  edx_config_version: master
+  edx_platform_repo: 'https://github.com/edx/edx-platform'
+  edxapp: master
+  forum_source_repo: 'https://github.com/edx/cs_comments_service'
+  forum: master
+  xqueue_source_repo: 'https://github.com/edx/xqueue'
+  xqueue: master
+  xqwatcher_courses: master
+  theme_source_repo: 'https://github.com/mitodl/mitx-online-theme'
+  theme_name: 'mitx-online-theme'
+  theme: lilac
+  codename: lilac
+  ami_id: ami-0885b1f6bd170450c
+
+mitx_online_production_versions: &mitx_online_production_versions
+  edx_config_repo: https://github.com/edx/configuration
+  edx_config_version: master
+  edx_platform_repo: 'https://github.com/edx/edx-platform'
+  edxapp: master
+  forum_source_repo: 'https://github.com/edx/cs_comments_service'
+  forum: master
+  xqueue_source_repo: 'https://github.com/edx/xqueue'
+  xqueue: master
+  xqwatcher_courses: master
+  theme_source_repo: 'https://github.com/mitodl/mitx-online-theme'
+  theme_name: 'mitx-online-theme'
+  theme: lilac
+  codename: lilac
+  ami_id: ami-0885b1f6bd170450c
+
 sandbox_residential_versions: &sandbox_residential_versions
   edx_config_repo: https://github.com/edx/configuration.git
   edx_config_version: open-release/koa.master

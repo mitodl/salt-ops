@@ -6,7 +6,7 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
-  'P@environment:(operations|operations-qa|mitx-qa|mitx-production|mitxpro-qa|mitxpro-production|rc-apps|production-apps|data-qa|data-production)':
+  'P@environment:(operations|operations-qa|mitx-qa|mitx-production|mitxpro-qa|mitxpro-production|mitx-online-qa|mitx-online-production|rc-apps|production-apps|data-qa|data-production)':
     - match: compound
     - consul
     - consul.dns_proxy
@@ -149,7 +149,7 @@ base:
     - nginx
     - elastic-stack.elastalert
     - datadog.plugins
-  'P@environment:(operations|mitx(pro)?-production)':
+  'P@environment:(operations|mitx(pro|-online)?-production)':
     - match: compound
     - datadog
     - datadog.plugins
@@ -168,7 +168,7 @@ base:
     - elastic-stack.elasticsearch.plugins
     - elastic_stack.elasticsearch.apps.cronjobs
     - nginx
-  'G@roles:elasticsearch and P@environment:mitx-qa':
+  'G@roles:elasticsearch and P@environment:(mitx-qa|mitx-online-qa|mitx-online-production)':
     - match: compound
     - elastic-stack.elasticsearch
     - elastic-stack.elasticsearch.plugins
@@ -189,7 +189,7 @@ base:
     - mongodb
     - mongodb.consul_check
     - vector
-  'G@roles:mongodb and P@environment:mitx(pro)?-production':
+  'G@roles:mongodb and P@environment:mitx(pro|-online)?-production':
     - match: compound
     - datadog.plugins
   'G@roles:consul_server and P@environment:operations(-qa)?':
@@ -198,7 +198,7 @@ base:
     - vault
     - vault.tests
     - utils.file_limits
-  'G@roles:rabbitmq and P@environment:mitx(xpro)?-(qa|production)':
+  'G@roles:rabbitmq and P@environment:mitx(pro|-online)?-(qa|production)':
     - match: compound
     - datadog.plugins
   'roles:edx':
@@ -218,7 +218,7 @@ base:
   'G@roles:edx and G@environment:mitx-production':
     - match: compound
     - utils.ssh_users
-  'G@roles:edx-worker and P@environment:mitx(pro)?-(qa|production)':
+  'G@roles:edx-worker and P@environment:mitx(pro|-online)?-(qa|production)':
     - match: compound
     - edx.prod
     - edx.run_ansible

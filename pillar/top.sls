@@ -96,7 +96,7 @@ base:
     - consul.mongodb
   mongodb*production*:
     - datadog.mongodb-integration
-  'G@roles:mongodb and G@environment:mitx-qa':
+  'G@roles:mongodb and P@environment:(mitx-qa|mitx-online-qa|mitx-online-production)':
     - match: compound
     - mongodb.mitx-qa
   dremio*:
@@ -165,12 +165,11 @@ base:
     - apps.redash
     - apps.redash_data_sources
     - data.email_mapping_etl
-  'P@environment:(mitx-qa|mitx-production|mitxpro-qa|mitxpro-production|operations|rc-apps|production-apps|micromasters)':
+  'P@environment:(mitx-qa|mitx-production|mitxpro-qa|mitxpro-production|mitx-online-qa|mitx-online-production|operations|rc-apps|production-apps|micromasters)':
     - match: compound
     - datadog
     - consul
-    - elastic_stack.beats
-  'P@environment:mitx(pro)?-(qa|production)':
+  'P@environment:mitx(pro|-online)?-(qa|production)':
     - match: compound
     - consul.mitx
   'G@roles:edx and G@environment:mitxpro-*':
@@ -191,7 +190,7 @@ base:
     - match: compound
     - consul.bootcamps
     - vault
-  'G@roles:consul_server and P@environment:mitx(pro)?-production':
+  'G@roles:consul_server and P@environment:mitx(pro|-online)?-production':
     - match: compound
     - datadog.mysql-integration
     - datadog.http-check-integration
@@ -218,7 +217,7 @@ base:
   'G@roles:elasticsearch and P@environment:mitxpro-qa':
     - match: compound
     - elasticsearch.mitx
-  'G@roles:elasticsearch and P@environment:mitx-qa':
+  'G@roles:elasticsearch and P@environment:(mitx-qa|mitx-online-qa|mitx-online-production)':
     - match: compound
     - elastic_stack.elasticsearch
     - elastic_stack.elasticsearch.mitx
@@ -333,7 +332,7 @@ base:
     - rabbitmq
     - fluentd.rabbitmq
     - consul.rabbitmq
-  'G@roles:rabbitmq and P@environment:(mitxpro-production|mitx-production|production-apps)':
+  'G@roles:rabbitmq and P@environment:(mitxpro-production|mitx-production|mitx-online-production|production-apps)':
     - match: compound
     - datadog.rabbitmq-integration
   'roles:tika':
