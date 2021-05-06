@@ -127,9 +127,6 @@ mitx_online_qa_versions: &mitx_online_qa_versions
   xqueue_source_repo: 'https://github.com/edx/xqueue'
   xqueue: master
   xqwatcher_courses: master
-  theme_source_repo: 'https://github.com/mitodl/mitx-online-theme'
-  theme_name: 'mitx-online-theme'
-  theme: lilac
   codename: lilac
   ami_id: ami-0885b1f6bd170450c
 
@@ -143,9 +140,6 @@ mitx_online_production_versions: &mitx_online_production_versions
   xqueue_source_repo: 'https://github.com/edx/xqueue'
   xqueue: master
   xqwatcher_courses: master
-  theme_source_repo: 'https://github.com/mitodl/mitx-online-theme'
-  theme_name: 'mitx-online-theme'
-  theme: lilac
   codename: lilac
   ami_id: ami-0885b1f6bd170450c
 
