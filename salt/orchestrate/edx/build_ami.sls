@@ -27,6 +27,7 @@
 {% else %}
 {% set app_image = salt.sdb.get('sdb://consul/focal_ami_id') %}
 {% set worker_image = salt.sdb.get('sdb://consul/focal_ami_id') %}
+{% endif %}
 
 update_edxapp_codename_value:
   salt.function:
