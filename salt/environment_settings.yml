@@ -117,6 +117,32 @@ xpro_production_versions: &xpro_production_versions
   codename: koa
   ami_id: ami-0885b1f6bd170450c
 
+mitxonline_qa_versions: &mitxonline_qa_versions
+  edx_config_repo: https://github.com/edx/configuration
+  edx_config_version: master
+  edx_platform_repo: 'https://github.com/edx/edx-platform'
+  edxapp: master
+  forum_source_repo: 'https://github.com/edx/cs_comments_service'
+  forum: master
+  xqueue_source_repo: 'https://github.com/edx/xqueue'
+  xqueue: master
+  xqwatcher_courses: master
+  codename: lilac
+  ami_id: ami-0885b1f6bd170450c
+
+mitxonline_production_versions: &mitxonline_production_versions
+  edx_config_repo: https://github.com/edx/configuration
+  edx_config_version: master
+  edx_platform_repo: 'https://github.com/edx/edx-platform'
+  edxapp: master
+  forum_source_repo: 'https://github.com/edx/cs_comments_service'
+  forum: master
+  xqueue_source_repo: 'https://github.com/edx/xqueue'
+  xqueue: master
+  xqwatcher_courses: master
+  codename: lilac
+  ami_id: ami-0885b1f6bd170450c
+
 sandbox_residential_versions: &sandbox_residential_versions
   edx_config_repo: https://github.com/edx/configuration.git
   edx_config_version: open-release/koa.master
@@ -371,6 +397,68 @@ environments:
           analytics:
             number: 1
             eip: eipalloc-0b5eaa0b85c89d093
+        security_groups:
+          - edx
+  mitxonline-qa:
+    business_unit: mitxonline
+    network_prefix: '10.21'
+    vpc_name: MITx Online QA
+    vpc_peers:
+      - operations-qa
+    backends:
+      pki:
+        - consul
+        - elasticsearch
+        - mongodb
+        - rabbitmq
+    purposes:
+      mitxonline-qa:
+        app: edx-platform
+        business_unit: mitxonline
+        domains:
+          cms: studio-rc.mitxonline.mit.edu
+          lms: courses-rc.mitxonline.mit.edu
+          preview: preview-rc.mitxonline.mit.edu
+        versions:
+          <<: *mitxonline_qa_versions
+        instances:
+          edx:
+            number: 2
+            type: t3a.large
+          edx-worker:
+            number: 1
+            type: t3a.large
+  mitxonline-production:
+    business_unit: mitxonline
+    network_prefix: '10.21'
+    vpc_name: MITx Online Production
+    vpc_peers:
+      - mitodl-operations-services
+    backends:
+      pki:
+        - consul
+        - elasticsearch
+        - mongodb
+        - rabbitmq
+    purposes:
+      mitxonline-production:
+        app: edx-platform
+        business_unit: mitxonline
+        domains:
+          cms: studio.mitxonline.mit.edu
+          lms: courses.mitxonline.mit.edu
+          preview: preview.mitxonline.mit.edu
+        versions:
+          <<: *mitxonline_production_versions
+        instances:
+          edxapp:
+            min_number: 6
+            max_number: 10
+            type: r5a.large
+          edx-worker:
+            min_number: 3
+            max_number: 7
+            type: t3a.large
         security_groups:
           - edx
   mitx-qa:
