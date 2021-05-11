@@ -127,7 +127,7 @@ edx:
         extra_args: -e
       - name: xblock-image-modal==0.4.2
       # edX EOX core plugin for Sentry
-      #- name: eox-core[sentry]
+      - name: eox-core[sentry]
       - name: git+https://github.com/raccoongang/xblock-pdf.git@8d63047c53bc8fdd84fa7b0ec577bb0a729c215f#egg=xblock-pdf
         extra_args: -e
       # edX Sysadmin plugin
@@ -192,6 +192,9 @@ edx:
       SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>value
       EOX_CORE_SENTRY_INTEGRATION_DSN: __vault__::secret-residential/{{ environment }}/{{ purpose }}/sentry>data>dsn
       EOX_CORE_SENTRY_IGNORED_ERRORS: []
+      EOX_CORE_USERS_BACKEND: eox_core.edxapp_wrapper.backends.users_l_v1
+      EOX_CORE_PRE_ENROLLMENT_BACKEND: eox_core.edxapp_wrapper.backendspre_enrollment_l_v1
+
 
     EDXAPP_CMS_ENV_EXTRA:
       ADDL_INSTALLED_APPS:
