@@ -6,7 +6,7 @@ base:
     - fluentd
     - fluentd.plugins
     - fluentd.config
-  'P@environment:(operations|operations-qa|mitx-qa|mitx-production|mitxpro-qa|mitxpro-production|mitx-online-qa|mitx-online-production|rc-apps|production-apps|data-qa|data-production)':
+  'P@environment:(operations|operations-qa|mitx-qa|mitx-production|mitxpro-qa|mitxpro-production|mitxonline-qa|mitxonline-production|rc-apps|production-apps|data-qa|data-production)':
     - match: compound
     - consul
     - consul.dns_proxy
@@ -168,7 +168,7 @@ base:
     - elastic-stack.elasticsearch.plugins
     - elastic_stack.elasticsearch.apps.cronjobs
     - nginx
-  'G@roles:elasticsearch and P@environment:(mitx-qa|mitx-online-qa|mitx-online-production)':
+  'G@roles:elasticsearch and P@environment:(mitx-qa|mitxonline-qa|mitxonline-production)':
     - match: compound
     - elastic-stack.elasticsearch
     - elastic-stack.elasticsearch.plugins
