@@ -23,7 +23,7 @@ edx:
     EDXAPP_EDX_API_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/edx-api-key>data>value
     EDXAPP_SESSION_COOKIE_DOMAIN: .xpro.mit.edu
     EDXAPP_SESSION_COOKIE_NAME: {{ environment }}-{{ purpose }}-session
-    {% if 'worker' in salt.grains.get(roles) %}
+    {% if 'worker' in salt.grains.get('roles') %}
     EDXAPP_COMMENTS_SERVICE_URL: "http://forum-{{ purpose }}.service.consul:4567"
     {% else %}
     EDXAPP_COMMENTS_SERVICE_URL: "http://localhost:4567"
