@@ -114,10 +114,6 @@ create_edx_worker_baseline_instance_in_{{ ENVIRONMENT }}:
     - require:
         - file: load_edx_base_cloud_profile
 
-ensure_instance_profile_exists_for_edx:
-  boto_iam_role.present:
-    - name: edx-instance-role
-
 load_pillar_data_on_edx_base_nodes:
   salt.function:
     - name: saltutil.refresh_pillar

@@ -50,10 +50,6 @@ generate_{{ app_name }}_cloud_map_file:
     - require:
         - file: load_{{ app_name }}_cloud_profile
 
-ensure_instance_profile_exists_for_{{ app_name }}:
-  boto_iam_role.present:
-    - name: {{ app_name }}-instance-role
-
 deploy_{{ app_name }}_cloud_map:
   salt.runner:
     - name: cloud.map_run
