@@ -192,8 +192,10 @@ edx:
       SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-residential/{{ environment }}/{{ purpose }}/saml-sp-cert>data>value
       EOX_CORE_SENTRY_INTEGRATION_DSN: __vault__::secret-residential/{{ environment }}/{{ purpose }}/sentry>data>dsn
       EOX_CORE_SENTRY_IGNORED_ERRORS: []
+      {% if 'koa' not in grains.get('edx_codename') %}
       EOX_CORE_USERS_BACKEND: eox_core.edxapp_wrapper.backends.users_l_v1
       EOX_CORE_PRE_ENROLLMENT_BACKEND: eox_core.edxapp_wrapper.backendspre_enrollment_l_v1
+      {% endif %}
 
 
     EDXAPP_CMS_ENV_EXTRA:
