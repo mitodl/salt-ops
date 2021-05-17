@@ -131,7 +131,7 @@ edx:
       - name: git+https://github.com/raccoongang/xblock-pdf.git@8d63047c53bc8fdd84fa7b0ec577bb0a729c215f#egg=xblock-pdf
         extra_args: -e
       # edX Sysadmin plugin
-      #- name: https://github.com/mitodl/edx-sysadmin#egg=edx-sysadmin
+      - name: https://github.com/mitodl/edx-sysadmin#egg=edx-sysadmin
 
     # Start ProctorTrack settings
     EDXAPP_PROCTORING_SETTINGS:
@@ -174,7 +174,11 @@ edx:
         RESTRICT_ENROLL_SOCIAL_PROVIDERS:
           - mit-kerberos
         ENABLE_THIRD_PARTY_ONLY_AUTH: True
+        {% if 'koa' not in grains.get('edx_codename') %}
+        ENABLE_SYSADMIN_DASHBOARD: False
+        {% else %}
         ENABLE_SYSADMIN_DASHBOARD: True
+        {% endif %}
       REMOTE_GRADEBOOK:
         URL: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>url
         DEFAULT_NAME: !!null
