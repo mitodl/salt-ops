@@ -228,7 +228,7 @@ edx:
         LICENSING: true
         REQUIRE_COURSE_EMAIL_AUTH: false
       FIELD_OVERRIDE_PROVIDERS:
-        - courseware.student_field_overrides.IndividualStudentOverrideProvider
+        - lms.djangoapps.courseware.student_field_overrides.IndividualStudentOverrideProvider
       GIT_IMPORT_STATIC: True
       OAUTH_OIDC_ISSUER: "{{ EDXAPP_LMS_ISSUER }}"
 
