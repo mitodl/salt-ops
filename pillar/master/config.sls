@@ -211,6 +211,8 @@ salt_master:
       {% if 'qa' in purpose %}
       - proxy-bootcamps-ci
       - proxy-bootcamps-rc
+      - proxy-mictomasters-ci
+      - proxy-micromasters-rc
       - proxy-mitxpro-ci
       - proxy-mitxpro-rc
       - proxy-mit-open-discussions-ci
@@ -219,6 +221,7 @@ salt_master:
       - proxy-ocw-studio-rc
       {% else %}
       - proxy-bootcamps-production
+      - proxy-micromasters-production
       - proxy-mitxpro-production
       - proxy-mit-open-discussions-production
       - proxy-ocw-studio-production
