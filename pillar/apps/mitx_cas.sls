@@ -145,5 +145,9 @@ mitx_cas:
         provider: touchstone
       - host: ^greetings.odl.mit.edu
         provider: touchstone
+      - host: ^quanta.mit.edu
+        provider: touchstone
+      - host: ^futonhub.mit.edu
+        provider: touchstone
     STATIC_ROOT: /opt/mitx-cas/static
     ZENDESK_PSK: __vault__::secret-operations/global/zendesk-cas-psk>data>value
