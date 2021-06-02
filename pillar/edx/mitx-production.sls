@@ -15,14 +15,11 @@ edx:
     os_packages:
       - git
       - libmysqlclient-dev
-      - mariadb-client-10.0
+      - mariadb-client-10.3
       - landscape-common
       - libssl-dev
-      - python3.5
-      - python3.5-dev
-      - python-pip
       - python3-pip
-      - python-virtualenv
+      - python3-virtualenv
       - nfs-common
       - postfix
 
