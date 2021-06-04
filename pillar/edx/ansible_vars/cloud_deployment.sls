@@ -135,6 +135,8 @@ edx:
     FORUM_API_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/global/forum-api-key>data>value
     {% if 'koa' in grains.get('edx_codename') %}
     FORUM_ELASTICSEARCH_HOST: "nearest-elasticsearch.query.consul"
+    forum_services:
+      - {service: "elasticsearch", host: "nearest-elasticsearch.query.consul", port: "9200"}
     {% else %}
     FORUM_ELASTICSEARCH_HOST_ES7: "nearest-elasticsearch.query.consul"
     {% endif %}
