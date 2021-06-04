@@ -131,7 +131,7 @@ edx:
       - name: git+https://github.com/raccoongang/xblock-pdf.git@8d63047c53bc8fdd84fa7b0ec577bb0a729c215f#egg=xblock-pdf
         extra_args: -e
       # edX Sysadmin plugin
-      - name: https://github.com/mitodl/edx-sysadmin#egg=edx-sysadmin
+      - name: git+https://github.com/mitodl/edx-sysadmin#egg=edx-sysadmin
 
     # Start ProctorTrack settings
     EDXAPP_PROCTORING_SETTINGS:
