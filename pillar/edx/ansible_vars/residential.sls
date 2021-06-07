@@ -183,6 +183,7 @@ edx:
         URL: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>url
         DEFAULT_NAME: !!null
       SECRET_KEY: __vault__:gen_if_missing:secret-residential/global/edxapp-lms-django-secret-key>data>value
+      SYSADMIN_GITHUB_WEBHOOK_KEY: __vault__::secret-residential/{{ environment }}/github-hmac-secret>data>value
       REMOTE_GRADEBOOK_USER: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>user
       REMOTE_GRADEBOOK_PASSWORD: __vault__::secret-{{ business_unit }}/{{ environment }}/remote_gradebook>data>password
       MONGODB_LOG:
