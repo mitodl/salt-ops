@@ -12,13 +12,16 @@
 
 mongodb:
   overrides:
-    version: '3.6'
+    version: '4.4'
     config:
       net:
         bindIp: '0.0.0.0,::'
         unixDomainSocket:
           enabled: False
         ipv6: True
+    systemd_overrides:
+      Service:
+        PIDFile: '/run/mongodb/mongod.pid'
   admin_username: admin
   admin_password: __vault__::secret-{{ business_unit }}/{{ environment }}/mongodb-admin-password>data>value
   replset_name: rs0

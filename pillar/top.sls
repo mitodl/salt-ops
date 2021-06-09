@@ -211,13 +211,13 @@ base:
     - nginx
     - nginx.apps_es
     - datadog.nginx-integration
-  'G@roles:elasticsearch and P@environment:mitx(pro)?-production':
+  'G@roles:elasticsearch and P@environment:mitxpro-production':
     - match: compound
     - elasticsearch.mitx
   'G@roles:elasticsearch and P@environment:mitxpro-qa':
     - match: compound
     - elasticsearch.mitx
-  'G@roles:elasticsearch and P@environment:(mitx-qa|mitxonline-qa|mitxonline-production)':
+  'G@roles:elasticsearch and P@environment:(mitx-qa|mitxonline-qa|mitxonline-production|mitx-production)':
     - match: compound
     - elastic_stack.elasticsearch
     - elastic_stack.elasticsearch.mitx
