@@ -193,7 +193,6 @@ base:
   'G@roles:consul_server and P@environment:mitx(pro|-online)?-production':
     - match: compound
     - datadog.mysql-integration
-    - datadog.http-check-integration
   'P@roles:(vault_server|master)':
     - match: compound
     - vault
