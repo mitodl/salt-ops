@@ -22,7 +22,7 @@
       'HUBSPOT_FOOTER_FORM_GUID': 'a8cffaac-4207-446a-b295-5f44656596f8',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
       'NOVOED_SAML_DEBUG': True,
-      'NOVOED_SAML_LOGIN_URL': 'https://app.novoed.com/saml/sso?provider=mitbootcamps-stg',
+      'NOVOED_SAML_LOGIN_URL': 'https://app.novoed.com/saml/sso?provider=mitstaging',
       'SITE_NAME': 'MIT Bootcamps CI',
       'vault_env_path': 'rc-apps'
       },
@@ -45,7 +45,7 @@
       'HUBSPOT_FOOTER_FORM_GUID': 'a8cffaac-4207-446a-b295-5f44656596f8',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
       'NOVOED_SAML_DEBUG': True,
-      'NOVOED_SAML_LOGIN_URL': 'https://app.novoed.com/saml/sso?provider=mitbootcamps-stg',
+      'NOVOED_SAML_LOGIN_URL': 'https://app.novoed.com/saml/sso?provider=mitstaging',
       'SITE_NAME': 'MIT Bootcamps RC',
       'vault_env_path': 'rc-apps'
       },
