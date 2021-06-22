@@ -1,6 +1,3 @@
-include:
-  - mongodb.repository
-
 {% set settings = salt.pillar.get('mitx_etl:settings', {}) %}
 
 mitx_etl_config:
@@ -17,10 +14,3 @@ add_task_to_cron:
     - special: '@daily'
     - require:
       - file: mitx_etl_config
-
-install_mongodb_client_for_dumping_data:
-  pkg.installed:
-    - name: mongodb-org-tools
-    - refresh: True
-    - require:
-      - pkgrepo: add_mongodb_package_repository
