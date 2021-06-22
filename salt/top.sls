@@ -149,7 +149,7 @@ base:
     - nginx
     - elastic-stack.elastalert
     - datadog.plugins
-  'P@environment:(operations|mitx(pro|-online)?-production)':
+  'P@environment:(operations|mitx(pro|-online)?-production) and not analytics-mitx*':
     - match: compound
     - datadog
     - datadog.plugins
