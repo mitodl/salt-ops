@@ -245,7 +245,7 @@ edx:
       DIRECTORY_PREFIX: 'video-transcripts/'
 
     common_feature_flags: &common_feature_flags
-      COURSE_INVITE_ONLY: {{ edxapp_course_default_invite_only }}
+      COURSES_INVITE_ONLY: {{ edxapp_course_default_invite_only }}
       REROUTE_ACTIVATION_EMAIL: {{ smtp_config.data.support_email }}
       ENABLE_INSTRUCTOR_ANALYTICS: true
       ENABLE_INSTRUCTOR_LEGACY_DASHBOARD: true
