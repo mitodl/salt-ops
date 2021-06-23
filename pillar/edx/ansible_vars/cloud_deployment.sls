@@ -61,7 +61,7 @@
   {% set edxapp_git_repo_dir = '/mnt/data/prod_repos' %}
   {% set edxapp_course_about_visibility_permission = 'see_exists' %}
   {% set edxapp_course_catalog_visibility_permission = 'see_exists' %}
-  {% set edxapp_course_default_invite_only = False %}
+  {% set edxapp_course_invite_only = False %}
   {% set edxapp_aws_grades_root_path = 'rp-prod/grades' %}
   {% set edxapp_upload_storage_prefix = 'submissions_attachments_prod' %}
   {% set edxapp_log_env_suffix = 'prod' %}
@@ -69,7 +69,7 @@
   {% set edxapp_git_repo_dir = '/mnt/data/repos' %}
   {% set edxapp_course_about_visibility_permission = 'staff' %}
   {% set edxapp_course_catalog_visibility_permission = 'staff' %}
-  {% set edxapp_course_default_invite_only = True %}
+  {% set edxapp_course_invite_only = True %}
   {% set edxapp_aws_grades_root_path =  'rp-dev/grades' %}
   {% set edxapp_upload_storage_prefix = 'submissions_attachments_dev' %}
   {% set edxapp_log_env_suffix = 'dev' %}
@@ -77,7 +77,7 @@
   {% set edxapp_git_repo_dir = '/mnt/data/repos' %}
   {% set edxapp_course_about_visibility_permission = 'see_exists' %}
   {% set edxapp_course_catalog_visibility_permission = 'see_exists' %}
-  {% set edxapp_course_default_invite_only = False %}
+  {% set edxapp_course_invite_only = False %}
   {% set edxapp_aws_grades_root_path =  'grades' %}
   {% set edxapp_upload_storage_prefix = 'submissions_attachments' %}
   {% set edxapp_log_env_suffix = 'prod' %}
