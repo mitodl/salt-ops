@@ -245,7 +245,6 @@ edx:
       DIRECTORY_PREFIX: 'video-transcripts/'
 
     common_feature_flags: &common_feature_flags
-      COURSES_INVITE_ONLY: {{ edxapp_course_default_invite_only }}
       REROUTE_ACTIVATION_EMAIL: {{ smtp_config.data.support_email }}
       ENABLE_INSTRUCTOR_ANALYTICS: true
       ENABLE_INSTRUCTOR_LEGACY_DASHBOARD: true
@@ -256,6 +255,7 @@ edx:
       ADMINS:
       - ['MITx Stacktrace Recipients', 'cuddle-bunnies@mit.edu']
       BOOK_URL: ""
+      COURSES_INVITE_ONLY: {{ edxapp_course_default_invite_only }}
       DATA_DIR: {{ edxapp_git_repo_dir }}
       SERVER_EMAIL: {{ smtp_config.data.server_email }}
       TIME_ZONE_DISPLAYED_FOR_DEADLINES: "{{ TIME_ZONE }}"
