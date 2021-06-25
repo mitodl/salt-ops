@@ -6,6 +6,7 @@
       'app_name': 'ocw-studio-ci',
       'env': 'qa',
       'env_name': 'ci',
+      'FEATURE_USE_LOCAL_STARTERS': 'True',
       'GITHUB_ORGANIZATION': 'ocw-content-ci',
       'GTM_ACCOUNT_ID': 'GTM-5JZ7X78',
       'MAILGUN_SENDER_DOMAIN': 'ocw-ci.mail.odl.mit.edu',
@@ -21,6 +22,7 @@
       'app_name': 'ocw-studio-rc',
       'env': 'qa',
       'env_name': 'rc',
+      'FEATURE_USE_LOCAL_STARTERS': 'True',
       'GTM_ACCOUNT_ID': 'GTM-57BZ8PN',
       'GITHUB_ORGANIZATION': 'ocw-content-rc',
       'MAILGUN_SENDER_DOMAIN': 'ocw-rc.mail.odl.mit.edu',
@@ -36,6 +38,7 @@
       'app_name': 'ocw-studio',
       'env': 'production',
       'env_name': 'production',
+      'FEATURE_USE_LOCAL_STARTERS': 'False',
       'GTM_ACCOUNT_ID': 'GTM-MQCSLSQ',
       'GITHUB_ORGANIZATION': 'ocw-content',
       'MAILGUN_SENDER_DOMAIN': 'ocw.mail.odl.mit.edu',
@@ -68,6 +71,7 @@ heroku:
     {% set rds_endpoint = salt.boto_rds.get_endpoint('ocw-studio-db-applications-{}'.format(env_data.env)) %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/ocw_studio
     {% endif %}
+    FEATURE_USE_LOCAL_STARTERS: {{ env_data.FEATURE_USE_LOCAL_STARTERS }}
     {% if environment == "rc" %}
     GIT_API_URL: "https://github.mit.edu/api/v3"
     {% endif %}
