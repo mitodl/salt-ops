@@ -1,6 +1,9 @@
 # -*- mode: yaml -*-
 {% set environment = salt.grains.get('environment', 'data-qa') %}
 
+mongodb:
+  version: '4.4'
+
 dagster:
   home: /opt/ol_data_pipelines
   dagit:

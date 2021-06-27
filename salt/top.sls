@@ -66,6 +66,7 @@ base:
     - pulsar.tests
   'roles:dagster':
     - match: grain
+    - mongodb.repository
     - dagster
     - caddy
     - caddy.local_auth
