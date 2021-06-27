@@ -3,6 +3,8 @@
 
 mongodb:
   version: '4.4'
+  overrides:
+    version: '4.4'
 
 dagster:
   home: /opt/ol_data_pipelines
