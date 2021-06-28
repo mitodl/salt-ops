@@ -8,6 +8,7 @@
       'env_name': 'ci',
       'FEATURE_USE_LOCAL_STARTERS': 'True',
       'GITHUB_ORGANIZATION': 'ocw-content-ci',
+      'GITHUB_WEBHOOK_BRANCH': '',
       'GTM_ACCOUNT_ID': 'GTM-5JZ7X78',
       'MAILGUN_SENDER_DOMAIN': 'ocw-ci.mail.odl.mit.edu',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio-ci.odl.mit.edu/',
