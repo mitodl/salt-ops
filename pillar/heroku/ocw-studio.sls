@@ -8,6 +8,7 @@
       'env_name': 'ci',
       'FEATURE_USE_LOCAL_STARTERS': 'True',
       'GITHUB_ORGANIZATION': 'ocw-content-ci',
+      'GITHUB_WEBHOOK_BRANCH': '',
       'GTM_ACCOUNT_ID': 'GTM-5JZ7X78',
       'MAILGUN_SENDER_DOMAIN': 'ocw-ci.mail.odl.mit.edu',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio-ci.odl.mit.edu/',
@@ -25,6 +26,7 @@
       'FEATURE_USE_LOCAL_STARTERS': 'True',
       'GTM_ACCOUNT_ID': 'GTM-57BZ8PN',
       'GITHUB_ORGANIZATION': 'ocw-content-rc',
+      'GITHUB_WEBHOOK_BRANCH': 'release-candidate',
       'MAILGUN_SENDER_DOMAIN': 'ocw-rc.mail.odl.mit.edu',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio-rc.odl.mit.edu/',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
@@ -41,6 +43,7 @@
       'FEATURE_USE_LOCAL_STARTERS': 'False',
       'GTM_ACCOUNT_ID': 'GTM-MQCSLSQ',
       'GITHUB_ORGANIZATION': 'ocw-content',
+      'GITHUB_WEBHOOK_BRANCH': 'release',
       'MAILGUN_SENDER_DOMAIN': 'ocw.mail.odl.mit.edu',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio.odl.mit.edu/',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
@@ -78,6 +81,7 @@ heroku:
     GIT_ORGANIZATION: {{ env_data.GITHUB_ORGANIZATION }}
     GIT_TOKEN: __vault__::secret-open-courseware/ocw-studio/{{ environment }}/github-user-token>data>value
     GITHUB_WEBHOOK_KEY: __vault__::secret-ocw-studio/data/app-config>data>data>github_shared_secret  # the double >data>data is because this is a kv-v2 mount
+    GITHUB_WEBHOOK_BRANCH: {{ env_data.GITHUB_WEBHOOK_BRANCH }}
     GTM_ACCOUNT_ID: {{ env_data.GTM_ACCOUNT_ID }}
     MAILGUN_FROM_EMAIL: 'MIT OCW <no-reply@{{ env_data.MAILGUN_SENDER_DOMAIN }}'
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
