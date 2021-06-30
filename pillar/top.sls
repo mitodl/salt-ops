@@ -92,6 +92,7 @@ base:
   'roles:mongodb':
     - match: grain
     - mongodb
+    - consul
     - vector.mongodb
     - consul.mongodb
   mongodb*production*:
