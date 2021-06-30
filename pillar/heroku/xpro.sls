@@ -86,7 +86,7 @@
       'CSRF_TRUSTED_ORIGINS': 'xpro.mit.edu,xpro-web.odl.mit.edu',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://secureacceptance.cybersource.com/pay',
       'CYBERSOURCE_WSDL_URL': 'https://ics2wsa.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
-      'DIGITAL_CREDENTIALS_SUPPORTED_RUNS': '',
+      'DIGITAL_CREDENTIALS_SUPPORTED_RUNS': 'course-v1:xPRO+BioEngx+R6',
       'HUBSPOT_CREATE_USER_FORM_ID': '9ada5d38-33ee-415c-8cb2-9d72e735b1d5',
       'HUBSPOT_FOOTER_FORM_GUID': '6f7e46ec-f757-43a4-b109-597210df0f75',
       'HUBSPOT_ID_PREFIX': 'xpro',
