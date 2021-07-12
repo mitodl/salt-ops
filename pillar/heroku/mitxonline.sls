@@ -16,7 +16,7 @@
       'MAILGUN_FROM_EMAIL': 'MITx Online <no-reply@mitxonline-ci-mail.mitxonline.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'mitxonline-ci-mail.mitxonline.mit.edu',
       'MITXONLINE_BASE_URL': 'https://mitxonline-ci.mitxonline.mit.edu',
-      'MITXPRO_SECURE_SSL_HOST': 'mitxonline-ci.mitxonline.mit.edu',
+      'MITXONLINE_SECURE_SSL_HOST': 'mitxonline-ci.mitxonline.mit.edu',
       'vault_env_path': 'rc-apps',
       },
     'rc': {
@@ -32,7 +32,7 @@
       'MAILGUN_FROM_EMAIL': 'MITx Online <no-reply@mitxonline-rc-mail.mitxonline.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'mitxonline-rc-mail.mitxonline.mit.edu',
       'MITXONLINE_BASE_URL': 'https://mitxonline-rc.mitxonline.mit.edu',
-      'MITXPRO_SECURE_SSL_HOST': 'mitxonline-rc.mitxonline.mit.edu',
+      'MITXONLINE_SECURE_SSL_HOST': 'mitxonline-rc.mitxonline.mit.edu',
       'vault_env_path': 'rc-apps',
       },
     'production': {
@@ -48,7 +48,7 @@
       'MAILGUN_FROM_EMAIL': 'MITx Online <no-reply@mitxonline.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'mitxonline.mit.edu',
       'MITXONLINE_BASE_URL': 'https://mitxonline.mit.edu',
-      'MITXPRO_SECURE_SSL_HOST': 'mitxonline.mit.edu',
+      'MITXONLINE_SECURE_SSL_HOST': 'mitxonline.mit.edu',
       'vault_env_path': 'production-apps',
       }
 } %}
@@ -62,7 +62,7 @@ heroku:
   app_name: {{ env_data.app_name }}
   api_key: __vault__::secret-{{ business_unit }}/heroku/api_key>data>value
   config_vars:
-    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>access_key
+    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-mitxonline-app-{{ env_data.env_name }}>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-mitxonline-app-{{ env_data.env_name }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'mitxonline-app-{{ env_data.env_name }}'
     {% if env_data.env_name == 'production' %}
@@ -101,7 +101,7 @@ heroku:
     RECAPTCHA_SITE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>site_key
     RECAPTCHA_SECRET_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>secret_key
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-secret-key>data>value
-    SENTRY_DSN: __vault__::secret-operations/global/xpro/sentry-dsn>data>value
+    SENTRY_DSN: __vault__::secret-operations/global/mitxonline/sentry-dsn>data>value
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
     SITE_NAME: "MITx Online"
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
