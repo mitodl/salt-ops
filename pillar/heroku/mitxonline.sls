@@ -8,13 +8,13 @@
       'env_name': 'ci',
       'GOOGLE_TRACKING_ID': '',
       'GOOGLE_TAG_MANAGER_ID': '',
-      'release_branch': 'master',
+      'release_branch': 'main',
       'app_log_level': 'INFO',
       'sentry_log_level': 'ERROR',
       'OPENEDX_API_BASE_URL': '',
       'openedx_environment': 'mitxonline-qa',
       'MAILGUN_FROM_EMAIL': 'MITx Online <no-reply@mitxonline-ci-mail.mitxonline.mit.edu>',
-      'MAILGUN_SENDER_DOMAIN': 'mitxonline-ci-mail.mitxoline.mit.edu',
+      'MAILGUN_SENDER_DOMAIN': 'mitxonline-ci-mail.mitxonline.mit.edu',
       'MITXONLINE_BASE_URL': 'https://mitxonline-ci.mitxonline.mit.edu',
       'MITXPRO_SECURE_SSL_HOST': 'mitxonline-ci.mitxonline.mit.edu',
       'vault_env_path': 'rc-apps',
@@ -24,13 +24,13 @@
       'env_name': 'rc',
       'GOOGLE_TRACKING_ID': '',
       'GOOGLE_TAG_MANAGER_ID': '',
-      'release_branch': 'master',
+      'release_branch': 'release-candidate',
       'app_log_level': 'INFO',
       'sentry_log_level': 'ERROR',
       'OPENEDX_API_BASE_URL': '',
       'openedx_environment': 'mitxonline-qa',
       'MAILGUN_FROM_EMAIL': 'MITx Online <no-reply@mitxonline-rc-mail.mitxonline.mit.edu>',
-      'MAILGUN_SENDER_DOMAIN': 'mitxonline-rc-mail.mitxoline.mit.edu',
+      'MAILGUN_SENDER_DOMAIN': 'mitxonline-rc-mail.mitxonline.mit.edu',
       'MITXONLINE_BASE_URL': 'https://mitxonline-rc.mitxonline.mit.edu',
       'MITXPRO_SECURE_SSL_HOST': 'mitxonline-rc.mitxonline.mit.edu',
       'vault_env_path': 'rc-apps',
@@ -40,13 +40,13 @@
       'env_name': 'ci',
       'GOOGLE_TRACKING_ID': '',
       'GOOGLE_TAG_MANAGER_ID': '',
-      'release_branch': 'master',
+      'release_branch': 'release',
       'app_log_level': 'INFO',
       'sentry_log_level': 'ERROR',
       'OPENEDX_API_BASE_URL': '',
       'openedx_environment': 'mitxonline-production',
       'MAILGUN_FROM_EMAIL': 'MITx Online <no-reply@mitxonline.mit.edu>',
-      'MAILGUN_SENDER_DOMAIN': 'mitxoline.mit.edu',
+      'MAILGUN_SENDER_DOMAIN': 'mitxonline.mit.edu',
       'MITXONLINE_BASE_URL': 'https://mitxonline.mit.edu',
       'MITXPRO_SECURE_SSL_HOST': 'mitxonline.mit.edu',
       'vault_env_path': 'production-apps',
@@ -63,8 +63,8 @@ heroku:
   api_key: __vault__::secret-{{ business_unit }}/heroku/api_key>data>value
   config_vars:
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>access_key
-    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>secret_key
-    AWS_STORAGE_BUCKET_NAME: 'xpro-app-{{ env_data.env_name }}'
+    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-mitxonline-app-{{ env_data.env_name }}>data>secret_key
+    AWS_STORAGE_BUCKET_NAME: 'mitxonline-app-{{ env_data.env_name }}'
     {% if env_data.env_name == 'production' %}
     {% set pg_creds = salt.vault.cached_read('postgres-production-apps-mitxonline/creds/mitxonline', cache_prefix='heroku-mitxonline') %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxonline
