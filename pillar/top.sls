@@ -127,6 +127,8 @@ base:
     - heroku.xpro
   proxy-mit-open-discussions-*:
     - heroku.discussions
+  proxy-mitxonline-*:
+    - heroku.mitxonline
   proxy-ocw-studio-*:
     - heroku.ocw-studio
   'roles:mitx-cas':
