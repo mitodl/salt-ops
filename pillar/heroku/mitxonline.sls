@@ -87,7 +87,6 @@ heroku:
     MITXONLINE_REPLY_TO_ADDRESS: 'MITx Online <support@mitxonline.mit.edu>'
     MITXONLINE_SECURE_SSL_REDIRECT: True
     MITXONLINE_SECURE_SSL_HOST: {{ env_data.MITXONLINE_SECURE_SSL_HOST }}
-    MITXONLINE_SUPPORT_EMAIL: {{ smtp_config.data.support_email }}
     MITXONLINE_USE_S3: True
     NODE_MODULES_CACHE: False
     OPENEDX_API_BASE_URL: {{ env_data.OPENEDX_API_BASE_URL}}
