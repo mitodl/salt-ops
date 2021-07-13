@@ -62,8 +62,8 @@ heroku:
   app_name: {{ env_data.app_name }}
   api_key: __vault__::secret-{{ business_unit }}/heroku/api_key>data>value
   config_vars:
-    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-mitxonline-app-{{ env_data.env_name }}>data>access_key
-    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-mitxonline-app-{{ env_data.env_name }}>data>secret_key
+    #AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-mitxonline-app-{{ env_data.env_name }}>data>access_key
+    #AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-mitxonline-app-{{ env_data.env_name }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'mitxonline-app-{{ env_data.env_name }}'
     {% if env_data.env_name == 'production' %}
     {% set pg_creds = salt.vault.cached_read('postgres-production-apps-mitxonline/creds/mitxonline', cache_prefix='heroku-mitxonline') %}
