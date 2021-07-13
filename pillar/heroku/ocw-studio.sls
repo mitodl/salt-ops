@@ -6,6 +6,7 @@
       'app_name': 'ocw-studio-ci',
       'env': 'qa',
       'env_name': 'ci',
+      'CONCOURSE_URL': 'https://cicd-qa.odl.mit.edu',
       'FEATURE_USE_LOCAL_STARTERS': 'True',
       'GITHUB_ORGANIZATION': 'ocw-content-ci',
       'GITHUB_WEBHOOK_BRANCH': '',
@@ -23,7 +24,9 @@
       'app_name': 'ocw-studio-rc',
       'env': 'qa',
       'env_name': 'rc',
+      'CONCOURSE_URL': 'https://cicd-qa.odl.mit.edu',
       'FEATURE_USE_LOCAL_STARTERS': 'True',
+      'GIT_DOMAIN': 'github.mit.edu',
       'GTM_ACCOUNT_ID': 'GTM-57BZ8PN',
       'GITHUB_ORGANIZATION': 'ocw-content-rc',
       'GITHUB_WEBHOOK_BRANCH': 'release-candidate',
@@ -40,7 +43,9 @@
       'app_name': 'ocw-studio',
       'env': 'production',
       'env_name': 'production',
+      'CONCOURSE_URL': 'https://cicd.odl.mit.edu'
       'FEATURE_USE_LOCAL_STARTERS': 'False',
+      'GIT_DOMAIN': 'github.com',
       'GTM_ACCOUNT_ID': 'GTM-MQCSLSQ',
       'GITHUB_ORGANIZATION': 'ocw-content',
       'GITHUB_WEBHOOK_BRANCH': 'release',
@@ -66,9 +71,14 @@ heroku:
   config_vars:
     ALLOWED_HOSTS: '["*"]'
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/ocw-studio-app-{{ env_data.env }}>data>access_key
+    AWS_PREVIEW_BUCKET_NAME: 'ocw-content-draft-{{ env_data.env }}'
+    AWS_PUBLISH_BUCKET_NAME: 'ocw-content-live-{{ env_data.env }}'
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/ocw-studio-app-{{ env_data.env }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'ol-ocw-studio-app-{{ env_data.env }}'
     CONTENT_SYNC_BACKEND: content_sync.backends.github.GithubBackend
+    CONTENT_SYNC_PIPELINE: content_sync.pipelines.concourse.ConcourseGithubPipeline
+    CONCOURSE_USERNAME: oldevops
+    CONCOURSE_PASSWORD: __vault__::secret-concourse/web>data>data>admin_password
     {% if env_data.env_name != 'ci' %}
     {% set pg_creds = salt.vault.cached_read('postgres-ocw-studio-applications-{}/creds/app'.format(env_data.env), cache_prefix='heroku-ocw-studio-' ~ env_data.env) %}
     {% set rds_endpoint = salt.boto_rds.get_endpoint('ocw-studio-db-applications-{}'.format(env_data.env)) %}
