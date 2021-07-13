@@ -6,6 +6,7 @@
       'app_name': 'ocw-studio-ci',
       'env': 'qa',
       'env_name': 'ci',
+      'CONCOURSE_URL': 'https://cicd-qa.odl.mit.edu',
       'FEATURE_USE_LOCAL_STARTERS': 'True',
       'GITHUB_ORGANIZATION': 'ocw-content-ci',
       'GITHUB_WEBHOOK_BRANCH': '',
@@ -76,8 +77,8 @@ heroku:
     AWS_STORAGE_BUCKET_NAME: 'ol-ocw-studio-app-{{ env_data.env }}'
     CONTENT_SYNC_BACKEND: content_sync.backends.github.GithubBackend
     CONTENT_SYNC_PIPELINE: content_sync.pipelines.concourse.ConcourseGithubPipeline
-    CONCOURSE_USERNAME: __vault__::????
-    CONCOURSE_PASSWORD: __vault__::????
+    CONCOURSE_USERNAME: oldevops
+    CONCOURSE_PASSWORD: __vault__::secret-concourse/web>data>data>admin_password
     {% if env_data.env_name != 'ci' %}
     {% set pg_creds = salt.vault.cached_read('postgres-ocw-studio-applications-{}/creds/app'.format(env_data.env), cache_prefix='heroku-ocw-studio-' ~ env_data.env) %}
     {% set rds_endpoint = salt.boto_rds.get_endpoint('ocw-studio-db-applications-{}'.format(env_data.env)) %}
