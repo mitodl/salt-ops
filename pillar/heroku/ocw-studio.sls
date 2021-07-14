@@ -47,7 +47,7 @@
       'FEATURE_USE_LOCAL_STARTERS': 'False',
       'GIT_DOMAIN': 'github.com',
       'GTM_ACCOUNT_ID': 'GTM-MQCSLSQ',
-      'GITHUB_ORGANIZATION': 'ocw-content',
+      'GITHUB_ORGANIZATION': 'mitocwcontent',
       'GITHUB_WEBHOOK_BRANCH': 'release',
       'MAILGUN_SENDER_DOMAIN': 'ocw.mail.odl.mit.edu',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio.odl.mit.edu/',
