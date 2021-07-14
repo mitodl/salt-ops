@@ -75,19 +75,19 @@ heroku:
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
-    MITXONLINE_ADMIN_EMAIL: 'cuddle-bunnies@mit.edu'
-    MITXONLONE_BASE_URL: {{ env_data.MITXONLINE_BASE_URL }}
-    MITXONLONE_DB_CONN_MAX_AGE: 0
-    MITXONLNE_DB_DISABLE_SSL: True    # pgbouncer buildpack uses stunnel to handle encryption
-    MITXONLINE_ENVIRONMENT: {{ env_data.env_name }}
-    MITXONLINE_FROM_EMAIL: 'MITx Online <support@mitxonline.mit.edu>'
-    MITXONLINE_LOG_LEVEL: {{ env_data.app_log_level }}
-    MITXONLINE_OAUTH_PROVIDER: 'mitxonline-oauth2'
-    MITXONLINE_REGISTRATION_ACCESS_TOKEN:  __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.openedx_environment }}/mitxonline-registration-access-token>data>value
-    MITXONLINE_REPLY_TO_ADDRESS: 'MITx Online <support@mitxonline.mit.edu>'
-    MITXONLINE_SECURE_SSL_REDIRECT: True
-    MITXONLINE_SECURE_SSL_HOST: {{ env_data.MITXONLINE_SECURE_SSL_HOST }}
-    MITXONLINE_USE_S3: True
+    MITX_ONLINE_ADMIN_EMAIL: 'cuddle-bunnies@mit.edu'
+    MITX_ONLINE_BASE_URL: {{ env_data.MITXONLINE_BASE_URL }}
+    MITX_ONLINE_DB_CONN_MAX_AGE: 0
+    MITX_ONLINE_DB_DISABLE_SSL: True    # pgbouncer buildpack uses stunnel to handle encryption
+    MITX_ONLINE_ENVIRONMENT: {{ env_data.env_name }}
+    MITX_ONLINE_FROM_EMAIL: 'MITx Online <support@mitxonline.mit.edu>'
+    MITX_ONLINE_LOG_LEVEL: {{ env_data.app_log_level }}
+    MITX_ONLINE_OAUTH_PROVIDER: 'mitxonline-oauth2'
+    MITX_ONLINE_REGISTRATION_ACCESS_TOKEN:  __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.openedx_environment }}/mitxonline-registration-access-token>data>value
+    MITX_ONLINE_REPLY_TO_ADDRESS: 'MITx Online <support@mitxonline.mit.edu>'
+    MITX_ONLINE_SECURE_SSL_REDIRECT: True
+    MITX_ONLINE_SECURE_SSL_HOST: {{ env_data.MITXONLINE_SECURE_SSL_HOST }}
+    MITX_ONLINE_USE_S3: True
     NODE_MODULES_CACHE: False
     OPENEDX_API_BASE_URL: {{ env_data.OPENEDX_API_BASE_URL}}
     OPENEDX_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/openedx-api-client>data>client-id
