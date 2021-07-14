@@ -43,7 +43,7 @@
       'app_name': 'ocw-studio',
       'env': 'production',
       'env_name': 'production',
-      'CONCOURSE_URL': 'https://cicd.odl.mit.edu'
+      'CONCOURSE_URL': 'https://cicd.odl.mit.edu',
       'FEATURE_USE_LOCAL_STARTERS': 'False',
       'GIT_DOMAIN': 'github.com',
       'GTM_ACCOUNT_ID': 'GTM-MQCSLSQ',
