@@ -104,6 +104,8 @@ heroku:
     MAILGUN_URL: https://api.mailgun.net/v3/{{ env_data.MAILGUN_SENDER_DOMAIN }}
     OCW_STUDIO_ADMIN_EMAIL: cuddle-bunnies@mit.edu
     OCW_STUDIO_BASE_URL: {{ env_data.OCW_STUDIO_BASE_URL }}
+    OCW_STUDIO_DRAFT_URL: {{ env_data.OCW_STUDIO_DRAFT_URL}}
+    OCW_STUDIO_LIVE_URL: {{ env_data.OCW_STUDIO_LIVE_URL}}
     OCW_STUDIO_DB_CONN_MAX_AGE: 0
     OCW_STUDIO_DB_DISABLE_SSL: True
     OCW_STUDIO_ENVIRONMENT: {{ env_data.env_name }}
