@@ -77,6 +77,7 @@ heroku:
     AWS_STORAGE_BUCKET_NAME: 'ol-ocw-studio-app-{{ env_data.env }}'
     CONTENT_SYNC_BACKEND: content_sync.backends.github.GithubBackend
     CONTENT_SYNC_PIPELINE: content_sync.pipelines.concourse.ConcourseGithubPipeline
+    CONCOURSE_URL: {{ env_data.CONCOURSE_URL }}
     CONCOURSE_USERNAME: oldevops
     CONCOURSE_PASSWORD: __vault__::secret-concourse/web>data>data>admin_password
     {% if env_data.env_name != 'ci' %}
@@ -88,6 +89,7 @@ heroku:
     {% if environment == "rc" %}
     GIT_API_URL: "https://github.mit.edu/api/v3"
     {% endif %}
+    GIT_DOMAIN: {{ env_data.GIT_DOMAIN }}
     GIT_ORGANIZATION: {{ env_data.GITHUB_ORGANIZATION }}
     GIT_TOKEN: __vault__::secret-open-courseware/ocw-studio/{{ environment }}/github-user-token>data>value
     GITHUB_WEBHOOK_KEY: __vault__::secret-ocw-studio/data/app-config>data>data>github_shared_secret  # the double >data>data is because this is a kv-v2 mount
