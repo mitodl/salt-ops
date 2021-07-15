@@ -3,22 +3,6 @@
 {% set rds_endpoint = salt.boto_rds.get_endpoint('production-apps-rds-postgres-mitxonline') %}
 
 {% set env_dict = {
-    'ci': {
-      'app_name': 'mitxonline-ci',
-      'env_name': 'ci',
-      'GOOGLE_TRACKING_ID': '',
-      'GOOGLE_TAG_MANAGER_ID': '',
-      'release_branch': 'main',
-      'app_log_level': 'INFO',
-      'sentry_log_level': 'ERROR',
-      'OPENEDX_API_BASE_URL': '',
-      'openedx_environment': 'mitxonline-qa',
-      'MAILGUN_FROM_EMAIL': 'MITx Online <no-reply@mitxonline-ci-mail.mitxonline.mit.edu>',
-      'MAILGUN_SENDER_DOMAIN': 'mitxonline-ci-mail.mitxonline.mit.edu',
-      'MITXONLINE_BASE_URL': 'https://mitxonline-ci.mitxonline.mit.edu',
-      'MITXONLINE_SECURE_SSL_HOST': 'mitxonline-ci.mitxonline.mit.edu',
-      'vault_env_path': 'rc-apps',
-      },
     'rc': {
       'app_name': 'mitxonline-rc',
       'env_name': 'rc',
@@ -27,7 +11,8 @@
       'release_branch': 'release-candidate',
       'app_log_level': 'INFO',
       'sentry_log_level': 'ERROR',
-      'OPENEDX_API_BASE_URL': '',
+      'logout_redirect_url': 'https://lms-qa.mitxonline.mit.edu/logout',
+      'OPENEDX_API_BASE_URL': 'https://lms-qa.mitxonline.mit.edu',
       'openedx_environment': 'mitxonline-qa',
       'MAILGUN_FROM_EMAIL': 'MITx Online <no-reply@mitxonline-rc-mail.mitxonline.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'mitxonline-rc-mail.mitxonline.mit.edu',
@@ -43,7 +28,8 @@
       'release_branch': 'release',
       'app_log_level': 'INFO',
       'sentry_log_level': 'ERROR',
-      'OPENEDX_API_BASE_URL': '',
+      'logout_redirect_url': 'https://lms.mitxonline.mit.edu/logout',
+      'OPENEDX_API_BASE_URL': 'https://lms.mitxonline.mit.edu',
       'openedx_environment': 'mitxonline-production',
       'MAILGUN_FROM_EMAIL': 'MITx Online <no-reply@mail.mitxonline.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'mail.mitxonline.mit.edu',
@@ -72,6 +58,7 @@ heroku:
     {% endif %}
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
     GTM_TRACKING_ID: {{ env_data.GOOGLE_TAG_MANAGER_ID }}
+    LOGOUT_REDIRECT_URL: {{ env_data.logout_redirect_url }}
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
