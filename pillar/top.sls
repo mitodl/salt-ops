@@ -17,8 +17,8 @@ base:
     - fluentd.cas
   'G@roles:elasticsearch and not P@environment:operations*':
     - match: compound
-    - elasticsearch
     - fluentd.elasticsearch
+    - consul
     - consul.elasticsearch
     - datadog.elasticsearch-integration
   'roles:kibana':
