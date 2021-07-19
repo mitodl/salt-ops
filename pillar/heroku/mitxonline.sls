@@ -6,6 +6,7 @@
     'rc': {
       'app_name': 'mitxonline-rc',
       'env_name': 'rc',
+      'env_stage': 'qa'
       'GOOGLE_TRACKING_ID': '',
       'GOOGLE_TAG_MANAGER_ID': '',
       'release_branch': 'release-candidate',
@@ -22,7 +23,8 @@
       },
     'production': {
       'app_name': 'mitxonline-production',
-      'env_name': 'ci',
+      'env_name': 'production',
+      'env_stage': 'production',
       'GOOGLE_TRACKING_ID': '',
       'GOOGLE_TAG_MANAGER_ID': '',
       'release_branch': 'release',
@@ -48,9 +50,9 @@ heroku:
   app_name: {{ env_data.app_name }}
   api_key: __vault__::secret-{{ business_unit }}/heroku/api_key>data>value
   config_vars:
-    #AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-mitxonline-app-{{ env_data.env_name }}>data>access_key
-    #AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-mitxonline-app-{{ env_data.env_name }}>data>secret_key
-    AWS_STORAGE_BUCKET_NAME: 'mitxonline-app-{{ env_data.env_name }}'
+    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/mitxonline>data>access_key
+    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/mitxonline>data>secret_key
+    AWS_STORAGE_BUCKET_NAME: 'ol-mitxonline-app-{{ env_data.env_stage}}'
     {% if env_data.env_name == 'production' %}
     {% set pg_creds = salt.vault.cached_read('postgres-production-apps-mitxonline/creds/mitxonline', cache_prefix='heroku-mitxonline') %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxonline
