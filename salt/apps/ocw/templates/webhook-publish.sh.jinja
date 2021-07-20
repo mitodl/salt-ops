@@ -65,6 +65,7 @@ git_fetch_and_reset() {
     log_message "Pulling $repo_name"
     git fetch && git reset --hard origin/$git_ref \
         || error_and_exit "Can not pull $repo_name"
+    git clean -f || error_and_exit "Unable to run git clean on directory for $repo_name"
     new_commit=`git rev-parse HEAD`
     log_message "$orig_commit -> $new_commit"
     if [ "$orig_commit" != "$new_commit" ]; then
