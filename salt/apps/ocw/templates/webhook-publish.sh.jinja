@@ -191,8 +191,6 @@ log_message "Writing commit hash files"
 
 cd /opt/ocw/ocw-www \
 && git rev-parse HEAD > $SITE_OUTPUT_DIR/static/ocw-www-hash.txt \
-&& cd /opt/ocw/ocw-to-hugo \
-&& git rev-parse HEAD > $SITE_OUTPUT_DIR/static/ocw-to-hugo-hash.txt \
 && cd /opt/ocw/ocw-hugo-themes \
 && git rev-parse HEAD > $SITE_OUTPUT_DIR/static/ocw-hugo-themes-hash.txt
 
