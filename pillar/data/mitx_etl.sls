@@ -29,8 +29,8 @@ mitx_etl:
       forum_db: forum_{{ purpose_suffix }}
     MySQL:
       {% if "mitxpro" in env %}
-      user: __vault__:cache:mariadb-mitxpro-edxapp-mitxpro-{{ env }}/creds/admin>data>username
-      pass: __vault__:cache:mariadb-mitxpro-edxapp-mitxpro-{{ env }}/creds/admin>data>password
+      user: __vault__:cache:mariadb-mitxpro-edxapp-{{ env }}/creds/admin>data>username
+      pass: __vault__:cache:mariadb-mitxpro-edxapp-{{ env }}/creds/admin>data>password
       {% else %}
       user: __vault__:cache:mysql-{{ env }}/creds/admin>data>username
       pass: __vault__:cache:mysql-{{ env }}/creds/admin>data>password
