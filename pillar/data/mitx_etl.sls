@@ -28,8 +28,13 @@ mitx_etl:
       password: __vault__:cache:mongodb-{{ env }}/creds/admin>data>password
       forum_db: forum_{{ purpose_suffix }}
     MySQL:
+      {% if env.startswitch("mitxpro") %}
+      user: __vault__:cache:mariadb-mitxpro-edxapp-mitxpro-{{ env }}/creds/admin>data>username
+      pass: __vault__:cache:mariadb-mitxpro-edxapp-mitxpro-{{ env }}/creds/admin>data>password
+      {% else %}
       user: __vault__:cache:mysql-{{ env }}/creds/admin>data>username
       pass: __vault__:cache:mysql-{{ env }}/creds/admin>data>password
+      {% endif %}
       host: mysql.service.consul
       db: edxapp_{{ purpose_suffix }}
     Slack:
