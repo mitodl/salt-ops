@@ -1,6 +1,6 @@
 vault:
   overrides:
-    version: 1.3.1
+    version: 1.7.3
     keybase_users:
       - renaissancedev
       - shaidar
