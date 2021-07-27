@@ -3,9 +3,9 @@ base:
     - match: compound
     - common
     - environment_settings
-  '* and not proxy-* and not restore-* and not G@roles:devstack and not P@environment:mitxonline and not G@context:packer and not P@roles:(edx|edx-worker)$':
-    - match: compound
-    - fluentd
+  # '* and not proxy-* and not restore-* and not G@roles:devstack and not P@environment:mitxonline and not G@context:packer and not P@roles:(edx|edx-worker)$':
+  #   - match: compound
+  #   - fluentd
   'P@environment:(rc.*|.*-qa)':
     - match: compound
     - elastic_stack.version_qa
