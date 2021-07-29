@@ -21,6 +21,7 @@
       'HUBSPOT_CREATE_USER_FORM_ID': '995ee734-a0ff-47cc-b747-6ea1d2dd6303',
       'HUBSPOT_FOOTER_FORM_GUID': 'a8cffaac-4207-446a-b295-5f44656596f8',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
+      'NOVOED_BASE_URL': 'https://mitstaging.novoed.com',
       'NOVOED_SAML_DEBUG': True,
       'NOVOED_SAML_LOGIN_URL': 'https://app.novoed.com/saml/sso?provider=mitstaging',
       'SITE_NAME': 'MIT Bootcamps CI',
@@ -44,6 +45,7 @@
       'HUBSPOT_CREATE_USER_FORM_ID': '995ee734-a0ff-47cc-b747-6ea1d2dd6303',
       'HUBSPOT_FOOTER_FORM_GUID': 'a8cffaac-4207-446a-b295-5f44656596f8',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
+      'NOVOED_BASE_URL': 'https://mitstaging.novoed.com',
       'NOVOED_SAML_DEBUG': True,
       'NOVOED_SAML_LOGIN_URL': 'https://app.novoed.com/saml/sso?provider=mitstaging',
       'SITE_NAME': 'MIT Bootcamps RC',
@@ -67,6 +69,7 @@
       'HUBSPOT_CREATE_USER_FORM_ID': '8321770d-1902-47e6-8302-c258f4f690b4',
       'HUBSPOT_FOOTER_FORM_GUID': '2d798908-c195-4c0c-b075-a10b0c1b08f3',
       'MAILGUN_SENDER_DOMAIN': 'mail.bootcamp.odl.mit.edu',
+      'NOVOED_BASE_URL': 'https://mitbootcamps.novoed.com',
       'NOVOED_SAML_DEBUG': False,
       'NOVOED_SAML_LOGIN_URL': 'https://app.novoed.com/saml/sso?provider=mitbootcamps',
       'SITE_NAME': 'MIT Bootcamps',
@@ -150,6 +153,7 @@ heroku:
     NOVOED_API_BASE_URL: https://api.novoed.com/
     NOVOED_API_KEY: __vault__::secret-operations/global/{{ business_unit }}/novoed>data>api_key
     NOVOED_API_SECRET: __vault__::secret-operations/global/{{ business_unit }}/novoed>data>api_secret
+    NOVOED_BASE_URL: {{ env_data.NOVOED_BASE_URL }}
     NOVOED_SAML_DEBUG: {{ env_data.NOVOED_SAML_DEBUG }}
     NOVOED_SAML_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/novoed>data>saml_key
     NOVOED_SAML_CERT: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/novoed>data>saml_cert
