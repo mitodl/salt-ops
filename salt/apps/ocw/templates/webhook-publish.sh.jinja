@@ -130,8 +130,7 @@ ocw_hugo_themes_changed=$?
 # Continue if there were changes, or if we want a 'full' run regardless of
 # changes.
 if [ "$script_option" != "full" ]; then
-    if [ $ocw_www_changed -eq 0 ] || [ $ocw_to_hugo_changed -eq 0 ] \
-            || [ $ocw_hugo_themes_changed -eq 0 ]; then
+    if [ $ocw_www_changed -eq 0 ] || [ $ocw_hugo_themes_changed -eq 0 ]; then
 
         log_message "Pulled new commit; continuing with publish."
 
