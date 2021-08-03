@@ -25,6 +25,7 @@
       'env': 'qa',
       'env_name': 'rc',
       'CONCOURSE_URL': 'https://cicd-qa.odl.mit.edu',
+      'DRIVE_SHARED_ID': '0AErNBMZMmOz3Uk9PVA',
       'FEATURE_USE_LOCAL_STARTERS': 'True',
       'GIT_DOMAIN': 'github.mit.edu',
       'GTM_ACCOUNT_ID': 'GTM-57BZ8PN',
@@ -44,6 +45,7 @@
       'env': 'production',
       'env_name': 'production',
       'CONCOURSE_URL': 'https://cicd.odl.mit.edu',
+      'DRIVE_SHARED_ID': '0AIZerpz9jimTUk9PVA',
       'FEATURE_USE_LOCAL_STARTERS': 'False',
       'GIT_DOMAIN': 'github.com',
       'GTM_ACCOUNT_ID': 'GTM-MQCSLSQ',
@@ -85,6 +87,8 @@ heroku:
     {% set rds_endpoint = salt.boto_rds.get_endpoint('ocw-studio-db-applications-{}'.format(env_data.env)) %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/ocw_studio
     {% endif %}
+    DRIVE_SERVICE_ACCOUNT_CREDS: __vault__::secret-open-courseware/ocw-studio/{{ environment }}/gdrive-service-json>data>value
+    DRIVE_SHARED_ID: {{ env_data.DRIVE_SHARED_ID }}
     FEATURE_USE_LOCAL_STARTERS: {{ env_data.FEATURE_USE_LOCAL_STARTERS }}
     {% if environment == "rc" %}
     GIT_API_URL: "https://github.mit.edu/api/v3"
