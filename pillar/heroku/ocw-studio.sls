@@ -7,6 +7,7 @@
       'env': 'qa',
       'env_name': 'ci',
       'CONCOURSE_URL': 'https://cicd-qa.odl.mit.edu',
+      'DRIVE_SHARED_ID': '',
       'FEATURE_USE_LOCAL_STARTERS': 'True',
       'GITHUB_ORGANIZATION': 'ocw-content-ci',
       'GITHUB_WEBHOOK_BRANCH': '',
