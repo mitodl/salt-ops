@@ -32,6 +32,8 @@
       'GITHUB_WEBHOOK_BRANCH': 'release-candidate',
       'MAILGUN_SENDER_DOMAIN': 'ocw-rc.mail.odl.mit.edu',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio-rc.odl.mit.edu/',
+      'OCW_STUDIO_DRAFT_URL': 'https://ocw-draft-qa.global.ssl.fastly.net/',
+      'OCW_STUDIO_LIVE_URL': 'https://ocw-live-qa.global.ssl.fastly.net/',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
       'OCW_STUDIO_SUPPORT_EMAIL': 'ocw-studio-rc-support@mit.edu',
       'sentry_log_level': 'WARN',
@@ -51,6 +53,8 @@
       'GITHUB_WEBHOOK_BRANCH': 'release',
       'MAILGUN_SENDER_DOMAIN': 'ocw.mail.odl.mit.edu',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio.odl.mit.edu/',
+      'OCW_STUDIO_DRAFT_URL': 'https://ocw-preview.odl.mit.edu/,
+      'OCW_STUDIO_LIVE_URL': 'https://ocw-published.odl.mit.edu/',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
       'OCW_STUDIO_SUPPORT_EMAIL': 'ocw-studio-support@mit.edu',
       'sentry_log_level': 'WARN',
@@ -70,6 +74,7 @@ heroku:
   api_key: __vault__::secret-operations/global/heroku/api_key>data>value
   config_vars:
     ALLOWED_HOSTS: '["*"]'
+    API_BEARER_TOKEN: __vault__::secret-open-courseware/ocw-studio/{{ environment }}/api-bearer-token>data>value
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/ocw-studio-app-{{ env_data.env }}>data>access_key
     AWS_PREVIEW_BUCKET_NAME: 'ocw-content-draft-{{ env_data.env }}'
     AWS_PUBLISH_BUCKET_NAME: 'ocw-content-live-{{ env_data.env }}'
@@ -101,6 +106,8 @@ heroku:
     MAILGUN_URL: https://api.mailgun.net/v3/{{ env_data.MAILGUN_SENDER_DOMAIN }}
     OCW_STUDIO_ADMIN_EMAIL: cuddle-bunnies@mit.edu
     OCW_STUDIO_BASE_URL: {{ env_data.OCW_STUDIO_BASE_URL }}
+    OCW_STUDIO_DRAFT_URL: {{ env_data.OCW_STUDIO_DRAFT_URL}}
+    OCW_STUDIO_LIVE_URL: {{ env_data.OCW_STUDIO_LIVE_URL}}
     OCW_STUDIO_DB_CONN_MAX_AGE: 0
     OCW_STUDIO_DB_DISABLE_SSL: True
     OCW_STUDIO_ENVIRONMENT: {{ env_data.env_name }}
