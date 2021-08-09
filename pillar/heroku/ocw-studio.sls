@@ -80,7 +80,7 @@ heroku:
   api_key: __vault__::secret-operations/global/heroku/api_key>data>value
   config_vars:
     ALLOWED_HOSTS: '["*"]'
-    API_BEARER_TOKEN: __vault__:gen_if_missing:secret-concourse/ocw/api-bearer-token>data>value
+    API_BEARER_TOKEN: __vault__::secret-concourse/ocw/api-bearer-token>data>value
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/ocw-studio-app-{{ env_data.env }}>data>access_key
     AWS_PREVIEW_BUCKET_NAME: 'ocw-content-draft-{{ env_data.env }}'
     AWS_PUBLISH_BUCKET_NAME: 'ocw-content-live-{{ env_data.env }}'
