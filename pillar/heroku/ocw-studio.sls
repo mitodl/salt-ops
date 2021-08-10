@@ -82,6 +82,8 @@ heroku:
     ALLOWED_HOSTS: '["*"]'
     API_BEARER_TOKEN: __vault__::secret-concourse/data/ocw/api-bearer-token>data>data>value
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/ocw-studio-app-{{ env_data.env }}>data>access_key
+    AWS_ACCOUNT_ID:  __vault__::secret-open-courseware/ocw-studio/{{ environment }}/aws_account_id>data>value
+    AWS_REGION: us-east-1
     AWS_PREVIEW_BUCKET_NAME: 'ocw-content-draft-{{ env_data.env }}'
     AWS_PUBLISH_BUCKET_NAME: 'ocw-content-live-{{ env_data.env }}'
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/ocw-studio-app-{{ env_data.env }}>data>secret_key
@@ -96,6 +98,7 @@ heroku:
     {% set rds_endpoint = salt.boto_rds.get_endpoint('ocw-studio-db-applications-{}'.format(env_data.env)) %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/ocw_studio
     {% endif %}
+    DRIVE_S3_UPLOAD_PREFIX: gdrive_uploads
     DRIVE_SERVICE_ACCOUNT_CREDS: __vault__::secret-open-courseware/ocw-studio/{{ environment }}/gdrive-service-json>data>value
     DRIVE_SHARED_ID: {{ env_data.DRIVE_SHARED_ID }}
     FEATURE_USE_LOCAL_STARTERS: {{ env_data.FEATURE_USE_LOCAL_STARTERS }}
@@ -141,3 +144,4 @@ heroku:
     SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-operations/{{ env_data.vault_env_path }}/open-courseware/saml>data>public_cert
     STATUS_TOKEN: __vault__:gen_if_missing:secret-open-courseware/{{ app }}/{{ environment }}/django-status-token>data>value
     USE_X_FORWARDED_PORT: True
+    VIDEO_S3_TRANSCODE_PREFIX: video_transcodes
