@@ -144,4 +144,4 @@ heroku:
     SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-operations/{{ env_data.vault_env_path }}/open-courseware/saml>data>public_cert
     STATUS_TOKEN: __vault__:gen_if_missing:secret-open-courseware/{{ app }}/{{ environment }}/django-status-token>data>value
     USE_X_FORWARDED_PORT: True
-    VIDEO_S3_TRANSCODE_PREFIX: video_transcodes
+    VIDEO_S3_TRANSCODE_PREFIX: aws_mediaconvert_transcodes
