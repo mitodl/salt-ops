@@ -83,6 +83,7 @@ heroku:
     API_BEARER_TOKEN: __vault__::secret-concourse/data/ocw/api-bearer-token>data>data>value
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/ocw-studio-app-{{ env_data.env }}>data>access_key
     AWS_ACCOUNT_ID:  __vault__::secret-open-courseware/ocw-studio/{{ environment }}/aws_account_id>data>value
+    AWS_ROLE_NAME: 'ocw-studio-mediaconvert-role-{{ env_data.env }}'
     AWS_REGION: us-east-1
     AWS_PREVIEW_BUCKET_NAME: 'ocw-content-draft-{{ env_data.env }}'
     AWS_PUBLISH_BUCKET_NAME: 'ocw-content-live-{{ env_data.env }}'
