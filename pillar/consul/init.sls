@@ -1,5 +1,5 @@
 {% set ENVIRONMENT = salt.grains.get('environment') %}
-{% set lan_nodes = [] %}
+{% set lan_nodes = ["provider=aws tag_key=consul_env tag_value=" ~ ENVIRONMENT] %}
 {% for host, addr in salt.saltutil.runner(
     'mine.get',
     tgt='consul-' ~ ENVIRONMENT ~ '-*',
@@ -10,7 +10,7 @@
 
 consul:
   products:
-    consul: 1.9.0
+    consul: 1.10.1
   extra_configs:
     defaults:
       server: {{ 'consul_server' in grains.get('roles') }}

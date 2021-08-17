@@ -1,4 +1,3 @@
-#!jinja|yaml|gpg
 {% set business_unit = salt.grains.get('business_unit') %}
 {% set environment = salt.grains.get('environment') %}
 {% set replset_config = {'_id': salt.pillar.get('mongodb:replset_name', 'rs0'), 'members': []} %}
