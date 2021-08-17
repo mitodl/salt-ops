@@ -95,8 +95,6 @@ base:
     - consul
     - vector.mongodb
     - consul.mongodb
-  # mongodb*production*:
-  #   - datadog.mongodb-integration
   'G@roles:mongodb and P@environment:(mitx-qa|mitxonline-qa|mitxonline-production)':
     - match: compound
     - mongodb.mitx-qa
