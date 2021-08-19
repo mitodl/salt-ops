@@ -5,7 +5,7 @@
     'rc': {
       'app_name': 'mitxonline-rc',
       'env_name': 'rc',
-      'env_stage': 'qa'
+      'env_stage': 'qa',
       'GOOGLE_TRACKING_ID': '',
       'GOOGLE_TAG_MANAGER_ID': '',
       'release_branch': 'release-candidate',

@@ -10,6 +10,7 @@
       'DRIVE_SHARED_ID': '',
       'DRIVE_VIDEO_UPLOADS_PARENT_FOLDER_ID': '1H4HCvbmY7v5YZFeqSlbCI1TFC5MXTMY4',
       'FEATURE_USE_LOCAL_STARTERS': 'True',
+      'GIT_DOMAIN': 'github.mit.edu',
       'GITHUB_ORGANIZATION': 'ocw-content-ci',
       'GITHUB_WEBHOOK_BRANCH': '',
       'GTM_ACCOUNT_ID': 'GTM-5JZ7X78',
