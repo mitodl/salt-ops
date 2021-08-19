@@ -1,6 +1,6 @@
 {% set minion_id = salt.grains.get('id', '') %}
 {% set environment = minion_id.split('-')[-1] %}
-{% set rds_endpoint = salt.boto_rds.get_endpoint('production-apps-rds-postgres-mitxonline') %}
+{% set rds_endpoint = salt.boto_rds.get_endpoint('mitxonline-production-app-db') %}
 
 {% set env_dict = {
     'rc': {
@@ -54,7 +54,7 @@ heroku:
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/mitxonline>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'ol-mitxonline-app-{{ env_data.env_stage}}'
     {% if env_data.env_name == 'production' %}
-    {% set pg_creds = salt.vault.cached_read('postgres-production-apps-mitxonline/creds/mitxonline', cache_prefix='heroku-mitxonline') %}
+    {% set pg_creds = salt.vault.cached_read('postgres-mitxonline/creds/mitxonline', cache_prefix='heroku-mitxonline') %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxonline
     HIREFIRE_TOKEN: __vault__::secret-{{ business_unit }}/production-apps/hirefire_token>data>value
     {% endif %}
