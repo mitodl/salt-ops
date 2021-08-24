@@ -16,7 +16,7 @@
       'openedx_environment': 'mitxonline-qa',
       'MAILGUN_FROM_EMAIL': 'MITx Online <no-reply@mitxonline-rc-mail.mitxonline.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'mitxonline-rc-mail.mitxonline.mit.edu',
-      'MITXONLINE_BASE_URL': 'https://mitxonline-rc.mitxonline.mit.edu',
+      'MITXONLINE_BASE_URL': 'https://rc.mitxonline.mit.edu',
       'MITXONLINE_SECURE_SSL_HOST': 'mitxonline-rc.mitxonline.mit.edu',
       },
     'production': {
