@@ -47,7 +47,7 @@
       'sentry_log_level': 'WARN',
       'SITE_NAME': 'MIT OCW Studio RC',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://ocw-studio-rc.odl.mit.edu/saml/metadata',
-      'vault_env_path': 'rc-apps'
+      'vault_env_path': 'rc-apps',
       'youtube_project_id': 'ovs-youtube-qa'
       },
     'production': {
