@@ -157,7 +157,7 @@ heroku:
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ app }}/{{ environment }}/django-status-token>data>value
     USE_X_FORWARDED_PORT: True
     VIDEO_S3_TRANSCODE_PREFIX: aws_mediaconvert_transcodes
-    YT_ACCESS_TOKEN: __vault__::secret-{{ business_unit }}/ {{ app }}/{{ env_data.vault_env_path }}/youtube-credentials>data>access_token
+    YT_ACCESS_TOKEN: __vault__::secret-{{ business_unit }}/{{ app }}/{{ env_data.vault_env_path }}/youtube-credentials>data>access_token
     YT_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ app }}/{{ env_data.vault_env_path }}/youtube-credentials>data>client_id
     YT_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ app }}/{{ env_data.vault_env_path }}/youtube-credentials>data>client_secret
     YT_PROJECT_ID: {{ env_data.youtube_project_id }}
