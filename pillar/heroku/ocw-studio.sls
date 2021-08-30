@@ -17,6 +17,8 @@
       'MAILGUN_SENDER_DOMAIN': 'ocw-ci.mail.odl.mit.edu',
       'OCW_IMPORT_STARTER_SLUG': 'course',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio-ci.odl.mit.edu/',
+      'OCW_STUDIO_DRAFT_URL': '',
+      'OCW_STUDIO_LIVE_URL': '',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
       'OCW_STUDIO_SUPPORT_EMAIL': 'ocw-studio-ci-support@mit.edu',
       'sentry_log_level': 'WARN',
