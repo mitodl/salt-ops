@@ -22,7 +22,8 @@
       'sentry_log_level': 'WARN',
       'SITE_NAME': 'MIT OCW Studio CI',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://ocw-studio-ci.odl.mit.edu/saml/metadata',
-      'vault_env_path': 'rc-apps'
+      'vault_env_path': 'rc-apps',
+      'youtube_project_id': 'ovs-youtube-qa'
       },
     'rc': {
       'app_name': 'ocw-studio-rc',
@@ -47,6 +48,7 @@
       'SITE_NAME': 'MIT OCW Studio RC',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://ocw-studio-rc.odl.mit.edu/saml/metadata',
       'vault_env_path': 'rc-apps'
+      'youtube_project_id': 'ovs-youtube-qa'
       },
     'production': {
       'app_name': 'ocw-studio',
@@ -71,10 +73,12 @@
       'SITE_NAME': 'MIT OCW Studio',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://ocw-studio.odl.mit.edu/saml/metadata',
       'vault_env_path': 'production-apps',
+      'youtube_project_id': ''
       }
 } %}
 {% set env_data = env_dict[environment] %}
 {% set app = 'ocw-studio' %}
+{% set business_unit = 'open-courseware' %}
 
 proxy:
   proxytype: heroku
@@ -86,7 +90,7 @@ heroku:
     ALLOWED_HOSTS: '["*"]'
     API_BEARER_TOKEN: __vault__::secret-concourse/data/ocw/api-bearer-token>data>data>value
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/ocw-studio-app-{{ env_data.env }}>data>access_key
-    AWS_ACCOUNT_ID:  __vault__::secret-open-courseware/ocw-studio/{{ environment }}/aws_account_id>data>value
+    AWS_ACCOUNT_ID:  __vault__::secret-{{ business_unit }}/ocw-studio/{{ environment }}/aws_account_id>data>value
     AWS_ROLE_NAME: 'service-role-mediaconvert-ocw-studio-{{ env_data.env }}'
     AWS_REGION: us-east-1
     AWS_PREVIEW_BUCKET_NAME: 'ocw-content-draft-{{ env_data.env }}'
@@ -104,7 +108,7 @@ heroku:
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/ocw_studio
     {% endif %}
     DRIVE_S3_UPLOAD_PREFIX: gdrive_uploads
-    DRIVE_SERVICE_ACCOUNT_CREDS: __vault__::secret-open-courseware/ocw-studio/{{ environment }}/gdrive-service-json>data>value
+    DRIVE_SERVICE_ACCOUNT_CREDS: __vault__::secret-{{ business_unit }}/ocw-studio/{{ environment }}/gdrive-service-json>data>value
     DRIVE_SHARED_ID: {{ env_data.DRIVE_SHARED_ID }}
     DRIVE_VIDEO_UPLOADS_PARENT_FOLDER_ID: {{ env_data.DRIVE_VIDEO_UPLOADS_PARENT_FOLDER_ID }}
     FEATURE_USE_LOCAL_STARTERS: {{ env_data.FEATURE_USE_LOCAL_STARTERS }}
@@ -113,7 +117,7 @@ heroku:
     {% endif %}
     GIT_DOMAIN: {{ env_data.GIT_DOMAIN }}
     GIT_ORGANIZATION: {{ env_data.GITHUB_ORGANIZATION }}
-    GIT_TOKEN: __vault__::secret-open-courseware/ocw-studio/{{ environment }}/github-user-token>data>value
+    GIT_TOKEN: __vault__::secret-{{ business_unit }}/ocw-studio/{{ environment }}/github-user-token>data>value
     GITHUB_WEBHOOK_KEY: __vault__::secret-ocw-studio/data/app-config>data>data>github_shared_secret  # the double >data>data is because this is a kv-v2 mount
     GITHUB_WEBHOOK_BRANCH: {{ env_data.GITHUB_WEBHOOK_BRANCH }}
     GTM_ACCOUNT_ID: {{ env_data.GTM_ACCOUNT_ID }}
@@ -132,8 +136,8 @@ heroku:
     OCW_STUDIO_LOG_LEVEL: {{ env_data.OCW_STUDIO_LOG_LEVEL }}
     OCW_STUDIO_SUPPORT_EMAIL: {{ env_data.OCW_STUDIO_SUPPORT_EMAIL }}
     OCW_STUDIO_USE_S3: True
-    SECRET_KEY: __vault__:gen_if_missing:secret-open-courseware/{{ app }}/{{ environment }}/django-secret-key>data>value
-    SENTRY_DSN: __vault__::secret-operations/global/open-courseware/ocw-studio/sentry-dsn>data>value
+    SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ app }}/{{ environment }}/django-secret-key>data>value
+    SENTRY_DSN: __vault__::secret-operations/global/{{ business_unit }}/ocw-studio/sentry-dsn>data>value
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
     SOCIAL_AUTH_SAML_CONTACT_NAME: Open Learning Support
     SOCIAL_AUTH_SAML_IDP_ATTRIBUTE_EMAIL: "urn:oid:0.9.2342.19200300.100.1.3"
@@ -142,12 +146,17 @@ heroku:
     SOCIAL_AUTH_SAML_IDP_ENTITY_ID: https://idp.mit.edu/shibboleth
     SOCIAL_AUTH_SAML_IDP_URL: https://idp.mit.edu/idp/profile/SAML2/Redirect/SSO
     SOCIAL_AUTH_SAML_LOGIN_URL: https://idp.mit.edu/idp/profile/SAML2/Redirect/SSO
-    SOCIAL_AUTH_SAML_IDP_X509: __vault__::secret-operations/{{ env_data.vault_env_path }}/open-courseware/saml>data>idp_x509
+    SOCIAL_AUTH_SAML_IDP_X509: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>idp_x509
     SOCIAL_AUTH_SAML_ORG_DISPLAYNAME: MIT Open Learning
     SOCIAL_AUTH_SAML_SECURITY_ENCRYPTED: True
     SOCIAL_AUTH_SAML_SP_ENTITY_ID: {{ env_data.SOCIAL_AUTH_SAML_SP_ENTITY_ID }}
-    SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/open-courseware/saml>data>private_key
-    SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-operations/{{ env_data.vault_env_path }}/open-courseware/saml>data>public_cert
-    STATUS_TOKEN: __vault__:gen_if_missing:secret-open-courseware/{{ app }}/{{ environment }}/django-status-token>data>value
+    SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>private_key
+    SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>public_cert
+    STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ app }}/{{ environment }}/django-status-token>data>value
     USE_X_FORWARDED_PORT: True
     VIDEO_S3_TRANSCODE_PREFIX: aws_mediaconvert_transcodes
+    YT_ACCESS_TOKEN: __vault__::secret-{{ business_unit }}/ {{ app }}/{{ env_data.vault_env_path }}/youtube-credentials>data>access_token
+    YT_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ app }}/{{ env_data.vault_env_path }}/youtube-credentials>data>client_id
+    YT_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ app }}/{{ env_data.vault_env_path }}/youtube-credentials>data>client_secret
+    YT_PROJECT_ID: {{ env_data.youtube_project_id }}
+    YT_REFRESH_TOKEN: __vault__::secret-{{ business_unit }}/{{ app }}/{{ env_data.vault_env_path }}/youtube-credentials>data>refresh_token
