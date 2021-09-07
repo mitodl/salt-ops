@@ -26,6 +26,7 @@ OCW_WWW_GIT_REF={{ ocw_www_git_ref }}
 OCW_HUGO_THEMES_GIT_REF={{ ocw_hugo_themes_git_ref }}
 COURSE_BASE_URL={{ course_base_url }}
 OCW_STUDIO_BASE_URL={{ ocw_studio_base_url }}
+OCW_IMPORT_STARTER_SLUG ={{ ocw_import_starter_slug }}
 GTM_ACCOUNT_ID={{ gtm_account_id }}
 # lock_dir ensures that only one run of this script happens at once.
 lock_dir=/tmp/webhook-publish-lock
@@ -40,6 +41,7 @@ export GTM_ACCOUNT_ID
 export OCW_TO_HUGO_OUTPUT_DIR=$COURSES_MARKDOWN_DIR
 export COURSE_OUTPUT_DIR=$SITE_OUTPUT_DIR/courses
 export COURSE_BASE_URL=$COURSE_BASE_URL
+export OCW_IMPORT_STARTER_SLUG=$OCW_IMPORT_STARTER_SLUG
 
 # Optional script argument
 script_option=$1
