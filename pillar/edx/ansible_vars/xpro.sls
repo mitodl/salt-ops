@@ -51,7 +51,7 @@ edx:
         extra_args: -e
       - name: git+https://github.com/mitodl/edx-git-auto-export.git@v0.2#egg=edx-git-auto-export
       # edX EOX core plugin for Sentry
-      - name: eox-core[sentry]
+      - name: ol-openedx-sentry
     ### Koa settings ###
     # Related keys/values can be removed once all envs are on Koa
     EDXAPP_ENABLE_VIDEO_UPLOAD_PIPELINE: True
@@ -122,8 +122,8 @@ edx:
         ENABLE_THIRD_PARTY_AUTH: True
         ALLOW_PUBLIC_ACCOUNT_CREATION: True
         SKIP_EMAIL_VALIDATION: True
-      EOX_CORE_SENTRY_INTEGRATION_DSN: __vault__::secret-{{ business_unit }}/{{ environment }}/{{ purpose }}/sentry>data>dsn
-      EOX_CORE_SENTRY_IGNORED_ERRORS: []
+      SENTRY_DSN: __vault__::secret-residential/{{ environment }}/{{ purpose }}/sentry>data>dsn
+      SENTRY_ENVIRONMENT: {{ environment }}
       XPRO_BASE_URL: '{{ heroku_env }}'
 
     EDXAPP_CMS_ENV_EXTRA:
