@@ -149,11 +149,11 @@ yarn install --pure-lockfile >> $LOG_DIR/ocw-hugo-themes-install.log 2>&1 \
     || error_and_exit "Can't install dependencies for ocw-hugo-themes"
 
 # Generate ocw-hugo-themes git hash
-npm run build:githash
+npm run build:githash || error_and_exit "Unable to create hash file"
 
 # Build ocw-www using ocw-hugo-themes
 export EXTERNAL_SITE_PATH=/opt/ocw/ocw-www
-npm run build
+npm run build || error_and_exit "Unable to build ocw-www site"
 
 # Run ocw-to-hugo
 cd ./node_modules/@mitodl/ocw-to-hugo
