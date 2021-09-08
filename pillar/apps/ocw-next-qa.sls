@@ -10,6 +10,7 @@ ocw-next:
   fastly_service_id: __vault__::secret-open-courseware/rc-apps/fastly-api>data>service_id
   course_base_url: https://ocwnext-rc.odl.mit.edu/courses
   ocw_studio_base_url: https://ocw-studio-rc.odl.mit.edu/
+  ocw_import_starter_slug: ocw-course
   gtm_account_id: GTM-PJMJGF6
 
 node:
