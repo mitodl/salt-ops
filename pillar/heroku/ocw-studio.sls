@@ -155,6 +155,7 @@ heroku:
     SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>private_key
     SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>public_cert
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ app }}/{{ environment }}/django-status-token>data>value
+    THREEPLAY_API_KEY: __vault__::secret-operations/global/{{ business_unit }}/ocw-studio/{{ environment }}/threeplay_api_key>data>value
     USE_X_FORWARDED_PORT: True
     VIDEO_S3_TRANSCODE_PREFIX: aws_mediaconvert_transcodes
     YT_ACCESS_TOKEN: __vault__::secret-{{ business_unit }}/{{ app }}/{{ env_data.vault_env_path }}/youtube-credentials>data>access_token
