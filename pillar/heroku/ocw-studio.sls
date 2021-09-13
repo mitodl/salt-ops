@@ -138,6 +138,7 @@ heroku:
     OCW_STUDIO_LOG_LEVEL: {{ env_data.OCW_STUDIO_LOG_LEVEL }}
     OCW_STUDIO_SUPPORT_EMAIL: {{ env_data.OCW_STUDIO_SUPPORT_EMAIL }}
     OCW_STUDIO_USE_S3: True
+    PREPUBLISH_ACTIONS: videos.threeplay_api.update_transcripts_for_website
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ app }}/{{ environment }}/django-secret-key>data>value
     SENTRY_DSN: __vault__::secret-operations/global/{{ business_unit }}/ocw-studio/sentry-dsn>data>value
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
