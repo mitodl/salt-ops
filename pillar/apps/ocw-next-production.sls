@@ -11,6 +11,7 @@ ocw-next:
   course_base_url: https://ocwnext.odl.mit.edu/courses
   ocw_studio_base_url: https://ocw-studio.odl.mit.edu/
   ocw_import_starter_slug: ocw-course
+  static_api_base_url: https://ocw-live-production.global.ssl.fastly.net/
   gtm_account_id: GTM-NMQZ25T
   mailchimp_audience_id: e07062bda1v
   mailchmip_user_id: ad81d725159c1f322a0c54837
