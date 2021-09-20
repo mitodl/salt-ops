@@ -118,3 +118,4 @@ install_caddy_webhook_script:
         ocw_studio_base_url: {{ ocw_next.ocw_studio_base_url }}
         gtm_account_id: {{ ocw_next.gtm_account_id }}
         ocw_import_starter_slug: {{ ocw_next.ocw_import_starter_slug }}
+        static_api_base_url: {{ ocw_next.static_api_base_url }}

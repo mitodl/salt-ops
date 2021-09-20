@@ -11,6 +11,7 @@ ocw-next:
   course_base_url: https://ocwnext-rc.odl.mit.edu/courses
   ocw_studio_base_url: https://ocw-studio-rc.odl.mit.edu/
   ocw_import_starter_slug: ocw-course
+  static_api_base_url: https://ocw-live-qa.global.ssl.fastly.net/
   gtm_account_id: GTM-PJMJGF6
 
 node:
