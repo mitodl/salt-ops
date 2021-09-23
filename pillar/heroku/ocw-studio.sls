@@ -33,7 +33,7 @@
       'env_name': 'rc',
       'CONCOURSE_URL': 'https://cicd-qa.odl.mit.edu',
       'DRIVE_SHARED_ID': '0AErNBMZMmOz3Uk9PVA',
-      'DRIVE_VIDEO_UPLOADS_PARENT_FOLDER_ID': '1H4HCvbmY7v5YZFeqSlbCI1TFC5MXTMY4',
+      'DRIVE_UPLOADS_PARENT_FOLDER_ID': '1H4HCvbmY7v5YZFeqSlbCI1TFC5MXTMY4',
       'FEATURE_USE_LOCAL_STARTERS': 'True',
       'GIT_DOMAIN': 'github.mit.edu',
       'GTM_ACCOUNT_ID': 'GTM-57BZ8PN',
@@ -58,7 +58,7 @@
       'env_name': 'production',
       'CONCOURSE_URL': 'https://cicd.odl.mit.edu',
       'DRIVE_SHARED_ID': '0AIZerpz9jimTUk9PVA',
-      'DRIVE_VIDEO_UPLOADS_PARENT_FOLDER_ID': '',
+      'DRIVE_UPLOADS_PARENT_FOLDER_ID': '',
       'FEATURE_USE_LOCAL_STARTERS': 'False',
       'GIT_DOMAIN': 'github.com',
       'GTM_ACCOUNT_ID': 'GTM-MQCSLSQ',
@@ -112,7 +112,7 @@ heroku:
     DRIVE_S3_UPLOAD_PREFIX: gdrive_uploads
     DRIVE_SERVICE_ACCOUNT_CREDS: __vault__::secret-{{ business_unit }}/ocw-studio/{{ environment }}/gdrive-service-json>data>value
     DRIVE_SHARED_ID: {{ env_data.DRIVE_SHARED_ID }}
-    DRIVE_VIDEO_UPLOADS_PARENT_FOLDER_ID: {{ env_data.DRIVE_VIDEO_UPLOADS_PARENT_FOLDER_ID }}
+    DRIVE_UPLOADS_PARENT_FOLDER_ID: {{ env_data.DRIVE_UPLOADS_PARENT_FOLDER_ID }}
     FEATURE_USE_LOCAL_STARTERS: {{ env_data.FEATURE_USE_LOCAL_STARTERS }}
     {% if environment == "rc" %}
     GIT_API_URL: "https://github.mit.edu/api/v3"
