@@ -76,6 +76,14 @@ redash:
         port: 5432
         user: __vault__:cache:postgres-production-apps-mitxpro/creds/readonly>data>username
         password: __vault__:cache:postgres-production-apps-mitxpro/creds/readonly>data>password
+    - name: MITx Online Production
+      type: pg
+      options:
+        dbname: mitxonline
+        host: mitxonline-production-app-db.cbnm7ajau6mi.us-east-1.rds.amazonaws.com
+        port: 5432
+        user: __vault__:cache:postgres-mitxonline/creds/readonly>data>username
+        password: __vault__:cache:postgres-mitxonline/creds/readonly>data>password
     - name: Redash Metadata
       type: pg
       options:
