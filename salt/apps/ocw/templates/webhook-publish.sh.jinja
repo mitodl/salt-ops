@@ -16,14 +16,20 @@ LOG_DIR=/opt/ocw/logs
 LOG_FILE=$LOG_DIR/webhook-publish.log
 SOURCE_DATA_BUCKET={{ source_data_bucket }}
 SOURCE_DATA_DIR=/opt/ocw/open-learning-course-data
-SITE_OUTPUT_DIR=/opt/ocw/ocw-www/dist/  # Should end in '/'
-COURSES_MARKDOWN_DIR=/opt/ocw/ocw-to-hugo/private/output
+OCW_HUGO_PROJECTS_PATH=/opt/ocw/ocw-hugo-projects
+OCW_HUGO_THEMES_PATH=/opt/ocw/ocw-hugo-themes
+WWW_HUGO_CONFIG_PATH=$OCW_HUGO_PROJECTS_PATH/ocw-www/config.yaml
+COURSE_HUGO_CONFIG_PATH=$OCW_HUGO_PROJECTS_PATH/ocw-course/config.yaml
+WWW_CONTENT_PATH=/opt/ocw/ocw-www
+SITE_OUTPUT_DIR=$WWW_CONTENT_PATH/dist/  # Should end in '/'
+COURSE_CONTENT_PATH=/opt/ocw/ocw-to-hugo/private/output
 WEBSITE_BUCKET={{ website_bucket }}
 OCW_TO_HUGO_BUCKET={{ ocw_to_hugo_bucket }}
 FASTLY_API_TOKEN={{ fastly_api_token }}
 FASTLY_SERVICE_ID={{ fastly_service_id }}
 OCW_WWW_GIT_REF={{ ocw_www_git_ref }}
 OCW_HUGO_THEMES_GIT_REF={{ ocw_hugo_themes_git_ref }}
+OCW_HUGO_PROJECTS_GIT_REF={{ ocw_hugo_projects_git_ref }}
 COURSE_BASE_URL={{ course_base_url }}
 OCW_STUDIO_BASE_URL={{ ocw_studio_base_url }}
 OCW_IMPORT_STARTER_SLUG={{ ocw_import_starter_slug }}
@@ -37,11 +43,12 @@ retry_file=/tmp/webhook-publish-retry
 
 # Export those shell variables that must be environment variables for the
 # processes we execute
-export OCW_STUDIO_BASE_URL
 export GTM_ACCOUNT_ID
-export OCW_TO_HUGO_OUTPUT_DIR=$COURSES_MARKDOWN_DIR
-export COURSE_OUTPUT_DIR=$SITE_OUTPUT_DIR/courses
+export WWW_CONTENT_PATH=$WWW_CONTENT_PATH
+export COURSE_CONTENT_PATH=$COURSE_CONTENT_PATH
+export COURSE_HUGO_CONFIG_PATH=$COURSE_HUGO_CONFIG_PATH
 export COURSE_BASE_URL=$COURSE_BASE_URL
+export OCW_STUDIO_BASE_URL=$OCW_STUDIO_BASE_URL
 export OCW_IMPORT_STARTER_SLUG=$OCW_IMPORT_STARTER_SLUG
 export STATIC_API_BASE_URL=$STATIC_API_BASE_URL
 
@@ -116,20 +123,19 @@ fi
 
 
 # Pull ocw-www
-
-cd /opt/ocw/ocw-www || error_and_exit "Can not cd to ocw-www"
+cd $WWW_CONTENT_PATH || error_and_exit "Can not cd to ocw-www"
 git_fetch_and_reset ocw-www $OCW_WWW_GIT_REF
 ocw_www_changed=$?
 
-# Temporarily modify ocw-www's go.mod to point at our local copy of ocw-hugo-themes
-cp go.mod go.mod.bak || error_and_exit "Could not back up go.mod in ocw-www"
-printf "\nreplace github.com/mitodl/ocw-hugo-themes/base-theme => /opt/ocw/ocw-hugo-themes/base-theme\n" >> go.mod
-printf "\nreplace github.com/mitodl/ocw-hugo-themes/www => /opt/ocw/ocw-hugo-themes/www\n" >> go.mod
-
 # Pull ocw-hugo-themes
-cd /opt/ocw/ocw-hugo-themes || error_and_exit "Can not cd to ocw-hugo-themes"
+cd $OCW_HUGO_THEMES_PATH || error_and_exit "Can not cd to ocw-hugo-themes"
 git_fetch_and_reset ocw-hugo-themes $OCW_HUGO_THEMES_GIT_REF
 ocw_hugo_themes_changed=$?
+
+# Pull ocw-hugo-projects
+cd $OCW_HUGO_PROJECTS_PATH || error_and_exit "Can not cd to ocw-hugo-projects"
+git_fetch_and_reset ocw-hugo-projects $OCW_HUGO_PROJECTS_GIT_REF
+ocw_hugo_projects_changed=$?
 
 # Continue if there were changes, or if we want a 'full' run regardless of
 # changes.
@@ -147,7 +153,7 @@ if [ "$script_option" != "full" ]; then
 fi
 
 # Install packages for ocw-hugo-themes (this should include ocw-to-hugo)
-cd /opt/ocw/ocw-hugo-themes
+cd $OCW_HUGO_THEMES_PATH
 log_message "Doing yarn install of dependencies for ocw-hugo-themes"
 yarn install --pure-lockfile >> $LOG_DIR/ocw-hugo-themes-install.log 2>&1 \
     || error_and_exit "Can't install dependencies for ocw-hugo-themes"
@@ -156,8 +162,7 @@ yarn install --pure-lockfile >> $LOG_DIR/ocw-hugo-themes-install.log 2>&1 \
 npm run build:githash || error_and_exit "Unable to create hash file"
 
 # Build ocw-www using ocw-hugo-themes
-export EXTERNAL_SITE_PATH=/opt/ocw/ocw-www
-npm run build || error_and_exit "Unable to build ocw-www site"
+npm run build -- $WWW_CONTENT_PATH $WWW_HUGO_CONFIG_PATH  || error_and_exit "Unable to build ocw-www site"
 
 # Run ocw-to-hugo
 cd ./node_modules/@mitodl/ocw-to-hugo
@@ -169,7 +174,7 @@ yarn install --pure-lockfile >> $LOG_DIR/ocw-to-hugo-install.log 2>&1 \
     || error_and_exit "Can not install ocw-to-hugo"
 
 log_message "Running ocw-to-hugo"
-node . -i $SOURCE_DATA_DIR -o $COURSES_MARKDOWN_DIR \
+node . -i $SOURCE_DATA_DIR -o $COURSE_CONTENT_PATH \
     --strips3 --staticPrefix /coursemedia --rm >> $LOG_DIR/ocw-to-hugo.log 2>&1
 if [ $? -ne 0 ]; then
     error_and_exit "Failed to run ocw-to-hugo. See $LOG_DIR/ocw-to-hugo.log"
@@ -177,16 +182,12 @@ fi
 
 
 # Run course builds with ocw-hugo-themes
-echo "Running hugo on courses in $COURSES_MARKDOWN_DIR..."
+echo "Running hugo on courses in $COURSE_CONTENT_PATH..."
 cd /opt/ocw/ocw-hugo-themes
 ./build_scripts/build_all_courses.sh >> $LOG_DIR/course-builds.log 2>&1
 if [ $? -ne 0 ]; then
     error_and_exit "Failed to run course builds. See $LOG_DIR/course-builds.log"
 fi
-
-# Undo our changes to ocw-www's go.mod file
-cd /opt/ocw/ocw-www
-cp go.mod.bak go.mod
 
 # Write commit hash files
 
@@ -231,7 +232,7 @@ fi
 # Sync ocw-to-hugo output to S3
 
 log_message "Syncing ocw-to-hugo output to S3"
-aws s3 sync $COURSES_MARKDOWN_DIR/ s3://$OCW_TO_HUGO_BUCKET/ \
+aws s3 sync $COURSE_CONTENT_PATH/ s3://$OCW_TO_HUGO_BUCKET/ \
     --delete --only-show-errors >> $LOG_DIR/ocw-to-hugo-output-sync.log 2>&1
 if [ $? -ne 0 ]; then
     error_and_exit "Failed to sync to S3 bucket. See $LOG_DIR/ocw-to-hugo-output-sync.log"
