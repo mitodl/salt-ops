@@ -6,6 +6,7 @@ ocw-next:
   search_api_url: //open.mit.edu/api/v0/search/
   ocw_www_git_ref: release
   ocw_hugo_themes_git_ref: release
+  ocw_hugo_projects_git_ref: release
   fastly_api_token: __vault__::secret-open-courseware/production-apps/fastly-api>data>token
   fastly_service_id: __vault__::secret-open-courseware/production-apps/fastly-api>data>service_id
   course_base_url: https://ocwnext.odl.mit.edu/courses
