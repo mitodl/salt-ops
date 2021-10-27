@@ -184,7 +184,7 @@ fi
 # Run course builds with ocw-hugo-themes
 echo "Running hugo on courses in $COURSE_CONTENT_PATH..."
 cd /opt/ocw/ocw-hugo-themes
-./build_scripts/build_all_courses.sh >> $LOG_DIR/course-builds.log 2>&1
+./package_scripts/build_all_courses.sh >> $LOG_DIR/course-builds.log 2>&1
 if [ $? -ne 0 ]; then
     error_and_exit "Failed to run course builds. See $LOG_DIR/course-builds.log"
 fi
