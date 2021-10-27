@@ -164,8 +164,9 @@ npm run build:githash || error_and_exit "Unable to create hash file"
 # Build ocw-www using ocw-hugo-themes
 npm run build -- $WWW_CONTENT_PATH $WWW_HUGO_CONFIG_PATH  || error_and_exit "Unable to build ocw-www site"
 
-# Move built ocw-www to the proper output direcory
+# Make sure output directory is clear and move built ocw-www there
 mkdir -p $SITE_OUTPUT_DIR
+clear_directory $SITE_OUTPUT_DIR
 mv $WWW_CONTENT_PATH/dist/* $SITE_OUTPUT_DIR
 
 # Run ocw-to-hugo
