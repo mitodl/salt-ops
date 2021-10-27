@@ -35,6 +35,9 @@ OCW_STUDIO_BASE_URL={{ ocw_studio_base_url }}
 OCW_IMPORT_STARTER_SLUG={{ ocw_import_starter_slug }}
 STATIC_API_BASE_URL={{ static_api_base_url }}
 GTM_ACCOUNT_ID={{ gtm_account_id }}
+OCW_WWW_HASH_PATH=$WWW_CONTENT_PATH/public/static/ocw-www-hash.txt
+OCW_HUGO_THEMES_HASH_PATH=$WWW_CONTENT_PATH/public/static/ocw-hugo-themes-hash.txt
+OCW_HUGO_PROJECTS_HASH_PATH=$WWW_CONTENT_PATH/public/static/ocw-hugo-projects-hash.txt
 # lock_dir ensures that only one run of this script happens at once.
 lock_dir=/tmp/webhook-publish-lock
 # If retry_file is present, the script will run itself again to catch changes
@@ -198,10 +201,12 @@ fi
 
 log_message "Writing commit hash files"
 
-cd /opt/ocw/ocw-www \
-&& git rev-parse HEAD > $SITE_OUTPUT_DIR/static/ocw-www-hash.txt \
-&& cd /opt/ocw/ocw-hugo-themes \
-&& git rev-parse HEAD > $SITE_OUTPUT_DIR/static/ocw-hugo-themes-hash.txt
+cd $WWW_CONTENT_PATH \
+&& git rev-parse HEAD > $OCW_WWW_HASH_PATH \
+&& cd $OCW_HUGO_THEMES_PATH \
+&& git rev-parse HEAD > $OCW_HUGO_THEMES_HASH_PATH
+&& cd $OCW_HUGO_PROJECTS_PATH \
+&& git rev-parse HEAD > $OCW_HUGO_PROJECTS_HASH_PATH
 
 if [ $? -ne 0 ]; then
     error_and_exit "Failed to write commit hash files"
