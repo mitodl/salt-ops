@@ -114,6 +114,7 @@ install_caddy_webhook_script:
         fastly_service_id: {{ ocw_next.fastly_service_id }}
         ocw_www_git_ref: {{ ocw_next.ocw_www_git_ref }}
         ocw_hugo_themes_git_ref: {{ ocw_next.ocw_hugo_themes_git_ref }}
+        ocw_hugo_projects_git_ref: {{ ocw_next.ocw_hugo_projects_git_ref }}
         course_base_url: {{ ocw_next.course_base_url }}
         ocw_studio_base_url: {{ ocw_next.ocw_studio_base_url }}
         gtm_account_id: {{ ocw_next.gtm_account_id }}
