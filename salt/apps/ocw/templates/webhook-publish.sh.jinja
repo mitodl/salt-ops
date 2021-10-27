@@ -21,7 +21,7 @@ OCW_HUGO_THEMES_PATH=/opt/ocw/ocw-hugo-themes
 WWW_HUGO_CONFIG_PATH=$OCW_HUGO_PROJECTS_PATH/ocw-www/config.yaml
 COURSE_HUGO_CONFIG_PATH=$OCW_HUGO_PROJECTS_PATH/ocw-course/config.yaml
 WWW_CONTENT_PATH=/opt/ocw/ocw-www
-SITE_OUTPUT_DIR=$WWW_CONTENT_PATH/dist/  # Should end in '/'
+SITE_OUTPUT_DIR=$WWW_CONTENT_PATH/public/  # Should end in '/'
 COURSE_CONTENT_PATH=/opt/ocw/ocw-to-hugo/private/output
 WEBSITE_BUCKET={{ website_bucket }}
 OCW_TO_HUGO_BUCKET={{ ocw_to_hugo_bucket }}
@@ -163,6 +163,10 @@ npm run build:githash || error_and_exit "Unable to create hash file"
 
 # Build ocw-www using ocw-hugo-themes
 npm run build -- $WWW_CONTENT_PATH $WWW_HUGO_CONFIG_PATH  || error_and_exit "Unable to build ocw-www site"
+
+# Move built ocw-www to the proper output direcory
+mkdir -p $SITE_OUTPUT_DIR
+mv $WWW_CONTENT_PATH/dist/* $SITE_OUTPUT_DIR
 
 # Run ocw-to-hugo
 cd ./node_modules/@mitodl/ocw-to-hugo
