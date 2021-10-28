@@ -35,6 +35,7 @@ OCW_STUDIO_BASE_URL={{ ocw_studio_base_url }}
 OCW_IMPORT_STARTER_SLUG={{ ocw_import_starter_slug }}
 STATIC_API_BASE_URL={{ static_api_base_url }}
 GTM_ACCOUNT_ID={{ gtm_account_id }}
+OCW_HASH_DIR=$WWW_CONTENT_PATH/public/static
 OCW_WWW_HASH_PATH=$WWW_CONTENT_PATH/public/static/ocw-www-hash.txt
 OCW_HUGO_THEMES_HASH_PATH=$WWW_CONTENT_PATH/public/static/ocw-hugo-themes-hash.txt
 OCW_HUGO_PROJECTS_HASH_PATH=$WWW_CONTENT_PATH/public/static/ocw-hugo-projects-hash.txt
@@ -201,10 +202,11 @@ fi
 
 log_message "Writing commit hash files"
 
-cd $WWW_CONTENT_PATH \
+mkdir $OCW_HASH_DIR \
+&& cd $WWW_CONTENT_PATH \
 && git rev-parse HEAD > $OCW_WWW_HASH_PATH \
 && cd $OCW_HUGO_THEMES_PATH \
-&& git rev-parse HEAD > $OCW_HUGO_THEMES_HASH_PATH
+&& git rev-parse HEAD > $OCW_HUGO_THEMES_HASH_PATH \
 && cd $OCW_HUGO_PROJECTS_PATH \
 && git rev-parse HEAD > $OCW_HUGO_PROJECTS_HASH_PATH
 
