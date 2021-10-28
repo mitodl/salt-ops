@@ -170,7 +170,7 @@ npm run build -- $WWW_CONTENT_PATH $WWW_HUGO_CONFIG_PATH  || error_and_exit "Una
 
 # Make sure output directory is clear and move built ocw-www there
 mkdir -p $SITE_OUTPUT_DIR
-clear_directory $SITE_OUTPUT_DIR
+find $SITE_OUTPUT_DIR -mindepth 1 -delete
 mv $WWW_CONTENT_PATH/dist/* $SITE_OUTPUT_DIR
 
 # Run ocw-to-hugo
@@ -202,8 +202,7 @@ fi
 
 log_message "Writing commit hash files"
 
-mkdir $OCW_HASH_DIR \
-&& cd $WWW_CONTENT_PATH \
+cd $WWW_CONTENT_PATH \
 && git rev-parse HEAD > $OCW_WWW_HASH_PATH \
 && cd $OCW_HUGO_THEMES_PATH \
 && git rev-parse HEAD > $OCW_HUGO_THEMES_HASH_PATH \
