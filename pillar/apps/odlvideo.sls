@@ -103,6 +103,7 @@ django:
     DROPBOX_TOKEN: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/dropbox_app>data>token
     EDX_BASE_URL: {{ env_data.EDX_BASE_URL }}
     ENABLE_VIDEO_PERMISSIONS: True
+    FIELD_ENCRYPTION_KEY: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/field-encryption-key>data>value
     ET_PIPELINE_ID: {{ env_data.transcode_pipeline_id }}
     ET_PRESET_IDS: 1504127981921-c2jlwt,1504127981867-06dkm6,1504127981819-v44xlx,1504127981769-6cnqhq,1351620000001-200040,1351620000001-200050
     FEATURE_RETRANSCODE_ENABLED: True
