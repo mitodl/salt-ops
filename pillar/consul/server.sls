@@ -48,6 +48,7 @@ consul:
         node_ttl: 30s
         service_ttl:
           "*": 30s
+      ui: True
       telemetry:
         dogstatsd_addr: 127.0.0.1:8125
       bootstrap_expect: 3
