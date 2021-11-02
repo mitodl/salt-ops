@@ -95,7 +95,7 @@ django:
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/odl-video-service-{{ env_data.env_name }}>data>secret_key
     CLOUDFRONT_KEY_ID: __vault__::secret-operations/global/cloudfront-private-key>data>id
     CLOUDFRONT_PRIVATE_KEY: __vault__::secret-operations/global/cloudfront-private-key>data>value
-    CELERY_BROKER_URL: amqp://{{ rabbit_creds.data.username }}:{{ rabbit_creds.data.password }}@rabbitmq.query.consul//odlvideo
+    CELERY_BROKER_URL: amqp://{{ rabbit_creds.data.username }}:{{ rabbit_creds.data.password }}@nearest-rabbitmq.query.consul//odlvideo
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@postgres-odlvideo.service.consul:5432/odlvideo
     DJANGO_LOG_LEVEL: {{ env_data.log_level }}
     DROPBOX_FOLDER: /Captions
