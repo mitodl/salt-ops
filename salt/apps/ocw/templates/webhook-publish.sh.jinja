@@ -240,15 +240,6 @@ if [ $? -ne 0 ]; then
     log_message "WARNING: Failed to clear Fastly cache!"
 fi
 
-# Sync ocw-to-hugo output to S3
-
-log_message "Syncing ocw-to-hugo output to S3"
-aws s3 sync $COURSE_CONTENT_PATH/ s3://$OCW_TO_HUGO_BUCKET/ \
-    --delete --only-show-errors >> $LOG_DIR/ocw-to-hugo-output-sync.log 2>&1
-if [ $? -ne 0 ]; then
-    error_and_exit "Failed to sync to S3 bucket. See $LOG_DIR/ocw-to-hugo-output-sync.log"
-fi
-
 
 log_message "Done"
 
