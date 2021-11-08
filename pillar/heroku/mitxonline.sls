@@ -94,6 +94,7 @@ heroku:
     SITE_NAME: "MITx Online"
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
     USE_X_FORWARDED_HOST: True
+    ZENDESK_HELP_WIDGET_ENABLED: True
 
 schedule:
   refresh_{{ env_data.app_name }}_configs:
