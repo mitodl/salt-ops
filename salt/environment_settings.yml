@@ -415,19 +415,6 @@ environments:
       mitxonline-qa:
         app: edx-platform
         business_unit: mitxonline
-        domains:
-          cms: studio-rc.mitxonline.mit.edu
-          lms: courses-rc.mitxonline.mit.edu
-          preview: preview-rc.mitxonline.mit.edu
-        versions:
-          <<: *mitxonline_qa_versions
-        instances:
-          edx:
-            number: 2
-            type: t3a.large
-          edx-worker:
-            number: 1
-            type: t3a.large
   mitxonline-production:
     business_unit: mitxonline
     network_prefix: '10.21'
@@ -569,41 +556,6 @@ environments:
           edx-worker:
             number: 1
             type: t3.large
-      next-residential-live:
-        app: edx-platform
-        business_unit: residential
-        domains:
-          cms: studio-mitx-qa-next.mitx.mit.edu
-          lms: mitx-qa-next.mitx.mit.edu
-          preview: preview-mitx-qa-next.mitx.mit.edu
-          gitreload: prod-gr-qa-next.mitx.mit.edu
-        versions:
-          <<: *next_residential_versions
-        instances:
-          edx:
-            number: 2
-            type: t3.large
-          edx-worker:
-            number: 1
-            type: t3.large
-      next-residential-draft:
-        app: edx-platform
-        business_unit: residential
-        domains:
-          cms: studio-mitx-qa-draft-next.mitx.mit.edu
-          lms: mitx-qa-draft-next.mitx.mit.edu
-          preview: preview-mitx-qa-draft-next.mitx.mit.edu
-          gitreload: gr-qa-next.mitx.mit.edu
-        versions:
-          <<: *next_residential_versions
-          xqwatcher_courses: master
-        instances:
-          edx:
-            number: 1
-            type: r5.large
-          edx-worker:
-            number: 1
-            type: t3.large
       sandbox:
         app: edx-platform
         business_unit: residential
@@ -617,24 +569,6 @@ environments:
           edx:
             number: 1
             type: t3.medium
-      continuous-delivery:
-        app: edx-platform
-        business_unit: residential
-        domains:
-          cms: studio-mitx-qa-testing.mitx.mit.edu
-          lms: mitx-qa-testing.mitx.mit.edu
-          preview: preview-mitx-qa-testing.mitx.mit.edu
-          gitreload: prod-gr-qa-testing.mitx.mit.edu
-        versions:
-          <<: *continuous_delivery_versions
-          xqwatcher_courses: master
-        instances:
-          edx:
-            number: 1
-            type: t3.large
-          edx-worker:
-            number: 1
-            type: t3.large
       mitx-cas:
         app: mitx-cas
         business_unit: operations
@@ -808,16 +742,6 @@ environments:
         security_groups:
           - vault
           - consul
-      dremio:
-        app: dremio
-        num_instances: 1
-        domains:
-          - dremio.odl.mit.edu
-        business_unit: operations
-        security_groups:
-          - webapp-odl-vpn
-        size:
-          r5.xlarge
       redash:
         app: redash
         num_instances: 4
@@ -943,23 +867,6 @@ environments:
         security_groups:
           - vault
           - consul
-      zookeeper:
-        app: zookeeper
-        num_instances: 3
-        size: t3.small
-        business_unit: operations
-        security_groups:
-          - zookeeper
-      pulsar:
-        apps:
-          - pulsar
-          - bookkeeper
-        num_instances: 3
-        size: r5.large
-        business_unit: operations
-        security_groups:
-          - bookkeeper
-          - pulsar
     backends:
       pki:
         - consul
