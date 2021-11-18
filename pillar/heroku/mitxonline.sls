@@ -83,7 +83,7 @@ heroku:
     OPENEDX_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ environment }}/openedx-api-client>data>client-secret
     OPENEDX_API_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.openedx_environment }}/edx-api-key>data>value
     OPENEDX_SERVICE_WORKER_API_TOKEN: __vault__::secret-{{ business_unit }}/{{ environment }}/openedx-service-worker-api-token>data>value
-    OPENEDX_SERVICE_WORKER_USERNAME: mitxonline-service-worker-api
+    OPENEDX_SERVICE_WORKER_USERNAME: login_service_user
     PGBOUNCER_DEFAULT_POOL_SIZE: 50
     PGBOUNCER_MIN_POOL_SIZE: 5
     RECAPTCHA_SITE_KEY: __vault__::secret-mitxonline/recaptcha-keys>data>site_key
