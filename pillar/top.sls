@@ -41,6 +41,13 @@ base:
     - master.api
     - caddy
     - caddy.master
+    - vault.roles.apps
+    - vault.roles.aws
+    - vault.roles.bootcamps
+    - vault.roles.micromasters
+    - vault.roles.mitx
+    - vault.roles.operations
+    - vault.roles.pki
   master-operations-production:
     - master.production_schedule
     # - master.extra_config
@@ -98,12 +105,6 @@ base:
   'G@roles:mongodb and P@environment:(mitx-qa|mitxonline-qa|mitxonline-production)':
     - match: compound
     - mongodb.mitx-qa
-  dremio*:
-    - dremio
-    - nginx
-    - nginx.dremio
-    - consul
-    - consul.dremio
   starcellbio*:
     - apps.starcellbio
     - nginx
@@ -118,7 +119,6 @@ base:
     - shibboleth.odlvideo
     - fluentd.odlvideo
     - logrotate.odlvideo
-    - elastic_stack.beats
   proxy-bootcamps-*:
     - heroku.bootcamps
   proxy-mitxpro-*:
@@ -141,10 +141,6 @@ base:
   'G@roles:rabbitmq and P@environment:mitx.*':
     - match: compound
     - rabbitmq.mitx
-  'roles:scylladb':
-    - match: grain
-    - scylladb
-    - consul.scylladb
   'roles:cassandra':
     - match: grain
     - cassandra
@@ -179,7 +175,6 @@ base:
   'P@environment:(operations|data)(-qa|-production)?':
     - match: compound
     - consul.operations
-    - vault
   'P@environment:(rc|production)-apps':
     - match: compound
     - rabbitmq.apps
@@ -187,23 +182,9 @@ base:
   'G@roles:edx-analytics and P@environment:mitx(pro)?-production':
     - match: compound
     - data.mitx_etl
-  'G@roles:consul_server and P@environment:operations(-qa)?':
-    - match: compound
-    - consul.bootcamps
-    - vault
   'G@roles:consul_server and P@environment:mitx(pro|-online)?-production':
     - match: compound
     - datadog.mysql-integration
-  'P@roles:(vault_server|master)':
-    - match: compound
-    - vault
-    - vault.roles.apps
-    - vault.roles.aws
-    - vault.roles.bootcamps
-    - vault.roles.micromasters
-    - vault.roles.mitx
-    - vault.roles.operations
-    - vault.roles.pki
   'G@roles:elasticsearch and P@environment:(rc|production)-apps':
     - match: compound
     - elastic_stack.elasticsearch
@@ -225,7 +206,6 @@ base:
     - match: compound
     - elastic_stack.elasticsearch.logging_production
     - netdata.elasticsearch_logging
-    - elastic_stack.beats
     - fluentd.elasticsearch
     - consul.elasticsearch
   'G@roles:elasticsearch and G@environment:operations-qa':
