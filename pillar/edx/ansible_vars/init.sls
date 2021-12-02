@@ -24,7 +24,7 @@
 {% set MONGODB_USE_SSL = False %}
 {% if 'mitxpro' in environment %}
 {% set VAULT_MYSQL_MOUNT_POINT = 'mariadb-mitxpro-edxapp-' ~ environment %}
-{% set rds_endpoint = salt.boto_rds.get_endpoint('ol-mitxpro-edxapp-db-{env_suffix}'.format(env_suffix=environment.split('-')[-1]) %}
+{% set rds_endpoint = salt.boto_rds.get_endpoint('ol-mitxpro-edxapp-db-{env_suffix}'.format(env_suffix=environment.split('-')[-1])) %}
 {% set MYSQL_HOST = rds_endpoint.split(':')[0] %}
 {% else %}
 {% set VAULT_MYSQL_MOUNT_POINT = 'mysql-' ~ environment %}
