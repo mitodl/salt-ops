@@ -18,7 +18,7 @@
 } %}
 {% set env_data = env_dict[ENVIRONMENT] %}
 {% set python_bin_dir = '/usr/local/pyenv/versions/{0}/bin'.format(env_data.python_version) %}
-
+{% set rds_endpoint = salt.boto_rds.get_endpoint(ENVIRONMENT ~ '-rds-postgres-mitxcas') %}
 
 schedule:
   refresh_{{ app_name }}_credentials:
@@ -122,7 +122,7 @@ mitx_cas:
         NAME: mitxcas
         USER: __vault__:cache:postgres-{{ ENVIRONMENT }}-mitxcas/creds/mitxcas>data>username
         PASSWORD: __vault__:cache:postgres-{{ ENVIRONMENT }}-mitxcas/creds/mitxcas>data>password
-        HOST: postgres-mitxcas.service.consul
+        HOST: {{ rds_endpoint.split(':')[0] }}
     SECRET_KEY: __vault__:gen_if_missing:secret-residential/{{ ENVIRONMENT }}/mitx-cas/django-secret-key>data>value
     CAS_ALLOWED_SERVICES:
       - host: ^introml.odl.mit.edu
