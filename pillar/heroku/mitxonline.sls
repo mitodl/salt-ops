@@ -45,7 +45,7 @@ proxy:
 
 heroku:
   app_name: {{ env_data.app_name }}
-  api_key: __vault__::secret-{{ business_unit }}/heroku/api_key>data>value
+  api_key: __vault__::secret-operations/heroku/odl-devops-api-key>data>value
   config_vars:
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/mitxonline>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/mitxonline>data>secret_key
