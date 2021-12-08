@@ -9,6 +9,14 @@
 {% if ENVIRONMENT = "production-apps"}
 {% set datacenter = "apps-production" %}
 {% endif %}
+{% set lan_nodes = ["provider=aws tag_key=consul_env tag_value=" ~ datacenter] %}
+{% for host, addr in salt.saltutil.runner(
+    'mine.get',
+    tgt='consul-' ~ ENVIRONMENT ~ '-*',
+    fun='grains.item',
+    tgt_type='glob').items() %}
+{% do lan_nodes.append('{0}'.format(addr['ec2:local_ipv4'])) %}
+{% endfor %}
 
 consul:
   extra_configs:
@@ -17,3 +25,4 @@ consul:
         - {{ env_settings.environments[ENVIRONMENT].network_prefix }}.0.2
         - 8.8.8.8
       datacenter: {{ datacenter }}
+      retry_join: {{ lan_nodes|tojson }}
