@@ -121,7 +121,7 @@ proxy:
 
 heroku:
   app_name: {{ env_data.app_name }}
-  api_key: __vault__::secret-operations/global/heroku/api_key>data>value
+  api_key: __vault__::secret-operations/global/heroku/odl-devops-api-key>data>value
   config_vars:
     AKISMET_API_KEY: __vault__::secret-{{ business_unit }}/global/akismet>data>api_key
     AKISMET_BLOG_URL: https://discussions-rc.odl.mit.edu
