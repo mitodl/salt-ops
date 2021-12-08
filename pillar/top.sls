@@ -166,6 +166,12 @@ base:
     - match: compound
     - datadog
     - consul
+  'P@environment:.*apps.*':
+    - match: compound
+    - consul.apps
+  'P@environment:.*mitxpro.*':
+    - match: compound
+    - consul.xpro
   'P@environment:mitx(pro|-online)?-(qa|production)':
     - match: compound
     - consul.mitx
