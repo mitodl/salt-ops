@@ -6,7 +6,7 @@
 {% if ENVIRONMENT == "rc-apps" %}
 {% set datacenter = "apps-qa" %}
 {% endif %}
-{% if ENVIRONMENT = "production-apps"}
+{% if ENVIRONMENT == "production-apps" %}
 {% set datacenter = "apps-production" %}
 {% endif %}
 {% set lan_nodes = ["provider=aws tag_key=consul_env tag_value=" ~ datacenter] %}
