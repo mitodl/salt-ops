@@ -10,7 +10,8 @@
 {% set minion_id = salt.grains.get('id', '') %}
 {% set postgresql_creds = salt.vault.cached_read('postgresql-{}-reddit/creds/reddit'.format(ENVIRONMENT), cache_prefix=minion_id) %}
 {% set POSTGRESQL_PORT = 5432 %}
-{% set POSTGRESQL_HOST = 'postgresql-reddit.service.consul' %}
+{% set rds_endpoint = salt.boto_rds.get_endpoint(ENVIRONMENT ~ '-rds-postgresql-reddit') %}
+{% set POSTGRESQL_HOST = rds_endpoint.split(':')[0] %}
 {% set DISCUSSIONS_HOST = 'discussions-reddit-{}.odl.mit.edu'.format(ENVIRONMENT) %}
 {% set admins = 'odldevops' %}
 {% set reddit_oauth_client = salt.vault.read('secret-operations/{}/reddit/app-token'.format(ENVIRONMENT)) %}
