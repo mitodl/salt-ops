@@ -31,7 +31,7 @@ edx:
         AUTH:
           - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>username
           - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>password
-        SERVER: http://xqueue-{{ purpose }}.service.consul:18040
+        SERVER: http://xqueue.service.consul:18040
         CONNECTIONS: 5
         HANDLERS:
           - HANDLER: 'xqueue_watcher.jailedgrader.JailedGrader'
