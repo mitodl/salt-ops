@@ -56,6 +56,7 @@
 {% set rabbit_creds = salt.vault.cached_read("rabbitmq-{env}/creds/odlvideo".format(env=ENVIRONMENT), cache_prefix=minion_id) %}
 {% set ga_json = salt.vault.read('secret-odl-video/' ~ ENVIRONMENT ~ '/ga-keyfile-json').data.value|json %}
 {% set business_unit = 'odl-video' %}
+{% set rds_endpoint = salt.boto_rds.get_endpoint(ENVIRONMENT ~ '-rds-postgres-odlvideo') %}
 
 schedule:
   refresh_{{ app_name }}_credentials:
@@ -96,7 +97,7 @@ django:
     CLOUDFRONT_KEY_ID: __vault__::secret-operations/global/cloudfront-private-key>data>id
     CLOUDFRONT_PRIVATE_KEY: __vault__::secret-operations/global/cloudfront-private-key>data>value
     CELERY_BROKER_URL: amqp://{{ rabbit_creds.data.username }}:{{ rabbit_creds.data.password }}@nearest-rabbitmq.query.consul//odlvideo  # The extra `/` is necessary for the vhost to be read correctly
-    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@postgres-odlvideo.service.consul:5432/odlvideo
+    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/odlvideo
     DJANGO_LOG_LEVEL: {{ env_data.log_level }}
     DROPBOX_FOLDER: /Captions
     DROPBOX_KEY: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/dropbox_app>data>key
