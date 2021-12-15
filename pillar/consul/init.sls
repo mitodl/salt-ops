@@ -7,6 +7,7 @@
     tgt_type='glob').items() %}
 {% do lan_nodes.append('{0}'.format(addr['ec2:local_ipv4'])) %}
 {% endfor %}
+{% set datacenter = salt.grains.get("consul_datacenter") %}
 
 consul:
   products:
@@ -23,7 +24,7 @@ consul:
           "*": 30s
       encrypt: __vault__::secret-operations/global/consul-shared-secret>data>value
       retry_join: {{ lan_nodes|tojson }}
-      datacenter: {{ ENVIRONMENT }}
+      datacenter: {{ datacenter or ENVIRONMENT }}
 
 {% if 'production' in ENVIRONMENT %}
 schedule:
