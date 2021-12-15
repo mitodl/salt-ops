@@ -181,6 +181,9 @@ base:
   'P@environment:(operations|data)(-qa|-production)?':
     - match: compound
     - consul.operations
+  'environment:operations':
+    - match: grain
+    - consul.operations
   'P@environment:(rc|production)-apps':
     - match: compound
     - rabbitmq.apps
