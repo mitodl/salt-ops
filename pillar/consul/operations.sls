@@ -32,5 +32,7 @@ consul:
         - 8.8.8.8
       {% if 'consul_server' in salt.grains.get('roles', []) %}
       retry_join_wan: {{ wan_nodes|tojson }}
+      primary_datacenter: {{ datacenter }}
       {% endif %}
       retry_join: {{ lan_nodes|tojson }}
+      datacenter: {{ datacenter }}
