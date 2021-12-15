@@ -53,38 +53,6 @@ current_residential_versions_rp: &current_residential_versions_rp
   codename: lilac
   ami_id: ami-0885b1f6bd170450c
 
-next_residential_versions: &next_residential_versions
-  edx_config_repo: https://github.com/mitodl/configuration
-  edx_config_version: open-release/lilac.master
-  edx_platform_repo: 'https://github.com/mitodl/edx-platform'
-  edxapp: mitx/lilac
-  forum_source_repo: 'https://github.com/mitodl/cs_comments_service'
-  forum: open-release/lilac.master
-  xqueue_source_repo: 'https://github.com/mitodl/xqueue'
-  xqueue: open-release/lilac.master
-  xqwatcher_courses: master
-  theme_source_repo: 'https://github.com/mitodl/mitx-theme'
-  theme_name: 'mitx-theme'
-  theme: lilac
-  codename: lilac
-  ami_id: ami-0885b1f6bd170450c
-
-edxapp_continuous_delivery_versions: &continuous_delivery_versions
-  edx_config_repo: https://github.com/mitodl/configuration
-  edx_config_version: master
-  edx_platform_repo: 'https://github.com/edx/edx-platform'
-  edxapp: master
-  forum_source_repo: 'https://github.com/edx/cs_comments_service'
-  forum: master
-  xqueue_source_repo: 'https://github.com/edx/xqueue'
-  xqueue: master
-  xqwatcher_courses: master
-  theme_source_repo: 'https://github.com/mitodl/mitx-theme'
-  theme_name: 'mitx-theme'
-  theme: master
-  codename: tumbleweed
-  ami_id: ami-80861296
-
 xpro_qa_versions: &xpro_qa_versions
   edx_config_repo: https://github.com/mitodl/configuration
   edx_config_version: open-release/koa.master
@@ -115,32 +83,6 @@ xpro_production_versions: &xpro_production_versions
   theme_name: 'mitxpro-theme'
   theme: koa
   codename: koa
-  ami_id: ami-0885b1f6bd170450c
-
-mitxonline_qa_versions: &mitxonline_qa_versions
-  edx_config_repo: https://github.com/edx/configuration
-  edx_config_version: master
-  edx_platform_repo: 'https://github.com/edx/edx-platform'
-  edxapp: master
-  forum_source_repo: 'https://github.com/edx/cs_comments_service'
-  forum: master
-  xqueue_source_repo: 'https://github.com/edx/xqueue'
-  xqueue: master
-  xqwatcher_courses: master
-  codename: lilac
-  ami_id: ami-0885b1f6bd170450c
-
-mitxonline_production_versions: &mitxonline_production_versions
-  edx_config_repo: https://github.com/edx/configuration
-  edx_config_version: master
-  edx_platform_repo: 'https://github.com/edx/edx-platform'
-  edxapp: master
-  forum_source_repo: 'https://github.com/edx/cs_comments_service'
-  forum: master
-  xqueue_source_repo: 'https://github.com/edx/xqueue'
-  xqueue: master
-  xqwatcher_courses: master
-  codename: lilac
   ami_id: ami-0885b1f6bd170450c
 
 sandbox_residential_versions: &sandbox_residential_versions
@@ -411,10 +353,6 @@ environments:
         - elasticsearch
         - mongodb
         - rabbitmq
-    purposes:
-      mitxonline-qa:
-        app: edx-platform
-        business_unit: mitxonline
   mitxonline-production:
     business_unit: mitxonline
     network_prefix: '10.21'
@@ -427,27 +365,23 @@ environments:
         - elasticsearch
         - mongodb
         - rabbitmq
+  mitx-staging-qa:
+    business_unit: residential-staging
+    network_prefix: '10.30'
+    vpc_name: MITx QA Staging
+    vpc_peers:
+      - operations-qa
     purposes:
-      mitxonline-production:
-        app: edx-platform
-        business_unit: mitxonline
-        domains:
-          cms: studio.mitxonline.mit.edu
-          lms: courses.mitxonline.mit.edu
-          preview: preview.mitxonline.mit.edu
+      xqwatcher:
+        app: xqueue-watcher
+        business_unit: residential-staging
         versions:
-          <<: *mitxonline_production_versions
-        instances:
-          edxapp:
-            min_number: 6
-            max_number: 10
-            type: r5a.large
-          edx-worker:
-            min_number: 3
-            max_number: 7
-            type: t3a.large
-        security_groups:
-          - edx
+          xqwatcher: 41ef7dff8e73f2ef5a5ffee20c4a5b822eb95341
+          edx_config_repo: https://github.com/edx/configuration
+          edx_config_version: open-release/maple.master
+        courses:
+          - name: 600x
+            num_instances: 1
   mitx-qa:
     business_unit: residential
     network_prefix: '10.5'
@@ -491,14 +425,14 @@ environments:
         app: xqueue-watcher
         business_unit: residential
         versions:
-          xqwatcher: fe9d465
-          edx_config_repo: https://github.com/mitodl/configuration
-          edx_config_version: open-release/koa.master
+          xqwatcher: 41ef7dff8e73f2ef5a5ffee20c4a5b822eb95341
+          edx_config_repo: https://github.com/edx/configuration
+          edx_config_version: open-release/maple.master
         courses:
           - name: 600x
             num_instances: 2
           - name: 686
-            num_instances: 1
+            num_instances: 
           - name: 6S082
             num_instances: 1
           - name: 940
@@ -557,6 +491,23 @@ environments:
         domains:
           - auth.mitx.mit.edu
         num_instances: 1
+  mitx-staging-production:
+    business_unit: residential-staging
+    network_prefix: '10.31'
+    vpc_name: MITx Production Staging
+    vpc_peers:
+      - operations-production
+    purposes:
+      xqwatcher:
+        app: xqueue-watcher
+        business_unit: residential-staging
+        versions:
+          xqwatcher: 41ef7dff8e73f2ef5a5ffee20c4a5b822eb95341
+          edx_config_repo: https://github.com/edx/configuration
+          edx_config_version: open-release/maple.master
+        courses:
+          - name: 600x
+            num_instances: 2
   mitx-production:
     business_unit: residential
     network_prefix: '10.7'
@@ -600,9 +551,9 @@ environments:
         app: xqueue-watcher
         business_unit: residential
         versions:
-          xqwatcher: a95cc96
-          edx_config_repo: https://github.com/mitodl/configuration
-          edx_config_version: open-release/koa.master
+          xqwatcher: 41ef7dff8e73f2ef5a5ffee20c4a5b822eb95341
+          edx_config_repo: https://github.com/edx/configuration
+          edx_config_version: open-release/maple.master
         courses:
           - name: 600x
             num_instances: 3

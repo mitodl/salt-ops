@@ -4,6 +4,13 @@
 {% set xqwatcher_venv_base = '/edx/app/xqwatcher/venvs' %}
 {% set python3_version = 'python3.8' %}
 {% set queue_name = 'mitx-6S082grader' %}
+{% set env_map = {
+  "mitx": "production",
+  "mitx-staging": "master"
+} %}
+
+{% set watcher_git_ref = env_map[environment.rsplit("-", 1)[-1]] %}
+{% set env_prefix = environment.rsplit("-", 1)[-1] %}
 
 edx:
   xqwatcher:
@@ -11,11 +18,9 @@ edx:
       - numpy
   ansible_vars:
    XQWATCHER_COURSES:
-    {% for purpose, purpose_data in env_data.purposes.items() %}
-    {% if 'residential' in purpose %}
-    - COURSE: "mit-6S082-{{ purpose }}-{{ queue_name }}"
+    - COURSE: "mit-6S082"
       GIT_REPO: git@github.mit.edu:mitx/graders-mit-6S082r
-      GIT_REF: {{ purpose_data.versions.xqwatcher_courses }}
+      GIT_REF: {{ watcher_git_ref }}
       PYTHON_REQUIREMENTS:
         - name: numpy
           version: 1.19.4
@@ -27,8 +32,8 @@ edx:
       QUEUE_NAME: {{ queue_name }}
       QUEUE_CONFIG:
         AUTH:
-          - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>username
-          - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>password
+          - xqwatcher
+          - __vault__::secret-{{ env_prefix }}/edx-xqueue>data>xqwatcher_password
         SERVER: http://xqueue.service.consul:18040
         CONNECTIONS: 5
         HANDLERS:
@@ -39,20 +44,14 @@ edx:
               lang: python3
               bin_path: "{{ xqwatcher_venv_base }}/mit-6S082/bin/python"
             KWARGS:
-              grader_root: ../data/mit-6S082-{{ purpose }}-{{ queue_name }}/
-    {% endif %}
-    {% endfor %}
+              grader_root: ../data/mit-6S082/
 
 
 schedule:
-  {% for purpose, purpose_data in env_data.purposes.items() %}
-  {% if purpose_data.business_unit == 'residential' %}
-  update_live_grader_for_{{ purpose }}_with_{{ queue_name }}_queue:
+  update_live_grader_for:
     function: git.pull
     minutes: 5
     args:
-      - /edx/app/xqwatcher/data/mit-6S082-{{ purpose }}-{{ queue_name }}/
+      - /edx/app/xqwatcher/data/mit-6S082/
     kwargs:
       identity: /edx/app/xqwatcher/.ssh/xqwatcher-courses
-  {% endif %}
-  {% endfor %}
