@@ -5,6 +5,14 @@
 {% if ENVIRONMENT == "operations" %}
 {% set datacenter = "operations-production" %}
 {% endif %}
+{% set lan_nodes = ["provider=aws tag_key=consul_env tag_value=" ~ datacenter] %}
+{% for host, addr in salt.saltutil.runner(
+    'mine.get',
+    tgt='consul-' ~ ENVIRONMENT ~ '-*',
+    fun='grains.item',
+    tgt_type='glob').items() %}
+{% do lan_nodes.append('{0}'.format(addr['ec2:local_ipv4'])) %}
+{% endfor %}
 
 {% set wan_nodes = [] %}
 {% for host, addr in salt.saltutil.runner(
@@ -22,6 +30,7 @@ consul:
         - {{ env_settings.environments[ENVIRONMENT].network_prefix }}.0.2
         - 1.1.1.1
         - 8.8.8.8
-    {% if 'consul_server' in salt.grains.get('roles', []) %}
+      {% if 'consul_server' in salt.grains.get('roles', []) %}
       retry_join_wan: {{ wan_nodes|tojson }}
-    {% endif %}
+      {% endif %}
+      retry_join: {{ lan_nodes|tojson }}
