@@ -11,6 +11,8 @@
 } %}
 {% set xpro_purpose = xpro_map[environment].xpro_purpose %}
 {% set xpro_environment = xpro_map[environment].xpro_environment %}
+{% set rds_endpoint = salt.boto_rds.get_endpoint('ol-mitxpro-edxapp-db-{env_suffix}'.format(env_suffix=environment.split('-')[-1])) %}
+{% set MYSQL_HOST = rds_endpoint.split(':')[0] %}
 
 dagster:
   pipeline_configs:
@@ -33,7 +35,7 @@ dagster:
         sqldb:
           config:
             mysql_db_name: edxapp_{{ xpro_purpose|replace('-', '_') }}
-            mysql_hostname: edxapp-mysql.service.{{ xpro_environment }}.consul
+            mysql_hostname: {{ MYSQL_HOST }}
             mysql_username: __vault__:cache:mariadb-mitxpro-edxapp-{{ xpro_environment }}/creds/readonly>data>username
             mysql_password: __vault__:cache:mariadb-mitxpro-edxapp-{{ xpro_environment }}/creds/readonly>data>password
       solids:

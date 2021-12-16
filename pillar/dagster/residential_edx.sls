@@ -11,6 +11,8 @@
 } %}
 {% set mitx_purpose = mitx_map[environment].mitx_purpose %}
 {% set mitx_environment = mitx_map[environment].mitx_environment %}
+{% set rds_endpoint = salt.boto_rds.get_endpoint('{env}-rds-mysql'.format(env=mitx_environment)) %}
+{% set MYSQL_HOST = rds_endpoint.split(':')[0] %}
 
 dagster:
   pipeline_configs:
@@ -33,7 +35,7 @@ dagster:
         sqldb:
           config:
             mysql_db_name: edxapp_{{ mitx_purpose|replace('-', '_') }}
-            mysql_hostname: mysql.service.{{ mitx_environment }}.consul
+            mysql_hostname: {{ MYSQL_HOST }}
             mysql_username: __vault__:cache:mysql-{{ mitx_environment }}/creds/readonly>data>username
             mysql_password: __vault__:cache:mysql-{{ mitx_environment }}/creds/readonly>data>password
       solids:
