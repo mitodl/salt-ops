@@ -11,7 +11,7 @@
 } %}
 {% set xpro_purpose = xpro_map[environment].xpro_purpose %}
 {% set xpro_environment = xpro_map[environment].xpro_environment %}
-{% set env_suffix=environment.split('-')[-1]) %}
+{% set env_suffix=environment.split('-')[-1] %}
 {% set rds_endpoint = salt.boto_rds.get_endpoint('ol-mitxpro-edxapp-db-{env_suffix}'.format(env_suffix=env_suffix) %}
 {% set MYSQL_HOST = rds_endpoint.split(':')[0] %}
 
