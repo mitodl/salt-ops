@@ -11,7 +11,8 @@
 } %}
 {% set xpro_purpose = xpro_map[environment].xpro_purpose %}
 {% set xpro_environment = xpro_map[environment].xpro_environment %}
-{% set rds_endpoint = salt.boto_rds.get_endpoint('ol-mitxpro-edxapp-db-{env_suffix}'.format(env_suffix=environment.split('-')[-1])) %}
+{% set env_suffix=environment.split('-')[-1]) %}
+{% set rds_endpoint = salt.boto_rds.get_endpoint('ol-mitxpro-edxapp-db-{env_suffix}'.format(env_suffix=env_suffix) %}
 {% set MYSQL_HOST = rds_endpoint.split(':')[0] %}
 
 dagster:
@@ -36,19 +37,19 @@ dagster:
           config:
             mysql_db_name: edxapp_{{ xpro_purpose|replace('-', '_') }}
             mysql_hostname: {{ MYSQL_HOST }}
-            mysql_username: __vault__:cache:mariadb-mitxpro-edxapp-{{ xpro_environment }}/creds/readonly>data>username
-            mysql_password: __vault__:cache:mariadb-mitxpro-edxapp-{{ xpro_environment }}/creds/readonly>data>password
+            mysql_username: __vault__:cache:mariadb-mitxpro-edxapp-mitxpro-{{ env_suffix }}/creds/readonly>data>username
+            mysql_password: __vault__:cache:mariadb-mitxpro-edxapp-mitxpro-{{ env_suffix }}/creds/readonly>data>password
       solids:
         export_edx_forum_database:
           config:
             edx_mongodb_forum_database_name: forum_{{ xpro_purpose|replace('-', '_') }}
             edx_mongodb_host: mongodb-master.service.{{ xpro_environment }}.consul
-            edx_mongodb_password: __vault__:cache:mongodb-{{ xpro_environment }}/creds/forum-{{ xpro_purpose }}>data>password
-            edx_mongodb_username: __vault__:cache:mongodb-{{ xpro_environment }}/creds/forum-{{ xpro_purpose }}>data>username
+            edx_mongodb_password: __vault__:cache:mongodb-mitxpro-{{ env_suffix }}/creds/forum-{{ xpro_purpose }}>data>password
+            edx_mongodb_username: __vault__:cache:mongodb-mitxpro-{{ env_suffix }}/creds/forum-{{ xpro_purpose }}>data>username
             edx_mongodb_auth_db: forum_{{ xpro_purpose|replace('-', '_') }}
         edx_upload_daily_extracts:
           config:
-            edx_etl_results_bucket: mitx-etl-{{ xpro_purpose }}-{{ xpro_environment }}
+            edx_etl_results_bucket: mitx-etl-{{ xpro_purpose }}-mitxpro-{{ env_suffix }}
         list_edx_courses:
           config:
             edx_token_type: jwt
