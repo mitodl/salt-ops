@@ -69,7 +69,7 @@ django:
     REDASH_MULTI_ORG: 'false'
     REDASH_NAME: MIT Open Learning Business Intelligence
     REDASH_PASSWORD_LOGIN_ENABLED: 'false'
-    REDASH_REDIS_URL: redis://{{ cache_endpoint }}:6379/0
+    REDASH_REDIS_URL: redis://{{ cache_endpoint.Address }}:6379/0
     REDASH_REMOTE_USER_HEADER: MAIL
     REDASH_REMOTE_USER_LOGIN_ENABLED: 'true'
     REDASH_SENTRY_DSN: __vault__::secret-operations/operations/redash/sentry-dsn>data>value
