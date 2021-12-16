@@ -11,7 +11,7 @@
 {% set redash_fluentd_webhook_token = salt.vault.read('secret-operations/global/redash_webhook_token').data.value %}
 {% set process_count = 4 * salt.grains.get('num_cpus', 2) %}
 {% set cache_data = salt.boto3_elasticache.describe_replication_groups("redash-redis") %}
-{% set cache_endpoint = cache_data[0].NodeGroups[0].PrimaryEndpoint %}
+{% set cache_endpoint = cache_data[0].ConfigurationEndpoint %}
 
 schedule:
   refresh_{{ app_name }}_credentials:
