@@ -1,11 +1,11 @@
 {% set environment = salt.grains.get('environment', 'data-qa') %}
 {% set xpro_map = {
     'data-qa': {
-        'xpro_environment': 'mitxpro-qa',
+        'xpro_environment': 'xpro-qa',
         'xpro_purpose': 'xpro-qa'
     },
     'data-production': {
-        'xpro_environment': 'mitxpro-production',
+        'xpro_environment': 'xpro-production',
         'xpro_purpose': 'xpro-production'
     }
 } %}
