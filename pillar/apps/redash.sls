@@ -10,6 +10,8 @@
 {% set rds_endpoint = salt.boto_rds.get_endpoint('{env}-rds-postgres-redash'.format(env=ENVIRONMENT)) %}
 {% set redash_fluentd_webhook_token = salt.vault.read('secret-operations/global/redash_webhook_token').data.value %}
 {% set process_count = 4 * salt.grains.get('num_cpus', 2) %}
+{% set cache_data = salt.boto3_elasticache.describe_replication_groups("redash-redis") %}
+{% set cache_endpoint = cache_data[0].NodeGroups[0].PrimaryEndpoint %}
 
 schedule:
   refresh_{{ app_name }}_credentials:
@@ -67,7 +69,7 @@ django:
     REDASH_MULTI_ORG: 'false'
     REDASH_NAME: MIT Open Learning Business Intelligence
     REDASH_PASSWORD_LOGIN_ENABLED: 'false'
-    REDASH_REDIS_URL: redis://redash-redis.service.consul:6379/0
+    REDASH_REDIS_URL: redis://{{ cache_endpoint }}:6379/0
     REDASH_REMOTE_USER_HEADER: MAIL
     REDASH_REMOTE_USER_LOGIN_ENABLED: 'true'
     REDASH_SENTRY_DSN: __vault__::secret-operations/operations/redash/sentry-dsn>data>value
