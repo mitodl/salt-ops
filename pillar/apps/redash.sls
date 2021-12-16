@@ -7,7 +7,7 @@
 {% set purpose_data = env_data.purposes[app_name] %}
 {% set minion_id = salt.grains.get('id', '') %}
 {% set pg_creds = salt.vault.cached_read('postgres-' ~ ENVIRONMENT ~ '-redash/creds/redash', cache_prefix=minion_id) %}
-{% set rds_endpoint = salt.boto_rds.get_endpoint('{env}-rds-postgres-redash'.format(env=mitx_environment)) %}
+{% set rds_endpoint = salt.boto_rds.get_endpoint('{env}-rds-postgres-redash'.format(env=ENVIRONMENT)) %}
 {% set redash_fluentd_webhook_token = salt.vault.read('secret-operations/global/redash_webhook_token').data.value %}
 {% set process_count = 4 * salt.grains.get('num_cpus', 2) %}
 
