@@ -7,6 +7,7 @@
 {% set purpose_data = env_data.purposes[app_name] %}
 {% set minion_id = salt.grains.get('id', '') %}
 {% set pg_creds = salt.vault.cached_read('postgres-' ~ ENVIRONMENT ~ '-redash/creds/redash', cache_prefix=minion_id) %}
+{% set rds_endpoint = salt.boto_rds.get_endpoint('{env}-rds-postgres-redash'.format(env=mitx_environment)) %}
 {% set redash_fluentd_webhook_token = salt.vault.read('secret-operations/global/redash_webhook_token').data.value %}
 {% set process_count = 4 * salt.grains.get('num_cpus', 2) %}
 
@@ -49,7 +50,7 @@ django:
     REDASH_ADDITIONAL_QUERY_RUNNERS: redash.query_runner.google_analytics,redash.query_runner.python,redash.query_runner.dremio_odbc
     REDASH_COOKIE_SECRET: __vault__:gen_if_missing:secret-operations/operations/redash/cookie-secret>data>value
     REDASH_SECRET_KEY: __vault__:gen_if_missing:secret-operations/operations/redash/secret-key>data>value
-    REDASH_DATABASE_URL: postgresql://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@postgres-redash.service.consul:5432/redash
+    REDASH_DATABASE_URL: postgresql://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/redash
     REDASH_DATE_FORMAT: YYYY-MM-DD
     REDASH_ENFORCE_HTTPS: 'true'
     REDASH_EVENT_REPORTING_WEBHOOKS: https://log-input.odl.mit.edu/redash-webhook/redash/events?token={{ redash_fluentd_webhook_token }}
