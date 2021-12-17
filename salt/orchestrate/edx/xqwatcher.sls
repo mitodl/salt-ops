@@ -16,10 +16,6 @@ load_xqwatcher_cloud_profile:
     - source: salt://orchestrate/aws/cloud_profiles/xqwatcher.conf
     - template: jinja
 
-ensure_instance_profile_exists_for_xqwatcher:
-  boto_iam_role.present:
-    - name: xqwatcher-instance-role
-
 {% for course in env_data.purposes[app_name].courses %}
 {% set INSTANCE_COUNT = course.num_instances %}
 {% set security_groups = course.get('security_groups', []) %}
