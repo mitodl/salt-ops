@@ -432,7 +432,7 @@ environments:
           - name: 600x
             num_instances: 2
           - name: 686
-            num_instances: 
+            num_instances: 1
           - name: 6S082
             num_instances: 1
           - name: 940
