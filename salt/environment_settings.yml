@@ -376,7 +376,7 @@ environments:
         app: xqueue-watcher
         business_unit: residential-staging
         versions:
-          xqwatcher: 41ef7dff8e73f2ef5a5ffee20c4a5b822eb95341
+          xqwatcher: master
           edx_config_repo: https://github.com/edx/configuration
           edx_config_version: open-release/maple.master
         courses:
@@ -425,7 +425,7 @@ environments:
         app: xqueue-watcher
         business_unit: residential
         versions:
-          xqwatcher: 41ef7dff8e73f2ef5a5ffee20c4a5b822eb95341
+          xqwatcher: master
           edx_config_repo: https://github.com/edx/configuration
           edx_config_version: open-release/maple.master
         courses:
@@ -502,7 +502,7 @@ environments:
         app: xqueue-watcher
         business_unit: residential-staging
         versions:
-          xqwatcher: 41ef7dff8e73f2ef5a5ffee20c4a5b822eb95341
+          xqwatcher: master
           edx_config_repo: https://github.com/edx/configuration
           edx_config_version: open-release/maple.master
         courses:
@@ -551,7 +551,7 @@ environments:
         app: xqueue-watcher
         business_unit: residential
         versions:
-          xqwatcher: 41ef7dff8e73f2ef5a5ffee20c4a5b822eb95341
+          xqwatcher: master
           edx_config_repo: https://github.com/edx/configuration
           edx_config_version: open-release/maple.master
         courses:
