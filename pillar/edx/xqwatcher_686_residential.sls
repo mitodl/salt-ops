@@ -3,7 +3,7 @@
 {% set env_data = env_settings.environments[environment] %}
 {% set xqwatcher_venv_base = '/edx/app/xqwatcher/venvs' %}
 {% set python3_version = 'python3.8' %}
-{% set env_prefix = environment.rsplit("-", 1)[-1] %}
+{% set env_prefix = environment.rsplit("-", 1)[0] %}
 
 edx:
   xqwatcher:

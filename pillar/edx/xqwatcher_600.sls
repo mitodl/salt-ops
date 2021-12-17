@@ -9,7 +9,7 @@
 } %}
 
 {% set watcher_git_ref = env_map[environment.rsplit("-", 1)[0]] %}
-{% set env_prefix = environment.rsplit("-", 1)[-1] %}
+{% set env_prefix = environment.rsplit("-", 1)[0] %}
 
 edx:
   xqwatcher:
