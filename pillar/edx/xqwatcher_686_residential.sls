@@ -3,6 +3,7 @@
 {% set env_data = env_settings.environments[environment] %}
 {% set xqwatcher_venv_base = '/edx/app/xqwatcher/venvs' %}
 {% set python3_version = 'python3.8' %}
+{% set env_prefix = environment.rsplit("-", 1)[-1] %}
 
 edx:
   xqwatcher:
@@ -69,9 +70,7 @@ edx:
                   NPROC: 25
               KWARGS:
                 grader_root: ../data/mit-686x-mooc/graders/
-      {% for purpose, purpose_data in env_data.purposes.items() %}
-      {% if 'residential' in purpose %}
-      - COURSE: mit-686x-{{ purpose }}
+      - COURSE: mit-686x
         GIT_REPO: git@github.mit.edu:mitx/graders-mit-686x
         GIT_REF: master
         PYTHON_REQUIREMENTS:
@@ -109,8 +108,8 @@ edx:
         QUEUE_NAME: mitx-686xgrader
         QUEUE_CONFIG:
           AUTH:
-            - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>username
-            - __vault__::secret-residential/{{ environment }}/xqwatcher-xqueue-django-auth-{{ purpose }}>data>password
+            - xqwatcher
+            - __vault__::secret-{{ env_prefix }}/edx-xqueue>data>xqwatcher_password
           SERVER: 'http://xqueue.service.consul:18040'
           CONNECTIONS: 5
           HANDLERS:
@@ -128,22 +127,16 @@ edx:
                   NPROC: 25
               KWARGS:
                 grader_root: ../data/mit-686x-{{ purpose }}/graders/
-      {% endif %}
-      {% endfor %}
 
 
 schedule:
-  {% for purpose, purpose_data in env_data.purposes.items() %}
-  {% if purpose_data.business_unit == 'residential' %}
-  update_live_686_grader_for_{{ purpose }}:
+  update_live_686_grader:
     function: git.pull
     minutes: 5
     args:
-      - /edx/app/xqwatcher/data/mit-686x-{{ purpose }}/
+      - /edx/app/xqwatcher/data/mit-686x/
     kwargs:
       identity: /edx/app/xqwatcher/.ssh/xqwatcher-courses
-  {% endif %}
-  {% endfor %}
   update_live_grader_for_mit_686x_mooc_queue:
     function: git.pull
     minutes: 5
