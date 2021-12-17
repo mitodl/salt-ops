@@ -4,7 +4,7 @@
 {% set tags = tags|default({}) %}
 
 {{ profile_name }}:
-  {% set instance_count = num_instances|default(3) %}
+  {% set instance_count = int(num_instances)|default(3) %}
   {% for id_num in range(instance_count) %}
   - {{ service_name }}-{{ environment_name }}-{{ id_num }}-{{ release_id }}:
       network_interfaces:
