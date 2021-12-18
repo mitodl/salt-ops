@@ -126,7 +126,7 @@ edx:
                   PROXY: 0
                   NPROC: 25
               KWARGS:
-                grader_root: ../data/mit-686x-{{ purpose }}/graders/
+                grader_root: ../data/mit-686x/graders/
 
 
 schedule:
