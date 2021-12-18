@@ -1,6 +1,5 @@
 {% set env_settings = salt.cp.get_url("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml", dest=None)|load_yaml %}
 {% set environment = salt.grains.get('environment', 'mitx-qa') %}
-{% set env_data = env_settings.environments[environment] %}
 {% set xqwatcher_venv_base = '/edx/app/xqwatcher/venvs' %}
 {% set python3_version = 'python3.8' %}
 {% set queue_name = 'mitx-6S082grader' %}
