@@ -60,6 +60,7 @@ base:
     - dagster.residential_edx
     - dagster.mitx_enrollments
     - dagster.mit_open
+    - dagster.mitxonline_edx
     - consul
     - caddy
     - caddy.dagster
