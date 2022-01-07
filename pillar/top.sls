@@ -50,7 +50,6 @@ base:
     - vault.roles.pki
   master-operations-production:
     - master.production_schedule
-    # - master.extra_config
   master-operations-qa:
     - master.qa_schedule
   'roles:dagster':
