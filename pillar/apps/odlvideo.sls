@@ -58,7 +58,7 @@
 {% set business_unit = 'odl-video' %}
 {% set rds_endpoint = salt.boto_rds.get_endpoint(ENVIRONMENT ~ '-rds-postgres-odlvideo') %}
 {% set redis_cluster = salt.boto3_elasticache.describe_replication_groups('ovs-{env}-redis'.format(env=env_data.env_name)) %}
-{% set redis_cluster_address = cache_data[0].NodeGroups[0].PrimaryEndpoint %}
+{% set redis_cluster_address = redis_cluster[0].NodeGroups[0].PrimaryEndpoint %}
 
 schedule:
   refresh_{{ app_name }}_credentials:
