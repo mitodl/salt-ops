@@ -57,6 +57,8 @@
 {% set ga_json = salt.vault.read('secret-odl-video/' ~ ENVIRONMENT ~ '/ga-keyfile-json').data.value|json %}
 {% set business_unit = 'odl-video' %}
 {% set rds_endpoint = salt.boto_rds.get_endpoint(ENVIRONMENT ~ '-rds-postgres-odlvideo') %}
+{% set redis_cluster = salt.boto3_elasticache.describe_replication_groups('ovs-{env}-redis'.format(env=env_data.env_name)) %}
+{% set redis_cluster_address = cache_data[0].NodeGroups[0].PrimaryEndpoint %}
 
 schedule:
   refresh_{{ app_name }}_credentials:
@@ -127,7 +129,7 @@ django:
     ODL_VIDEO_LOG_FILE: /var/log/odl-video/django.log
     OPENEDX_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/openedx-api>data>client_id
     OPENEDX_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/openedx-api>data>client_secret
-    REDIS_URL: redis://ovs-{{ env_data.env_name }}-redis.service.consul:6379/0
+    REDIS_URL: redis://{{ redis_cluster_address }}:6379/0
     REDIS_MAX_CONNECTIONS: {{ env_data.redis_max_connections }}
     SECRET_KEY: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/django-secret-key>data>value
     SENTRY_DSN: __vault__::secret-{{ business_unit }}/global/sentry-dsn>data>value
