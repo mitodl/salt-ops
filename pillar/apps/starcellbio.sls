@@ -15,6 +15,7 @@
       }
 } %}
 {% set env_data = env_dict[ENVIRONMENT] %}
+{% set rds_endpoint = salt.boto_rds.get_endpoint(ENVIRONMENT ~ '-rds-mariadb-starcellbio') %}
 
 schedule:
   refresh_{{ app_name }}_credentials:
@@ -122,7 +123,7 @@ starcellbio:
     DB_NAME: starcellbio
     DB_USER: __vault__:cache:mariadb-{{ ENVIRONMENT }}-starcellbio/creds/starcellbio>data>username
     DB_PASSWORD: __vault__:cache:mariadb-{{ ENVIRONMENT }}-starcellbio/creds/starcellbio>data>password
-    DB_HOST: mariadb-starcellbio.service.consul
+    DB_HOST: {{ rds_endpoint.split(":")[0] }}
     DB_PORT: 3306
     TEMPLATE_DEBUG: false
     SERVER_EMAIL: mitxmail@mit.edu
