@@ -6,6 +6,11 @@
 {% set xpro_rc_db_user, xpro_rc_db_pass = xpro_rc_pg.split('/')[-2].split('@')[0].split(':') %}
 {% set xpro_rc_db_host, xpro_rc_db_port = xpro_rc_pg.split('/')[-2].split('@')[1].split(':') %}
 
+{% set ovs_rds_endpoint = salt.boto_rds.get_endpoint('production-apps-rds-postgres-odlvideo').split(":")[0] %}
+{% set reddit_rds_endpoint = salt.boto_rds.get_endpoint('production-apps-rds-postgresql-reddit').split(":")[0] %}
+{% set xpro_rds_endpoint = salt.boto_rds.get_endpoint('production-apps-rds-postgres-mitxpro').split(":")[0] %}
+{% set discussions_rds_endpoint = salt.boto_rds.get_endpoint('production-apps-rds-postgresql-opendiscussions').split(":")[0] %}
+
 redash:
   data_sources:
     - name: MicroMasters
@@ -28,7 +33,7 @@ redash:
       type: pg
       options:
         dbname: odlvideo
-        host: postgres-odlvideo.service.production-apps.consul
+        host: {{ ovs_rds_endpoint }}
         port: 5432
         user: __vault__:cache:postgres-production-apps-odlvideo/creds/readonly>data>username
         password: __vault__:cache:postgres-production-apps-odlvideo/creds/readonly>data>password
@@ -36,7 +41,7 @@ redash:
       type: pg
       options:
         dbname: opendiscussions
-        host: postgresql-opendiscussions.service.production-apps.consul
+        host: {{ discussions_rds_endpoint }}
         port: 5432
         user: __vault__:cache:postgres-production-apps-opendiscussions/creds/readonly>data>username
         password: __vault__:cache:postgres-production-apps-opendiscussions/creds/readonly>data>password
@@ -44,7 +49,7 @@ redash:
       type: pg
       options:
         dbname: reddit
-        host: postgresql-reddit.service.production-apps.consul
+        host: {{ reddit_rds_endpoint }}
         port: 5432
         user: __vault__:cache:postgresql-production-apps-reddit/creds/readonly>data>username
         password: __vault__:cache:postgresql-production-apps-reddit/creds/readonly>data>password
@@ -72,7 +77,7 @@ redash:
       type: pg
       options:
         dbname: mitxpro
-        host: postgres-mitxpro.service.production-apps.consul
+        host: {{ xpro_rds_endpoint }}
         port: 5432
         user: __vault__:cache:postgres-production-apps-mitxpro/creds/readonly>data>username
         password: __vault__:cache:postgres-production-apps-mitxpro/creds/readonly>data>password
