@@ -14,6 +14,7 @@
       'GIT_DOMAIN': 'github.mit.edu',
       'GITHUB_ORGANIZATION': 'ocw-content-ci',
       'GITHUB_WEBHOOK_BRANCH': '',
+      'GITHUB_APP_ID': '',
       'GITHUB_RATE_LIMIT_CHECK': 'False',
       'GTM_ACCOUNT_ID': 'GTM-5JZ7X78',
       'MAILGUN_SENDER_DOMAIN': 'ocw-ci.mail.odl.mit.edu',
@@ -39,6 +40,7 @@
       'FEATURE_USE_LOCAL_STARTERS': 'True',
       'GIT_DOMAIN': 'github.mit.edu',
       'GTM_ACCOUNT_ID': 'GTM-57BZ8PN',
+      'GITHUB_APP_ID': 12,
       'GITHUB_ORGANIZATION': 'ocw-content-rc',
       'GITHUB_WEBHOOK_BRANCH': 'release-candidate',
       'GITHUB_RATE_LIMIT_CHECK': 'False',
@@ -64,6 +66,7 @@
       'DRIVE_UPLOADS_PARENT_FOLDER_ID': '',
       'FEATURE_USE_LOCAL_STARTERS': 'False',
       'GIT_DOMAIN': 'github.com',
+      'GITHUB_APP_ID': 999999,
       'GITHUB_RATE_LIMIT_CHECK': 'True',
       'GTM_ACCOUNT_ID': 'GTM-MQCSLSQ',
       'GITHUB_ORGANIZATION': 'mitocwcontent',
@@ -124,6 +127,8 @@ heroku:
     GIT_DOMAIN: {{ env_data.GIT_DOMAIN }}
     GIT_ORGANIZATION: {{ env_data.GITHUB_ORGANIZATION }}
     GIT_TOKEN: __vault__::secret-{{ business_unit }}/ocw-studio/{{ environment }}/github-user-token>data>value
+    GITHUB_APP_ID: {{ env_data.GITHUB_APP_ID }}
+    GITHUB_APP_PRIVATE_KEY: __vault__::secret-ocw-studio/data/app-config>data>data>github_app_private_key  # the double >data>data is because this is a kv-v2 mount
     GITHUB_WEBHOOK_KEY: __vault__::secret-ocw-studio/data/app-config>data>data>github_shared_secret  # the double >data>data is because this is a kv-v2 mount
     GITHUB_WEBHOOK_BRANCH: {{ env_data.GITHUB_WEBHOOK_BRANCH }}
     GITHUB_RATE_LIMIT_CHECK: {{ env_data.GITHUB_RATE_LIMIT_CHECK }}
