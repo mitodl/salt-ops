@@ -66,7 +66,7 @@
       'DRIVE_UPLOADS_PARENT_FOLDER_ID': '',
       'FEATURE_USE_LOCAL_STARTERS': 'False',
       'GIT_DOMAIN': 'github.com',
-      'GITHUB_APP_ID': 999999,
+      'GITHUB_APP_ID': 166173,
       'GITHUB_RATE_LIMIT_CHECK': 'True',
       'GTM_ACCOUNT_ID': 'GTM-MQCSLSQ',
       'GITHUB_ORGANIZATION': 'mitocwcontent',
