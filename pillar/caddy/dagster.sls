@@ -49,49 +49,26 @@ caddy:
               - ':443'
             routes:
               - match:
-                  - path:
-                      - /login*
-                terminal: true
-                handle:
-                - handler: auth_portal
-                  portal:
-                    auth_url_path: /login
-                    primary: true
-                    backends:
-                      - name: Dagster
-                        method: local
-                        path: /var/lib/caddy/auth/users.json
-                        realm: local
-                    jwt:
-                      token_name: access_token
-                      token_secret: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ ENVIRONMENT }}/caddy-jwt-secret>data>value
-                    ui:
-                      allow_role_selection: false
-                      auto_redirect_url: ''
-                      logo_description: Dagster
-                      logo_url: https://dagster.io/images/logo.png
-                      private_links:
-                        - title: Dagster
-                          link: /
-              - match:
                   - host: {{ server_domain_names|tojson }}
                 handle:
-                  - handler: authentication
-                    providers:
-                      jwt:
-                        authorizer:
-                          primary: true
-                          auth_url_path: /login
-                          trusted_tokens:
-                            - token_name: access_token
-                              token_secret: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ ENVIRONMENT }}/caddy-jwt-secret>data>value
-                  - handler: headers
-                    response:
-                      add:
-                        Connection:
-                          - upgrade
-                  - handler: reverse_proxy
-                    transport:
-                      protocol: http
-                    upstreams:
-                      - dial: 127.0.0.1:3000
+                handle:
+                  - handler: subroute
+                    routes:
+                      - handle:
+                          - handler: authentication
+                            providers:
+                              http_basic:
+                                accounts:
+                                  - username: pulumi
+                                    # Password should be bcrypted and base64 encoded
+                                    password: __vault__::secret-data/dagster-http-auth-password>data>value
+                      - handler: headers
+                        response:
+                          add:
+                            Connection:
+                              - upgrade
+                      - handler: reverse_proxy
+                        transport:
+                          protocol: http
+                        upstreams:
+                          - dial: 127.0.0.1:3000
