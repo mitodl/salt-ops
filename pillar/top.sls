@@ -3,6 +3,7 @@ base:
     - match: compound
     - common
     - environment_settings
+    - vector
   # '* and not proxy-* and not restore-* and not G@roles:devstack and not P@environment:mitxonline and not G@context:packer and not P@roles:(edx|edx-worker)$':
   #   - match: compound
   #   - fluentd
@@ -20,7 +21,6 @@ base:
     - fluentd.elasticsearch
     - consul
     - consul.elasticsearch
-    - datadog.elasticsearch-integration
   'roles:kibana':
     - match: grain
     - mitca
@@ -30,9 +30,6 @@ base:
     - nginx.kibana
     - elastalert
     - logrotate.kibana
-  'G@roles:kibana and G@environment:operations':
-    - match: compound
-    - datadog.elastalert-process-integration
   'roles:master':
     - match: grain
     - master
@@ -66,18 +63,6 @@ base:
   'roles:fluentd':
     - match: grain
     - fluentd
-  'roles:zookeeper':
-    - match: grain
-    - zookeeper
-    - consul.zookeeper
-  'roles:bookkeeper':
-    - match: grain
-    - bookkeeper
-    - consul.bookkeeper
-  'roles:pulsar':
-    - match: grain
-    - pulsar
-    - consul.pulsar
   'G@roles:fluentd-server and G@environment:operations-qa':
     - match: compound
     - consul.fluentd
@@ -86,25 +71,6 @@ base:
     - match: compound
     - consul.fluentd
     - fluentd.server
-    - datadog.fluentd-integration
-  'roles:consul_server':
-    - match: grain
-    - consul
-    - consul.server
-    - fluentd.consul
-    - datadog.consul-integration
-    - caddy
-    - caddy.consul
-    - caddy.odl_wildcard_tls
-  'roles:mongodb':
-    - match: grain
-    - mongodb
-    - consul
-    - vector.mongodb
-    - consul.mongodb
-  'G@roles:mongodb and P@environment:(mitx-qa|mitxonline-qa|mitxonline-production)':
-    - match: compound
-    - mongodb.mitx-qa
   starcellbio*:
     - apps.starcellbio
     - nginx
@@ -145,7 +111,6 @@ base:
     - match: grain
     - cassandra
     - consul.cassandra
-    - datadog.cassandra-integration
   'roles:reddit':
     - match: grain
     - nginx
@@ -164,7 +129,6 @@ base:
     - data.email_mapping_etl
   'P@environment:(mitx-qa|mitx-production|mitxpro-qa|mitxpro-production|mitx-online-qa|mitx-online-production|operations|rc-apps|production-apps|micromasters)':
     - match: compound
-    - datadog
     - consul
   'P@environment:.*apps.*':
     - match: compound
@@ -175,9 +139,6 @@ base:
   'P@environment:mitx(pro|-online)?-(qa|production)':
     - match: compound
     - consul.mitx
-  'G@roles:edx and G@environment:mitxpro-*':
-    - match: compound
-    - consul.mitx-forum
   'P@environment:(operations|data)(-qa|-production)?':
     - match: compound
     - consul.operations
@@ -191,16 +152,12 @@ base:
   'G@roles:edx-analytics and P@environment:mitx(pro)?-production':
     - match: compound
     - data.mitx_etl
-  'G@roles:consul_server and P@environment:mitx(pro|-online)?-production':
-    - match: compound
-    - datadog.mysql-integration
   'G@roles:elasticsearch and P@environment:(rc|production)-apps':
     - match: compound
     - elastic_stack.elasticsearch
     - elastic_stack.elasticsearch.apps
     - nginx
     - nginx.apps_es
-    - datadog.nginx-integration
   'G@roles:elasticsearch and P@environment:mitxpro-production':
     - match: compound
     - elasticsearch.mitx
@@ -223,54 +180,6 @@ base:
     - netdata.elasticsearch_logging
     - fluentd.elasticsearch
     - consul.elasticsearch
-  'P@roles:(edx|edx-worker)$':
-    - match: compound
-    - edx
-    - edx.mitx-pkgs
-    - edx.ansible_vars
-    - edx.ansible_vars.pkgs
-    - edx.ansible_vars.cloud_deployment
-    - edx.scheduled_jobs
-    - vector.edx
-    - datadog.nginx-integration
-    - datadog.supervisord-integration
-  'P@roles:(edx|edx-worker)$and not G@roles:edx-analytics':
-    - match: compound
-    - vector.edx
-  'P@roles:(edx|edx-worker) and not G@edx_codename:tumbleweed':
-    - match: compound
-    - edx.ansible_vars.theme
-  'G@roles:sandbox and P@environment:mitx(pro)?-qa':
-    - match: compound
-    - edx
-    - edx.sandbox
-    - edx.ansible_vars
-    - edx.ansible_vars.theme
-  'P@roles:(edx|edx-worker|sandbox) and P@environment:mitxpro.*':
-    - match: compound
-    - edx.mitxpro
-    - edx.ansible_vars.xpro
-  'P@roles:(edx|edx-worker) and G@environment:mitx-qa':
-    - match: compound
-    - edx.ansible_vars.residential
-    - edx.ansible_vars.residential_qa
-    - edx.mitx-qa
-  'purpose:continuous-delivery':
-    - match: grain
-    - edx.mitx-koa
-  'P@roles:(edx|edx-worker) and G@environment:mitx-production':
-    - match: compound
-    - edx.ansible_vars.residential
-    - edx.mitx-production
-  'P@purpose:.*-draft and P@environment:mitx-(qa|production)':
-    - match: compound
-    - consul.mitx-draft
-  'P@purpose:.*-live and P@environment:mitx-(qa|production)':
-    - match: compound
-    - consul.mitx-live
-  'P@purpose:.*next-residential.*':
-    - match: compound
-    - edx.ansible_vars.next_residential
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
@@ -308,22 +217,11 @@ base:
   'G@roles:backups and P@environment:operations':
     - match: compound
     - backups.operations
-  'G@roles:devstack and P@environment:dev':
-    - match: compound
-    - devstack
-    - consul.devstack
-    - mongodb.devstack
-    - mysql.devstack
-    - elasticsearch.devstack
-    - rabbitmq.devstack
   'roles:rabbitmq':
     - match: grain
     - rabbitmq
     - fluentd.rabbitmq
     - consul.rabbitmq
-  'G@roles:rabbitmq and P@environment:(mitxpro-production|mitx-production|mitxonline-production|production-apps)':
-    - match: compound
-    - datadog.rabbitmq-integration
   'roles:tika':
     - match: grain
     - nginx
@@ -359,8 +257,6 @@ base:
     - match: grain
     - logrotate.ocw_cms
     - fluentd.ocw_db
-  'P@roles:ocw-(cms|db|origin|mirror) and G@ocw-environment:production':
-    - datadog
   'G@roles:ocw-build and G@environment:production-apps':
     - match: compound
     - apps.ocw-next-production
