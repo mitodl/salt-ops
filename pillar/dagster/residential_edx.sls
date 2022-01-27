@@ -37,8 +37,8 @@ dagster:
           config:
             mysql_db_name: edxapp
             mysql_hostname: {{ MYSQL_HOST }}
-            mysql_username: __vault__:cache:mariadb-{{ mitx_environment }}/creds/readonly>data>username
-            mysql_password: __vault__:cache:mariadb-{{ mitx_environment }}/creds/readonly>data>password
+            mysql_username: __vault__:cache:mariadb-mitx/creds/readonly>data>username
+            mysql_password: __vault__:cache:mariadb-mitx/creds/readonly>data>password
       solids:
         export_edx_forum_database:
           config:
