@@ -43,7 +43,7 @@ dagster:
         export_edx_forum_database:
           config:
             edx_mongodb_forum_database_name: forum
-            edx_mongodb_host: {{ consul.get(key="mongodb/host" }}
+            edx_mongodb_host: {{ consul.get(key="xpro/mongodb/host" }}
             edx_mongodb_password: __vault__:secret-xpro/mongodb-forum>data>password
             edx_mongodb_username: __vault__:secret-xpro/mongodb-forum>data>username
             edx_mongodb_auth_db: admin
