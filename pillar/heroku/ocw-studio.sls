@@ -65,9 +65,9 @@
       'DRIVE_SHARED_ID': '0AIZerpz9jimTUk9PVA',
       'DRIVE_UPLOADS_PARENT_FOLDER_ID': '',
       'FEATURE_USE_LOCAL_STARTERS': 'False',
-      'GIT_DOMAIN': 'github.com',
-      'GITHUB_APP_ID': 166173,
-      'GITHUB_RATE_LIMIT_CHECK': 'True',
+      'GIT_DOMAIN': 'github.mit.edu',
+      'GITHUB_APP_ID': 13,
+      'GITHUB_RATE_LIMIT_CHECK': 'False',
       'GTM_ACCOUNT_ID': 'GTM-MQCSLSQ',
       'GITHUB_ORGANIZATION': 'mitocwcontent',
       'GITHUB_WEBHOOK_BRANCH': 'release',
@@ -115,15 +115,13 @@ heroku:
     {% set pg_creds = salt.vault.cached_read('postgres-ocw-studio-applications-{}/creds/app'.format(env_data.env), cache_prefix='heroku-ocw-studio-' ~ env_data.env) %}
     {% set rds_endpoint = salt.boto_rds.get_endpoint('ocw-studio-db-applications-{}'.format(env_data.env)) %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/ocw_studio
+    GIT_API_URL: "https://github.mit.edu/api/v3"
     {% endif %}
     DRIVE_S3_UPLOAD_PREFIX: gdrive_uploads
     DRIVE_SERVICE_ACCOUNT_CREDS: __vault__::secret-{{ business_unit }}/ocw-studio/{{ environment }}/gdrive-service-json>data>value
     DRIVE_SHARED_ID: {{ env_data.DRIVE_SHARED_ID }}
     DRIVE_UPLOADS_PARENT_FOLDER_ID: {{ env_data.DRIVE_UPLOADS_PARENT_FOLDER_ID }}
     FEATURE_USE_LOCAL_STARTERS: {{ env_data.FEATURE_USE_LOCAL_STARTERS }}
-    {% if environment == "rc" %}
-    GIT_API_URL: "https://github.mit.edu/api/v3"
-    {% endif %}
     GIT_DOMAIN: {{ env_data.GIT_DOMAIN }}
     GIT_ORGANIZATION: {{ env_data.GITHUB_ORGANIZATION }}
     GIT_TOKEN: __vault__::secret-{{ business_unit }}/ocw-studio/{{ environment }}/github-user-token>data>value
