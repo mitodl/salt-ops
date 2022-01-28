@@ -69,7 +69,7 @@
       'GITHUB_APP_ID': <TBD>,
       'GITHUB_RATE_LIMIT_CHECK': 'False',
       'GTM_ACCOUNT_ID': 'GTM-MQCSLSQ',
-      'GITHUB_ORGANIZATION': '<TBD>',
+      'GITHUB_ORGANIZATION': 'mitocwcontent',
       'GITHUB_WEBHOOK_BRANCH': 'release',
       'MAILGUN_SENDER_DOMAIN': 'ocw.mail.odl.mit.edu',
       'OCW_IMPORT_STARTER_SLUG': 'ocw-course',
