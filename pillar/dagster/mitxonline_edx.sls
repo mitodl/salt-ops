@@ -8,6 +8,9 @@
     }
 } %}
 {% set mitxonline_environment = mitxonline_map[environment].mitxonline_environment %}
+{% set env_suffix=environment.split('-')[-1] %}
+{% set rds_endpoint = salt.boto_rds.get_endpoint('edxapp-db-mitx-{env_suffix}'.format(env_suffix=env_suffix)) %}
+{% set MYSQL_HOST = rds_endpoint.split(':')[0] %}
 
 dagster:
   pipeline_configs:
@@ -37,10 +40,10 @@ dagster:
         export_edx_forum_database:
           config:
             edx_mongodb_forum_database_name: forum
-            edx_mongodb_host: mongodb-master.service.{{ mitxonline_environment }}.consul
-            edx_mongodb_password: __vault__:cache:mongodb-mitxonline/creds/forum>data>password
-            edx_mongodb_username: __vault__:cache:mongodb-mitxonline/creds/forum>data>username
-            edx_mongodb_auth_db: forum
+            edx_mongodb_host: {{ consul.get(key="mitxonline/mongodb/host" }}
+            edx_mongodb_password: __vault__:secret-mitxonline/mongodb-forum>data>password
+            edx_mongodb_username: __vault__:secret-mitxonline/mongodb-forum>data>username
+            edx_mongodb_auth_db: admin
         edx_upload_daily_extracts:
           config:
             edx_etl_results_bucket: ol-data-lake-{{ mitxonline_environment }}/edxapp/extracts/
