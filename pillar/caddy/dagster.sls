@@ -51,7 +51,6 @@ caddy:
               - match:
                   - host: {{ server_domain_names|tojson }}
                 handle:
-                handle:
                   - handler: subroute
                     routes:
                       - handle:
