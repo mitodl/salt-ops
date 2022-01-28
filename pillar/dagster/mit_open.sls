@@ -21,7 +21,7 @@ dagster:
             postgres_password: __vault__:cache:postgres-{{ open_env_map[environment] }}-opendiscussions/creds/readonly>data>password
             postgres_port: 5432
             postgres_username: __vault__:cache:postgres-{{ open_env_map[environment] }}-opendiscussions/creds/readonly>data>username
-      solids:
+      ops:
         fetch_open_run_data:
           config:
             outputs_dir: {{ bucket }}/processed/mit-open-course-runs/
@@ -44,7 +44,7 @@ dagster:
             postgres_password: __vault__:cache:postgres-{{ open_env_map[environment] }}-opendiscussions/creds/opendiscussions>data>password
             postgres_port: 5432
             postgres_username: __vault__:cache:postgres-{{ open_env_map[environment] }}-opendiscussions/creds/opendiscussions>data>username
-      solids:
+      ops:
         fetch_open_run_data:
           config:
             outputs_dir: {{ bucket }}/processed/mit-open-course-runs/

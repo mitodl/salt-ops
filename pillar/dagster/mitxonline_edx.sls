@@ -36,7 +36,7 @@ dagster:
             mysql_hostname: edxapp-db.service.{{ mitxonline_environment }}.consul
             mysql_username: __vault__:cache:mariadb-mitxonline/creds/readonly>data>username
             mysql_password: __vault__:cache:mariadb-mitxonline/creds/readonly>data>password
-      solids:
+      ops:
         export_edx_forum_database:
           config:
             edx_mongodb_forum_database_name: forum

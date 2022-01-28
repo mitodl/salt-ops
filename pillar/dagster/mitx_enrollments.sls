@@ -13,7 +13,7 @@ dagster:
             s3_prefix: pipeline-storage/xpro_edx
         bigquery_db:
           config: {{ bigquery_creds|json }}
-      solids:
+      ops:
         download_user_data:
           config:
             last_modified_days: 5
