@@ -34,12 +34,6 @@ caddy:
       #   roles:
       #     - superadmin
   install_from_repo: False
-  custom_build:
-    os: linux
-    arch: amd64
-    plugins:
-      - github.com/greenpau/caddy-authorize
-      - github.com/greenpau/caddy-auth-portal
   config:
     apps:
       http:
