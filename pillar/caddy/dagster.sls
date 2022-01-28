@@ -52,16 +52,16 @@ caddy:
                             providers:
                               http_basic:
                                 accounts:
-                                  - username: pulumi
+                                  - username: dagster
                                     # Password should be bcrypted and base64 encoded
                                     password: __vault__::secret-data/dagster-http-auth-password>data>value
-                      - handler: headers
-                        response:
-                          add:
-                            Connection:
-                              - upgrade
-                      - handler: reverse_proxy
-                        transport:
-                          protocol: http
-                        upstreams:
-                          - dial: 127.0.0.1:3000
+                          - handler: headers
+                            response:
+                              add:
+                                Connection:
+                                  - upgrade
+                          - handler: reverse_proxy
+                            transport:
+                              protocol: http
+                            upstreams:
+                              - dial: 127.0.0.1:3000
