@@ -66,7 +66,7 @@
       'DRIVE_UPLOADS_PARENT_FOLDER_ID': '',
       'FEATURE_USE_LOCAL_STARTERS': 'False',
       'GIT_DOMAIN': 'github.mit.edu',
-      'GITHUB_APP_ID': <TBD>,
+      'GITHUB_APP_ID': 13,
       'GITHUB_RATE_LIMIT_CHECK': 'False',
       'GTM_ACCOUNT_ID': 'GTM-MQCSLSQ',
       'GITHUB_ORGANIZATION': 'mitocwcontent',
