@@ -4,6 +4,15 @@ vector:
     sources:
       host_metrics:
         type: host_metrics
+        scrape_interval_secs: 60
+        collectors:
+          - cpu
+          - disk
+          - filesystem
+          - load
+          - host
+          - memory
+          - network
 
     transforms:
       host_metrics_relabel:
