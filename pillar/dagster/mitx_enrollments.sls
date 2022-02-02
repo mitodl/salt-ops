@@ -2,6 +2,8 @@
 {% set env_suffix = environment.split('-')[-1] %}
 {% set bucket = "s3://ol-data-lake-mitx-" ~ env_suffix ~ "/raw" %}
 {% set bigquery_creds = salt.vault.read('secret-operations/data/institutional-research-bigquery-service-account').data.value %}
+{% do bigquery_creds.pop('auth_provider_x509_cert_url') %}
+{% do bigquery_creds.pop('type') %}
 
 dagster:
   pipeline_configs:
