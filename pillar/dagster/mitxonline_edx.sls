@@ -2,9 +2,11 @@
 {% set mitxonline_map = {
     'data-qa': {
         'mitxonline_environment': 'mitxonline-qa',
+        'mongodb_uri': 'mongodb://mitxonline-mitxonline-q-shard-00-00.5zw8v.mongodb.net:27017,mitxonline-mitxonline-q-shard-00-01.5zw8v.mongodb.net:27017,mitxonline-mitxonline-q-shard-00-02.5zw8v.mongodb.net:27017/?ssl=true&authSource=admin&replicaSet=atlas-2z2o2h-shard-0'
     },
     'data-production': {
         'mitxonline_environment': 'mitxonline-production',
+        'mongodb_uri': 'mongodb://mitxonline-mitxonline-p-shard-00-00.z2ka1.mongodb.net:27017,mitxonline-mitxonline-p-shard-00-01.z2ka1.mongodb.net:27017,mitxonline-mitxonline-p-shard-00-02.z2ka1.mongodb.net:27017,mitxonline-mitxonline-p-shard-00-03.z2ka1.mongodb.net:27017,mitxonline-mitxonline-p-shard-00-04.z2ka1.mongodb.net:27017/?ssl=true&authSource=admin&replicaSet=atlas-rxrinr-shard-0'
     }
 } %}
 {% set mitxonline_environment = mitxonline_map[environment].mitxonline_environment %}
@@ -15,10 +17,6 @@
 dagster:
   pipeline_configs:
     mitxonline_edx:
-      execution:
-        multiprocess:
-          config:
-            max_concurrent: {{ salt.grains.get('num_cpus') * 2 }}
       resources:
         io_manager:
           config:
@@ -40,7 +38,7 @@ dagster:
         export_edx_forum_database:
           config:
             edx_mongodb_forum_database_name: forum
-            edx_mongodb_host: {{ salt.consul.get(key="mitxonline/mongodb/host") }}
+            edx_mongodb_uri: {{ mitxonline_map[environment]['mongodb_uri'] }}
             edx_mongodb_password: __vault__::secret-mitxonline/mongodb-forum>data>password
             edx_mongodb_username: __vault__::secret-mitxonline/mongodb-forum>data>username
             edx_mongodb_auth_db: admin

@@ -2,11 +2,13 @@
 {% set mitx_map = {
     'data-qa': {
         'mitx_environment': 'mitx-qa',
-        'mitx_purpose': 'current-residential-live'
+        'mitx_purpose': 'current-residential-live',
+        'mongodb_uri': 'mongodb://residential-mitx-qa-shard-00-00.fm2me.mongodb.net:27017,residential-mitx-qa-shard-00-01.fm2me.mongodb.net:27017,residential-mitx-qa-shard-00-02.fm2me.mongodb.net:27017/?ssl=true&authSource=admin&replicaSet=atlas-rbhsmt-shard-0'
     },
     'data-production': {
         'mitx_environment': 'mitx-production',
-        'mitx_purpose': 'residential-live'
+        'mitx_purpose': 'residential-live',
+        'mongodb_uri': 'mongodb://residential-mitx-produc-shard-00-00.67e0a.mongodb.net:27017,residential-mitx-produc-shard-00-01.67e0a.mongodb.net:27017,residential-mitx-produc-shard-00-02.67e0a.mongodb.net:27017,residential-mitx-produc-shard-00-03.67e0a.mongodb.net:27017,residential-mitx-produc-shard-00-04.67e0a.mongodb.net:27017/?ssl=true&authSource=admin&replicaSet=atlas-4jehu0-shard-0'
     }
 } %}
 {% set mitx_purpose = mitx_map[environment].mitx_purpose %}
@@ -18,10 +20,6 @@
 dagster:
   pipeline_configs:
     residential_edx:
-      execution:
-        multiprocess:
-          config:
-            max_concurrent: {{ salt.grains.get('num_cpus') * 2 }}
       resources:
         io_manager:
           config:
@@ -43,7 +41,7 @@ dagster:
         export_edx_forum_database:
           config:
             edx_mongodb_forum_database_name: forum
-            edx_mongodb_host: {{ salt.consul.get(key="mitx/mongodb/host") }}
+            edx_mongodb_uri: {{ mitx_map[environment]['mongodb_uri'] }}
             edx_mongodb_password: __vault__::secret-mitx/mongodb-forum>data>password
             edx_mongodb_username: __vault__::secret-mitx/mongodb-forum>data>username
             edx_mongodb_auth_db: admin

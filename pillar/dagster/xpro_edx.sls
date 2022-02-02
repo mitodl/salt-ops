@@ -2,11 +2,13 @@
 {% set xpro_map = {
     'data-qa': {
         'xpro_environment': 'xpro-qa',
-        'xpro_purpose': 'xpro-qa'
+        'xpro_purpose': 'xpro-qa',
+        'mongodb_uri': 'mongodb://mitxpro-xpro-qa-shard-00-00.nfim6.mongodb.net:27017,mitxpro-xpro-qa-shard-00-01.nfim6.mongodb.net:27017,mitxpro-xpro-qa-shard-00-02.nfim6.mongodb.net:27017/?ssl=true&authSource=admin&replicaSet=atlas-vyrskd-shard-0'
     },
     'data-production': {
         'xpro_environment': 'xpro-production',
-        'xpro_purpose': 'xpro-production'
+        'xpro_purpose': 'xpro-production',
+        'mongodb_uri': 'mongodb://mitxpro-xpro-production-shard-00-00.gjfnw.mongodb.net:27017,mitxpro-xpro-production-shard-00-01.gjfnw.mongodb.net:27017,mitxpro-xpro-production-shard-00-02.gjfnw.mongodb.net:27017,mitxpro-xpro-production-shard-00-03.gjfnw.mongodb.net:27017,mitxpro-xpro-production-shard-00-04.gjfnw.mongodb.net:27017/?ssl=true&authSource=admin&replicaSet=atlas-iv3mqe-shard-0'
     }
 } %}
 {% set xpro_purpose = xpro_map[environment].xpro_purpose %}
@@ -18,10 +20,6 @@
 dagster:
   pipeline_configs:
     xpro_edx:
-      execution:
-        multiprocess:
-          config:
-            max_concurrent: {{ salt.grains.get('num_cpus') * 2 }}
       resources:
         io_manager:
           config:
@@ -43,7 +41,7 @@ dagster:
         export_edx_forum_database:
           config:
             edx_mongodb_forum_database_name: forum
-            edx_mongodb_host: {{ salt.consul.get(key="xpro/mongodb/host") }}
+            edx_mongodb_uri: {{ xpro_map[environment]["mongodb_uri"] }}
             edx_mongodb_password: __vault__::secret-xpro/mongodb-forum>data>password
             edx_mongodb_username: __vault__::secret-xpro/mongodb-forum>data>username
             edx_mongodb_auth_db: admin
