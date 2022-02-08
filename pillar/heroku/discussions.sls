@@ -22,6 +22,8 @@
       'MICROMASTERS_BASE_URL': 'micromasters-ci.odl.mit.edu',
       'MITXPRO_BASE_URL': 'xpro-ci.odl.mit.edu',
       'OCW_ITERATOR_CHUNK_SIZE': 300,
+      'OCW_NEXT_AWS_STORAGE_BUCKET_NAME'='ol-ocw-studio-app-qa',
+      'OCW_NEXT_LIVE_BUCKET'='ocw-content-live-qa',
       'OCW_UPLOAD_IMAGE_ONLY': True,
       'OPEN_DISCUSSIONS_BASE_URL': 'https://discussions-ci.odl.mit.edu',
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'discussionsci',
@@ -57,6 +59,8 @@
       'MICROMASTERS_BASE_URL': 'micromasters-rc.odl.mit.edu',
       'MITXPRO_BASE_URL': 'xpro-rc.odl.mit.edu',
       'OCW_ITERATOR_CHUNK_SIZE': 300,
+      'OCW_NEXT_AWS_STORAGE_BUCKET_NAME'='ol-ocw-studio-app-qa',
+      'OCW_NEXT_LIVE_BUCKET'='ocw-content-live-qa',
       'OCW_UPLOAD_IMAGE_ONLY': True,
       'OPEN_DISCUSSIONS_BASE_URL': 'https://discussions-rc.odl.mit.edu',
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'discussionsrc',
@@ -92,6 +96,8 @@
       'MICROMASTERS_BASE_URL': 'micromasters.mit.edu',
       'MITXPRO_BASE_URL': 'xpro.mit.edu',
       'OCW_ITERATOR_CHUNK_SIZE': 300,
+      'OCW_NEXT_AWS_STORAGE_BUCKET_NAME'='ol-ocw-studio-app-production',
+      'OCW_NEXT_LIVE_BUCKET'='ocw-content-live-production',
       'OCW_UPLOAD_IMAGE_ONLY': False,
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'discussionsprod',
       'OPEN_DISCUSSIONS_BASE_URL': 'https://open.mit.edu',
@@ -191,6 +197,8 @@ heroku:
     OCW_CONTENT_BUCKET_NAME: ocw-content-storage
     OCW_ITERATOR_CHUNK_SIZE: {{ env_data.OCW_ITERATOR_CHUNK_SIZE }}
     OCW_LEARNING_COURSE_BUCKET_NAME: open-learning-course-data-{{ env_data.env_name }}
+    OCW_NEXT_AWS_STORAGE_BUCKET_NAME: {{ env_data.OCW_NEXT_AWS_STORAGE_BUCKET_NAME }}
+    OCW_NEXT_LIVE_BUCKET: {{ env_data.OCW_NEXT_LIVE_BUCKET }}
     OCW_UPLOAD_IMAGE_ONLY: {{ env_data.OCW_UPLOAD_IMAGE_ONLY }}
     OLL_ALT_URL: https://openlearninglibrary.mit.edu/courses/
     OLL_API_ACCESS_TOKEN_URL: https://openlearninglibrary.mit.edu/oauth2/access_token/
