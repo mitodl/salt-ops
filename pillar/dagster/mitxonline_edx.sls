@@ -44,7 +44,7 @@ dagster:
             edx_mongodb_auth_db: admin
         edx_upload_daily_extracts:
           config:
-            edx_etl_results_bucket: ol-data-lake-{{ mitxonline_environment }}/edxapp/extracts/
+            edx_etl_results_bucket: mitxonline-etl-{{ mitxonline_environment }}
         list_edx_courses:
           config:
             edx_base_url: __vault__::secret-data/{{ environment }}/pipelines/edx/mitxonline/edx-oauth-client>data>url
