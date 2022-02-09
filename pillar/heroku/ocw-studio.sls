@@ -85,7 +85,7 @@
       'SITE_NAME': 'MIT OCW Studio',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://ocw-studio.odl.mit.edu/saml/metadata',
       'vault_env_path': 'production-apps',
-      'youtube_project_id': ''
+      'youtube_project_id': 'ocw-studio-qa'
       }
 } %}
 {% set env_data = env_dict[environment] %}
