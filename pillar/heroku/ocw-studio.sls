@@ -139,6 +139,8 @@ heroku:
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
     MAILGUN_URL: https://api.mailgun.net/v3/{{ env_data.MAILGUN_SENDER_DOMAIN }}
+    MITOL_MAIL_FROM_EMAIL: ocw-prod-support@mit.edu
+    MITOL_MAIL_REPLY_TO_ADDRESS: ocw-prod-support@mit.edu
     OCW_IMPORT_STARTER_SLUG: {{ env_data.OCW_IMPORT_STARTER_SLUG }}
     OCW_STUDIO_ADMIN_EMAIL: cuddle-bunnies@mit.edu
     OCW_STUDIO_BASE_URL: {{ env_data.OCW_STUDIO_BASE_URL }}
