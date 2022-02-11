@@ -18,8 +18,6 @@
       'GITHUB_RATE_LIMIT_CHECK': 'False',
       'GTM_ACCOUNT_ID': 'GTM-5JZ7X78',
       'MAILGUN_SENDER_DOMAIN': 'ocw-ci.mail.odl.mit.edu',
-      'MITOL_MAIL_FROM_EMAIL': 'ocw-ci-support@mit.edu',
-      'MITOL_MAIL_REPLY_TO_ADDRESS': 'ocw-ci-support@mit.edu',
       'OCW_IMPORT_STARTER_SLUG': 'course',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio-ci.odl.mit.edu/',
       'OCW_STUDIO_DRAFT_URL': '',
@@ -48,8 +46,6 @@
       'GITHUB_WEBHOOK_BRANCH': 'release-candidate',
       'GITHUB_RATE_LIMIT_CHECK': 'False',
       'MAILGUN_SENDER_DOMAIN': 'ocw-rc.mail.odl.mit.edu',
-      'MITOL_MAIL_FROM_EMAIL': 'ocw-rc-support@mit.edu',
-      'MITOL_MAIL_REPLY_TO_ADDRESS': 'ocw-rc-support@mit.edu',
       'OCW_IMPORT_STARTER_SLUG': 'ocw-course',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio-rc.odl.mit.edu/',
       'OCW_STUDIO_DRAFT_URL': 'https://ocw-draft-qa.global.ssl.fastly.net/',
@@ -78,8 +74,6 @@
       'GITHUB_ORGANIZATION': 'mitocwcontent',
       'GITHUB_WEBHOOK_BRANCH': 'release',
       'MAILGUN_SENDER_DOMAIN': 'ocw.mail.odl.mit.edu',
-      'MITOL_MAIL_FROM_EMAIL': 'ocw-prod-support@mit.edu',
-      'MITOL_MAIL_REPLY_TO_ADDRESS': 'ocw-prod-support@mit.edu',
       'OCW_IMPORT_STARTER_SLUG': 'ocw-course',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio.odl.mit.edu/',
       'OCW_STUDIO_DRAFT_URL': 'https://ocw-preview.odl.mit.edu/',
@@ -145,8 +139,8 @@ heroku:
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
     MAILGUN_URL: https://api.mailgun.net/v3/{{ env_data.MAILGUN_SENDER_DOMAIN }}
-    MITOL_MAIL_FROM_EMAIL: {{ env_data.MITOL_MAIL_FROM_EMAIL }}
-    MITOL_MAIL_REPLY_TO_ADDRESS: {{ env_data.MITOL_MAIL_REPLY_TO_ADDRESS }}
+    MITOL_MAIL_FROM_EMAIL: ocw-prod-support@mit.edu
+    MITOL_MAIL_REPLY_TO_ADDRESS: ocw-prod-support@mit.edu
     OCW_IMPORT_STARTER_SLUG: {{ env_data.OCW_IMPORT_STARTER_SLUG }}
     OCW_STUDIO_ADMIN_EMAIL: cuddle-bunnies@mit.edu
     OCW_STUDIO_BASE_URL: {{ env_data.OCW_STUDIO_BASE_URL }}
