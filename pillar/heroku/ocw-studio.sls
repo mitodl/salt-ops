@@ -77,7 +77,7 @@
       'OCW_IMPORT_STARTER_SLUG': 'ocw-course',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio.odl.mit.edu/',
       'OCW_STUDIO_DRAFT_URL': 'https://ocw-preview.odl.mit.edu/',
-      'OCW_STUDIO_LIVE_URL': 'https://ocw-published.odl.mit.edu/',
+      'OCW_STUDIO_LIVE_URL': 'https://ocwnext.odl.mit.edu/',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
       'OCW_STUDIO_SUPPORT_EMAIL': 'ocw-studio-support@mit.edu',
       'SEARCH_API_URL': 'https://open.mit.edu/api/v0/search/',
