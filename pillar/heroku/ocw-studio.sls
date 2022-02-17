@@ -16,6 +16,7 @@
       'GITHUB_WEBHOOK_BRANCH': '',
       'GITHUB_APP_ID': '',
       'GITHUB_RATE_LIMIT_CHECK': 'False',
+      'OCW_GTM_ACCOUNT_ID': 'GTM-PJMJGF6',
       'GTM_ACCOUNT_ID': 'GTM-5JZ7X78',
       'MAILGUN_SENDER_DOMAIN': 'ocw-ci.mail.odl.mit.edu',
       'OCW_IMPORT_STARTER_SLUG': 'course',
@@ -41,6 +42,7 @@
       'FEATURE_USE_LOCAL_STARTERS': 'True',
       'GIT_DOMAIN': 'github.mit.edu',
       'GTM_ACCOUNT_ID': 'GTM-57BZ8PN',
+      'OCW_GTM_ACCOUNT_ID': 'GTM-PJMJGF6',
       'GITHUB_APP_ID': 12,
       'GITHUB_ORGANIZATION': 'ocw-content-rc',
       'GITHUB_WEBHOOK_BRANCH': 'release-candidate',
@@ -71,6 +73,7 @@
       'GITHUB_APP_ID': 13,
       'GITHUB_RATE_LIMIT_CHECK': 'False',
       'GTM_ACCOUNT_ID': 'GTM-MQCSLSQ',
+      'OCW_GTM_ACCOUNT_ID': 'GTM-NMQZ25T',
       'GITHUB_ORGANIZATION': 'mitocwcontent',
       'GITHUB_WEBHOOK_BRANCH': 'release',
       'MAILGUN_SENDER_DOMAIN': 'ocw.mail.odl.mit.edu',
@@ -135,6 +138,7 @@ heroku:
     GITHUB_WEBHOOK_BRANCH: {{ env_data.GITHUB_WEBHOOK_BRANCH }}
     GITHUB_RATE_LIMIT_CHECK: {{ env_data.GITHUB_RATE_LIMIT_CHECK }}
     GTM_ACCOUNT_ID: {{ env_data.GTM_ACCOUNT_ID }}
+    OCW_GTM_ACCOUNT_ID: {{ env_data.OCW_GTM_ACCOUNT_ID }}
     MAILGUN_FROM_EMAIL: 'MIT OCW <no-reply@{{ env_data.MAILGUN_SENDER_DOMAIN }}'
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
