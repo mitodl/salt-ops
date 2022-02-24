@@ -199,6 +199,7 @@ heroku:
     OCW_LEARNING_COURSE_BUCKET_NAME: open-learning-course-data-{{ env_data.env_name }}
     OCW_NEXT_AWS_STORAGE_BUCKET_NAME: {{ env_data.OCW_NEXT_AWS_STORAGE_BUCKET_NAME }}
     OCW_NEXT_LIVE_BUCKET: {{ env_data.OCW_NEXT_LIVE_BUCKET }}
+    OCW_NEXT_SEARCH_WEBHOOK_KEY: __vault__::secret-{{ business_unit }}/global/update-search-data-webhook-key>data>value
     OCW_UPLOAD_IMAGE_ONLY: {{ env_data.OCW_UPLOAD_IMAGE_ONLY }}
     OLL_ALT_URL: https://openlearninglibrary.mit.edu/courses/
     OLL_API_ACCESS_TOKEN_URL: https://openlearninglibrary.mit.edu/oauth2/access_token/
