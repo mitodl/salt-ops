@@ -13,6 +13,7 @@ manage_vector_base_configuration:
     - onchanges_in:
       - service: vector_service_running
 
+{% if salt.pillar.get('vector:extra_configurations') %}
 manage_vector_extra_configurations:
 {% set extra_configs = salt.pillar.get('vector:extra_configurations') %}
 {% for cfg in extra_configs %}
@@ -23,3 +24,4 @@ manage_vector_extra_configurations:
   - onchanges_in:
     - service: vector_service_running
 {% endfor %}
+{% endif %}
