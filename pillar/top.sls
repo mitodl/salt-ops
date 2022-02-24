@@ -15,7 +15,7 @@ base:
     - elastic_stack.version_production
   'roles:auth_server':
     - match: grain
-    - fluentd.cas
+    - vector.cas
   'G@roles:elasticsearch and not P@environment:operations*':
     - match: compound
     - fluentd.elasticsearch
@@ -116,7 +116,7 @@ base:
     - nginx
     - nginx.reddit
     - reddit
-    - fluentd.reddit
+    - vector.reddit
   'G@environment:operations and G@roles:redash':
     - match: compound
     - nginx
@@ -183,7 +183,7 @@ base:
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
-    - fluentd.xqwatcher
+    - vector.xqwatcher
   'lightsail-xqwatcher-686':
     - match: glob
     - edx.xqwatcher
@@ -220,7 +220,7 @@ base:
   'roles:rabbitmq':
     - match: grain
     - rabbitmq
-    - fluentd.rabbitmq
+    - vector.rabbitmq
     - consul.rabbitmq
   'roles:tika':
     - match: grain

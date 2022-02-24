@@ -9,6 +9,7 @@ base:
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
+    - vector
   'roles:amps-redirect':
     - match: grain
     - letsencrypt
@@ -37,6 +38,7 @@ base:
     - match: grain
     - rabbitmq
     - rabbitmq.tests
+    - vector
   'roles:dagster':
     - match: grain
     - mongodb.repository
@@ -58,6 +60,7 @@ base:
     - reddit
     - nginx
     - nginx.certificates
+    - vector
   'roles:cassandra':
     - match: grain
     - cassandra
@@ -72,6 +75,7 @@ base:
     - match: compound
     - utils.configure_debian_source_repos
     - consul
+    - vector
     - python
     - node
     - nginx-shibboleth
