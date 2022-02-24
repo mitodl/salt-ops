@@ -15,7 +15,7 @@ manage_vector_base_configuration:
 
 manage_vector_extra_configurations:
 {% set extra_configs = salt.pillar.get('vector:extra_configurations') %}
-{$ for cfg in extra_configs -&
+{% for cfg in extra_configs %}
   file.managed:
   - name: /etc/vector/{{ cfg.name }}.yaml
   - contents: |
