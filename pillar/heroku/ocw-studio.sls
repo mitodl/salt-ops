@@ -31,6 +31,7 @@
       'SITE_NAME': 'MIT OCW Studio CI',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://ocw-studio-ci.odl.mit.edu/saml/metadata',
       'vault_env_path': 'rc-apps',
+      'VIDEO_TRANSCODE_QUEUE': 'ocw-studio-mediaconvert-queue-ci',
       'youtube_project_id': 'ovs-youtube-qa'
       },
     'rc': {
@@ -61,6 +62,7 @@
       'SITE_NAME': 'MIT OCW Studio RC',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://ocw-studio-rc.odl.mit.edu/saml/metadata',
       'vault_env_path': 'rc-apps',
+      'VIDEO_TRANSCODE_QUEUE': 'ocw-studio-mediaconvert-queue-qa',
       'youtube_project_id': 'ocw-studio-qa'
       },
     'production': {
@@ -91,6 +93,7 @@
       'SITE_NAME': 'MIT OCW Studio',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://ocw-studio.odl.mit.edu/saml/metadata',
       'vault_env_path': 'production-apps',
+      'VIDEO_TRANSCODE_QUEUE': 'ocw-studio-mediaconvert-queue-production',
       'youtube_project_id': 'ocw-studio-qa'
       }
 } %}
@@ -184,6 +187,7 @@ heroku:
     THREEPLAY_CALLBACK_KEY: __vault__:gen_if_missing:secret-operations/global/{{ business_unit }}/ocw-studio/threeplay_callback_key>data>value
     USE_X_FORWARDED_PORT: True
     VIDEO_S3_TRANSCODE_PREFIX: aws_mediaconvert_transcodes
+    VIDEO_TRANSCODE_QUEUE: {{ env_data.VIDEO_TRANSCODE_QUEUE }}
     YT_ACCESS_TOKEN: __vault__::secret-{{ business_unit }}/{{ app }}/{{ env_data.vault_env_path }}/youtube-credentials>data>access_token
     YT_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ app }}/{{ env_data.vault_env_path }}/youtube-credentials>data>client_id
     YT_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ app }}/{{ env_data.vault_env_path }}/youtube-credentials>data>client_secret
