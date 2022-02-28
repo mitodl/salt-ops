@@ -1,7 +1,7 @@
 base:
   '*':
     - utils.install_libs
-    - vector
+    #- vector
   'P@environment:(operations|operations-qa|mitx-qa|mitx-production|mitxpro-qa|mitxpro-production|mitxonline-qa|mitxonline-production|rc-apps|production-apps|data-qa|data-production)':
     - match: compound
     - consul
