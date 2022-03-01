@@ -1,6 +1,13 @@
 {% set env_settings = salt.cp.get_url("https://raw.githubusercontent.com/mitodl/salt-ops/main/salt/environment_settings.yml", dest=None)|load_yaml %}
 {% set ENVIRONMENT = salt.environ.get('ENVIRONMENT', 'rc-apps') %}
 {% set env_data = env_settings.environments[ENVIRONMENT] %}
+{% set datacenter = ENVIRONMENT %}
+{% if ENVIRONMENT == "rc-apps" %}
+{% set datacenter = "apps-qa" %}
+{% endif %}
+{% if ENVIRONMENT == "production-apps" %}
+{% set datacenter = "apps-production" %}
+{% endif %}
 {% set VPC_NAME = env_data.vpc_name %}
 {% set INSTANCE_COUNT = salt.environ.get('INSTANCE_COUNT', 3) %}
 {% set BUSINESS_UNIT = salt.environ.get('BUSINESS_UNIT', env_data.business_unit) %}
@@ -123,7 +130,7 @@ configure_vault_rabbitmq_backend:
     - description: Backend to create dynamic RabbitMQ credentials for {{ ENVIRONMENT }}
     - mount_point: rabbitmq-{{ ENVIRONMENT }}
     - connection_config:
-        connection_uri: "http://rabbitmq.service.{{ ENVIRONMENT }}.consul:15672"
+        connection_uri: "http://rabbitmq.service.{{ datacenter }}.consul:15672"
         username: admin
         password: {{ rabbitmq_admin_password }}
         verify_connection: False
