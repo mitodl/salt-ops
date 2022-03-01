@@ -58,9 +58,9 @@ base:
     - utils.file_limits
     - pgbouncer
     - reddit
+    - vector
     - nginx
     - nginx.certificates
-    - vector
   'roles:cassandra':
     - match: grain
     - cassandra
@@ -75,15 +75,16 @@ base:
     - match: compound
     - utils.configure_debian_source_repos
     - consul
-    - vector
     - python
     - node
     - nginx-shibboleth
     - django
     - uwsgi
+    - vector
   'roles:odl-video-service':
     - match: grain
     - utils.logrotate
+    - vector
   'roles:redash':
     - match: grain
     - utils.configure_debian_source_repos

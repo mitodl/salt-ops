@@ -1,0 +1,48 @@
+log_schema:
+  timestamp_key: vector_timestamp
+  host_key: log_host
+sources:
+  collect_rabbitmq_application_logs:
+    type: file
+    read_from: end
+    file_key: log_file
+    glob_minimum_cooldown_ms: 20000
+    include:
+    - /var/log/rabbitmq/rabbit*.log
+    multiline:
+      start_pattern: r'^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+?) \[(\w+)\]'
+      condition_pattern: r'^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+?) \[(\w+)\] (.*)$'
+      mode: 'halt_before'
+      timeout_ms: 5000
+transforms:
+  parse_rabbitmq_application_logs:
+    type: remap
+    inputs:
+    - 'collect_rabbitmq_application_logs'
+    source: |
+      parsed, err = parse_regex(.message, r'^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+?) \[(?P<type>\w+)\] (?P<message>.*)$')
+      if err != null {
+        .parse_error = err
+      }
+      . = merge(., parsed)
+      .log_process = "rabbitmq"
+      .log_type = "rabbitmq.application"
+      .environment = "{{ config_elements.environment }}"
+sinks:
+  ship_rabbitmq_logs_to_grafana_cloud:
+    inputs:
+    - 'parse_rabbitmq_application_logs'
+    labels:
+      application: {{ config_elements.application_name }}
+      environment: {{ config_elements.environment }}
+      service: {{ config_elements.service_name }}
+      process: rabbitmq
+    type: loki
+    auth:
+      password: {{ config_elements.grafana_cloud_password }}
+      strategy: basic
+      user: "{{ config_elements.grafana_cloud_loki_user }}"
+    encoding:
+      codec: json
+    endpoint: "{{ config_elements.grafana_cloud_loki_endpoint }}"
+    out_of_order_action: rewrite_timestamp

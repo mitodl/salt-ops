@@ -1,0 +1,47 @@
+log_schema:
+  timestamp_key: vector_timestamp
+  host_key: log_host
+sources:
+  collect_odlvideo_django_logs:
+    type: file
+    read_from: end
+    file_key: log_file
+    include:
+    - /var/log/odl-video/django.log
+transforms:
+  parse_odlvideo_django_logs:
+    type: remap
+    inputs:
+    - 'collect_odlvideo_django_logs'
+    source: |
+      event, err = parse_json(.message)
+      if event != null {
+        . = merge!(., event)
+        .log_process = "odlvideo"
+        .log_type = "odlvideo.application"
+        .environment = "{{ config_elements.environment }}"
+      }
+  enrich_odlvideo_django_logs:
+    type: aws_ec2_metadata
+    inputs:
+    - 'parse_odlvideo_django_logs'
+    namespace: ec2
+sinks:
+  ship_odlvideo_logs_to_grafana_cloud:
+    type: loki
+    auth: 
+      password: {{ config_elements.grafana_cloud_password }}
+      strategy: basic
+      user: "{{ config_elements.grafana_cloud_loki_user }}"
+    encoding: 
+      codec: json
+    endpoint: "{{ config_elements.grafana_cloud_loki_endpoint }}"
+    inputs: 
+      - enrich_odlvideo_django_logs
+    labels: 
+      application: {{ config_elements.application_name }}
+      environment: {{ config_elements.environment }}
+      service: {{ config_elements.service_name }}
+      process: django
+    out_of_order_action: rewrite_timestamp
+
