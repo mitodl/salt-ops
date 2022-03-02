@@ -3,7 +3,7 @@ base:
     - match: compound
     - common
     - environment_settings
-    # - vector
+    - vector
   # '* and not proxy-* and not restore-* and not G@roles:devstack and not P@environment:mitxonline and not G@context:packer and not P@roles:(edx|edx-worker)$':
   #   - match: compound
   #   - fluentd
