@@ -53,7 +53,7 @@
 {% set env_data = env_dict[ENVIRONMENT] %}
 {% set minion_id = salt.grains.get('id', '') %}
 {% set pg_creds = salt.vault.cached_read('postgres-{env}-odlvideo/creds/odlvideo'.format(env=ENVIRONMENT), cache_prefix=minion_id) %}
-{% set rabbit_creds = salt.vault.cached_read("rabbitmq-{env}/creds/odlvideo".format(env=ENVIRONMENT), cache_prefix=minion_id) %}
+{% set rabbit_creds = salt.vault.read("secret-odl-video/rabbitmq-credentials") %}
 {% set ga_json = salt.vault.read('secret-odl-video/' ~ ENVIRONMENT ~ '/ga-keyfile-json').data.value|json %}
 {% set business_unit = 'odl-video' %}
 {% set rds_endpoint = salt.boto_rds.get_endpoint(ENVIRONMENT ~ '-rds-postgres-odlvideo') %}

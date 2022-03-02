@@ -3,11 +3,6 @@
 vault:
   roles:
     {% for env in ['rc-apps', 'production-apps'] %}
-    datadog-rabbitmq-{{ env }}:
-      backend: rabbitmq-{{ env }}
-      name: datadog
-      options:
-        tags: monitoring
     {% for app in ['reddit', 'odlvideo'] %}
     rabbitmq-{{ env }}-{{ app }}:
       backend: rabbitmq-{{ env }}
