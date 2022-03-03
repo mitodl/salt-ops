@@ -18,7 +18,6 @@ base:
     - vector.cas
   'G@roles:elasticsearch and not P@environment:operations*':
     - match: compound
-    - fluentd.elasticsearch
     - consul
     - consul.elasticsearch
   'roles:kibana':
@@ -172,13 +171,11 @@ base:
     - match: compound
     - elastic_stack.elasticsearch.logging_production
     - netdata.elasticsearch_logging
-    - fluentd.elasticsearch
     - consul.elasticsearch
   'G@roles:elasticsearch and G@environment:operations-qa':
     - match: compound
     - elastic_stack.elasticsearch.logging_qa
     - netdata.elasticsearch_logging
-    - fluentd.elasticsearch
     - consul.elasticsearch
   'roles:xqwatcher':
     - match: grain
