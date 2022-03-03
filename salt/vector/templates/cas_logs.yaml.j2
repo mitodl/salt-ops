@@ -19,7 +19,7 @@ transforms:
     inputs:
     - 'collect_cas_application_logs'
     source: |
-      parsed = parse_regex!(.message, r'^\[(?P<time>\d{4}-\d{2}-\d{2}\w+:\d{2}:\d{2})\] (?P<log_level>\w+) \[(?P<module_name>[a-zA-Z0-9-_.]+):(?P<line_number>\d+)\] (?P<message>.*)')
+      parsed, err = parse_regex(.message, r'^\[(?P<time>\d{4}-\d{2}-\d{2}\w+:\d{2}:\d{2})\] (?P<log_level>\w+) \[(?P<module_name>[a-zA-Z0-9-_.]+):(?P<line_number>\d+)\] (?P<message>.*)')
       if err != null {
         .parse_error = err
       }
@@ -35,8 +35,6 @@ transforms:
 sinks:
   ship_cas_logs_to_grafana_cloud:
     inputs:
-    - 'filter_healthchecks_cas_nginx_access_logs'
-    - 'parse_cas_nginx_error_logs'
     - 'enrich_cas_application_logs'
     type: loki
     labels:
