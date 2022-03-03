@@ -3,7 +3,7 @@ base:
     - match: compound
     - common
     - environment_settings
-    # - vector
+    - vector
   # '* and not proxy-* and not restore-* and not G@roles:devstack and not P@environment:mitxonline and not G@context:packer and not P@roles:(edx|edx-worker)$':
   #   - match: compound
   #   - fluentd
@@ -15,7 +15,6 @@ base:
     - elastic_stack.version_production
   'roles:auth_server':
     - match: grain
-    - vector.cas
   'G@roles:elasticsearch and not P@environment:operations*':
     - match: compound
     - consul
@@ -82,8 +81,8 @@ base:
     - consul
     - shibboleth
     - shibboleth.odlvideo
-    - fluentd.odlvideo
     - logrotate.odlvideo
+    - vector.odlvideo
   proxy-bootcamps-*:
     - heroku.bootcamps
   proxy-mitxpro-*:
@@ -102,7 +101,7 @@ base:
     - consul
     - shibboleth
     - shibboleth.mitx_cas
-    - fluentd.cas
+    - vector.cas
   'G@roles:rabbitmq and P@environment:mitx.*':
     - match: compound
     - rabbitmq.mitx
@@ -114,8 +113,8 @@ base:
     - match: grain
     - nginx
     - nginx.reddit
-    - reddit
     - vector.reddit
+    - reddit
   'G@environment:operations and G@roles:redash':
     - match: compound
     - nginx
@@ -217,8 +216,8 @@ base:
   'roles:rabbitmq':
     - match: grain
     - rabbitmq
-    - vector.rabbitmq
     - consul.rabbitmq
+    - vector.rabbitmq
   'roles:tika':
     - match: grain
     - nginx

@@ -1,0 +1,52 @@
+log_schema:
+  timestamp_key: vector_timestamp
+  host_key: log_host
+sources:
+  collect_cas_application_logs:
+    type: file
+    read_from: end
+    file_key: log_file
+    include:
+    - /opt/log/django.log
+    multiline:
+      start_pattern: '^\['
+      condition_pattern: '^\['
+      mode: 'halt_before'
+      timeout_ms: 5000
+transforms:
+  parse_cas_application_logs:
+    type: remap
+    inputs:
+    - 'collect_cas_application_logs'
+    source: |
+      parsed, err = parse_regex(.message, r'^\[(?P<time>\d{4}-\d{2}-\d{2}\w+:\d{2}:\d{2})\] (?P<log_level>\w+) \[(?P<module_name>[a-zA-Z0-9-_.]+):(?P<line_number>\d+)\] (?P<message>.*)')
+      if err != null {
+        .parse_error = err
+      }
+      . = merge(., parsed)
+      .log_process = "cas"
+      .log_type = "cas.application"
+      .environment = "{{ config_elements.environment }}"
+  enrich_cas_application_logs:
+    type: aws_ec2_metadata
+    inputs:
+    - 'parse_cas_application_logs'
+    namespace: ec2
+sinks:
+  ship_cas_logs_to_grafana_cloud:
+    inputs:
+    - 'enrich_cas_application_logs'
+    type: loki
+    labels:
+      application: {{ config_elements.application_name }}
+      environment: {{ config_elements.environment }}
+      service: {{ config_elements.service_name }}
+      process: django
+    auth:
+      password: {{ config_elements.grafana_cloud_password }}
+      strategy: basic
+      user: "{{ config_elements.grafana_cloud_loki_user }}"
+    encoding:
+      codec: json
+    endpoint: "{{ config_elements.grafana_cloud_loki_endpoint }}"
+    out_of_order_action: rewrite_timestamp

@@ -1,0 +1,42 @@
+log_schema:
+  timestamp_key: vector_timestamp
+  host_key: log_host
+sources:
+  collect_auth_logs:
+    type: file
+    file_key: log_file
+    read_from: end
+    include:
+    - /var/log/auth.log
+transforms:
+  parse_auth_logs:
+    type: remap
+    inputs:
+    - 'collect_auth_logs'
+    source: |
+      parsed, err = parse_syslog(.message)
+      if err != null {
+        .parse_error = err
+      }
+      . = merge(., parsed)
+      .log_process = "authlog"
+      .log_type = "{{ config_elements.application_name }}.authlog"
+      .environment = "{{ config_elements.environment }}"
+sinks:
+  ship_auth_logs_to_grafana_cloud:
+    type: loki
+    auth:
+      password: {{ config_elements.grafana_cloud_password }}
+      strategy: basic
+      user: "{{ config_elements.grafana_cloud_loki_user }}"
+    encoding:
+      codec: json
+    endpoint: {{ config_elements.grafana_cloud_loki_endpoint }}
+    inputs:
+    - 'parse_auth_logs'
+    labels:
+      application: {{ config_elements.application_name }}
+      environment: {{ config_elements.environment }}
+      service: {{ config_elements.service_name }}
+      process: authlog 
+    out_of_order_action: rewrite_timestamp

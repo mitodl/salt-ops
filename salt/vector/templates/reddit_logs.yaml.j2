@@ -1,0 +1,71 @@
+log_schema:
+  timestamp_key: vector_timestamp
+  host_key: log_host
+sources:
+  collect_reddit_mcrouter_logs:
+    type: file
+    read_from: end
+    file_key: log_file
+    include:
+    - /var/log/mcrouter/mcrouter.log
+  collect_reddit_application_logs:
+    type: file
+    read_from: end
+    file_key: log_file
+    include:
+    - /var/log/reddit/reddit.log
+    multiline:
+      start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d+'
+      condition_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d+'
+      mode: halt_before
+      timeout_ms: 5000
+transforms:
+  parse_reddit_mcrouter_logs:
+    type: remap
+    inputs:
+    - 'collect_reddit_mcrouter_logs'
+    source: |
+      parsed, err = parse_regex(.message, r'(?P<time>\w\d{4}\s\d{2}:\d{2}:\d{2}.\d{6})\s*(?P<code_value>\d+)\s*(?P<file_name>.*):(?P<line_num>\d+)\]\s*(?P<message>.*)')
+      . = merge(., parsed)
+      if err != null {
+        .parse_error = err
+      }
+      .log_process = "mcrouter"
+      .log_type = "reddit.mcrouter"
+      .environment = "{{ config_elements.environment }}"
+  parse_reddit_application_logs:
+    type: remap
+    inputs:
+    - 'collect_reddit_application_logs'
+    source: |
+      parsed, err = parse_regex(.message, r'(?P<asctime>\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2},\d{3})\s-(?P<file_name>.*)(?P<line_num>\d+)\s--\s(?P<func_name>\w+)\s(?P<level_name>\[\w+\]):(?s)(?P<message>.*)')
+      . = merge(., parsed)
+      if err != null {
+        .parse_error = err
+      }
+      .log_process = "reddit"
+      .log_type = "reddit.application"
+      .environment = "{{ config_elements.environment }}"
+  enrich_reddit_application_logs:
+    type: aws_ec2_metadata
+    inputs:
+    - 'parse_reddit_application_logs'
+    namespace: ec2
+sinks:
+  ship_reddit_logs_to_grafana_cloud:
+    inputs:
+    - 'parse_reddit_mcrouter_logs'
+    - 'enrich_reddit_application_logs'
+    labels:
+      application: {{ config_elements.application_name }}
+      environment: {{ config_elements.environment }}
+      service: {{ config_elements.service_name }}
+    type: loki
+    auth:
+      password: {{ config_elements.grafana_cloud_password }}
+      strategy: basic
+      user: "{{ config_elements.grafana_cloud_loki_user }}"
+    encoding:
+      codec: json
+    endpoint: "{{ config_elements.grafana_cloud_loki_endpoint }}"
+    out_of_order_action: rewrite_timestamp
