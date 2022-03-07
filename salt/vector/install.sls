@@ -23,11 +23,25 @@ ensure_vector_package_state:
     - require:
       - pkgrepo: update_apt_sources_list
 
+{% set vector_service = salt.grains.filter_by({
+    'systemd': {
+      'destination_path': '/etc/systemd/system/vector.service',
+      'source_path': 'salt://vector/files/vector.service',
+    },
+    'upstart': {
+      'destination_path': '/etc/init/vector.conf',
+      'source_path': 'salt://vector/files/vector.conf',
+    }
+  }, grain='init')
+%}
+
 ensure_state_of_systemd_service_file:
   file.managed:
-    - name: /etc/systemd/system/vector.service
-    - source: salt://vector/files/vector.service
+    - name: {{ vector_service.destination_path }}
+    - source: {{ vector_service.source_path }}
+  {% if salt.grains.get('init') == 'systemd' %}
   cmd.wait:
     - name: systemctl daemon-reload
     - onchanges:
         - file: ensure_state_of_systemd_service_file
+  {% endif %}
