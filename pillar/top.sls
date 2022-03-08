@@ -154,6 +154,7 @@ base:
     - match: compound
     - elastic_stack.elasticsearch
     - elastic_stack.elasticsearch.apps
+    - vector.elasticsearch-apps
     - nginx
     - nginx.apps_es
   'G@roles:elasticsearch and P@environment:mitxpro-production':
