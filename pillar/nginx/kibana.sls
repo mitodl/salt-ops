@@ -52,7 +52,7 @@ nginx:
               - ssl_client_certificate: /etc/ssl/certs/mitca.pem
               - ssl_verify_client: 'on'
               - set $authorized: 'no'
-              - if ($ssl_client_s_dn ~ "emailAddress=(tmacey|pdpinch|shaidar|ichuang|gsidebo|mkdavies|gschneel|mattbert|nlevesq|ferdial|briangro|annagav|jmartis|abeglova|gumaerc|mas48)@MIT.EDU"):
+              - if ($ssl_client_s_dn ~ "emailAddress=(tmacey|pdpinch|shaidar|ichuang|mkdavies|mattbert|nlevesq|ferdial|briangro|annagav|jmartis|abeglova|gumaerc|mas48|amendonc)@MIT.EDU"):
                 - set $authorized: 'yes'
               - if ($authorized !~ "yes"):
                 - return: 403
