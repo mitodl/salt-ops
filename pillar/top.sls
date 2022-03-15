@@ -6,15 +6,12 @@ base:
     - vector
   # '* and not proxy-* and not restore-* and not G@roles:devstack and not P@environment:mitxonline and not G@context:packer and not P@roles:(edx|edx-worker)$':
   #   - match: compound
-  #   - fluentd
   'P@environment:(rc.*|.*-qa)':
     - match: compound
     - elastic_stack.version_qa
   'not P@environment:(rc.*|.*-qa)':
     - match: compound
     - elastic_stack.version_production
-  'roles:auth_server':
-    - match: grain
   'G@roles:elasticsearch and not P@environment:operations*':
     - match: compound
     - consul
@@ -147,25 +144,12 @@ base:
     - match: compound
     - rabbitmq.apps
     - consul.apps
-  'G@roles:edx-analytics and P@environment:mitx(pro)?-production':
-    - match: compound
-    - data.mitx_etl
   'G@roles:elasticsearch and P@environment:(rc|production)-apps':
     - match: compound
     - elastic_stack.elasticsearch
     - elastic_stack.elasticsearch.apps
     - nginx
     - nginx.apps_es
-  'G@roles:elasticsearch and P@environment:mitxpro-production':
-    - match: compound
-    - elasticsearch.mitx
-  'G@roles:elasticsearch and P@environment:mitxpro-qa':
-    - match: compound
-    - elasticsearch.mitx
-  'G@roles:elasticsearch and P@environment:(mitx-qa|mitxonline-qa|mitxonline-production|mitx-production)':
-    - match: compound
-    - elastic_stack.elasticsearch
-    - elastic_stack.elasticsearch.mitx
   'G@roles:elasticsearch and G@environment:operations':
     - match: compound
     - elastic_stack.elasticsearch.logging_production
@@ -203,13 +187,6 @@ base:
     - nginx.mitxpro_redirect
     - nginx.chalkradio_redirect
     - letsencrypt.amps_redirect
-  'G@roles:backups and P@environment:mitx-(qa|production)':
-    - match: compound
-    - backups.mitx
-  'G@roles:restores and P@environment:mitx-(qa|production)':
-    - match: compound
-    - backups.mitx
-    - backups.restore
   'G@roles:backups and P@environment:operations':
     - match: compound
     - backups.operations
@@ -225,11 +202,9 @@ base:
   'roles:ocw-cms':
     - match: grain
     - logrotate.ocw_cms
-    - fluentd.ocw_cms
     - apps.ocw
   'roles:ocw-mirror':
     - match: grain
-    - fluentd.ocw_mirror
     - apps.ocw
     - logrotate.ocw_mirror
   'G@roles:ocw-mirror and G@ocw-environment:production':
@@ -242,7 +217,6 @@ base:
     - letsencrypt.ocw_origin
     - nginx
     - nginx.ocw_origin
-    - fluentd.ocw_origin
   'P@roles:ocw-(cms|mirror|origin) and G@ocw-environment:production':
     - match: compound
     - apps.ocw-production
@@ -252,7 +226,6 @@ base:
   'roles:ocw-db':
     - match: grain
     - logrotate.ocw_cms
-    - fluentd.ocw_db
   'G@roles:ocw-build and G@environment:production-apps':
     - match: compound
     - apps.ocw-next-production
