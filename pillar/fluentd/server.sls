@@ -46,7 +46,6 @@ fluentd:
     - fluent-plugin-avro
     - fluent-plugin-anonymizer
     - fluent-plugin-elasticsearch
-    - fluent-plugin-logzio
   proxied_plugins:
     - route: heroku-http
       port: 9000
@@ -130,31 +129,6 @@ fluentd:
                   attrs:
                     - '@type': json
                     - keep_time_key: 'true'
-        - directive: source
-          attrs:
-            - '@id': salt_logs_inbound
-            - '@type': udp
-            - '@label': '@es_logging'
-            - tag: saltmaster
-            - port: 9999
-            - bind: ::1
-            - nested_directives:
-                - directive: parse
-                  attrs:
-                    - '@type': json
-                    - keep_time_key: 'true'
-        - directive: source
-          attrs:
-            - '@type': forward
-            - port: 5001
-            - bind: '0.0.0.0'
-            - nested_directives:
-                - directive: transport
-                  directive_arg: tls
-                  attrs:
-                    - cert_path: {{ fluentd_cert_path }}
-                    - private_key_path: {{ fluentd_cert_key_path }}
-                    - client_cert_auth: 'false'
         - directive: filter
           directive_arg: 'mailgun.**'
           attrs:
@@ -209,19 +183,6 @@ fluentd:
                     - '@type': relabel
                     - '@label': '@es_logging'
         - directive: match
-          directive_arg: edx.tracking
-          attrs:
-            - '@type': copy
-            - nested_directives:
-              - directive: store
-                attrs:
-                  - '@type': relabel
-                  - '@label': '@prod_residential_tracking_events'
-              - directive: store
-                attrs:
-                  - '@type': relabel
-                  - '@label': '@prod_xpro_tracking_events'
-        - directive: match
           directive_arg: mailgun.**
           attrs:
             - '@type': copy
@@ -230,19 +191,6 @@ fluentd:
                 attrs:
                   - '@type': relabel
                   - '@label': '@mailgun_s3_data_lake'
-              - directive: store
-                attrs:
-                  - '@type': relabel
-                  - '@label': '@es_logging'
-        - directive: match
-          directive_arg: 'edx.xqwatcher.686.**'
-          attrs:
-            - '@type': copy
-            - nested_directives:
-              - directive: store
-                attrs:
-                  - '@type': relabel
-                  - '@label': '@logzio_686'
               - directive: store
                 attrs:
                   - '@type': relabel
@@ -276,79 +224,6 @@ fluentd:
                         attrs:
                           - flush_interval: '10s'
                           - flush_thread_count: 4
-
-        - directive: label
-          directive_arg: '@prod_residential_tracking_events'
-          attrs:
-            - nested_directives:
-                - directive: filter
-                  directive_arg: 'edx.tracking'
-                  attrs:
-                    - '@type': grep
-                    - nested_directives:
-                      - directive: regexp
-                        attrs:
-                          - key: environment
-                          - pattern: mitx-production
-                - directive: match
-                  directive_arg: edx.tracking
-                  attrs:
-                    - '@type': s3
-                    - aws_key_id: __vault__:cache:aws-mitx/creds/read-write-{{ residential_tracking_bucket }}>data>access_key
-                    - aws_sec_key: __vault__:cache:aws-mitx/creds/read-write-{{ residential_tracking_bucket }}>data>secret_key
-                    - s3_bucket: {{ residential_tracking_bucket }}
-                    - s3_region: us-east-1
-                    - path: logs/
-                    - s3_object_key_format: '%{path}%{time_slice}_%{index}.%{file_extension}'
-                    - time_slice_format: '%Y-%m-%d-%H'
-                    - nested_directives:
-                      - directive: buffer
-                        attrs:
-                          - '@type': file
-                          - path: {{ fluentd_directories.residential_tracking_logs }}
-                          - timekey: 3600
-                          - timekey_wait: '10m'
-                          - timekey_use_utc: 'true'
-                    - nested_directives:
-                      - directive: format
-                        attrs:
-                          - '@type': json
-        - directive: label
-          directive_arg: '@prod_xpro_tracking_events'
-          attrs:
-            - nested_directives:
-                - directive: filter
-                  directive_arg: 'edx.tracking'
-                  attrs:
-                    - '@type': grep
-                    - nested_directives:
-                      - directive: regexp
-                        attrs:
-                          - key: environment
-                          - pattern: mitxpro-production
-                - directive: match
-                  directive_arg: edx.tracking
-                  attrs:
-                    - '@type': s3
-                    - aws_key_id: __vault__:cache:aws-mitx/creds/read-write-{{ xpro_tracking_bucket }}>data>access_key
-                    - aws_sec_key: __vault__:cache:aws-mitx/creds/read-write-{{ xpro_tracking_bucket }}>data>secret_key
-                    - s3_bucket: {{ xpro_tracking_bucket }}
-                    - s3_region: us-east-1
-                    - path: logs/
-                    - s3_object_key_format: '%{path}%{time_slice}_%{index}.%{file_extension}'
-                    - time_slice_format: '%Y-%m-%d'
-                    - nested_directives:
-                      - directive: buffer
-                        attrs:
-                          - '@type': file
-                          - path: {{ fluentd_directories.xpro_tracking_logs }}
-                          - timekey: 3600
-                          - timekey_wait: '10m'
-                          - timekey_use_utc: 'true'
-                    - nested_directives:
-                      - directive: format
-                        attrs:
-                          - '@type': json
         - directive: label
           directive_arg: '@mailgun_s3_data_lake'
           attrs:
@@ -384,26 +259,6 @@ fluentd:
                             - '@type': json
                     - include_time_key: 'true'
                     - time_slice_format: '%Y-%m-%d-%H'
-        - directive: label
-          directive_arg: '@logzio_686'
-          attrs:
-            - nested_directives:
-                - directive: match
-                  directive_arg: 'edx.xqwatcher.686.**'
-                  attrs:
-                    - '@type': logzio_buffered
-                    - endpoint_url: __vault__::secret-residential/mitx-production/logzio-686-url>data>value
-                    - output_include_time: 'true'
-                    - output_include_tags: 'true'
-                    - http_idle_timeout: 10
-                    - nested_directives:
-                        - directive: buffer
-                          attrs:
-                            - '@type': memory
-                            - flush_thread_count: 4
-                            - flush_interval: '3s'
-                            - chunk_limit_size: 16m
-                            - queue_limit_length: 4096
 
 beacons:
   service:
