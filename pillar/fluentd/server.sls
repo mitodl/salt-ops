@@ -3,8 +3,6 @@
 {% set minion_id = salt.grains.get('id', '') %}
 {% set micromasters_ir_bucket = 'odl-micromasters-ir-data' %}
 {% set micromasters_ir_bucket_creds = salt.vault.read('aws-mitx/creds/read-write-{bucket}'.format(bucket=micromasters_ir_bucket)) %}
-{% set residential_tracking_bucket = 'odl-residential-tracking-data' %}
-{% set xpro_tracking_bucket = 'odl-xpro-edx-tracking-data' %}
 {% set data_lake_bucket = 'mitodl-data-lake' %}
 {% set edx_tracking_bucket = 'odl-residential-tracking-data' %}
 {% set edx_tracking_bucket_creds = salt.vault.read('aws-mitx/creds/read-write-{bucket}'.format(bucket=edx_tracking_bucket)) %}
