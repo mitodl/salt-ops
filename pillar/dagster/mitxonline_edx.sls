@@ -52,8 +52,8 @@ dagster:
             edx_client_secret: __vault__::secret-data/{{ environment }}/pipelines/edx/mitxonline/edx-oauth-client>data>secret
         edx_export_courses:
           config:
-            edx_base_url: __vault__::secret-data/{{ environment }}/pipelines/edx/residential/edx-oauth-client>data>url
-            edx_client_id: __vault__::secret-data/{{ environment }}/pipelines/edx/residential/edx-oauth-client>data>id
-            edx_client_secret: __vault__::secret-data/{{ environment }}/pipelines/edx/residential/edx-oauth-client>data>secret
-            edx_studio_base_url: __vault__::secret-data/{{ environment }}/pipelines/edx/residential/edx-oauth-client>data>studio_url
+            edx_base_url: __vault__::secret-data/{{ environment }}/pipelines/edx/mitxonline/edx-oauth-client>data>url
+            edx_client_id: __vault__::secret-data/{{ environment }}/pipelines/edx/mitxonline/edx-oauth-client>data>id
+            edx_client_secret: __vault__::secret-data/{{ environment }}/pipelines/edx/mitxonline/edx-oauth-client>data>secret
+            edx_studio_base_url: __vault__::secret-data/{{ environment }}/pipelines/edx/mitxonline/edx-oauth-client>data>studio_url
             edx_course_bucket: {{ mitxonline_map[environment].mitxonline_environment }}-edxapp-courses
