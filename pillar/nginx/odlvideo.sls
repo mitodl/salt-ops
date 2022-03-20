@@ -10,9 +10,9 @@ nginx:
   source_version: 1.13.8
   source_hash: 8410b6c31ff59a763abf7e5a5316e7629f5a5033c95a3a0ebde727f9ec8464c5
   certificates:
-    ovs_web_cert:
-      public_cert: __vault__::secret-odl-video/{{ ENVIRONMENT }}/ovs_web_cert>data>value
-      private_key: __vault__::secret-odl-video/{{ ENVIRONMENT }}/ovs_web_cert>data>key
+    odl_wildcard:
+      public_cert: __vault__::secret-operations/global/odl_wildcard_cert>data>value
+      private_key: __vault__::secret-operations/global/odl_wildcard_cert>data>key
   server:
     extra_config:
       shib_params:
@@ -43,8 +43,8 @@ nginx:
               - listen: '443 ssl default_server'
               - listen: '[::]:443 ssl'
               - root: /opt/odl-video-service/
-              - ssl_certificate: /etc/nginx/ssl/ovs_web_cert.crt
-              - ssl_certificate_key: /etc/nginx/ssl/ovs_web_cert.key
+              - ssl_certificate: /etc/nginx/ssl/odl_wildcard.crt
+              - ssl_certificate_key: /etc/nginx/ssl/odl_wildcard.key
               - ssl_stapling: 'on'
               - ssl_stapling_verify: 'on'
               - ssl_session_timeout: 1d
