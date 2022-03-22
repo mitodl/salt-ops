@@ -55,6 +55,7 @@ base:
     - dagster.mitx_enrollments
     - dagster.mit_open
     - dagster.mitxonline_edx
+    - dagster.micromasters
     - consul
     - caddy
     - caddy.dagster
