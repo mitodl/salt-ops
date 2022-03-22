@@ -12,11 +12,15 @@ dagster:
         io_manager:
           config:
             s3_bucket: dagster-{{ environment }}
-            s3_prefix: pipeline-storage/xpro_edx
+            s3_prefix: pipeline-storage/mitx-bigquery
         bigquery_db:
           config: {{ bigquery_creds|json }}
       ops:
-        download_user_data:
+        export_person_course:
           config:
-            last_modified_days: 5
-            outputs_dir: {{ bucket }}/bigquery-mitx-data/user-info-combo/
+            outputs_dir: /tmp/bigquery_person_course
+            table_name: person_course
+        export_user_info_combo:
+          config:
+            outputs_dir:  /tmp/bigquery_user_info_combo
+            table_name: user_info_combo
