@@ -55,7 +55,6 @@ django:
     REDASH_DATABASE_URL: postgresql://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/redash
     REDASH_DATE_FORMAT: YYYY-MM-DD
     REDASH_ENFORCE_HTTPS: 'true'
-    REDASH_EVENT_REPORTING_WEBHOOKS: https://log-input.odl.mit.edu/redash-webhook/redash/events?token={{ redash_fluentd_webhook_token }}
     REDASH_HOST: https://bi.odl.mit.edu
     REDASH_LOG_LEVEL: INFO
     REDASH_LOG_PREFIX: REDASH
