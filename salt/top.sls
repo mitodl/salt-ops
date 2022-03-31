@@ -106,33 +106,12 @@ base:
     - utils.logrotate
     - nginx
     - elastic-stack.elastalert
-  'G@roles:elasticsearch and P@environment:micromasters':
-    - match: compound
-    - elasticsearch
-    - elasticsearch.plugins
-    - nginx
   'G@roles:elasticsearch and P@environment:(rc-apps|production-apps)':
     - match: compound
     - elastic-stack.elasticsearch
     - elastic-stack.elasticsearch.plugins
     - elastic_stack.elasticsearch.apps.cronjobs
     - nginx
-  'G@roles:elasticsearch and P@environment:(mitx-qa|mitxonline-qa|mitxonline-production|mitx-production)':
-    - match: compound
-    - elastic-stack.elasticsearch
-    - elastic-stack.elasticsearch.plugins
-  'G@roles:elasticsearch and P@environment:mitxpro-qa':
-    - match: compound
-    - elasticsearch
-    - elasticsearch.plugins
-  'G@roles:elasticsearch and P@environment:mitxpro-production':
-    - match: compound
-    - elasticsearch
-    - elasticsearch.plugins
-  'G@roles:edx-analytics and P@environment:mitx(pro)?-production':
-    - match: compound
-    - etl
-    - etl.mitx
   'roles:tika':
     - match: grain
     - nginx
@@ -143,17 +122,11 @@ base:
     - nginx
     - nginx.certificates
     - letsencrypt
-    - fluentd
-    - fluentd.plugins
-    - fluentd.config
     - apps.ocw.ocw-origin.install
     - apps.ocw.sync_repo
     - apps.ocw.symlinks_origin
   'roles:ocw-cms':
     - match: grain
-    - fluentd
-    - fluentd.plugins
-    - fluentd.config
     - utils.logrotate
     - apps.ocw.engines
     - apps.ocw.cms_plone
@@ -161,15 +134,9 @@ base:
     - apps.ocw.symlinks_cms
   'roles:ocw-db':
     - match: grain
-    - fluentd
-    - fluentd.plugins
-    - fluentd.config
     - utils.logrotate
   'roles:ocw-mirror':
     - match: grain
-    - fluentd
-    - fluentd.plugins
-    - fluentd.config
     - apps.ocw.mirror
     - apps.ocw.sync_repo
     - utils.logrotate

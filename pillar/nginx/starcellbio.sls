@@ -9,13 +9,8 @@ nginx:
   install_from_ppa: True
   certificates:
     starcellbio:
-      {% if ENVIRONMENT == 'production-apps' %}
       public_cert: __vault__::secret-starteam/global/starcellbio/ssl>data>cert
       private_key: __vault__::secret-starteam/global/starcellbio/ssl>data>key
-      {% else %}
-      public_cert: __vault__::secret-operations/global/odl_wildcard_cert>data>value
-      private_key: __vault__::secret-operations/global/odl_wildcard_cert>data>key
-      {% endif %}
   servers:
     managed:
       {{ app_name }}:
