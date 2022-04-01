@@ -11,8 +11,8 @@ nginx:
   source_hash: 8410b6c31ff59a763abf7e5a5316e7629f5a5033c95a3a0ebde727f9ec8464c5
   certificates:
     odl_wildcard:
-      public_cert: __vault__::secret-operations/global/odl_wildcard_cert>data>value
-      private_key: __vault__::secret-operations/global/odl_wildcard_cert>data>key
+      public_cert: __vault__::secret-operations/global/ovs_web_cert>data>value
+      private_key: __vault__::secret-operations/global/ovs_web_cert>data>key
   server:
     extra_config:
       shib_params:
