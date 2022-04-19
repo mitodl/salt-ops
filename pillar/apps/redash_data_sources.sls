@@ -7,7 +7,7 @@
 {% set xpro_rc_db_host, xpro_rc_db_port = xpro_rc_pg.split('/')[-2].split('@')[1].split(':') %}
 
 {% set ovs_rds_endpoint = salt.boto_rds.get_endpoint('production-apps-rds-postgres-odlvideo').split(":")[0] %}
-{% set reddit_rds_endpoint = salt.boto_rds.get_endpoint('production-apps-rds-postgresql-reddit').split(":")[0] %}
+{# set reddit_rds_endpoint = salt.boto_rds.get_endpoint('production-apps-rds-postgresql-reddit').split(":")[0] #}
 {% set xpro_rds_endpoint = salt.boto_rds.get_endpoint('production-apps-rds-postgres-mitxpro').split(":")[0] %}
 {% set discussions_rds_endpoint = salt.boto_rds.get_endpoint('production-apps-rds-postgresql-opendiscussions').split(":")[0] %}
 
