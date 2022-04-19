@@ -9,6 +9,7 @@
 {% set RABBITMQ_PORT = 5672 %}
 {% set minion_id = salt.grains.get('id', '') %}
 {% set postgresql_creds = salt.vault.cached_read('postgres-{}-reddit/creds/reddit'.format(ENVIRONMENT), cache_prefix=minion_id) %}
+{% set rabbitmq_creds = salt.vault.cached_read('rabbitmq-{}/creds/reddit'.format(ENVIRONMENT), cache_prefix=minion_id) %}
 {% set POSTGRESQL_PORT = 5432 %}
 {% set rds_endpoint = salt.boto_rds.get_endpoint(ENVIRONMENT ~ '-rds-postgresql-reddit') %}
 {% set POSTGRESQL_HOST = rds_endpoint.split(':')[0] %}
@@ -157,8 +158,8 @@ reddit:
       cassandra_default_pool: main
 
       amqp_host: '{{ RABBITMQ_HOST }}:{{ RABBITMQ_PORT }}'
-      amqp_user: __vault__:cache:rabbitmq-{{ ENVIRONMENT }}/creds/reddit>data>username
-      amqp_pass: __vault__:cache:rabbitmq-{{ ENVIRONMENT }}/creds/reddit>data>password
+      amqp_user: {{ rabbitmq_creds.data.username }}
+      amqp_pass: {{ rabbitmq_creds.data.password }}
       amqp_virtual_host: /reddit
 
       smtp_server: ''
@@ -211,8 +212,8 @@ reddit:
       factory: 'reddit_service_websockets.app:make_app'
       amqp.endpoint: nearest-rabbitmq.query.consul:5672
       amqp.vhost: /reddit
-      amqp.username: __vault__:cache:rabbitmq-{{ ENVIRONMENT }}/creds/reddit>data>username
-      amqp.password: __vault__:cache:rabbitmq-{{ ENVIRONMENT }}/creds/reddit>data>password
+      amqp.username: {{ rabbitmq_creds.data.username }}
+      amqp.password: {{ rabbitmq_creds.data.password }}
       amqp.exchange.broadcast: sutro
       amqp.exchange.status: reddit_exchange
       amqp.send_status_messages: 'false'
