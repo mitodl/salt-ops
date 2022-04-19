@@ -127,8 +127,8 @@ reddit:
       db_servers_flair: main
       db_servers_promocampaign: main
 
-      db_user: __vault__:cache:postgres-{{ ENVIRONMENT }}-reddit/creds/reddit>data>username
-      db_pass: __vault__:cache:postgres-{{ ENVIRONMENT }}-reddit/creds/reddit>data>password
+      db_user: {{ postgresql_creds.data.username }}
+      db_pass: {{ postgresql_creds.data.password }}
       db_port: {{ 6432 }}
       db_pool_size: 20
       db_pool_overflow_size: 5
