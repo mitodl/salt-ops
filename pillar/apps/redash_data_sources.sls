@@ -51,8 +51,8 @@ redash:
         dbname: reddit
         host: {{ reddit_rds_endpoint }}
         port: 5432
-        user: __vault__:cache:postgresql-production-apps-reddit/creds/readonly>data>username
-        password: __vault__:cache:postgresql-production-apps-reddit/creds/readonly>data>password
+        user: __vault__:cache:postgres-production-apps-reddit/creds/readonly>data>username
+        password: __vault__:cache:postgres-production-apps-reddit/creds/readonly>data>password
     - name: MIT Open ElasticSearch
       type: elasticsearch
       options:
