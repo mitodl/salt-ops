@@ -8,7 +8,7 @@
 {% set RABBITMQ_HOST = 'nearest-rabbitmq.query.consul' %}
 {% set RABBITMQ_PORT = 5672 %}
 {% set minion_id = salt.grains.get('id', '') %}
-{% set postgresql_creds = salt.vault.cached_read('postgresql-{}-reddit/creds/reddit'.format(ENVIRONMENT), cache_prefix=minion_id) %}
+{% set postgresql_creds = salt.vault.cached_read('postgres-{}-reddit/creds/reddit'.format(ENVIRONMENT), cache_prefix=minion_id) %}
 {% set POSTGRESQL_PORT = 5432 %}
 {% set rds_endpoint = salt.boto_rds.get_endpoint(ENVIRONMENT ~ '-rds-postgresql-reddit') %}
 {% set POSTGRESQL_HOST = rds_endpoint.split(':')[0] %}
@@ -127,8 +127,8 @@ reddit:
       db_servers_flair: main
       db_servers_promocampaign: main
 
-      db_user: __vault__:cache:postgresql-{{ ENVIRONMENT }}-reddit/creds/reddit>data>username
-      db_pass: __vault__:cache:postgresql-{{ ENVIRONMENT }}-reddit/creds/reddit>data>password
+      db_user: __vault__:cache:postgres-{{ ENVIRONMENT }}-reddit/creds/reddit>data>username
+      db_pass: __vault__:cache:postgres-{{ ENVIRONMENT }}-reddit/creds/reddit>data>password
       db_port: {{ 6432 }}
       db_pool_size: 20
       db_pool_overflow_size: 5
