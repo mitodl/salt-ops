@@ -1,8 +1,8 @@
 {% set ENVIRONMENT = salt.grains.get('environment', 'dev') %}
 {% set mm_es = salt.vault.read('secret-micromasters/production/elasticsearch-auth-key').data.value.split(':') %}
 {% set discussions_es = salt.vault.read('secret-operations/production-apps/discussions/elasticsearch-auth-key').data.value.split(':') %}
-{% set heroku_api_key = salt.vault.read('secret-operations/global/heroku/api_key').data.value %}
-{% set xpro_rc_pg = salt.heroku.list_app_config_vars('xpro-rc', api_key=heroku_api_key)['DATABASE_URL'] %}
+{% set heroku_mitx_api_key = salt.vault.read('secret-operations/heroku/mitx-devops-api-key').data.value %}
+{% set xpro_rc_pg = salt.heroku.list_app_config_vars('xpro-rc', api_key=heroku_mitx_api_key)['DATABASE_URL'] %}
 {% set xpro_rc_db_user, xpro_rc_db_pass = xpro_rc_pg.split('/')[-2].split('@')[0].split(':') %}
 {% set xpro_rc_db_host, xpro_rc_db_port = xpro_rc_pg.split('/')[-2].split('@')[1].split(':') %}
 
@@ -89,6 +89,14 @@ redash:
         port: 5432
         user: __vault__:cache:postgres-mitxonline/creds/readonly>data>username
         password: __vault__:cache:postgres-mitxonline/creds/readonly>data>password
+    - name: OCW Studio Production
+      type: pg
+      options:
+        dbname: ocw_studio
+        host: ocw-studio-db-applications-production.cbnm7ajau6mi.us-east-1.rds.amazonaws.com
+        port: 5432
+        user: __vault__:cache:postgres-ocw-studio-applications-production/creds/readonly>data>username
+        password: __vault__:cache:postgres-ocw-studio-applications-production/creds/readonly>data>username
     - name: Redash Metadata
       type: pg
       options:
