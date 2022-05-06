@@ -32,7 +32,8 @@
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://ocw-studio-ci.odl.mit.edu/saml/metadata',
       'vault_env_path': 'rc-apps',
       'VIDEO_TRANSCODE_QUEUE': 'ocw-studio-mediaconvert-queue-ci',
-      'youtube_project_id': 'ovs-youtube-qa'
+      'youtube_project_id': 'ovs-youtube-qa',
+      'sitemap_domain': 'ocwnext-rc.odl.mit.edu'
       },
     'rc': {
       'app_name': 'ocw-studio-rc',
@@ -63,7 +64,8 @@
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://ocw-studio-rc.odl.mit.edu/saml/metadata',
       'vault_env_path': 'rc-apps',
       'VIDEO_TRANSCODE_QUEUE': 'ocw-studio-mediaconvert-queue-qa',
-      'youtube_project_id': 'ocw-studio-qa'
+      'youtube_project_id': 'ocw-studio-qa',
+      'sitemap_domain': 'ocwnext-rc.odl.mit.edu'
       },
     'production': {
       'app_name': 'ocw-studio',
@@ -94,7 +96,8 @@
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://ocw-studio.odl.mit.edu/saml/metadata',
       'vault_env_path': 'production-apps',
       'VIDEO_TRANSCODE_QUEUE': 'ocw-studio-mediaconvert-queue-production',
-      'youtube_project_id': 'ocw-studio-qa'
+      'youtube_project_id': 'ocw-studio-qa',
+      'sitemap_domain': 'ocw.mit.edu'
       }
 } %}
 {% set env_data = env_dict[environment] %}
@@ -169,6 +172,7 @@ heroku:
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ app }}/{{ environment }}/django-secret-key>data>value
     SENTRY_DSN: __vault__::secret-operations/global/{{ business_unit }}/ocw-studio/sentry-dsn>data>value
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
+    SITEMAP_DOMAIN: {{ env_data.sitemap_domain }}
     SOCIAL_AUTH_SAML_CONTACT_NAME: Open Learning Support
     SOCIAL_AUTH_SAML_IDP_ATTRIBUTE_EMAIL: "urn:oid:0.9.2342.19200300.100.1.3"
     SOCIAL_AUTH_SAML_IDP_ATTRIBUTE_NAME: "urn:oid:2.16.840.1.113730.3.1.241"

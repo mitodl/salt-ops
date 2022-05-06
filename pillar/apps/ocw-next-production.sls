@@ -16,6 +16,7 @@ ocw-next:
   gtm_account_id: GTM-NMQZ25T
   mailchimp_audience_id: e07062bda1v
   mailchmip_user_id: ad81d725159c1f322a0c54837
+  sitemap_domain: ocw.mit.edu
 
 node:
   version: 12.19.0
