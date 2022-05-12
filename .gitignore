@@ -4,3 +4,4 @@
 **/salt/master/jobs/*
 **/var/cache/salt/*
 .idea/
+*.DS_Store
