@@ -190,7 +190,7 @@ heroku:
     THREEPLAY_API_KEY: __vault__::secret-operations/global/{{ business_unit }}/ocw-studio/threeplay_api_key>data>value
     THREEPLAY_CALLBACK_KEY: __vault__:gen_if_missing:secret-operations/global/{{ business_unit }}/ocw-studio/threeplay_callback_key>data>value
     USE_X_FORWARDED_PORT: True
-    VIDEO_S3_TRANSCODE_ENDPOINT: __vault__::secret-ocw-studio/video_s3_transcode_endpoint>data>data>value
+    VIDEO_S3_TRANSCODE_ENDPOINT: __vault__::secret-ocw-studio/data/video_s3_transcode_endpoint>data>data>value
     VIDEO_S3_TRANSCODE_PREFIX: aws_mediaconvert_transcodes
     VIDEO_TRANSCODE_QUEUE: {{ env_data.VIDEO_TRANSCODE_QUEUE }}
     YT_ACCESS_TOKEN: __vault__::secret-{{ business_unit }}/{{ app }}/{{ env_data.vault_env_path }}/youtube-credentials>data>access_token
