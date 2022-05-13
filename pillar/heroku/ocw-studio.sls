@@ -109,7 +109,7 @@ proxy:
 
 heroku:
   app_name: {{ env_data.app_name }}
-  api_key: __vault__::secret-operations/heroku/odl-devops-api-key>data>value
+  api_key: __vault__::secret-operations/global/heroku/odl-devops-api-key>data>value
   config_vars:
     ALLOWED_HOSTS: '["*"]'
     API_BEARER_TOKEN: __vault__::secret-concourse/data/ocw/api-bearer-token>data>data>value
