@@ -105,7 +105,7 @@ redash:
         port: 5432
         sslmode: require
         user: __vault__:cache:postgres-ocw-studio-applications-production/creds/readonly>data>username
-        password: __vault__:cache:postgres-ocw-studio-applications-production/creds/readonly>data>username
+        password: __vault__:cache:postgres-ocw-studio-applications-production/creds/readonly>data>password
     - name: Redash Metadata
       type: pg
       options:
