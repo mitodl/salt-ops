@@ -19,6 +19,7 @@ redash:
         dbname: micromasters
         host: micromasters-db-read-replica.cbnm7ajau6mi.us-east-1.rds.amazonaws.com
         port: 15432
+        sslmode: require
         user: __vault__:cache:postgresql-micromasters/creds/readonly>data>username
         password: __vault__:cache:postgresql-micromasters/creds/readonly>data>password
     - name: Bootcamp Ecommerce
@@ -27,6 +28,7 @@ redash:
         dbname: bootcamp_ecommerce
         host: bootcamps-rds-postgresql.cbnm7ajau6mi.us-east-1.rds.amazonaws.com
         port: 5432
+        sslmode: require
         user: __vault__:cache:postgresql-bootcamps/creds/readonly>data>username
         password: __vault__:cache:postgresql-bootcamps/creds/readonly>data>password
     - name: ODL Video Service
@@ -35,6 +37,7 @@ redash:
         dbname: odlvideo
         host: {{ ovs_rds_endpoint }}
         port: 5432
+        sslmode: require
         user: __vault__:cache:postgres-production-apps-odlvideo/creds/readonly>data>username
         password: __vault__:cache:postgres-production-apps-odlvideo/creds/readonly>data>password
     - name: Open Discussions
@@ -43,6 +46,7 @@ redash:
         dbname: opendiscussions
         host: {{ discussions_rds_endpoint }}
         port: 5432
+        sslmode: require
         user: __vault__:cache:postgres-production-apps-opendiscussions/creds/readonly>data>username
         password: __vault__:cache:postgres-production-apps-opendiscussions/creds/readonly>data>password
     - name: Open Discussions Reddit
@@ -51,6 +55,7 @@ redash:
         dbname: reddit
         host: {{ reddit_rds_endpoint }}
         port: 5432
+        sslmode: require
         user: __vault__:cache:postgres-production-apps-reddit/creds/readonly>data>username
         password: __vault__:cache:postgres-production-apps-reddit/creds/readonly>data>password
     - name: MIT Open ElasticSearch
@@ -68,6 +73,7 @@ redash:
     - name: MITxPro RC
       type: pg
       options:
+        sslmode: require
         dbname: {{ xpro_rc_pg.split('/')[-1] }}
         host: {{ xpro_rc_db_host }}
         port: {{ xpro_rc_db_port }}
@@ -79,6 +85,7 @@ redash:
         dbname: mitxpro
         host: {{ xpro_rds_endpoint }}
         port: 5432
+        sslmode: require
         user: __vault__:cache:postgres-production-apps-mitxpro/creds/readonly>data>username
         password: __vault__:cache:postgres-production-apps-mitxpro/creds/readonly>data>password
     - name: MITx Online Production
@@ -87,6 +94,7 @@ redash:
         dbname: mitxonline
         host: mitxonline-production-app-db.cbnm7ajau6mi.us-east-1.rds.amazonaws.com
         port: 5432
+        sslmode: require
         user: __vault__:cache:postgres-mitxonline/creds/readonly>data>username
         password: __vault__:cache:postgres-mitxonline/creds/readonly>data>password
     - name: OCW Studio Production
@@ -95,6 +103,7 @@ redash:
         dbname: ocw_studio
         host: ocw-studio-db-applications-production.cbnm7ajau6mi.us-east-1.rds.amazonaws.com
         port: 5432
+        sslmode: require
         user: __vault__:cache:postgres-ocw-studio-applications-production/creds/readonly>data>username
         password: __vault__:cache:postgres-ocw-studio-applications-production/creds/readonly>data>username
     - name: Redash Metadata
@@ -103,5 +112,6 @@ redash:
         dbname: redash
         host: postgres-redash.service.consul
         port: 5432
+        sslmode: require
         user: __vault__:cache:postgres-operations-redash/creds/readonly>data>username
         password: __vault__:cache:postgres-operations-redash/creds/readonly>data>password
