@@ -382,6 +382,23 @@ environments:
         courses:
           - name: 600x
             num_instances: 1
+  mitx-ci:
+    business_unit: residential
+    network_prefix: '172.19'
+    vpc_name: MITx CI
+    vpc_peers:
+      - operations-ci
+    purposes:
+      xqwatcher:
+        app: xqueue-watcher
+        business_unit: residential
+        versions:
+          xqwatcher: master
+          edx_config_repo: https://github.com/edx/configuration
+          edx_config_version: open-release/nutmeg.master
+        courses:
+          - name: 600x
+            num_instances: 1
   mitx-qa:
     business_unit: residential
     network_prefix: '10.5'
