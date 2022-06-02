@@ -138,6 +138,7 @@ heroku:
     DRIVE_SHARED_ID: {{ env_data.DRIVE_SHARED_ID }}
     DRIVE_UPLOADS_PARENT_FOLDER_ID: {{ env_data.DRIVE_UPLOADS_PARENT_FOLDER_ID }}
     FEATURE_USE_LOCAL_STARTERS: {{ env_data.FEATURE_USE_LOCAL_STARTERS }}
+    GIT_DEFAULT_USER_NAME: 'OCW Studio Bot'
     GIT_DOMAIN: {{ env_data.GIT_DOMAIN }}
     GIT_ORGANIZATION: {{ env_data.GITHUB_ORGANIZATION }}
     GIT_TOKEN: __vault__::secret-{{ business_unit }}/ocw-studio/{{ environment }}/github-user-token>data>value
