@@ -84,6 +84,8 @@ heroku:
     MITX_ONLINE_SECURE_SSL_HOST: {{ env_data.MITXONLINE_SECURE_SSL_HOST }}
     MITX_ONLINE_USE_S3: True
     NODE_MODULES_CACHE: False
+    OPEN_EXCHANGE_RATES_APP_ID: __vault__::secret-mitxonline/open-exchange-rates>data>app_id
+    OPEN_EXCHANGE_RATES_URL: https://openexchangerates.org/api/
     OPENEDX_API_BASE_URL: {{ env_data.OPENEDX_API_BASE_URL}}
     OPENEDX_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/openedx-api-client>data>client-id
     OPENEDX_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ environment }}/openedx-api-client>data>client-secret
