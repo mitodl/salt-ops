@@ -9,12 +9,12 @@ ocw-next:
   ocw_hugo_projects_git_ref: release-candidate
   fastly_api_token: __vault__::secret-open-courseware/rc-apps/fastly-api>data>token
   fastly_service_id: __vault__::secret-open-courseware/rc-apps/fastly-api>data>service_id
-  course_base_url: https://ocwnext-rc.odl.mit.edu/courses
+  course_base_url: https://live-qa.ocw.mit.edu/courses
   ocw_studio_base_url: https://ocw-studio-rc.odl.mit.edu/
   ocw_import_starter_slug: ocw-course
-  static_api_base_url: https://ocw-live-qa.global.ssl.fastly.net/
+  static_api_base_url: https://live-qa.ocw.mit.edu/
   gtm_account_id: GTM-PJMJGF6
-  sitemap_domain: ocwnext-rc.odl.mit.edu
+  sitemap_domain: live-qa.ocw.mit.edu
 
 node:
   version: 12.19.0
