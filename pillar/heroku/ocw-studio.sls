@@ -6,7 +6,7 @@
       'app_name': 'ocw-studio-ci',
       'env': 'qa',
       'env_name': 'ci',
-      'CONCOURSE_URL': 'https://cicd-qa.odl.mit.edu',
+      'CONCOURSE_URL': 'https://cicd-ci.odl.mit.edu',
       'DRIVE_SHARED_ID': '',
       'DRIVE_UPLOADS_PARENT_FOLDER_ID': '',
       'DRIVE_VIDEO_UPLOADS_PARENT_FOLDER_ID': '1H4HCvbmY7v5YZFeqSlbCI1TFC5MXTMY4',
@@ -33,7 +33,7 @@
       'vault_env_path': 'rc-apps',
       'VIDEO_TRANSCODE_QUEUE': 'ocw-studio-mediaconvert-queue-ci',
       'youtube_project_id': 'ovs-youtube-qa',
-      'sitemap_domain': 'ocwnext-rc.odl.mit.edu'
+      'sitemap_domain': 'live-ci.ocw.mit.edu'
       },
     'rc': {
       'app_name': 'ocw-studio-rc',
@@ -65,7 +65,7 @@
       'vault_env_path': 'rc-apps',
       'VIDEO_TRANSCODE_QUEUE': 'ocw-studio-mediaconvert-queue-qa',
       'youtube_project_id': 'ocw-studio-qa',
-      'sitemap_domain': 'ocwnext-rc.odl.mit.edu'
+      'sitemap_domain': 'live-qa.ocw.mit.edu'
       },
     'production': {
       'app_name': 'ocw-studio',
