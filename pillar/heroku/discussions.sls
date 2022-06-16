@@ -83,7 +83,7 @@
       'app_name': 'odl-open-discussions',
       'CELERY_WORKER_MAX_MEMORY_PER_CHILD': 250000,
       'CLOUDFRONT_DIST': 'd2mcnjhkvrfuy2',
-      'CORS_URLS': ['https://micromasters.mit.edu', 'https://ocwnext.odl.mit.edu', 'https://ocw-beta.odl.mit.edu', 'https://ocw-preview.odl.mit.edu', 'https://ocw-published.odl.mit.edu', "https://www.ocw.mit.edu", "https://ocw.mit.edu", 'https://live.ocw.mit.edu'],
+      'CORS_URLS': ['https://micromasters.mit.edu', 'https://ocwnext.odl.mit.edu', 'https://ocw-beta.odl.mit.edu', 'https://ocw-preview.odl.mit.edu', 'https://ocw-published.odl.mit.edu', "https://draft.ocw.mit.edu", "https://www.ocw.mit.edu", "https://ocw.mit.edu", 'https://live.ocw.mit.edu'],
       'DEBUG': False,
       'env_name': 'production',
       'FEATURE_COURSE_UI': False,
