@@ -78,12 +78,14 @@ heroku:
     MITX_ONLINE_FROM_EMAIL: 'MITx Online <support@mitxonline.mit.edu>'
     MITX_ONLINE_LOG_LEVEL: {{ env_data.app_log_level }}
     MITX_ONLINE_OAUTH_PROVIDER: 'mitxonline-oauth2'
+    MITX_ONLINE_REFINE_OIDC_CONFIG_CLIENT_ID: __vault__::secret-mitxonline/refine-oidc>data>client-id
     MITX_ONLINE_REGISTRATION_ACCESS_TOKEN:  __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.openedx_environment }}/mitxonline-registration-access-token>data>value
     MITX_ONLINE_REPLY_TO_ADDRESS: 'MITx Online <support@mitxonline.mit.edu>'
     MITX_ONLINE_SECURE_SSL_REDIRECT: True
     MITX_ONLINE_SECURE_SSL_HOST: {{ env_data.MITXONLINE_SECURE_SSL_HOST }}
     MITX_ONLINE_USE_S3: True
     NODE_MODULES_CACHE: False
+    OIDC_RSA_PRIVATE_KEY: __vault__::secret-mitxonline/refine-oidc>data>rsa-private-key
     OPEN_EXCHANGE_RATES_APP_ID: __vault__::secret-mitxonline/open-exchange-rates>data>app_id
     OPEN_EXCHANGE_RATES_URL: https://openexchangerates.org/api/
     OPENEDX_API_BASE_URL: {{ env_data.OPENEDX_API_BASE_URL}}
