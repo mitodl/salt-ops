@@ -169,6 +169,7 @@ heroku:
     ELASTICSEARCH_SHARD_COUNT: {{ env_data.ELASTICSEARCH_SHARD_COUNT }}
     ELASTICSEARCH_URL: {{ env_data.ELASTICSEARCH_URL}}
     EMBEDLY_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/embedly_key>data>value
+    ENABLE_INFINITE_CORRIDOR: {{ env_data.ENABLE_INFINITE_CORRIDOR }}
     FEATURE_ANONYMOUS_ACCESS: True
     FEATURE_ARTICLE_UI: True
     FEATURE_COMMENT_NOTIFICATIONS: True
