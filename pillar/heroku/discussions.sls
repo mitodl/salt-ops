@@ -12,6 +12,7 @@
       'ELASTICSEARCH_INDEX': 'discussions-ci',
       'ELASTICSEARCH_SHARD_COUNT': 2,
       'ELASTICSEARCH_URL': 'https://elasticsearch-rc-apps.odl.mit.edu',
+      'ENABLE_INFINITE_CORRIDOR': True,
       'env_name': 'ci',
       'FEATURE_COURSE_UI': True,
       'GA_G_TRACKING_ID': 'G-N6Y7B0Z3JL',
@@ -50,6 +51,7 @@
       'ELASTICSEARCH_INDEX': 'discussions-rc',
       'ELASTICSEARCH_SHARD_COUNT': 2,
       'ELASTICSEARCH_URL': 'https://elasticsearch-rc-apps.odl.mit.edu',
+      'ENABLE_INFINITE_CORRIDOR': True,
       'env_name': 'rc',
       'FEATURE_COURSE_UI': True,
       'GA_G_TRACKING_ID': 'G-N6Y7B0Z3JL',
@@ -85,6 +87,7 @@
       'CLOUDFRONT_DIST': 'd2mcnjhkvrfuy2',
       'CORS_URLS': ['https://micromasters.mit.edu', 'https://ocwnext.odl.mit.edu', 'https://ocw-beta.odl.mit.edu', 'https://ocw-preview.odl.mit.edu', 'https://ocw-published.odl.mit.edu', "https://draft.ocw.mit.edu", "https://www.ocw.mit.edu", "https://ocw.mit.edu", 'https://live.ocw.mit.edu'],
       'DEBUG': False,
+      'ENABLE_INFINITE_CORRIDOR': False,
       'env_name': 'production',
       'FEATURE_COURSE_UI': False,
       'ELASTICSEARCH_INDEX': 'discussions',
@@ -166,6 +169,7 @@ heroku:
     ELASTICSEARCH_SHARD_COUNT: {{ env_data.ELASTICSEARCH_SHARD_COUNT }}
     ELASTICSEARCH_URL: {{ env_data.ELASTICSEARCH_URL}}
     EMBEDLY_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/embedly_key>data>value
+    ENABLE_INFINITE_CORRIDOR: {{ env_data.ENABLE_INFINITE_CORRIDOR }}
     FEATURE_ANONYMOUS_ACCESS: True
     FEATURE_ARTICLE_UI: True
     FEATURE_COMMENT_NOTIFICATIONS: True
