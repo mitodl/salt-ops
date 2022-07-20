@@ -17,6 +17,7 @@
       'MAILGUN_FROM_EMAIL': 'MITx Online <no-reply@mitxonline-rc-mail.mitxonline.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'mitxonline-rc-mail.mitxonline.mit.edu',
       'MITOL_PAYMENT_GATEWAY_CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
+      'MITOL_PAYMENT_GATEWAY_CYBERSOURCE_REST_API_ENVIRONMENT': 'apitest.cybersource.com',
       'MITXONLINE_BASE_URL': 'https://rc.mitxonline.mit.edu',
       'MITXONLINE_SECURE_SSL_HOST': 'mitxonline-rc.mitxonline.mit.edu',
       },
@@ -35,6 +36,7 @@
       'MAILGUN_FROM_EMAIL': 'MITx Online <no-reply@mail.mitxonline.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'mail.mitxonline.mit.edu',
       'MITOL_PAYMENT_GATEWAY_CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://secureacceptance.cybersource.com/pay',
+      'MITOL_PAYMENT_GATEWAY_CYBERSOURCE_REST_API_ENVIRONMENT': 'api.cybersource.com',
       'MITXONLINE_BASE_URL': 'https://mitxonline.mit.edu',
       'MITXONLINE_SECURE_SSL_HOST': 'mitxonline.mit.edu',
       }
@@ -69,7 +71,11 @@ heroku:
     MITOL_PAYMENT_GATEWAY_CYBERSOURCE_ACCESS_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/cybersource-credentials>data>access-key
     MITOL_PAYMENT_GATEWAY_CYBERSOURCE_PROFILE_ID: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/cybersource-credentials>data>profile-id
     MITOL_PAYMENT_GATEWAY_CYBERSOURCE_SECURE_ACCEPTANCE_URL: {{ env_data.MITOL_PAYMENT_GATEWAY_CYBERSOURCE_SECURE_ACCEPTANCE_URL }}
+    MITOL_PAYMENT_GATEWAY_CYBERSOURCE_REST_API_ENVIRONMENT: {{ env_data.MITOL_PAYMENT_GATEWAY_CYBERSOURCE_REST_API_ENVIRONMENT }}
     MITOL_PAYMENT_GATEWAY_CYBERSOURCE_SECURITY_KEY:  __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/cybersource-credentials>data>security-key
+    MITOL_PAYMENT_GATEWAY_CYBERSOURCE_MERCHANT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/cybersource-credentials>data>merchant-id
+    MITOL_PAYMENT_GATEWAY_CYBERSOURCE_MERCHANT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/cybersource-credentials>data>merchant-secret
+    MITOL_PAYMENT_GATEWAY_CYBERSOURCE_MERCHANT_SECRET_KEY_ID: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/cybersource-credentials>data>merchant-secret-key-id
     MITX_ONLINE_ADMIN_EMAIL: 'cuddle-bunnies@mit.edu'
     MITX_ONLINE_BASE_URL: {{ env_data.MITXONLINE_BASE_URL }}
     MITX_ONLINE_DB_CONN_MAX_AGE: 0
