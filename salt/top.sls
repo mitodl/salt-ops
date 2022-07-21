@@ -2,7 +2,7 @@ base:
   '*':
     - utils.install_libs
     - vector
-  'P@environment:(operations|operations-qa|mitx-qa|mitx-production|mitxpro-qa|mitxpro-production|mitxonline-qa|mitxonline-production|rc-apps|production-apps|data-qa|data-production)':
+  'P@environment:(operations|operations-qa|mitx-qa|mitx-production|rc-apps|production-apps)':
     - match: compound
     - consul
     - consul.dns_proxy
@@ -10,13 +10,6 @@ base:
     - match: grain
     - edx.xqwatcher
     - vector
-  'roles:amps-redirect':
-    - match: grain
-    - letsencrypt
-    - nginx
-  'roles:backups':
-    - match: grain
-    - backups.backup
   'roles:master':
     - match: grain
     - master
@@ -29,30 +22,11 @@ base:
     - match: compound
     - master.aws
     - master_utils.dns
-  'G@roles:elasticsearch and P@environment:operations(-qa)?':
-    - match: compound
-    - utils.file_limits
-    - elastic-stack.elasticsearch
-    - elastic-stack.elasticsearch.plugins
   'roles:rabbitmq':
     - match: grain
     - rabbitmq
     - rabbitmq.tests
     - vector
-  'roles:dagster':
-    - match: grain
-    - mongodb.repository
-    - dagster
-    - caddy
-    - caddy.local_auth
-  'roles:fluentd':
-    - match: grain
-    - fluentd
-    - fluentd.plugins
-    - fluentd.config
-  'roles:log-aggregator':
-    - match: grain
-    - fluentd.reverse_proxy
   'roles:reddit':
     - match: grain
     - utils.file_limits
@@ -85,37 +59,12 @@ base:
     - match: grain
     - utils.logrotate
     - vector
-  'roles:redash':
-    - match: grain
-    - utils.configure_debian_source_repos
-    - consul
-    - consul.dns_proxy
-    - python
-    - nginx-shibboleth
-    - django.install
-    - django.deploy
-    - apps.redash.datasources
-    - uwsgi
-    - etl
-    - etl.email_mapping
-  'G@roles:kibana and P@environment:operations(-qa)?':
-    - match: compound
-    - elastic-stack.kibana
-    - utils.mitca_pem
-    - utils.configure_debian_source_repos
-    - utils.logrotate
-    - nginx
-    - elastic-stack.elastalert
   'G@roles:elasticsearch and P@environment:(rc-apps|production-apps)':
     - match: compound
     - elastic-stack.elasticsearch
     - elastic-stack.elasticsearch.plugins
     - elastic_stack.elasticsearch.apps.cronjobs
     - nginx
-  'roles:tika':
-    - match: grain
-    - nginx
-    - tika
   'roles:ocw-origin':
     - match: grain
     - utils.configure_debian_source_repos
@@ -144,10 +93,3 @@ base:
     - match: compound
     - nginx
     - nginx.certificates
-  'roles:ocw-build':
-    - match: grain
-    - vector
-    - node
-    - caddy
-    - apps.ocw.nextgen_build_install
-    - utils.logrotate

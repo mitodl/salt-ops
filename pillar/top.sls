@@ -16,15 +16,6 @@ base:
     - match: compound
     - consul
     - consul.elasticsearch
-  'roles:kibana':
-    - match: grain
-    - mitca
-    - elastic_stack.kibana
-    - elastic_stack.beats
-    - nginx
-    - nginx.kibana
-    - elastalert
-    - logrotate.kibana
   'roles:master':
     - match: grain
     - master
@@ -44,29 +35,6 @@ base:
     - master.production_schedule
   master-operations-qa:
     - master.qa_schedule
-  'roles:dagster':
-    - match: grain
-    - dagster
-    - dagster.xpro_edx
-    - dagster.residential_edx
-    - dagster.mitx_enrollments
-    - dagster.mit_open
-    - dagster.mitxonline_edx
-    - dagster.micromasters
-    - consul
-    - caddy
-    - caddy.dagster
-  'roles:fluentd':
-    - match: grain
-    - fluentd
-  'G@roles:fluentd-server and G@environment:operations-qa':
-    - match: compound
-    - consul.fluentd
-    - fluentd.server_operations_qa
-  'G@roles:fluentd-server and G@environment:operations':
-    - match: compound
-    - consul.fluentd
-    - fluentd.server
   starcellbio*:
     - apps.starcellbio
     - nginx
@@ -113,25 +81,12 @@ base:
     - nginx.reddit
     - vector.reddit
     - reddit
-  'G@environment:operations and G@roles:redash':
-    - match: compound
-    - nginx
-    - nginx.redash
-    - consul
-    - shibboleth
-    - shibboleth.redash
-    - apps.redash
-    - apps.redash_data_sources
-    - data.email_mapping_etl
-  'P@environment:(mitx-qa|mitx-production|mitxpro-qa|mitxpro-production|mitx-online-qa|mitx-online-production|operations|rc-apps|production-apps|micromasters)':
+  'P@environment:(mitx-qa|mitx-production|operations|operations-qa|rc-apps|production-apps)':
     - match: compound
     - consul
   'P@environment:.*apps.*':
     - match: compound
     - consul.apps
-  'P@environment:.*mitxpro.*':
-    - match: compound
-    - consul.xpro
   'P@environment:mitx(pro|-online)?-(qa|production)':
     - match: compound
     - consul.mitx
@@ -152,16 +107,6 @@ base:
     - vector.elasticsearch-apps
     - nginx
     - nginx.apps_es
-  'G@roles:elasticsearch and G@environment:operations':
-    - match: compound
-    - elastic_stack.elasticsearch.logging_production
-    - netdata.elasticsearch_logging
-    - consul.elasticsearch
-  'G@roles:elasticsearch and G@environment:operations-qa':
-    - match: compound
-    - elastic_stack.elasticsearch.logging_qa
-    - netdata.elasticsearch_logging
-    - consul.elasticsearch
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher
@@ -182,25 +127,11 @@ base:
   'xqwatcher-940*':
     - match: glob
     - edx.xqwatcher_940
-  'roles:amps-redirect':
-    - match: grain
-    - nginx
-    - nginx.amps_redirect
-    - nginx.mitxpro_redirect
-    - nginx.chalkradio_redirect
-    - letsencrypt.amps_redirect
-  'G@roles:backups and P@environment:operations':
-    - match: compound
-    - backups.operations
   'roles:rabbitmq':
     - match: grain
     - rabbitmq
     - consul.rabbitmq
     - vector.rabbitmq
-  'roles:tika':
-    - match: grain
-    - nginx
-    - nginx.tika
   'roles:ocw-cms':
     - match: grain
     - logrotate.ocw_cms
