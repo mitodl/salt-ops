@@ -16,6 +16,8 @@
       'openedx_environment': 'mitxonline-qa',
       'MAILGUN_FROM_EMAIL': 'MITx Online <no-reply@mitxonline-rc-mail.mitxonline.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'mitxonline-rc-mail.mitxonline.mit.edu',
+      'MITOL_GOOGLE_SHEETS_REFUNDS_REQUEST_WORKSHEET_ID': 0,
+      'MITOL_GOOGLE_SHEETS_REFUNDS_FIRST_ROW': 4,
       'MITOL_PAYMENT_GATEWAY_CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
       'MITOL_PAYMENT_GATEWAY_CYBERSOURCE_REST_API_ENVIRONMENT': 'apitest.cybersource.com',
       'MITXONLINE_BASE_URL': 'https://rc.mitxonline.mit.edu',
@@ -35,6 +37,8 @@
       'openedx_environment': 'mitxonline-production',
       'MAILGUN_FROM_EMAIL': 'MITx Online <no-reply@mail.mitxonline.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'mail.mitxonline.mit.edu',
+      'MITOL_GOOGLE_SHEETS_REFUNDS_REQUEST_WORKSHEET_ID': 0,
+      'MITOL_GOOGLE_SHEETS_REFUNDS_FIRST_ROW': 4,
       'MITOL_PAYMENT_GATEWAY_CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://secureacceptance.cybersource.com/pay',
       'MITOL_PAYMENT_GATEWAY_CYBERSOURCE_REST_API_ENVIRONMENT': 'api.cybersource.com',
       'MITXONLINE_BASE_URL': 'https://mitxonline.mit.edu',
@@ -68,6 +72,12 @@ heroku:
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
+    MITOL_GOOGLE_SHEETS_DRIVE_CLIENT_ID: __vault__::secret-mitxonline/google-sheets-refunds>data>drive-client-id
+    MITOL_GOOGLE_SHEETS_DRIVE_CLIENT_SECRET: __vault__::secret-mitxonline/google-sheets-refunds>data>drive-client-secret
+    MITOL_GOOGLE_SHEETS_DRIVE_API_PROJECT_ID: __vault__::secret-mitxonline/google-sheets-refunds>data>drive-api-project-id
+    MITOL_GOOGLE_SHEETS_ENROLLMENT_CHANGE_SHEET_ID: __vault__::secret-mitxonline/google-sheets-refunds>data>enrollment-change-sheet-id
+    MITOL_GOOGLE_SHEETS_REFUNDS_REQUEST_WORKSHEET_ID: {{ env_data.MITOL_GOOGLE_SHEETS_REFUNDS_REQUEST_WORKSHEET_ID }}
+    MITOL_GOOGLE_SHEETS_REFUNDS_FIRST_ROW: {{ env_data.MITOL_GOOGLE_SHEETS_REFUNDS_FIRST_ROW }}
     MITOL_PAYMENT_GATEWAY_CYBERSOURCE_ACCESS_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/cybersource-credentials>data>access-key
     MITOL_PAYMENT_GATEWAY_CYBERSOURCE_PROFILE_ID: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/cybersource-credentials>data>profile-id
     MITOL_PAYMENT_GATEWAY_CYBERSOURCE_SECURE_ACCEPTANCE_URL: {{ env_data.MITOL_PAYMENT_GATEWAY_CYBERSOURCE_SECURE_ACCEPTANCE_URL }}
