@@ -59,12 +59,12 @@ heroku:
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/mitxonline>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'ol-mitxonline-app-{{ env_data.env_stage}}'
     {% if env_data.env_name == 'production' %}
-    {% set rds_endpoint = salt.boto_rds.get_endpoint('mitxonline-production-app-db') %}
-    {% set pg_creds = salt.vault.cached_read('postgres-mitxonline/creds/app', cache_prefix='heroku-mitxonline') %}
-    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxonline
     HIREFIRE_TOKEN: __vault__::secret-{{ business_unit }}/production-apps/hirefire_token>data>value
     {% endif %}
     MITX_ONLINE_SUPPORT_EMAIL: 'mitxonline-support@mit.edu'
+    {% set rds_endpoint = salt.boto_rds.get_endpoint('mitxonline-{}-app-db'.format(env_data.env_stage)) %}
+    {% set pg_creds = salt.vault.cached_read('postgres-mitxonline/creds/app', cache_prefix='heroku-mitxonline') %}
+    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxonline
     FEATURE_SYNC_ON_DASHBOARD_LOAD: True
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
     GTM_TRACKING_ID: {{ env_data.GOOGLE_TAG_MANAGER_ID }}
