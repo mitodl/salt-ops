@@ -6,14 +6,6 @@
 {% set xpro_rc_db_user, xpro_rc_db_pass = xpro_rc_pg.split('/')[-2].split('@')[0].split(':') %}
 {% set xpro_rc_db_host, xpro_rc_db_port = xpro_rc_pg.split('/')[-2].split('@')[1].split(':') %}
 
-{% set micromasters_rc_pg = salt.heroku.list_app_config_vars('micromasters-rc', api_key=heroku_api_key)['DATABASE_URL'] %}
-{% set micromasters_rc_db_user, micromasters_rc_db_pass = micromasters_rc_pg.split('/')[-2].split('@')[0].split(':') %}
-{% set micromasters_rc_db_host, micromasters_rc_db_port = micromasters_rc_pg.split('/')[-2].split('@')[1].split(':') %}
-
-{% set mitxonline_rc_pg = salt.heroku.list_app_config_vars('mitxonline-rc', api_key=heroku_api_key)['DATABASE_URL'] %}
-{% set mitxonline_rc_db_user, mitxonline_rc_db_pass = mitxonline_rc_pg.split('/')[-2].split('@')[0].split(':') %}
-{% set mitxonline_rc_db_host, mitxonline_rc_db_port = mitxonline_rc_pg.split('/')[-2].split('@')[1].split(':') %}
-
 {% set ovs_rds_endpoint = salt.boto_rds.get_endpoint('production-apps-rds-postgres-odlvideo').split(":")[0] %}
 {% set reddit_rds_endpoint = salt.boto_rds.get_endpoint('production-apps-rds-postgresql-reddit').split(":")[0] %}
 {% set xpro_rds_endpoint = salt.boto_rds.get_endpoint('production-apps-rds-postgres-mitxpro').split(":")[0] %}
@@ -30,15 +22,6 @@ redash:
         sslmode: require
         user: __vault__:cache:postgresql-micromasters/creds/readonly>data>username
         password: __vault__:cache:postgresql-micromasters/creds/readonly>data>password
-    - name: MicroMasters RC
-      type: pg
-      options:
-        sslmode: require
-        dbname: {{ micromasters_rc_pg.split('/')[-1] }}
-        host: {{ micromasters_rc_db_host }}
-        port: {{ micromasters_rc_db_port }}
-        user: {{ micromasters_rc_db_user }}
-        password: {{ micromasters_rc_db_pass }}
     - name: Bootcamp Ecommerce
       type: pg
       options:
@@ -114,15 +97,6 @@ redash:
         sslmode: require
         user: __vault__:cache:postgres-mitxonline/creds/readonly>data>username
         password: __vault__:cache:postgres-mitxonline/creds/readonly>data>password
-    - name: MITx Online RC
-      type: pg
-      options:
-        sslmode: require
-        dbname: {{ mitxonline_rc_pg.split('/')[-1] }}
-        host: {{ mitxonline_rc_db_host }}
-        port: {{ mitxonline_rc_db_port }}
-        user: {{ mitxonline_rc_db_user }}
-        password: {{ mitxonline_rc_db_pass }}
     - name: OCW Studio Production
       type: pg
       options:
