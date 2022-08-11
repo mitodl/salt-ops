@@ -72,10 +72,13 @@ heroku:
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
+    MITOL_GOOGLE_SHEET_PROCESSOR_APP_NAME: MITx Online ({{ env_data.env_name }})
     MITOL_GOOGLE_SHEETS_DRIVE_CLIENT_ID: __vault__::secret-mitxonline/google-sheets-refunds>data>drive-client-id
     MITOL_GOOGLE_SHEETS_DRIVE_CLIENT_SECRET: __vault__::secret-mitxonline/google-sheets-refunds>data>drive-client-secret
     MITOL_GOOGLE_SHEETS_DRIVE_API_PROJECT_ID: __vault__::secret-mitxonline/google-sheets-refunds>data>drive-api-project-id
     MITOL_GOOGLE_SHEETS_ENROLLMENT_CHANGE_SHEET_ID: __vault__::secret-mitxonline/google-sheets-refunds>data>enrollment-change-sheet-id
+    MITOL_GOOGLE_SHEETS_REFUNDS_ERROR_COL: 13
+    MITOL_GOOGLE_SHEETS_REFUNDS_SKIP_ROW_COL: 14
     MITOL_GOOGLE_SHEETS_REFUNDS_REQUEST_WORKSHEET_ID: {{ env_data.MITOL_GOOGLE_SHEETS_REFUNDS_REQUEST_WORKSHEET_ID }}
     MITOL_GOOGLE_SHEETS_REFUNDS_FIRST_ROW: {{ env_data.MITOL_GOOGLE_SHEETS_REFUNDS_FIRST_ROW }}
     MITOL_PAYMENT_GATEWAY_CYBERSOURCE_ACCESS_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/cybersource-credentials>data>access-key
