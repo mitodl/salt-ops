@@ -197,10 +197,12 @@ heroku:
     MICROMASTERS_COURSE_URL: https://{{ etl_micromasters_host }}/api/v0/courseruns/
     MICROMASTERS_EXTERNAL_LOGIN_URL: https://{{ env_data.MICROMASTERS_BASE_URL}}/discussions
     MITPE_BASE_URL: https://professional.mit.edu/
+    {% if env_data.env_name != 'ci' %}
     MITX_ONLINE_BASE_URL: https://mitxonline.mit.edu/
     MITX_ONLINE_COURSES_API_URL: https://mitxonline.mit.edu/api/courses/
     MITX_ONLINE_PROGRAMS_API_URL: https://mitxonline.mit.edu/api/programs/
     MITX_ONLINE_LEARNING_COURSE_BUCKET_NAME: mitx-etl-mitxonline-production
+    {% endif %}
     MIT_WS_CERTIFICATE: __vault__::secret-{{ business_unit }}/global/mit-application-certificate>data>certificate
     MIT_WS_PRIVATE_KEY: __vault__::secret-{{ business_unit }}/global/mit-application-certificate>data>private_key
     NEW_RELIC_LOG: stdout
