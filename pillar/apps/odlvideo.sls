@@ -101,7 +101,7 @@ django:
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/odl-video-service-{{ env_data.env_name }}>data>secret_key
     CLOUDFRONT_KEY_ID: __vault__::secret-operations/global/cloudfront-private-key>data>id
     CLOUDFRONT_PRIVATE_KEY: __vault__::secret-operations/global/cloudfront-private-key>data>value
-    CELERY_BROKER_URL: amqp://{{ rabbit_creds.data.username }}:{{ rabbit_creds.data.password }}@nearest-rabbitmq.query.consul//odlvideo  # The extra `/` is necessary for the vhost to be read correctly
+    CELERY_BROKER_URL: redis://{{ redis_cluster_address }}:6379/1
     DJANGO_LOG_LEVEL: {{ env_data.log_level }}
     DROPBOX_FOLDER: /Captions
     DROPBOX_KEY: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/dropbox_app>data>key
