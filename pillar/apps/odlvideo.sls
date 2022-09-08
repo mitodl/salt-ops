@@ -56,7 +56,6 @@
 {% set rabbit_creds = salt.vault.read("secret-odl-video/rabbitmq-credentials") %}
 {% set ga_json = salt.vault.read('secret-odl-video/' ~ ENVIRONMENT ~ '/ga-keyfile-json').data.value|json %}
 {% set business_unit = 'odl-video' %}
-{% set rds_endpoint = salt.boto_rds.get_endpoint(ENVIRONMENT ~ '-rds-postgres-odlvideo') %}
 {% set redis_cluster = salt.boto3_elasticache.describe_replication_groups('ovs-{env}-redis'.format(env=env_data.env_name)) %}
 {% set redis_cluster_address = redis_cluster[0].NodeGroups[0].PrimaryEndpoint.Address %}
 
@@ -93,6 +92,7 @@ django:
     FEATURE_VIDEOJS_ANNOTATIONS: True
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@rc-apps-rds-postgres-odlvideo.cbnm7ajau6mi.us-east-1.rds.amazonaws.com/odlvideo
     {% else %}
+    {% set rds_endpoint = salt.boto_rds.get_endpoint(ENVIRONMENT ~ '-rds-postgres-odlvideo') %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/odlvideo
     {% endif %}
     AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/odl-video-service-{{ env_data.env_name }}>data>access_key
