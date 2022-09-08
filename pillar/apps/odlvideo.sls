@@ -91,6 +91,9 @@ django:
   environment:
     {% if env_data.env_name == 'rc' %}
     FEATURE_VIDEOJS_ANNOTATIONS: True
+    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@rc-apps-rds-postgres-odlvideo.cbnm7ajau6mi.us-east-1.rds.amazonaws.com/odlvideo
+    {% else %}
+    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/odlvideo
     {% endif %}
     AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/odl-video-service-{{ env_data.env_name }}>data>access_key
     AWS_REGION: us-east-1
@@ -99,7 +102,6 @@ django:
     CLOUDFRONT_KEY_ID: __vault__::secret-operations/global/cloudfront-private-key>data>id
     CLOUDFRONT_PRIVATE_KEY: __vault__::secret-operations/global/cloudfront-private-key>data>value
     CELERY_BROKER_URL: amqp://{{ rabbit_creds.data.username }}:{{ rabbit_creds.data.password }}@nearest-rabbitmq.query.consul//odlvideo  # The extra `/` is necessary for the vhost to be read correctly
-    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/odlvideo
     DJANGO_LOG_LEVEL: {{ env_data.log_level }}
     DROPBOX_FOLDER: /Captions
     DROPBOX_KEY: __vault__::secret-{{ business_unit }}/{{ ENVIRONMENT }}/dropbox_app>data>key
