@@ -9,7 +9,7 @@
       'CLOUDFRONT_DIST': 'd28ic9ywb63ioi',
       'CORS_URLS': ['https://micromasters-ci.odl.mit.edu', 'https://ocwnext-rc.odl.mit.edu', 'https://draft-qa.ocw.mit.edu', 'https://live-qa.ocw.mit.edu'],
       'DEBUG': False,
-      'ELASTICSEARCH_INDEX': 'discussions-rc',
+      'ELASTICSEARCH_INDEX': 'discussions-ci',
       'ELASTICSEARCH_SHARD_COUNT': 2,
       'ELASTICSEARCH_URL': 'https://search-opensearch-open-qa-76e2mth7e5hvtclhuhh7uckoiu.us-east-1.es.amazonaws.com',
       'ENABLE_INFINITE_CORRIDOR': True,
