@@ -11,7 +11,7 @@
       'DEBUG': False,
       'ELASTICSEARCH_INDEX': 'discussions-rc',
       'ELASTICSEARCH_SHARD_COUNT': 2,
-      'ELASTICSEARCH_URL': 'https://search-opensearch-open-ci-gkxs5qardmug7pc472eznyfety.us-east-1.es.amazonaws.com',
+      'ELASTICSEARCH_URL': 'https://search-opensearch-open-qa-76e2mth7e5hvtclhuhh7uckoiu.us-east-1.es.amazonaws.com',
       'ENABLE_INFINITE_CORRIDOR': True,
       'env_name': 'ci',
       'FEATURE_COURSE_UI': True,
