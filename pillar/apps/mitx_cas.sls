@@ -137,8 +137,6 @@ mitx_cas:
         provider: touchstone
       - host: ^vote.odl.mit.edu
         provider: touchstone
-      - host: ^comusica.odl.mit.edu
-        provider: touchstone
       - host: ^commencement.odl.mit.edu
         provider: touchstone
       - host: ^canvas.odl.mit.edu
