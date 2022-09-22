@@ -73,11 +73,9 @@ heroku:
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
     MITOL_GOOGLE_SHEET_PROCESSOR_APP_NAME: MITx Online ({{ env_data.env_name }})
-    MITOL_GOOGLE_SHEETS_ADMIN_EMAILS: __vault__::secret-mitxonline/google-service-worker>data>admin_emails
     MITOL_GOOGLE_SHEETS_DRIVE_CLIENT_ID: __vault__::secret-mitxonline/google-sheets-refunds>data>drive-client-id
     MITOL_GOOGLE_SHEETS_DRIVE_CLIENT_SECRET: __vault__::secret-mitxonline/google-sheets-refunds>data>drive-client-secret
     MITOL_GOOGLE_SHEETS_DRIVE_API_PROJECT_ID: __vault__::secret-mitxonline/google-sheets-refunds>data>drive-api-project-id
-    MITOL_GOOGLE_SHEETS_DRIVE_SERVICE_ACCOUNT_CREDS: __vault__::secret-mitxonline/google-service-worker>data>json_key
     MITOL_GOOGLE_SHEETS_ENROLLMENT_CHANGE_SHEET_ID: __vault__::secret-mitxonline/google-sheets-refunds>data>enrollment-change-sheet-id
     MITOL_GOOGLE_SHEETS_REFUNDS_COMPLETED_DATE_COL: 12
     MITOL_GOOGLE_SHEETS_REFUNDS_ERROR_COL: 13
