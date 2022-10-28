@@ -21,7 +21,7 @@
       'HUBSPOT_FOOTER_FORM_GUID': 'ff810010-c33c-4e99-9285-32d283fbc816',
       'HUBSPOT_ID_PREFIX': 'xpro-ci',
       'HUBSPOT_NEW_COURSES_FORM_GUID': 'b9220dc1-4e48-4097-8539-9f2907f18b1e',
-      'HUBSPOT_PORTAL_ID': 5890463,
+      'HUBSPOT_PORTAL_ID': 23128026,
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-ci-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-ci-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro-ci.odl.mit.edu',
@@ -56,7 +56,7 @@
       'HUBSPOT_FOOTER_FORM_GUID': 'ff810010-c33c-4e99-9285-32d283fbc816',
       'HUBSPOT_ID_PREFIX': 'xpro-rc',
       'HUBSPOT_NEW_COURSES_FORM_GUID': 'b9220dc1-4e48-4097-8539-9f2907f18b1e',
-      'HUBSPOT_PORTAL_ID': 5890463,
+      'HUBSPOT_PORTAL_ID': 23128026,
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-rc-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-rc-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://rc.xpro.mit.edu',
@@ -157,10 +157,10 @@ heroku:
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
     HUBSPOT_CREATE_USER_FORM_ID: {{ env_data.HUBSPOT_CREATE_USER_FORM_ID }}
     GTM_TRACKING_ID: {{ env_data.GOOGLE_TAG_MANAGER_ID }}
-    HUBSPOT_API_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/hubspot-api-key>data>value
     HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
     HUBSPOT_ID_PREFIX: {{ env_data.HUBSPOT_ID_PREFIX }}
     HUBSPOT_NEW_COURSES_FORM_GUID: {{ env_data.HUBSPOT_NEW_COURSES_FORM_GUID }}
+    HUBSPOT_PIPELINE_ID: '75e28846-ad0d-4be2-a027-5e1da6590b98'
     HUBSPOT_PORTAL_ID: {{ env_data.HUBSPOT_PORTAL_ID }}
     LOGOUT_REDIRECT_URL: {{ env_data.logout_redirect_url }}
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
@@ -170,6 +170,7 @@ heroku:
     MITOL_DIGITAL_CREDENTIALS_DEEP_LINK_URL: dccrequest://request
     MITOL_DIGITAL_CREDENTIALS_HMAC_SECRET: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>hmac_secret
     MITOL_DIGITAL_CREDENTIALS_VERIFY_SERVICE_BASE_URL: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>sign_and_verify_url
+    MITOL_HUBSPOT_API_PRIVATE_TOKEN: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/hubspot-api-private-token>data>value
     MITXPRO_ADMIN_EMAIL: 'cuddle-bunnies@mit.edu'
     MITXPRO_BASE_URL: {{ env_data.MITXPRO_BASE_URL }}
     MITXPRO_DB_CONN_MAX_AGE: 0
