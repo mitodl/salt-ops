@@ -33,7 +33,8 @@
       'vault_env_path': 'rc-apps',
       'VIDEO_TRANSCODE_QUEUE': 'ocw-studio-mediaconvert-queue-ci',
       'youtube_project_id': 'ovs-youtube-qa',
-      'sitemap_domain': 'live-ci.ocw.mit.edu'
+      'sitemap_domain': 'live-ci.ocw.mit.edu',
+      'OCW_HUGO_THEMES_SENTRY_DSN': ''
       },
     'rc': {
       'app_name': 'ocw-studio-rc',
@@ -65,7 +66,8 @@
       'vault_env_path': 'rc-apps',
       'VIDEO_TRANSCODE_QUEUE': 'ocw-studio-mediaconvert-queue-qa',
       'youtube_project_id': 'ocw-studio-qa',
-      'sitemap_domain': 'live-qa.ocw.mit.edu'
+      'sitemap_domain': 'live-qa.ocw.mit.edu',
+      'OCW_HUGO_THEMES_SENTRY_DSN': 'https://eee58f41dda54d2b814296e12dced4b7@o48788.ingest.sentry.io/5304953'
       },
     'production': {
       'app_name': 'ocw-studio',
@@ -97,7 +99,8 @@
       'vault_env_path': 'production-apps',
       'VIDEO_TRANSCODE_QUEUE': 'ocw-studio-mediaconvert-queue-production',
       'youtube_project_id': 'ocw-studio-qa',
-      'sitemap_domain': 'ocw.mit.edu'
+      'sitemap_domain': 'ocw.mit.edu',
+      'OCW_HUGO_THEMES_SENTRY_DSN': 'https://eee58f41dda54d2b814296e12dced4b7@o48788.ingest.sentry.io/5304953'
       }
 } %}
 {% set env_data = env_dict[environment] %}
@@ -199,3 +202,4 @@ heroku:
     YT_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ app }}/{{ env_data.vault_env_path }}/youtube-credentials>data>client_secret
     YT_PROJECT_ID: {{ env_data.youtube_project_id }}
     YT_REFRESH_TOKEN: __vault__::secret-{{ business_unit }}/{{ app }}/{{ env_data.vault_env_path }}/youtube-credentials>data>refresh_token
+    OCW_HUGO_THEMES_SENTRY_DSN: {{ env_data.OCW_HUGO_THEMES_SENTRY_DSN }}
