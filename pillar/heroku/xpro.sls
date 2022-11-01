@@ -158,7 +158,6 @@ heroku:
     HUBSPOT_CREATE_USER_FORM_ID: {{ env_data.HUBSPOT_CREATE_USER_FORM_ID }}
     GTM_TRACKING_ID: {{ env_data.GOOGLE_TAG_MANAGER_ID }}
     HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
-    HUBSPOT_ID_PREFIX: {{ env_data.HUBSPOT_ID_PREFIX }}
     HUBSPOT_NEW_COURSES_FORM_GUID: {{ env_data.HUBSPOT_NEW_COURSES_FORM_GUID }}
     HUBSPOT_PIPELINE_ID: '75e28846-ad0d-4be2-a027-5e1da6590b98'
     HUBSPOT_PORTAL_ID: {{ env_data.HUBSPOT_PORTAL_ID }}
@@ -171,6 +170,7 @@ heroku:
     MITOL_DIGITAL_CREDENTIALS_HMAC_SECRET: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>hmac_secret
     MITOL_DIGITAL_CREDENTIALS_VERIFY_SERVICE_BASE_URL: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>sign_and_verify_url
     MITOL_HUBSPOT_API_PRIVATE_TOKEN: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/hubspot-api-private-token>data>value
+    MITOL_HUBSPOT_API_ID_PREFIX: {{ env_data.HUBSPOT_ID_PREFIX }}
     MITXPRO_ADMIN_EMAIL: 'cuddle-bunnies@mit.edu'
     MITXPRO_BASE_URL: {{ env_data.MITXPRO_BASE_URL }}
     MITXPRO_DB_CONN_MAX_AGE: 0
