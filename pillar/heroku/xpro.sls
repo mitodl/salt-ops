@@ -169,7 +169,7 @@ heroku:
     MITOL_DIGITAL_CREDENTIALS_DEEP_LINK_URL: dccrequest://request
     MITOL_DIGITAL_CREDENTIALS_HMAC_SECRET: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>hmac_secret
     MITOL_DIGITAL_CREDENTIALS_VERIFY_SERVICE_BASE_URL: __vault__::secret-{{ business_unit }}/{{ environment }}/digital-credentials-integration>data>sign_and_verify_url
-    MITOL_HUBSPOT_API_PRIVATE_TOKEN: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/hubspot-api-private-token>data>value
+    MITOL_HUBSPOT_API_PRIVATE_TOKEN: __vault__::secret-{{ business_unit }}/hubspot-api-private-token>data>value
     MITOL_HUBSPOT_API_ID_PREFIX: {{ env_data.HUBSPOT_ID_PREFIX }}
     MITXPRO_ADMIN_EMAIL: 'cuddle-bunnies@mit.edu'
     MITXPRO_BASE_URL: {{ env_data.MITXPRO_BASE_URL }}
