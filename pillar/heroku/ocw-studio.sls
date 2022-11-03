@@ -20,6 +20,7 @@
       'GTM_ACCOUNT_ID': 'GTM-5JZ7X78',
       'MAILGUN_SENDER_DOMAIN': 'ocw-ci.mail.odl.mit.edu',
       'OCW_IMPORT_STARTER_SLUG': 'course',
+      'OCW_COURSE_STARTER_SLUG': 'ocw-course-v2',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio-ci.odl.mit.edu/',
       'OCW_STUDIO_DRAFT_URL': '',
       'OCW_STUDIO_LIVE_URL': '',
@@ -53,6 +54,7 @@
       'GITHUB_RATE_LIMIT_CHECK': 'False',
       'MAILGUN_SENDER_DOMAIN': 'ocw-rc.mail.odl.mit.edu',
       'OCW_IMPORT_STARTER_SLUG': 'ocw-course',
+      'OCW_COURSE_STARTER_SLUG': 'ocw-course-v2',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio-rc.odl.mit.edu/',
       'OCW_STUDIO_DRAFT_URL': 'https://draft-qa.ocw.mit.edu/',
       'OCW_STUDIO_LIVE_URL': 'https://live-qa.ocw.mit.edu/',
@@ -86,6 +88,7 @@
       'GITHUB_WEBHOOK_BRANCH': 'release',
       'MAILGUN_SENDER_DOMAIN': 'ocw.mail.odl.mit.edu',
       'OCW_IMPORT_STARTER_SLUG': 'ocw-course',
+      'OCW_COURSE_STARTER_SLUG': 'ocw-course-v2',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio.odl.mit.edu/',
       'OCW_STUDIO_DRAFT_URL': 'https://draft.ocw.mit.edu/',
       'OCW_STUDIO_LIVE_URL': 'https://ocw.mit.edu/',
@@ -159,6 +162,7 @@ heroku:
     MITOL_MAIL_FROM_EMAIL: ocw-prod-support@mit.edu
     MITOL_MAIL_REPLY_TO_ADDRESS: ocw-prod-support@mit.edu
     OCW_IMPORT_STARTER_SLUG: {{ env_data.OCW_IMPORT_STARTER_SLUG }}
+    OCW_COURSE_STARTER_SLUG: {{ env_data.OCW_COURSE_STARTER_SLUG }}
     OCW_STUDIO_ADMIN_EMAIL: cuddle-bunnies@mit.edu
     OCW_STUDIO_BASE_URL: {{ env_data.OCW_STUDIO_BASE_URL }}
     OCW_STUDIO_DRAFT_URL: {{ env_data.OCW_STUDIO_DRAFT_URL}}
