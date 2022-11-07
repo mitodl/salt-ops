@@ -6,21 +6,10 @@ base:
     - vector
   # '* and not proxy-* and not restore-* and not G@roles:devstack and not P@environment:mitxonline and not G@context:packer and not P@roles:(edx|edx-worker)$':
   #   - match: compound
-  'P@environment:(rc.*|.*-qa)':
-    - match: compound
-    - elastic_stack.version_qa
-  'not P@environment:(rc.*|.*-qa)':
-    - match: compound
-    - elastic_stack.version_production
-  'G@roles:elasticsearch and not P@environment:operations*':
-    - match: compound
-    - consul
-    - consul.elasticsearch
   'roles:master':
     - match: grain
     - master
     - master.config
-    - elastic_stack.beats
     - master.api
     - caddy
     - caddy.master
@@ -100,13 +89,6 @@ base:
     - match: compound
     - rabbitmq.apps
     - consul.apps
-  'G@roles:elasticsearch and P@environment:(rc|production)-apps':
-    - match: compound
-    - elastic_stack.elasticsearch
-    - elastic_stack.elasticsearch.apps
-    - vector.elasticsearch-apps
-    - nginx
-    - nginx.apps_es
   'roles:xqwatcher':
     - match: grain
     - edx.xqwatcher

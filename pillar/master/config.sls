@@ -26,7 +26,6 @@ salt_master:
         - https://github.com/mitodl/salt-extensions:
             - root: extensions
         - https://github.com/mitodl/master-formula
-        - https://github.com/mitodl/elasticsearch-formula
         - https://github.com/mitodl/fluentd-formula
         - https://github.com/mitodl/consul-formula
         - https://github.com/mitodl/vault-formula
@@ -41,8 +40,6 @@ salt_master:
         - https://github.com/mitodl/pgbouncer-formula
         - https://github.com/mitodl/python-formula
         - https://github.com/mitodl/node-formula
-        - https://github.com/mitodl/elastic-stack-formula
-        - https://github.com/mitodl/tika-formula
         - https://github.com/mitodl/netdata-formula
         - https://github.com/mitodl/mysql-formula
         - https://github.com/mitodl/caddy-formula

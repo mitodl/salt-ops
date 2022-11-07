@@ -29,7 +29,6 @@ salt_master:
     - boto3
     - boto>=2.35.0
     - croniter
-    - elasticsearch
     - mysqlclient
     - python-consul
     - python-dateutil

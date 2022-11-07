@@ -59,12 +59,6 @@ base:
     - match: grain
     - utils.logrotate
     - vector
-  'G@roles:elasticsearch and P@environment:(rc-apps|production-apps)':
-    - match: compound
-    - elastic-stack.elasticsearch
-    - elastic-stack.elasticsearch.plugins
-    - elastic_stack.elasticsearch.apps.cronjobs
-    - nginx
   'roles:ocw-origin':
     - match: grain
     - utils.configure_debian_source_repos
