@@ -2,26 +2,6 @@
 
 vault:
   roles:
-    {% for bucket in salt.boto_s3_bucket.list()['Buckets'] %}
-    read_write_delete_iam_bucket_access_for_{{ bucket.Name }}:
-      backend: aws-mitx
-      name: read-write-delete-{{ bucket.Name }}
-      options:
-        policy_document: "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Action\": [\"s3:GetObject\", \"s3:ListAllMyBuckets\", \"s3:ListBucket\", \"s3:ListObjects\", \"s3:PutObject\", \"s3:DeleteObject\", \"s3:*Acl\"], \"Resource\": [\"arn:aws:s3:::{{ bucket.Name }}\", \"arn:aws:s3:::{{ bucket.Name }}/*\"]}]}"
-        credential_type: iam_user
-    read_and_write_iam_bucket_access_for_{{ bucket.Name }}:
-      backend: aws-mitx
-      name: read-write-{{ bucket.Name }}
-      options:
-        policy_document: "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Action\": [\"s3:GetObject\", \"s3:ListAllMyBuckets\", \"s3:ListBucket\", \"s3:ListObjects\", \"s3:PutObject\", \"s3:*Acl\"], \"Resource\": [\"arn:aws:s3:::{{ bucket.Name }}\", \"arn:aws:s3:::{{ bucket.Name }}/*\"]}]}"
-        credential_type: iam_user
-    read_only_iam_bucket_access_for_{{ bucket.Name }}:
-      backend: aws-mitx
-      name: read-only-{{ bucket.Name }}
-      options:
-        policy_document: "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Action\": [\"s3:GetObject\", \"s3:ListAllMyBuckets\", \"s3:ListBucket\", \"s3:ListObjects\"], \"Resource\": [\"arn:aws:s3:::{{ bucket.Name }}\", \"arn:aws:s3:::{{ bucket.Name }}/*\"]}]}"
-        credential_type: iam_user
-    {% endfor %}{# End of bucket loop #}
     {% for env in ['ci', 'rc', 'production'] %}
     {% load_json as ovs_policy %}
     {

@@ -10,16 +10,10 @@ base:
     - match: grain
     - master
     - master.config
-    - master.api
-    - caddy
-    - caddy.master
     - vault.roles.apps
     - vault.roles.aws
     - vault.roles.bootcamps
     - vault.roles.micromasters
-    - vault.roles.mitx
-    - vault.roles.operations
-    - vault.roles.pki
   master-operations-production:
     - master.production_schedule
   master-operations-qa:
@@ -57,9 +51,6 @@ base:
     - shibboleth
     - shibboleth.mitx_cas
     - vector.cas
-  'G@roles:rabbitmq and P@environment:mitx.*':
-    - match: compound
-    - rabbitmq.mitx
   'roles:cassandra':
     - match: grain
     - cassandra
@@ -76,9 +67,6 @@ base:
   'P@environment:.*apps.*':
     - match: compound
     - consul.apps
-  'P@environment:mitx(pro|-online)?-(qa|production)':
-    - match: compound
-    - consul.mitx
   'P@environment:(operations|data)(-qa|-production)?':
     - match: compound
     - consul.operations

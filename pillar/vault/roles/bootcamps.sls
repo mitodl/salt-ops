@@ -21,14 +21,9 @@ vault:
       options:
         {% raw %}
         sql: >-
-          REVOKE "bootcamp-ecommerce" FROM "{{name}}";
-          GRANT "{{name}}" TO bootcamp-ecommerce WITH ADMIN OPTION;
-          SET ROLE bootcamp-ecommerce;
-          REASSIGN OWNED BY "{{name}}" TO "bootcamp-ecommerce";
-          RESET ROLE;
-          DROP OWNED BY "{{name}}";
-          REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM "{{name}}";
-          REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM "{{name}}";
-          REVOKE USAGE ON SCHEMA public FROM "{{name}}";
-          DROP USER "{{name}}";"""
+          CREATE USER "{{name}}" WITH PASSWORD '{{password}}' VALID UNTIL '{{expiration}}';
+          GRANT SELECT ON ALL TABLES IN SCHEMA public TO "{{name}}";
+          GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO "{{name}}";
+          ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO "{{name}}";
+          ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON SEQUENCES TO "{{name}}";
         {% endraw %}
