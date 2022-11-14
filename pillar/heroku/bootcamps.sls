@@ -17,7 +17,7 @@
       'FEATURE_NOVOED_INTEGRATION': False,
       'GA_TRACKING_ID': 'UA-5145472-19',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
-      'HUBSPOT_PORTAL_ID': '6431386',
+      'HUBSPOT_PORTAL_ID': '23263862',
       'HUBSPOT_CREATE_USER_FORM_ID': '995ee734-a0ff-47cc-b747-6ea1d2dd6303',
       'HUBSPOT_FOOTER_FORM_GUID': 'a8cffaac-4207-446a-b295-5f44656596f8',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
@@ -41,7 +41,7 @@
       'FEATURE_NOVOED_INTEGRATION': True,
       'GA_TRACKING_ID': 'UA-5145472-19',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
-      'HUBSPOT_PORTAL_ID': '6431386',
+      'HUBSPOT_PORTAL_ID': '23263862',
       'HUBSPOT_CREATE_USER_FORM_ID': '995ee734-a0ff-47cc-b747-6ea1d2dd6303',
       'HUBSPOT_FOOTER_FORM_GUID': 'a8cffaac-4207-446a-b295-5f44656596f8',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
@@ -134,8 +134,8 @@ heroku:
     FEATURE_NOVOED_INTEGRATION: {{ env_data.FEATURE_NOVOED_INTEGRATION }}
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
     GTM_TRACKING_ID: {{ env_data.GTM_TRACKING_ID }}
-    HUBSPOT_API_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/hubspot>data>api_key
-    HUBSPOT_ID_PREFIX: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/hubspot>data>id_prefix
+    MITOL_HUBSPOT_API_PRIVATE_TOKEN: __vault__::secret-{{ business_unit }}/hubspot-api-private-token>data>value
+    MITOL_HUBSPOT_API_ID_PREFIX: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/hubspot>data>id_prefix
     HUBSPOT_PORTAL_ID: {{ env_data.HUBSPOT_PORTAL_ID }}
     HUBSPOT_CREATE_USER_FORM_ID: {{ env_data.HUBSPOT_CREATE_USER_FORM_ID }}
     HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
