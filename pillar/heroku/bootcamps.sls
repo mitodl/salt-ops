@@ -17,9 +17,9 @@
       'FEATURE_NOVOED_INTEGRATION': False,
       'GA_TRACKING_ID': 'UA-5145472-19',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
-      'HUBSPOT_PORTAL_ID': '6431386',
-      'HUBSPOT_CREATE_USER_FORM_ID': '995ee734-a0ff-47cc-b747-6ea1d2dd6303',
-      'HUBSPOT_FOOTER_FORM_GUID': 'a8cffaac-4207-446a-b295-5f44656596f8',
+      'HUBSPOT_PORTAL_ID': '23263862',
+      'HUBSPOT_CREATE_USER_FORM_ID': 'afc02d5a-1e0a-4981-9910-323cf2081c6e',
+      'HUBSPOT_FOOTER_FORM_GUID': 'be317df4-ed94-4d42-bfb9-01adec557d8f',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
       'NOVOED_BASE_URL': 'https://mitstaging.novoed.com',
       'NOVOED_SAML_DEBUG': True,
@@ -41,9 +41,9 @@
       'FEATURE_NOVOED_INTEGRATION': True,
       'GA_TRACKING_ID': 'UA-5145472-19',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
-      'HUBSPOT_PORTAL_ID': '6431386',
-      'HUBSPOT_CREATE_USER_FORM_ID': '995ee734-a0ff-47cc-b747-6ea1d2dd6303',
-      'HUBSPOT_FOOTER_FORM_GUID': 'a8cffaac-4207-446a-b295-5f44656596f8',
+      'HUBSPOT_PORTAL_ID': '23263862',
+      'HUBSPOT_CREATE_USER_FORM_ID': 'afc02d5a-1e0a-4981-9910-323cf2081c6e',
+      'HUBSPOT_FOOTER_FORM_GUID': 'be317df4-ed94-4d42-bfb9-01adec557d8f',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
       'NOVOED_BASE_URL': 'https://mitstaging.novoed.com',
       'NOVOED_SAML_DEBUG': True,
@@ -134,8 +134,9 @@ heroku:
     FEATURE_NOVOED_INTEGRATION: {{ env_data.FEATURE_NOVOED_INTEGRATION }}
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
     GTM_TRACKING_ID: {{ env_data.GTM_TRACKING_ID }}
-    HUBSPOT_API_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/hubspot>data>api_key
-    HUBSPOT_ID_PREFIX: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/hubspot>data>id_prefix
+    HUBSPOT_PIPELINE_ID: '75e28846-ad0d-4be2-a027-5e1da6590b98'
+    MITOL_HUBSPOT_API_PRIVATE_TOKEN: __vault__::secret-{{ business_unit }}/hubspot-api-private-token>data>value
+    MITOL_HUBSPOT_API_ID_PREFIX: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/hubspot>data>id_prefix
     HUBSPOT_PORTAL_ID: {{ env_data.HUBSPOT_PORTAL_ID }}
     HUBSPOT_CREATE_USER_FORM_ID: {{ env_data.HUBSPOT_CREATE_USER_FORM_ID }}
     HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
