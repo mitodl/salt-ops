@@ -34,7 +34,7 @@ edx:
         AUTH:
           - xqwatcher
           - __vault__::secret-{{ env_prefix }}/edx-xqueue>data>xqwatcher_password
-        SERVER: http://xqueue.service.consul:18040
+        SERVER: http://xqueue.service.consul:8040
         CONNECTIONS: 5
         HANDLERS:
           - HANDLER: 'xqueue_watcher.jailedgrader.JailedGrader'
