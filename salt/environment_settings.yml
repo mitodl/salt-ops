@@ -378,7 +378,7 @@ environments:
         versions:
           xqwatcher: master
           edx_config_repo: https://github.com/edx/configuration
-          edx_config_version: open-release/nutmeg.master
+          edx_config_version: open-release/olive.master
         courses:
           - name: 600x
             num_instances: 1
@@ -395,7 +395,7 @@ environments:
         versions:
           xqwatcher: master
           edx_config_repo: https://github.com/edx/configuration
-          edx_config_version: open-release/nutmeg.master
+          edx_config_version: open-release/olive.master
         courses:
           - name: 600x
             num_instances: 1
@@ -444,7 +444,7 @@ environments:
         versions:
           xqwatcher: master
           edx_config_repo: https://github.com/edx/configuration
-          edx_config_version: open-release/nutmeg.master
+          edx_config_version: open-release/olive.master
         courses:
           - name: 600x
             num_instances: 2
@@ -521,7 +521,7 @@ environments:
         versions:
           xqwatcher: master
           edx_config_repo: https://github.com/edx/configuration
-          edx_config_version: open-release/nutmeg.master
+          edx_config_version: open-release/olive.master
         courses:
           - name: 600x
             num_instances: 2
@@ -570,7 +570,7 @@ environments:
         versions:
           xqwatcher: master
           edx_config_repo: https://github.com/edx/configuration
-          edx_config_version: open-release/nutmeg.master
+          edx_config_version: open-release/olive.master
         courses:
           - name: 600x
             num_instances: 3
