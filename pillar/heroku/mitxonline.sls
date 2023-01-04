@@ -8,6 +8,8 @@
       'env_stage': 'qa',
       'GOOGLE_TRACKING_ID': 'UA-5145472-46',
       'GOOGLE_TAG_MANAGER_ID': 'GTM-TW97MNR',
+      'HUBSPOT_ID_PREFIX': 'mitxonline-rc',
+      'HUBSPOT_PORTAL_ID': 23586992,
       'release_branch': 'release-candidate',
       'app_log_level': 'INFO',
       'sentry_log_level': 'ERROR',
@@ -29,6 +31,8 @@
       'env_stage': 'production',
       'GOOGLE_TRACKING_ID': 'UA-5145472-48',
       'GOOGLE_TAG_MANAGER_ID': 'GTM-M47BLXN',
+      'HUBSPOT_ID_PREFIX': 'mitxonline',
+      'HUBSPOT_PORTAL_ID': 20596155,
       'release_branch': 'release',
       'app_log_level': 'INFO',
       'sentry_log_level': 'ERROR',
@@ -68,6 +72,8 @@ heroku:
     FEATURE_SYNC_ON_DASHBOARD_LOAD: True
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
     GTM_TRACKING_ID: {{ env_data.GOOGLE_TAG_MANAGER_ID }}
+    HUBSPOT_PIPELINE_ID: '19817792'
+    HUBSPOT_PORTAL_ID: {{ env_data.HUBSPOT_PORTAL_ID }}
     LOGOUT_REDIRECT_URL: {{ env_data.logout_redirect_url }}
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
@@ -82,6 +88,8 @@ heroku:
     MITOL_GOOGLE_SHEETS_REFUNDS_SKIP_ROW_COL: 14
     MITOL_GOOGLE_SHEETS_REFUNDS_REQUEST_WORKSHEET_ID: {{ env_data.MITOL_GOOGLE_SHEETS_REFUNDS_REQUEST_WORKSHEET_ID }}
     MITOL_GOOGLE_SHEETS_REFUNDS_FIRST_ROW: {{ env_data.MITOL_GOOGLE_SHEETS_REFUNDS_FIRST_ROW }}
+    MITOL_HUBSPOT_API_PRIVATE_TOKEN: __vault__::secret-{{ business_unit }}/hubspot-api-private-token>data>value
+    MITOL_HUBSPOT_API_ID_PREFIX: {{ env_data.HUBSPOT_ID_PREFIX }}
     MITOL_PAYMENT_GATEWAY_CYBERSOURCE_ACCESS_KEY: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/cybersource-credentials>data>access-key
     MITOL_PAYMENT_GATEWAY_CYBERSOURCE_PROFILE_ID: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/cybersource-credentials>data>profile-id
     MITOL_PAYMENT_GATEWAY_CYBERSOURCE_SECURE_ACCEPTANCE_URL: {{ env_data.MITOL_PAYMENT_GATEWAY_CYBERSOURCE_SECURE_ACCEPTANCE_URL }}
