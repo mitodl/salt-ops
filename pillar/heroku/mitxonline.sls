@@ -81,6 +81,8 @@ heroku:
     MITOL_GOOGLE_SHEETS_PROCESSOR_APP_NAME: MITx Online ({{ env_data.env_name }})
     MITOL_GOOGLE_SHEETS_DRIVE_CLIENT_ID: __vault__::secret-mitxonline/google-sheets-refunds>data>drive-client-id
     MITOL_GOOGLE_SHEETS_DRIVE_CLIENT_SECRET: __vault__::secret-mitxonline/google-sheets-refunds>data>drive-client-secret
+    MITOL_OPENEDX_USER_RETIREMENT_CLIENT_ID: __vault__::secret-mitxonline/openedx-user-retirement>data>worker-client-id
+    MITOL_OPENEDX_USER_RETIREMENT_CLIENT_SECRET: __vault__::secret-mitxonline/openedx-user-retirement>data>worker-client-secret
     MITOL_GOOGLE_SHEETS_DRIVE_API_PROJECT_ID: __vault__::secret-mitxonline/google-sheets-refunds>data>drive-api-project-id
     MITOL_GOOGLE_SHEETS_ENROLLMENT_CHANGE_SHEET_ID: __vault__::secret-mitxonline/google-sheets-refunds>data>enrollment-change-sheet-id
     MITOL_GOOGLE_SHEETS_REFUNDS_COMPLETED_DATE_COL: 12
