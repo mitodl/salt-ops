@@ -70,6 +70,7 @@ heroku:
     {% set pg_creds = salt.vault.cached_read('postgres-mitxonline/creds/app', cache_prefix='heroku-mitxonline') %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxonline
     FEATURE_SYNC_ON_DASHBOARD_LOAD: True
+    FEATURE_IGNORE_EDX_FAILURES: True
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
     GTM_TRACKING_ID: {{ env_data.GOOGLE_TAG_MANAGER_ID }}
     HUBSPOT_PIPELINE_ID: '19817792'
