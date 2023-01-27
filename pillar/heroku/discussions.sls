@@ -48,6 +48,7 @@
       'CLOUDFRONT_DIST': 'd1d3xcwjqmwwj2',
       'CORS_URLS': ['https://micromasters-rc.odl.mit.edu', 'https://ocwnext-rc.odl.mit.edu', 'https://ocw-next.netlify.app', 'https://ol-devops-ci.odl.mit.edu', 'https://draft-qa.ocw.mit.edu', 'https://live-qa.ocw.mit.edu'],
       'DEBUG': False,
+      'EDX_LEARNING_COURSE_BUCKET_NAME': 'edxorg-qa-edxapp-courses',
       'ELASTICSEARCH_INDEX': 'discussions-rc',
       'ELASTICSEARCH_SHARD_COUNT': 2,
       'ELASTICSEARCH_URL': 'https://search-opensearch-open-qa-76e2mth7e5hvtclhuhh7uckoiu.us-east-1.es.amazonaws.com',
@@ -87,6 +88,7 @@
       'CLOUDFRONT_DIST': 'd2mcnjhkvrfuy2',
       'CORS_URLS': ['https://micromasters.mit.edu', 'https://ocwnext.odl.mit.edu', 'https://ocw-beta.odl.mit.edu', 'https://ocw-preview.odl.mit.edu', 'https://ocw-published.odl.mit.edu', "https://draft.ocw.mit.edu", "https://www.ocw.mit.edu", "https://ocw.mit.edu", 'https://live.ocw.mit.edu'],
       'DEBUG': False,
+      'EDX_LEARNING_COURSE_BUCKET_NAME': 'edxorg-production-edxapp-courses',
       'ENABLE_INFINITE_CORRIDOR': False,
       'env_name': 'production',
       'FEATURE_COURSE_UI': False,
@@ -154,6 +156,7 @@ heroku:
     {% endif %}
     DEBUG: {{ env_data.DEBUG }}
     DUPLICATE_COURSES_URL: https://raw.githubusercontent.com/mitodl/open-resource-blacklists/master/duplicate_courses.yml
+    EDX_LEARNING_COURSE_BUCKET_NAME: {env_data.EDX_LEARNING_COURSE_BUCKET_NAME}
     EDX_API_ACCESS_TOKEN_URL: https://api.edx.org/oauth2/v1/access_token
     EDX_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/edx-api-client>data>id
     EDX_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/edx-api-client>data>secret
