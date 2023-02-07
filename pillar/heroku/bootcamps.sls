@@ -6,7 +6,7 @@
     'ci': {
       'app_name': 'bootcamp-ecommerce-ci',
       'env_name': 'ci',
-      'BOOTCAMP_ADMISSION_BASE_URL': 'https://admissions-test.herokuapp.com',
+      'ALLOWED_HOSTS': ["bootcamp-ci.odl.mit.edu"],
       'BOOTCAMP_ECOMMERCE_BASE_URL': 'https://bootcamp-ecommerce-ci.herokuapp.com',
       'BOOTCAMP_LOG_LEVEL': 'INFO',
       'BOOTCAMP_SUPPORT_EMAIL': 'bootcamp-support@mit.edu',
@@ -30,7 +30,7 @@
     'rc': {
       'app_name': 'bootcamp-ecommerce-rc',
       'env_name': 'rc',
-      'BOOTCAMP_ADMISSION_BASE_URL': 'https://admissions-test.herokuapp.com',
+      'ALLOWED_HOSTS': ["bootcamp-rc.odl.mit.edu"],
       'BOOTCAMP_ECOMMERCE_BASE_URL': 'https://bootcamp-rc.odl.mit.edu',
       'BOOTCAMP_LOG_LEVEL': 'INFO',
       'BOOTCAMP_SUPPORT_EMAIL': 'bootcamp-support@mit.edu',
@@ -54,7 +54,7 @@
     'production': {
       'app_name': 'bootcamp-ecommerce',
       'env_name': 'production',
-      'BOOTCAMP_ADMISSION_BASE_URL': 'https://admissions.herokuapp.com',
+      'ALLOWED_HOSTS': ["bootcamp.mit.edu", "bootcamps.mit.edu", "bootcamp.odl.mit.edu"],
       'BOOTCAMP_ECOMMERCE_BASE_URL': 'https://bootcamp.odl.mit.edu',
       'BOOTCAMP_LOG_LEVEL': 'INFO',
       'BOOTCAMP_SUPPORT_EMAIL': 'bootcamp@mit.edu',
@@ -88,7 +88,7 @@ heroku:
   app_name: {{ env_data.app_name }}
   api_key: __vault__::secret-operations/global/heroku/mitx-devops-api-key>data>value
   config_vars:
-    ALLOWED_HOSTS: '["*"]'
+    ALLOWED_HOSTS: '{{ env_data.ALLOWED_HOSTS|tojson }}'
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-ol-bootcamps-app-{{ env_data.env_name }}>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-ol-bootcamps-app-{{ env_data.env_name }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'ol-bootcamps-app-{{ env_data.env_name }}'
