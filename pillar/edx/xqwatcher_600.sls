@@ -19,7 +19,7 @@ edx:
    XQWATCHER_COURSES:
     {% for queue_name in ['Watcher-MITx-6.0001r', 'Watcher-MITx-6.00x'] %}
     - COURSE: "mit-600x-{{ queue_name }}"
-      GIT_REPO: git@github.com:mitodl/graders-mit-600x
+      GIT_REPO: git@github.com:mitx/graders-mit-600x
       GIT_REF: {{ watcher_git_ref }}
       PYTHON_REQUIREMENTS:
         - name: numpy
