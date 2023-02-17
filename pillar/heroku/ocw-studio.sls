@@ -125,6 +125,8 @@ heroku:
     AWS_REGION: us-east-1
     AWS_PREVIEW_BUCKET_NAME: 'ocw-content-draft-{{ env_data.env }}'
     AWS_PUBLISH_BUCKET_NAME: 'ocw-content-live-{{ env_data.env }}'
+    AWS_OFFLINE_PREVIEW_BUCKET_NAME: 'ocw-content-offline-draft-{{ env_data.env }}'
+    AWS_OFFLINE_PUBLISH_BUCKET_NAME: 'ocw-content-offline-live-{{ env_data.env }}'
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/ocw-studio-app-{{ env_data.env }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'ol-ocw-studio-app-{{ env_data.env }}'
     CONTENT_SYNC_BACKEND: content_sync.backends.github.GithubBackend
