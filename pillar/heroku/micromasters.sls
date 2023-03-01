@@ -5,6 +5,8 @@
 {% set env_dict = {
     'ci': {
       'app_name': 'micromasters-ci',
+      'ALLOWED_HOSTS': '["micromasters-ci.odl.mit.edu"]',
+      'EDXORG_BASE_URL': 'https://lms-ci.mitx.mit.edu',
       'ELASTICSEARCH_INDEX': 'micromasters-ci',
       'env_name': 'ci',
       'FEATURE_EXAMS_CARD_ENABLED': False,
@@ -12,6 +14,7 @@
       'GTM_CONTAINER_ID': 'GTM-NB27R8L',
       'MAILGUN_FROM_EMAIL': 'no-reply@micromasters-rc-mail.odl.mit.edu',
       'MAILGUN_URL': 'https://api.mailgun.net/v3/micromasters-rc-mail.odl.mit.edu',
+      'MICROMASTERS_BASE_URL': 'https://micromasters-ci.odl.mit.edu',
       'MICROMASTERS_CORS_ORIGIN_WHITELIST': "['discussions-ci.odl.mit.edu']",
       'MICROMASTERS_LOG_LEVEL': 'DEBUG',
       'MIDDLEWARE_FEATURE_FLAG_QS_PREFIX': '',
@@ -25,7 +28,9 @@
       },
     'rc': {
       'app_name': 'micromasters-rc',
+      'ALLOWED_HOSTS': '["micromasters-rc.odl.mit.edu"]',
       'CLOUDFRONT_DIST': 'd3o95baofem9lo',
+      'EDXORG_BASE_URL': 'https://courses.stage.edx.org',
       'ELASTICSEARCH_INDEX': 'micromasters-rc',
       'ELASTICSEARCH_SHARD_COUNT': 3,
       'env_name': 'rc',
@@ -34,6 +39,7 @@
       'GTM_CONTAINER_ID': 'GTM-NB27R8L',
       'MAILGUN_FROM_EMAIL': 'no-reply@micromasters-rc-mail.odl.mit.edu',
       'MAILGUN_URL': 'https://api.mailgun.net/v3/micromasters-rc-mail.odl.mit.edu',
+      'MICROMASTERS_BASE_URL': 'https://micromasters-rc.odl.mit.edu',
       'MICROMASTERS_CORS_ORIGIN_WHITELIST': "['discussions-rc.odl.mit.edu']",
       'MICROMASTERS_LOG_LEVEL': 'DEBUG',
       'MIDDLEWARE_FEATURE_FLAG_QS_PREFIX': 'BGA',
@@ -50,7 +56,9 @@
       },
     'production': {
       'app_name': 'micromasters-production',
+      'ALLOWED_HOSTS': '["micromasters.mit.edu", "mmfin.mit.edu", "mm.mit.edu"]',
       'CLOUDFRONT_DIST': 'do5zh7b0lqdye',
+      'EDXORG_BASE_URL': 'https://courses.edx.org',
       'ELASTICSEARCH_INDEX': 'micromasters',
       'ELASTICSEARCH_SHARD_COUNT': 2,
       'env_name': 'production',
@@ -59,6 +67,7 @@
       'GTM_CONTAINER_ID': 'GTM-NB27R8L',
       'MAILGUN_FROM_EMAIL': 'no-reply@micromasters.odl.mit.edu',
       'MAILGUN_URL': 'https://api.mailgun.net/v3/micromasters.odl.mit.edu',
+      'MICROMASTERS_BASE_URL': 'https://micromasters.mit.edu',
       'MICROMASTERS_CORS_ORIGIN_WHITELIST': "['discussions.odl.mit.edu','odl.mit.edu']",
       'MICROMASTERS_LOG_LEVEL': 'INFO',
       'MIDDLEWARE_FEATURE_FLAG_QS_PREFIX': 'XIQ',
@@ -87,7 +96,7 @@ heroku:
   app_name: {{ env_data.app_name }}
   api_key: __vault__::secret-operations/global/heroku/api_key>data>value
   config_vars:
-    ALLOWED_HOSTS: '[*]'
+    ALLOWED_HOSTS: '{{ env_data.ALLOWED_HOSTS|tojson }}'
     AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/read-write-delete-{{ business_unit }}-app-{{ env_data.env_name }}>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-{{ business_unit }}-app-{{ env_data.env_name }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: odl-{{ business_unit}}-{{ env_data.env_name }}
@@ -98,6 +107,7 @@ heroku:
     CYBERSOURCE_SECURE_ACCEPTANCE_URL: {{ env_data.CYBERSOURCE_SECURE_ACCEPTANCE_URL}}
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.security_key }}
     EDXORG_BASE_URL: {{ env_data.EDXORG_BASE_URL }}
+    EDXORG_CALLBACK_URL: {{ env_data.EDXORG_BASE_URL }}
     EDXORG_CLIENT_ID: __vault__::secret-{{ business_unit }}/>edx>data>client_id
     EDXORG_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/>edx>data>client_secret
     ENABLE_STUNNEL_AMAZON_RDS_FIX: True
@@ -114,20 +124,20 @@ heroku:
     FEATURE_OPEN_DISCUSSIONS_USER_UPDATE: False
     FEATURE_PROGRAM_RECORD_LINK: True
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
-    GOOGLE_API_KEY: __vault__::secret-{{ business_unit }}/google_api_key>data>value
+    GOOGLE_API_KEY: __vault__::secret-{{ business_unit }}/google>data>api_key
     GTM_CONTAINER_ID: {{ env_data.GTM_CONTAINER_ID }}
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
-    MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
+    MAILGUN_KEY: __vault__::secret-operations/mailgun>data>api_key
     MAILGUN_URL: {{ env_data.MAILGUN_URL }}
+    MICROMASTERS_BASE_URL: {{ env_data.MICROMASTERS_BASE_URL }}
     MICROMASTERS_CORS_ORIGIN_WHITELIST: {{ env_data.MICROMASTERS_CORS_ORIGIN_WHITELIST }}
     MICROMASTERS_DB_CONN_MAX_AGE: 0
     MICROMASTERS_DB_DISABLE_SSL: True
-    MICROMASTERS_ECOMMERCE_EMAIL: __vault__::secret-{{ business_unit }}/ecommerce_email>data>value
-    MICROMASTERS_EMAIL_HOST: __vault__::secret-operations/global/mit-smtp>data>relay_host
-    MICROMASTERS_EMAIL_PASSWORD: __vault__::secret-operations/global/mit-smtp>data>relay_password
+    MICROMASTERS_EMAIL_HOST: __vault__::secret-operations/mit-smtp>data>relay_host
+    MICROMASTERS_EMAIL_PASSWORD: __vault__::secret-operations/mit-smtp>data>relay_password
     MICROMASTERS_EMAIL_PORT: 587
     MICROMASTERS_EMAIL_TLS: True
-    MICROMASTERS_EMAIL_USER: __vault__::secret-operations/global/mit-smtp>data>relay_username
+    MICROMASTERS_EMAIL_USER: __vault__::secret-operations/mit-smtp>data>relay_username
     MICROMASTERS_ENVIRONMENT: {{ env_data.env_name }}
     MICROMASTERS_FROM_EMAIL: 'MITx MicroMasters <micromasters-support@mit.edu>'
     MICROMASTERS_LOG_LEVEL: {{ env_data.MICROMASTERS_LOG_LEVEL }}
@@ -138,38 +148,37 @@ heroku:
     OPEN_DISCUSSIONS_BASE_URL: {{ env_data.OPEN_DISCUSSIONS_BASE_URL }}
     OPEN_DISCUSSIONS_COOKIE_DOMAIN: {{ env_data.OPEN_DISCUSSIONS_COOKIE_DOMAIN }}
     OPEN_DISCUSSIONS_COOKIE_NAME: {{ env_data.OPEN_DISCUSSIONS_COOKIE_NAME }}
-    OPEN_DISCUSSIONS_JWT_SECRET: __vault__::secret-{{ business_unit }}/jwt_secret>data>value
+    OPEN_DISCUSSIONS_JWT_SECRET: __vault__::secret-{{ business_unit }}/open-discussions>data>jwt_secret
     OPEN_DISCUSSIONS_REDIRECT_COMPLETE_URL: '/complete/micromasters'
     OPEN_DISCUSSIONS_REDIRECT_URL: {{ env_data.OPEN_DISCUSSIONS_BASE_URL }}
     OPEN_DISCUSSIONS_SITE_KEY: 'micromasters'
-    OPEN_EXCHANGE_RATES_APP_ID: __vault__::secret-{{ business_unit }}/global/open_exchange_rates_app_id>data>value
+    OPEN_EXCHANGE_RATES_APP_ID: __vault__::secret-{{ business_unit }}/open-exchange-rates>data>app_id
     OPEN_EXCHANGE_RATES_URL: 'https://openexchangerates.org/api/'
     OPENSEARCH_HTTP_AUTH: __vault__::secret-{{ business_unit }}/opensearch>data>http_auth
     OPENSEARCH_INDEX: 'micromasters'
-    OPENSEARCH_URL: __vault__::secret-{{ business_unit }}/opensearch>data>opensearch_url
+    OPENSEARCH_URL: __vault__::secret-{{ business_unit }}/opensearch>data>url
     PGBOUNCER_DEFAULT_POOL_SIZE: {{ env_data.PGBOUNCER_DEFAULT_POOL_SIZE }}
     PGBOUNCER_MAX_CLIENT_CONN: {{ env_data.PGBOUNCER_MAX_CLIENT_CONN }}
-    SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/django-secret-key>data>value    
-    SENTRY_AUTH_TOKEN: __vault__::secret-{{ business_unit }}/sentry-auth-token>data>value                  
-    SENTRY_DSN: __vault__::secret-operations/global/micromasters/sentry-dsn>data>value
+    SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/django>data>secret_key    
+    SENTRY_AUTH_TOKEN: __vault__::secret-{{ business_unit }}/sentry>data>auth_token                 
+    SENTRY_DSN: __vault__::secret-{{ business_unit }}/sentry>data>dsn
     SENTRY_ORG_NAME: 'mit-office-of-digital-learning'
     SENTRY_PROJECT_NAME: 'micromasters'
-    STATUS_TOKEN:  __vault__:gen_if_missing:secret-{{ business_unit }}/django-status-token>data>value                      
+    STATUS_TOKEN:  __vault__:gen_if_missing:secret-{{ business_unit }}/django>data>status_token                     
     UWSGI_PROCESS_COUNT: 4
     UWSGI_SOCKET_TIMEOUT: 1                      
     UWSGI_THREAD_COUNT: 50
     {% if env_data.env_name == 'production' %}
-    {% set pg_creds = salt.vault.cached_read('postgres-micromasters/creds/app', cache_prefix='heroku-micormasters') %}
+    {% set pg_creds = salt.vault.cached_read('postgres-micromasters/creds/app', cache_prefix='heroku-micromasters') %}
     ADWORDS_CONVERSION_ID: 935224753
     CLIENT_ELASTICSEARCH_URL: '/api/v0/search/'
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/micromasters
     FEATURE_PEARSON_EXAMS_SYNC: True
-    HIREFIRE_TOKEN: __vault__::secret-{{ business_unit }}/hirefire_token>data>value
     {% endif %}
     {% if env_data.env_name != 'ci' %}
     CLOUDFRONT_DIST: {{ env_data.CLOUDFRONT_DIST }}
     ELASTICSEARCH_DEFAULT_PAGE_SIZE: 50
-    ELASTICSEARCH_HTTP_AUTH: __vault__::secret-{{ business_unit }}/es_http_auth>data>value
+    ELASTICSEARCH_HTTP_AUTH: __vault__::secret-{{ business_unit }}/elasticssearch>data>http_auth
     ELASTICSEARCH_INDEX: {{ env_data.ELASTICSEARCH_INDEX }}
     ELASTICSEARCH_SHARD_COUNT: {{ env_data.ELASTICSEARCH_SHARD_COUNT }}
     ELASTICSEARCH_URL: 'https://elasticsearch'-{{ env_data.vault_env_path }}'.odl.mit.edu/'
@@ -183,18 +192,18 @@ heroku:
     EXAMS_SSO_CLIENT_CODE: 'MITX'
     EXAMS_SSO_PASSPHRASE: __vault__::secret-{{ business_unit }}/exams_sso>data>passphrase
     EXAMS_SSO_URL: __vault__::secret-{{ business_unit }}/exams_sso>data>url
-    FEATURE_ENABLE_EDX_EXAMS: True
     FEATURE_ENABLE_PROGRAM_LETTER: True
     FEATURE_MITXONLINE_LOGIN: True
-    FEATURE_TURN_PAYMENT_OFF: True
-    FEATURE_USE_COMBINED_FINAL_GRADE: True
     MICROMASTERS_ADMIN_EMAIL: 'cuddle-bunnies@mit.edu'
+    MICROMASTERS_DB_CONN_MAX_AGE: 0
+    MICROMASTERS_DB_DISABLE_SSL: True
+    #MICROMASTERS_ECOMMERCE_EMAIL: __vault__::secret-{{ business_unit }}/ecommerce-email>data>value
     MIDDLEWARE_FEATURE_FLAG_QS_PREFIX: {{ env_data.MIDDLEWARE_FEATURE_FLAG_QS_PREFIX }}
     MITXONLINE_BASE_URL: {{ env_data.MITXONLINE_BASE_URL }}
     MITXONLINE_CALLBACK_URL: {{ env_data.MITXONLINE_CALLBACK_URL }}
-    MITXONLINE_CLIENT_ID:  __vault__::secret-{{ business_unit }}/mitxonline-oauth>data>client_id
-    MITXONLINE_CLIENT_SECRET:  __vault__::secret-{{ business_unit }}/mitxonline-oauth>data>client_secret
-    MITXONLINE_STAFF_ACCESS_TOKEN:  __vault__::secret-{{ business_unit }}/mitxonline-oauth>data>client_id
+    MITXONLINE_CLIENT_ID:  __vault__::secret-{{ business_unit }}/mitxonline>data>oauth_client_id
+    MITXONLINE_CLIENT_SECRET:  __vault__::secret-{{ business_unit }}/mitxonline>data>oauth_client_secret
+    MITXONLINE_STAFF_ACCESS_TOKEN:  __vault__::secret-{{ business_unit }}/mitxonline>data>staff_access_token
     MITXONLINE_URL: {{ env_data.MITXONLINE_URL }}
     {% endif %}
 
