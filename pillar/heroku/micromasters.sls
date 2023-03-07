@@ -94,7 +94,7 @@ proxy:
 
 heroku:
   app_name: {{ env_data.app_name }}
-  api_key: __vault__::secret-operations/global/heroku/api_key>data>value
+  api_key: __vault__::secret-operations/heroku>data>api_key
   config_vars:
     ALLOWED_HOSTS: '{{ env_data.ALLOWED_HOSTS|tojson }}'
     AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/read-write-delete-{{ business_unit }}-app-{{ env_data.env_name }}>data>access_key
@@ -177,11 +177,6 @@ heroku:
     {% endif %}
     {% if env_data.env_name != 'ci' %}
     CLOUDFRONT_DIST: {{ env_data.CLOUDFRONT_DIST }}
-    ELASTICSEARCH_DEFAULT_PAGE_SIZE: 50
-    ELASTICSEARCH_HTTP_AUTH: __vault__::secret-{{ business_unit }}/elasticssearch>data>http_auth
-    ELASTICSEARCH_INDEX: {{ env_data.ELASTICSEARCH_INDEX }}
-    ELASTICSEARCH_SHARD_COUNT: {{ env_data.ELASTICSEARCH_SHARD_COUNT }}
-    ELASTICSEARCH_URL: 'https://elasticsearch'-{{ env_data.vault_env_path }}'.odl.mit.edu/'
     ENABLE_STUNNEL_AMAZON_RDS_FIX: True
     EXAMS_AUDIT_AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/read-write-{{ business_unit }}-app-{{ env_data.env_name }}>data>access_key
     EXAMS_AUDIT_AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-odl-micromasters-audit-{{ env_data.env_name }}>data>secret_key
@@ -197,7 +192,7 @@ heroku:
     MICROMASTERS_ADMIN_EMAIL: 'cuddle-bunnies@mit.edu'
     MICROMASTERS_DB_CONN_MAX_AGE: 0
     MICROMASTERS_DB_DISABLE_SSL: True
-    #MICROMASTERS_ECOMMERCE_EMAIL: __vault__::secret-{{ business_unit }}/ecommerce-email>data>value
+    MICROMASTERS_ECOMMERCE_EMAIL: __vault__::secret-{{ business_unit }}/ecommerce-email>data>value
     MIDDLEWARE_FEATURE_FLAG_QS_PREFIX: {{ env_data.MIDDLEWARE_FEATURE_FLAG_QS_PREFIX }}
     MITXONLINE_BASE_URL: {{ env_data.MITXONLINE_BASE_URL }}
     MITXONLINE_CALLBACK_URL: {{ env_data.MITXONLINE_CALLBACK_URL }}
