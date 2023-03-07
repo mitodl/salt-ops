@@ -101,7 +101,7 @@ heroku:
     ALLOWED_HOSTS: '{{ env_data.ALLOWED_HOSTS|tojson }}'
     AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/read-write-delete-{{ business_unit }}-app-{{ env_data.env_name }}>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-{{ business_unit }}-app-{{ env_data.env_name }}>data>secret_key
-    AWS_STORAGE_BUCKET_NAME: odl-{{ business_unit}}-{{ env_data.env_name }}
+    AWS_STORAGE_BUCKET_NAME: ol-{{ business_unit}}-app-{{ env_data.env_name }}
     BATCH_UPDATE_RATE_LIMIT: '2/m'
     CYBERSOURCE_ACCESS_KEY: {{ cybersource_creds.access_key }}
     CYBERSOURCE_PROFILE_ID: {{ cybersource_creds.profile_id }}
