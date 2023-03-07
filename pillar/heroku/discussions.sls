@@ -156,7 +156,6 @@ heroku:
     {% endif %}
     DEBUG: {{ env_data.DEBUG }}
     DUPLICATE_COURSES_URL: https://raw.githubusercontent.com/mitodl/open-resource-blacklists/master/duplicate_courses.yml
-    EDX_LEARNING_COURSE_BUCKET_NAME: {{ env_data.EDX_LEARNING_COURSE_BUCKET_NAME }}
     EDX_API_ACCESS_TOKEN_URL: https://api.edx.org/oauth2/v1/access_token
     EDX_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/edx-api-client>data>id
     EDX_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/edx-api-client>data>secret
@@ -198,6 +197,7 @@ heroku:
     MICROMASTERS_EXTERNAL_LOGIN_URL: https://{{ env_data.MICROMASTERS_BASE_URL}}/discussions
     MITPE_BASE_URL: https://professional.mit.edu/
     {% if env_data.env_name != 'ci' %}
+    EDX_LEARNING_COURSE_BUCKET_NAME: {{ env_data.EDX_LEARNING_COURSE_BUCKET_NAME }}
     MITX_ONLINE_BASE_URL: https://mitxonline.mit.edu/
     MITX_ONLINE_COURSES_API_URL: https://mitxonline.mit.edu/api/courses/
     MITX_ONLINE_PROGRAMS_API_URL: https://mitxonline.mit.edu/api/programs/
