@@ -86,8 +86,10 @@
 {% set env_data = env_dict[environment] %}
 {% set business_unit = 'micromasters' %}
 {% set cybersource_creds = salt.vault.read('secret-' ~ business_unit ~ '/cybersource').data %}
-{% set exams_audit = salt.vault.read('secret-' ~ business_unit ~ '/exams_audit').data %}
-{% set exams_sftp = salt.vault.read('secret-' ~ business_unit ~ '/exams_sftp').data %}
+# Those can be removed once this issue is closed https://github.com/mitodl/micromasters/issues/5314
+{% set exams_audit = salt.vault.read('secret-' ~ business_unit ~ '/exams/audit').data %}
+{% set exams_sftp = salt.vault.read('secret-' ~ business_unit ~ '/exams/sftp').data %}
+{% set exams_sso = salt.vault.read('secret-' ~ business_unit ~ '/exams/sso').data %}
 
 proxy:
   proxytype: heroku
@@ -179,20 +181,20 @@ heroku:
     CLOUDFRONT_DIST: {{ env_data.CLOUDFRONT_DIST }}
     ENABLE_STUNNEL_AMAZON_RDS_FIX: True
     EXAMS_AUDIT_AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/read-write-{{ business_unit }}-app-{{ env_data.env_name }}>data>access_key
-    EXAMS_AUDIT_AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-odl-micromasters-audit-{{ env_data.env_name }}>data>secret_key
+    EXAMS_AUDIT_AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-{{ business_unit }}-app-{{ env_data.env_name }}>data>secret_key
     EXAMS_AUDIT_ENABLED: True
     EXAMS_AUDIT_ENCRYPTION_FINGERPRINT: {{ exams_audit.encryption_fingerprint }}
     EXAMS_AUDIT_ENCRYPTION_PUBLIC_KEY: {{ exams_audit.encryption_public_key }}
     EXAMS_AUDIT_S3_BUCKET: odl-micromasters-audit-{{ env_data.env_name }}
     EXAMS_SSO_CLIENT_CODE: 'MITX'
-    EXAMS_SSO_PASSPHRASE: __vault__::secret-{{ business_unit }}/exams_sso>data>passphrase
-    EXAMS_SSO_URL: __vault__::secret-{{ business_unit }}/exams_sso>data>url
+    EXAMS_SSO_PASSPHRASE: {{ exams_sso.passphrase }}
+    EXAMS_SSO_URL: {{ exams_sso.url }}
     FEATURE_ENABLE_PROGRAM_LETTER: True
     FEATURE_MITXONLINE_LOGIN: True
     MICROMASTERS_ADMIN_EMAIL: 'cuddle-bunnies@mit.edu'
     MICROMASTERS_DB_CONN_MAX_AGE: 0
     MICROMASTERS_DB_DISABLE_SSL: True
-    MICROMASTERS_ECOMMERCE_EMAIL: __vault__::secret-{{ business_unit }}/ecommerce-email>data>value
+    MICROMASTERS_ECOMMERCE_EMAIL: 'cuddle-bunnies@mit.edu'
     MIDDLEWARE_FEATURE_FLAG_QS_PREFIX: {{ env_data.MIDDLEWARE_FEATURE_FLAG_QS_PREFIX }}
     MITXONLINE_BASE_URL: {{ env_data.MITXONLINE_BASE_URL }}
     MITXONLINE_CALLBACK_URL: {{ env_data.MITXONLINE_CALLBACK_URL }}
