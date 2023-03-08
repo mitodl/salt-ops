@@ -67,7 +67,7 @@
       'MAILGUN_FROM_EMAIL': 'no-reply@micromasters.odl.mit.edu',
       'MAILGUN_URL': 'https://api.mailgun.net/v3/micromasters.odl.mit.edu',
       'MICROMASTERS_BASE_URL': 'https://micromasters.mit.edu',
-      'MICROMASTERS_CORS_ORIGIN_WHITELIST': "['discussions.odl.mit.edu','odl.mit.edu']",
+      'MICROMASTERS_CORS_ORIGIN_WHITELIST': "['open.mit.edu']",
       'MICROMASTERS_LOG_LEVEL': 'INFO',
       'MIDDLEWARE_FEATURE_FLAG_QS_PREFIX': 'XIQ',
       'MITXONLINE_BASE_URL': 'https://courses.mitxonline.mit.edu'
@@ -99,8 +99,8 @@ heroku:
   api_key: __vault__::secret-operations/heroku>data>api_key
   config_vars:
     ALLOWED_HOSTS: '{{ env_data.ALLOWED_HOSTS|tojson }}'
-    AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/read-write-delete-{{ business_unit }}-app-{{ env_data.env_name }}>data>access_key
-    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-{{ business_unit }}-app-{{ env_data.env_name }}>data>secret_key
+    AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/{{ business_unit }}-app>data>access_key
+    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/{{ business_unit }}-app>data>secret_key
     AWS_STORAGE_BUCKET_NAME: ol-{{ business_unit}}-app-{{ env_data.env_name }}
     BATCH_UPDATE_RATE_LIMIT: '2/m'
     CYBERSOURCE_ACCESS_KEY: {{ cybersource_creds.access_key }}
@@ -173,15 +173,15 @@ heroku:
     {% if env_data.env_name == 'production' %}
     {% set pg_creds = salt.vault.cached_read('postgres-micromasters/creds/app', cache_prefix='heroku-micromasters') %}
     ADWORDS_CONVERSION_ID: 935224753
-    CLIENT_ELASTICSEARCH_URL: '/api/v0/search/'
-    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/micromasters
     FEATURE_PEARSON_EXAMS_SYNC: True
     {% endif %}
     {% if env_data.env_name != 'ci' %}
+    CLIENT_ELASTICSEARCH_URL: '/api/v0/search/'
     CLOUDFRONT_DIST: {{ env_data.CLOUDFRONT_DIST }}
+    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/micromasters
     ENABLE_STUNNEL_AMAZON_RDS_FIX: True
-    EXAMS_AUDIT_AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/read-write-{{ business_unit }}-app-{{ env_data.env_name }}>data>access_key
-    EXAMS_AUDIT_AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-{{ business_unit }}-app-{{ env_data.env_name }}>data>secret_key
+    EXAMS_AUDIT_AWS_ACCESS_KEY_ID: {{ exams_audit.access_key }}
+    EXAMS_AUDIT_AWS_SECRET_ACCESS_KEY: {{ exams_audit.secret_key }}
     EXAMS_AUDIT_ENABLED: True
     EXAMS_AUDIT_ENCRYPTION_FINGERPRINT: {{ exams_audit.encryption_fingerprint }}
     EXAMS_AUDIT_ENCRYPTION_PUBLIC_KEY: {{ exams_audit.encryption_public_key }}
