@@ -164,14 +164,14 @@ heroku:
     OPENSEARCH_URL: __vault__::secret-{{ business_unit }}/opensearch>data>url
     PGBOUNCER_DEFAULT_POOL_SIZE: {{ env_data.PGBOUNCER_DEFAULT_POOL_SIZE }}
     PGBOUNCER_MAX_CLIENT_CONN: {{ env_data.PGBOUNCER_MAX_CLIENT_CONN }}
-    SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/django>data>secret_key    
-    SENTRY_AUTH_TOKEN: __vault__::secret-{{ business_unit }}/sentry>data>auth_token                 
+    SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/django>data>secret_key
+    SENTRY_AUTH_TOKEN: __vault__::secret-{{ business_unit }}/sentry>data>auth_token
     SENTRY_DSN: __vault__::secret-{{ business_unit }}/sentry>data>dsn
     SENTRY_ORG_NAME: 'mit-office-of-digital-learning'
     SENTRY_PROJECT_NAME: 'micromasters'
-    STATUS_TOKEN:  __vault__:gen_if_missing:secret-{{ business_unit }}/django>data>status_token                     
+    STATUS_TOKEN:  __vault__:gen_if_missing:secret-{{ business_unit }}/django>data>status_token
     UWSGI_PROCESS_COUNT: 4
-    UWSGI_SOCKET_TIMEOUT: 1                      
+    UWSGI_SOCKET_TIMEOUT: 1
     UWSGI_THREAD_COUNT: 50
     {% if env_data.env_name == 'production' %}
     ADWORDS_CONVERSION_ID: 935224753
