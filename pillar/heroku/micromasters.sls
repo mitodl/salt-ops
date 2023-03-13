@@ -90,7 +90,6 @@
 {% set env_data = env_dict[environment] %}
 {% set business_unit = 'micromasters' %}
 {% set cybersource_creds = salt.vault.read('secret-' ~ business_unit ~ '/cybersource').data %}
-{% set rds_endpoint = salt.boto_rds.get_endpoint('micromasters-{env}-app-db'.format(env=env_data.aws_env)) %}
 # Those can be removed once this issue is closed https://github.com/mitodl/micromasters/issues/5314
 {% set exams_audit = salt.vault.read('secret-' ~ business_unit ~ '/exams/audit').data %}
 {% set exams_sftp = salt.vault.read('secret-' ~ business_unit ~ '/exams/sftp').data %}
@@ -180,6 +179,7 @@ heroku:
     FEATURE_PEARSON_EXAMS_SYNC: True
     {% endif %}
     {% if env_data.env_name != 'ci' %}
+    {% set rds_endpoint = salt.boto_rds.get_endpoint('micromasters-{env}-app-db'.format(env=env_data.aws_env)) %}
     {% set pg_creds = salt.vault.cached_read('postgres-micromasters/creds/app', cache_prefix='heroku-micromasters') %}
     CLIENT_ELASTICSEARCH_URL: '/api/v0/search/'
     CLOUDFRONT_DIST: {{ env_data.CLOUDFRONT_DIST }}
