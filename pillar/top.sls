@@ -30,17 +30,23 @@ base:
     - shibboleth.odlvideo
     - logrotate.odlvideo
     - vector.odlvideo
-  proxy-bootcamps-*:
+  'proxy-bootcamps-*':
+    - match: glob
     - heroku.bootcamps
-  proxy-micromasters-*:
+  'proxy-micromasters-*':
+    - match: glob
     - heroku.micromasters
-  proxy-mitxpro-*:
+  'proxy-mitxpro-*':
+    - match: glob
     - heroku.xpro
-  proxy-mit-open-discussions-*:
+  'proxy-mit-open-discussions-*':
+    - match: glob
     - heroku.discussions
-  proxy-mitxonline-*:
+  'proxy-mitxonline-*':
+    - match: glob
     - heroku.mitxonline
-  proxy-ocw-studio-*:
+  'proxy-ocw-studio-*':
+    - match: glob
     - heroku.ocw-studio
   'roles:mitx-cas':
     - match: grain
