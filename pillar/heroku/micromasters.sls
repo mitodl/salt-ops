@@ -42,9 +42,9 @@
       'MICROMASTERS_CORS_ORIGIN_WHITELIST': "['discussions-rc.odl.mit.edu']",
       'MICROMASTERS_LOG_LEVEL': 'DEBUG',
       'MIDDLEWARE_FEATURE_FLAG_QS_PREFIX': 'BGA',
-      'MITXONLINE_BASE_URL': 'https://courses-qa.mitxonline.mit.edu/'
-      'MITXONLINE_CALLBACK_URL': 'https://courses-qa.mitxonline.mit.edu/'
-      'MITXONLINE_URL': 'https://rc.mitxonline.mit.edu/'
+      'MITXONLINE_BASE_URL': 'https://courses-qa.mitxonline.mit.edu/',
+      'MITXONLINE_CALLBACK_URL': 'https://courses-qa.mitxonline.mit.edu/',
+      'MITXONLINE_URL': 'https://rc.mitxonline.mit.edu/',
       'OPEN_DISCUSSIONS_API_USERNAME': 'od_mm_rc_api',
       'OPEN_DISCUSSIONS_BASE_URL': 'https://discussions-rc.odl.mit.edu/',
       'OPEN_DISCUSSIONS_COOKIE_DOMAIN': 'odl.mit.edu',
@@ -70,9 +70,9 @@
       'MICROMASTERS_CORS_ORIGIN_WHITELIST': "['open.mit.edu']",
       'MICROMASTERS_LOG_LEVEL': 'INFO',
       'MIDDLEWARE_FEATURE_FLAG_QS_PREFIX': 'XIQ',
-      'MITXONLINE_BASE_URL': 'https://courses.mitxonline.mit.edu'
-      'MITXONLINE_CALLBACK_URL': 'https://courses.mitxonline.mit.edu'
-      'MITXONLINE_URL': 'https://mitxonline.mit.edu/'
+      'MITXONLINE_BASE_URL': 'https://courses.mitxonline.mit.edu',
+      'MITXONLINE_CALLBACK_URL': 'https://courses.mitxonline.mit.edu',
+      'MITXONLINE_URL': 'https://mitxonline.mit.edu/',
       'OPEN_DISCUSSIONS_API_USERNAME': 'od_mm_prod_api',
       'OPEN_DISCUSSIONS_BASE_URL': 'https://open.mit.edu',
       'OPEN_DISCUSSIONS_COOKIE_DOMAIN': 'mit.edu',
