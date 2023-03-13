@@ -15,7 +15,7 @@
       'MAILGUN_FROM_EMAIL': 'no-reply@micromasters-rc-mail.odl.mit.edu',
       'MAILGUN_URL': 'https://api.mailgun.net/v3/micromasters-rc-mail.odl.mit.edu',
       'MICROMASTERS_BASE_URL': 'https://micromasters-ci.odl.mit.edu',
-      'MICROMASTERS_CORS_ORIGIN_WHITELIST': "['discussions-ci.odl.mit.edu']",
+      'MICROMASTERS_CORS_ORIGIN_WHITELIST': '["discussions-ci.odl.mit.edu"]',
       'MICROMASTERS_LOG_LEVEL': 'DEBUG',
       'MIDDLEWARE_FEATURE_FLAG_QS_PREFIX': '',
       'OPEN_DISCUSSIONS_API_USERNAME': 'od_mm_ci_api',
@@ -42,7 +42,7 @@
       'MAILGUN_FROM_EMAIL': 'no-reply@micromasters-rc-mail.odl.mit.edu',
       'MAILGUN_URL': 'https://api.mailgun.net/v3/micromasters-rc-mail.odl.mit.edu',
       'MICROMASTERS_BASE_URL': 'https://micromasters-rc.odl.mit.edu',
-      'MICROMASTERS_CORS_ORIGIN_WHITELIST': "['discussions-rc.odl.mit.edu']",
+      'MICROMASTERS_CORS_ORIGIN_WHITELIST': '["discussions-rc.odl.mit.edu"]',
       'MICROMASTERS_LOG_LEVEL': 'DEBUG',
       'MIDDLEWARE_FEATURE_FLAG_QS_PREFIX': 'BGA',
       'MITXONLINE_BASE_URL': 'https://courses-qa.mitxonline.mit.edu/',
@@ -72,7 +72,7 @@
       'MAILGUN_FROM_EMAIL': 'no-reply@micromasters.odl.mit.edu',
       'MAILGUN_URL': 'https://api.mailgun.net/v3/micromasters.odl.mit.edu',
       'MICROMASTERS_BASE_URL': 'https://micromasters.mit.edu',
-      'MICROMASTERS_CORS_ORIGIN_WHITELIST': "['open.mit.edu']",
+      'MICROMASTERS_CORS_ORIGIN_WHITELIST': '["open.mit.edu"]',
       'MICROMASTERS_LOG_LEVEL': 'INFO',
       'MIDDLEWARE_FEATURE_FLAG_QS_PREFIX': 'XIQ',
       'MITXONLINE_BASE_URL': 'https://courses.mitxonline.mit.edu',
@@ -136,7 +136,7 @@ heroku:
     MAILGUN_KEY: __vault__::secret-operations/mailgun>data>api_key
     MAILGUN_URL: {{ env_data.MAILGUN_URL }}
     MICROMASTERS_BASE_URL: {{ env_data.MICROMASTERS_BASE_URL }}
-    MICROMASTERS_CORS_ORIGIN_WHITELIST: {{ env_data.MICROMASTERS_CORS_ORIGIN_WHITELIST }}
+    MICROMASTERS_CORS_ORIGIN_WHITELIST: '{{ env_data.MICROMASTERS_CORS_ORIGIN_WHITELIST|tojson }}'
     MICROMASTERS_DB_CONN_MAX_AGE: 0
     MICROMASTERS_DB_DISABLE_SSL: True
     MICROMASTERS_EMAIL_HOST: __vault__::secret-operations/mit-smtp>data>relay_host
