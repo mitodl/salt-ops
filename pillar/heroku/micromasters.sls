@@ -109,7 +109,7 @@ heroku:
     CYBERSOURCE_ACCESS_KEY: {{ cybersource_creds.access_key }}
     CYBERSOURCE_PROFILE_ID: {{ cybersource_creds.profile_id }}
     CYBERSOURCE_REFERENCE_PREFIX: {{ env_data.env_name }}
-    CYBERSOURCE_SECURE_ACCEPTANCE_URL: {{ env_data.CYBERSOURCE_SECURE_ACCEPTANCE_URL}}
+    CYBERSOURCE_SECURE_ACCEPTANCE_URL: {{ env_data.CYBERSOURCE_SECURE_ACCEPTANCE_URL }}
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.security_key }}
     EDXORG_BASE_URL: {{ env_data.EDXORG_BASE_URL }}
     EDXORG_CALLBACK_URL: {{ env_data.EDXORG_BASE_URL }}
