@@ -5,6 +5,7 @@
     'ci': {
       'app_name': 'micromasters-ci',
       'ALLOWED_HOSTS': '["micromasters-ci.odl.mit.edu"]',
+      'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
       'EDXORG_BASE_URL': 'https://lms-ci.mitx.mit.edu',
       'ELASTICSEARCH_INDEX': 'micromasters-ci',
       'env_name': 'ci',
@@ -29,6 +30,7 @@
       'app_name': 'micromasters-rc',
       'ALLOWED_HOSTS': '["micromasters-rc.odl.mit.edu"]',
       'CLOUDFRONT_DIST': 'd3o95baofem9lo',
+      'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
       'EDXORG_BASE_URL': 'https://courses.stage.edx.org',
       'ELASTICSEARCH_INDEX': 'micromasters-rc',
       'ELASTICSEARCH_SHARD_COUNT': 3,
@@ -57,6 +59,7 @@
       'app_name': 'micromasters-production',
       'ALLOWED_HOSTS': '["micromasters.mit.edu", "mmfin.mit.edu", "mm.mit.edu"]',
       'CLOUDFRONT_DIST': 'do5zh7b0lqdye',
+      'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://secureacceptance.cybersource.com/pay',
       'EDXORG_BASE_URL': 'https://courses.edx.org',
       'ELASTICSEARCH_INDEX': 'micromasters',
       'ELASTICSEARCH_SHARD_COUNT': 2,
