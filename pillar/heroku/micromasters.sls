@@ -28,6 +28,7 @@
       },
     'rc': {
       'app_name': 'micromasters-rc',
+      'aws_env': 'qa',
       'ALLOWED_HOSTS': '["micromasters-rc.odl.mit.edu"]',
       'CLOUDFRONT_DIST': 'd3o95baofem9lo',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
@@ -57,6 +58,7 @@
       },
     'production': {
       'app_name': 'micromasters-production',
+      'aws_env': 'production',
       'ALLOWED_HOSTS': '["micromasters.mit.edu", "mmfin.mit.edu", "mm.mit.edu"]',
       'CLOUDFRONT_DIST': 'do5zh7b0lqdye',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://secureacceptance.cybersource.com/pay',
@@ -88,7 +90,7 @@
 {% set env_data = env_dict[environment] %}
 {% set business_unit = 'micromasters' %}
 {% set cybersource_creds = salt.vault.read('secret-' ~ business_unit ~ '/cybersource').data %}
-{% set rds_endpoint = salt.boto_rds.get_endpoint('micromasters-{env}-app-db'.format(env=env_data.env_name)) %}
+{% set rds_endpoint = salt.boto_rds.get_endpoint('micromasters-{env}-app-db'.format(env=env_data.aws_env)) %}
 # Those can be removed once this issue is closed https://github.com/mitodl/micromasters/issues/5314
 {% set exams_audit = salt.vault.read('secret-' ~ business_unit ~ '/exams/audit').data %}
 {% set exams_sftp = salt.vault.read('secret-' ~ business_unit ~ '/exams/sftp').data %}
