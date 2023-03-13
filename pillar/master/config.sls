@@ -137,7 +137,7 @@ salt_master:
       {% if 'qa' in purpose %}
       - proxy-bootcamps-ci
       - proxy-bootcamps-rc
-      - proxy-mictomasters-ci
+      - proxy-micromasters-ci
       - proxy-micromasters-rc
       - proxy-mitxpro-ci
       - proxy-mitxpro-rc
