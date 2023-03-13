@@ -174,11 +174,11 @@ heroku:
     UWSGI_SOCKET_TIMEOUT: 1                      
     UWSGI_THREAD_COUNT: 50
     {% if env_data.env_name == 'production' %}
-    {% set pg_creds = salt.vault.cached_read('postgres-micromasters/creds/app', cache_prefix='heroku-micromasters') %}
     ADWORDS_CONVERSION_ID: 935224753
     FEATURE_PEARSON_EXAMS_SYNC: True
     {% endif %}
     {% if env_data.env_name != 'ci' %}
+    {% set pg_creds = salt.vault.cached_read('postgres-micromasters/creds/app', cache_prefix='heroku-micromasters') %}
     CLIENT_ELASTICSEARCH_URL: '/api/v0/search/'
     CLOUDFRONT_DIST: {{ env_data.CLOUDFRONT_DIST }}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/micromasters
