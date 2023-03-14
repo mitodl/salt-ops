@@ -102,18 +102,17 @@ heroku:
   app_name: {{ env_data.app_name }}
   api_key: __vault__::secret-operations/heroku>data>api_key
   config_vars:
-    {% if env_data.env_name == 'production' %}
     ALLOWED_HOSTS: '{{ env_data.ALLOWED_HOSTS|tojson }}'
     AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/{{ business_unit }}>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/{{ business_unit }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: ol-{{ business_unit}}-app-{{ env_data.env_name }}
     BATCH_UPDATE_RATE_LIMIT: '2/m'
+    {% if env_data.env_name == 'production' %}
     CYBERSOURCE_ACCESS_KEY: {{ cybersource_creds.access_key }}
     CYBERSOURCE_PROFILE_ID: {{ cybersource_creds.profile_id }}
     CYBERSOURCE_REFERENCE_PREFIX: {{ env_data.env_name }}
     CYBERSOURCE_SECURE_ACCEPTANCE_URL: {{ env_data.CYBERSOURCE_SECURE_ACCEPTANCE_URL }}
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.security_key }}
-    {% endif %}
     EDXORG_BASE_URL: {{ env_data.EDXORG_BASE_URL }}
     EDXORG_CALLBACK_URL: {{ env_data.EDXORG_BASE_URL }}
     EDXORG_CLIENT_ID: __vault__::secret-{{ business_unit }}>edx>data>client_id
@@ -124,6 +123,7 @@ heroku:
     EXAMS_SFTP_PASSWORD: {{ exams_sftp.password }}
     EXAMS_SFTP_UPLOAD_DIR: '.'
     EXAMS_SFTP_USERNAME: {{ exams_sftp.username }}
+    {% endif %}
     FEATURE_EXAMS_CARD_ENABLED: {{ env_data.FEATURE_EXAMS_CARD_ENABLED }}
     FEATURE_FINAL_GRADE_ALGORITHM: 'v1'
     FEATURE_OPEN_DISCUSSIONS_CREATE_CHANNEL_UI: True
