@@ -179,7 +179,6 @@ heroku:
     FEATURE_PEARSON_EXAMS_SYNC: True
     {% endif %}
     {% if env_data.env_name != 'ci' %}
-    {% set rds_endpoint = salt.boto_rds.get_endpoint('micromasters-{env}-app-db'.format(env=env_data.aws_env)) %}
     {% set pg_creds = salt.vault.cached_read('postgres-micromasters/creds/app', cache_prefix='heroku-micromasters') %}
     CLIENT_ELASTICSEARCH_URL: '/api/v0/search/'
     CLOUDFRONT_DIST: {{ env_data.CLOUDFRONT_DIST }}
