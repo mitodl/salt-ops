@@ -132,6 +132,7 @@ heroku:
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
     GOOGLE_API_KEY: __vault__::secret-{{ business_unit }}/google>data>api_key
     GTM_CONTAINER_ID: {{ env_data.GTM_CONTAINER_ID }}
+    {% if env_data.env_name == 'production' %}
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
     MAILGUN_KEY: __vault__::secret-operations/mailgun>data>api_key
     MAILGUN_URL: {{ env_data.MAILGUN_URL }}
@@ -174,6 +175,7 @@ heroku:
     UWSGI_PROCESS_COUNT: 4
     UWSGI_SOCKET_TIMEOUT: 1
     UWSGI_THREAD_COUNT: 50
+    {% endif %}
     {% if env_data.env_name == 'production' %}
     ADWORDS_CONVERSION_ID: 935224753
     FEATURE_PEARSON_EXAMS_SYNC: True
