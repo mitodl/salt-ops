@@ -100,7 +100,7 @@ proxy:
 
 heroku:
   app_name: {{ env_data.app_name }}
-  api_key: __vault__::secret-operations/heroku>data>api_key
+  api_key: __vault__::secret-operations/heroku>data>mitx_devops_api_key
   config_vars:
     ALLOWED_HOSTS: '{{ env_data.ALLOWED_HOSTS|tojson }}'
     AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/{{ business_unit }}>data>access_key
