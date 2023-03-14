@@ -103,8 +103,8 @@ heroku:
   api_key: __vault__::secret-operations/heroku>data>api_key
   config_vars:
     ALLOWED_HOSTS: '{{ env_data.ALLOWED_HOSTS|tojson }}'
-    AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/{{ business_unit }}-app>data>access_key
-    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/{{ business_unit }}-app>data>secret_key
+    AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/{{ business_unit }}>data>access_key
+    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/{{ business_unit }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: ol-{{ business_unit}}-app-{{ env_data.env_name }}
     BATCH_UPDATE_RATE_LIMIT: '2/m'
     CYBERSOURCE_ACCESS_KEY: {{ cybersource_creds.access_key }}
