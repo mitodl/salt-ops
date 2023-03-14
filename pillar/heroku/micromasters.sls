@@ -102,7 +102,6 @@ heroku:
   app_name: {{ env_data.app_name }}
   api_key: __vault__::secret-operations/heroku>data>api_key
   config_vars:
-    {% if env_data.env_name == 'production' %}
     ALLOWED_HOSTS: '{{ env_data.ALLOWED_HOSTS|tojson }}'
     AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/{{ business_unit }}>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/{{ business_unit }}>data>secret_key
@@ -115,8 +114,8 @@ heroku:
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.security_key }}
     EDXORG_BASE_URL: {{ env_data.EDXORG_BASE_URL }}
     EDXORG_CALLBACK_URL: {{ env_data.EDXORG_BASE_URL }}
-    EDXORG_CLIENT_ID: __vault__::secret-{{ business_unit }}/>edx>data>client_id
-    EDXORG_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/>edx>data>client_secret
+    EDXORG_CLIENT_ID: __vault__::secret-{{ business_unit }}>edx>data>client_id
+    EDXORG_CLIENT_SECRET: __vault__::secret-{{ business_unit }}>edx>data>client_secret
     ENABLE_STUNNEL_AMAZON_RDS_FIX: True
     EXAMS_AUDIT_NACL_PUBLIC_KEY: {{ exams_audit.nacl_public_key }}
     EXAMS_SFTP_HOST: {{ exams_sftp.host }}
@@ -175,12 +174,11 @@ heroku:
     UWSGI_PROCESS_COUNT: 4
     UWSGI_SOCKET_TIMEOUT: 1
     UWSGI_THREAD_COUNT: 50
-    {% endif %}
     {% if env_data.env_name == 'production' %}
     ADWORDS_CONVERSION_ID: 935224753
     FEATURE_PEARSON_EXAMS_SYNC: True
     {% endif %}
-    {% if env_data.env_name == 'production' %}
+    {% if env_data.env_name != 'ci' %}
     {% set rds_endpoint = salt.boto_rds.get_endpoint('micromasters-{env}-app-db'.format(env=env_data.aws_env)) %}
     {% set pg_creds = salt.vault.cached_read('postgres-micromasters/creds/app', cache_prefix='heroku-micromasters') %}
     CLIENT_ELASTICSEARCH_URL: '/api/v0/search/'
