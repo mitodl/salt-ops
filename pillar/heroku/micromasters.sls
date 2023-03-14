@@ -107,7 +107,6 @@ heroku:
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/{{ business_unit }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: ol-{{ business_unit}}-app-{{ env_data.env_name }}
     BATCH_UPDATE_RATE_LIMIT: '2/m'
-    {% if env_data.env_name == 'production' %}
     CYBERSOURCE_ACCESS_KEY: {{ cybersource_creds.access_key }}
     CYBERSOURCE_PROFILE_ID: {{ cybersource_creds.profile_id }}
     CYBERSOURCE_REFERENCE_PREFIX: {{ env_data.env_name }}
@@ -115,6 +114,7 @@ heroku:
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.security_key }}
     EDXORG_BASE_URL: {{ env_data.EDXORG_BASE_URL }}
     EDXORG_CALLBACK_URL: {{ env_data.EDXORG_BASE_URL }}
+    {% if env_data.env_name == 'production' %}
     EDXORG_CLIENT_ID: __vault__::secret-{{ business_unit }}>edx>data>client_id
     EDXORG_CLIENT_SECRET: __vault__::secret-{{ business_unit }}>edx>data>client_secret
     ENABLE_STUNNEL_AMAZON_RDS_FIX: True
