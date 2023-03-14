@@ -102,6 +102,7 @@ heroku:
   app_name: {{ env_data.app_name }}
   api_key: __vault__::secret-operations/heroku>data>api_key
   config_vars:
+    {% if env_data.env_name == 'production' %}
     ALLOWED_HOSTS: '{{ env_data.ALLOWED_HOSTS|tojson }}'
     AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/{{ business_unit }}>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/{{ business_unit }}>data>secret_key
@@ -132,7 +133,6 @@ heroku:
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
     GOOGLE_API_KEY: __vault__::secret-{{ business_unit }}/google>data>api_key
     GTM_CONTAINER_ID: {{ env_data.GTM_CONTAINER_ID }}
-    {% if env_data.env_name == 'production' %}
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
     MAILGUN_KEY: __vault__::secret-operations/mailgun>data>api_key
     MAILGUN_URL: {{ env_data.MAILGUN_URL }}
