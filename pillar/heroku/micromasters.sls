@@ -114,16 +114,14 @@ heroku:
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.security_key }}
     EDXORG_BASE_URL: {{ env_data.EDXORG_BASE_URL }}
     EDXORG_CALLBACK_URL: {{ env_data.EDXORG_BASE_URL }}
-    {% if env_data.env_name == 'production' %}
-    EDXORG_CLIENT_ID: __vault__::secret-{{ business_unit }}>edx>data>client_id
-    EDXORG_CLIENT_SECRET: __vault__::secret-{{ business_unit }}>edx>data>client_secret
+    EDXORG_CLIENT_ID: __vault__::secret-{{ business_unit }}/edx>data>client_id
+    EDXORG_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/edx>data>client_secret
     ENABLE_STUNNEL_AMAZON_RDS_FIX: True
     EXAMS_AUDIT_NACL_PUBLIC_KEY: {{ exams_audit.nacl_public_key }}
     EXAMS_SFTP_HOST: {{ exams_sftp.host }}
     EXAMS_SFTP_PASSWORD: {{ exams_sftp.password }}
     EXAMS_SFTP_UPLOAD_DIR: '.'
     EXAMS_SFTP_USERNAME: {{ exams_sftp.username }}
-    {% endif %}
     FEATURE_EXAMS_CARD_ENABLED: {{ env_data.FEATURE_EXAMS_CARD_ENABLED }}
     FEATURE_FINAL_GRADE_ALGORITHM: 'v1'
     FEATURE_OPEN_DISCUSSIONS_CREATE_CHANNEL_UI: True
