@@ -102,6 +102,7 @@ heroku:
   app_name: {{ env_data.app_name }}
   api_key: __vault__::secret-operations/heroku>data>api_key
   config_vars:
+    {% if env_data.env_name == 'production' %}
     ALLOWED_HOSTS: '{{ env_data.ALLOWED_HOSTS|tojson }}'
     AWS_ACCESS_KEY_ID: __vault__:cache:aws-mitx/creds/{{ business_unit }}>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/{{ business_unit }}>data>secret_key
@@ -112,6 +113,7 @@ heroku:
     CYBERSOURCE_REFERENCE_PREFIX: {{ env_data.env_name }}
     CYBERSOURCE_SECURE_ACCEPTANCE_URL: {{ env_data.CYBERSOURCE_SECURE_ACCEPTANCE_URL }}
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.security_key }}
+    {% endif %}
     EDXORG_BASE_URL: {{ env_data.EDXORG_BASE_URL }}
     EDXORG_CALLBACK_URL: {{ env_data.EDXORG_BASE_URL }}
     EDXORG_CLIENT_ID: __vault__::secret-{{ business_unit }}>edx>data>client_id
