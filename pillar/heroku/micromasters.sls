@@ -22,8 +22,8 @@
       'OPEN_DISCUSSIONS_BASE_URL': 'https://discussions-ci.odl.mit.edu/',
       'OPEN_DISCUSSIONS_COOKIE_DOMAIN': 'odl.mit.edu',
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'discussionsci',
-      'PGBOUNCER_DEFAULT_POOL_SIZE': 100,
-      'PGBOUNCER_MAX_CLIENT_CONN': 1000,
+      'PGBOUNCER_DEFAULT_POOL_SIZE': 50,
+      'PGBOUNCER_MAX_CLIENT_CONN': 50,
       'vault_env_path': 'rc-apps'
       },
     'rc': {
@@ -52,8 +52,8 @@
       'OPEN_DISCUSSIONS_BASE_URL': 'https://discussions-rc.odl.mit.edu/',
       'OPEN_DISCUSSIONS_COOKIE_DOMAIN': 'odl.mit.edu',
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'discussionsrc',
-      'PGBOUNCER_DEFAULT_POOL_SIZE': 100,
-      'PGBOUNCER_MAX_CLIENT_CONN': 1000,
+      'PGBOUNCER_DEFAULT_POOL_SIZE': 50,
+      'PGBOUNCER_MAX_CLIENT_CONN': 50,
       'vault_env_path': 'rc-apps'
       },
     'production': {
@@ -170,9 +170,6 @@ heroku:
     SENTRY_ORG_NAME: 'mit-office-of-digital-learning'
     SENTRY_PROJECT_NAME: 'micromasters'
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/django>data>status_token
-    UWSGI_PROCESS_COUNT: 4
-    UWSGI_SOCKET_TIMEOUT: 1
-    UWSGI_THREAD_COUNT: 50
     {% set rds_endpoint = salt.boto_rds.get_endpoint('micromasters-{env}-app-db'.format(env=env_data.aws_env)) %}
     {% set pg_creds = salt.vault.cached_read('postgres-micromasters/creds/app', cache_prefix='heroku-micromasters') %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/micromasters
@@ -204,6 +201,9 @@ heroku:
     MITXONLINE_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/mitxonline>data>oauth_client_secret
     MITXONLINE_STAFF_ACCESS_TOKEN: __vault__::secret-{{ business_unit }}/mitxonline>data>staff_access_token
     MITXONLINE_URL: {{ env_data.MITXONLINE_URL }}
+    UWSGI_PROCESSES: 2
+    UWSGI_SOCKET_TIMEOUT: 1
+    UWSGI_THREADS: 50
     {% endif %}
 
 schedule:
