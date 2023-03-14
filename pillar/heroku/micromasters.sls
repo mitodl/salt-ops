@@ -117,10 +117,8 @@ heroku:
     EDXORG_CLIENT_ID: __vault__::secret-{{ business_unit }}/edx>data>client_id
     EDXORG_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/edx>data>client_secret
     EXAMS_AUDIT_NACL_PUBLIC_KEY: {{ exams_audit.nacl_public_key }}
-    {% if env_data.env_name == 'production' %}
     EXAMS_SFTP_HOST: {{ exams_sftp.host }}
     EXAMS_SFTP_PASSWORD: {{ exams_sftp.password }}
-    {% endif %}
     EXAMS_SFTP_UPLOAD_DIR: '.'
     EXAMS_SFTP_USERNAME: {{ exams_sftp.username }}
     FEATURE_EXAMS_CARD_ENABLED: {{ env_data.FEATURE_EXAMS_CARD_ENABLED }}
