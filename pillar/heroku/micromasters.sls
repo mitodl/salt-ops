@@ -4,7 +4,7 @@
 {% set env_dict = {
     'ci': {
       'app_name': 'micromasters-ci',
-      'ALLOWED_HOSTS': '["micromasters-ci.odl.mit.edu"]',
+      'ALLOWED_HOSTS': ['micromasters-ci.odl.mit.edu'],
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
       'EDXORG_BASE_URL': 'https://lms-ci.mitx.mit.edu',
       'ELASTICSEARCH_INDEX': 'micromasters-ci',
@@ -15,7 +15,7 @@
       'MAILGUN_FROM_EMAIL': 'no-reply@micromasters-rc-mail.odl.mit.edu',
       'MAILGUN_URL': 'https://api.mailgun.net/v3/micromasters-rc-mail.odl.mit.edu',
       'MICROMASTERS_BASE_URL': 'https://micromasters-ci.odl.mit.edu',
-      'MICROMASTERS_CORS_ORIGIN_WHITELIST': '["discussions-ci.odl.mit.edu"]',
+      'MICROMASTERS_CORS_ORIGIN_WHITELIST': ['discussions-ci.odl.mit.edu'],
       'MICROMASTERS_LOG_LEVEL': 'DEBUG',
       'MIDDLEWARE_FEATURE_FLAG_QS_PREFIX': '',
       'OPEN_DISCUSSIONS_API_USERNAME': 'od_mm_ci_api',
@@ -29,7 +29,7 @@
     'rc': {
       'app_name': 'micromasters-rc',
       'aws_env': 'qa',
-      'ALLOWED_HOSTS': '["micromasters-rc.odl.mit.edu"]',
+      'ALLOWED_HOSTS': ['micromasters-rc.odl.mit.edu'],
       'CLOUDFRONT_DIST': 'd3o95baofem9lo',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
       'EDXORG_BASE_URL': 'https://courses.stage.edx.org',
@@ -42,7 +42,7 @@
       'MAILGUN_FROM_EMAIL': 'no-reply@micromasters-rc-mail.odl.mit.edu',
       'MAILGUN_URL': 'https://api.mailgun.net/v3/micromasters-rc-mail.odl.mit.edu',
       'MICROMASTERS_BASE_URL': 'https://micromasters-rc.odl.mit.edu',
-      'MICROMASTERS_CORS_ORIGIN_WHITELIST': '["discussions-rc.odl.mit.edu"]',
+      'MICROMASTERS_CORS_ORIGIN_WHITELIST': ['discussions-rc.odl.mit.edu'],
       'MICROMASTERS_LOG_LEVEL': 'DEBUG',
       'MIDDLEWARE_FEATURE_FLAG_QS_PREFIX': 'BGA',
       'MITXONLINE_BASE_URL': 'https://courses-qa.mitxonline.mit.edu/',
@@ -59,7 +59,7 @@
     'production': {
       'app_name': 'micromasters-production',
       'aws_env': 'production',
-      'ALLOWED_HOSTS': '["micromasters.mit.edu", "mmfin.mit.edu", "mm.mit.edu"]',
+      'ALLOWED_HOSTS': ['micromasters.mit.edu', 'mmfin.mit.edu', 'mm.mit.edu'],
       'CLOUDFRONT_DIST': 'do5zh7b0lqdye',
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://secureacceptance.cybersource.com/pay',
       'EDXORG_BASE_URL': 'https://courses.edx.org',
@@ -72,7 +72,7 @@
       'MAILGUN_FROM_EMAIL': 'no-reply@micromasters.odl.mit.edu',
       'MAILGUN_URL': 'https://api.mailgun.net/v3/micromasters.odl.mit.edu',
       'MICROMASTERS_BASE_URL': 'https://micromasters.mit.edu',
-      'MICROMASTERS_CORS_ORIGIN_WHITELIST': '["open.mit.edu"]',
+      'MICROMASTERS_CORS_ORIGIN_WHITELIST': ['open.mit.edu'],
       'MICROMASTERS_LOG_LEVEL': 'INFO',
       'MIDDLEWARE_FEATURE_FLAG_QS_PREFIX': 'XIQ',
       'MITXONLINE_BASE_URL': 'https://courses.mitxonline.mit.edu',
