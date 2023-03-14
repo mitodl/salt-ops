@@ -4,6 +4,7 @@
 {% set env_dict = {
     'ci': {
       'app_name': 'micromasters-ci',
+      'aws_env': 'ci',
       'ALLOWED_HOSTS': ['micromasters-ci.odl.mit.edu'],
       'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
       'EDXORG_BASE_URL': 'https://lms-ci.mitx.mit.edu',
