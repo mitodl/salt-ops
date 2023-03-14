@@ -203,9 +203,9 @@ heroku:
     MIDDLEWARE_FEATURE_FLAG_QS_PREFIX: {{ env_data.MIDDLEWARE_FEATURE_FLAG_QS_PREFIX }}
     MITXONLINE_BASE_URL: {{ env_data.MITXONLINE_BASE_URL }}
     MITXONLINE_CALLBACK_URL: {{ env_data.MITXONLINE_CALLBACK_URL }}
-    MITXONLINE_CLIENT_ID:  __vault__::secret-{{ business_unit }}/mitxonline>data>oauth_client_id
-    MITXONLINE_CLIENT_SECRET:  __vault__::secret-{{ business_unit }}/mitxonline>data>oauth_client_secret
-    MITXONLINE_STAFF_ACCESS_TOKEN:  __vault__::secret-{{ business_unit }}/mitxonline>data>staff_access_token
+    MITXONLINE_CLIENT_ID: __vault__::secret-{{ business_unit }}/mitxonline>data>oauth_client_id
+    MITXONLINE_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/mitxonline>data>oauth_client_secret
+    MITXONLINE_STAFF_ACCESS_TOKEN: __vault__::secret-{{ business_unit }}/mitxonline>data>staff_access_token
     MITXONLINE_URL: {{ env_data.MITXONLINE_URL }}
     {% endif %}
 
