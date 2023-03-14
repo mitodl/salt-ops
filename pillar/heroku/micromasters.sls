@@ -182,7 +182,6 @@ heroku:
     {% set pg_creds = salt.vault.cached_read('postgres-micromasters/creds/app', cache_prefix='heroku-micromasters') %}
     CLIENT_ELASTICSEARCH_URL: '/api/v0/search/'
     CLOUDFRONT_DIST: {{ env_data.CLOUDFRONT_DIST }}
-    #DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/micromasters
     ENABLE_STUNNEL_AMAZON_RDS_FIX: True
     EXAMS_AUDIT_AWS_ACCESS_KEY_ID: {{ exams_audit.access_key }}
     EXAMS_AUDIT_AWS_SECRET_ACCESS_KEY: {{ exams_audit.secret_key }}
