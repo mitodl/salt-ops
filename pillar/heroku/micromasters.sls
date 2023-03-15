@@ -24,7 +24,7 @@
       'OPEN_DISCUSSIONS_COOKIE_DOMAIN': 'odl.mit.edu',
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'discussionsci',
       'PGBOUNCER_DEFAULT_POOL_SIZE': 50,
-      'PGBOUNCER_MAX_CLIENT_CONN': 50,
+      'PGBOUNCER_MAX_CLIENT_CONN': 1000,
       'vault_env_path': 'rc-apps'
       },
     'rc': {
@@ -54,7 +54,7 @@
       'OPEN_DISCUSSIONS_COOKIE_DOMAIN': 'odl.mit.edu',
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'discussionsrc',
       'PGBOUNCER_DEFAULT_POOL_SIZE': 50,
-      'PGBOUNCER_MAX_CLIENT_CONN': 50,
+      'PGBOUNCER_MAX_CLIENT_CONN': 1000,
       'vault_env_path': 'rc-apps'
       },
     'production': {
