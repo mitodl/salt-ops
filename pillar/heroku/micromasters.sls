@@ -91,10 +91,6 @@
 {% set env_data = env_dict[environment] %}
 {% set business_unit = 'micromasters' %}
 {% set cybersource_creds = salt.vault.read('secret-' ~ business_unit ~ '/cybersource').data %}
-# Those can be removed once this issue is closed https://github.com/mitodl/micromasters/issues/5314
-{% set exams_audit = salt.vault.read('secret-' ~ business_unit ~ '/exams/audit').data %}
-{% set exams_sftp = salt.vault.read('secret-' ~ business_unit ~ '/exams/sftp').data %}
-{% set exams_sso = salt.vault.read('secret-' ~ business_unit ~ '/exams/sso').data %}
 
 proxy:
   proxytype: heroku
@@ -117,11 +113,6 @@ heroku:
     EDXORG_CALLBACK_URL: {{ env_data.EDXORG_BASE_URL }}
     EDXORG_CLIENT_ID: __vault__::secret-{{ business_unit }}/edx>data>client_id
     EDXORG_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/edx>data>client_secret
-    EXAMS_AUDIT_NACL_PUBLIC_KEY: {{ exams_audit.nacl_public_key }}
-    EXAMS_SFTP_HOST: {{ exams_sftp.host }}
-    EXAMS_SFTP_PASSWORD: '{{ exams_sftp.password }}'
-    EXAMS_SFTP_UPLOAD_DIR: '.'
-    EXAMS_SFTP_USERNAME: {{ exams_sftp.username }}
     FEATURE_EXAMS_CARD_ENABLED: {{ env_data.FEATURE_EXAMS_CARD_ENABLED }}
     FEATURE_FINAL_GRADE_ALGORITHM: 'v1'
     FEATURE_OPEN_DISCUSSIONS_CREATE_CHANNEL_UI: True
@@ -182,15 +173,6 @@ heroku:
     CLIENT_ELASTICSEARCH_URL: '/api/v0/search/'
     CLOUDFRONT_DIST: {{ env_data.CLOUDFRONT_DIST }}
     ENABLE_STUNNEL_AMAZON_RDS_FIX: True
-    EXAMS_AUDIT_AWS_ACCESS_KEY_ID: {{ exams_audit.access_key }}
-    EXAMS_AUDIT_AWS_SECRET_ACCESS_KEY: {{ exams_audit.secret_key }}
-    EXAMS_AUDIT_ENABLED: True
-    EXAMS_AUDIT_ENCRYPTION_FINGERPRINT: {{ exams_audit.encryption_fingerprint }}
-    EXAMS_AUDIT_ENCRYPTION_PUBLIC_KEY: {{ exams_audit.encryption_public_key }}
-    EXAMS_AUDIT_S3_BUCKET: odl-micromasters-audit-{{ env_data.env_name }}
-    EXAMS_SSO_CLIENT_CODE: 'MITX'
-    EXAMS_SSO_PASSPHRASE: {{ exams_sso.passphrase }}
-    EXAMS_SSO_URL: {{ exams_sso.url }}
     FEATURE_ENABLE_PROGRAM_LETTER: True
     FEATURE_MITXONLINE_LOGIN: True
     MICROMASTERS_ADMIN_EMAIL: 'cuddle-bunnies@mit.edu'
