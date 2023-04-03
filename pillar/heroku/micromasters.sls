@@ -165,7 +165,7 @@ heroku:
     {% set rds_endpoint = salt.boto_rds.get_endpoint('micromasters-{env}-app-db'.format(env=env_data.aws_env)) %}
     {% if env_data.env_name == 'ci' %}
     # Static pg_creds stored in Vault QA for CI app
-    {% set pg_creds = salt.vault.read('secret-' ~ business_unit ~ '/ci/pg_creds/').data %}
+    {% set pg_creds = salt.vault.read('secret-' ~ business_unit ~ '/ci/pg_creds').data %}
     DATABASE_URL: postgres://{{ pg_creds.username }}:{{ pg_creds.password }}@{{ rds_endpoint }}/micromasters
     {% else %}
     {% set pg_creds = salt.vault.cached_read('postgres-micromasters/creds/app', cache_prefix='heroku-micromasters') %}
