@@ -163,8 +163,14 @@ heroku:
     SENTRY_PROJECT_NAME: 'micromasters'
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/django>data>status_token
     {% set rds_endpoint = salt.boto_rds.get_endpoint('micromasters-{env}-app-db'.format(env=env_data.aws_env)) %}
+    {% if env_data.env_name == 'ci' %}
+    # Static pg_creds stored in Vault QA for CI app
+    {% set pg_creds = salt.vault.read('secret-' ~ business_unit ~ '/ci/pg_creds/').data %}
+    DATABASE_URL: postgres://{{ pg_creds.username }}:{{ pg_creds.password }}@{{ rds_endpoint }}/micromasters
+    {% else %}
     {% set pg_creds = salt.vault.cached_read('postgres-micromasters/creds/app', cache_prefix='heroku-micromasters') %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/micromasters
+    {% endif %}
     {% if env_data.env_name == 'production' %}
     ADWORDS_CONVERSION_ID: 935224753
     FEATURE_PEARSON_EXAMS_SYNC: True
