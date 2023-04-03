@@ -167,15 +167,14 @@ heroku:
     # Static pg_creds stored in Vault QA for CI app
     {% set pg_creds = salt.vault.read('secret-' ~ business_unit ~ '/ci/rds').data %}
     DATABASE_URL: postgres://{{ pg_creds.username }}:{{ pg_creds.password }}@{{ rds_endpoint }}/micromasters
-    {% else %}
-    {% set pg_creds = salt.vault.cached_read('postgres-micromasters/creds/app', cache_prefix='heroku-micromasters') %}
-    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/micromasters
     {% endif %}
     {% if env_data.env_name == 'production' %}
     ADWORDS_CONVERSION_ID: 935224753
     FEATURE_PEARSON_EXAMS_SYNC: True
     {% endif %}
     {% if env_data.env_name != 'ci' %}
+    {% set pg_creds = salt.vault.cached_read('postgres-micromasters/creds/app', cache_prefix='heroku-micromasters') %}
+    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/micromasters
     CLIENT_ELASTICSEARCH_URL: '/api/v0/search/'
     CLOUDFRONT_DIST: {{ env_data.CLOUDFRONT_DIST }}
     ENABLE_STUNNEL_AMAZON_RDS_FIX: True
