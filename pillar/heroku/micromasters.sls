@@ -58,7 +58,7 @@
       'vault_env_path': 'rc-apps'
       },
     'production': {
-      'app_name': 'micromasters-production',
+      'app_name': 'micromasters',
       'aws_env': 'production',
       'ALLOWED_HOSTS': ['micromasters.mit.edu', 'mmfin.mit.edu', 'mm.mit.edu'],
       'CLOUDFRONT_DIST': 'do5zh7b0lqdye',
