@@ -124,6 +124,7 @@ heroku:
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-xpro-app-{{ env_data.env_name }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'xpro-app-{{ env_data.env_name }}'
     COUPON_REQUEST_SHEET_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>sheet_id
+    CRON_COURSERUN_SYNC_HOURS: '*'
     CYBERSOURCE_ACCESS_KEY: {{ cybersource_creds.data.access_key }}
     CYBERSOURCE_MERCHANT_ID: 'mit_odl_xpro'
     CYBERSOURCE_PROFILE_ID: {{ cybersource_creds.data.profile_id }}
