@@ -160,6 +160,7 @@ heroku:
     EDX_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/edx-api-client>data>id
     EDX_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/edx-api-client>data>secret
     EDX_API_URL: https://api.edx.org/catalog/v1/catalogs/10/courses
+    ELASTICSEARCH_DEFAULT_TIMEOUT: 30
     ELASTICSEARCH_HTTP_AUTH: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/elasticsearch>data>http_auth
     ELASTICSEARCH_INDEX: {{ env_data.ELASTICSEARCH_INDEX}}
     # This should match the nginx config client_max_body_size in apps_es.sls
