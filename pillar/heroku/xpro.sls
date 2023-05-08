@@ -125,6 +125,7 @@ heroku:
     AWS_STORAGE_BUCKET_NAME: 'xpro-app-{{ env_data.env_name }}'
     COUPON_REQUEST_SHEET_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/google-sheets-coupon-integration>data>sheet_id
     CRON_COURSERUN_SYNC_HOURS: '*'
+    CRON_COURSERUN_SYNC_DAYS: 'fri'
     CYBERSOURCE_ACCESS_KEY: {{ cybersource_creds.data.access_key }}
     CYBERSOURCE_MERCHANT_ID: 'mit_odl_xpro'
     CYBERSOURCE_PROFILE_ID: {{ cybersource_creds.data.profile_id }}
