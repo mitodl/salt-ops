@@ -62,6 +62,7 @@ heroku:
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/mitxonline>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/mitxonline>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'ol-mitxonline-app-{{ env_data.env_stage}}'
+    CRON_COURSERUN_SYNC_HOURS: '*'
     {% if env_data.env_name == 'production' %}
     HIREFIRE_TOKEN: __vault__::secret-{{ business_unit }}/production-apps/hirefire_token>data>value
     {% endif %}
