@@ -24,6 +24,7 @@
       'MITOL_PAYMENT_GATEWAY_CYBERSOURCE_REST_API_ENVIRONMENT': 'apitest.cybersource.com',
       'MITXONLINE_BASE_URL': 'https://rc.mitxonline.mit.edu',
       'MITXONLINE_SECURE_SSL_HOST': 'mitxonline-rc.mitxonline.mit.edu',
+      'CRON_COURSE_CERTIFICATES_HOURS': 18,
       },
     'production': {
       'app_name': 'mitxonline-production',
@@ -47,6 +48,7 @@
       'MITOL_PAYMENT_GATEWAY_CYBERSOURCE_REST_API_ENVIRONMENT': 'api.cybersource.com',
       'MITXONLINE_BASE_URL': 'https://mitxonline.mit.edu',
       'MITXONLINE_SECURE_SSL_HOST': 'mitxonline.mit.edu',
+      'CRON_COURSE_CERTIFICATES_HOURS': 18,
       }
 } %}
 {% set env_data = env_dict[environment] %}
@@ -63,6 +65,7 @@ heroku:
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/mitxonline>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'ol-mitxonline-app-{{ env_data.env_stage}}'
     CRON_COURSERUN_SYNC_HOURS: '*'
+    CRON_COURSE_CERTIFICATES_HOURS: {{ env_data.CRON_COURSE_CERTIFICATES_HOURS }}
     {% if env_data.env_name == 'production' %}
     HIREFIRE_TOKEN: __vault__::secret-{{ business_unit }}/production-apps/hirefire_token>data>value
     {% endif %}
