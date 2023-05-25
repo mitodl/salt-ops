@@ -18,7 +18,6 @@
       'GA_TRACKING_ID': 'UA-5145472-19',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
       'HUBSPOT_PORTAL_ID': '23263862',
-      'HUBSPOT_CREATE_USER_FORM_ID': 'afc02d5a-1e0a-4981-9910-323cf2081c6e',
       'HUBSPOT_FOOTER_FORM_GUID': 'be317df4-ed94-4d42-bfb9-01adec557d8f',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
       'NOVOED_BASE_URL': 'https://mitstaging.novoed.com',
@@ -42,7 +41,6 @@
       'GA_TRACKING_ID': 'UA-5145472-19',
       'GTM_TRACKING_ID': 'GTM-NZT8SRC',
       'HUBSPOT_PORTAL_ID': '23263862',
-      'HUBSPOT_CREATE_USER_FORM_ID': 'afc02d5a-1e0a-4981-9910-323cf2081c6e',
       'HUBSPOT_FOOTER_FORM_GUID': 'be317df4-ed94-4d42-bfb9-01adec557d8f',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
       'NOVOED_BASE_URL': 'https://mitstaging.novoed.com',
@@ -66,7 +64,6 @@
       'GA_TRACKING_ID': 'UA-5145472-18',
       'GTM_TRACKING_ID': 'GTM-TFSZHVB',
       'HUBSPOT_PORTAL_ID': '6119748',
-      'HUBSPOT_CREATE_USER_FORM_ID': '8321770d-1902-47e6-8302-c258f4f690b4',
       'HUBSPOT_FOOTER_FORM_GUID': '2d798908-c195-4c0c-b075-a10b0c1b08f3',
       'MAILGUN_SENDER_DOMAIN': 'mail.bootcamp.odl.mit.edu',
       'NOVOED_BASE_URL': 'https://mitbootcamps.novoed.com',
@@ -138,7 +135,6 @@ heroku:
     MITOL_HUBSPOT_API_PRIVATE_TOKEN: __vault__::secret-{{ business_unit }}/hubspot-api-private-token>data>value
     MITOL_HUBSPOT_API_ID_PREFIX: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/hubspot>data>id_prefix
     HUBSPOT_PORTAL_ID: {{ env_data.HUBSPOT_PORTAL_ID }}
-    HUBSPOT_CREATE_USER_FORM_ID: {{ env_data.HUBSPOT_CREATE_USER_FORM_ID }}
     HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
     JOBMA_ACCESS_TOKEN: {{ jobma.access_token }}
     JOBMA_BASE_URL: {{ jobma.base_url }}
