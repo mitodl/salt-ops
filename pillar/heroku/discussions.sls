@@ -31,6 +31,9 @@
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'discussionsci',
       'OPEN_DISCUSSIONS_COOKIE_DOMAIN': 'odl.mit.edu',
       'OPEN_DISCUSSIONS_SUPPORT_EMAIL': 'odl-discussions-ci-support@mit.edu',
+      'OPENSEARCH_INDEX': 'discussions-ci',
+      'OPENSEARCH_SHARD_COUNT': 2,
+      'OPENSEARCH_URL': 'https://search-opensearch-open-ci-gkxs5qardmug7pc472eznyfety.us-east-1.es.amazonaws.com',
       'PGBOUNCER_DEFAULT_POOL_SIZE': 5,
       'PGBOUNCER_MAX_CLIENT_CONN': 20,
       'PGBOUNCER_MIN_POOL_SIZE': 5,
@@ -71,6 +74,9 @@
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'discussionsrc',
       'OPEN_DISCUSSIONS_COOKIE_DOMAIN': 'odl.mit.edu',
       'OPEN_DISCUSSIONS_SUPPORT_EMAIL': 'odl-discussions-rc-support@mit.edu',
+      'OPENSEARCH_INDEX': 'discussions-rc',
+      'OPENSEARCH_SHARD_COUNT': 2,
+      'OPENSEARCH_URL': 'https://search-opensearch-open-qa-76e2mth7e5hvtclhuhh7uckoiu.us-east-1.es.amazonaws.com',
       'PGBOUNCER_DEFAULT_POOL_SIZE': 50,
       'PGBOUNCER_MAX_CLIENT_CONN': 500,
       'PGBOUNCER_MIN_POOL_SIZE': 20,
@@ -111,6 +117,9 @@
       'OPEN_DISCUSSIONS_BASE_URL': 'https://open.mit.edu',
       'OPEN_DISCUSSIONS_COOKIE_DOMAIN': 'mit.edu',
       'OPEN_DISCUSSIONS_SUPPORT_EMAIL': 'odl-discussions-support@mit.edu',
+      'OPENSEARCH_INDEX': 'discussions',
+      'OPENSEARCH_SHARD_COUNT': 3,
+      'OPENSEARCH_URL': 'https://search-opensearch-open-production-dg3wjt3eud45psxdrw3lz3k2ie.us-east-1.es.amazonaws.com',
       'PGBOUNCER_DEFAULT_POOL_SIZE': 50,
       'PGBOUNCER_MAX_CLIENT_CONN': 500,
       'PGBOUNCER_MIN_POOL_SIZE': 20,
@@ -248,6 +257,13 @@ heroku:
     OPEN_DISCUSSIONS_REDDIT_VALIDATE_SSL: True
     OPEN_DISCUSSIONS_SUPPORT_EMAIL: {{ env_data.OPEN_DISCUSSIONS_SUPPORT_EMAIL }}
     OPEN_DISCUSSIONS_USE_S3: True
+    OPENSEARCH_DEFAULT_TIMEOUT: 30
+    OPENSEARCH_HTTP_AUTH: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/elasticsearch>data>http_auth
+    OPENSEARCH_INDEX: {{ env_data.OPENSEARCH_INDEX}}
+    # This should match the nginx config client_max_body_size in apps_es.sls
+    OPENSEARCH_INDEXING_CHUNK_SIZE: 75
+    OPENSEARCH_SHARD_COUNT: {{ env_data.OPENSEARCH_SHARD_COUNT }}
+    OPENSEARCH_URL: {{ env_data.OPENSEARCH_URL}}
     PGBOUNCER_DEFAULT_POOL_SIZE: {{ env_data.PGBOUNCER_DEFAULT_POOL_SIZE}}
     PGBOUNCER_MAX_CLIENT_CONN: {{ env_data.PGBOUNCER_MAX_CLIENT_CONN }}
     PGBOUNCER_MIN_POOL_SIZE: {{ env_data.PGBOUNCER_MIN_POOL_SIZE }}
