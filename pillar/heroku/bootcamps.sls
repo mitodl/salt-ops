@@ -1,10 +1,10 @@
 {% set minion_id = salt.grains.get('id', '') %}
 {% set environment = minion_id.split('-')[-1] %}
-{% set rds_endpoint = salt.boto_rds.get_endpoint('bootcamps-rds-postgresql') %}
 
 {% set env_dict = {
     'ci': {
       'app_name': 'bootcamp-ecommerce-ci',
+      'aws_env': 'ci',
       'env_name': 'ci',
       'ALLOWED_HOSTS': ["bootcamp-ci.odl.mit.edu"],
       'BOOTCAMP_ECOMMERCE_BASE_URL': 'https://bootcamp-ecommerce-ci.herokuapp.com',
@@ -28,6 +28,7 @@
       },
     'rc': {
       'app_name': 'bootcamp-ecommerce-rc',
+      'aws_env': 'qa',
       'env_name': 'rc',
       'ALLOWED_HOSTS': ["bootcamp-rc.odl.mit.edu"],
       'BOOTCAMP_ECOMMERCE_BASE_URL': 'https://bootcamp-rc.odl.mit.edu',
@@ -51,6 +52,7 @@
       },
     'production': {
       'app_name': 'bootcamp-ecommerce',
+      'aws_env': 'production',
       'env_name': 'production',
       'ALLOWED_HOSTS': ["bootcamp.mit.edu", "bootcamps.mit.edu", "bootcamp.odl.mit.edu"],
       'BOOTCAMP_ECOMMERCE_BASE_URL': 'https://bootcamp.odl.mit.edu',
@@ -77,6 +79,7 @@
 {% set business_unit = 'bootcamps' %}
 {% set cybersource_creds = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/cybersource').data %}
 {% set jobma = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/jobma').data %}
+{% set rds_endpoint = salt.boto_rds.get_endpoint('bootcamps-db-applications-{env}'.format(env=env_data.aws_env)) %}
 
 proxy:
   proxytype: heroku
@@ -86,8 +89,8 @@ heroku:
   api_key: __vault__::secret-operations/global/heroku/mitx-devops-api-key>data>value
   config_vars:
     ALLOWED_HOSTS: '{{ env_data.ALLOWED_HOSTS|tojson }}'
-    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/read-write-delete-ol-bootcamps-app-{{ env_data.env_name }}>data>access_key
-    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/read-write-delete-ol-bootcamps-app-{{ env_data.env_name }}>data>secret_key
+    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/bootcamps-app>data>access_key
+    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/bootcamps-app>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'ol-bootcamps-app-{{ env_data.env_name }}'
     BOOTCAMP_ADMIN_EMAIL: cuddle-bunnies@mit.edu
     BOOTCAMP_DB_DISABLE_SSL: True
@@ -112,12 +115,16 @@ heroku:
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.security_key }}
     CYBERSOURCE_TRANSACTION_KEY: {{ cybersource_creds.transaction_key }}
     CYBERSOURCE_WSDL_URL: {{ env_data.CYBERSOURCE_WSDL_URL }}
-    {% if env_data.env_name == 'production' %}
+    {% if env_data.env_name == 'ci' %}
+    # Static pg_creds stored in Vault QA for CI app
+    {% set pg_creds = salt.vault.read('secret-' ~ business_unit ~ '/ci/rds').data %}
+    {% else %}
     {% set pg_creds = salt.vault.cached_read('postgresql-bootcamps/creds/app', cache_prefix='heroku-bootcamp') %}
+    {% endif %}
+    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/bootcamp_ecommerce
+    {% if env_data.env_name == 'production' %}
     BOOTCAMP_ECOMMERCE_EMAIL: __vault__::secret-{{ business_unit }}/production-apps/>cybersource>data>email
     BOOTCAMP_ECOMMERCE_SAML_BASE_URL: https://bootcamps.mit.edu
-    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/bootcamp_ecommerce
-    ENABLE_STUNNEL_AMAZON_RDS_FIX: true
     HIREFIRE_TOKEN: __vault__::secret-{{ business_unit }}/production-apps/hirefire_token>data>value
     SESSION_ENGINE_BACKEND: cache
     USE_X_FORWARDED_HOST: True
