@@ -94,7 +94,7 @@ heroku:
     ALLOWED_HOSTS: '{{ env_data.ALLOWED_HOSTS|tojson }}'
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/bootcamps-app>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/bootcamps-app>data>secret_key
-    AWS_STORAGE_BUCKET_NAME: 'ol-bootcamps-app-{{ env_data.env_name }}'
+    AWS_STORAGE_BUCKET_NAME: 'ol-bootcamps-app-{{ env_data.aws_env }}'
     BOOTCAMP_ADMIN_EMAIL: cuddle-bunnies@mit.edu
     BOOTCAMP_DB_DISABLE_SSL: True
     BOOTCAMP_ECOMMERCE_BASE_URL: {{ env_data.BOOTCAMP_ECOMMERCE_BASE_URL }}
