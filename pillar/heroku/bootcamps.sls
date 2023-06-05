@@ -122,7 +122,7 @@ heroku:
     # Static pg_creds stored in Vault QA for CI app
     {% set pg_creds = salt.vault.read('secret-' ~ business_unit ~ '/ci/rds').data %}
     {% else %}
-    {% set pg_creds = salt.vault.cached_read('postgresql-bootcamps/creds/app', cache_prefix='heroku-bootcamp') %}
+    {% set pg_creds = salt.vault.cached_read('postgres-bootcamps/creds/app', cache_prefix='heroku-bootcamp') %}
     {% endif %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/bootcamp_ecommerce
     {% if env_data.env_name == 'production' %}
