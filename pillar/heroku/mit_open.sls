@@ -100,7 +100,7 @@ heroku:
     ALLOWED_HOSTS: '["*"]'
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws/creds/mitopen>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws/creds/mitopen>data>secret_key
-    AWS_STORAGE_BUCKET_NAME: 'ol-mitopen-{{ env_data.env_name }}'
+    AWS_STORAGE_BUCKET_NAME: 'ol-mitopen-app-storage-{{ env_data.env_name }}'
     CELERY_WORKER_MAX_MEMORY_PER_CHILD: {{ env_data.CELERY_WORKER_MAX_MEMORY_PER_CHILD }}
     CKEDITOR_ENVIRONMENT_ID:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>environment_id
     CKEDITOR_SECRET_KEY:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>secret_key
