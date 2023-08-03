@@ -97,8 +97,6 @@ heroku:
   config_vars:
     AKISMET_API_KEY: __vault__::secret-{{ business_unit }}/global/akismet>data>api_key
     AKISMET_BLOG_URL: https://discussions-rc.odl.mit.edu
-    ALGOLIA_API_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/algolia>data>api_key
-    ALGOLIA_APP_ID: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/algolia>data>app_id
     ALLOWED_HOSTS: '["*"]'
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws/creds/mitopen>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws/creds/mitopen>data>secret_key
@@ -117,21 +115,6 @@ heroku:
     EDX_API_URL: https://api.edx.org/catalog/v1/catalogs/10/courses
     EMBEDLY_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/embedly_key>data>value
     ENABLE_INFINITE_CORRIDOR: {{ env_data.ENABLE_INFINITE_CORRIDOR }}
-    FEATURE_ANONYMOUS_ACCESS: True
-    FEATURE_ARTICLE_UI: True
-    FEATURE_COMMENT_NOTIFICATIONS: True
-    FEATURE_COURSE_FILE_SEARCH: True
-    FEATURE_COURSE_UI: {{ env_data.FEATURE_COURSE_UI }}
-    FEATURE_SPAM_EXEMPTIONS: True
-    FEATURE_INDEX_UPDATES: True
-    FEATURE_MOIRA: True
-    FEATURE_PODCAST_APIS: True
-    FEATURE_PODCAST_SEARCH: True
-    FEATURE_PROFILE_UI: True
-    FEATURE_SAML_AUTH: True
-    FEATURE_SEARCH_UI: True
-    FEATURE_USE_NEW_BRANDING: True
-    FEATURE_WIDGETS_UI: True
     GA_G_TRACKING_ID: {{ env_data.GA_G_TRACKING_ID }}
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
     GITHUB_ACCESS_TOKEN: __vault__::secret-{{ business_unit }}/global/odlbot-github-access-token>data>value
@@ -146,8 +129,6 @@ heroku:
     MITX_ONLINE_COURSES_API_URL: https://mitxonline.mit.edu/api/courses/
     MITX_ONLINE_PROGRAMS_API_URL: https://mitxonline.mit.edu/api/programs/
     MITX_ONLINE_LEARNING_COURSE_BUCKET_NAME: mitx-etl-mitxonline-production
-    MIT_WS_CERTIFICATE: __vault__::secret-{{ business_unit }}/global/mit-application-certificate>data>certificate
-    MIT_WS_PRIVATE_KEY: __vault__::secret-{{ business_unit }}/global/mit-application-certificate>data>private_key
     NEW_RELIC_LOG: stdout
     NODE_MODULES_CACHE: False
     OCW_CONTENT_BUCKET_NAME: ocw-content-storage
@@ -198,23 +179,9 @@ heroku:
     PGBOUNCER_MAX_CLIENT_CONN: {{ env_data.PGBOUNCER_MAX_CLIENT_CONN }}
     PGBOUNCER_MIN_POOL_SIZE: {{ env_data.PGBOUNCER_MIN_POOL_SIZE }}
     PROLEARN_CATALOG_API_URL: https://prolearn.mit.edu/graphql
-    RECAPTCHA_SECRET_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>secret_key
-    RECAPTCHA_SITE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/recaptcha-keys>data>site_key
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.env_name }}/django-secret-key>data>value
     SEE_BASE_URL: https://executive.mit.edu/
     SENTRY_DSN: __vault__::secret-operations/global/{{ business_unit }}/sentry-dsn>data>value
-    SOCIAL_AUTH_SAML_CONTACT_NAME: ODL Support
-    SOCIAL_AUTH_SAML_IDP_ATTRIBUTE_EMAIL: urn:oid:0.9.2342.19200300.100.1.3
-    SOCIAL_AUTH_SAML_IDP_ATTRIBUTE_NAME: urn:oid:2.16.840.1.113730.3.1.241
-    SOCIAL_AUTH_SAML_IDP_ATTRIBUTE_PERM_ID: urn:oid:1.3.6.1.4.1.5923.1.1.1.6
-    SOCIAL_AUTH_SAML_IDP_ENTITY_ID: https://idp.mit.edu/shibboleth
-    SOCIAL_AUTH_SAML_IDP_URL: https://idp.mit.edu/idp/profile/SAML2/Redirect/SSO
-    SOCIAL_AUTH_SAML_IDP_X509: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>idp_x509
-    SOCIAL_AUTH_SAML_ORG_DISPLAYNAME: MIT Office of Digital Learning
-    SOCIAL_AUTH_SAML_SECURITY_ENCRYPTED: True
-    SOCIAL_AUTH_SAML_SP_ENTITY_ID: {{ env_data.SOCIAL_AUTH_SAML_SP_ENTITY_ID }}
-    SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>private_key
-    SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>public_cert
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
     TIKA_ACCESS_TOKEN: __vault__::secret-operations/{{ env_data.vault_env_path }}/tika/access-token>data>value
     TIKA_SERVER_ENDPOINT: {{ env_data.TIKA_SERVER_ENDPOINT }}
