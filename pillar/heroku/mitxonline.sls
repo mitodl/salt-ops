@@ -131,6 +131,8 @@ heroku:
     PGBOUNCER_MIN_POOL_SIZE: 5
     RECAPTCHA_SITE_KEY: __vault__::secret-mitxonline/recaptcha-keys>data>site_key
     RECAPTCHA_SECRET_KEY: __vault__::secret-mitxonline/recaptcha-keys>data>secret_key
+    OPENEDX_RETIREMENT_SERVICE_WORKER_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ environment }}/openedx-retirement-service-worker-client-id>data>value
+    OPENEDX_RETIREMENT_SERVICE_WORKER_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ environment }}/openedx-retirement-service-worker-client-secret>data>value
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-secret-key>data>value
     SENTRY_DSN: __vault__::secret-operations/global/mitxonline/sentry-dsn>data>value
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
