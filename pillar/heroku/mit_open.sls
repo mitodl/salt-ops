@@ -133,7 +133,7 @@ heroku:
     NODE_MODULES_CACHE: False
     OCW_CONTENT_BUCKET_NAME: ocw-content-storage
     OCW_ITERATOR_CHUNK_SIZE: {{ env_data.OCW_ITERATOR_CHUNK_SIZE }}
-    OCW_LEARNING_COURSE_BUCKET_NAME: open-learning-course-data-{{ env_data.env_name }}
+    OCW_LEARNING_COURSE_BUCKET_NAME: ol-mitopen-course-data-{{ env_data.env_name }}
     OCW_NEXT_AWS_STORAGE_BUCKET_NAME: {{ env_data.OCW_NEXT_AWS_STORAGE_BUCKET_NAME }}
     OCW_NEXT_BASE_URL: {{ env_data.OCW_NEXT_BASE_URL }}
     OCW_NEXT_LIVE_BUCKET: {{ env_data.OCW_NEXT_LIVE_BUCKET }}
