@@ -42,6 +42,9 @@ base:
   'proxy-mit-open-discussions-*':
     - match: glob
     - heroku.discussions
+  'proxy-mitopen-*':
+    - match: glob
+    - heroku.mitopen
   'proxy-mitxonline-*':
     - match: glob
     - heroku.mitxonline
