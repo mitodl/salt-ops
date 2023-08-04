@@ -4,7 +4,7 @@
 {% set env_dict = {
     'rc': {
       'app_log_level': 'INFO',
-      'app_name': 'ol-mitopen-rc', # MODIFIED
+      'app_name': 'ol-mitopen-rc',
       'CELERY_WORKER_MAX_MEMORY_PER_CHILD': 125000,      
       'CORS_URLS': ['https://ocwnext-rc.odl.mit.edu', 'https://ocw-next.netlify.app', 'https://ol-devops-ci.odl.mit.edu', 'https://draft-qa.ocw.mit.edu', 'https://live-qa.ocw.mit.edu'],
       'DEBUG': False,
@@ -12,31 +12,31 @@
       'ENABLE_INFINITE_CORRIDOR': True,
       'env_name': 'rc',
       'FEATURE_COURSE_UI': True,
-      'GA_G_TRACKING_ID': 'G-N6Y7B0Z3JL', # UPDATE
-      'GA_TRACKING_ID': 'UA-5145472-29', # UPDATE
-      'INDEXING_API_USERNAME': 'od_mm_rc_api', # UPDATE?
+      'GA_G_TRACKING_ID': 'G-N6Y7B0Z3JL',
+      'GA_TRACKING_ID': 'UA-5145472-29',
+      'INDEXING_API_USERNAME': 'od_mm_rc_api', 
       'NEW_RELIC_APP_NAME': 'mitopen-rc',
-      'MAILGUN_SENDER_DOMAIN': 'discussions-mail.odl.mit.edu', # UPDATE? someday: open.mit.edu, for now placeholder off odl.mit.edu
+      'MAILGUN_SENDER_DOMAIN': 'discussions-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'xpro-rc.odl.mit.edu',
       'OCW_ITERATOR_CHUNK_SIZE': 300,
       'OCW_NEXT_AWS_STORAGE_BUCKET_NAME': 'ol-ocw-studio-app-qa',
       'OCW_NEXT_BASE_URL': 'https://live-qa.ocw.mit.edu/',
       'OCW_NEXT_LIVE_BUCKET': 'ocw-content-live-qa',
       'OCW_UPLOAD_IMAGE_ONLY': True,
-      'OPEN_DISCUSSIONS_BASE_URL': 'https://mit-open-rc.odl.mit.edu',  # UPDATE would update to correct url at an *.open.mit.edu domain
+      'OPEN_DISCUSSIONS_BASE_URL': 'https://mit-open-rc.odl.mit.edu',
       'OPEN_DISCUSSIONS_COOKIE_NAME': 'mitopen-rc',
-      'OPEN_DISCUSSIONS_COOKIE_DOMAIN': 'odl.mit.edu', # UPDATE, should match wbase url domain 
-      'OPEN_DISCUSSIONS_SUPPORT_EMAIL': 'odl-mitopen-rc-support@mit.edu', # Presumably this needs to be created somewhere with IS&T, moira
-      'OPENSEARCH_INDEX': 'mitopen-rc', # MODIFIED
+      'OPEN_DISCUSSIONS_COOKIE_DOMAIN': 'odl.mit.edu',
+      'OPEN_DISCUSSIONS_SUPPORT_EMAIL': 'odl-mitopen-rc-support@mit.edu',
+      'OPENSEARCH_INDEX': 'mitopen-rc',
       'OPENSEARCH_SHARD_COUNT': 2,
-      'OPENSEARCH_URL': 'https://search-opensearch-open-qa-76e2mth7e5hvtclhuhh7uckoiu.us-east-1.es.amazonaws.com', # UPDATE
+      'OPENSEARCH_URL': 'https://search-opensearch-open-qa-76e2mth7e5hvtclhuhh7uckoiu.us-east-1.es.amazonaws.com',
       'PGBOUNCER_DEFAULT_POOL_SIZE': 50,
       'PGBOUNCER_MAX_CLIENT_CONN': 500,
       'PGBOUNCER_MIN_POOL_SIZE': 20,
-      'release_branch': 'release-candidate',  # UPDATE, re: doof retirement
-      'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://mitopen-rc.odl.mit.edu/saml/metadata', # MODIFIED, this is the placeholder URL
+      'release_branch': 'release-candidate',
+      'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://mitopen-rc.odl.mit.edu/saml/metadata',
       'TIKA_SERVER_ENDPOINT': 'https://tika-qa.odl.mit.edu',
-      'vault_env_path': 'rc-apps',  # TO REMOVE, requires extensive modification of the env vars below
+      'vault_env_path': 'rc-apps',
       'env_stage': 'qa',
       },
     'production': {
