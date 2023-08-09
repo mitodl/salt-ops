@@ -102,18 +102,18 @@ heroku:
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws/creds/mitopen>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'ol-mitopen-app-storage-{{ env_data.env_name }}'
     CELERY_WORKER_MAX_MEMORY_PER_CHILD: {{ env_data.CELERY_WORKER_MAX_MEMORY_PER_CHILD }}
-    CKEDITOR_ENVIRONMENT_ID:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>environment_id
-    CKEDITOR_SECRET_KEY:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>secret_key
-    CKEDITOR_UPLOAD_URL:  __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/ckeditor>data>upload_url
+    CKEDITOR_ENVIRONMENT_ID:  __vault__::secret-{{ business_unit }}/ckeditor>data>environment_id
+    CKEDITOR_SECRET_KEY:  __vault__::secret-{{ business_unit }}/ckeditor>data>secret_key
+    CKEDITOR_UPLOAD_URL:  __vault__::secret-{{ business_unit }}/ckeditor>data>upload_url
     CSAIL_BASE_URL: https://cap.csail.mit.edu/
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitopen
     DEBUG: {{ env_data.DEBUG }}
     DUPLICATE_COURSES_URL: https://raw.githubusercontent.com/mitodl/open-resource-blacklists/master/duplicate_courses.yml
     EDX_API_ACCESS_TOKEN_URL: https://api.edx.org/oauth2/v1/access_token
-    EDX_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/edx-api-client>data>id
-    EDX_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.vault_env_path }}/edx-api-client>data>secret
+    EDX_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/edx-api-client>data>id
+    EDX_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/edx-api-client>data>secret
     EDX_API_URL: https://api.edx.org/catalog/v1/catalogs/10/courses
-    EMBEDLY_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/embedly_key>data>value
+    EMBEDLY_KEY: __vault__::secret-operations/{{ business_unit }}/embedly_key>data>value
     ENABLE_INFINITE_CORRIDOR: {{ env_data.ENABLE_INFINITE_CORRIDOR }}
     GA_G_TRACKING_ID: {{ env_data.GA_G_TRACKING_ID }}
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
@@ -141,8 +141,8 @@ heroku:
     OCW_UPLOAD_IMAGE_ONLY: {{ env_data.OCW_UPLOAD_IMAGE_ONLY }}
     OLL_ALT_URL: https://openlearninglibrary.mit.edu/courses/
     OLL_API_ACCESS_TOKEN_URL: https://openlearninglibrary.mit.edu/oauth2/access_token/
-    OLL_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/open-learning-library-client>data>client-id
-    OLL_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/open-learning-library-client>data>client-secret
+    OLL_API_CLIENT_ID: __vault__::secret-{{ business_unit }}/open-learning-library-client>data>client-id
+    OLL_API_CLIENT_SECRET: __vault__::secret-{{ business_unit }}/open-learning-library-client>data>client-secret
     OLL_API_URL: https://discovery.openlearninglibrary.mit.edu/api/v1/catalogs/1/courses/
     OLL_BASE_URL: https://openlearninglibrary.mit.edu/course/
     # All need to change name prefix
@@ -165,12 +165,12 @@ heroku:
     OPEN_DISCUSSIONS_ENVIRONMENT: {{ env_data.env_name }}
     OPEN_DISCUSSIONS_FROM_EMAIL: MITOpen <mitopen-support@mit.edu>
     OPEN_DISCUSSIONS_FRONTPAGE_DIGEST_MAX_POSTS: 10
-    OPEN_DISCUSSIONS_JWT_SECRET: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.env_name }}/jwt_secret>data>value
+    OPEN_DISCUSSIONS_JWT_SECRET: __vault__:gen_if_missing:secret-{{ business_unit }}/jwt_secret>data>value
     OPEN_DISCUSSIONS_LOG_LEVEL: {{ env_data.app_log_level }}
     OPEN_DISCUSSIONS_SUPPORT_EMAIL: {{ env_data.OPEN_DISCUSSIONS_SUPPORT_EMAIL }}
     OPEN_DISCUSSIONS_USE_S3: True
     OPENSEARCH_DEFAULT_TIMEOUT: 30
-    OPENSEARCH_HTTP_AUTH: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/elasticsearch>data>http_auth
+    OPENSEARCH_HTTP_AUTH: __vault__::secret-{{ business_unit }}/elasticsearch>data>http_auth
     OPENSEARCH_INDEX: {{ env_data.OPENSEARCH_INDEX}}
     OPENSEARCH_INDEXING_CHUNK_SIZE: 75
     OPENSEARCH_SHARD_COUNT: {{ env_data.OPENSEARCH_SHARD_COUNT }}
@@ -179,17 +179,17 @@ heroku:
     PGBOUNCER_MAX_CLIENT_CONN: {{ env_data.PGBOUNCER_MAX_CLIENT_CONN }}
     PGBOUNCER_MIN_POOL_SIZE: {{ env_data.PGBOUNCER_MIN_POOL_SIZE }}
     PROLEARN_CATALOG_API_URL: https://prolearn.mit.edu/graphql
-    SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ env_data.env_name }}/django-secret-key>data>value
+    SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/django-secret-key>data>value
     SEE_BASE_URL: https://executive.mit.edu/
     SENTRY_DSN: __vault__::secret-operations/global/{{ business_unit }}/sentry-dsn>data>value
-    STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
-    TIKA_ACCESS_TOKEN: __vault__::secret-operations/{{ env_data.vault_env_path }}/tika/access-token>data>value
+    STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/django-status-token>data>value
+    TIKA_ACCESS_TOKEN: __vault__::secret-operations/tika/access-token>data>value
     TIKA_SERVER_ENDPOINT: {{ env_data.TIKA_SERVER_ENDPOINT }}
     USE_X_FORWARDED_HOST: True
     USE_X_FORWARDED_PORT: True
     XPRO_CATALOG_API_URL: https://{{ etl_xpro_host }}/api/programs/
     XPRO_COURSES_API_URL: https://{{ etl_xpro_host }}/api/courses/
-    YOUTUBE_DEVELOPER_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/youtube-developer-key>data>value
+    YOUTUBE_DEVELOPER_KEY: __vault__::secret-{{ business_unit }}/youtube-developer-key>data>value
     YOUTUBE_FETCH_TRANSCRIPT_SCHEDULE_SECONDS: 21600
     YOUTUBE_FETCH_TRANSCRIPT_SLEEP_SECONDS: 20
 
