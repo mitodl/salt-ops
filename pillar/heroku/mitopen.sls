@@ -75,7 +75,7 @@
 } %}
 {% set env_data = env_dict[environment] %}
 {% set business_unit = 'mitopen' %}
-{% set pg_creds = salt.vault.cached_read('postgres-mitopen/creds/mitopen', cache_prefix='heroku-mitopen') %}
+{% set pg_creds = salt.vault.cached_read('postgres-mitopen/creds/app', cache_prefix='heroku-mitopen') %}
 {% set rds_endpoint = salt.boto_rds.get_endpoint('rds-postgresql-mitopen') %}
 
 {% set etl_micromasters_host = salt.sdb.get('sdb://consul/open-{}-etl-micromasters-host'.format(environment)) %}
