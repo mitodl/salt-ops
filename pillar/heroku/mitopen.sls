@@ -158,7 +158,7 @@ heroku:
     MITOPEN_SUPPORT_EMAIL: {{ env_data.MITOPEN_SUPPORT_EMAIL }}
     MITOPEN_USE_S3: True
     OPENSEARCH_DEFAULT_TIMEOUT: 30
-    OPENSEARCH_HTTP_AUTH: __vault__::secret-mitopen/secrets>data>data>elasticsearch>http_auth
+    OPENSEARCH_HTTP_AUTH: __vault__::secret-mitopen/secrets>data>data>opensearch>http_auth
     OPENSEARCH_INDEX: {{ env_data.OPENSEARCH_INDEX}}
     OPENSEARCH_INDEXING_CHUNK_SIZE: 75
     OPENSEARCH_SHARD_COUNT: {{ env_data.OPENSEARCH_SHARD_COUNT }}
