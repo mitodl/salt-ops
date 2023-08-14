@@ -107,7 +107,7 @@ heroku:
     ENABLE_INFINITE_CORRIDOR: {{ env_data.ENABLE_INFINITE_CORRIDOR }}
     GA_G_TRACKING_ID: {{ env_data.GA_G_TRACKING_ID }}
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
-    GITHUB_ACCESS_TOKEN: __vault__::secret-mitopen/secrets>data>data>global>odlbot-github-access-token
+    GITHUB_ACCESS_TOKEN: __vault__::secret-operations/global/odlbot-github-access-token>data>value
     INDEXING_API_USERNAME: {{ env_data.INDEXING_API_USERNAME }}
     MAILGUN_FROM_EMAIL: 'MIT Open <no-reply@{{ env_data.MAILGUN_SENDER_DOMAIN }}'
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
@@ -127,7 +127,7 @@ heroku:
     OCW_NEXT_AWS_STORAGE_BUCKET_NAME: {{ env_data.OCW_NEXT_AWS_STORAGE_BUCKET_NAME }}
     OCW_NEXT_BASE_URL: {{ env_data.OCW_NEXT_BASE_URL }}
     OCW_NEXT_LIVE_BUCKET: {{ env_data.OCW_NEXT_LIVE_BUCKET }}
-    OCW_NEXT_SEARCH_WEBHOOK_KEY: __vault__::secret-mitopen/secrets>data>data>global>update-search-data-webhook-key
+    OCW_NEXT_SEARCH_WEBHOOK_KEY: __vault__::secret-operations/global/update-search-data-webhook-key>data>value
     OCW_UPLOAD_IMAGE_ONLY: {{ env_data.OCW_UPLOAD_IMAGE_ONLY }}
     OLL_ALT_URL: https://openlearninglibrary.mit.edu/courses/
     OLL_API_ACCESS_TOKEN_URL: https://openlearninglibrary.mit.edu/oauth2/access_token/
