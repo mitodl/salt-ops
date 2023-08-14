@@ -153,7 +153,7 @@ heroku:
     MITOPEN_ENVIRONMENT: {{ env_data.env_name }}
     MITOPEN_FROM_EMAIL: MITOpen <mitopen-support@mit.edu>
     MITOPEN_FRONTPAGE_DIGEST_MAX_POSTS: 10
-    MITOPEN_JWT_SECRET: __vault__:gen_if_missing:secret-mitopen/secrets>data>data>jwt_secret
+    MITOPEN_JWT_SECRET: __vault__::secret-mitopen/secrets>data>data>jwt_secret
     MITOPEN_LOG_LEVEL: {{ env_data.app_log_level }}
     MITOPEN_SUPPORT_EMAIL: {{ env_data.MITOPEN_SUPPORT_EMAIL }}
     MITOPEN_USE_S3: True
@@ -167,10 +167,10 @@ heroku:
     PGBOUNCER_MAX_CLIENT_CONN: {{ env_data.PGBOUNCER_MAX_CLIENT_CONN }}
     PGBOUNCER_MIN_POOL_SIZE: {{ env_data.PGBOUNCER_MIN_POOL_SIZE }}
     PROLEARN_CATALOG_API_URL: https://prolearn.mit.edu/graphql
-    SECRET_KEY: __vault__:gen_if_missing:secret-mitopen/secrets>data>data>django-secret-key
+    SECRET_KEY: __vault__::secret-mitopen/secrets>data>data>django-secret-key
     SEE_BASE_URL: https://executive.mit.edu/
     SENTRY_DSN: __vault__::secret-operations/global/mitopen/sentry-dsn>data>value
-    STATUS_TOKEN: __vault__:gen_if_missing:secret-mitopen/secrets>data>data>django-status-token
+    STATUS_TOKEN: __vault__::secret-mitopen/secrets>data>data>django-status-token
     TIKA_ACCESS_TOKEN: __vault__::secret-operations/tika/access-token>data>value
     TIKA_SERVER_ENDPOINT: {{ env_data.TIKA_SERVER_ENDPOINT }}
     USE_X_FORWARDED_HOST: True
