@@ -138,6 +138,8 @@ heroku:
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ environment }}/django-status-token>data>value
     USE_X_FORWARDED_HOST: True
     ZENDESK_HELP_WIDGET_ENABLED: True
+    POSTHOG_API_TOKEN: __vault__::secret-{{ business_unit }}/{{ env_data.env_name }}/posthog-credentials>data>api-token
+    POSTHOG_API_HOST: "https://app.posthog.com"
 
 schedule:
   refresh_{{ env_data.app_name }}_configs:
