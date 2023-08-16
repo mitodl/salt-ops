@@ -88,8 +88,8 @@ heroku:
   api_key: __vault__::secret-operations/global/heroku/odl-devops-api-key>data>value
   config_vars:
     ALLOWED_HOSTS: '["*"]'
-    AWS_ACCESS_KEY_ID:  __vault__:cache:aws/creds/mitopen>data>access_key
-    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws/creds/mitopen>data>secret_key
+    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/ol-mitopen-application>data>access_key
+    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/ol-mitopen-application>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'ol-mitopen-app-storage-{{ env_data.env_name }}'
     CELERY_WORKER_MAX_MEMORY_PER_CHILD: {{ env_data.CELERY_WORKER_MAX_MEMORY_PER_CHILD }}
     CKEDITOR_ENVIRONMENT_ID:  __vault__::secret-mitopen/secrets>data>data>ckeditor>environment_id
