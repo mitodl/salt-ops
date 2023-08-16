@@ -103,7 +103,7 @@ heroku:
     EDX_API_CLIENT_ID: __vault__::secret-mitopen/secrets>data>data>edx-api-client>id
     EDX_API_CLIENT_SECRET: __vault__::secret-mitopen/secrets>data>data>edx-api-client>secret
     EDX_API_URL: https://api.edx.org/catalog/v1/catalogs/10/courses
-    EMBEDLY_KEY: __vault__::secret-operations/mitopen/embedly_key>data>value
+    EMBEDLY_KEY: __vault__::secret-operations/global/embedly>data>key
     ENABLE_INFINITE_CORRIDOR: {{ env_data.ENABLE_INFINITE_CORRIDOR }}
     GA_G_TRACKING_ID: {{ env_data.GA_G_TRACKING_ID }}
     GA_TRACKING_ID: {{ env_data.GA_TRACKING_ID }}
