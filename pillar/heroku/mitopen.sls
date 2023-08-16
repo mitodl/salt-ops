@@ -15,7 +15,7 @@
       'GA_TRACKING_ID': '',
       'INDEXING_API_USERNAME': 'od_mm_rc_api', 
       'NEW_RELIC_APP_NAME': 'mitopen-rc',
-      'MAILGUN_SENDER_DOMAIN': 'mitopen-mail.odl.mit.edu',
+      'MAILGUN_SENDER_DOMAIN': 'discussions-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'xpro-rc.odl.mit.edu',
       'OCW_ITERATOR_CHUNK_SIZE': 300,
       'OCW_NEXT_AWS_STORAGE_BUCKET_NAME': 'ol-ocw-studio-app-qa',
