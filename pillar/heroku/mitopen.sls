@@ -75,7 +75,6 @@
 } %}
 {% set env_data = env_dict[environment] %}
 {% set pg_creds = salt.vault.cached_read('postgres-mitopen/creds/app', cache_prefix='heroku-mitopen') %}
-{% set rds_endpoint = salt.boto_rds.get_endpoint('rds-postgresql-mitopen') %}
 
 {% set etl_micromasters_host = salt.sdb.get('sdb://consul/open-{}-etl-micromasters-host'.format(environment)) %}
 {% set etl_xpro_host = salt.sdb.get('sdb://consul/open-{}-etl-xpro-host'.format(environment)) %}
@@ -96,7 +95,7 @@ heroku:
     CKEDITOR_SECRET_KEY:  __vault__::secret-mitopen/secrets>data>data>ckeditor>secret_key
     CKEDITOR_UPLOAD_URL:  __vault__::secret-mitopen/secrets>data>data>ckeditor>upload_url
     CSAIL_BASE_URL: https://cap.csail.mit.edu/
-    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitopen
+    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ salt.boto_rds.get_endpoint('ol-mitopen-db-qa') }}/mitopen
     DEBUG: {{ env_data.DEBUG }}
     DUPLICATE_COURSES_URL: https://raw.githubusercontent.com/mitodl/open-resource-blacklists/master/duplicate_courses.yml
     EDX_API_ACCESS_TOKEN_URL: https://api.edx.org/oauth2/v1/access_token
