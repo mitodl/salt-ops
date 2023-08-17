@@ -32,7 +32,7 @@
       'PGBOUNCER_DEFAULT_POOL_SIZE': 50,
       'PGBOUNCER_MAX_CLIENT_CONN': 500,
       'PGBOUNCER_MIN_POOL_SIZE': 20,
-      'release_branch': 'release-candidate',
+      'release_branch': 'md/ol-inf_issue-1657',
       'TIKA_SERVER_ENDPOINT': 'https://tika-qa.odl.mit.edu',
       'env_stage': 'qa',
       },
