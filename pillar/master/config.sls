@@ -143,6 +143,7 @@ salt_master:
       - proxy-mitxpro-rc
       - proxy-mit-open-discussions-ci
       - proxy-mit-open-discussions-rc
+      - proxy-mitopen-rc
       - proxy-mitxonline-ci
       - proxy-mitxonline-rc
       - proxy-ocw-studio-ci
@@ -152,6 +153,7 @@ salt_master:
       - proxy-micromasters-production
       - proxy-mitxpro-production
       - proxy-mit-open-discussions-production
+      - proxy-mitopen-production
       - proxy-mitxonline-production
       - proxy-ocw-studio-production
       {% endif %}
