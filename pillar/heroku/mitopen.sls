@@ -93,16 +93,16 @@ heroku:
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/ol-mitopen-application>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'ol-mitopen-app-storage-{{ env_data.env_name }}'
     CELERY_WORKER_MAX_MEMORY_PER_CHILD: {{ env_data.CELERY_WORKER_MAX_MEMORY_PER_CHILD }}
-    CKEDITOR_ENVIRONMENT_ID:  __vault__::secret-mitopen/secrets>data>data>ckeditor>environment_id
-    CKEDITOR_SECRET_KEY:  __vault__::secret-mitopen/secrets>data>data>ckeditor>secret_key
-    CKEDITOR_UPLOAD_URL:  __vault__::secret-mitopen/secrets>data>data>ckeditor>upload_url
+    CKEDITOR_ENVIRONMENT_ID:  __vault__::secret-mitopen/data/secrets>data>data>ckeditor>environment_id
+    CKEDITOR_SECRET_KEY:  __vault__::secret-mitopen/data/secrets>data>data>ckeditor>secret_key
+    CKEDITOR_UPLOAD_URL:  __vault__::secret-mitopen/data/secrets>data>data>ckeditor>upload_url
     CSAIL_BASE_URL: https://cap.csail.mit.edu/
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ salt.boto_rds.get_endpoint('ol-mitopen-db-qa') }}/mitopen
     DEBUG: {{ env_data.DEBUG }}
     DUPLICATE_COURSES_URL: https://raw.githubusercontent.com/mitodl/open-resource-blacklists/master/duplicate_courses.yml
     EDX_API_ACCESS_TOKEN_URL: https://api.edx.org/oauth2/v1/access_token
-    EDX_API_CLIENT_ID: __vault__::secret-mitopen/secrets>data>data>edx-api-client>id
-    EDX_API_CLIENT_SECRET: __vault__::secret-mitopen/secrets>data>data>edx-api-client>secret
+    EDX_API_CLIENT_ID: __vault__::secret-mitopen/data/secrets>data>data>edx-api-client>id
+    EDX_API_CLIENT_SECRET: __vault__::secret-mitopen/data/secrets>data>data>edx-api-client>secret
     EDX_API_URL: https://api.edx.org/catalog/v1/catalogs/10/courses
     EMBEDLY_KEY: __vault__::secret-operations/global/embedly>data>key
     ENABLE_INFINITE_CORRIDOR: {{ env_data.ENABLE_INFINITE_CORRIDOR }}
@@ -132,8 +132,8 @@ heroku:
     OCW_UPLOAD_IMAGE_ONLY: {{ env_data.OCW_UPLOAD_IMAGE_ONLY }}
     OLL_ALT_URL: https://openlearninglibrary.mit.edu/courses/
     OLL_API_ACCESS_TOKEN_URL: https://openlearninglibrary.mit.edu/oauth2/access_token/
-    OLL_API_CLIENT_ID: __vault__::secret-mitopen/secrets>data>data>open-learning-library-client>client-id
-    OLL_API_CLIENT_SECRET: __vault__::secret-mitopen/secrets>data>data>open-learning-library-client>client-secret
+    OLL_API_CLIENT_ID: __vault__::secret-mitopen/data/secrets>data>data>open-learning-library-client>client-id
+    OLL_API_CLIENT_SECRET: __vault__::secret-mitopen/data/secrets>data>data>open-learning-library-client>client-secret
     OLL_API_URL: https://discovery.openlearninglibrary.mit.edu/api/v1/catalogs/1/courses/
     OLL_BASE_URL: https://openlearninglibrary.mit.edu/course/
     MITOPEN_ADMIN_EMAIL: cuddle-bunnies@mit.edu
@@ -154,12 +154,12 @@ heroku:
     MITOPEN_ENVIRONMENT: {{ env_data.env_name }}
     MITOPEN_FROM_EMAIL: MITOpen <mitopen-support@mit.edu>
     MITOPEN_FRONTPAGE_DIGEST_MAX_POSTS: 10
-    MITOPEN_JWT_SECRET: __vault__::secret-mitopen/secrets>data>data>jwt_secret
+    MITOPEN_JWT_SECRET: __vault__::secret-mitopen/data/secrets>data>data>jwt_secret
     MITOPEN_LOG_LEVEL: {{ env_data.app_log_level }}
     MITOPEN_SUPPORT_EMAIL: {{ env_data.MITOPEN_SUPPORT_EMAIL }}
     MITOPEN_USE_S3: True
     OPENSEARCH_DEFAULT_TIMEOUT: 30
-    OPENSEARCH_HTTP_AUTH: __vault__::secret-mitopen/secrets>data>data>opensearch>http_auth
+    OPENSEARCH_HTTP_AUTH: __vault__::secret-mitopen/data/secrets>data>data>opensearch>http_auth
     OPENSEARCH_INDEX: {{ env_data.OPENSEARCH_INDEX}}
     OPENSEARCH_INDEXING_CHUNK_SIZE: 75
     OPENSEARCH_SHARD_COUNT: {{ env_data.OPENSEARCH_SHARD_COUNT }}
@@ -168,17 +168,17 @@ heroku:
     PGBOUNCER_MAX_CLIENT_CONN: {{ env_data.PGBOUNCER_MAX_CLIENT_CONN }}
     PGBOUNCER_MIN_POOL_SIZE: {{ env_data.PGBOUNCER_MIN_POOL_SIZE }}
     PROLEARN_CATALOG_API_URL: https://prolearn.mit.edu/graphql
-    SECRET_KEY: __vault__::secret-mitopen/secrets>data>data>django-secret-key
+    SECRET_KEY: __vault__::secret-mitopen/data/secrets>data>data>django-secret-key
     SEE_BASE_URL: https://executive.mit.edu/
     SENTRY_DSN: __vault__::secret-operations/global/mitopen/sentry-dsn>data>value
-    STATUS_TOKEN: __vault__::secret-mitopen/secrets>data>data>django-status-token
+    STATUS_TOKEN: __vault__::secret-mitopen/data/secrets>data>data>django-status-token
     TIKA_ACCESS_TOKEN: __vault__::secret-operations/tika/access-token>data>value
     TIKA_SERVER_ENDPOINT: {{ env_data.TIKA_SERVER_ENDPOINT }}
     USE_X_FORWARDED_HOST: True
     USE_X_FORWARDED_PORT: True
     XPRO_CATALOG_API_URL: https://{{ etl_xpro_host }}/api/programs/
     XPRO_COURSES_API_URL: https://{{ etl_xpro_host }}/api/courses/
-    YOUTUBE_DEVELOPER_KEY: __vault__::secret-mitopen/secrets>data>data>youtube-developer-key
+    YOUTUBE_DEVELOPER_KEY: __vault__::secret-mitopen/data/secrets>data>data>youtube-developer-key
     YOUTUBE_FETCH_TRANSCRIPT_SCHEDULE_SECONDS: 21600
     YOUTUBE_FETCH_TRANSCRIPT_SLEEP_SECONDS: 20
     SOCIAL_AUTH_OL_OIDC_OIDC_ENDPOINT: https://{{ env_data.SSO_URL }}/realms/olapps
