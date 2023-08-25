@@ -70,7 +70,7 @@
       'PGBOUNCER_MAX_CLIENT_CONN': 500,
       'PGBOUNCER_MIN_POOL_SIZE': 20,
       'release_branch': 'release',
-      'SSO_URL': 'sso-qa.odl.mit.edu',
+      'SSO_URL': 'sso-production.odl.mit.edu',
       'TIKA_SERVER_ENDPOINT': 'https://tika-production.odl.mit.edu',
       'env_stage': 'production',
       }
