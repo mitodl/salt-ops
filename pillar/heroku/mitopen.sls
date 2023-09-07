@@ -178,6 +178,7 @@ heroku:
     USE_X_FORWARDED_PORT: True
     XPRO_CATALOG_API_URL: https://{{ etl_xpro_host }}/api/programs/
     XPRO_COURSES_API_URL: https://{{ etl_xpro_host }}/api/courses/
+    XPRO_LEARNING_COURSE_BUCKET_NAME: mitx-etl-xpro-production-mitxpro-production
     YOUTUBE_DEVELOPER_KEY: __vault__::secret-mitopen/data/secrets>data>data>youtube-developer-key
     YOUTUBE_FETCH_TRANSCRIPT_SCHEDULE_SECONDS: 21600
     YOUTUBE_FETCH_TRANSCRIPT_SLEEP_SECONDS: 20
