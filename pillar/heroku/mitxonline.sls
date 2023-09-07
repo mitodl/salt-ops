@@ -142,6 +142,8 @@ heroku:
     ZENDESK_HELP_WIDGET_ENABLED: True
     POSTHOG_API_TOKEN: __vault__::secret-{{ business_unit }}/posthog-credentials>data>api-token
     POSTHOG_API_HOST: "https://app.posthog.com"
+    HUBSPOT_HOME_PAGE_FORM_GUID: __vault__::secret-{{ business_unit }}/hubspot>data>formId
+    HUBSPOT_PORTAL_ID:__vault__::secret-{{ business_unit }}/hubspot>data>portalId
 
 schedule:
   refresh_{{ env_data.app_name }}_configs:
