@@ -9,7 +9,6 @@
       'GOOGLE_TRACKING_ID': 'UA-5145472-46',
       'GOOGLE_TAG_MANAGER_ID': 'GTM-TW97MNR',
       'HUBSPOT_ID_PREFIX': 'mitxonline-rc',
-      'HUBSPOT_PORTAL_ID': 23586992,
       'release_branch': 'release-candidate',
       'app_log_level': 'INFO',
       'sentry_log_level': 'ERROR',
@@ -33,7 +32,6 @@
       'GOOGLE_TRACKING_ID': 'UA-5145472-48',
       'GOOGLE_TAG_MANAGER_ID': 'GTM-M47BLXN',
       'HUBSPOT_ID_PREFIX': 'mitxonline',
-      'HUBSPOT_PORTAL_ID': 20596155,
       'release_branch': 'release',
       'app_log_level': 'INFO',
       'sentry_log_level': 'ERROR',
@@ -78,7 +76,6 @@ heroku:
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
     GTM_TRACKING_ID: {{ env_data.GOOGLE_TAG_MANAGER_ID }}
     HUBSPOT_PIPELINE_ID: '19817792'
-    HUBSPOT_PORTAL_ID: {{ env_data.HUBSPOT_PORTAL_ID }}
     LOGOUT_REDIRECT_URL: {{ env_data.logout_redirect_url }}
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
@@ -143,7 +140,7 @@ heroku:
     POSTHOG_API_TOKEN: __vault__::secret-{{ business_unit }}/posthog-credentials>data>api-token
     POSTHOG_API_HOST: "https://app.posthog.com"
     HUBSPOT_HOME_PAGE_FORM_GUID: __vault__::secret-{{ business_unit }}/hubspot>data>formId
-    HUBSPOT_PORTAL_ID:__vault__::secret-{{ business_unit }}/hubspot>data>portalId
+    HUBSPOT_PORTAL_ID: __vault__::secret-{{ business_unit }}/hubspot>data>portalId
 
 schedule:
   refresh_{{ env_data.app_name }}_configs:
