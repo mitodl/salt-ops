@@ -198,8 +198,8 @@ heroku:
     OCW_STUDIO_LOG_LEVEL: {{ env_data.OCW_STUDIO_LOG_LEVEL }}
     OCW_STUDIO_SUPPORT_EMAIL: {{ env_data.OCW_STUDIO_SUPPORT_EMAIL }}
     OCW_STUDIO_USE_S3: True
-    OCW_MASS_BUILD_BATCH_SIZE: {{ env_data.OCW_STUDIO_MASS_BUILD_BATCH_SIZE }},
-    OCW_MASS_BUILD_MAX_IN_FLIGHT: {{ env_data.OCW_STUDIO_MASS_BUILD_MAX_IN_FLIGHT }},
+    OCW_MASS_BUILD_BATCH_SIZE: {{ env_data.OCW_MASS_BUILD_BATCH_SIZE }},
+    OCW_MASS_BUILD_MAX_IN_FLIGHT: {{ env_data.OCW_MASS_BUILD_MAX_IN_FLIGHT }},
     OCW_NEXT_SEARCH_WEBHOOK_KEY: __vault__::secret-{{ business_unit }}/global/update-search-data-webhook-key>data>value
     OPEN_DISCUSSIONS_URL: {{ env_data.OPEN_DISCUSSIONS_URL }}
     PREPUBLISH_ACTIONS: videos.tasks.update_transcripts_for_website,videos.youtube.update_youtube_metadata,content_sync.tasks.update_website_in_root_website
