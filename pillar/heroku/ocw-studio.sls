@@ -25,6 +25,8 @@
       'MAILGUN_SENDER_DOMAIN': 'ocw-ci.mail.odl.mit.edu',
       'OCW_IMPORT_STARTER_SLUG': 'course',
       'OCW_COURSE_STARTER_SLUG': 'ocw-course-v2',
+      'OCW_MASS_BUILD_BATCH_SIZE': '20',
+      'OCW_MASS_BUILD_MAX_IN_FLIGHT': '10',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio-ci.odl.mit.edu/',
       'OCW_STUDIO_DRAFT_URL': '',
       'OCW_STUDIO_LIVE_URL': '',
@@ -63,6 +65,8 @@
       'MAILGUN_SENDER_DOMAIN': 'ocw-rc.mail.odl.mit.edu',
       'OCW_IMPORT_STARTER_SLUG': 'ocw-course',
       'OCW_COURSE_STARTER_SLUG': 'ocw-course-v2',
+      'OCW_MASS_BUILD_BATCH_SIZE': '160',
+      'OCW_MASS_BUILD_MAX_IN_FLIGHT': '80',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio-rc.odl.mit.edu/',
       'OCW_STUDIO_DRAFT_URL': 'https://draft-qa.ocw.mit.edu/',
       'OCW_STUDIO_LIVE_URL': 'https://live-qa.ocw.mit.edu/',
@@ -101,6 +105,8 @@
       'MAILGUN_SENDER_DOMAIN': 'ocw.mail.odl.mit.edu',
       'OCW_IMPORT_STARTER_SLUG': 'ocw-course',
       'OCW_COURSE_STARTER_SLUG': 'ocw-course-v2',
+      'OCW_MASS_BUILD_BATCH_SIZE': '160',
+      'OCW_MASS_BUILD_MAX_IN_FLIGHT': '80',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio.odl.mit.edu/',
       'OCW_STUDIO_DRAFT_URL': 'https://draft.ocw.mit.edu/',
       'OCW_STUDIO_LIVE_URL': 'https://ocw.mit.edu/',
@@ -192,6 +198,8 @@ heroku:
     OCW_STUDIO_LOG_LEVEL: {{ env_data.OCW_STUDIO_LOG_LEVEL }}
     OCW_STUDIO_SUPPORT_EMAIL: {{ env_data.OCW_STUDIO_SUPPORT_EMAIL }}
     OCW_STUDIO_USE_S3: True
+    OCW_MASS_BUILD_BATCH_SIZE: {{ env_data.OCW_STUDIO_MASS_BUILD_BATCH_SIZE }},
+    OCW_MASS_BUILD_MAX_IN_FLIGHT: {{ env_data.OCW_STUDIO_MASS_BUILD_MAX_IN_FLIGHT }},
     OCW_NEXT_SEARCH_WEBHOOK_KEY: __vault__::secret-{{ business_unit }}/global/update-search-data-webhook-key>data>value
     OPEN_DISCUSSIONS_URL: {{ env_data.OPEN_DISCUSSIONS_URL }}
     PREPUBLISH_ACTIONS: videos.tasks.update_transcripts_for_website,videos.youtube.update_youtube_metadata,content_sync.tasks.update_website_in_root_website
