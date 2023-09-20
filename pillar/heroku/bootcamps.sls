@@ -20,6 +20,7 @@
       'HUBSPOT_API_ID_PREFIX' 'bootcamp-rc',
       'HUBSPOT_PORTAL_ID': '23263862',
       'HUBSPOT_FOOTER_FORM_GUID': 'be317df4-ed94-4d42-bfb9-01adec557d8f',
+      'JOBMA_BASE_URL': 'https://dev.jobma.com',
       'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
       'NOVOED_BASE_URL': 'https://mitstaging.novoed.com',
       'NOVOED_SAML_DEBUG': True,
@@ -69,6 +70,7 @@
       'HUBSPOT_API_ID_PREFIX' 'bootcamp',
       'HUBSPOT_PORTAL_ID': '6119748',
       'HUBSPOT_FOOTER_FORM_GUID': '2d798908-c195-4c0c-b075-a10b0c1b08f3',
+      'JOBMA_BASE_URL': 'https://www.jobma.com',
       'MAILGUN_SENDER_DOMAIN': 'mail.bootcamp.odl.mit.edu',
       'NOVOED_BASE_URL': 'https://mitbootcamps.novoed.com',
       'NOVOED_SAML_DEBUG': False,
@@ -124,7 +126,6 @@ heroku:
     {% endif %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/bootcamps
     {% if env_data.env_name == 'production' %}
-    BOOTCAMP_ECOMMERCE_EMAIL: __vault__::secret-bootcamps/data/cybersource>data>data>email
     BOOTCAMP_ECOMMERCE_SAML_BASE_URL: https://bootcamps.mit.edu
     HIREFIRE_TOKEN: __vault__::secret-bootcamps/data/hirefire_token>data>data>value
     SESSION_ENGINE_BACKEND: cache
