@@ -25,7 +25,6 @@
       'NOVOED_SAML_DEBUG': True,
       'NOVOED_SAML_LOGIN_URL': 'https://app.novoed.com/saml/sso?provider=mitstaging',
       'SITE_NAME': 'MIT Bootcamps CI',
-      'vault_env_path': 'rc-apps'
       },
     'rc': {
       'app_name': 'bootcamp-ecommerce-rc',
@@ -51,7 +50,6 @@
       'NOVOED_SAML_DEBUG': True,
       'NOVOED_SAML_LOGIN_URL': 'https://app.novoed.com/saml/sso?provider=mitstaging',
       'SITE_NAME': 'MIT Bootcamps RC',
-      'vault_env_path': 'rc-apps'
       },
     'production': {
       'app_name': 'bootcamp-ecommerce',
@@ -76,7 +74,6 @@
       'NOVOED_SAML_DEBUG': False,
       'NOVOED_SAML_LOGIN_URL': 'https://app.novoed.com/saml/sso?provider=mitbootcamps',
       'SITE_NAME': 'MIT Bootcamps',
-      'vault_env_path': 'production-apps'
       }
 } %}
 {% set env_data = env_dict[environment] %}
@@ -121,21 +118,21 @@ heroku:
     CYBERSOURCE_WSDL_URL: {{ env_data.CYBERSOURCE_WSDL_URL }}
     {% if env_data.env_name == 'ci' %}
     # Static pg_creds stored in Vault QA for CI app
-    {% set pg_creds = salt.vault.read('secret-bootcamps/ci/rds').data %}
+    {% set pg_creds = salt.vault.read('secret-bootcamps/data/rds').data %}
     {% else %}
     {% set pg_creds = salt.vault.cached_read('postgres-bootcamps/creds/app', cache_prefix='heroku-bootcamp') %}
     {% endif %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/bootcamps
     {% if env_data.env_name == 'production' %}
-    BOOTCAMP_ECOMMERCE_EMAIL: __vault__::secret-bootcamps/>cybersource>data>data>email
+    BOOTCAMP_ECOMMERCE_EMAIL: __vault__::secret-bootcamps/data/cybersource>data>data>email
     BOOTCAMP_ECOMMERCE_SAML_BASE_URL: https://bootcamps.mit.edu
-    HIREFIRE_TOKEN: __vault__::secret-bootcamps/hirefire_token>data>data>value
+    HIREFIRE_TOKEN: __vault__::secret-bootcamps/data/hirefire_token>data>data>value
     SESSION_ENGINE_BACKEND: cache
     USE_X_FORWARDED_HOST: True
     {% endif %}
     EDXORG_BASE_URL: {{ env_data.EDXORG_BASE_URL }}
-    EDXORG_CLIENT_ID: __vault__::secret-bootcamps/edx>data>>dataclient_id
-    EDXORG_CLIENT_SECRET: __vault__::secret-bootcamps/edx>data>data>client_secret
+    EDXORG_CLIENT_ID: __vault__::secret-bootcamps/data/edx>data>>dataclient_id
+    EDXORG_CLIENT_SECRET: __vault__::secret-bootcamps/data/edx>data>data>client_secret
     ENABLE_STUNNEL_AMAZON_RDS_FIX: true
     FEATURE_ENABLE_CERTIFICATE_USER_VIEW: True
     FEATURE_SOCIAL_AUTH_API: True
