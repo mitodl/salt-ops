@@ -103,7 +103,7 @@ heroku:
     BOOTCAMP_EMAIL_PASSWORD: {{ mit_smtp.relay_password }}
     BOOTCAMP_EMAIL_PORT: 587
     BOOTCAMP_EMAIL_TLS: True
-    BOOTCAMP_EMAIL_USER: mitxmail
+    BOOTCAMP_EMAIL_USER: {{ mit_smtp.relay_username }}
     BOOTCAMP_ENVIRONMENT: {{ env_data.env_name }}
     BOOTCAMP_LOG_LEVEL: {{ env_data.BOOTCAMP_LOG_LEVEL }}
     BOOTCAMP_REPLY_TO_ADDRESS: 'MIT Bootcamps <bootcamps-support@mit.edu>'
