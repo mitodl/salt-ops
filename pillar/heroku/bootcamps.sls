@@ -120,7 +120,7 @@ heroku:
     CYBERSOURCE_WSDL_URL: {{ env_data.CYBERSOURCE_WSDL_URL }}
     {% if env_data.env_name == 'ci' %}
     # Static pg_creds stored in Vault QA for CI app
-    {% set pg_creds = salt.vault.read('secret-bootcamps/data/rds').data %}
+    {% set pg_creds = salt.vault.read('secret-bootcamps/data/rds').data.data %}
     {% else %}
     {% set pg_creds = salt.vault.cached_read('postgres-bootcamps/creds/app', cache_prefix='heroku-bootcamp') %}
     {% endif %}
