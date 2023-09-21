@@ -80,8 +80,8 @@
 } %}
 {% set env_data = env_dict[environment] %}
 {% set cybersource_creds = salt.vault.read('secret-bootcamps/data/cybersource').data %}
-{% set jobma = salt.vault.read('secret-bootcamps/data/jobma').data %}
-{% set mit_smtp = salt.vault.read('secret-global/data/mit-smtp').data %}
+{% set jobma = salt.vault.read('secret-bootcamps/data/jobma').data.data %}
+{% set mit_smtp = salt.vault.read('secret-global/data/mit-smtp').data.data %}
 {% set rds_endpoint = salt.boto_rds.get_endpoint('bootcamps-db-applications-{env}'.format(env=env_data.aws_env)) %}
 
 proxy:
@@ -92,8 +92,8 @@ heroku:
   api_key: __vault__::secret-global/data/heroku>data>data>mitx-devops-api-key
   config_vars:
     ALLOWED_HOSTS: '{{ env_data.ALLOWED_HOSTS|tojson }}'
-    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/bootcamps-app>data>>data>access_key
-    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/bootcamps-app>data>data>secret_key
+    AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/bootcamps-app>data>access_key
+    AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/bootcamps-app>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'ol-bootcamps-app-{{ env_data.aws_env }}'
     BOOTCAMP_ADMIN_EMAIL: cuddle-bunnies@mit.edu
     BOOTCAMP_DB_DISABLE_SSL: True
@@ -132,7 +132,7 @@ heroku:
     USE_X_FORWARDED_HOST: True
     {% endif %}
     EDXORG_BASE_URL: {{ env_data.EDXORG_BASE_URL }}
-    EDXORG_CLIENT_ID: __vault__::secret-bootcamps/data/edx>data>>dataclient_id
+    EDXORG_CLIENT_ID: __vault__::secret-bootcamps/data/edx>data>data>client_id
     EDXORG_CLIENT_SECRET: __vault__::secret-bootcamps/data/edx>data>data>client_secret
     ENABLE_STUNNEL_AMAZON_RDS_FIX: true
     FEATURE_ENABLE_CERTIFICATE_USER_VIEW: True
@@ -147,7 +147,7 @@ heroku:
     HUBSPOT_PORTAL_ID: {{ env_data.HUBSPOT_PORTAL_ID }}
     HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
     JOBMA_ACCESS_TOKEN: {{ jobma.access_token }}
-    JOBMA_BASE_URL: JOBMA_BASE_URL
+    JOBMA_BASE_URL: {{ env_data.JOBMA_BASE_URL }}
     JOBMA_WEBHOOK_ACCESS_TOKEN: {{ jobma.webhook_access_token }}
     JOBMA_LINK_EXPIRATION_DAYS: 13
     MAILGUN_FROM_EMAIL: 'MIT Bootcamps <no-reply@{{ env_data.MAILGUN_SENDER_DOMAIN }}'
