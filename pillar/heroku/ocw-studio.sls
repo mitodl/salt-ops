@@ -141,6 +141,7 @@ heroku:
     AWS_ACCOUNT_ID:  __vault__::secret-{{ business_unit }}/ocw-studio/{{ environment }}/aws_account_id>data>value
     AWS_ROLE_NAME: 'service-role-mediaconvert-ocw-studio-{{ env_data.env }}'
     AWS_REGION: us-east-1
+    AWS_ARTIFACTS_BUCKET_NAME: 'ol-eng-artifacts'
     AWS_PREVIEW_BUCKET_NAME: 'ocw-content-draft-{{ env_data.env }}'
     AWS_PUBLISH_BUCKET_NAME: 'ocw-content-live-{{ env_data.env }}'
     AWS_OFFLINE_PREVIEW_BUCKET_NAME: 'ocw-content-offline-draft-{{ env_data.env }}'
