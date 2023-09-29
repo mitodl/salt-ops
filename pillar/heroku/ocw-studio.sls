@@ -66,7 +66,7 @@
       'OCW_IMPORT_STARTER_SLUG': 'ocw-course',
       'OCW_COURSE_STARTER_SLUG': 'ocw-course-v2',
       'OCW_MASS_BUILD_BATCH_SIZE': '160',
-      'OCW_MASS_BUILD_MAX_IN_FLIGHT': '80',
+      'OCW_MASS_BUILD_MAX_IN_FLIGHT': '20',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio-rc.odl.mit.edu/',
       'OCW_STUDIO_DRAFT_URL': 'https://draft-qa.ocw.mit.edu/',
       'OCW_STUDIO_LIVE_URL': 'https://live-qa.ocw.mit.edu/',
@@ -106,7 +106,7 @@
       'OCW_IMPORT_STARTER_SLUG': 'ocw-course',
       'OCW_COURSE_STARTER_SLUG': 'ocw-course-v2',
       'OCW_MASS_BUILD_BATCH_SIZE': '160',
-      'OCW_MASS_BUILD_MAX_IN_FLIGHT': '80',
+      'OCW_MASS_BUILD_MAX_IN_FLIGHT': '20',
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio.odl.mit.edu/',
       'OCW_STUDIO_DRAFT_URL': 'https://draft.ocw.mit.edu/',
       'OCW_STUDIO_LIVE_URL': 'https://ocw.mit.edu/',
@@ -141,6 +141,7 @@ heroku:
     AWS_ACCOUNT_ID:  __vault__::secret-{{ business_unit }}/ocw-studio/{{ environment }}/aws_account_id>data>value
     AWS_ROLE_NAME: 'service-role-mediaconvert-ocw-studio-{{ env_data.env }}'
     AWS_REGION: us-east-1
+    AWS_ARTIFACTS_BUCKET_NAME: 'ol-eng-artifacts'
     AWS_PREVIEW_BUCKET_NAME: 'ocw-content-draft-{{ env_data.env }}'
     AWS_PUBLISH_BUCKET_NAME: 'ocw-content-live-{{ env_data.env }}'
     AWS_OFFLINE_PREVIEW_BUCKET_NAME: 'ocw-content-offline-draft-{{ env_data.env }}'
