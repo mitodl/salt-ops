@@ -163,7 +163,7 @@ heroku:
     NOVOED_BASE_URL: {{ env_data.NOVOED_BASE_URL }}
     NOVOED_SAML_DEBUG: {{ env_data.NOVOED_SAML_DEBUG }}
     NOVOED_SAML_KEY: __vault__::secret-bootcamps/data/novoed>data>data>saml_key
-    NOVOED_SAML_CERT: __vault__::secret-bootcamps/data/novoed>data>>data>saml_cert
+    NOVOED_SAML_CERT: __vault__::secret-bootcamps/data/novoed>data>data>saml_cert
     NOVOED_SAML_LOGIN_URL: {{ env_data.NOVOED_SAML_LOGIN_URL }}
     PGBOUNCER_DEFAULT_POOL_SIZE: 50
     PGBOUNCER_MIN_POOL_SIZE: 5
