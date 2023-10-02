@@ -167,8 +167,8 @@ heroku:
     NOVOED_SAML_LOGIN_URL: {{ env_data.NOVOED_SAML_LOGIN_URL }}
     PGBOUNCER_DEFAULT_POOL_SIZE: 50
     PGBOUNCER_MIN_POOL_SIZE: 5
-    RECAPTCHA_SITE_KEY: __vault__::secret-bootcamps/data/recaptcha-keys>data>data>site_key
-    RECAPTCHA_SECRET_KEY: __vault__::secret-bootcamps/data/recaptcha-keys>data>data>secret_key
+    RECAPTCHA_SITE_KEY: __vault__::secret-bootcamps/data/recaptcha>data>data>site_key
+    RECAPTCHA_SECRET_KEY: __vault__::secret-bootcamps/data/recaptcha>data>data>secret_key
     SECRET_KEY: __vault__:secret-bootcamps/data/django>data>data>secret_key
     SENTRY_DSN: __vault__::secret-bootcamps/data/sentry>data>data>dsn
     SITE_NAME: {{ env_data.SITE_NAME }}
