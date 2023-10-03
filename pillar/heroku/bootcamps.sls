@@ -89,7 +89,7 @@ proxy:
 
 heroku:
   app_name: {{ env_data.app_name }}
-  api_key: __vault__::secret-global/data/heroku>data>data>mitx-devops-api-key
+  api_key: __vault__::secret-global/data/heroku>data>data>mitx_devops_api_key
   config_vars:
     ALLOWED_HOSTS: '{{ env_data.ALLOWED_HOSTS|tojson }}'
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/bootcamps-app>data>access_key
