@@ -82,7 +82,6 @@
 {% set cybersource_creds = salt.vault.read('secret-bootcamps/data/cybersource').data.data %}
 {% set jobma = salt.vault.read('secret-bootcamps/data/jobma').data.data %}
 {% set mit_smtp = salt.vault.read('secret-global/data/mit-smtp').data.data %}
-{% set rds_endpoint = salt.boto_rds.get_endpoint('bootcamps-db-applications-{env}'.format(env=env_data.aws_env)) %}
 
 proxy:
   proxytype: heroku
@@ -122,6 +121,7 @@ heroku:
     # Static pg_creds stored in Vault QA for CI app
     {% set pg_creds = salt.vault.read('secret-bootcamps/data/rds').data.data %}
     {% else %}
+    {% set rds_endpoint = salt.boto_rds.get_endpoint('bootcamps-db-applications-{env}'.format(env=env_data.aws_env)) %}
     {% set pg_creds = salt.vault.cached_read('postgres-bootcamps/creds/app', cache_prefix='heroku-bootcamp') %}
     {% endif %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/bootcamps
