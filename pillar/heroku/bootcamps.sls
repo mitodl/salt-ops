@@ -127,7 +127,7 @@ heroku:
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/bootcamps
     {% if env_data.env_name == 'production' %}
     BOOTCAMP_ECOMMERCE_SAML_BASE_URL: https://bootcamps.mit.edu
-    HIREFIRE_TOKEN: __vault__::secret-bootcamps/data/hirefire_token>data>data>value
+    HIREFIRE_TOKEN: __vault__::secret-bootcamps/data/hirefire>data>data>token
     SESSION_ENGINE_BACKEND: cache
     USE_X_FORWARDED_HOST: True
     {% endif %}
