@@ -18,10 +18,8 @@
       'MAILGUN_SENDER_DOMAIN': 'discussions-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'xpro-rc.odl.mit.edu',
       'OCW_ITERATOR_CHUNK_SIZE': 300,
-      'OCW_NEXT_AWS_STORAGE_BUCKET_NAME': 'ol-ocw-studio-app-qa',
-      'OCW_NEXT_BASE_URL': 'https://live-qa.ocw.mit.edu/',
-      'OCW_NEXT_LIVE_BUCKET': 'ocw-content-live-qa',
-      'OCW_UPLOAD_IMAGE_ONLY': True,
+      'OCW_BASE_URL': 'https://live-qa.ocw.mit.edu/',
+      'OCW_LIVE_BUCKET': 'ocw-content-live-qa',
       'MITOPEN_BASE_URL': 'https://mit-open-rc.odl.mit.edu',
       'MITOPEN_COOKIE_NAME': 'mitopen-rc',
       'MITOPEN_COOKIE_DOMAIN': 'odl.mit.edu',
@@ -55,10 +53,8 @@
       'MICROMASTERS_BASE_URL': 'micromasters.mit.edu',
       'MITXPRO_BASE_URL': 'xpro.mit.edu',
       'OCW_ITERATOR_CHUNK_SIZE': 300,
-      'OCW_NEXT_AWS_STORAGE_BUCKET_NAME': 'ol-ocw-studio-app-production',
-      'OCW_NEXT_BASE_URL': 'https://ocw.mit.edu/',
-      'OCW_NEXT_LIVE_BUCKET': 'ocw-content-live-production',
-      'OCW_UPLOAD_IMAGE_ONLY': False,
+      'OCW_BASE_URL': 'https://ocw.mit.edu/',
+      'OCW_LIVE_BUCKET': 'ocw-content-live-production',
       'MITOPEN_COOKIE_NAME': 'mitopenprod',
       'MITOPEN_BASE_URL': 'https://open.mit.edu',
       'MITOPEN_COOKIE_DOMAIN': 'mit.edu',
@@ -122,14 +118,10 @@ heroku:
     MITX_ONLINE_LEARNING_COURSE_BUCKET_NAME: mitx-etl-mitxonline-production
     NEW_RELIC_LOG: stdout
     NODE_MODULES_CACHE: False
-    OCW_CONTENT_BUCKET_NAME: ocw-content-storage
     OCW_ITERATOR_CHUNK_SIZE: {{ env_data.OCW_ITERATOR_CHUNK_SIZE }}
-    OCW_LEARNING_COURSE_BUCKET_NAME: ol-mitopen-course-data-{{ env_data.env_name }}
-    OCW_NEXT_AWS_STORAGE_BUCKET_NAME: {{ env_data.OCW_NEXT_AWS_STORAGE_BUCKET_NAME }}
-    OCW_NEXT_BASE_URL: {{ env_data.OCW_NEXT_BASE_URL }}
-    OCW_NEXT_LIVE_BUCKET: {{ env_data.OCW_NEXT_LIVE_BUCKET }}
-    OCW_NEXT_SEARCH_WEBHOOK_KEY: __vault__::secret-operations/global/update-search-data-webhook-key>data>value
-    OCW_UPLOAD_IMAGE_ONLY: {{ env_data.OCW_UPLOAD_IMAGE_ONLY }}
+    OCW_BASE_URL: {{ env_data.OCW_NEXT_BASE_URL }}
+    OCW_LIVE_BUCKET: {{ env_data.OCW_LIVE_BUCKET }}
+    OCW_WEBHOOK_KEY: __vault__::secret-operations/global/update-search-data-webhook-key>data>value
     OLL_ALT_URL: https://openlearninglibrary.mit.edu/courses/
     OLL_API_ACCESS_TOKEN_URL: https://openlearninglibrary.mit.edu/oauth2/access_token/
     OLL_API_CLIENT_ID: __vault__::secret-mitopen/data/secrets>data>data>open-learning-library-client>client-id
