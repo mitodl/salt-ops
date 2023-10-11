@@ -119,7 +119,7 @@ heroku:
     NEW_RELIC_LOG: stdout
     NODE_MODULES_CACHE: False
     OCW_ITERATOR_CHUNK_SIZE: {{ env_data.OCW_ITERATOR_CHUNK_SIZE }}
-    OCW_BASE_URL: {{ env_data.OCW_NEXT_BASE_URL }}
+    OCW_BASE_URL: {{ env_data.OCW_BASE_URL }}
     OCW_LIVE_BUCKET: {{ env_data.OCW_LIVE_BUCKET }}
     OCW_WEBHOOK_KEY: __vault__::secret-operations/global/update-search-data-webhook-key>data>value
     OLL_ALT_URL: https://openlearninglibrary.mit.edu/courses/
