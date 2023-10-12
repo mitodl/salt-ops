@@ -177,7 +177,7 @@ heroku:
     SOCIAL_AUTH_OL_OIDC_OIDC_ENDPOINT: https://{{ env_data.SSO_URL }}/realms/olapps
     OIDC_ENDPOINT: https://{{ env_data.SSO_URL }}/realms/olapps
     SOCIAL_AUTH_OL_OIDC_KEY: ol-open-client
-    SOCIAL_AUTH_OL_OIDC_SECRET: __vault__::secret-mitopen/data/secrets>data>data>oidc-secret-key
+    SOCIAL_AUTH_OL_OIDC_SECRET: __vault__::secret-operations/sso/open>data>client_secret
     AUTHORIZATION_URL: https://{{ env_data.SSO_URL }}/realms/olapps/protocol/openid-connect/auth
     ACCESS_TOKEN_URL: https://{{ env_data.SSO_URL }}/realms/olapps/protocol/openid-connect/token
     USERINFO_URL: https://{{ env_data.SSO_URL }}/realms/olapps/protocol/openid-connect/userinfo
