@@ -43,6 +43,9 @@
       'TIKA_SERVER_ENDPOINT': 'https://tika-ci.odl.mit.edu',
       'vault_env_path': 'rc-apps',
       'env_stage': 'ci',
+      'FEATURE_KEYCLOAK_ENABLED': True,
+      'KEYCLOAK_BASE_URL': 'https://sso-ci.odl.mit.edu',
+      'KEYCLOAK_REALM_NAME': 'olapps',
       },
     'rc': {
       'app_log_level': 'INFO',
@@ -86,6 +89,9 @@
       'TIKA_SERVER_ENDPOINT': 'https://tika-qa.odl.mit.edu',
       'vault_env_path': 'rc-apps',
       'env_stage': 'qa',
+      'FEATURE_KEYCLOAK_ENABLED': True,
+      'KEYCLOAK_BASE_URL': 'https://sso-qa.odl.mit.edu',
+      'KEYCLOAK_REALM_NAME': 'olapps',
       },
     'production': {
       'app_log_level': 'INFO',
@@ -129,6 +135,9 @@
       'TIKA_SERVER_ENDPOINT': 'https://tika-production.odl.mit.edu',
       'vault_env_path': 'production-apps',
       'env_stage': 'production',
+      'FEATURE_KEYCLOAK_ENABLED': False,
+      'KEYCLOAK_BASE_URL': '',
+      'KEYCLOAK_REALM_NAME': '',
       }
 } %}
 {% set env_data = env_dict[environment] %}
