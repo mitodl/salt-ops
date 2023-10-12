@@ -305,6 +305,9 @@ heroku:
     YOUTUBE_DEVELOPER_KEY: __vault__::secret-{{ business_unit }}/{{ environment }}/youtube-developer-key>data>value
     YOUTUBE_FETCH_TRANSCRIPT_SCHEDULE_SECONDS: 21600
     YOUTUBE_FETCH_TRANSCRIPT_SLEEP_SECONDS: 20
+    FEATURE_KEYCLOAK_ENABLED: {{ env_data.FEATURE_KEYCLOAK_ENABLED }}
+    KEYCLOAK_BASE_URL: {{ env_data.KEYCLOAK_BASE_URL }}
+    KEYCLOAK_REALM_NAME': {{ env_data.KEYCLOAK_REALM_NAME }}
 
 schedule:
   refresh_{{ env_data.app_name }}_configs:
