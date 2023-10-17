@@ -148,6 +148,7 @@ heroku:
     AWS_OFFLINE_PUBLISH_BUCKET_NAME: 'ocw-content-offline-live-{{ env_data.env }}'
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/ocw-studio-app-{{ env_data.env }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'ol-ocw-studio-app-{{ env_data.env }}'
+    AWS_MAX_CONCURRENT_CONNECTIONS: 100
     CONTENT_SYNC_BACKEND: content_sync.backends.github.GithubBackend
     CONTENT_SYNC_PIPELINE: content_sync.pipelines.concourse.ConcourseGithubPipeline
     CONTENT_SYNC_THEME_PIPELINE: content_sync.pipelines.concourse.ThemeAssetsPipeline
