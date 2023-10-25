@@ -110,6 +110,7 @@ heroku:
     MAILGUN_KEY: __vault__::secret-operations/global/mailgun-api-key>data>value
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
     MAILGUN_URL: https://api.mailgun.net/v3/{{ env_data.MAILGUN_SENDER_DOMAIN }}
+    MICROMASTERS_CATALOG_API_URL: https://{{ etl_micromasters_host }}/api/v0/catalog/
     MITPE_BASE_URL: https://professional.mit.edu/
     EDX_LEARNING_COURSE_BUCKET_NAME: {{ env_data.EDX_LEARNING_COURSE_BUCKET_NAME }}
     MITX_ONLINE_BASE_URL: https://mitxonline.mit.edu/
