@@ -307,7 +307,7 @@ heroku:
     YOUTUBE_FETCH_TRANSCRIPT_SLEEP_SECONDS: 20
     FEATURE_KEYCLOAK_ENABLED: {{ env_data.FEATURE_KEYCLOAK_ENABLED }}
     KEYCLOAK_BASE_URL: {{ env_data.KEYCLOAK_BASE_URL }}
-    KEYCLOAK_REALM_NAME': {{ env_data.KEYCLOAK_REALM_NAME }}
+    KEYCLOAK_REALM_NAME: {{ env_data.KEYCLOAK_REALM_NAME }}
 
 schedule:
   refresh_{{ env_data.app_name }}_configs:
