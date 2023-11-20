@@ -30,7 +30,6 @@
       'PGBOUNCER_DEFAULT_POOL_SIZE': 50,
       'PGBOUNCER_MAX_CLIENT_CONN': 500,
       'PGBOUNCER_MIN_POOL_SIZE': 20,
-      'release_branch': 'md/ol-inf_issue-1657',
       'SSO_URL': 'sso-qa.odl.mit.edu',
       'TIKA_SERVER_ENDPOINT': 'https://tika-qa.odl.mit.edu',
       'env_stage': 'qa',
@@ -65,7 +64,6 @@
       'PGBOUNCER_DEFAULT_POOL_SIZE': 50,
       'PGBOUNCER_MAX_CLIENT_CONN': 500,
       'PGBOUNCER_MIN_POOL_SIZE': 20,
-      'release_branch': 'release',
       'SSO_URL': 'sso.odl.mit.edu',
       'TIKA_SERVER_ENDPOINT': 'https://tika-production.odl.mit.edu',
       'env_stage': 'production',
@@ -163,7 +161,7 @@ heroku:
     PROLEARN_CATALOG_API_URL: https://prolearn.mit.edu/graphql
     SECRET_KEY: __vault__::secret-mitopen/data/secrets>data>data>django-secret-key
     SEE_BASE_URL: https://executive.mit.edu/
-    SENTRY_DSN: __vault__::secret-operations/global/mitopen/sentry-dsn>data>value
+    SENTRY_DSN: __vault__::secret-mitopen/data/secrets>data>data>sentry-dsn
     STATUS_TOKEN: __vault__::secret-mitopen/data/secrets>data>data>django-status-token
     TIKA_ACCESS_TOKEN: __vault__::secret-operations/tika/access-token>data>value
     TIKA_SERVER_ENDPOINT: {{ env_data.TIKA_SERVER_ENDPOINT }}
