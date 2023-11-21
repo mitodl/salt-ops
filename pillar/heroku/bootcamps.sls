@@ -2,31 +2,6 @@
 {% set environment = minion_id.split('-')[-1] %}
 
 {% set env_dict = {
-    'ci': {
-      'app_name': 'bootcamp-ecommerce-ci',
-      'aws_env': 'ci',
-      'env_name': 'ci',
-      'ALLOWED_HOSTS': ["bootcamp-ci.odl.mit.edu"],
-      'BOOTCAMP_ECOMMERCE_BASE_URL': 'https://bootcamp-ecommerce-ci.herokuapp.com',
-      'BOOTCAMP_LOG_LEVEL': 'INFO',
-      'BOOTCAMP_SUPPORT_EMAIL': 'bootcamp-support@mit.edu',
-      'CYBERSOURCE_SECURE_ACCEPTANCE_URL': 'https://testsecureacceptance.cybersource.com/pay',
-      'CYBERSOURCE_REFERENCE_PREFIX': 'ci',
-      'CYBERSOURCE_WSDL_URL': 'https://ics2wstest.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.154.wsdl',
-      'EDXORG_BASE_URL': 'https://micromasters.d.mitx.mit.edu',
-      'FEATURE_NOVOED_INTEGRATION': False,
-      'GA_TRACKING_ID': 'UA-5145472-19',
-      'GTM_TRACKING_ID': 'GTM-NZT8SRC',
-      'HUBSPOT_API_ID_PREFIX': 'bootcamp-rc',
-      'HUBSPOT_PORTAL_ID': '23263862',
-      'HUBSPOT_FOOTER_FORM_GUID': 'be317df4-ed94-4d42-bfb9-01adec557d8f',
-      'JOBMA_BASE_URL': 'https://dev.jobma.com',
-      'MAILGUN_SENDER_DOMAIN': 'mail-rc.bootcamp.odl.mit.edu',
-      'NOVOED_BASE_URL': 'https://mitstaging.novoed.com',
-      'NOVOED_SAML_DEBUG': True,
-      'NOVOED_SAML_LOGIN_URL': 'https://app.novoed.com/saml/sso?provider=mitstaging',
-      'SITE_NAME': 'MIT Bootcamps CI',
-      },
     'rc': {
       'app_name': 'bootcamp-ecommerce-rc',
       'aws_env': 'qa',
@@ -117,13 +92,8 @@ heroku:
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.security_key }}
     CYBERSOURCE_TRANSACTION_KEY: {{ cybersource_creds.transaction_key }}
     CYBERSOURCE_WSDL_URL: {{ env_data.CYBERSOURCE_WSDL_URL }}
-    {% if env_data.env_name == 'ci' %}
-    # Static pg_creds stored in Vault QA for CI app
-    {% set pg_creds = salt.vault.read('secret-bootcamps/data/rds').data.data %}
-    {% else %}
     {% set rds_endpoint = salt.boto_rds.get_endpoint('bootcamps-db-applications-{env}'.format(env=env_data.aws_env)) %}
     {% set pg_creds = salt.vault.cached_read('postgres-bootcamps/creds/app', cache_prefix='heroku-bootcamp') %}
-    {% endif %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/bootcamps
     {% if env_data.env_name == 'production' %}
     BOOTCAMP_ECOMMERCE_SAML_BASE_URL: https://bootcamps.mit.edu
