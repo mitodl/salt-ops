@@ -135,7 +135,7 @@ heroku:
     CYBERSOURCE_WSDL_URL: {{ env_data.CYBERSOURCE_WSDL_URL }}
     CYBERSOURCE_INQUIRY_LOG_NACL_ENCRYPTION_KEY: __vault__::secret-xpro/cybersource>data>inquiry_log_nacl_encryption_key
     {% set pg_creds = salt.vault.cached_read('postgres-xpro/creds/app', cache_prefix='heroku-mitxpro') %}
-    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxpro
+    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/xpro
     {% if env_data.env_name == 'production' %}
     CERTIFICATE_CREATION_DELAY_IN_HOURS: 48
     HIREFIRE_TOKEN: __vault__::secret-xpro/hirefire>data>token
