@@ -122,7 +122,7 @@ heroku:
   config_vars:
     AWS_ACCESS_KEY_ID:  __vault__:cache:aws-mitx/creds/xpro-app>data>access_key
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/xpro-app>data>secret_key
-    AWS_STORAGE_BUCKET_NAME: 'xpro-app-{{ env_data.env_name }}'
+    AWS_STORAGE_BUCKET_NAME: 'ol-xpro-app-{{ env_data.aws_env }}'
     COUPON_REQUEST_SHEET_ID: __vault__::secret-xpro/google-sheets>data>sheet_id
     CRON_COURSERUN_SYNC_HOURS: '*'
     CYBERSOURCE_ACCESS_KEY: {{ cybersource_creds.data.access_key }}
