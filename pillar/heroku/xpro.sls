@@ -162,7 +162,7 @@ heroku:
     HUBSPOT_PIPELINE_ID: '75e28846-ad0d-4be2-a027-5e1da6590b98'
     HUBSPOT_PORTAL_ID: {{ env_data.HUBSPOT_PORTAL_ID }}
     LOGOUT_REDIRECT_URL: {{ env_data.logout_redirect_url }}
-    MAILGUN_KEY: __vault__::secret-global/data/mailgun>data>api_key
+    MAILGUN_KEY: __vault__::secret-global/data/mailgun>data>data>api_key
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
     MAILGUN_SENDER_DOMAIN: {{ env_data.MAILGUN_SENDER_DOMAIN }}
     MITOL_DIGITAL_CREDENTIALS_AUTH_TYPE: code
