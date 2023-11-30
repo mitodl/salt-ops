@@ -62,9 +62,6 @@
       'MITXPRO_SECURE_SSL_HOST': 'rc.xpro.mit.edu',
       'vault_env_path': 'rc-apps',
       'ENABLE_ORDER_RECEIPTS': True,
-      'FEATURE_COURSE_DROPDOWN': True,
-      'FEATURE_WEBINARS': True,
-      'FEATURE_ENABLE_BLOG': True,
       'SHEETS_MONITORING_FREQUENCY': 43200,
       'SHEETS_DEFERRAL_FIRST_ROW': 184,
       'SHEETS_REFUND_FIRST_ROW': 254,
@@ -99,9 +96,6 @@
       'MITXPRO_BASE_URL': 'https://xpro.mit.edu',
       'MITXPRO_SECURE_SSL_HOST': 'xpro.mit.edu',
       'ENABLE_ORDER_RECEIPTS': True,
-      'FEATURE_COURSE_DROPDOWN': True,
-      'FEATURE_WEBINARS': True,
-      'FEATURE_ENABLE_BLOG': True,
       'SHEETS_MONITORING_FREQUENCY': 3600,
       'SHEETS_DEFERRAL_FIRST_ROW': 234,
       'SHEETS_REFUND_FIRST_ROW': 287,
@@ -161,6 +155,9 @@ heroku:
     {% if env_data.env_name == 'rc' %}
     FEATURE_DIGITAL_CREDENTIALS: True
     {% endif %}
+    FEATURE_COURSE_DROPDOWN: True
+    FEATURE_WEBINARS: True
+    FEATURE_ENABLE_BLOG: True
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
     GTM_TRACKING_ID: {{ env_data.GOOGLE_TAG_MANAGER_ID }}
     HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
