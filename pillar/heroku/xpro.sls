@@ -155,6 +155,9 @@ heroku:
     {% if env_data.env_name == 'rc' %}
     FEATURE_DIGITAL_CREDENTIALS: True
     {% endif %}
+    FEATURE_COURSE_DROPDOWN: True
+    FEATURE_WEBINARS: True
+    FEATURE_ENABLE_BLOG: True
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
     GTM_TRACKING_ID: {{ env_data.GOOGLE_TAG_MANAGER_ID }}
     HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
