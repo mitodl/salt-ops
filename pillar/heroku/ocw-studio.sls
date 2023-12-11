@@ -37,6 +37,7 @@
       'sentry_log_level': 'WARN',
       'SITE_NAME': 'MIT OCW Studio CI',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://ocw-studio-ci.odl.mit.edu/saml/metadata',
+      'STATIC_API_BASE_URL_TEST': 'https://test-ci.ocw.mit.edu/',
       'vault_env_path': 'rc-apps',
       'VIDEO_TRANSCODE_QUEUE': 'ocw-studio-mediaconvert-queue-ci',
       'youtube_project_id': 'ovs-youtube-qa',
@@ -77,6 +78,7 @@
       'sentry_log_level': 'WARN',
       'SITE_NAME': 'MIT OCW Studio RC',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://ocw-studio-rc.odl.mit.edu/saml/metadata',
+      'STATIC_API_BASE_URL_TEST': 'https://test-qa.ocw.mit.edu/',
       'vault_env_path': 'rc-apps',
       'VIDEO_TRANSCODE_QUEUE': 'ocw-studio-mediaconvert-queue-qa',
       'youtube_project_id': 'ocw-studio-qa',
@@ -117,6 +119,7 @@
       'sentry_log_level': 'WARN',
       'SITE_NAME': 'MIT OCW Studio',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://ocw-studio.odl.mit.edu/saml/metadata',
+      'STATIC_API_BASE_URL_TEST': 'https://test.ocw.mit.edu/',
       'vault_env_path': 'production-apps',
       'VIDEO_TRANSCODE_QUEUE': 'ocw-studio-mediaconvert-queue-production',
       'youtube_project_id': 'ocw-studio-qa',
@@ -144,8 +147,10 @@ heroku:
     AWS_ARTIFACTS_BUCKET_NAME: 'ol-eng-artifacts'
     AWS_PREVIEW_BUCKET_NAME: 'ocw-content-draft-{{ env_data.env }}'
     AWS_PUBLISH_BUCKET_NAME: 'ocw-content-live-{{ env_data.env }}'
+    AWS_TEST_BUCKET_NAME: 'ocw-content-test-{{env_data.env}}'
     AWS_OFFLINE_PREVIEW_BUCKET_NAME: 'ocw-content-offline-draft-{{ env_data.env }}'
     AWS_OFFLINE_PUBLISH_BUCKET_NAME: 'ocw-content-offline-live-{{ env_data.env }}'
+    AWS_OFFLINE_TEST_BUCKET_NAME: 'ocw-content-offline-test-{{ env_data.env }}'
     AWS_SECRET_ACCESS_KEY: __vault__:cache:aws-mitx/creds/ocw-studio-app-{{ env_data.env }}>data>secret_key
     AWS_STORAGE_BUCKET_NAME: 'ol-ocw-studio-app-{{ env_data.env }}'
     AWS_MAX_CONCURRENT_CONNECTIONS: 100
@@ -202,6 +207,8 @@ heroku:
     OCW_STUDIO_USE_S3: True
     OCW_MASS_BUILD_BATCH_SIZE: {{ env_data.OCW_MASS_BUILD_BATCH_SIZE }}
     OCW_MASS_BUILD_MAX_IN_FLIGHT: {{ env_data.OCW_MASS_BUILD_MAX_IN_FLIGHT }}
+    OCW_WWW_TEST_SLUG: ocw-ci-test-www
+    OCW_COURSE_TEST_SLUG: ocw-ci-test-course
     OCW_NEXT_SEARCH_WEBHOOK_KEY: __vault__::secret-{{ business_unit }}/global/update-search-data-webhook-key>data>value
     OPEN_DISCUSSIONS_URL: {{ env_data.OPEN_DISCUSSIONS_URL }}
     PREPUBLISH_ACTIONS: videos.tasks.update_transcripts_for_website,videos.youtube.update_youtube_metadata,content_sync.tasks.update_website_in_root_website
@@ -224,6 +231,7 @@ heroku:
     SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>private_key
     SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: __vault__::secret-operations/{{ env_data.vault_env_path }}/{{ business_unit }}/saml>data>public_cert
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ app }}/{{ environment }}/django-status-token>data>value
+    STATIC_API_BASE_URL_TEST: {{ env_data.STATIC_API_BASE_URL_TEST }}
     THREEPLAY_API_KEY: __vault__::secret-operations/global/{{ business_unit }}/ocw-studio/threeplay_api_key>data>value
     THREEPLAY_CALLBACK_KEY: __vault__:gen_if_missing:secret-operations/global/{{ business_unit }}/ocw-studio/threeplay_callback_key>data>value
     USE_X_FORWARDED_PORT: True
