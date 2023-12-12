@@ -33,6 +33,8 @@
       'SSO_URL': 'sso-qa.odl.mit.edu',
       'TIKA_SERVER_ENDPOINT': 'https://tika-qa.odl.mit.edu',
       'env_stage': 'qa',
+      'KEYCLOAK_BASE_URL': 'https://sso-qa.odl.mit.edu',
+      'KEYCLOAK_REALM_NAME': 'olapps',
       },
     'production': {
       'app_log_level': 'INFO',
@@ -67,6 +69,8 @@
       'SSO_URL': 'sso.odl.mit.edu',
       'TIKA_SERVER_ENDPOINT': 'https://tika-production.odl.mit.edu',
       'env_stage': 'production',
+      'KEYCLOAK_BASE_URL': 'https://sso.odl.mit.edu',
+      'KEYCLOAK_REALM_NAME': 'olapps',
       }
 } %}
 {% set env_data = env_dict[environment] %}
@@ -180,6 +184,8 @@ heroku:
     AUTHORIZATION_URL: https://{{ env_data.SSO_URL }}/realms/olapps/protocol/openid-connect/auth
     ACCESS_TOKEN_URL: https://{{ env_data.SSO_URL }}/realms/olapps/protocol/openid-connect/token
     USERINFO_URL: https://{{ env_data.SSO_URL }}/realms/olapps/protocol/openid-connect/userinfo
+    KEYCLOAK_BASE_URL: {{ env_data.KEYCLOAK_BASE_URL }}
+    KEYCLOAK_REALM_NAME: {{ env_data.KEYCLOAK_REALM_NAME }}
 
 schedule:
   refresh_{{ env_data.app_name }}_configs:
