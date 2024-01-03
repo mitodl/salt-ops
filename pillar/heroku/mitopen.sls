@@ -30,10 +30,10 @@
       'PGBOUNCER_DEFAULT_POOL_SIZE': 50,
       'PGBOUNCER_MAX_CLIENT_CONN': 500,
       'PGBOUNCER_MIN_POOL_SIZE': 20,
-      'SSO_URL': 'sso-qa.odl.mit.edu',
+      'SSO_URL': 'sso-qa.ol.mit.edu',
       'TIKA_SERVER_ENDPOINT': 'https://tika-qa.odl.mit.edu',
       'env_stage': 'qa',
-      'KEYCLOAK_BASE_URL': 'https://sso-qa.odl.mit.edu',
+      'KEYCLOAK_BASE_URL': 'https://sso-qa.ol.mit.edu',
       'KEYCLOAK_REALM_NAME': 'olapps',
       },
     'production': {
@@ -66,10 +66,10 @@
       'PGBOUNCER_DEFAULT_POOL_SIZE': 50,
       'PGBOUNCER_MAX_CLIENT_CONN': 500,
       'PGBOUNCER_MIN_POOL_SIZE': 20,
-      'SSO_URL': 'sso.odl.mit.edu',
+      'SSO_URL': 'sso.ol.mit.edu',
       'TIKA_SERVER_ENDPOINT': 'https://tika-production.odl.mit.edu',
       'env_stage': 'production',
-      'KEYCLOAK_BASE_URL': 'https://sso.odl.mit.edu',
+      'KEYCLOAK_BASE_URL': 'https://sso.ol.mit.edu',
       'KEYCLOAK_REALM_NAME': 'olapps',
       }
 } %}
