@@ -21,7 +21,6 @@
       'HUBSPOT_ID_PREFIX': 'xpro-ci',
       'HUBSPOT_NEW_COURSES_FORM_GUID': '0c3a6036-a8b2-4de7-80a7-1e409322a6aa',
       'HUBSPOT_PORTAL_ID': 23128026,
-      'HUBSPOT_ENTERPRISE_PAGE_FORM_ID': 'de779fe5-c777-4da5-847b-ed2efc39e987',
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-ci-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-ci-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro-ci.odl.mit.edu',
@@ -57,7 +56,6 @@
       'HUBSPOT_ID_PREFIX': 'xpro-rc',
       'HUBSPOT_NEW_COURSES_FORM_GUID': '0c3a6036-a8b2-4de7-80a7-1e409322a6aa',
       'HUBSPOT_PORTAL_ID': 23128026,
-      'HUBSPOT_ENTERPRISE_PAGE_FORM_ID': 'de779fe5-c777-4da5-847b-ed2efc39e987',
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro-rc-mail.odl.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro-rc-mail.odl.mit.edu',
       'MITXPRO_BASE_URL': 'https://rc.xpro.mit.edu',
@@ -93,7 +91,6 @@
       'HUBSPOT_ID_PREFIX': 'xpro',
       'HUBSPOT_NEW_COURSES_FORM_GUID': 'ad5d54e5-5ca9-4255-9c17-fa222e0a9b82',
       'HUBSPOT_PORTAL_ID': 4994459,
-      'HUBSPOT_ENTERPRISE_PAGE_FORM_ID': '7863854e-029b-4604-9097-009e86fd1d5f',
       'MAILGUN_FROM_EMAIL': 'MIT xPRO <no-reply@xpro.mit.edu>',
       'MAILGUN_SENDER_DOMAIN': 'xpro.mit.edu',
       'MITXPRO_BASE_URL': 'https://xpro.mit.edu',
@@ -167,7 +164,6 @@ heroku:
     HUBSPOT_NEW_COURSES_FORM_GUID: {{ env_data.HUBSPOT_NEW_COURSES_FORM_GUID }}
     HUBSPOT_PIPELINE_ID: '75e28846-ad0d-4be2-a027-5e1da6590b98'
     HUBSPOT_PORTAL_ID: {{ env_data.HUBSPOT_PORTAL_ID }}
-    HUBSPOT_ENTERPRISE_PAGE_FORM_ID: {{ env_data.HUBSPOT_ENTERPRISE_PAGE_FORM_ID }}
     LOGOUT_REDIRECT_URL: {{ env_data.logout_redirect_url }}
     MAILGUN_KEY: __vault__::secret-global/data/mailgun>data>data>api_key
     MAILGUN_FROM_EMAIL: {{ env_data.MAILGUN_FROM_EMAIL }}
