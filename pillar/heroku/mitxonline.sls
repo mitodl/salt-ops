@@ -68,7 +68,7 @@ heroku:
     HIREFIRE_TOKEN: __vault__::secret-{{ business_unit }}/production-apps/hirefire_token>data>value
     {% endif %}
     MITX_ONLINE_SUPPORT_EMAIL: 'mitxonline-support@mit.edu'
-    {% set rds_endpoint = salt.boto_rds.get_endpoint('mitxonline-{}-app-db'.format(env_data.env_stage)) %}
+    {% set rds_endpoint = 'mitxonline-{}-app-db.cbnm7ajau6mi.us-east-1.rds.amazonaws.com:5432'.format(env_data.env_stage) %}
     {% set pg_creds = salt.vault.cached_read('postgres-mitxonline/creds/app', cache_prefix='heroku-mitxonline') %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/mitxonline
     FEATURE_SYNC_ON_DASHBOARD_LOAD: True

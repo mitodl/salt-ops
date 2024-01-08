@@ -95,7 +95,7 @@ heroku:
     CKEDITOR_SECRET_KEY:  __vault__::secret-mitopen/data/secrets>data>data>ckeditor>secret_key
     CKEDITOR_UPLOAD_URL:  __vault__::secret-mitopen/data/secrets>data>data>ckeditor>upload_url
     CSAIL_BASE_URL: https://cap.csail.mit.edu/
-    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ salt.boto_rds.get_endpoint('ol-mitopen-db-{}'.format(env_data.env_stage)) }}/mitopen
+    DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ 'ol-mitopen-db-{}.cbnm7ajau6mi.us-east-1.rds.amazonaws.com'.format(env_data.env_stage) }}:5432/mitopen
     DEBUG: {{ env_data.DEBUG }}
     DUPLICATE_COURSES_URL: https://raw.githubusercontent.com/mitodl/open-resource-blacklists/master/duplicate_courses.yml
     EDX_API_ACCESS_TOKEN_URL: https://api.edx.org/oauth2/v1/access_token

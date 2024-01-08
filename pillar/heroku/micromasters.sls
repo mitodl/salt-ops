@@ -162,7 +162,7 @@ heroku:
     SENTRY_ORG_NAME: 'mit-office-of-digital-learning'
     SENTRY_PROJECT_NAME: 'micromasters'
     STATUS_TOKEN: __vault__:gen_if_missing:secret-{{ business_unit }}/django>data>status_token
-    {% set rds_endpoint = salt.boto_rds.get_endpoint('micromasters-{env}-app-db'.format(env=env_data.aws_env)) %}
+    {% set rds_endpoint = 'micromasters-{env}-app-db.cbnm7ajau6mi.us-east-1.rds.amazonaws.com:5432'.format(env=env_data.aws_env) %}
     {% if env_data.env_name == 'ci' %}
     # Static pg_creds stored in Vault QA for CI app
     {% set pg_creds = salt.vault.read('secret-' ~ business_unit ~ '/ci/rds').data %}

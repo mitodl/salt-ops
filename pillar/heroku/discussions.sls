@@ -143,7 +143,7 @@
 {% set env_data = env_dict[environment] %}
 {% set business_unit = 'mit-open' %}
 {% set pg_creds = salt.vault.cached_read('postgres-{}-opendiscussions/creds/opendiscussions'.format(env_data.vault_env_path), cache_prefix='heroku-opendiscussions') %}
-{% set rds_endpoint = salt.boto_rds.get_endpoint('{env}-rds-postgresql-opendiscussions'.format(env=env_data.vault_env_path)) %}
+{% set rds_endpoint = '{env}-rds-postgresql-opendiscussions.cbnm7ajau6mi.us-east-1.rds.amazonaws.com:5432'.format(env=env_data.vault_env_path) %}
 
 {% set etl_micromasters_host = salt.sdb.get('sdb://consul/open-{}-etl-micromasters-host'.format(environment)) %}
 {% set etl_xpro_host = salt.sdb.get('sdb://consul/open-{}-etl-xpro-host'.format(environment)) %}

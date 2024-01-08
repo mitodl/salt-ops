@@ -114,7 +114,7 @@
 {% set business_unit = 'mitxpro' %}
 {% set cybersource_creds = salt.vault.read('secret-' ~ business_unit ~ '/' ~ env_data.vault_env_path ~ '/cybersource') %}
 {% set smtp_config = salt.vault.read('secret-' ~ business_unit ~ '/' ~ business_unit ~ '-' ~ env_data.env_name ~ '/smtp_config') %}
-{% set rds_endpoint = salt.boto_rds.get_endpoint('xpro-db-applications-{env}'.format(env=env_data.aws_env)) %}
+{% set rds_endpoint = 'xpro-db-applications-{env}.cbnm7ajau6mi.us-east-1.rds.amazonaws.com:5432'.format(env=env_data.aws_env) %}
 
 proxy:
   proxytype: heroku

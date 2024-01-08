@@ -92,7 +92,7 @@ heroku:
     CYBERSOURCE_SECURITY_KEY: {{ cybersource_creds.security_key }}
     CYBERSOURCE_TRANSACTION_KEY: {{ cybersource_creds.transaction_key }}
     CYBERSOURCE_WSDL_URL: {{ env_data.CYBERSOURCE_WSDL_URL }}
-    {% set rds_endpoint = salt.boto_rds.get_endpoint('bootcamps-db-applications-{env}'.format(env=env_data.aws_env)) %}
+    {% set rds_endpoint = 'bootcamps-db-applications-{env}.cbnm7ajau6mi.us-east-1.rds.amazonaws.com:5432'.format(env=env_data.aws_env) %}
     {% set pg_creds = salt.vault.cached_read('postgres-bootcamps/creds/app', cache_prefix='heroku-bootcamp') %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/bootcamps
     {% if env_data.env_name == 'production' %}

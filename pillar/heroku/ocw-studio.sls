@@ -162,7 +162,7 @@ heroku:
     CONCOURSE_PASSWORD: __vault__::secret-concourse/data/web>data>data>admin_password
     {% if env_data.env_name != 'ci' %}
     {% set pg_creds = salt.vault.cached_read('postgres-ocw-studio-applications-{}/creds/app'.format(env_data.env), cache_prefix='heroku-ocw-studio-' ~ env_data.env) %}
-    {% set rds_endpoint = salt.boto_rds.get_endpoint('ocw-studio-db-applications-{}'.format(env_data.env)) %}
+    {% set rds_endpoint = 'ocw-studio-db-applications-{}.cbnm7ajau6mi.us-east-1.rds.amazonaws.com:5432'.format(env_data.env) %}
     DATABASE_URL: postgres://{{ pg_creds.data.username }}:{{ pg_creds.data.password }}@{{ rds_endpoint }}/ocw_studio
     ENV_NAME: {{ env_data.env_name }}
     GIT_API_URL: "https://github.mit.edu/api/v3"
