@@ -6,6 +6,7 @@
       'app_name': 'xpro-ci',
       'aws_env': 'ci',
       'env_name': 'ci',
+      'ZENDESK_DOMAIN_VERIFICATION_TAG_VALUE': 'pv2na9vf73s3cz2uxmeosr',
       'GOOGLE_TRACKING_ID': 'UA-5145472-40',
       'GOOGLE_TAG_MANAGER_ID': 'GTM-KJHRV6K',
       'release_branch': 'master',
@@ -41,6 +42,7 @@
       'app_name': 'xpro-rc',
       'aws_env': 'qa',
       'env_name': 'rc',
+      'ZENDESK_DOMAIN_VERIFICATION_TAG_VALUE': 'pv2na9vf73s3cz2uxmeosr',
       'GOOGLE_TRACKING_ID': 'UA-5145472-40',
       'GOOGLE_TAG_MANAGER_ID': 'GTM-KJHRV6K',
       'release_branch': 'release-candidate',
@@ -77,6 +79,7 @@
       'app_name': 'xpro-production',
       'aws_env': 'production',
       'env_name': 'production',
+      'ZENDESK_DOMAIN_VERIFICATION_TAG_VALUE': 'pv2na9vf73s3cz2uxmeosr',
       'GOOGLE_TRACKING_ID': 'UA-5145472-38',
       'GOOGLE_TAG_MANAGER_ID': 'GTM-KG4FR7J',
       'release_branch': 'release',
@@ -161,6 +164,7 @@ heroku:
     FEATURE_COURSE_DROPDOWN: True
     FEATURE_WEBINARS: True
     FEATURE_ENABLE_BLOG: True
+    ZENDESK_DOMAIN_VERIFICATION_TAG_VALUE: {{ env_data.ZENDESK_DOMAIN_VERIFICATION_TAG_VALUE }}
     GA_TRACKING_ID: {{ env_data.GOOGLE_TRACKING_ID }}
     GTM_TRACKING_ID: {{ env_data.GOOGLE_TAG_MANAGER_ID }}
     HUBSPOT_FOOTER_FORM_GUID: {{ env_data.HUBSPOT_FOOTER_FORM_GUID }}
