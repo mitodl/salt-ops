@@ -209,7 +209,7 @@ heroku:
     OCW_MASS_BUILD_MAX_IN_FLIGHT: {{ env_data.OCW_MASS_BUILD_MAX_IN_FLIGHT }}
     OCW_WWW_TEST_SLUG: ocw-ci-test-www
     OCW_COURSE_TEST_SLUG: ocw-ci-test-course
-    OCW_NEXT_SEARCH_WEBHOOK_KEY: __vault__::secret-{{ business_unit }}/global/update-search-data-webhook-key>data>value
+    OPEN_CATALOG_WEBHOOK_KEY: __vault__::secret-{{ business_unit }}/global/update-search-data-webhook-key>data>value
     OPEN_CATALOG_URLS: {{ env_data.OPEN_CATALOG_URLS }}
     PREPUBLISH_ACTIONS: videos.tasks.update_transcripts_for_website,videos.youtube.update_youtube_metadata,content_sync.tasks.update_website_in_root_website
     SEARCH_API_URL: {{ env_data.SEARCH_API_URL }}
