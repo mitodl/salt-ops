@@ -32,7 +32,7 @@
       'OCW_STUDIO_LIVE_URL': '',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
       'OCW_STUDIO_SUPPORT_EMAIL': 'ocw-studio-ci-support@mit.edu',
-      'OPEN_DISCUSSIONS_URL': 'https://discussions-ci.odl.mit.edu',
+      'OPEN_CATALOG_URLS': 'https://discussions-ci.odl.mit.edu/api/v0/ocw_next_webhook/,https://mitopen-rc.odl.mit.edu/api/v1/ocw_next_webhook/',
       'SEARCH_API_URL': 'https://discussions-ci.odl.mit.edu/api/v0/search/',
       'sentry_log_level': 'WARN',
       'SITE_NAME': 'MIT OCW Studio CI',
@@ -73,7 +73,7 @@
       'OCW_STUDIO_LIVE_URL': 'https://live-qa.ocw.mit.edu/',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
       'OCW_STUDIO_SUPPORT_EMAIL': 'ocw-studio-rc-support@mit.edu',
-      'OPEN_DISCUSSIONS_URL': 'https://discussions-rc.odl.mit.edu',
+      'OPEN_CATALOG_URLS': 'https://discussions-rc.odl.mit.edu/api/v0/ocw_next_webhook/,https://mitopen-rc.odl.mit.edu/api/v1/ocw_next_webhook/',
       'SEARCH_API_URL': 'https://discussions-rc.odl.mit.edu/api/v0/search/',
       'sentry_log_level': 'WARN',
       'SITE_NAME': 'MIT OCW Studio RC',
@@ -114,7 +114,7 @@
       'OCW_STUDIO_LIVE_URL': 'https://ocw.mit.edu/',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
       'OCW_STUDIO_SUPPORT_EMAIL': 'ocw-studio-support@mit.edu',
-      'OPEN_DISCUSSIONS_URL': 'https://open.mit.edu',
+      'OPEN_CATALOG_URLS': 'https://open.mit.edu/api/v0/ocw_next_webhook/,https://mitopen.odl.mit.edu/api/v1/ocw_next_webhook/',
       'SEARCH_API_URL': 'https://open.mit.edu/api/v0/search/',
       'sentry_log_level': 'WARN',
       'SITE_NAME': 'MIT OCW Studio',
@@ -209,8 +209,8 @@ heroku:
     OCW_MASS_BUILD_MAX_IN_FLIGHT: {{ env_data.OCW_MASS_BUILD_MAX_IN_FLIGHT }}
     OCW_WWW_TEST_SLUG: ocw-ci-test-www
     OCW_COURSE_TEST_SLUG: ocw-ci-test-course
-    OCW_NEXT_SEARCH_WEBHOOK_KEY: __vault__::secret-{{ business_unit }}/global/update-search-data-webhook-key>data>value
-    OPEN_DISCUSSIONS_URL: {{ env_data.OPEN_DISCUSSIONS_URL }}
+    OPEN_CATALOG_WEBHOOK_KEY: __vault__::secret-{{ business_unit }}/global/update-search-data-webhook-key>data>value
+    OPEN_CATALOG_URLS: {{ env_data.OPEN_CATALOG_URLS }}
     PREPUBLISH_ACTIONS: videos.tasks.update_transcripts_for_website,videos.youtube.update_youtube_metadata,content_sync.tasks.update_website_in_root_website
     SEARCH_API_URL: {{ env_data.SEARCH_API_URL }}
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ app }}/{{ environment }}/django-secret-key>data>value
