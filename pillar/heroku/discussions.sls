@@ -40,6 +40,7 @@
       'release_branch': 'master',
       'SOCIAL_AUTH_MICROMASTERS_LOGIN_URL': 'https://micromasters-ci.odl.mit.edu/discussions/',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions-ci.odl.mit.edu/saml/metadata',
+      'SSO_URL': 'sso-ci.ol.mit.edu',
       'TIKA_SERVER_ENDPOINT': 'https://tika-ci.odl.mit.edu',
       'vault_env_path': 'rc-apps',
       'env_stage': 'ci',
@@ -86,6 +87,7 @@
       'release_branch': 'release-candidate',
       'SOCIAL_AUTH_MICROMASTERS_LOGIN_URL': 'https://micromasters-rc.odl.mit.edu/login/edxorg/?next=/discussions/',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions-rc.odl.mit.edu/saml/metadata',
+      'SSO_URL': 'sso-qa.ol.mit.edu',
       'TIKA_SERVER_ENDPOINT': 'https://tika-qa.odl.mit.edu',
       'vault_env_path': 'rc-apps',
       'env_stage': 'qa',
@@ -132,6 +134,7 @@
       'release_branch': 'release',
       'SOCIAL_AUTH_MICROMASTERS_LOGIN_URL': 'https://micromasters.mit.edu/login/edxorg/?next=/discussions/',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://discussions.odl.mit.edu/saml/metadata',
+      'SSO_URL': 'sso.ol.mit.edu',
       'TIKA_SERVER_ENDPOINT': 'https://tika-production.odl.mit.edu',
       'vault_env_path': 'production-apps',
       'env_stage': 'production',
@@ -308,6 +311,10 @@ heroku:
     FEATURE_KEYCLOAK_ENABLED: {{ env_data.FEATURE_KEYCLOAK_ENABLED }}
     KEYCLOAK_BASE_URL: {{ env_data.KEYCLOAK_BASE_URL }}
     KEYCLOAK_REALM_NAME: {{ env_data.KEYCLOAK_REALM_NAME }}
+    SOCIAL_AUTH_OL_OIDC_OIDC_ENDPOINT: https://{{ env_data.SSO_URL }}/realms/olapps
+    OIDC_ENDPOINT: https://{{ env_data.SSO_URL }}/realms/olapps
+    SOCIAL_AUTH_OL_OIDC_KEY: ol-open-discussions-client
+    SOCIAL_AUTH_OL_OIDC_SECRET: __vault__::secret-operations/sso/open-discussions>data>client_secret
 
 schedule:
   refresh_{{ env_data.app_name }}_configs:
