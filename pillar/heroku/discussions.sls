@@ -315,6 +315,9 @@ heroku:
     OIDC_ENDPOINT: https://{{ env_data.SSO_URL }}/realms/olapps
     SOCIAL_AUTH_OL_OIDC_KEY: ol-open-discussions-client
     SOCIAL_AUTH_OL_OIDC_SECRET: __vault__::secret-operations/sso/open-discussions>data>client_secret
+    ACCESS_TOKEN_URL: https://{{ env_data.SSO_URL }}/realms/olapps/protocol/openid-connect/token
+    AUTHORIZATION_URL: https://{{ env_data.SSO_URL }}/realms/olapps/protocol/openid-connect/auth
+    USERINFO_URL: https://{{ env_data.SSO_URL }}/realms/olapps/protocol/openid-connect/userinfo
 
 schedule:
   refresh_{{ env_data.app_name }}_configs:
