@@ -44,7 +44,7 @@
       'vault_env_path': 'rc-apps',
       'env_stage': 'ci',
       'FEATURE_KEYCLOAK_ENABLED': True,
-      'KEYCLOAK_BASE_URL': 'https://sso-ci.odl.mit.edu',
+      'KEYCLOAK_BASE_URL': 'https://sso-ci.ol.mit.edu',
       'KEYCLOAK_REALM_NAME': 'olapps',
       },
     'rc': {
@@ -90,7 +90,7 @@
       'vault_env_path': 'rc-apps',
       'env_stage': 'qa',
       'FEATURE_KEYCLOAK_ENABLED': True,
-      'KEYCLOAK_BASE_URL': 'https://sso-qa.odl.mit.edu',
+      'KEYCLOAK_BASE_URL': 'https://sso-qa.ol.mit.edu',
       'KEYCLOAK_REALM_NAME': 'olapps',
       },
     'production': {
