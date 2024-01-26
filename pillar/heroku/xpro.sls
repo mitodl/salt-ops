@@ -81,7 +81,7 @@
       'app_name': 'xpro-production',
       'aws_env': 'production',
       'env_name': 'production',
-      'ZENDESK_DOMAIN_VERIFICATION_TAG_VALUE': '1c4iviypqh7fl4ylnbtdik',
+      'ZENDESK_DOMAIN_VERIFICATION_TAG_VALUE': '7bssn24czomsqr17u73tt',
       'GOOGLE_TRACKING_ID': 'UA-5145472-38',
       'GOOGLE_TAG_MANAGER_ID': 'GTM-KG4FR7J',
       'release_branch': 'release',
