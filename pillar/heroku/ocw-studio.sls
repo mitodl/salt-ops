@@ -34,6 +34,8 @@
       'OCW_STUDIO_SUPPORT_EMAIL': 'ocw-studio-ci-support@mit.edu',
       'OPEN_CATALOG_URLS': 'https://discussions-ci.odl.mit.edu/api/v0/ocw_next_webhook/,https://mitopen-rc.odl.mit.edu/api/v1/ocw_next_webhook/',
       'SEARCH_API_URL': 'https://discussions-ci.odl.mit.edu/api/v0/search/',
+      'COURSE_SEARCH_API_URL': 'https://mit-open-rc.odl.mit.edu/api/v1/learning_resources_search/',
+      'CONTENT_FILE_SEARCH_API_URL': 'https://mit-open-rc.odl.mit.edu/api/v1/content_file_search/',
       'sentry_log_level': 'WARN',
       'SITE_NAME': 'MIT OCW Studio CI',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://ocw-studio-ci.odl.mit.edu/saml/metadata',
@@ -75,6 +77,8 @@
       'OCW_STUDIO_SUPPORT_EMAIL': 'ocw-studio-rc-support@mit.edu',
       'OPEN_CATALOG_URLS': 'https://discussions-rc.odl.mit.edu/api/v0/ocw_next_webhook/,https://mitopen-rc.odl.mit.edu/api/v1/ocw_next_webhook/',
       'SEARCH_API_URL': 'https://discussions-rc.odl.mit.edu/api/v0/search/',
+      'COURSE_SEARCH_API_URL': 'https://mit-open-rc.odl.mit.edu/api/v1/learning_resources_search/',
+      'CONTENT_FILE_SEARCH_API_URL': 'https://mit-open-rc.odl.mit.edu/api/v1/content_file_search/',
       'sentry_log_level': 'WARN',
       'SITE_NAME': 'MIT OCW Studio RC',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://ocw-studio-rc.odl.mit.edu/saml/metadata',
@@ -116,6 +120,8 @@
       'OCW_STUDIO_SUPPORT_EMAIL': 'ocw-studio-support@mit.edu',
       'OPEN_CATALOG_URLS': 'https://open.mit.edu/api/v0/ocw_next_webhook/,https://mitopen.odl.mit.edu/api/v1/ocw_next_webhook/',
       'SEARCH_API_URL': 'https://open.mit.edu/api/v0/search/',
+      'COURSE_SEARCH_API_URL': 'https://mitopen.odl.mit.edu/api/v1/learning_resources_search/',
+      'CONTENT_FILE_SEARCH_API_URL': 'https://mitopen.odl.mit.edu/api/v1/content_file_search/',
       'sentry_log_level': 'WARN',
       'SITE_NAME': 'MIT OCW Studio',
       'SOCIAL_AUTH_SAML_SP_ENTITY_ID': 'https://ocw-studio.odl.mit.edu/saml/metadata',
@@ -213,6 +219,8 @@ heroku:
     OPEN_CATALOG_URLS: {{ env_data.OPEN_CATALOG_URLS }}
     PREPUBLISH_ACTIONS: videos.tasks.update_transcripts_for_website,videos.youtube.update_youtube_metadata,content_sync.tasks.update_website_in_root_website
     SEARCH_API_URL: {{ env_data.SEARCH_API_URL }}
+    COURSE_SEARCH_API_URL: {{ env_data.COURSE_SEARCH_API_URL }}
+    CONTENT_FILE_SEARCH_API_URL: {{ env_data.CONTENT_FILE_SEARCH_API_URL }}
     SECRET_KEY: __vault__:gen_if_missing:secret-{{ business_unit }}/{{ app }}/{{ environment }}/django-secret-key>data>value
     SENTRY_DSN: __vault__::secret-operations/global/{{ business_unit }}/ocw-studio/sentry-dsn>data>value
     SENTRY_LOG_LEVEL: {{ env_data.sentry_log_level }}
