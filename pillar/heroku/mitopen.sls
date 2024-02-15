@@ -41,7 +41,7 @@
       'app_name': 'mitopen-production',
       'CELERY_WORKER_MAX_MEMORY_PER_CHILD': 250000,
       'CLOUDFRONT_DIST': 'd2mcnjhkvrfuy2',
-      'CORS_URLS': ['https://ocw-preview.odl.mit.edu', "https://draft.ocw.mit.edu", "https://www.ocw.mit.edu", "https://ocw.mit.edu", 'https://live.ocw.mit.edu'],
+      'CORS_URLS': ['https://ocw-preview.odl.mit.edu', "https://draft.ocw.mit.edu", "https://www.ocw.mit.edu", "https://ocw.mit.edu", 'https://live.ocw.mit.edu', 'https://live-qa.ocw.mit.edu'],
       'DEBUG': False,
       'EDX_LEARNING_COURSE_BUCKET_NAME': 'edxorg-production-edxapp-courses',
       'ENABLE_INFINITE_CORRIDOR': True,
