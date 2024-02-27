@@ -30,6 +30,7 @@
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio-ci.odl.mit.edu/',
       'OCW_STUDIO_DRAFT_URL': '',
       'OCW_STUDIO_LIVE_URL': '',
+      'OCW_STUDIO_TEST_URL': '',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
       'OCW_STUDIO_SUPPORT_EMAIL': 'ocw-studio-ci-support@mit.edu',
       'OPEN_CATALOG_URLS': 'https://discussions-ci.odl.mit.edu/api/v0/ocw_next_webhook/,https://mitopen-rc.odl.mit.edu/api/v1/ocw_next_webhook/',
@@ -73,6 +74,7 @@
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio-rc.odl.mit.edu/',
       'OCW_STUDIO_DRAFT_URL': 'https://draft-qa.ocw.mit.edu/',
       'OCW_STUDIO_LIVE_URL': 'https://live-qa.ocw.mit.edu/',
+      'OCW_STUDIO_TEST_URL': 'https://test-qa.ocw.mit.edu/',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
       'OCW_STUDIO_SUPPORT_EMAIL': 'ocw-studio-rc-support@mit.edu',
       'OPEN_CATALOG_URLS': 'https://discussions-rc.odl.mit.edu/api/v0/ocw_next_webhook/,https://mitopen-rc.odl.mit.edu/api/v1/ocw_next_webhook/',
@@ -116,6 +118,7 @@
       'OCW_STUDIO_BASE_URL': 'https://ocw-studio.odl.mit.edu/',
       'OCW_STUDIO_DRAFT_URL': 'https://draft.ocw.mit.edu/',
       'OCW_STUDIO_LIVE_URL': 'https://ocw.mit.edu/',
+      'OCW_STUDIO_TEST_URL': 'https://test.ocw.mit.edu/',
       'OCW_STUDIO_LOG_LEVEL': 'INFO',
       'OCW_STUDIO_SUPPORT_EMAIL': 'ocw-studio-support@mit.edu',
       'OPEN_CATALOG_URLS': 'https://open.mit.edu/api/v0/ocw_next_webhook/,https://mitopen.odl.mit.edu/api/v1/ocw_next_webhook/',
@@ -205,6 +208,7 @@ heroku:
     OCW_STUDIO_BASE_URL: {{ env_data.OCW_STUDIO_BASE_URL }}
     OCW_STUDIO_DRAFT_URL: {{ env_data.OCW_STUDIO_DRAFT_URL}}
     OCW_STUDIO_LIVE_URL: {{ env_data.OCW_STUDIO_LIVE_URL}}
+    OCW_STUDIO_TEST_URL: {{ env_data.OCW_STUDIO_TEST_URL }}
     OCW_STUDIO_DB_CONN_MAX_AGE: 0
     OCW_STUDIO_DB_DISABLE_SSL: True
     OCW_STUDIO_ENVIRONMENT: {{ env_data.env_name }}
@@ -213,6 +217,8 @@ heroku:
     OCW_STUDIO_USE_S3: True
     OCW_MASS_BUILD_BATCH_SIZE: {{ env_data.OCW_MASS_BUILD_BATCH_SIZE }}
     OCW_MASS_BUILD_MAX_IN_FLIGHT: {{ env_data.OCW_MASS_BUILD_MAX_IN_FLIGHT }}
+    TEST_ROOT_WEBSITE_NAME: ocw-ci-test-www
+    OCW_TEST_SITE_SLUGS: '["ocw-ci-test-www", "ocw-ci-test-course"]'
     OCW_WWW_TEST_SLUG: ocw-ci-test-www
     OCW_COURSE_TEST_SLUG: ocw-ci-test-course
     OPEN_CATALOG_WEBHOOK_KEY: __vault__::secret-{{ business_unit }}/global/update-search-data-webhook-key>data>value
