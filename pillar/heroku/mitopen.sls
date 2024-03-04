@@ -176,7 +176,7 @@ heroku:
     XPRO_LEARNING_COURSE_BUCKET_NAME: mitx-etl-xpro-production-mitxpro-production
     YOUTUBE_DEVELOPER_KEY: __vault__::secret-mitopen/data/secrets>data>data>youtube-developer-key
     YOUTUBE_FETCH_TRANSCRIPT_SCHEDULE_SECONDS: 21600
-    YOUTUBE_FETCH_TRANSCRIPT_SLEEP_SECONDS: 20
+    YOUTUBE_CONFIG_URL=https://raw.githubusercontent.com/mitodl/open-video-data/mitopen/youtube/channels.yaml
     SOCIAL_AUTH_OL_OIDC_OIDC_ENDPOINT: https://{{ env_data.SSO_URL }}/realms/olapps
     OIDC_ENDPOINT: https://{{ env_data.SSO_URL }}/realms/olapps
     SOCIAL_AUTH_OL_OIDC_KEY: ol-open-client
