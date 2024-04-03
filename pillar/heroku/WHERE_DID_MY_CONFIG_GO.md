@@ -7,4 +7,5 @@
 - [MIT Open](https://github.com/mitodl/ol-infrastructure/tree/main/src/ol_infrastructure/applications/mitopen)
 - [MITXOnline](https://github.com/mitodl/ol-infrastructure/tree/main/src/ol_infrastructure/applications/mitxonline)
 - [OCW-Studio'](https://github.com/mitodl/ol-infrastructure/tree/main/src/ol_infrastructure/applications/ocw_studio)
+- [OpenDiscussions](https://github.com/mitodl/ol-infrastructure/tree/main/src/ol_infrastructure/applications/open_discussions)
 - [xPro](https://github.com/mitodl/ol-infrastructure/tree/main/src/ol_infrastructure/applications/xpro)
