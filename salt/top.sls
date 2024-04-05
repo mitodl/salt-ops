@@ -38,14 +38,7 @@ base:
   'roles:cassandra':
     - match: grain
     - cassandra
-  starcellbio*:
-    - consul
-    - python
-    - node
-    - django
-    - uwsgi
-    - nginx
-  'G@roles:odl-video-service or G@roles:mitx-cas':
+  'G@roles:mitx-cas':
     - match: compound
     - utils.configure_debian_source_repos
     - consul
@@ -54,10 +47,6 @@ base:
     - nginx-shibboleth
     - django
     - uwsgi
-    - vector
-  'roles:odl-video-service':
-    - match: grain
-    - utils.logrotate
     - vector
   'roles:ocw-origin':
     - match: grain
