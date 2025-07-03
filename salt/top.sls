@@ -2,14 +2,10 @@ base:
   '*':
     - utils.install_libs
     - vector
-  'P@environment:(operations|operations-qa|mitx-qa|mitx-production|rc-apps|production-apps)':
+  'P@environment:(operations|operations-qa|rc-apps|production-apps)':
     - match: compound
     - consul
     - consul.dns_proxy
-  'roles:xqwatcher':
-    - match: grain
-    - edx.xqwatcher
-    - vector
   'roles:master':
     - match: grain
     - master
@@ -38,41 +34,3 @@ base:
   'roles:cassandra':
     - match: grain
     - cassandra
-  'G@roles:mitx-cas':
-    - match: compound
-    - utils.configure_debian_source_repos
-    - consul
-    - python
-    - node
-    - nginx-shibboleth
-    - django
-    - uwsgi
-    - vector
-  'roles:ocw-origin':
-    - match: grain
-    - utils.configure_debian_source_repos
-    - nginx
-    - nginx.certificates
-    - letsencrypt
-    - apps.ocw.ocw-origin.install
-    - apps.ocw.sync_repo
-    - apps.ocw.symlinks_origin
-  'roles:ocw-cms':
-    - match: grain
-    - utils.logrotate
-    - apps.ocw.engines
-    - apps.ocw.cms_plone
-    - apps.ocw.sync_repo
-    - apps.ocw.symlinks_cms
-  'roles:ocw-db':
-    - match: grain
-    - utils.logrotate
-  'roles:ocw-mirror':
-    - match: grain
-    - apps.ocw.mirror
-    - apps.ocw.sync_repo
-    - utils.logrotate
-  'G@roles:ocw-mirror and G@ocw-environment:production':
-    - match: compound
-    - nginx
-    - nginx.certificates
