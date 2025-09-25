@@ -10,8 +10,6 @@ base:
     - master.config
     - vault.roles.apps
     - vault.roles.aws
-    - vault.roles.bootcamps
-    - vault.roles.micromasters
   master-operations-production:
     - master.production_schedule
   master-operations-qa:

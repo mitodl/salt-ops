@@ -1,12 +1,6 @@
 {% set ONE_WEEK = 604800 %}
 
 schedule:
-  scan_for_expiring_vault_leases:
-    maxrunning: 1
-    when: Monday 9:00am
-    function: vault.scan_leases
-    kwargs:
-      time_horizon: {{ ONE_WEEK }}
   refresh_master_vault_token:
     maxrunning: 1
     days: 5
