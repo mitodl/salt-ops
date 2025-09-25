@@ -12,7 +12,6 @@ base:
     - master.api
     - master_utils.dns
     - master_utils.libgit
-    - heroku.proxy_config
     - caddy
   'G@roles:master and P@environment:operations(-qa)?':
     - match: compound
